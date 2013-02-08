@@ -9,6 +9,7 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Text;
 
 namespace Zeta.Extreme {
@@ -21,6 +22,16 @@ namespace Zeta.Extreme {
 	/// 	создан с учетом оптимизации и минимальной мутации
 	/// </remarks>
 	public sealed class ZexQuery : CacheKeyGeneratorBase {
+		/// <summary>
+		/// Конструктор запроса по умолчанию
+		/// </summary>
+		public ZexQuery() {
+			Time = new TimeHandler();
+			Row = new RowHandler();
+			Column = new ColumnHandler();
+			Zone =new ZoneHandler();
+			Valuta = "NONE";
+		}
 		/// <summary>
 		/// 	Условие на время
 		/// </summary>
@@ -75,5 +86,43 @@ namespace Zeta.Extreme {
 		/// 	Модификатор кэш-строки (префикс)
 		/// </summary>
 		public string CustomHashPrefix;
+
+		private IList<ZexQuery> _children;
+
+		/// <summary>
+		/// Простая копия условия на время
+		/// </summary>
+		/// <param name="deep">Если да, то делает копии вложенных измерений</param>
+		/// <returns></returns>
+		public ZexQuery Copy(bool deep = false) {
+			var result = (ZexQuery) MemberwiseClone();
+			if (deep) {
+				result.Column = result.Column.Copy();
+				result.Row = result.Row.Copy();
+				result.Time = result.Time.Copy();
+				result.Zone = result.Zone.Copy();
+
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Дочерние запросы
+		/// </summary>
+		public IList<ZexQuery> Children {
+			get { return _children ?? (_children = new List<ZexQuery>()); }
+
+		}
+
+		/// <summary>
+		/// Родительский запрос
+		/// </summary>
+		public ZexQuery Parent { get; set; }
+
+		/// <summary>
+		/// Обратная ссылка на сессию
+		/// </summary>
+		public ZexSession Session { get; set; }
 	}
 }

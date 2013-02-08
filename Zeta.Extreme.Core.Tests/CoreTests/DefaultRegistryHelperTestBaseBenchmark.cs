@@ -61,6 +61,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			for (var i = 0; i < 10000; i++)
 			{
 				var q = new ZexQuery { CustomHashPrefix = (i % 500).ToString() };
+				
 				session.RegisterAsync(q);
 			}
 			session.WaitRegistration();

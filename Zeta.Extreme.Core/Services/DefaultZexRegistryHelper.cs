@@ -65,6 +65,7 @@ namespace Zeta.Extreme {
 				}
 			}
 			if (null == result) {
+				query.Session = _session; //надо установить сессию раз новый запрос
 				lock (_session.ActiveSet) {
 					_session.ActiveSet[key] = query;
 					result = query;

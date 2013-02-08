@@ -9,19 +9,46 @@
 
 #endregion
 
-using System;
+using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Описание условия на строку
 	/// </summary>
-	public sealed class RowHandler : CacheKeyGeneratorBase {
+	public sealed class RowHandler : CachedItemHandlerBase<IZetaRow> {
+		/// <summary>
+		/// 	Условие на объединение по дереву (динамический суммовой набор) - для оптимизированных сумм
+		/// </summary>
+		public RowTreeUsage TreeUsage {
+			get { return _treeUsage; }
+			set {
+				if (value != _treeUsage) {
+					_treeUsage = value;
+					InvalidateCacheKey();
+				}
+			}
+		}
+
 		/// <summary>
 		/// 	Функция непосредственного вычисления кэшевой строки
 		/// </summary>
 		/// <returns> </returns>
 		protected override string EvalCacheKey() {
-			throw new NotImplementedException();
+			if (TreeUsage != RowTreeUsage.None && !string.IsNullOrWhiteSpace(Code)) {
+				return "TREE:" + Code + "~" + TreeUsage;
+			}
+			return base.EvalCacheKey();
+		}
+
+		private RowTreeUsage _treeUsage;
+
+		/// <summary>
+		/// Простая копия условия на строку
+		/// </summary>
+		/// <returns></returns>
+		public RowHandler Copy()
+		{
+			return MemberwiseClone() as RowHandler;
 		}
 	}
 }

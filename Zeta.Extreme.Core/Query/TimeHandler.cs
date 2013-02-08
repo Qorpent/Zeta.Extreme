@@ -21,7 +21,16 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <returns> </returns>
 		protected override string EvalCacheKey() {
-			throw new NotImplementedException();
+			return "NOCACHEFORNOW";
+		}
+
+		/// <summary>
+		/// Простая копия условия на время
+		/// </summary>
+		/// <returns></returns>
+		public TimeHandler Copy()
+		{
+			return MemberwiseClone() as TimeHandler;
 		}
 	}
 }

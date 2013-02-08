@@ -14,6 +14,10 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">
+      <Project>{C51304FD-0406-48E0-833E-EEDC67425BC8}</Project>
+      <Name>Comdiv.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Comdiv.Zeta.Model.Implementation\Comdiv.Zeta.Model.Implementation.csproj">
       <Project>{fbe507cb-2311-4972-9d3d-8f2625274445}</Project>
       <Name>Comdiv.Zeta.Model.Implementation</Name>
@@ -25,7 +29,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstracts\CacheKeyGeneratorBase.cs" />
+    <Compile Include="Abstracts\CachedItemHandlerBase.cs" />
     <Compile Include="Query\ColumnHandler.cs" />
+    <Compile Include="Query\RowTreeUsage.cs" />
+    <Compile Include="Query\ZoneType.cs" />
     <Compile Include="Services\DefaultZexPreloadProcessor.cs" />
     <Compile Include="Services\DefaultZexRegistryHelper.cs" />
     <Compile Include="Abstracts\IZexPreloadProcessor.cs" />

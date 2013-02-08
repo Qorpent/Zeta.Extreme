@@ -9,19 +9,20 @@
 
 #endregion
 
-using System;
+using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Описание условия на колонку
 	/// </summary>
-	public sealed class ColumnHandler : CacheKeyGeneratorBase {
+	public sealed class ColumnHandler : CachedItemHandlerBase<IZetaColumn> {
 		/// <summary>
-		/// 	Функция непосредственного вычисления кэшевой строки
+		/// Простая копия условия на время
 		/// </summary>
-		/// <returns> </returns>
-		protected override string EvalCacheKey() {
-			throw new NotImplementedException();
+		/// <returns></returns>
+		public ColumnHandler Copy()
+		{
+			return MemberwiseClone() as ColumnHandler;
 		}
 	}
 }
