@@ -11,7 +11,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Core {
+namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Препроцессор до загрузки по умолчанию
 	/// </summary>

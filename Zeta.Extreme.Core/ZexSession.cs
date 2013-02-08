@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Zeta.Extreme.Core {
+namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Базовый класс сессии расчетов Zeta
 	/// </summary>

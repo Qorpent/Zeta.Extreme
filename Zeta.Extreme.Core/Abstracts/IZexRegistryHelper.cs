@@ -9,7 +9,7 @@
 
 #endregion
 
-namespace Zeta.Extreme.Core {
+namespace Zeta.Extreme {
 	/// <summary>
 	/// 	¬спомогательный интерфейс класса дл€
 	/// 	регистрации запроса в сессии

@@ -1,52 +1,61 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : ZexQuery.cs
+// Project: Zeta.Extreme.Core
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System.Text;
 
-namespace Zeta.Extreme.Core {
+namespace Zeta.Extreme {
 	/// <summary>
-	/// Инкапсуляция запроса к Zeta
+	/// 	Инкапсуляция запроса к Zeta
 	/// </summary>
 	/// <remarks>
-	/// В обновленной версии не используется избыточных
-	/// интерфейсов IQuery, IQueryBuilder, наоборот ZexQuery
-	/// создан с учетом оптимизации и минимальной мутации
+	/// 	В обновленной версии не используется избыточных
+	/// 	интерфейсов IQuery, IQueryBuilder, наоборот ZexQuery
+	/// 	создан с учетом оптимизации и минимальной мутации
 	/// </remarks>
 	public sealed class ZexQuery : CacheKeyGeneratorBase {
 		/// <summary>
-		/// Модификатор кэш-строки (префикс)
-		/// </summary>
-		public string CustomHashPrefix;
-
-		/// <summary>
-		/// Условие на время
+		/// 	Условие на время
 		/// </summary>
 		public TimeHandler Time { get; set; }
+
 		/// <summary>
-		/// Условие на строку
+		/// 	Условие на строку
 		/// </summary>
 		public RowHandler Row { get; set; }
+
 		/// <summary>
-		/// Условие на колонку
+		/// 	Условие на колонку
 		/// </summary>
 		public ColumnHandler Column { get; set; }
+
 		/// <summary>
-		/// Условие на объект
+		/// 	Условие на объект
 		/// </summary>
 		public ZoneHandler Zone { get; set; }
+
 		/// <summary>
-		/// Выходная валюта
+		/// 	Выходная валюта
 		/// </summary>
 		public string Valuta { get; set; }
 
 		/// <summary>
-		/// Функция непосредственного вычисления кэшевой строки
+		/// 	Функция непосредственного вычисления кэшевой строки
 		/// </summary>
-		/// <returns></returns>
+		/// <returns> </returns>
 		protected override string EvalCacheKey() {
 			var sb = new StringBuilder();
-			
-			if(null!=CustomHashPrefix) {
+
+			if (null != CustomHashPrefix) {
 				sb.Append('/');
 				sb.Append(CustomHashPrefix);
-				
 			}
 			sb.Append('/');
 			sb.Append(null == Zone ? "NOOBJ" : Zone.GetCacheKey());
@@ -61,5 +70,10 @@ namespace Zeta.Extreme.Core {
 
 			return sb.ToString();
 		}
+
+		/// <summary>
+		/// 	Модификатор кэш-строки (префикс)
+		/// </summary>
+		public string CustomHashPrefix;
 	}
 }

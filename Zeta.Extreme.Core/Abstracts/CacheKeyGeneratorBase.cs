@@ -1,47 +1,56 @@
-namespace Zeta.Extreme.Core {
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : CacheKeyGeneratorBase.cs
+// Project: Zeta.Extreme.Core
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
+namespace Zeta.Extreme {
 	/// <summary>
-	/// Базовый класс для запросов и условий, отвечает за целостность кэш-строки
+	/// 	Базовый класс для запросов и условий, отвечает за целостность кэш-строки
 	/// </summary>
 	public abstract class CacheKeyGeneratorBase {
-		private string _cacheKey; //cached value of key
-
 		/// <summary>
-		/// Возвращает кэш-строку запроса
+		/// 	Возвращает кэш-строку запроса
 		/// </summary>
-		/// <returns></returns>
+		/// <returns> </returns>
 		public string GetCacheKey(bool save = true) {
-			if(null!=_cacheKey) {
+			if (null != _cacheKey) {
 				return _cacheKey;
 			}
-			if(save) {
+			if (save) {
 				return _cacheKey ?? (_cacheKey = EvalCacheKey());
 			}
 			return EvalCacheKey();
 		}
 
 		/// <summary>
-		/// Возвращает строку, которая представляет текущий объект.
+		/// 	Возвращает строку, которая представляет текущий объект.
 		/// </summary>
-		/// <returns>
-		/// Строка, представляющая текущий объект.
-		/// </returns>
+		/// <returns> Строка, представляющая текущий объект. </returns>
 		/// <filterpriority>2</filterpriority>
-		public override string ToString()
-		{
+		public override string ToString() {
 			//должен вернуть кэш строку, но не сохранять ее!!!
 			return GetCacheKey(false);
 		}
 
 		/// <summary>
-		/// Сбрасывает кэш-строку
+		/// 	Сбрасывает кэш-строку
 		/// </summary>
 		public void InvalidateCacheKey() {
 			_cacheKey = null;
 		}
+
 		/// <summary>
-		/// Функция непосредственного вычисления кэшевой строки
+		/// 	Функция непосредственного вычисления кэшевой строки
 		/// </summary>
-		/// <returns></returns>
+		/// <returns> </returns>
 		protected abstract string EvalCacheKey();
+
+		private string _cacheKey; //cached value of key
 	}
 }
