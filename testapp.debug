@@ -1,0 +1,13 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<AppDir>c:\tmp\zext</AppDir>
+		<Configuration>Debug</Configuration>
+		<QISD>False</QISD>
+		<IsWeb>True</IsWeb>
+	</PropertyGroup>
+	<Import Project="testapp.base" />
+	<ItemGroup>
+		<Config Include="..\..\qorpent\config\local-eco-as-default.db-connection"/>
+		<Config Include="..\..\qorpent\config\local-debug-sfo.rolemap.bxl"/>
+	</ItemGroup>
+</Project>

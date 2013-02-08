@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration>Debug</Configuration>
+    <ProjectGuid>{75E74DED-91CC-4090-B3B2-2E8AE3C085E8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Zeta.Extreme.FrontEnd</RootNamespace>
+    <AssemblyName>Zeta.Extreme.FrontEnd</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="*.import" />
+    <None Include="Zeta.Extreme.Form.import" />
+    <None Include="Zeta.Extreme.FrontEnd.export" />
+    <None Include="Zeta.Extreme.Core.import" />
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
+  <Import Project="..\..\qorpent.kernel\build.targets" />
+</Project>

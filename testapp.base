@@ -1,0 +1,12 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Import Project="..\qorpent.kernel\package-install.targets" />
+	<PropertyGroup>
+		<DirectImport>True</DirectImport>
+		<IsWeb>True</IsWeb>
+	</PropertyGroup>
+	<ItemGroup>	
+		<Package Include="qorpent.kernel"/>
+		<Package Include="qorpent.sys"/>
+		<Package Include="Zeta.Extreme" />			
+	</ItemGroup>
+</Project>

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IsTest>True</IsTest>
+    <Configuration>Debug</Configuration>
+    <ProjectGuid>{736C7DE4-EB8F-4CC0-9372-07B55D1E1797}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Zeta.Extreme.Core.Tests</RootNamespace>
+    <AssemblyName>Zeta.Extreme.Core.Tests</AssemblyName>
+    <AssemblyNameBase>Zeta.Extreme.Core</AssemblyNameBase>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="*.import" />
+    <None Include="*.export" />
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
+  <Import Project="..\..\qorpent.kernel\build.targets" />
+</Project>

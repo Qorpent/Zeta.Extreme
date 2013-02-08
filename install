@@ -24,7 +24,6 @@
 
 	-->
 
-
 	<PropertyGroup>
 		<!-- change CustomPackageCondition to valid expression if U want provide custom way to detect 
 		package activiti in installation, by default - package is active if it's name is in 
@@ -62,6 +61,23 @@
 			9. 'UsrView' - VBXL and it's resource to be placed in Usr (top level) View directory with RELATIVE PATH
 			
 		-->
+		
+			<Library Include="Zeta.Extreme.Core" />
+			<Library Include="Zeta.Extreme.Form" />
+			<Library Include="Zeta.Extreme.FrontEnd" />
+			<Config Include="*.base.ioc-manifest.bxl"/>
+			
+			<!--dependency -->
+			<Library Include="Comdiv.Zeta.Model" />
+			<Library Include="Comdiv.Zeta.Model.Implementation" />
+			<Library Include="Comdiv.Core" />
+			<Library Include="Comdiv.Dependency" />
+			<Library Include="Nhibernate" />
+			<Library Include="FluentNHibernate" />
+			<Library Include="Iesi.Collections" />
+			
+			
+			
 	</ItemGroup>
 	
 	
