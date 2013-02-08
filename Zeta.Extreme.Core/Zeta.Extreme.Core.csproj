@@ -18,6 +18,14 @@
       <Project>{C51304FD-0406-48E0-833E-EEDC67425BC8}</Project>
       <Name>Comdiv.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\core\Comdiv.Dependency\Comdiv.Dependency.csproj">
+      <Project>{6E58C87C-2522-4AA5-9211-6109305B2D7B}</Project>
+      <Name>Comdiv.Dependency</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Comdiv.Zeta.Data.Minimal\Comdiv.Zeta.Data.Minimal.csproj">
+      <Project>{D964FB40-AA23-4EC6-AEF0-F418303FF5DE}</Project>
+      <Name>Comdiv.Zeta.Data.Minimal</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Comdiv.Zeta.Model.Implementation\Comdiv.Zeta.Model.Implementation.csproj">
       <Project>{fbe507cb-2311-4972-9d3d-8f2625274445}</Project>
       <Name>Comdiv.Zeta.Model.Implementation</Name>
@@ -31,6 +39,8 @@
     <Compile Include="Abstracts\CacheKeyGeneratorBase.cs" />
     <Compile Include="Abstracts\CachedItemHandlerBase.cs" />
     <Compile Include="Query\ColumnHandler.cs" />
+    <Compile Include="Query\DefaultPeriodEvaluator.cs" />
+    <Compile Include="Query\IPeriodEvaluator.cs" />
     <Compile Include="Query\RowTreeUsage.cs" />
     <Compile Include="Query\ZoneType.cs" />
     <Compile Include="Services\DefaultZexPreloadProcessor.cs" />

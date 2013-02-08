@@ -124,5 +124,12 @@ namespace Zeta.Extreme {
 		/// Обратная ссылка на сессию
 		/// </summary>
 		public ZexSession Session { get; set; }
+
+		/// <summary>
+		/// Стандартная процедура нормализации
+		/// </summary>
+		public void Normalize() {
+			Time.Normalize(Session);
+		}
 	}
 }

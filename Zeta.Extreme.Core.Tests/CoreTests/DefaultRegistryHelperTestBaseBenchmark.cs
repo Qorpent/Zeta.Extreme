@@ -1,6 +1,10 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
+using Comdiv.Application;
+using Comdiv.Persistence;
+using Comdiv.Zeta.Data.Minimal;
+using Comdiv.Zeta.Model;
 using NUnit.Framework;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
@@ -63,11 +67,11 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			Assert.Less(sw.ElapsedMilliseconds, 100000);
 		}
 
-
 		[Explicit]
 		[Test]
-		public void ComplexRegistryTest([Values(10000,20000,30000,40000,50000)]int cnt)
-		{
+		public void ComplexRegistryTest([Values(10000,20000,30000,40000,50000,100000)]int cnt) {
+			
+			
 			var sw = Stopwatch.StartNew();
 			for (var i = 0; i < cnt; i++)
 			{
@@ -111,7 +115,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			if(async)session.RegisterAsync(q);
 			else session.Register(q);
 			q = new ZexQuery
-				{CustomHashPrefix = i.ToString() + "x", Time = {BasePeriod = 12, Period = -101, BaseYear = 2012, Year = -1}};
+				{CustomHashPrefix = i.ToString() + "x", Time = {BasePeriod = 12, Period = -204, BaseYear = 2012, Year = -1}};
 
 			//it forces more complicated behavior
 			if (async) session.RegisterAsync(q);

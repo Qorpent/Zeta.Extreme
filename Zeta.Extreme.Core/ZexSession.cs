@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Zeta.Extreme {
@@ -74,7 +75,7 @@ namespace Zeta.Extreme {
 			lock (this) {
 				var helper = GetRegistryHelper();
 				var result = helper.Register(query, uid);
-				_currentHelper = helper;
+				ReturnRegistryHelper(helper);
 				return result;
 			}
 		}
@@ -97,14 +98,16 @@ namespace Zeta.Extreme {
 						try {
 							var helper = GetRegistryHelper();
 							var result = helper.Register(query, uid);
-							_currentHelper = helper;
+							ReturnRegistryHelper(helper);
 							return result;
 						}
 						finally {
-							lock (_regq) _regq.Remove(id);
+							lock(_regq)_regq.Remove(id);
 						}
 					});
-				lock (_regq) _regq[id] = task;
+				lock(_regq)_regq.Add(id,task);
+				//должны делать в основном потоке, иначе 
+				//WaitRegistry может раньше отработать
 				task.Start();
 				return task;
 			}
@@ -120,21 +123,44 @@ namespace Zeta.Extreme {
 		}
 
 
+		
+
 		/// <summary>
-		/// 	Возвращает инстанцию хелпера для регистрации в сессии с частичным кэшем
+		/// 	Возвращает объект вспомогательного класса регистрации
 		/// </summary>
 		/// <returns> </returns>
-		protected IZexRegistryHelper GetRegistryHelper() {
-			lock (this) {
-				if (null != _currentHelper) {
-					var result = _currentHelper;
-					_currentHelper = null;
-					return result;
+		/// <exception cref="NotImplementedException"></exception>
+		public IZexRegistryHelper GetRegistryHelper()
+		{
+			lock (_registryhelperpool)
+			{
+				if (_registryhelperpool.Count != 0)
+				{
+					return _registryhelperpool.Pop();
 				}
-				if (null != CustomRegistryHelperClass) {
+			}
+			lock (this)
+			{
+				if (null != CustomRegistryHelperClass)
+				{
 					return Activator.CreateInstance(CustomRegistryHelperClass, this) as IZexRegistryHelper;
 				}
 				return new DefaultZexRegistryHelper(this);
+			}
+		}
+
+		/// <summary>
+		/// 	Возвращает препроцессор в пул
+		/// </summary>
+		/// <param name="helper"> </param>
+		public void ReturnRegistryHelper(IZexRegistryHelper helper)
+		{
+			lock (_registryhelperpool)
+			{
+				if (_registryhelperpool.Count < 99)
+				{
+					_registryhelperpool.Push(helper);
+				}
 			}
 		}
 
@@ -169,6 +195,48 @@ namespace Zeta.Extreme {
 			}
 		}
 
+
+		/// <summary>
+		/// 	Возвращает объект препроцессора
+		/// </summary>
+		/// <returns> </returns>
+		/// <exception cref="NotImplementedException"></exception>
+		public IPeriodEvaluator GetPeriodEvaluator()
+		{
+			lock (_periodevalpool)
+			{
+				if (_periodevalpool.Count != 0)
+				{
+					return _periodevalpool.Pop();
+				}
+			}
+			lock (this)
+			{
+				if (null != CustomPeriodEvaluatorClass)
+				{
+					return Activator.CreateInstance(CustomPeriodEvaluatorClass, this) as IPeriodEvaluator;
+				}
+				return new DefaultPeriodEvaluator();
+			}
+		}
+
+		/// <summary>
+		/// 	Возвращает препроцессор в пул
+		/// </summary>
+		/// <param name="periodEvaluator"> </param>
+		public void ReturnPeriodEvaluator(IPeriodEvaluator periodEvaluator)
+		{
+			lock (_periodevalpool)
+			{
+				if (_periodevalpool.Count < 99)
+				{
+					_periodevalpool.Push(periodEvaluator);
+				}
+			}
+		}
+
+		private readonly Stack<IPeriodEvaluator> _periodevalpool = new Stack<IPeriodEvaluator>(100);
+		private readonly Stack<IZexRegistryHelper> _registryhelperpool = new Stack<IZexRegistryHelper>(100);
 		private readonly Stack<IZexPreloadProcessor> _preloadprocesspool = new Stack<IZexPreloadProcessor>(100);
 		private readonly IDictionary<int, Task<ZexQuery>> _regq = new Dictionary<int, Task<ZexQuery>>();
 
@@ -182,7 +250,13 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public Type CustomRegistryHelperClass;
 
-		private IZexRegistryHelper _currentHelper; //one-instance cache
+		/// <summary>
+		/// 	Позволяет переопределить тип хелпера регистрации
+		/// </summary>
+		public Type CustomPeriodEvaluatorClass;
+
 		private int rcount;
+
+		
 	}
 }

@@ -114,7 +114,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <returns></returns>
 		public bool IsPeriodDefined() {
-			return Period > 0;
+			return Period > 0 || (null != _periods && 0 != _periods.Length);
 		}
 
 		/// <summary>
@@ -122,7 +122,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <returns></returns>
 		public bool IsYearDefinied() {
-			return Year > 1900 && Year < 3000;
+			return ( Year > 1900 && Year < 3000 ) || (null!=_years && 0!=_years.Length);
 		}
 
 		/// <summary>
@@ -181,6 +181,56 @@ namespace Zeta.Extreme {
 		public TimeHandler Copy()
 		{
 			return MemberwiseClone() as TimeHandler;
+		}
+
+		/// <summary>
+		/// Нормализует формульные года и периоды
+		/// </summary>
+		/// <param name="session"> </param>
+		public void Normalize(ZexSession session = null)
+		{
+			if (!IsYearDefinied()) ResolveYear();
+			if (!IsPeriodDefined()) ResolvePeriod(session);
+			if (null != _periods && 0 != _periods.Length) {
+				Periods = _periods.Distinct().OrderBy(_ => _).ToArray();
+			}
+			if (null != _years && 0 != _years.Length)
+			{
+				Years = _years.Distinct().OrderBy(_ => _).ToArray();
+			}
+		}
+		private void ResolvePeriod(ZexSession session)
+		{
+			//TODO: fix to real logic, должен вызывать функцию
+			if (0 == Period)
+			{
+				Period = BasePeriod;
+			}
+			IPeriodEvaluator periodEvaluator = null;
+			if(null==session) {
+				periodEvaluator = new DefaultPeriodEvaluator();
+			}else {
+				periodEvaluator = session.GetPeriodEvaluator();
+			}
+			var result = periodEvaluator.Evaluate(BasePeriod, Period,Year);
+			if(0!=result.Year && (null==_years||0==_years.Length)) {
+				Year = Year;
+			}
+			if(null!=result.Periods) {
+				Periods = result.Periods;
+			}else {
+				Period = result.Period;
+			}
+
+			if(null!=session) {
+				session.ReturnPeriodEvaluator(periodEvaluator);
+			}
+		}
+
+		private void ResolveYear()
+		{
+			//применяет дельту к году
+			Year = BaseYear + Year;
 		}
 	}
 }

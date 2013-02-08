@@ -17,6 +17,7 @@
   <ItemGroup>
     <Compile Include="CoreTests\DefaultRegistryHelperTestBase.cs" />
     <Compile Include="CoreTests\DefaultRegistryHelperTestBaseBenchmark.cs" />
+    <Compile Include="CoreTests\QueryCacheKeySensibilityTest.cs" />
     <Compile Include="CoreTests\SessionTestBase.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -24,9 +25,17 @@
       <Project>{c51304fd-0406-48e0-833e-eedc67425bc8}</Project>
       <Name>Comdiv.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\core\Comdiv.Dependency\Comdiv.Dependency.csproj">
+      <Project>{6E58C87C-2522-4AA5-9211-6109305B2D7B}</Project>
+      <Name>Comdiv.Dependency</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
       <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
       <Name>Qorpent.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Comdiv.Zeta.Data.Minimal\Comdiv.Zeta.Data.Minimal.csproj">
+      <Project>{D964FB40-AA23-4EC6-AEF0-F418303FF5DE}</Project>
+      <Name>Comdiv.Zeta.Data.Minimal</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Comdiv.Zeta.Model.Implementation\Comdiv.Zeta.Model.Implementation.csproj">
       <Project>{fbe507cb-2311-4972-9d3d-8f2625274445}</Project>
@@ -36,6 +45,9 @@
       <Project>{f939564a-d5a9-4bee-b8f2-47c384358afc}</Project>
       <Name>Comdiv.Zeta.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="FluentNHibernate, Version=1.3.0.0, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>
