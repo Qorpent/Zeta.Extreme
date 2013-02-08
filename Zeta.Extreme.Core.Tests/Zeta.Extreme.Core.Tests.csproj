@@ -14,5 +14,10 @@
     <None Include="*.export" />
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CoreTests\DefaultRegistryHelperTestBase.cs" />
+    <Compile Include="CoreTests\DefaultRegistryHelperTestBaseBenchmark.cs" />
+    <Compile Include="CoreTests\SessionTestBase.cs" />
+  </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>
