@@ -35,6 +35,17 @@
     <Compile Include="Query\ZexQuery.cs" />
     <Compile Include="ZexSession.cs" />
     <Compile Include="Query\ZoneHandler.cs" />
+    <Compile Include="CacheKeyGeneratorBase.cs" />
+    <Compile Include="ColumnHandler.cs" />
+    <Compile Include="DefaultZexPreloadProcessor.cs" />
+    <Compile Include="DefaultZexRegistryHelper.cs" />
+    <Compile Include="IZexPreloadProcessor.cs" />
+    <Compile Include="IZexRegistryHelper.cs" />
+    <Compile Include="RowHandler.cs" />
+    <Compile Include="TimeHandler.cs" />
+    <Compile Include="ZexQuery.cs" />
+    <Compile Include="ZexSession.cs" />
+    <Compile Include="ZoneHandler.cs" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>
