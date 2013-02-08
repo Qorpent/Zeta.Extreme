@@ -28,8 +28,8 @@ namespace Zeta.Extreme {
 		public ZexQuery() {
 			Time = new TimeHandler();
 			Row = new RowHandler();
-			Column = new ColumnHandler();
-			Zone =new ZoneHandler();
+			Col = new ColumnHandler();
+			Obj =new ZoneHandler();
 			Valuta = "NONE";
 		}
 		/// <summary>
@@ -45,12 +45,12 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Условие на колонку
 		/// </summary>
-		public ColumnHandler Column { get; set; }
+		public ColumnHandler Col { get; set; }
 
 		/// <summary>
 		/// 	Условие на объект
 		/// </summary>
-		public ZoneHandler Zone { get; set; }
+		public ZoneHandler Obj { get; set; }
 
 		/// <summary>
 		/// 	Выходная валюта
@@ -69,11 +69,11 @@ namespace Zeta.Extreme {
 				sb.Append(CustomHashPrefix);
 			}
 			sb.Append('/');
-			sb.Append(null == Zone ? "NOOBJ" : Zone.GetCacheKey());
+			sb.Append(null == Obj ? "NOOBJ" : Obj.GetCacheKey());
 			sb.Append('/');
 			sb.Append(null == Row ? "NOROW" : Row.GetCacheKey());
 			sb.Append('/');
-			sb.Append(null == Column ? "NOCOL" : Column.GetCacheKey());
+			sb.Append(null == Col ? "NOCOL" : Col.GetCacheKey());
 			sb.Append('/');
 			sb.Append(null == Time ? "NOTIME" : Time.GetCacheKey());
 			sb.Append('/');
@@ -97,10 +97,10 @@ namespace Zeta.Extreme {
 		public ZexQuery Copy(bool deep = false) {
 			var result = (ZexQuery) MemberwiseClone();
 			if (deep) {
-				result.Column = result.Column.Copy();
+				result.Col = result.Col.Copy();
 				result.Row = result.Row.Copy();
 				result.Time = result.Time.Copy();
-				result.Zone = result.Zone.Copy();
+				result.Obj = result.Obj.Copy();
 
 			}
 

@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Text;
 using Comdiv.Model.Interfaces;
 using Comdiv.Olap.Model;
@@ -268,10 +269,12 @@ namespace Zeta.Extreme {
 		protected virtual string GetIdConditionString() {
 			if (_ids != null && 0 != _ids.Length && null == Native) {
 				//набор ID - высший приоритет
+				_ids = _ids.Distinct().OrderBy(_ => _).ToArray();
 				return "IDS:" + string.Join(",", _ids);
 			}
-			if (_codes != null && 0 != _ids.Length && null == Native) //затем набор кодов
+			if (_codes != null && 0 != _codes.Length && null == Native) //затем набор кодов
 			{
+				_codes = _codes.Where(_=>null!=_).Distinct().OrderBy(_ => _).ToArray();
 				return "CODES:" + string.Join(",", _codes);
 			}
 			if (0 != Id) {
