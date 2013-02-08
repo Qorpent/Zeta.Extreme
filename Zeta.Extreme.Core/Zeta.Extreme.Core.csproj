@@ -4,7 +4,7 @@
     <Configuration>Debug</Configuration>
     <ProjectGuid>{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Zeta.Extreme.Core</RootNamespace>
+    <RootNamespace>Zeta.Extreme</RootNamespace>
     <AssemblyName>Zeta.Extreme.Core</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
@@ -22,6 +22,19 @@
       <Project>{f939564a-d5a9-4bee-b8f2-47c384358afc}</Project>
       <Name>Comdiv.Zeta.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstracts\CacheKeyGeneratorBase.cs" />
+    <Compile Include="Query\ColumnHandler.cs" />
+    <Compile Include="Services\DefaultZexPreloadProcessor.cs" />
+    <Compile Include="Services\DefaultZexRegistryHelper.cs" />
+    <Compile Include="Abstracts\IZexPreloadProcessor.cs" />
+    <Compile Include="Abstracts\IZexRegistryHelper.cs" />
+    <Compile Include="Query\RowHandler.cs" />
+    <Compile Include="Query\TimeHandler.cs" />
+    <Compile Include="Query\ZexQuery.cs" />
+    <Compile Include="ZexSession.cs" />
+    <Compile Include="Query\ZoneHandler.cs" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>
