@@ -9,6 +9,8 @@
 
 #endregion
 
+using System;
+using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme {
@@ -49,6 +51,19 @@ namespace Zeta.Extreme {
 		public RowHandler Copy()
 		{
 			return MemberwiseClone() as RowHandler;
+		}
+
+		/// <summary>
+		/// Нормализует ссылки и параметры
+		/// </summary>
+		/// <param name="session"></param>
+
+		public void Normalize(ZexSession session)
+		{
+			if(IsStandaloneSingletonDefinition()) {
+				//try load native
+				Native = RowCache.get(0 == Id ? (object) Code : Id);
+			}
 		}
 	}
 }

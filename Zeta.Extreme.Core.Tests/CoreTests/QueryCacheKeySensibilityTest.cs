@@ -111,8 +111,20 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			int fstyear, int fstbaseyear, int fstperiod, int fstbaseperiod, 
 			int secondyear, int secondbaseyear, int secondperiod, int secondbaseperiod, 
 			bool areequal) {
-			var q1 = new ZexQuery{Time = {Year = fstyear, BaseYear = fstbaseyear, Period = fstperiod, BasePeriod = fstbaseperiod}};
-			var q2 = new ZexQuery { Time = { Year = secondyear, BaseYear = secondbaseyear, Period = secondperiod, BasePeriod = secondbaseperiod } };
+			var q1 = new ZexQuery
+				{
+					Time = {Year = fstyear, BaseYear = fstbaseyear, Period = fstperiod, BasePeriod = fstbaseperiod},
+					Row = {Code = "m260113"},
+					Col = {Code = "Á1"},
+					Obj = {Id = 352,Type = ObjType.Obj}
+				};
+			var q2 = new ZexQuery
+				{
+					Time = {Year = secondyear, BaseYear = secondbaseyear, Period = secondperiod, BasePeriod = secondbaseperiod},
+					Row = {Code = "m260113"},
+					Col = { Code = "Á1" },
+					Obj = { Id = 352, Type = ObjType.Obj }
+				};
 			q1.Normalize();
 			q2.Normalize();
 			Console.WriteLine(q1.GetCacheKey());

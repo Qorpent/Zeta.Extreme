@@ -267,22 +267,51 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <returns></returns>
 		protected virtual string GetIdConditionString() {
-			if (_ids != null && 0 != _ids.Length && null == Native) {
-				//набор ID - высший приоритет
-				_ids = _ids.Distinct().OrderBy(_ => _).ToArray();
-				return "IDS:" + string.Join(",", _ids);
-			}
+			
 			if (_codes != null && 0 != _codes.Length && null == Native) //затем набор кодов
 			{
 				_codes = _codes.Where(_=>null!=_).Distinct().OrderBy(_ => _).ToArray();
 				return "CODES:" + string.Join(",", _codes);
 			}
+			if (_ids != null && 0 != _ids.Length && null == Native)
+			{
+				//набор ID - высший приоритет
+				_ids = _ids.Distinct().OrderBy(_ => _).ToArray();
+				return "IDS:" + string.Join(",", _ids);
+			}
+			if (!string.IsNullOrWhiteSpace(Code))
+			{
+				return "CODE:" + Code;
+			}
 			if (0 != Id) {
 				//потом ид
 				return "ID:" + Id;
 			}
-			if (!string.IsNullOrWhiteSpace(Code)) {
-				return "CODE:" + Code;
+			
+			return null;
+		}
+
+		/// <summary>
+		/// Определяет что условие описывает одну, определенную инстанцию объекта
+		/// еще без загрузки Native
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool IsStandaloneSingletonDefinition(bool falseonnative = true) {
+			if(null!=Native && falseonnative) return false;
+			if (null!=Native) return true; //falseonnative - false
+			if(null!=_ids && 0!=_ids.Length) return false;
+			if (null!=_codes && 0!=_codes.Length) return false;
+			if (0==Id && string.IsNullOrWhiteSpace(Code)) return false;
+			return true;
+		}
+
+		/// <summary>
+		/// Возвращает нормализованный ID сущности
+		/// </summary>
+		/// <returns></returns>
+		public object GetEffectiveKey() {
+			if(IsStandaloneSingletonDefinition(false)) {
+				return 0 == Id ? (object) Code : Id;
 			}
 			return null;
 		}
@@ -296,5 +325,7 @@ namespace Zeta.Extreme {
 		private bool _isFormula;
 		private TItem _native;
 		private string _tag;
-		}
+
+		
+	}
 }

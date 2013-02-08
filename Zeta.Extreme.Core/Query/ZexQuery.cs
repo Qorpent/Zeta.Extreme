@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -29,7 +30,7 @@ namespace Zeta.Extreme {
 			Time = new TimeHandler();
 			Row = new RowHandler();
 			Col = new ColumnHandler();
-			Obj =new ZoneHandler();
+			Obj =new ObjHandler();
 			Valuta = "NONE";
 		}
 		/// <summary>
@@ -50,7 +51,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Условие на объект
 		/// </summary>
-		public ZoneHandler Obj { get; set; }
+		public ObjHandler Obj { get; set; }
 
 		/// <summary>
 		/// 	Выходная валюта
@@ -129,7 +130,11 @@ namespace Zeta.Extreme {
 		/// Стандартная процедура нормализации
 		/// </summary>
 		public void Normalize() {
+			var objt = Task.Run(() => Obj.Normalize(Session)); //объекты зачастую из БД догружаются
 			Time.Normalize(Session);
+			Row.Normalize(Session);
+			Col.Normalize(Session);
+			objt.Wait();
 		}
 	}
 }

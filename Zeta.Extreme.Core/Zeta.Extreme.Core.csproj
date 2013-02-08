@@ -42,7 +42,7 @@
     <Compile Include="Query\DefaultPeriodEvaluator.cs" />
     <Compile Include="Query\IPeriodEvaluator.cs" />
     <Compile Include="Query\RowTreeUsage.cs" />
-    <Compile Include="Query\ZoneType.cs" />
+    <Compile Include="Query\ObjType.cs" />
     <Compile Include="Services\DefaultZexPreloadProcessor.cs" />
     <Compile Include="Services\DefaultZexRegistryHelper.cs" />
     <Compile Include="Abstracts\IZexPreloadProcessor.cs" />
@@ -50,7 +50,7 @@
     <Compile Include="Query\RowHandler.cs" />
     <Compile Include="Query\TimeHandler.cs" />
     <Compile Include="Query\ZexQuery.cs" />
-    <Compile Include="Query\ZoneHandler.cs" />
+    <Compile Include="Query\ObjHandler.cs" />
     <Compile Include="ZexSession.cs" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />

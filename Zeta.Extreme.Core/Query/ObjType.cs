@@ -5,7 +5,7 @@ namespace Zeta.Extreme {
 	/// Перечисление типов зон
 	/// </summary>
 	[Flags]
-	public enum ZoneType {
+	public enum ObjType {
 		/// <summary>
 		/// Не определено
 		/// </summary>

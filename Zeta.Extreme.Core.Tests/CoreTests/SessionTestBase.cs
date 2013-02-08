@@ -24,6 +24,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 					new ZetaClassicModel());
 				Periods.Get(12);
 				RowCache.start();
+				ColumnCache.start();
 				wascallnhibernate = true;
 			}
 		}

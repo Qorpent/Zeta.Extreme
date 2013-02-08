@@ -115,7 +115,13 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			if(async)session.RegisterAsync(q);
 			else session.Register(q);
 			q = new ZexQuery
-				{CustomHashPrefix = i.ToString() + "x", Time = {BasePeriod = 12, Period = -204, BaseYear = 2012, Year = -1}};
+				{
+					CustomHashPrefix = i.ToString() + "x", 
+					Time = {BasePeriod = 12, Period = -204, BaseYear = 2012, Year = -1},
+					Row = { Code = "m260113" },
+					Col = { Code = "Á1" },
+					Obj = { Id = 352, Type = ObjType.Obj }
+				};
 
 			//it forces more complicated behavior
 			if (async) session.RegisterAsync(q);
