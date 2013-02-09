@@ -52,6 +52,5 @@ namespace Zeta.Extreme {
 		protected abstract string EvalCacheKey();
 
 		private string _cacheKey; //cached value of key
-
 	}
 }

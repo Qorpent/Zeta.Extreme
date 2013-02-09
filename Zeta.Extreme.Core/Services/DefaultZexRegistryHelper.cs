@@ -46,36 +46,22 @@ namespace Zeta.Extreme {
 			var key = query.GetCacheKey();
 			ZexQuery result = null;
 
-			lock (_session.MainQueryRegistry) {
-				if (_session.MainQueryRegistry.ContainsKey(uid)) {
-					return _session.MainQueryRegistry[uid];
-				}
+
+			if (_session.MainQueryRegistry.TryGetValue(uid, out result)) {
+				return result;
 			}
 
-			lock (_session.ActiveSet) {
-				if (_session.ActiveSet.ContainsKey(key)) {
-					result = _session.ActiveSet[key];
-				}
+			var found = false;
+			found = _session.ActiveSet.TryGetValue(key, out result);
+			if (!found) {
+				found = _session.ProcessedSet.TryGetValue(key, out result);
 			}
-			if (null == result) {
-				lock (_session.ProcessedSet) {
-					if (_session.ProcessedSet.ContainsKey(key)) {
-						result = _session.ProcessedSet[key];
-					}
-				}
-			}
-			if (null == result) {
+			if (!found) {
 				query.Session = _session; //надо установить сессию раз новый запрос
-				lock (_session.ActiveSet) {
-					_session.ActiveSet[key] = query;
-					result = query;
-				}
+				query = _session.ActiveSet.GetOrAdd(key, query);
+				result = query;
 			}
-			lock (_session.MainQueryRegistry) {
-				_session.MainQueryRegistry[uid] = result;
-			}
-
-
+			_session.MainQueryRegistry[uid] = result;
 			return result;
 		}
 

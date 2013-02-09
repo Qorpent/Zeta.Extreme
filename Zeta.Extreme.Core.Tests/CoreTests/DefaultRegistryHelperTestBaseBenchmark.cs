@@ -69,7 +69,8 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 
 		[Explicit]
 		[Test]
-		public void ComplexRegistryTest([Values(10000,20000,30000,40000,50000,100000)]int cnt) {
+		public void ComplexRegistryTest([Values(20000,10000, 30000, 40000, 50000, 100000)]int cnt)
+		{
 			
 			
 			var sw = Stopwatch.StartNew();

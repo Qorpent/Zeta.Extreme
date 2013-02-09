@@ -9,7 +9,7 @@
 
 #endregion
 
-using System;
+using System.Text.RegularExpressions;
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 
@@ -32,6 +32,13 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	True если целевая строка - ссылка
+		/// </summary>
+		public bool IsRef {
+			get { return null != Native && null != Native.RefTo; }
+		}
+
+		/// <summary>
 		/// 	Функция непосредственного вычисления кэшевой строки
 		/// </summary>
 		/// <returns> </returns>
@@ -42,28 +49,55 @@ namespace Zeta.Extreme {
 			return base.EvalCacheKey();
 		}
 
-		private RowTreeUsage _treeUsage;
-
 		/// <summary>
-		/// Простая копия условия на строку
+		/// 	Простая копия условия на строку
 		/// </summary>
-		/// <returns></returns>
-		public RowHandler Copy()
-		{
+		/// <returns> </returns>
+		public RowHandler Copy() {
 			return MemberwiseClone() as RowHandler;
 		}
 
 		/// <summary>
-		/// Нормализует ссылки и параметры
+		/// 	Нормализует ссылки и параметры
 		/// </summary>
-		/// <param name="session"></param>
-
-		public void Normalize(ZexSession session)
-		{
-			if(IsStandaloneSingletonDefinition()) {
+		/// <param name="session"> </param>
+		/// <param name="column"> </param>
+		public void Normalize(ZexSession session, IZetaColumn column) {
+			if (IsStandaloneSingletonDefinition()) {
 				//try load native
 				Native = RowCache.get(0 == Id ? (object) Code : Id);
 			}
+			NormalizeReferencedRows(column);
 		}
+
+		private void NormalizeReferencedRows(IZetaColumn column) {
+			var proceed = true;
+			while (proceed) {
+				ResolveHardLinks();
+				Native = Native.ResolveExRef(column);
+				proceed = ResolveSingleRowFormula();
+			}
+		}
+
+		private bool ResolveSingleRowFormula() {
+			if (IsFormula && (FormulaType == "boo" || FormulaType == "cs")) {
+				var match = Regex.Match(Formula.Trim(), @"^\$([\w\d]+)\?$", RegexOptions.Compiled);
+				if (match.Success) {
+					var reference = RowCache.get(match.Groups[1].Value);
+					Native = reference;
+					return true;
+				}
+			}
+			return false;
+		}
+
+		private void ResolveHardLinks() {
+			while (IsRef) {
+				var refrow = Native.RefTo;
+				Native = refrow;
+			}
+		}
+
+		private RowTreeUsage _treeUsage;
 	}
 }

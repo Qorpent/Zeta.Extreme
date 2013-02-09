@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using Comdiv.Zeta.Data.Minimal;
+using Comdiv.Zeta.Model;
 using NUnit.Framework;
 using Qorpent.Utils.Extensions;
 
@@ -131,6 +133,35 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			Console.WriteLine();
 			Console.WriteLine(q2.GetCacheKey());
 			Assert.AreEqual(areequal,q1.GetCacheKey()==q2.GetCacheKey());
+		}
+
+		[Test]
+		public void HardLinkAndSingleRowTest() {
+			var target = RowCache.get("m260113");
+			var r = new row {Code = "x1", RefTo = target};
+			RowCache.RegisterCustom(r);
+			var r2 = new row {Code="x2", Formula = " $x1? ", IsFormula = true, FormulaEvaluator = "boo"};
+			RowCache.RegisterCustom(r2);
+
+			var q1 = new ZexQuery {Row = {Code = "x1"}};
+			var q2 = new ZexQuery { Row = { Code = "m260113" } };
+			var q3 = new ZexQuery { Row = { Code = "x2" } };
+
+			q1.Normalize();
+			q2.Normalize();
+			q3.Normalize();
+			
+
+			var key1 = q1.GetCacheKey();
+			var key2 = q2.GetCacheKey();
+			var key3 = q2.GetCacheKey();
+
+			Console.WriteLine(key1);
+			Console.WriteLine(key2);
+			Console.WriteLine(key3);
+
+			Assert.AreEqual(key1,key2);
+			Assert.AreEqual(key2, key3);
 		}
 	}
 }

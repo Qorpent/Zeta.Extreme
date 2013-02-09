@@ -24,15 +24,16 @@ namespace Zeta.Extreme {
 	/// </remarks>
 	public sealed class ZexQuery : CacheKeyGeneratorBase {
 		/// <summary>
-		/// Конструктор запроса по умолчанию
+		/// 	Конструктор запроса по умолчанию
 		/// </summary>
 		public ZexQuery() {
 			Time = new TimeHandler();
 			Row = new RowHandler();
 			Col = new ColumnHandler();
-			Obj =new ObjHandler();
+			Obj = new ObjHandler();
 			Valuta = "NONE";
 		}
+
 		/// <summary>
 		/// 	Условие на время
 		/// </summary>
@@ -57,6 +58,23 @@ namespace Zeta.Extreme {
 		/// 	Выходная валюта
 		/// </summary>
 		public string Valuta { get; set; }
+
+		/// <summary>
+		/// 	Дочерние запросы
+		/// </summary>
+		public IList<ZexQuery> Children {
+			get { return _children ?? (_children = new List<ZexQuery>()); }
+		}
+
+		/// <summary>
+		/// 	Родительский запрос
+		/// </summary>
+		public ZexQuery Parent { get; set; }
+
+		/// <summary>
+		/// 	Обратная ссылка на сессию
+		/// </summary>
+		public ZexSession Session { get; set; }
 
 		/// <summary>
 		/// 	Функция непосредственного вычисления кэшевой строки
@@ -84,17 +102,10 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// 	Модификатор кэш-строки (префикс)
+		/// 	Простая копия условия на время
 		/// </summary>
-		public string CustomHashPrefix;
-
-		private IList<ZexQuery> _children;
-
-		/// <summary>
-		/// Простая копия условия на время
-		/// </summary>
-		/// <param name="deep">Если да, то делает копии вложенных измерений</param>
-		/// <returns></returns>
+		/// <param name="deep"> Если да, то делает копии вложенных измерений </param>
+		/// <returns> </returns>
 		public ZexQuery Copy(bool deep = false) {
 			var result = (ZexQuery) MemberwiseClone();
 			if (deep) {
@@ -102,39 +113,28 @@ namespace Zeta.Extreme {
 				result.Row = result.Row.Copy();
 				result.Time = result.Time.Copy();
 				result.Obj = result.Obj.Copy();
-
 			}
 
 			return result;
 		}
 
-		/// <summary>
-		/// Дочерние запросы
-		/// </summary>
-		public IList<ZexQuery> Children {
-			get { return _children ?? (_children = new List<ZexQuery>()); }
-
-		}
 
 		/// <summary>
-		/// Родительский запрос
-		/// </summary>
-		public ZexQuery Parent { get; set; }
-
-		/// <summary>
-		/// Обратная ссылка на сессию
-		/// </summary>
-		public ZexSession Session { get; set; }
-
-		/// <summary>
-		/// Стандартная процедура нормализации
+		/// 	Стандартная процедура нормализации
 		/// </summary>
 		public void Normalize() {
 			var objt = Task.Run(() => Obj.Normalize(Session)); //объекты зачастую из БД догружаются
 			Time.Normalize(Session);
-			Row.Normalize(Session);
 			Col.Normalize(Session);
-			objt.Wait();
+			var rowt = Task.Run(() => Row.Normalize(Session, Col.Native)); //тут формулы парсим простые как рефы			
+			Task.WaitAll(objt, rowt);
 		}
+
+		/// <summary>
+		/// 	Модификатор кэш-строки (префикс)
+		/// </summary>
+		public string CustomHashPrefix;
+
+		private IList<ZexQuery> _children;
 	}
 }

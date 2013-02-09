@@ -31,16 +31,16 @@ namespace Zeta.Extreme {
 		/// <param name="query"> </param>
 		/// <returns> </returns>
 		public virtual ZexQuery Process(ZexQuery query) {
-			var internalquery = query.Copy(true); 
+			var internalquery = query.Copy(true);
 			// внутри сессии работаем только с копиями
 			// ибо иначе отконтроллировать изменения препроцессора по сути невозможно
 
 			//сначала вызываем стандартную процедуру нормализации запроса
 			internalquery.Normalize();
+
 			return internalquery;
 		}
 
-		
 
 		/// <summary>
 		/// 	обратная ссылка на сессию

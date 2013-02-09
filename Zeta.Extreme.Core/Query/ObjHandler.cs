@@ -2,7 +2,7 @@
 
 // Copyright 2012-2013 Media Technology LTD 
 // Solution: Qorpent.TextExpert
-// Original file : ZoneHandler.cs
+// Original file : ObjHandler.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using Comdiv.Application;
 using Comdiv.Olap.Model;
 using Comdiv.Zeta.Model;
@@ -19,25 +18,22 @@ namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Описание условия на объект
 	/// </summary>
-	public sealed class ObjHandler : CachedItemHandlerBase<IZoneElement>
-	{
-		private ObjType _type;
-
+	public sealed class ObjHandler : CachedItemHandlerBase<IZoneElement> {
 		/// <summary>
-		/// Тип зоны
+		/// 	Тип зоны
 		/// </summary>
 		public ObjType Type {
 			get {
-				if(null!=Native) {
+				if (null != Native) {
 					return GetNativeType(Native);
 				}
 				return _type;
 			}
 			set {
-				if(null!=Native) {
+				if (null != Native) {
 					throw new Exception("cannot set type on natived zones");
 				}
-				if(value==_type) {
+				if (value == _type) {
 					return;
 				}
 				_type = value;
@@ -51,14 +47,21 @@ namespace Zeta.Extreme {
 		public override void Apply(IZoneElement item) {
 			_type = GetNativeType(item);
 			base.Apply(item);
-			
 		}
 
 		private ObjType GetNativeType(IZoneElement native) {
-			if (null != (native as IZetaMainObject)) return ObjType.Obj;
-			if (null != (native as IZetaDetailObject)) return ObjType.Detail;
-			if (null != (native as IZetaObjectGroup)) return ObjType.Grp;
-			if (null != (native as IMainObjectGroup)) return ObjType.Div;
+			if (null != (native as IZetaMainObject)) {
+				return ObjType.Obj;
+			}
+			if (null != (native as IZetaDetailObject)) {
+				return ObjType.Detail;
+			}
+			if (null != (native as IZetaObjectGroup)) {
+				return ObjType.Grp;
+			}
+			if (null != (native as IMainObjectGroup)) {
+				return ObjType.Div;
+			}
 			return ObjType.Unknown;
 		}
 
@@ -72,34 +75,38 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Простая копия зоны
+		/// 	Простая копия зоны
 		/// </summary>
-		/// <returns></returns>
+		/// <returns> </returns>
 		public ObjHandler Copy() {
 			return MemberwiseClone() as ObjHandler;
 		}
 
 		/// <summary>
-		/// Определяет что условие описывает одну, определенную инстанцию объекта
-		/// еще без загрузки Native, у объектов еще проверяется тип
+		/// 	Определяет что условие описывает одну, определенную инстанцию объекта
+		/// 	еще без загрузки Native, у объектов еще проверяется тип
 		/// </summary>
-		/// <returns></returns>
-		public override bool IsStandaloneSingletonDefinition(bool nativefalse =true)
-		{
+		/// <returns> </returns>
+		public override bool IsStandaloneSingletonDefinition(bool nativefalse = true) {
 			var result = base.IsStandaloneSingletonDefinition(nativefalse);
-			if(result) {
-				if(Type==ObjType.None) return false;
-				if(Type==ObjType.Unknown) return false;
+			if (result) {
+				if (Type == ObjType.None) {
+					return false;
+				}
+				if (Type == ObjType.Unknown) {
+					return false;
+				}
 			}
 			return result;
 		}
+
 		/// <summary>
-		/// Нормализует объект зоны
+		/// 	Нормализует объект зоны
 		/// </summary>
-		/// <param name="session"></param>
+		/// <param name="session"> </param>
 		/// <exception cref="NotImplementedException"></exception>
 		public void Normalize(ZexSession session) {
-			if(IsStandaloneSingletonDefinition()) {
+			if (IsStandaloneSingletonDefinition()) {
 				switch (Type) {
 					case ObjType.Obj:
 						Native = myapp.storage.Get<IZetaMainObject>().Load(GetEffectiveKey());
@@ -108,11 +115,12 @@ namespace Zeta.Extreme {
 						Native = myapp.storage.Get<IZetaMainObject>().Load(GetEffectiveKey());
 						break;
 					case ObjType.Grp:
-						Native =myapp.storage.Get<IZetaMainObject>().Load(GetEffectiveKey());
+						Native = myapp.storage.Get<IZetaMainObject>().Load(GetEffectiveKey());
 						break;
-
 				}
 			}
 		}
+
+		private ObjType _type;
 	}
 }
