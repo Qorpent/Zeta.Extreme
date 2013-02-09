@@ -30,6 +30,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 
 
 		[Test]
+		[Repeat(3)]
 		public void Register_In_Simple_To_Complex_Way() {
 			var sw = Stopwatch.StartNew();
 			foreach (var row in rows
@@ -54,17 +55,23 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				}
 			}
 
-			session.WaitRegistration();
+			session.WaitPreparation();
+			session.WaitEvaluation();
 
 			sw.Stop();
 
 			Console.WriteLine(sw.ElapsedMilliseconds);
-
-			Assert.AreEqual(1032,session.Stat_Registry_New);
+			Assert.AreEqual(996,session.MainQueryRegistry.Where(x=>x.Key!=x.Value.GetCacheKey()).Count());
+			Assert.AreEqual(1038,session.Stat_Registry_Started_User);
+			Assert.AreEqual(1038 
+				- CAPT_COUNT * periods.Length
+				- OBS_COUNT * periods.Length 
+				,session.Stat_Registry_User);
 
 		}
 
-
+		const int CAPT_COUNT =1;
+		private const int OBS_COUNT = 6;
 		[Test]
 		public void Bug_Dont_Prceed_Redirect()
 		{
@@ -77,11 +84,31 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				Obj = { Native = obj }
 			};
 			session.RegisterAsync(q, "test");
-			session.WaitRegistration();
+			session.WaitPreparation();
 
 			var q1 = session.MainQueryRegistry["test"];
 			Assert.AreEqual("r590610",q1.Row.Code); //redirect performed
 			Assert.AreEqual(1,session.Stat_Row_Redirections); //statistics acounted
+
+
+		}
+
+		[Test]
+		public void Bug_Something_Bad_WithSums()
+		{
+
+			var q = new ZexQuery
+			{
+				Row = { Native = RowCache.get("m260400") },
+				Col = { Native = col },
+				Time = { Year = 2012, Period = 11 },
+				Obj = { Native = obj }
+			};
+			session.RegisterAsync(q, "test");
+			session.WaitPreparation();
+			session.WaitEvaluation();
+
+			
 
 		}
 

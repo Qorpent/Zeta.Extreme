@@ -16,6 +16,7 @@ namespace Zeta.Extreme {
 	/// 	Стандартная реализация хелпера для регистрации запросов в системе
 	/// </summary>
 	public class DefaultZexRegistryHelper : IZexRegistryHelper {
+		private static long QUERYID;
 		/// <summary>
 		/// 	Конструирует хелпер, в присоединении к сессии
 		/// </summary>
@@ -33,35 +34,48 @@ namespace Zeta.Extreme {
 		/// <returns> итоговый запрос после регистрации </returns>
 		public virtual ZexQuery Register(ZexQuery srcquery, string uid) {
 			var stat = _session.CollectStatistics;
-			if(stat)System.Threading.Interlocked.Increment(ref _session.Stat_Registry_Started);
+			if (stat) {
+				Interlocked.Increment(ref _session.Stat_Registry_Started);
+				if (!string.IsNullOrWhiteSpace(uid)) {
+					Interlocked.Increment(ref _session.Stat_Registry_Started_User);
+				}
+			}
 			var query = srcquery;
 			ZexQuery result = null;
 
 			var preloadkey = srcquery.GetCacheKey();
 			string mappedkey;
-			if(_session.KeyMap.TryGetValue(preloadkey, out mappedkey)) {
-				if (stat)System.Threading.Interlocked.Increment(ref _session.Stat_Registry_Resolved_By_Map_Key);
-			
+			if (_session.KeyMap.TryGetValue(preloadkey, out mappedkey)) {
+				if (stat) {
+					Interlocked.Increment(ref _session.Stat_Registry_Resolved_By_Map_Key);
+				}
+
 				result = _session.MainQueryRegistry[mappedkey];
-				if(!string.IsNullOrWhiteSpace(uid) &&mappedkey!=uid) {
+				if (!string.IsNullOrWhiteSpace(uid) && mappedkey != uid) {
+					if (stat) {
+						Interlocked.Increment(ref _session.Stat_Registry_User);
+					}
 					_session.MainQueryRegistry[uid] = result;
 				}
 				return result;
 			}
-			
+
 
 			var preprocessor = _session.GetPreloadProcessor();
 			try {
-				if (stat) Interlocked.Increment(ref _session.Stat_Registry_Preprocessed);
+				if (stat) {
+					Interlocked.Increment(ref _session.Stat_Registry_Preprocessed);
+				}
 				query = preprocessor.Process(query);
-				
 			}
 			finally {
 				_session.ReturnPreloadPreprocessor(preprocessor);
 			}
 
-			if(null==query) {
-				if (stat) System.Threading.Interlocked.Increment(ref _session.Stat_Registry_Ignored);
+			if (null == query) {
+				if (stat) {
+					Interlocked.Increment(ref _session.Stat_Registry_Ignored);
+				}
 				return null;
 			}
 
@@ -69,11 +83,12 @@ namespace Zeta.Extreme {
 				uid = query.GetCacheKey();
 			}
 			var key = query.GetCacheKey();
-			
 
 
 			if (_session.MainQueryRegistry.TryGetValue(uid, out result)) {
-				if (stat) System.Threading.Interlocked.Increment(ref _session.Stat_Registry_Resolved_By_Uid);
+				if (stat) {
+					Interlocked.Increment(ref _session.Stat_Registry_Resolved_By_Uid);
+				}
 				return result;
 			}
 
@@ -82,12 +97,23 @@ namespace Zeta.Extreme {
 			if (!found) {
 				found = _session.ProcessedSet.TryGetValue(key, out result);
 			}
-			if (stat && found) _session.Stat_Registry_Resolved_By_Key++;
+			if (stat && found) {
+				_session.Stat_Registry_Resolved_By_Key++;
+			}
 			if (!found) {
 				query.Session = _session; //надо установить сессию раз новый запрос
 				query = _session.ActiveSet.GetOrAdd(key, query);
 				result = query;
-				if (stat) System.Threading.Interlocked.Increment(ref _session.Stat_Registry_New);
+				lock(typeof(DefaultZexRegistryHelper)) {
+					result.UID = ++QUERYID;
+				}
+				if (stat) {
+					Interlocked.Increment(ref _session.Stat_Registry_New);
+				}
+				_session.PrepareAsync(result); //инициируем следующую фазу обработки
+			}
+			if (stat && uid != key) {
+				Interlocked.Increment(ref _session.Stat_Registry_User);
 			}
 			_session.MainQueryRegistry[uid] = result;
 			_session.KeyMap[preloadkey] = uid;

@@ -40,6 +40,24 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	True если целевая строка - ссылка
+		/// </summary>
+		public bool IsSum {
+			get { return null != Native && Native.IsMarkSeted("0SA"); }
+		}
+
+		/// <summary>
+		/// 	Проверяем еще суммовые разделы
+		/// </summary>
+		/// <returns> </returns>
+		public override bool IsPrimary() {
+			if (!base.IsPrimary()) {
+				return false;
+			}
+			return !IsSum;
+		}
+
+		/// <summary>
 		/// 	Функция непосредственного вычисления кэшевой строки
 		/// </summary>
 		/// <returns> </returns>
@@ -68,7 +86,7 @@ namespace Zeta.Extreme {
 				//try load native
 				Native = RowCache.get(0 == Id ? (object) Code : Id);
 			}
-			NormalizeReferencedRows(session,column);
+			NormalizeReferencedRows(session, column);
 		}
 
 		private void NormalizeReferencedRows(ZexSession session, IZetaColumn column) {
@@ -79,8 +97,8 @@ namespace Zeta.Extreme {
 				Native = Native.ResolveExRef(column);
 				proceed = ResolveSingleRowFormula();
 			}
-			if(initialcode!=Code) {
-				if(session!=null && session.CollectStatistics) {
+			if (initialcode != Code) {
+				if (session != null && session.CollectStatistics) {
 					Interlocked.Increment(ref session.Stat_Row_Redirections);
 				}
 			}

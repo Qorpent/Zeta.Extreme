@@ -37,7 +37,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				var q = new ZexQuery { CustomHashPrefix = i.ToString() };
 				session.RegisterAsync(q);
 			}
-			session.WaitRegistration();
+			session.WaitPreparation();
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
 			Console.WriteLine(session.MainQueryRegistry.Count);
@@ -58,7 +58,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				
 				session.RegisterAsync(q);
 			}
-			session.WaitRegistration();
+			session.WaitPreparation();
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
 			Console.WriteLine(session.MainQueryRegistry.Count);
@@ -78,7 +78,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			{
 				prepareQueries(i,true);
 			}
-			session.WaitRegistration();
+			session.WaitPreparation();
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
 			var asynctime = sw.ElapsedMilliseconds;

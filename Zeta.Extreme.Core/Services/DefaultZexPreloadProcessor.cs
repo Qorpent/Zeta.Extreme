@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using Comdiv.Extensions;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -37,13 +38,18 @@ namespace Zeta.Extreme {
 
 			//сначала вызываем стандартную процедуру нормализации запроса
 
-			
 
 			internalquery.Normalize(_session);
-			if(internalquery.Row.Native!=null && internalquery.Row.Native.IsMarkSeted("0CAPTION")) {
+			if (internalquery.Row.Native != null && internalquery.Row.Native.IsMarkSeted("0CAPTION")) {
 				return null; //it's not processable query
 			}
-			
+			var obsolete = TagHelper.Value(internalquery.Row.Tag, "obsolete").toInt();
+			if (obsolete != 0) {
+				if (obsolete <= internalquery.Time.Year) {
+					return null;
+				}
+			}
+
 
 			return internalquery;
 		}

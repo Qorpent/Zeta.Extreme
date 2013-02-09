@@ -1,0 +1,49 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : QueryResult.cs
+// Project: Zeta.Extreme.Core
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
+using System;
+
+namespace Zeta.Extreme {
+	/// <summary>
+	/// 	Инкапсуляция результата
+	/// </summary>
+	public class QueryResult {
+		/// <summary>
+		/// 	Для форм - идентификатор ячейки
+		/// </summary>
+		public int CellId;
+
+		/// <summary>
+		/// 	Ошибка
+		/// </summary>
+		public Exception Error;
+
+		/// <summary>
+		/// 	Признак завершенности
+		/// </summary>
+		public bool IsComplete;
+
+		/// <summary>
+		/// 	Запрос обработан но отклик не получен
+		/// </summary>
+		public bool IsNull;
+
+		/// <summary>
+		/// 	Численное значение
+		/// </summary>
+		public decimal NumericResult;
+
+		/// <summary>
+		/// 	Строчный результат
+		/// </summary>
+		public string StringResult;
+	}
+}

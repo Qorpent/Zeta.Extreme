@@ -38,6 +38,11 @@
   <ItemGroup>
     <Compile Include="Abstracts\CacheKeyGeneratorBase.cs" />
     <Compile Include="Abstracts\CachedItemHandlerBase.cs" />
+    <Compile Include="Abstracts\IZexQueryPreparator.cs" />
+    <Compile Include="DefaultZexSqlBuilder.cs" />
+    <Compile Include="IZexSqlBuilder.cs" />
+    <Compile Include="Services\DefaultZexQueryPreparator.cs" />
+    <Compile Include="QueryResult.cs" />
     <Compile Include="Query\ColumnHandler.cs" />
     <Compile Include="Query\DefaultPeriodEvaluator.cs" />
     <Compile Include="Query\IPeriodEvaluator.cs" />
@@ -52,6 +57,10 @@
     <Compile Include="Query\ZexQuery.cs" />
     <Compile Include="Query\ObjHandler.cs" />
     <Compile Include="ZexSession.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

@@ -218,6 +218,14 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	Проверяет первичность элемента запроса
+		/// </summary>
+		/// <returns> </returns>
+		public virtual bool IsPrimary() {
+			return !IsFormula;
+		}
+
+		/// <summary>
 		/// 	Применяет свойства от сущности без установки ее Native
 		/// </summary>
 		public virtual void Apply(TItem item) {

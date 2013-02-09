@@ -13,7 +13,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests
 		{
 			var q = new ZexQuery { CustomHashPrefix = "CanRegisterOneQuerySynchronously" };
 			var rqt =  session.RegisterAsync(q);
-			session.WaitRegistration();
+			session.WaitPreparation();
 			var rq = rqt.Result;
 			Assert.AreEqual(q, rq);
 			Assert.AreSame(rq, session.MainQueryRegistry[q.GetCacheKey()]);
@@ -30,7 +30,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests
 				var q = new ZexQuery {CustomHashPrefix = i.ToString()};
 				session.RegisterAsync(q, "uid"+i);
 			}
-			session.WaitRegistration();
+			session.WaitPreparation();
 			foreach (var zexQuery in session.MainQueryRegistry) {
 				Assert.AreEqual(zexQuery.Value.CustomHashPrefix,zexQuery.Key.Substring(3));
 			}
