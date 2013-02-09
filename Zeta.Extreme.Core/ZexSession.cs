@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Zeta.Extreme {
@@ -32,10 +33,57 @@ namespace Zeta.Extreme {
 		/// <remarks>
 		/// 	Инициирует основные коллекции
 		/// </remarks>
-		public ZexSession() {
+		public ZexSession(bool collectStatistics = false) {
+			CollectStatistics = collectStatistics;
 			MainQueryRegistry = new ConcurrentDictionary<string, ZexQuery>();
 			ActiveSet = new ConcurrentDictionary<string, ZexQuery>();
 			ProcessedSet = new ConcurrentDictionary<string, ZexQuery>();
+			KeyMap = new ConcurrentDictionary<string, string>();
+		}
+
+		/// <summary>
+		/// Если включено, службы накапливают статистические данные по работе сессии
+		/// </summary>
+		public readonly bool CollectStatistics;
+
+		/// <summary>
+		/// Статистика количества вызовов регистрации
+		/// </summary>
+		public  int Stat_Registry_Started;
+		/// <summary>
+		/// Статистика количества дублированных запросов без препроцессинга
+		/// </summary>
+		public  int Stat_Registry_Resolved_By_Map_Key;
+		/// <summary>
+		/// Статистика вызовов препроцессора
+		/// </summary>
+		public  int Stat_Registry_Preprocessed;
+		/// <summary>
+		/// Статистика резольвинга по наличию в кэше
+		/// </summary>
+		public  int Stat_Registry_Resolved_By_Uid;
+		/// <summary>
+		/// Статистика резольвинга по внутреннему ключу
+		/// </summary>
+		public  int Stat_Registry_Resolved_By_Key;
+		/// <summary>
+		/// Статистика действительно уникальных регистраций
+		/// </summary>
+		public  int Stat_Registry_New;
+
+		/// <summary>
+		/// Возвращает сообщение о статистике работы
+		/// </summary>
+		/// <returns></returns>
+		public string GetStatisticString() {
+			var sb = new StringBuilder();
+			foreach (var source in this.GetType().GetFields().Where(x=>x.Name.StartsWith("Stat_")).OrderBy(x=>x.Name)) {
+				sb.Append(source.Name);
+				sb.Append(' ');
+				sb.Append(source.GetValue(this));
+				sb.Append(Environment.NewLine);
+			}
+			return sb.ToString();
 		}
 
 		/// <summary>
@@ -46,6 +94,13 @@ namespace Zeta.Extreme {
 		/// 	здесь, в MainQueryRegistry мы можем на уровне Value иметь дубляжи запросов
 		/// </remarks>
 		public ConcurrentDictionary<string, ZexQuery> MainQueryRegistry { get; private set; }
+
+
+		/// <summary>
+		/// Оптимизационный мапинг ключей между входным и отпрепроцессорным
+		/// запросом
+		/// </summary>
+		public ConcurrentDictionary<string, string> KeyMap { get; private set; }
 
 		/// <summary>
 		/// 	Набор всех уникальных, еще не обработанных запросов (агенда)

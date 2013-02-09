@@ -84,8 +84,9 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			var asynctime = sw.ElapsedMilliseconds;
 			Console.WriteLine(session.MainQueryRegistry.Count);
 			Assert.AreEqual(cnt*2, session.MainQueryRegistry.Count);
+			Console.WriteLine(session.GetStatisticString());
 		
-			session = new ZexSession();
+			session = new ZexSession(true);
 
 			sw = Stopwatch.StartNew();
 			for (var i = 0; i < cnt; i++)
@@ -98,7 +99,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			Console.WriteLine(session.MainQueryRegistry.Count);
 			Assert.AreEqual(cnt*2, session.MainQueryRegistry.Count);
 			Assert.Less(asynctime, synctime);
-
+			Console.WriteLine(session.GetStatisticString());
 
 			//Assert.Greater(synctime/3,asynctime);
 		}

@@ -30,11 +30,29 @@ namespace Zeta.Extreme {
 		/// <param name="uid"> </param>
 		/// <returns> итоговый запрос после регистрации </returns>
 		public virtual ZexQuery Register(ZexQuery srcquery, string uid) {
+			var stat = _session.CollectStatistics;
+			if(stat)System.Threading.Interlocked.Increment(ref _session.Stat_Registry_Started);
 			var query = srcquery;
+			ZexQuery result = null;
+
+			var preloadkey = srcquery.GetCacheKey();
+			string mappedkey;
+			if(_session.KeyMap.TryGetValue(preloadkey, out mappedkey)) {
+				if (stat)System.Threading.Interlocked.Increment(ref _session.Stat_Registry_Resolved_By_Map_Key);
+			
+				result = _session.MainQueryRegistry[mappedkey];
+				if(!string.IsNullOrWhiteSpace(uid) &&mappedkey!=uid) {
+					_session.MainQueryRegistry[uid] = result;
+				}
+				return result;
+			}
+			
 
 			var preprocessor = _session.GetPreloadProcessor();
 			try {
+				if (stat) _session.Stat_Registry_Preprocessed++;
 				preprocessor.Process(query);
+				
 			}
 			finally {
 				_session.ReturnPreloadPreprocessor(preprocessor);
@@ -44,10 +62,11 @@ namespace Zeta.Extreme {
 				uid = query.GetCacheKey();
 			}
 			var key = query.GetCacheKey();
-			ZexQuery result = null;
+			
 
 
 			if (_session.MainQueryRegistry.TryGetValue(uid, out result)) {
+				if (stat) System.Threading.Interlocked.Increment(ref _session.Stat_Registry_Resolved_By_Uid);
 				return result;
 			}
 
@@ -56,12 +75,15 @@ namespace Zeta.Extreme {
 			if (!found) {
 				found = _session.ProcessedSet.TryGetValue(key, out result);
 			}
+			if (stat && found) _session.Stat_Registry_Resolved_By_Key++;
 			if (!found) {
 				query.Session = _session; //надо установить сессию раз новый запрос
 				query = _session.ActiveSet.GetOrAdd(key, query);
 				result = query;
+				if (stat) System.Threading.Interlocked.Increment(ref _session.Stat_Registry_New);
 			}
 			_session.MainQueryRegistry[uid] = result;
+			_session.KeyMap[preloadkey] = uid;
 			return result;
 		}
 

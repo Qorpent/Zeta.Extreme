@@ -1,3 +1,4 @@
+using System;
 using Comdiv.Application;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Data.Minimal;
@@ -10,7 +11,15 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 
 		[SetUp]
 		public void setup() {
-			this.session = new ZexSession();
+			this.session = new ZexSession(true);
+		}
+
+		[TearDown]
+		public void teardown()
+		{
+			if(null!=session) {
+				Console.WriteLine(session.GetStatisticString());
+			}
 		}
 
 		private static bool wascallnhibernate ;
