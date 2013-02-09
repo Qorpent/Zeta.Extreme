@@ -10,6 +10,7 @@
 #endregion
 
 using System.Text.RegularExpressions;
+using System.Threading;
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 
@@ -67,15 +68,21 @@ namespace Zeta.Extreme {
 				//try load native
 				Native = RowCache.get(0 == Id ? (object) Code : Id);
 			}
-			NormalizeReferencedRows(column);
+			NormalizeReferencedRows(session,column);
 		}
 
-		private void NormalizeReferencedRows(IZetaColumn column) {
+		private void NormalizeReferencedRows(ZexSession session, IZetaColumn column) {
+			var initialcode = Code;
 			var proceed = true;
 			while (proceed) {
 				ResolveHardLinks();
 				Native = Native.ResolveExRef(column);
 				proceed = ResolveSingleRowFormula();
+			}
+			if(initialcode!=Code) {
+				if(session!=null && session.CollectStatistics) {
+					Interlocked.Increment(ref session.Stat_Row_Redirections);
+				}
 			}
 		}
 
@@ -83,7 +90,8 @@ namespace Zeta.Extreme {
 			if (IsFormula && (FormulaType == "boo" || FormulaType == "cs")) {
 				var match = Regex.Match(Formula.Trim(), @"^\$([\w\d]+)\?$", RegexOptions.Compiled);
 				if (match.Success) {
-					var reference = RowCache.get(match.Groups[1].Value);
+					var code = match.Groups[1].Value;
+					var reference = RowCache.get(code);
 					Native = reference;
 					return true;
 				}

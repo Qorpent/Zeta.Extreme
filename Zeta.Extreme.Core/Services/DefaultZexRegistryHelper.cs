@@ -9,6 +9,8 @@
 
 #endregion
 
+using System.Threading;
+
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Стандартная реализация хелпера для регистрации запросов в системе
@@ -50,12 +52,17 @@ namespace Zeta.Extreme {
 
 			var preprocessor = _session.GetPreloadProcessor();
 			try {
-				if (stat) _session.Stat_Registry_Preprocessed++;
-				preprocessor.Process(query);
+				if (stat) Interlocked.Increment(ref _session.Stat_Registry_Preprocessed);
+				query = preprocessor.Process(query);
 				
 			}
 			finally {
 				_session.ReturnPreloadPreprocessor(preprocessor);
+			}
+
+			if(null==query) {
+				if (stat) System.Threading.Interlocked.Increment(ref _session.Stat_Registry_Ignored);
+				return null;
 			}
 
 			if (string.IsNullOrWhiteSpace(uid)) {

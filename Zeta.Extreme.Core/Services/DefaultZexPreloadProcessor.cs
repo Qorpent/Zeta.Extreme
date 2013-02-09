@@ -36,7 +36,14 @@ namespace Zeta.Extreme {
 			// ибо иначе отконтроллировать изменения препроцессора по сути невозможно
 
 			//сначала вызываем стандартную процедуру нормализации запроса
-			internalquery.Normalize();
+
+			
+
+			internalquery.Normalize(_session);
+			if(internalquery.Row.Native!=null && internalquery.Row.Native.IsMarkSeted("0CAPTION")) {
+				return null; //it's not processable query
+			}
+			
 
 			return internalquery;
 		}

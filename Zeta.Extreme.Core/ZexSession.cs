@@ -78,7 +78,7 @@ namespace Zeta.Extreme {
 		public string GetStatisticString() {
 			var sb = new StringBuilder();
 			foreach (var source in this.GetType().GetFields().Where(x=>x.Name.StartsWith("Stat_")).OrderBy(x=>x.Name)) {
-				sb.Append(source.Name);
+				sb.Append(source.Name.Substring(5));
 				sb.Append(' ');
 				sb.Append(source.GetValue(this));
 				sb.Append(Environment.NewLine);
@@ -281,7 +281,16 @@ namespace Zeta.Extreme {
 		/// 	Позволяет переопределить тип хелпера регистрации
 		/// </summary>
 		public Type CustomRegistryHelperClass;
+		/// <summary>
+		/// Счетчик игнорируемых запросов
+		/// </summary>
+		public int Stat_Registry_Ignored;
 
+		/// <summary>
+		/// Счетчик переводов строки
+		/// </summary>
+		public int Stat_Row_Redirections;
 		private int _preEvalTaskCounter;
+		
 	}
 }

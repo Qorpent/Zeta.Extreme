@@ -122,11 +122,11 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Стандартная процедура нормализации
 		/// </summary>
-		public void Normalize() {
-			var objt = Task.Run(() => Obj.Normalize(Session)); //объекты зачастую из БД догружаются
-			Time.Normalize(Session);
-			Col.Normalize(Session);
-			var rowt = Task.Run(() => Row.Normalize(Session, Col.Native)); //тут формулы парсим простые как рефы			
+		public void Normalize(ZexSession session =null) {
+			var objt = Task.Run(() => Obj.Normalize(session??Session)); //объекты зачастую из БД догружаются
+			Time.Normalize(session??Session);
+			Col.Normalize(session??Session);
+			var rowt = Task.Run(() => Row.Normalize(session??Session, Col.Native)); //тут формулы парсим простые как рефы			
 			Task.WaitAll(objt, rowt);
 		}
 
