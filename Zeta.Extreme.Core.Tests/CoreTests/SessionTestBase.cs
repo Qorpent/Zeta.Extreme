@@ -63,7 +63,8 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				myapp.ioc.Clear();
 				myapp.ioc.setupHibernate(
 					new NamedConnection("Default",
-										"Data Source=(local);Initial Catalog=eco;Integrated Security=True;Min Pool Size=5;Application Name=zeta3"),
+						"Data Source=assoibdx;Initial Catalog=eco;Persist Security Info=True;User ID=sfo_home;Password=rhfcysq$0;Application Name=zeta3"),
+						//"Data Source=(local);Initial Catalog=eco;Integrated Security=True;Min Pool Size=5;Application Name=zeta3"),
 					new ZetaMinimalMode());
 				Periods.Get(12);
 				RowCache.start("m111", "m112", "m260", "m250", "m218", "r590");

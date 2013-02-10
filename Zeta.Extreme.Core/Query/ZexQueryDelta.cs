@@ -18,6 +18,7 @@ namespace Zeta.Extreme {
 	/// 	Описывает потенциальный подзапрос для оптимизации расчета сумм и простых формул
 	/// </summary>
 	public sealed class ZexQueryDelta {
+		
 		/// <summary>
 		/// 	Применяет смещение к целевому запросу
 		/// </summary>
@@ -158,7 +159,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Множитель при расчете значений
 		/// </summary>
-		public decimal Multiplicator;
+		public decimal Multiplicator =1;
 
 		/// <summary>
 		/// 	Прямое смещение по объекту

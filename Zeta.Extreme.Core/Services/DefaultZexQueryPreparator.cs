@@ -65,25 +65,33 @@ namespace Zeta.Extreme {
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Sum);
 			}
-			var subqueries = new List<Task<ZexQuery>>();
+			var subqueries = new List<Tuple<ZexQueryDelta, Task<ZexQuery>>>();
 			foreach (var r in _sumh.GetSumDelta(query.Row.Native)) {
 				var sq = r.Apply(query);
-				subqueries.Add( _session.RegisterAsync(sq));
+				subqueries.Add(new Tuple<ZexQueryDelta,Task<ZexQuery>>( r, _session.RegisterAsync(sq)));
 			}
-			Task.WaitAll(subqueries.ToArray());
+			Task.WaitAll(subqueries.Select(_=>_.Item2).ToArray());
 
-			var subq = subqueries.Select(_ => _.Result).Where(_=>null!=_).ToArray();
+			var subq = subqueries.Where(_=>null!=_.Item2.Result).ToArray();
 			
 			if (subq.Length == 0) {
 				query.Result = new QueryResult {IsComplete = true, NumericResult = 0m};
 				return;
 			}
+
 			var resulttask = new Func<QueryResult>(() =>
 				{	
 
 					var result = subq.AsParallel().Aggregate(
 					0m,
-					(r,q)=> r+q.GetResult().NumericResult);
+					(r,q)=>
+						{
+							var res = q.Item2.Result.GetResult();
+							if(null!=res) {
+								r += res.NumericResult * q.Item1.Multiplicator;
+							}
+							return r;
+						});
 					return new QueryResult {IsComplete = true, NumericResult = result};
 				});
 			query.GetResultTask = _session.RegisterEvalTask(resulttask, false);
