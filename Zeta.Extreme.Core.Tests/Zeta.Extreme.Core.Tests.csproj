@@ -20,6 +20,7 @@
     <Compile Include="CoreTests\QueryCacheKeySensibilityTest.cs" />
     <Compile Include="CoreTests\SessionTestBase.cs" />
     <Compile Include="CoreTests\ZatrSimpleTest.cs" />
+    <Compile Include="SubQuery\ZexQueryDeltaTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">

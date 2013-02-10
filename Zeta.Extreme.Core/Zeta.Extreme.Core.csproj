@@ -39,8 +39,9 @@
     <Compile Include="Abstracts\CacheKeyGeneratorBase.cs" />
     <Compile Include="Abstracts\CachedItemHandlerBase.cs" />
     <Compile Include="Abstracts\IZexQueryPreparator.cs" />
-    <Compile Include="DefaultZexSqlBuilder.cs" />
-    <Compile Include="IZexSqlBuilder.cs" />
+    <Compile Include="Query\ZexQueryDelta.cs" />
+    <Compile Include="Services\DefaultZexSqlBuilder.cs" />
+    <Compile Include="Abstracts\IZexSqlBuilder.cs" />
     <Compile Include="Services\DefaultZexQueryPreparator.cs" />
     <Compile Include="QueryResult.cs" />
     <Compile Include="Query\ColumnHandler.cs" />
