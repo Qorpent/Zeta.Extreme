@@ -496,19 +496,27 @@ namespace Zeta.Extreme {
 		/// <param name="query"></param>
 		/// <returns></returns>
 		/// <exception cref="NotImplementedException"></exception>
-		public Task<QueryResult> RegisterForDataRequest(ZexQuery query) {
-			lock(this) {
+		public Task<QueryResult> RegisterSqlRequest(ZexQuery query) {
+			lock(syncsqlawait) {
+				
 				_sqlDataAwaiters.Add(query);
+				
 				if(null==_currentSqlBatchTask) {
 					_currentSqlBatchTask = CreateNewSqlBatchTask();
 				}
 				
-				if(_sqlDataAwaiters.Count>=10000) {
+				if(_sqlDataAwaiters.Count>=BatchSize) {
 					return RunSqlBatch();
 				}
 				return _currentSqlBatchTask;
 			}
 		}
+
+		/// <summary>
+		/// Размер батча
+		/// </summary>
+		public int BatchSize = 500;
+
 		object syncsqlawait = new object();
 		private Task<QueryResult> CreateNewSqlBatchTask() {
 			return new Task<QueryResult>(() =>
@@ -518,7 +526,7 @@ namespace Zeta.Extreme {
 					Dictionary<long, ZexQuery> _myrequests;
 					lock(syncsqlawait) {
 						if(_sqlDataAwaiters.IsEmpty) return null;
-						_myrequests = _sqlDataAwaiters.ToDictionary(_ => _.UID, _ => _);
+						_myrequests = _sqlDataAwaiters.ToArray().Distinct().ToDictionary(_ => _.UID, _ => _);
 						_sqlDataAwaiters = new ConcurrentBag<ZexQuery>();
 					}
 					Stopwatch sw = null;
@@ -527,23 +535,50 @@ namespace Zeta.Extreme {
 						sw = Stopwatch.StartNew();
 						Interlocked.Increment(ref Stat_Batch_Count);
 					}
-					var script = string.Join("\r\nunion\r\n", _myrequests.Values.Select(_ => _.SqlRequest));
-					using(var c = myapp.sql.GetConnection("Default")) {
-						c.Open();
-						var t = c.BeginTransaction(IsolationLevel.ReadUncommitted);
-						var cmd = c.CreateCommand();
-						cmd.Transaction = t;
-						cmd.CommandText = script;
-						var reader = cmd.ExecuteReader();
-						while (reader.Read()) {
-							var key = Convert.ToInt64(reader[0]);
-							var cellid = reader.GetInt32(1);
-							var val = reader.GetDecimal(2);
-							_myrequests[key].Result = new QueryResult {IsComplete = true, CellId = cellid, NumericResult = val};
+					var times = _myrequests.Values.Select(_ => new {  y = _.Time.Year, p = _.Time.Period }).Distinct();
+					var colobj = _myrequests.Values.Select(_ => new {o = _.Obj.Id,c = _.Col.Id}).Distinct();
+					var rowids = string.Join(",", _myrequests.Values.Select(_ => _.Row.Id).Distinct());
+					var script = "select 0 as id, 0 as col, 0 as row, 0 as obj, 0 as year, 0 as period, cast(0 as decimal(18,6)) as value";
+					foreach (var time in times) {
+						foreach (var cobj in colobj) {
+							script +=
+								string.Format(
+									"\r\nunion\r\nselect id,col,row,obj,year,period,decimalvalue from cell where period={0} and year={1} and col={2} and obj={3} and row in ({4})",
+									time.p, time.y, cobj.c, cobj.o, rowids);
 						}
-						reader.Close();
-						t.Rollback();
 					}
+					using (var c = myapp.sql.GetConnection("Default")) {
+						c.Open();
+						var cmd = c.CreateCommand();
+						cmd.CommandText = script;
+						using (var r = cmd.ExecuteReader()) {
+							while(r.Read()) {
+								var id = r.GetInt32(0);
+								if(0==id)continue;
+								if (CollectStatistics)
+								{
+									Interlocked.Increment(ref Stat_Primary_Catched);
+								}
+								var col = r.GetInt32(1);
+								var row = r.GetInt32(2);
+								var obj = r.GetInt32(3);
+								var year = r.GetInt32(4);
+								var period = r.GetInt32(5);
+								var value = r.GetDecimal(6);
+								var target =
+									_myrequests.Values.FirstOrDefault(
+										_ => _.Row.Id == row && _.Col.Id == col && _.Obj.Id == obj && _.Time.Year == year && _.Time.Period == period);
+								if(null!=target) {
+									if(CollectStatistics) {
+										Interlocked.Increment(ref Stat_Primary_Affected);
+									}
+									target.Result = new QueryResult {IsComplete = true, NumericResult = value, CellId = id};
+								}
+							}
+						}
+					}
+
+
 					if(CollectStatistics) {
 						sw.Stop();
 						lock (syncsqlawait) {
@@ -592,5 +627,18 @@ namespace Zeta.Extreme {
 		/// Статистика времени батчей
 		/// </summary>
 		public TimeSpan Stat_Batch_Time;
+		/// <summary>
+		/// Статистика общего времени выполнения
+		/// </summary>
+		public TimeSpan Stat_Time_Total;
+		/// <summary>
+		/// Статистика возвращеных ячеек
+		/// </summary>
+		public int Stat_Primary_Catched;
+
+	/// <summary>
+	/// Статистика использованных значений
+	/// </summary>
+		public int Stat_Primary_Affected;
 	}
 }

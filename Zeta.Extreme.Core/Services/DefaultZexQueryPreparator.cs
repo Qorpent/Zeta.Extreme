@@ -100,7 +100,7 @@ namespace Zeta.Extreme {
 			var sqlbuilder = _session.GetSqlBuilder();
 
 			sqlbuilder.PrepareSqlRequest(query);
-			query.GetResultTask = _session.RegisterForDataRequest(query);
+			query.GetResultTask = _session.RegisterSqlRequest(query);
 			query.Result = new QueryResult {IsComplete = true, Error = new Exception("primaries not supproted by now")};
 		}
 
