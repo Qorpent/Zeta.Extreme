@@ -10,10 +10,12 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -62,26 +64,26 @@ namespace Zeta.Extreme {
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Sum);
 			}
-			var subqueries = new List<ZexQuery>();
-			foreach (var r in query.Row.Native.Children) {
-				if (r.IsMarkSeted("0NOSUM")) {
-					continue;
-				}
-				var q = _session.Register(query.ToRow(r, true));
-				if (null != q) {
-					subqueries.Add(q);
-				}
-			}
+			var subqueries = new ConcurrentBag<ZexQuery>();
+			query.Row.Native.Children.AsParallel().ForAll(
+				_ =>
+					{
+						if (_.IsMarkSeted("0NOSUM")) {
+							return;
+						}
+						var q = _session.Register(query.ToRow(_, true));
+						if (null != q) {
+							subqueries.Add(q);
+						}
+					}
+				);
 			if (subqueries.Count == 0) {
 				query.Result = new QueryResult {IsComplete = true, NumericResult = 0m};
+				return;
 			}
-
 			var resulttask = new Func<QueryResult>(() =>
-				{
-					var awaits = subqueries.Select(_ => _.GetResultTask).Where(_ => null != _).OfType<Task>().ToArray();
-					if (0 != awaits.Length) {
-						Task.WaitAll(awaits);
-					}
+				{	
+					subqueries.AsParallel().ForAll(_=> _.WaitResult());
 					var result = subqueries.Sum(sq => sq.GetResult().NumericResult);
 					return new QueryResult {IsComplete = true, NumericResult = result};
 				});
