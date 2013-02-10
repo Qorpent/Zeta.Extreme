@@ -10,12 +10,10 @@
 #endregion
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -46,7 +44,7 @@ namespace Zeta.Extreme {
 			if (query.IsPrimary) {
 				RegisterPrimaryRequest(query);
 			}
-			else if (null!=query.Row.Native && _sumh.IsSum(query.Row.Native) && query.Col.IsPrimary()) {
+			else if (null != query.Row.Native && _sumh.IsSum(query.Row.Native) && query.Col.IsPrimary()) {
 				ExpandSum(query);
 			}
 			else {
@@ -68,30 +66,29 @@ namespace Zeta.Extreme {
 			var subqueries = new List<Tuple<ZexQueryDelta, Task<ZexQuery>>>();
 			foreach (var r in _sumh.GetSumDelta(query.Row.Native)) {
 				var sq = r.Apply(query);
-				subqueries.Add(new Tuple<ZexQueryDelta,Task<ZexQuery>>( r, _session.RegisterAsync(sq)));
+				subqueries.Add(new Tuple<ZexQueryDelta, Task<ZexQuery>>(r, _session.RegisterAsync(sq)));
 			}
-			Task.WaitAll(subqueries.Select(_=>_.Item2).ToArray());
+			Task.WaitAll(subqueries.Select(_ => _.Item2).ToArray());
 
-			var subq = subqueries.Where(_=>null!=_.Item2.Result).ToArray();
-			
+			var subq = subqueries.Where(_ => null != _.Item2.Result).ToArray();
+
 			if (subq.Length == 0) {
 				query.Result = new QueryResult {IsComplete = true, NumericResult = 0m};
 				return;
 			}
 
 			var resulttask = new Func<QueryResult>(() =>
-				{	
-
+				{
 					var result = subq.AsParallel().Aggregate(
-					0m,
-					(r,q)=>
-						{
-							var res = q.Item2.Result.GetResult();
-							if(null!=res) {
-								r += res.NumericResult * q.Item1.Multiplicator;
-							}
-							return r;
-						});
+						0m,
+						(r, q) =>
+							{
+								var res = q.Item2.Result.GetResult();
+								if (null != res) {
+									r += res.NumericResult*q.Item1.Multiplicator;
+								}
+								return r;
+							});
 					return new QueryResult {IsComplete = true, NumericResult = result};
 				});
 			query.GetResultTask = _session.RegisterEvalTask(resulttask, false);
@@ -105,7 +102,7 @@ namespace Zeta.Extreme {
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Primary);
 			}
-			
+
 			var sqlbuilder = _session.GetSqlBuilder();
 
 			sqlbuilder.PrepareSqlRequest(query);
@@ -115,6 +112,6 @@ namespace Zeta.Extreme {
 
 		private readonly ZexSession _session;
 		private readonly bool _stat;
-		private ZetaVirtualSumHelper _sumh;
+		private readonly ZetaVirtualSumHelper _sumh;
 	}
 }

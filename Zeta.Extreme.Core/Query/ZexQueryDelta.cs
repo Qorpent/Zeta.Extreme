@@ -20,6 +20,7 @@ namespace Zeta.Extreme {
 	public sealed class ZexQueryDelta {
 		/// <summary>
 		/// 	Применяет смещение к целевому запросу
+		/// Если есть изменения - то правильно создает копии и переписывает кэш-строку
 		/// </summary>
 		/// <param name="target"> </param>
 		/// <returns> </returns>
