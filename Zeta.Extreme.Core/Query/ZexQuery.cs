@@ -215,5 +215,15 @@ namespace Zeta.Extreme {
 		public string CustomHashPrefix;
 
 		private IList<ZexQuery> _children;
+
+		/// <summary>
+		/// Синхронизатор результата
+		/// </summary>
+		public void WaitResult() {
+
+			if(null!=GetResultTask) {
+				GetResultTask.Wait();
+			}
+		}
 	}
 }
