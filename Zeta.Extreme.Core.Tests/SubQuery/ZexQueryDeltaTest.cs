@@ -8,6 +8,8 @@ using NUnit.Framework;
 
 namespace Zeta.Extreme.Core.Tests.SubQuery
 {
+	
+
 	[TestFixture]
 	public class ZexQueryDeltaTest
 	{
