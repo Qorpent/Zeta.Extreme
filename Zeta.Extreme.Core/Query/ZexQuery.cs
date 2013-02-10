@@ -101,13 +101,14 @@ namespace Zeta.Extreme {
 		public bool IsNotPrepared {
 			get { return null == Result && null == GetResultTask; }
 		}
+
 		/// <summary>
-		/// Автоматический код запроса, присваиваемый системой
+		/// 	Автоматический код запроса, присваиваемый системой
 		/// </summary>
 		public long UID { get; set; }
 
 		/// <summary>
-		/// Кэшированный запрос SQL
+		/// 	Кэшированный запрос SQL
 		/// </summary>
 		public string SqlRequest { get; set; }
 
@@ -178,12 +179,13 @@ namespace Zeta.Extreme {
 			if (null == GetResultTask) {
 				throw new Exception("cannot retrieve result - no process or direct result attached");
 			}
-			
+
 			if (GetResultTask.Status == TaskStatus.Faulted) {
 				throw new Exception("cannot retrieve result - some problems int getresult task - faulted ", GetResultTask.Exception);
 			}
-			
-			if(null!=GetResultTask) { //некоторые задачи выставляют результат собственными средствами
+
+			if (null != GetResultTask) {
+				//некоторые задачи выставляют результат собственными средствами
 				Result = GetResultTask.Result;
 			}
 			return Result;
@@ -209,25 +211,25 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	Синхронизатор результата
+		/// </summary>
+		public void WaitResult() {
+			if (null != GetResultTask) {
+				if (GetResultTask.Status == TaskStatus.Created) {
+					try {
+						GetResultTask.Start();
+					}
+					catch {}
+				}
+				GetResultTask.Wait();
+			}
+		}
+
+		/// <summary>
 		/// 	Модификатор кэш-строки (префикс)
 		/// </summary>
 		public string CustomHashPrefix;
 
 		private IList<ZexQuery> _children;
-
-		/// <summary>
-		/// Синхронизатор результата
-		/// </summary>
-		public void WaitResult() {
-
-			if(null!=GetResultTask) {
-				if(GetResultTask.Status==TaskStatus.Created) {
-					try {
-						GetResultTask.Start();
-					}catch{}
-				}
-				GetResultTask.Wait();
-			}
-		}
 	}
 }

@@ -24,17 +24,18 @@ namespace Zeta.Extreme {
 			_session = session;
 		}
 
-		private ZexSession _session;
-
 		/// <summary>
-		/// Формирует строку вызова для запроса
+		/// 	Формирует строку вызова для запроса
 		/// </summary>
-		/// <param name="query"></param>
+		/// <param name="query"> </param>
 		public void PrepareSqlRequest(ZexQuery query) {
-			query.SqlRequest = 
-				string.Format("select {0}, Id, DecimalValue from cell where row = {1} and col= {2} and obj ={3} and year={4} and period={5} ",
-					query.UID,query.Row.Id,query.Col.Id,query.Obj.Id,query.Time.Year,query.Time.Period
-				);
+			query.SqlRequest =
+				string.Format(
+					"select {0}, Id, DecimalValue from cell where row = {1} and col= {2} and obj ={3} and year={4} and period={5} ",
+					query.UID, query.Row.Id, query.Col.Id, query.Obj.Id, query.Time.Year, query.Time.Period
+					);
 		}
+
+		private ZexSession _session;
 	}
 }

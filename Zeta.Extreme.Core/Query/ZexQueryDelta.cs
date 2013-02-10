@@ -2,7 +2,7 @@
 
 // Copyright 2012-2013 Media Technology LTD 
 // Solution: Qorpent.TextExpert
-// Original file : SubQueryDescriptor.cs
+// Original file : ZexQueryDelta.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -18,14 +18,13 @@ namespace Zeta.Extreme {
 	/// 	Описывает потенциальный подзапрос для оптимизации расчета сумм и простых формул
 	/// </summary>
 	public sealed class ZexQueryDelta {
-		
 		/// <summary>
 		/// 	Применяет смещение к целевому запросу
 		/// </summary>
 		/// <param name="target"> </param>
 		/// <returns> </returns>
 		public ZexQuery Apply(ZexQuery target) {
-			lock(this) {
+			lock (this) {
 				if (NoChanges(target)) {
 					return target;
 				}
@@ -44,7 +43,8 @@ namespace Zeta.Extreme {
 				result.Time = result.Time.Copy();
 				if (0 != Year && Year < 1900) {
 					result.Time.Year += Year;
-				}else if(Year!=result.Time.Year) {
+				}
+				else if (Year != result.Time.Year) {
 					result.Time.Year = Year;
 				}
 				if (0 != Period) {
@@ -159,7 +159,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Множитель при расчете значений
 		/// </summary>
-		public decimal Multiplicator =1;
+		public decimal Multiplicator = 1;
 
 		/// <summary>
 		/// 	Прямое смещение по объекту

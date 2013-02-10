@@ -11,13 +11,13 @@
 
 namespace Zeta.Extreme {
 	/// <summary>
-	/// Интерфейс построителя запросов на первичные данные
+	/// 	Интерфейс построителя запросов на первичные данные
 	/// </summary>
 	public interface IZexSqlBuilder {
 		/// <summary>
-		/// Формирует строку вызова для запроса
+		/// 	Формирует строку вызова для запроса
 		/// </summary>
-		/// <param name="query"></param>
+		/// <param name="query"> </param>
 		void PrepareSqlRequest(ZexQuery query);
 	}
 }

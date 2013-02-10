@@ -17,6 +17,7 @@ namespace Zeta.Extreme {
 	/// </summary>
 	public class DefaultZexRegistryHelper : IZexRegistryHelper {
 		private static long QUERYID;
+
 		/// <summary>
 		/// 	Конструирует хелпер, в присоединении к сессии
 		/// </summary>
@@ -104,7 +105,7 @@ namespace Zeta.Extreme {
 				query.Session = _session; //надо установить сессию раз новый запрос
 				query = _session.ActiveSet.GetOrAdd(key, query);
 				result = query;
-				lock(typeof(DefaultZexRegistryHelper)) {
+				lock (typeof (DefaultZexRegistryHelper)) {
 					result.UID = ++QUERYID;
 				}
 				if (stat) {
