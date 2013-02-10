@@ -29,11 +29,13 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		public void PrepareSqlRequest(ZexQuery query) {
-			query.SqlRequest =
+			return; //NOTE : сейчас не используется, понадобится только когда действительно
+					//будем по-разному SQL делать
+			/*query.SqlRequest =
 				string.Format(
 					"select {0}, Id, DecimalValue from cell where row = {1} and col= {2} and obj ={3} and year={4} and period={5} ",
 					query.UID, query.Row.Id, query.Col.Id, query.Obj.Id, query.Time.Year, query.Time.Period
-					);
+					);*/
 		}
 
 		private ZexSession _session;

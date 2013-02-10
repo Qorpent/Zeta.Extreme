@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -42,7 +41,6 @@ namespace Zeta.Extreme {
 			CollectStatistics = collectStatistics;
 			MainQueryRegistry = new ConcurrentDictionary<string, ZexQuery>();
 			ActiveSet = new ConcurrentDictionary<string, ZexQuery>();
-			ProcessedSet = new ConcurrentDictionary<string, ZexQuery>();
 			KeyMap = new ConcurrentDictionary<string, string>();
 		}
 
@@ -68,11 +66,6 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public ConcurrentDictionary<string, ZexQuery> ActiveSet { get; private set; }
 
-		/// <summary>
-		/// 	Набор всех уникальных, уже  обработанных запросов
-		/// 	ключ - хэшкей
-		/// </summary>
-		public ConcurrentDictionary<string, ZexQuery> ProcessedSet { get; private set; }
 
 		/// <summary>
 		/// 	Возвращает сообщение о статистике работы
@@ -132,7 +125,7 @@ namespace Zeta.Extreme {
 							var helper = GetRegistryHelper();
 							var result = helper.Register(query, uid);
 							ReturnRegistryHelper(helper);
-							
+
 							return result;
 						}
 						finally {
@@ -193,15 +186,18 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public void WaitEvaluation() {
 			RunSqlBatch(); // выполняем остаточные запросы
-			
-			Task.WaitAll(_evalTaskAgenda.Values.Where(_=>_.Status!=TaskStatus.Created).ToArray());
-				//	Thread.Sleep(20);
-			
+
+			Task.WaitAll(_evalTaskAgenda.Values.Where(_ => _.Status != TaskStatus.Created).ToArray());
+			//	Thread.Sleep(20);
+
 			while (_evalTaskAgenda.Any(_ => _.Value.Status == TaskStatus.Created)) {
-				var tasks = _evalTaskAgenda.Take(3).Select(_=>_.Value).ToArray();
+				var tasks = _evalTaskAgenda.Take(3).Select(_ => _.Value).ToArray();
 				foreach (var t in tasks) {
-					if(t.Status==TaskStatus.Created) {
-						try{t.Start();}catch{}
+					if (t.Status == TaskStatus.Created) {
+						try {
+							t.Start();
+						}
+						catch {}
 					}
 				}
 				Task.WaitAll(tasks);
@@ -383,6 +379,125 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	Регистриует задачу с уникальным SQL запросом в очередь на выполнение запросов
+		/// </summary>
+		/// <param name="query"> </param>
+		/// <returns> </returns>
+		/// <exception cref="NotImplementedException"></exception>
+		public Task<QueryResult> RegisterSqlRequest(ZexQuery query) {
+			lock (syncsqlawait) {
+				_sqlDataAwaiters.Add(query);
+
+				if (null == _currentSqlBatchTask) {
+					_currentSqlBatchTask = CreateNewSqlBatchTask();
+				}
+
+				if (_sqlDataAwaiters.Count >= BatchSize) {
+					return RunSqlBatch();
+				}
+				return _currentSqlBatchTask;
+			}
+		}
+
+		private Task<QueryResult> CreateNewSqlBatchTask() {
+			return new Task<QueryResult>(() =>
+				{
+					Dictionary<long, ZexQuery> _myrequests;
+					lock (syncsqlawait) {
+						if (_sqlDataAwaiters.IsEmpty) {
+							return null;
+						}
+						_myrequests = _sqlDataAwaiters.ToArray().Distinct().ToDictionary(_ => _.UID, _ => _);
+						_sqlDataAwaiters = new ConcurrentBag<ZexQuery>();
+					}
+					Stopwatch sw = null;
+					if (CollectStatistics) {
+						sw = Stopwatch.StartNew();
+						Interlocked.Increment(ref Stat_Batch_Count);
+					}
+					var times = _myrequests.Values.Select(_ => new {y = _.Time.Year, p = _.Time.Period}).Distinct();
+					var colobj = _myrequests.Values.Select(_ => new {o = _.Obj.Id, c = _.Col.Id}).Distinct();
+					var rowids = string.Join(",", _myrequests.Values.Select(_ => _.Row.Id).Distinct());
+					var script =
+						"select 0 as id, 0 as col, 0 as row, 0 as obj, 0 as year, 0 as period, cast(0 as decimal(18,6)) as value";
+					foreach (var time in times) {
+						foreach (var cobj in colobj) {
+							script +=
+								string.Format(
+									"\r\nunion\r\nselect id,col,row,obj,year,period,decimalvalue from cell where period={0} and year={1} and col={2} and obj={3} and row in ({4})",
+									time.p, time.y, cobj.c, cobj.o, rowids);
+						}
+					}
+					using (var c = myapp.sql.GetConnection("Default")) {
+						c.Open();
+						var cmd = c.CreateCommand();
+						cmd.CommandText = script;
+						using (var r = cmd.ExecuteReader()) {
+							while (r.Read()) {
+								var id = r.GetInt32(0);
+								if (0 == id) {
+									continue;
+								}
+								if (CollectStatistics) {
+									Interlocked.Increment(ref Stat_Primary_Catched);
+								}
+								var col = r.GetInt32(1);
+								var row = r.GetInt32(2);
+								var obj = r.GetInt32(3);
+								var year = r.GetInt32(4);
+								var period = r.GetInt32(5);
+								var value = r.GetDecimal(6);
+								var target =
+									_myrequests.Values.FirstOrDefault(
+										_ => _.Row.Id == row && _.Col.Id == col && _.Obj.Id == obj && _.Time.Year == year && _.Time.Period == period);
+								if (null != target) {
+									if (CollectStatistics) {
+										Interlocked.Increment(ref Stat_Primary_Affected);
+									}
+									target.Result = new QueryResult {IsComplete = true, NumericResult = value, CellId = id};
+								}
+							}
+						}
+					}
+
+
+					if (CollectStatistics) {
+						sw.Stop();
+						lock (syncsqlawait) {
+							Stat_Batch_Time += sw.Elapsed;
+						}
+					}
+					foreach (var myrequest in _myrequests.Values.Where(_ => null == _.Result)) {
+						myrequest.Result = new QueryResult {IsComplete = true, IsNull = true};
+					}
+
+					return null;
+				});
+		}
+
+		/// <summary>
+		/// 	Стартует текущую задачу по SQL
+		/// </summary>
+		public Task<QueryResult> RunSqlBatch() {
+			lock (this) {
+				var task = _currentSqlBatchTask;
+				if (null == task) {
+					task = CreateNewSqlBatchTask();
+				}
+				_currentSqlBatchTask = null;
+				var id = _evalTaskCounter++;
+				task.ContinueWith(t_ =>
+					{
+						Task t;
+						_evalTaskAgenda.TryRemove(id, out t);
+					});
+				_evalTaskAgenda[id] = task;
+				task.Start();
+				return task;
+			}
+		}
+
+		/// <summary>
 		/// 	Если включено, службы накапливают статистические данные по работе сессии
 		/// </summary>
 		public readonly bool CollectStatistics;
@@ -399,6 +514,12 @@ namespace Zeta.Extreme {
 
 		private readonly ConcurrentStack<IZexRegistryHelper> _registryhelperpool = new ConcurrentStack<IZexRegistryHelper>();
 		private readonly ConcurrentStack<IZexSqlBuilder> _sqlbuilders = new ConcurrentStack<IZexSqlBuilder>();
+		private readonly object syncsqlawait = new object();
+
+		/// <summary>
+		/// 	Размер батча
+		/// </summary>
+		public int BatchSize = 1000;
 
 		/// <summary>
 		/// 	Позволяет переопределить тип хелпера регистрации
@@ -424,6 +545,26 @@ namespace Zeta.Extreme {
 		/// 	Пользовательский тип SQL - генератора
 		/// </summary>
 		public Type CustomSqlBuilderClass;
+
+		/// <summary>
+		/// 	Статистика батчей
+		/// </summary>
+		public int Stat_Batch_Count;
+
+		/// <summary>
+		/// 	Статистика времени батчей
+		/// </summary>
+		public TimeSpan Stat_Batch_Time;
+
+		/// <summary>
+		/// 	Статистика использованных значений
+		/// </summary>
+		public int Stat_Primary_Affected;
+
+		/// <summary>
+		/// 	Статистика возвращеных ячеек
+		/// </summary>
+		public int Stat_Primary_Catched;
 
 		/// <summary>
 		/// 	Счетчик формул
@@ -491,161 +632,19 @@ namespace Zeta.Extreme {
 		public int Stat_Row_Redirections;
 
 		/// <summary>
+		/// 	Статистика общего времени выполнения
+		/// </summary>
+		public TimeSpan Stat_Time_Total;
+
+		private Task<QueryResult> _currentSqlBatchTask;
+
+		/// <summary>
 		/// 	Счетчик очереди выполнения
 		/// </summary>
 		private int _evalTaskCounter;
 
 		private int _preEvalTaskCounter;
 
-		/// <summary>
-		/// Регистриует задачу с уникальным SQL запросом в очередь на выполнение запросов
-		/// </summary>
-		/// <param name="query"></param>
-		/// <returns></returns>
-		/// <exception cref="NotImplementedException"></exception>
-		public Task<QueryResult> RegisterSqlRequest(ZexQuery query) {
-			lock(syncsqlawait) {
-				
-				_sqlDataAwaiters.Add(query);
-				
-				if(null==_currentSqlBatchTask) {
-					_currentSqlBatchTask = CreateNewSqlBatchTask();
-				}
-				
-				if(_sqlDataAwaiters.Count>=BatchSize) {
-					return RunSqlBatch();
-				}
-				return _currentSqlBatchTask;
-			}
-		}
-
-		/// <summary>
-		/// Размер батча
-		/// </summary>
-		public int BatchSize = 1000;
-
-		object syncsqlawait = new object();
-		private Task<QueryResult> CreateNewSqlBatchTask() {
-			return new Task<QueryResult>(() =>
-				{
-					
-					
-					Dictionary<long, ZexQuery> _myrequests;
-					lock(syncsqlawait) {
-						if(_sqlDataAwaiters.IsEmpty) return null;
-						_myrequests = _sqlDataAwaiters.ToArray().Distinct().ToDictionary(_ => _.UID, _ => _);
-						_sqlDataAwaiters = new ConcurrentBag<ZexQuery>();
-					}
-					Stopwatch sw = null;
-					if (CollectStatistics)
-					{
-						sw = Stopwatch.StartNew();
-						Interlocked.Increment(ref Stat_Batch_Count);
-					}
-					var times = _myrequests.Values.Select(_ => new {  y = _.Time.Year, p = _.Time.Period }).Distinct();
-					var colobj = _myrequests.Values.Select(_ => new {o = _.Obj.Id,c = _.Col.Id}).Distinct();
-					var rowids = string.Join(",", _myrequests.Values.Select(_ => _.Row.Id).Distinct());
-					var script = "select 0 as id, 0 as col, 0 as row, 0 as obj, 0 as year, 0 as period, cast(0 as decimal(18,6)) as value";
-					foreach (var time in times) {
-						foreach (var cobj in colobj) {
-							script +=
-								string.Format(
-									"\r\nunion\r\nselect id,col,row,obj,year,period,decimalvalue from cell where period={0} and year={1} and col={2} and obj={3} and row in ({4})",
-									time.p, time.y, cobj.c, cobj.o, rowids);
-						}
-					}
-					using (var c = myapp.sql.GetConnection("Default")) {
-						c.Open();
-						var cmd = c.CreateCommand();
-						cmd.CommandText = script;
-						using (var r = cmd.ExecuteReader()) {
-							while(r.Read()) {
-								var id = r.GetInt32(0);
-								if(0==id)continue;
-								if (CollectStatistics)
-								{
-									Interlocked.Increment(ref Stat_Primary_Catched);
-								}
-								var col = r.GetInt32(1);
-								var row = r.GetInt32(2);
-								var obj = r.GetInt32(3);
-								var year = r.GetInt32(4);
-								var period = r.GetInt32(5);
-								var value = r.GetDecimal(6);
-								var target =
-									_myrequests.Values.FirstOrDefault(
-										_ => _.Row.Id == row && _.Col.Id == col && _.Obj.Id == obj && _.Time.Year == year && _.Time.Period == period);
-								if(null!=target) {
-									if(CollectStatistics) {
-										Interlocked.Increment(ref Stat_Primary_Affected);
-									}
-									target.Result = new QueryResult {IsComplete = true, NumericResult = value, CellId = id};
-								}
-							}
-						}
-					}
-
-
-					if(CollectStatistics) {
-						sw.Stop();
-						lock (syncsqlawait) {
-							Stat_Batch_Time += sw.Elapsed;
-						}
-					}
-					foreach (var myrequest in _myrequests.Values.Where(_=>null==_.Result)) {
-						myrequest.Result = new QueryResult {IsComplete = true, IsNull = true};
-
-					}
-
-					return null;
-				});
-		}
-
-		/// <summary>
-		/// Стартует текущую задачу по SQL
-		/// </summary>
-		public Task<QueryResult> RunSqlBatch() {
-			lock (this) {
-				var task = _currentSqlBatchTask;
-				if(null==task) {
-					task = CreateNewSqlBatchTask();
-				}
-				_currentSqlBatchTask = null;
-				var id = _evalTaskCounter++;
-				task.ContinueWith(t_ =>
-					{
-						Task t;
-						_evalTaskAgenda.TryRemove(id, out t);
-					});
-				_evalTaskAgenda[id] = task;
-				task.Start();
-				return task;
-				
-			}
-		}
-
-		ConcurrentBag<ZexQuery> _sqlDataAwaiters  = new ConcurrentBag<ZexQuery>();
-		private Task<QueryResult> _currentSqlBatchTask;
-		/// <summary>
-		/// Статистика батчей
-		/// </summary>
-		public int Stat_Batch_Count;
-		/// <summary>
-		/// Статистика времени батчей
-		/// </summary>
-		public TimeSpan Stat_Batch_Time;
-		/// <summary>
-		/// Статистика общего времени выполнения
-		/// </summary>
-		public TimeSpan Stat_Time_Total;
-		/// <summary>
-		/// Статистика возвращеных ячеек
-		/// </summary>
-		public int Stat_Primary_Catched;
-
-	/// <summary>
-	/// Статистика использованных значений
-	/// </summary>
-		public int Stat_Primary_Affected;
+		private ConcurrentBag<ZexQuery> _sqlDataAwaiters = new ConcurrentBag<ZexQuery>();
 	}
 }

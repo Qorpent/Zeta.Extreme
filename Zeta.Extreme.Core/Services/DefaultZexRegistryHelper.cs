@@ -95,9 +95,6 @@ namespace Zeta.Extreme {
 
 			var found = false;
 			found = _session.ActiveSet.TryGetValue(key, out result);
-			if (!found) {
-				found = _session.ProcessedSet.TryGetValue(key, out result);
-			}
 			if (stat && found) {
 				_session.Stat_Registry_Resolved_By_Key++;
 			}
