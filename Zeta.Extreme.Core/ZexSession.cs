@@ -193,12 +193,18 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public void WaitEvaluation() {
 			RunSqlBatch(); // выполняем остаточные запросы
+			
+			Task.WaitAll(_evalTaskAgenda.Values.Where(_=>_.Status!=TaskStatus.Created).ToArray());
+				//	Thread.Sleep(20);
+			
 			while (_evalTaskAgenda.Any(_ => _.Value.Status == TaskStatus.Created)) {
-				foreach (var task in _evalTaskAgenda) {
-					if (task.Value.Status == TaskStatus.Created) {
-						task.Value.Start();
+				var tasks = _evalTaskAgenda.Take(3).Select(_=>_.Value).ToArray();
+				foreach (var t in tasks) {
+					if(t.Status==TaskStatus.Created) {
+						try{t.Start();}catch{}
 					}
 				}
+				Task.WaitAll(tasks);
 			}
 
 			while (!_evalTaskAgenda.IsEmpty) {
@@ -516,7 +522,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// Размер батча
 		/// </summary>
-		public int BatchSize = 500;
+		public int BatchSize = 1000;
 
 		object syncsqlawait = new object();
 		private Task<QueryResult> CreateNewSqlBatchTask() {

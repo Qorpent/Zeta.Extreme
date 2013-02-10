@@ -24,15 +24,18 @@ namespace Zeta.Extreme {
 		/// <param name="target"> </param>
 		/// <returns> </returns>
 		public ZexQuery Apply(ZexQuery target) {
-			if (NoChanges(target)) {
-				return target;
+			lock(this) {
+				if (NoChanges(target)) {
+					return target;
+				}
+				var result = target.Copy();
+				MoveColumn(result);
+				MoveRow(result);
+				MoveObj(result);
+				MoveTime(result);
+				result.InvalidateCacheKey();
+				return result;
 			}
-			var result = target.Copy();
-			MoveColumn(result);
-			MoveRow(result);
-			MoveObj(result);
-			MoveTime(result);
-			return result;
 		}
 
 		private void MoveTime(ZexQuery result) {

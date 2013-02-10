@@ -34,20 +34,11 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		public override void FixtureSetup()
 		{
 			base.FixtureSetup();
-			rows = (from row in myapp.storage.AsQueryable<row>()
-			        where row.Path.Contains("/m260/")
-			        orderby row.Path
-			        select row).ToArray();
+			rows = RowCache.get("m260").AllChildren.OfType<row>().ToArray();
 			;
-			rows1 = (from row in myapp.storage.AsQueryable<row>()
-					where row.Path.Contains("/m111/")
-					orderby row.Path
-					select row).ToArray();
+			rows1 = RowCache.get("m111").AllChildren.OfType<row>().ToArray();
 			;
-			rows2 = (from row in myapp.storage.AsQueryable<row>()
-					where row.Path.Contains("/m112/")
-					orderby row.Path
-					select row).ToArray();
+			rows2 = RowCache.get("m112").AllChildren.OfType<row>().ToArray();
 			;
 			colset = new[]
 				{
@@ -65,12 +56,19 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			obj = myapp.storage.AsQueryable<IZetaMainObject>().First(x => x.Id == 352);
 			objs = myapp.storage.AsQueryable<IZetaMainObject>().Where(x => x.ShowOnStartPage).ToArray();
 		}
-
+		[Test]
+		public void Bug_Something_Wrong_With_Sums() {
+			var q = new ZexQuery
+				{Row = {Code = "m260"}, Col = {Code = "Á1"}, Time = {Year = 2012, Period = 13}, Obj = {Id = 352}};
+			session.RegisterAsync(q);
+			session.WaitPreparation();
+			//session.WaitEvaluation();
+		}
 
 		[Test]
 		public void RegisterInSimpleToComplexWay() {
 			var sw = Stopwatch.StartNew();
-			RunForm(1000);
+			RunForm(2000);
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
 			Assert.AreEqual(996,session.MainQueryRegistry.Where(x=>x.Key!=x.Value.GetCacheKey()).Count());
@@ -130,7 +128,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		[Explicit]
 		public void InsaneBatch()
 		{
-			int batchsize = 1000;
+			int batchsize = 200;
 			int count = 107;
 			int timespan = 500;
 			int rsn = 100;
@@ -169,15 +167,18 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 					               => new ZatrSimpleTest(this).RunForm(batchsize, i, true, rsn))
 						);
 				}
-				Thread.Sleep(timespan);
+				Thread.Sleep(timespan/2);
 				var waitfirs = t.Where(x => !x.IsCompleted).ToArray();
-				if (qsize <= waitfirs.Length) {
-					var ws = Stopwatch.StartNew();
+				var ws = Stopwatch.StartNew();
+				while (qsize <= waitfirs.Length) {
+					
 					Task.WaitAny(waitfirs);
-					ws.Stop();
-					waittime += ws.Elapsed;
+					Thread.Sleep(timespan/2);
+					waitfirs = t.Where(x => !x.IsCompleted).ToArray();
+					
 				}
-				
+				ws.Stop();
+				waittime += ws.Elapsed;
 				//Thread.Sleep(Math.Max(0, timespan - (int) waittime.TotalMilliseconds));
 			}
 			Task.WaitAll(t.ToArray());

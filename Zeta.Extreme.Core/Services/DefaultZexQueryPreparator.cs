@@ -34,6 +34,7 @@ namespace Zeta.Extreme {
 		public DefaultZexQueryPreparator(ZexSession session) {
 			_session = session;
 			_stat = _session.CollectStatistics;
+			_sumh = new ZetaVirtualSumHelper();
 		}
 
 		/// <summary>
@@ -45,7 +46,7 @@ namespace Zeta.Extreme {
 			if (query.IsPrimary) {
 				RegisterPrimaryRequest(query);
 			}
-			else if (query.Row.IsSum && query.Col.IsPrimary()) {
+			else if (null!=query.Row.Native && _sumh.IsSum(query.Row.Native) && query.Col.IsPrimary()) {
 				ExpandSum(query);
 			}
 			else {
@@ -65,17 +66,12 @@ namespace Zeta.Extreme {
 				Interlocked.Increment(ref _session.Stat_QueryType_Sum);
 			}
 			var subqueries = new List<Task<ZexQuery>>();
-			foreach (var r in query.Row.Native.Children)
-			{
-				if (r.IsMarkSeted("0NOSUM"))
-				{
-					continue;
-				}
-				subqueries.Add( _session.RegisterAsync(query.ToRow(r, true)));
-				
+			foreach (var r in _sumh.GetSumDelta(query.Row.Native)) {
+				var sq = r.Apply(query);
+				subqueries.Add( _session.RegisterAsync(sq));
 			}
-			
 			Task.WaitAll(subqueries.ToArray());
+
 			var subq = subqueries.Select(_ => _.Result).Where(_=>null!=_).ToArray();
 			
 			if (subq.Length == 0) {
@@ -84,11 +80,10 @@ namespace Zeta.Extreme {
 			}
 			var resulttask = new Func<QueryResult>(() =>
 				{	
-					var result = subq.Sum(sq =>
-						{
-							sq.WaitResult();
-							return sq.GetResult().NumericResult;
-						});
+
+					var result = subq.AsParallel().Aggregate(
+					0m,
+					(r,q)=> r+q.GetResult().NumericResult);
 					return new QueryResult {IsComplete = true, NumericResult = result};
 				});
 			query.GetResultTask = _session.RegisterEvalTask(resulttask, false);
@@ -112,5 +107,6 @@ namespace Zeta.Extreme {
 
 		private readonly ZexSession _session;
 		private readonly bool _stat;
+		private ZetaVirtualSumHelper _sumh;
 	}
 }

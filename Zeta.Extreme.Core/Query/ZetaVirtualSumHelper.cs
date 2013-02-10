@@ -21,12 +21,15 @@ namespace Zeta.Extreme
 		/// <param name="r"></param>
 		/// <returns></returns>
 		public bool IsSum (IZetaRow r) {
-			if(r.LocalProperties.ContainsKey("_zvs_h_t")) return true;
-			if (r.LocalProperties.ContainsKey("_zvs_h_f")) return false;
-			var issum = EvalIsSum(r);
-			if(issum) r.LocalProperties["_zvs_h_t"] = true;
-			else r.LocalProperties["_zvs_h_f"] = true;
-			return issum;
+			lock(r.LocalProperties) {
+				if (r.LocalProperties.ContainsKey("_zvs_h_t")) return true;
+				if (r.LocalProperties.ContainsKey("_zvs_h_f")) return false;
+				var issum = EvalIsSum(r);
+				if (issum) r.LocalProperties["_zvs_h_t"] = true;
+				else r.LocalProperties["_zvs_h_f"] = true;
+				return issum;
+			}
+
 		}
 
 		/// <summary>

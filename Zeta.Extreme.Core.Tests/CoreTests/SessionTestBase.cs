@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Comdiv.Application;
 using Comdiv.Model.Mapping;
 using Comdiv.Persistence;
@@ -43,6 +44,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		[SetUp]
 		public virtual void setup() {
 			this.session = new ZexSession(true);
+			
 		}
 
 		[TearDown]
@@ -53,6 +55,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			}
 		}
 
+		private static Task loadrowcahe;
 		private static bool wascallnhibernate ;
 		[TestFixtureSetUp]
 		public virtual void FixtureSetup() {
@@ -60,10 +63,10 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				myapp.ioc.Clear();
 				myapp.ioc.setupHibernate(
 					new NamedConnection("Default",
-										"Data Source=assoibdx;Initial Catalog=eco;Persist Security Info=True;User ID=sfo_home;Password=rhfcysq$0;Application Name=zeta3"),
+										"Data Source=(local);Initial Catalog=eco;Integrated Security=True;Min Pool Size=5;Application Name=zeta3"),
 					new ZetaMinimalMode());
 				Periods.Get(12);
-				RowCache.start("m111","m112","m260","m250");
+				RowCache.start("m111", "m112", "m260", "m250", "m218", "r590");
 				ColumnCache.start();
 				wascallnhibernate = true;
 			}

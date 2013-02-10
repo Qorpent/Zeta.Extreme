@@ -171,19 +171,18 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		/// <exception cref="Exception"></exception>
 		public QueryResult GetResult() {
+			WaitResult();
 			if (null != Result) {
 				return Result;
 			}
 			if (null == GetResultTask) {
 				throw new Exception("cannot retrieve result - no process or direct result attached");
 			}
-			if (GetResultTask.Status == TaskStatus.Created) {
-				GetResultTask.Start();
-			}
+			
 			if (GetResultTask.Status == TaskStatus.Faulted) {
 				throw new Exception("cannot retrieve result - some problems int getresult task - faulted ", GetResultTask.Exception);
 			}
-			GetResultTask.Wait();
+			
 			if(null!=GetResultTask) { //некоторые задачи выставляют результат собственными средствами
 				Result = GetResultTask.Result;
 			}
@@ -222,6 +221,11 @@ namespace Zeta.Extreme {
 		public void WaitResult() {
 
 			if(null!=GetResultTask) {
+				if(GetResultTask.Status==TaskStatus.Created) {
+					try {
+						GetResultTask.Start();
+					}catch{}
+				}
 				GetResultTask.Wait();
 			}
 		}
