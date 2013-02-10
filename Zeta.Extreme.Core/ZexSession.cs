@@ -132,6 +132,7 @@ namespace Zeta.Extreme {
 							var helper = GetRegistryHelper();
 							var result = helper.Register(query, uid);
 							ReturnRegistryHelper(helper);
+							
 							return result;
 						}
 						finally {

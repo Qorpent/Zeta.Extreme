@@ -125,6 +125,18 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			int rsn = 1;
 			ExecuteFormBatch(timespan, rsn, batchsize, count,7);
 		}
+
+		[Test]
+		[Explicit]
+		public void InsaneBatch()
+		{
+			int batchsize = 1000;
+			int count = 107;
+			int timespan = 500;
+			int rsn = 100;
+			ExecuteFormBatch(timespan, rsn, batchsize, count, 8);
+		}
+
 		[Test]
 		[Explicit]
 		public void PribBatch()
@@ -141,9 +153,22 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			var waittime = new TimeSpan();
 			var t = new List<Task>();
 			for (var i = 0; i < count; i++) {
-				t.Add(Task.Run(()
-				               => new ZatrSimpleTest(this).RunForm(batchsize, i, true, rsn))
-					);
+
+				if(rsn==100) {
+					t.Add(Task.Run(()
+								   => new ZatrSimpleTest(this).RunForm(batchsize, i, true, 0))
+						);
+					t.Add(Task.Run(()
+								   => new ZatrSimpleTest(this).RunForm(batchsize, i, true, 1))
+						);
+					t.Add(Task.Run(()
+								   => new ZatrSimpleTest(this).RunForm(batchsize, i, true, 2))
+						);
+				}else {
+					t.Add(Task.Run(()
+					               => new ZatrSimpleTest(this).RunForm(batchsize, i, true, rsn))
+						);
+				}
 				Thread.Sleep(timespan);
 				var waitfirs = t.Where(x => !x.IsCompleted).ToArray();
 				if (qsize <= waitfirs.Length) {
