@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Comdiv.Application;
 using Comdiv.Model.Mapping;
@@ -70,7 +71,24 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 						//"Data Source=(local);Initial Catalog=eco;Integrated Security=True;Min Pool Size=5;Application Name=zeta3"),
 					new ZetaMinimalMode());
 				Periods.Get(12);
-				RowCache.start("m111", "m112", "m260", "m250", "m218", "r590");
+				RowCache.start("m111", "m112", "m260", "m250", "m218", "r590","m220");
+				FormulaStorage.Default.AutoBatchCompile = false;
+				var _sumh = new ZetaVirtualSumHelper();
+				var formulas = RowCache.byid.Values.Where(_ => _.IsFormula && !_sumh.IsSum(_)).ToArray();
+			
+				foreach(var f in formulas) {
+					var req = new FormulaRequest {Key =f.Code, Formula = f.Formula, Language = f.FormulaEvaluator};
+					FormulaStorage.Default.Register(req);
+					try {
+						FormulaStorage.Default.CompileAll();
+					}catch(Exception e) {
+						Console.WriteLine(f.Code+":"+e.Message);
+						req.PreparedType = typeof (CompileErrorFormulaStub);
+						req.ErrorInCompilation = e;
+					}
+				}
+				
+				FormulaStorage.Default.AutoBatchCompile = true;
 				ColumnCache.start();
 				wascallnhibernate = true;
 			}

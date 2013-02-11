@@ -17,16 +17,20 @@ namespace Zeta.Extreme.Core.Tests.SubQuery
 			Assert.AreEqual("Eval( new Zeta.Extreme.ZexQueryDelta{ RowCode = \"Y\", })", d.ToCSharpString("Eval"));
 		}
 
+		
 		[Test]
-		public void CanBeParsedFromRealWorldFormula() {
-			var preprocessor = new DefaultDeltaPreprocessor();
-			var result =
-				preprocessor.Preprocess(@"f.If ( year == 2011 and periodin ( 4,112 ) and colin (""Б1"",""PLAN"") , { - $m1111216@DELTA? - $r2161111@Ok.P4? - $r2161131@Ok.P4? } , {
-f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) ) , { f.If ( colin(""PLANC"") , { $m1111216@PLANC? }, { f.If ( colin (""Б1"",""PLAN""), { - $m1111216@DELTA? } ) } ) }, { f.If ( year < 2011 , { f.If ( colin(""PLANC"") , { $m211216@PLANC? }, { f.If ( colin (""Б1"",""PLAN""), { - $m211216@DELTA? } ) } ) } , { f.If ( colin (""Б1"",""PLAN""), { $r2161200@Rd? - $r2161200@Pd? } ) } ) } ) } )
-", new FormulaRequest {Language = "boo"});
-			Console.WriteLine(result);
-			Assert.AreEqual(@"f.If ( year == 2011 and periodin ( 4,112 ) and colin (""Б1"",""PLAN"") , { - EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) - EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""r2161111"", ColCode = ""Ok"", Period = 4, }) - EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""r2161131"", ColCode = ""Ok"", Period = 4, }) } , {
-f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) ) , { f.If ( colin(""PLANC"") , { EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""m1111216"", ColCode = ""PLANC"", }) }, { f.If ( colin (""Б1"",""PLAN""), { - EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) } ) } ) }, { f.If ( year < 2011 , { f.If ( colin(""PLANC"") , { EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""m211216"", ColCode = ""PLANC"", }) }, { f.If ( colin (""Б1"",""PLAN""), { - EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""m211216"", ColCode = ""DELTA"", }) } ) } ) } , { f.If ( colin (""Б1"",""PLAN""), { EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""r2161200"", ColCode = ""Rd"", }) - EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""r2161200"", ColCode = ""Pd"", }) } ) } ) } ) } )".Trim(),result.Trim());
+		public void Can_Keep_Simple_Deltas() {
+			var storage = new FormulaStorage();
+			var request = new FormulaRequest
+			{
+				Language = "boo",
+				Formula =
+					@"f.choose ( $Ф2190р , $Ф2190ф )"
+			};
+			storage.Preprocess(request);
+
+			Console.WriteLine(request.PreprocessedFormula);
+			Assert.AreEqual(@"f.choose (  new Zeta.Extreme.ZexQueryDelta{ RowCode = ""Ф2190р"", } ,  new Zeta.Extreme.ZexQueryDelta{ RowCode = ""Ф2190ф"", } )".Trim(), request.PreprocessedFormula.Trim());
 		}
 
 

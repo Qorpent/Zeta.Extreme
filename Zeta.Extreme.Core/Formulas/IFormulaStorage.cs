@@ -41,5 +41,20 @@ namespace Zeta.Extreme {
 		/// <param name="key"> </param>
 		/// <param name="formula"> </param>
 		void Return(string key, IFormula formula);
+
+		/// <summary>
+		/// Асинхронно выполняет полную компиляцию формул
+		/// </summary>
+		void StartAsyncCompilation();
+
+		/// <summary>
+		/// True - включен режим автоматического батча
+		/// </summary>
+		bool AutoBatchCompile { get; set; }
+
+		/// <summary>
+		/// Компилирует все формы в стеке
+		/// </summary>
+		void CompileAll();
 	}
 }

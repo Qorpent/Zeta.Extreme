@@ -29,10 +29,11 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		public ZexQuery Apply(ZexQuery target) {
 			lock (this) {
-				if (NoChanges(target)) {
-					return target;
-				}
 				var result = target.Copy();
+				if (NoChanges(target)) {
+					return result;
+				}
+				
 				MoveColumn(result);
 				MoveRow(result);
 				MoveObj(result);

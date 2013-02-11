@@ -34,7 +34,10 @@ namespace Zeta.Extreme {
 				if (null != _session._async_serial_acess_task) {
 					_session._async_serial_acess_task.Wait();
 				}
-				var realquery = _session.Register(query);
+				ZexQuery realquery = null;
+				
+				realquery = _session.Register(query);
+				
 				if (null == realquery) {
 					return new QueryResult();
 				}

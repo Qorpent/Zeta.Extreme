@@ -29,7 +29,13 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	–егул€рное выражение дл€ выборки отдельного элемента формулы
 		/// </summary>
-		public const string FormulaVector =
+		public const string FormulaValueVector =
 			@"\$(?<r>[\w\d]+)(@(?<c>[\w\d]+))?(\.Y(?<ys>-)?(?<y>\d+))?(\.P(?<ps>-)?(?<p>\d+))?\?";
+
+		/// <summary>
+		/// 	–егул€рное выражение дл€ выборки отдельного элемента формулы (без вопроса)
+		/// </summary>
+		public const string FormulaOnlyDeltaVector =
+			@"\$(?<r>[\w\d]+)(@(?<c>[\w\d]+))?(\.Y(?<ys>-)?(?<y>\d+))?(\.P(?<ps>-)?(?<p>\d+))?";
 	}
 }

@@ -42,6 +42,26 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// Шоткат для быстрой проверки что речь идет о предприятии
+		/// </summary>
+		public bool IsForObj {
+			get { return Type == ObjType.Obj; }
+		}
+		/// <summary>
+		/// Шоткат для быстрой проверки что речь идет не о предприятии
+		/// </summary>
+		public bool IsNotForObj
+		{
+			get { return Type != ObjType.Obj; }
+		}
+		/// <summary>
+		/// Ссылка на реальный экземпляр старшего объекта
+		/// </summary>
+		public IZetaMainObject ObjRef {
+			get { return Native as IZetaMainObject; }
+		}
+
+		/// <summary>
 		/// 	Применяет свойства от сущности без установки ее Native
 		/// </summary>
 		public override void Apply(IZoneElement item) {

@@ -46,13 +46,23 @@
     <Compile Include="Extensions\ISerialSession.cs" />
     <Compile Include="Extensions\SerialAccessExtensions.cs" />
     <Compile Include="Extensions\SerialSession.cs" />
+    <Compile Include="Formulas\BackwardCompatibleFormulaBase.cs" />
+    <Compile Include="Formulas\BackwardCompatibleMainFormulaSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Formulas\BooConverter.cs" />
+    <Compile Include="Formulas\CompileErrorFormulaStub.cs" />
     <Compile Include="Formulas\DefaultDeltaPreprocessor.cs" />
+    <Compile Include="Formulas\DeltaFormulaBase.cs" />
+    <Compile Include="Formulas\FormulaAttribute.cs" />
+    <Compile Include="Formulas\FormulaCompiler.cs" />
     <Compile Include="Formulas\FormulaRequest.cs" />
     <Compile Include="Formulas\FormulaStorage.cs" />
     <Compile Include="Formulas\IFormula.cs" />
     <Compile Include="Formulas\IFormulaPreprocessor.cs" />
     <Compile Include="Formulas\IFormulaStorage.cs" />
     <Compile Include="Formulas\FormulaParserConstants.cs" />
+    <Compile Include="Formulas\SessionAttachedFormulaBase.cs" />
     <Compile Include="Query\ZetaVirtualSumHelper.cs" />
     <Compile Include="Query\ZexQueryDelta.cs" />
     <Compile Include="Services\DefaultZexSqlBuilder.cs" />

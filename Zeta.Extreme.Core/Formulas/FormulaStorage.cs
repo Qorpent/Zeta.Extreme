@@ -31,6 +31,8 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public FormulaStorage() {
 			AddPreprocessor(new DefaultDeltaPreprocessor());
+			AddPreprocessor(new BooConverter());
+			AutoBatchCompile = true;
 		}
 
 		/// <summary>
@@ -75,7 +77,7 @@ namespace Zeta.Extreme {
 						}
 					}
 					var waitbatchsize = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).Count();
-					if (BatchSize <= waitbatchsize) {
+					if (AutoBatchCompile && BatchSize <= waitbatchsize) {
 						StartAsyncCompilation();
 					}
 					return request.Key;
@@ -136,13 +138,31 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		private void StartAsyncCompilation() {
+		/// <summary>
+		/// Асинхронно выполняет полную компиляцию формул
+		/// </summary>
+		public void StartAsyncCompilation() {
 			lock (_compile_lock) {
 				var batch = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).ToArray();
 				var t = Task.Run(() => new FormulaCompiler().Compile(batch));
 				foreach (var f in batch) {
 					f.FormulaCompilationTask = t;
 				}
+			}
+		}
+
+		/// <summary>
+		/// True - включен режим автоматического батча
+		/// </summary>
+		public bool AutoBatchCompile { get; set; }
+
+		/// <summary>
+		/// Компилирует все формы в стеке
+		/// </summary>
+		public void CompileAll() {
+			lock (_compile_lock) {
+				var batch = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).ToArray();
+				new FormulaCompiler().Compile(batch);
 			}
 		}
 

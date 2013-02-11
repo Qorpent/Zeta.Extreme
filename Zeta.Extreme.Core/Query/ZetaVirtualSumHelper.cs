@@ -159,16 +159,11 @@ namespace Zeta.Extreme {
 				if (c.IsMarkSeted("0NOSUM")) {
 					continue;
 				}
-				if (IsSum(c)) {
-					yield return new ZexQueryDelta {Row = c};
-				}
-				if (c.IsFormula) {
+				if(!IsSum(c) && 0!= c.Children.Count) {
 					continue;
 				}
-				if (c.Children.Count != 0) {
-					continue;
-				}
-				yield return new ZexQueryDelta {Row = c};
+				yield return new ZexQueryDelta { Row = c };
+
 			}
 		}
 	}

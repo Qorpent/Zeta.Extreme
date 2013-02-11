@@ -67,5 +67,10 @@ namespace Zeta.Extreme {
 		/// 	Теги
 		/// </summary>
 		public string Tags;
+
+		/// <summary>
+		/// Ошибка компиляции
+		/// </summary>
+		public Exception ErrorInCompilation;
 	}
 }

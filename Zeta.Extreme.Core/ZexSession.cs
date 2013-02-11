@@ -32,6 +32,10 @@ namespace Zeta.Extreme {
 	/// </remarks>
 	public class ZexSession {
 		private static int ID;
+		/// <summary>
+		/// Ведение полной трассировки запросов
+		/// </summary>
+		public bool TraceQuery = false;
 
 		/// <summary>
 		/// 	Конструктор по умолчанию
@@ -46,6 +50,8 @@ namespace Zeta.Extreme {
 			ActiveSet = new ConcurrentDictionary<string, ZexQuery>();
 			KeyMap = new ConcurrentDictionary<string, string>();
 		}
+
+		
 
 		/// <summary>
 		/// 	Уникальный идентификатор сессии в процессе
@@ -89,13 +95,18 @@ namespace Zeta.Extreme {
 			lock (this) {
 				ISerialSession result;
 				if (_subsessionpool.TryPop(out result)) {
+					result.GetUnderlinedSession()._preEvalTaskAgenda.Clear();
+					result.GetUnderlinedSession()._evalTaskAgenda.Clear();
 					return result;
 				}
 				var copy = new ZexSession(CollectStatistics)
 					{
 						Registry = Registry,
 						ActiveSet = ActiveSet,
+						KeyMap = KeyMap,
 						MasterSession = this,
+						TraceQuery = TraceQuery,
+						//_register_lock =  this._register_lock
 					};
 				if (CollectStatistics) {
 					Stat_SubSession_Count ++;
@@ -103,9 +114,12 @@ namespace Zeta.Extreme {
 				//share query cache
 				//but not task queues
 				result = copy.AsSerial(); //we not allow use it on non-serial way
+				_subsessions[copy.Id] = copy;
 				return result;
 			}
 		}
+
+		private IDictionary<int, ZexSession> _subsessions = new Dictionary<int, ZexSession>();
 
 		/// <summary>
 		/// 	Позволяет вернуть использованную подсессию в пул
@@ -235,10 +249,13 @@ namespace Zeta.Extreme {
 		/// 	Ожидает окончания всех процессов асинхронной регистрации
 		/// </summary>
 		protected internal void WaitPreparation() {
+			
 			while (!_preEvalTaskAgenda.IsEmpty) {
 				SyncPreEval();
 				Thread.Sleep(20);
 			}
+
+		
 		}
 
 		/// <summary>
@@ -250,7 +267,7 @@ namespace Zeta.Extreme {
 			Task.WaitAll(_evalTaskAgenda.Values.Where(_ => _.Status != TaskStatus.Created).ToArray());
 			//	Thread.Sleep(20);
 
-			while (_evalTaskAgenda.Any(_ => _.Value.Status == TaskStatus.Created)) {
+			while (_evalTaskAgenda.Any()) {
 				// так как это поздние задачи и по идее не длительные,
 				// то мы разбираем их как очередь, без распаралелливания
 				// при этом подзадачи каскадом активируются сами по формулам
@@ -271,6 +288,8 @@ namespace Zeta.Extreme {
 				Task.WaitAll(_evalTaskAgenda.Values.ToArray());
 				//	Thread.Sleep(20);
 			}
+
+		
 		}
 
 		/// <summary>
@@ -737,5 +756,6 @@ namespace Zeta.Extreme {
 		/// 	Объект блокировки для последовательного доступа
 		/// </summary>
 		protected internal object _sync_serial_access_lock = new object();
+	
 	}
 }

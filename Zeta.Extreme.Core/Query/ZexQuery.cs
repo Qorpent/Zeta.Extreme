@@ -121,7 +121,10 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Позволяет синхронизировать запросы в подсессиях
 		/// </summary>
-		public void WaitPrepare() {
+		public void WaitPrepare() {	
+			while(null==PrepareTask) {
+				Thread.Sleep(30);
+			}
 			if (PrepareTask != null) {
 				if (!PrepareTask.IsCompleted) {
 					PrepareTask.Wait();
@@ -162,6 +165,12 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		public ZexQuery Copy(bool deep = false) {
 			var result = (ZexQuery) MemberwiseClone();
+			result.PrepareTask = null;
+			result.GetResultTask = null;
+			result.Result = null;
+			if(null!=TraceList) {
+				result.TraceList = new List<string>();
+			}
 			if (deep) {
 				result.Col = result.Col.Copy();
 				result.Row = result.Row.Copy();
@@ -232,16 +241,17 @@ namespace Zeta.Extreme {
 		/// 	Синхронизатор результата
 		/// </summary>
 		public void WaitResult() {
-			if (null == Result && null == GetResultTask) {
-				Thread.Sleep(20);
+			WaitPrepare();
+			while(null == Result && null == GetResultTask) {
+				Thread.Sleep(5);
 			}
 			if (null != GetResultTask) {
-				if (GetResultTask.Status == TaskStatus.Created) {
+				if(GetResultTask.Status==TaskStatus.Created)
 					try {
 						GetResultTask.Start();
 					}
 					catch {}
-				}
+				
 				GetResultTask.Wait();
 			}
 		}
@@ -252,5 +262,11 @@ namespace Zeta.Extreme {
 		public string CustomHashPrefix;
 
 		private IList<ZexQuery> _children;
+
+		/// <summary>
+		/// Реестр трассы
+		/// </summary>
+		public List<string> TraceList;
+		
 	}
 }

@@ -25,8 +25,14 @@ namespace Zeta.Extreme {
 		/// </remarks>
 		public override QueryResult Eval() {
 			try {
-				var result = EvaluateNumber();
-				return new QueryResult(result);
+				var result = EvaluateExpression();
+				if(result==null) return new QueryResult();
+				if(result is decimal || result is int) {
+					return new QueryResult((decimal)result);
+				}else {
+					return new QueryResult {IsComplete = true, StringResult = result.ToString()};
+
+				}
 			}
 			catch (DivideByZeroException) {
 				return new QueryResult {IsComplete = true, StringResult = "-"};
@@ -40,7 +46,7 @@ namespace Zeta.Extreme {
 		/// 	Основной промежуточный метод , все приводит к числу
 		/// </summary>
 		/// <param name="delta"> </param>
-		protected decimal EvalDelta(ZexQueryDelta delta) {
+		protected internal decimal EvalDelta(ZexQueryDelta delta) {
 			var query = delta.Apply(Query);
 			var result = Session.Eval(query);
 			if (null == result) {
@@ -53,6 +59,6 @@ namespace Zeta.Extreme {
 		/// 	Метод для перекрытия при формировании динамической формулы
 		/// </summary>
 		/// <returns> </returns>
-		protected abstract decimal EvaluateNumber();
+		protected abstract object EvaluateExpression();
 	}
 }

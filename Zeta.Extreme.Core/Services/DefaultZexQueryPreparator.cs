@@ -56,7 +56,7 @@ namespace Zeta.Extreme {
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Formula);
 			}
-			var key = query.Row.Formula.Trim();
+			var key = query.Row.Code;
 			var formula = FormulaStorage.Default.GetFormula(key, false);
 			if (null == formula) {
 				query.Result = new QueryResult {IsComplete = true, Error = new Exception("formula not found")};
@@ -80,15 +80,14 @@ namespace Zeta.Extreme {
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Sum);
 			}
-			var subqueries = new List<Tuple<ZexQueryDelta, Task<ZexQuery>>>();
+			var subqueries = new List<Tuple<decimal,ZexQuery>>();
 			foreach (var r in _sumh.GetSumDelta(query.Row.Native)) {
 				var sq = r.Apply(query);
-				subqueries.Add(new Tuple<ZexQueryDelta, Task<ZexQuery>>(r, _session.RegisterAsync(sq)));
+				sq = _session.Register(sq);
+				if(null==sq) continue;
+				subqueries.Add(new Tuple<decimal,ZexQuery>(r.Multiplicator,sq));
 			}
-			Task.WaitAll(subqueries.Select(_ => _.Item2).ToArray());
-
-			var subq = subqueries.Where(_ => null != _.Item2.Result).ToArray();
-
+			var subq = subqueries.ToArray();
 			if (subq.Length == 0) {
 				query.Result = new QueryResult {IsComplete = true, NumericResult = 0m};
 				return;
@@ -96,16 +95,14 @@ namespace Zeta.Extreme {
 
 			var resulttask = new Func<QueryResult>(() =>
 				{
-					var result = subq.AsParallel().Aggregate(
-						0m,
-						(r, q) =>
-							{
-								var res = q.Item2.Result.GetResult();
-								if (null != res) {
-									r += res.NumericResult*q.Item1.Multiplicator;
-								}
-								return r;
-							});
+					var result = 0m;
+					foreach(var sq in subq) {
+						var val = sq.Item2.GetResult();
+						if(null!=val) {
+							result += val.NumericResult * sq.Item1;
+						}
+					}
+
 					return new QueryResult {IsComplete = true, NumericResult = result};
 				});
 			query.GetResultTask = _session.RegisterEvalTask(resulttask, false);

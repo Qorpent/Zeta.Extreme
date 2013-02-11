@@ -53,21 +53,21 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Признак работы в под-сессии
 		/// </summary>
-		protected bool IsSubSession;
+		protected internal bool IsSubSession;
 
 		/// <summary>
 		/// 	Базовая сессия
 		/// </summary>
-		protected ZexSession Mastersesion;
+		protected internal ZexSession Mastersesion;
 
 		/// <summary>
 		/// 	Исходный запрос
 		/// </summary>
-		protected ZexQuery Query;
+		protected internal ZexQuery Query;
 
 		/// <summary>
 		/// 	Рабочая сессия
 		/// </summary>
-		protected ISerialSession Session;
+		protected internal ISerialSession Session;
 	}
 }

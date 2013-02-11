@@ -24,6 +24,7 @@
     <Compile Include="MockFormulaTest.cs" />
     <Compile Include="SerialAcessTest.cs" />
     <Compile Include="SubQuery\ExistedFormulasParsingTest.cs" />
+    <Compile Include="SubQuery\FormulaCompilerTest.cs" />
     <Compile Include="SubQuery\ZetaVirtualSumHelperTest.cs" />
     <Compile Include="SubQuery\ZexQueryDeltaTest.cs" />
   </ItemGroup>

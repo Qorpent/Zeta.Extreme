@@ -54,7 +54,7 @@ namespace Zeta.Extreme {
 			if (null != internalquery.Row.Native && internalquery.Row.IsFormula && !_sumh.IsSum(internalquery.Row.Native)) {
 				FormulaStorage.Default.Register(new FormulaRequest
 					{
-						Key = internalquery.Row.Formula.Trim(),
+						Key = internalquery.Row.Code,
 						Formula = internalquery.Row.Formula,
 						Language = internalquery.Row.FormulaType,
 						Tags = internalquery.Row.Tag,
