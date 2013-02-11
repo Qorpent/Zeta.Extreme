@@ -128,7 +128,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		[Explicit]
 		public void InsaneBatch()
 		{
-			int batchsize = 200;
+			int batchsize = 1000;
 			int count = 107;
 			int timespan = 500;
 			int rsn = 100;

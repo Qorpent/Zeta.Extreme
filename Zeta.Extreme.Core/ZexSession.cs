@@ -191,16 +191,22 @@ namespace Zeta.Extreme {
 			//	Thread.Sleep(20);
 
 			while (_evalTaskAgenda.Any(_ => _.Value.Status == TaskStatus.Created)) {
-				var tasks = _evalTaskAgenda.Take(3).Select(_ => _.Value).ToArray();
-				foreach (var t in tasks) {
-					if (t.Status == TaskStatus.Created) {
+				// так как это поздние задачи и по идее не длительные,
+				// то мы разбираем их как очередь, без распаралелливания
+				// при этом подзадачи каскадом активируются сами по формулам
+				// и суммам через WaitResult на дочках
+				var task = _evalTaskAgenda.FirstOrDefault().Value;
+				if(null!=task) {
+					if(task.Status==TaskStatus.Created) {
 						try {
-							t.Start();
+							task.Start();
+						}catch {
+							
 						}
-						catch {}
 					}
+					task.Wait();
 				}
-				Task.WaitAll(tasks);
+				
 			}
 
 			while (!_evalTaskAgenda.IsEmpty) {

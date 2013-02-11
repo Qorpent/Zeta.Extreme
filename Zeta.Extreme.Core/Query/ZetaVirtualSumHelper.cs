@@ -174,7 +174,26 @@ namespace Zeta.Extreme {
 		}
 
 		private IEnumerable<ZexQueryDelta> GetGroupSumDelta(IZetaRow row) {
-			yield break;
+			var groups = row.Group.split(false, true, '/', ';').Distinct();
+			var pluses = groups.Where(_ => !_.StartsWith("-")).ToArray();
+			var minuses = groups.Where(_ => _.StartsWith("-")).Select(_ => _.Substring(1)).ToArray();
+			foreach(var p in pluses) {
+				if(RowCache.bygroup.ContainsKey(p)) {
+					foreach (var r in RowCache.bygroup[p]) {
+						yield return new ZexQueryDelta { Row = r };
+					} 
+				}
+			}
+			foreach (var m in minuses)
+			{
+				if (RowCache.bygroup.ContainsKey(m))
+				{
+					foreach (var r in RowCache.bygroup[m])
+					{
+						yield return new ZexQueryDelta { Row = r, Multiplicator = -1};
+					}
+				}
+			}
 		}
 
 		private IEnumerable<ZexQueryDelta> GetNativeSumDelta(IZetaRow row) {
