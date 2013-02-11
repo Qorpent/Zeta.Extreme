@@ -24,7 +24,7 @@ namespace Zeta.Extreme {
 		/// <param name="session"> </param>
 		public DefaultZexRegistryHelper(ZexSession session) {
 			_session = session;
-			this._stat = session.CollectStatistics;
+			_stat = session.CollectStatistics;
 		}
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace Zeta.Extreme {
 		/// <returns> итоговый запрос после регистрации </returns>
 		public virtual ZexQuery Register(ZexQuery srcquery, string uid) {
 			WriteInitialStatistics(uid);
-			
+
 			var query = srcquery;
 			ZexQuery result;
 			var preloadkey = srcquery.GetCacheKey();
@@ -44,12 +44,16 @@ namespace Zeta.Extreme {
 			// мы сразу ловим ключ запроса на тот случай, если он уже 
 			// был когда либо запрошен, в этом случае мы мину€ все 
 			// обработки берем запрос из кэша
-			if (TryResolveByKeyMap(uid, preloadkey, out result)) return result;
+			if (TryResolveByKeyMap(uid, preloadkey, out result)) {
+				return result;
+			}
 
 			//теперь фаза препроцессинга - приводим запрос к нормализованной форме
 			query = PreprocessQuery(query);
 			//провер€ем, не отвергнут ли запрос препроцессором
-			if (CheckNullQuery(query)) return null;
+			if (CheckNullQuery(query)) {
+				return null;
+			}
 
 
 			//теперь определ€ем пользовательский и реальный ключ запроса
@@ -59,7 +63,9 @@ namespace Zeta.Extreme {
 			var key = query.GetCacheKey();
 
 			//пытаемс€ вернуть готовый запрос из общего хранилища (ключ - пользовательский)
-			if (TryReturnAlreadyRegistered(uid, out result)) return result;
+			if (TryReturnAlreadyRegistered(uid, out result)) {
+				return result;
+			}
 
 			//пытаемс€ найти в рабочей агенде (ключ-кэш запроса)
 			var found = TryGetFromActiveAgenda(key, out result);
@@ -113,7 +119,6 @@ namespace Zeta.Extreme {
 					Interlocked.Increment(ref _session.Stat_Registry_Resolved_By_Uid);
 				}
 				{
-					
 					return true;
 				}
 			}
@@ -139,12 +144,12 @@ namespace Zeta.Extreme {
 				query = preprocessor.Process(query);
 			}
 			finally {
-				_session.ReturnPreloadPreprocessor(preprocessor);
+				_session.Return(preprocessor);
 			}
 			return query;
 		}
 
-		private bool TryResolveByKeyMap(string uid, string preloadkey,  out ZexQuery result) {
+		private bool TryResolveByKeyMap(string uid, string preloadkey, out ZexQuery result) {
 			result = null;
 			string mappedkey;
 			if (_session.KeyMap.TryGetValue(preloadkey, out mappedkey)) {
@@ -160,7 +165,6 @@ namespace Zeta.Extreme {
 					_session.Registry[uid] = result;
 				}
 				return true;
-				
 			}
 			return false;
 		}

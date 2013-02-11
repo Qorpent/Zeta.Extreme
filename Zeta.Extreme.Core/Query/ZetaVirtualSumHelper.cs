@@ -24,18 +24,6 @@ namespace Zeta.Extreme {
 	/// </summary>
 	public class ZetaVirtualSumHelper {
 		/// <summary>
-		/// 	Регулярное выражение оценки и разбора суммовых формул
-		/// </summary>
-		public const string SummableFormulaRegex =
-			@"^\s*(-?\s*\$[\w\d]+(@[\w\d]+)?(\.Y-?\d+)?(\.P-?\d+)?\?)(((\s*[+-]\s*)|\s+)\$[\w\d]+(@[\w\d]+)?(\.Y-?\d+)?(\.P-?\d+)?\?)*\s*$";
-
-		/// <summary>
-		/// 	Регулярное выражение для выборки отдельного элемента формулы
-		/// </summary>
-		public const string FormulaItemSplitRegex =
-			@"(?<s>[-+])?\s*\$(?<r>[\w\d]+)(@(?<c>[\w\d]+))?(\.Y(?<ys>-)?(?<y>\d+))?(\.P(?<ps>-)?(?<p>\d+))?\?";
-
-		/// <summary>
 		/// 	Возвращает кэшированное значение проверки строки на 
 		/// 	суммируемость или вычисляет и кэширует
 		/// </summary>
@@ -82,7 +70,8 @@ namespace Zeta.Extreme {
 		/// <param name="formula"> </param>
 		/// <returns> </returns>
 		public bool IsSumableFormula(string formula) {
-			return Regex.IsMatch(formula, SummableFormulaRegex, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+			return Regex.IsMatch(formula, FormulaParserConstants.PseudoSumPattern,
+			                     RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		}
 
 		/// <summary>
@@ -128,75 +117,33 @@ namespace Zeta.Extreme {
 		}
 
 		private IEnumerable<ZexQueryDelta> GetFormulaSumDelta(IZetaRow row) {
-			var matches = Regex.Matches(row.Formula, FormulaItemSplitRegex, RegexOptions.Compiled);
-			foreach (Match match in matches) {
-				var delta = new ZexQueryDelta();
-				var s = match.Groups["s"].Value != "-";
-				var r = match.Groups["r"].Value;
-				var c = match.Groups["c"].Value;
-				var y = match.Groups["y"].Value.toInt();
-				var ys = match.Groups["ys"].Value != "-";
-				if (!ys) {
-					y = -y;
-				}
-				var p = match.Groups["p"].Value.toInt();
-				var ps = match.Groups["ps"].Value != "-";
-				if (!ps) {
-					p = -p;
-				}
-				if (!s) {
-					delta.Multiplicator = -1;
-				}
-				if (!string.IsNullOrWhiteSpace(r)) {
-					var _r = RowCache.get(r);
-					if (null != _r) {
-						delta.Row = _r;
-					}
-					else {
-						delta.RowCode = r;
-					}
-				}
-				if (!string.IsNullOrWhiteSpace(c)) {
-					var _c = ColumnCache.get(c);
-					if (null != _c) {
-						delta.Column = _c;
-					}
-					delta.ColumCode = c;
-				}
-				if (0 != y) {
-					delta.Year = y;
-				}
-				if (0 != p) {
-					delta.Period = p;
-				}
-				yield return delta;
-			}
+			var matches = Regex.Matches(row.Formula, FormulaParserConstants.PseudoSumVector, RegexOptions.Compiled);
+			return from Match match in matches select ZexQueryDelta.CreateFromMatch(match);
 		}
 
 		private IEnumerable<ZexQueryDelta> GetGroupSumDelta(IZetaRow row) {
 			var groups = row.Group.split(false, true, '/', ';').Distinct();
 			var pluses = groups.Where(_ => !_.StartsWith("-")).ToArray();
 			var minuses = groups.Where(_ => _.StartsWith("-")).Select(_ => _.Substring(1)).ToArray();
-			foreach(var p in pluses) {
-				if(RowCache.bygroup.ContainsKey(p)) {
+			foreach (var p in pluses) {
+				if (RowCache.bygroup.ContainsKey(p)) {
 					foreach (var r in RowCache.bygroup[p]) {
-						if(r.IsMarkSeted("0MINUS")) {
-							yield return new ZexQueryDelta { Row = r,Multiplicator = -1};	
-						}else {
+						if (r.IsMarkSeted("0MINUS")) {
+							yield return new ZexQueryDelta {Row = r, Multiplicator = -1};
+						}
+						else {
 							yield return new ZexQueryDelta {Row = r};
 						}
-					} 
+					}
 				}
 			}
-			foreach (var m in minuses)
-			{
-				if (RowCache.bygroup.ContainsKey(m))
-				{
-					foreach (var r in RowCache.bygroup[m])
-					{
-						if(r.IsMarkSeted("0MINUS")) {
-							yield return new ZexQueryDelta { Row = r};	
-						}else {
+			foreach (var m in minuses) {
+				if (RowCache.bygroup.ContainsKey(m)) {
+					foreach (var r in RowCache.bygroup[m]) {
+						if (r.IsMarkSeted("0MINUS")) {
+							yield return new ZexQueryDelta {Row = r};
+						}
+						else {
 							yield return new ZexQueryDelta {Row = r, Multiplicator = -1};
 						}
 					}

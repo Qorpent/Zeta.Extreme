@@ -23,6 +23,7 @@
     <Compile Include="CoreTests\ZatrSimpleTest.cs" />
     <Compile Include="MockFormulaTest.cs" />
     <Compile Include="SerialAcessTest.cs" />
+    <Compile Include="SubQuery\ExistedFormulasParsingTest.cs" />
     <Compile Include="SubQuery\ZetaVirtualSumHelperTest.cs" />
     <Compile Include="SubQuery\ZexQueryDeltaTest.cs" />
   </ItemGroup>
@@ -55,6 +56,12 @@
   <ItemGroup>
     <Reference Include="FluentNHibernate, Version=1.3.0.0, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL" />
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL" />
+    <Reference Include="nunit.core">
+      <HintPath>..\..\..\exras\lib\nunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.core.interfaces">
+      <HintPath>..\..\..\exras\lib\nunit.core.interfaces.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

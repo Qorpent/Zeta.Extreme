@@ -10,8 +10,11 @@
 #endregion
 
 using System;
+using System.Text;
+using System.Text.RegularExpressions;
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -20,7 +23,7 @@ namespace Zeta.Extreme {
 	public sealed class ZexQueryDelta {
 		/// <summary>
 		/// 	Применяет смещение к целевому запросу
-		/// Если есть изменения - то правильно создает копии и переписывает кэш-строку
+		/// 	Если есть изменения - то правильно создает копии и переписывает кэш-строку
 		/// </summary>
 		/// <param name="target"> </param>
 		/// <returns> </returns>
@@ -37,6 +40,101 @@ namespace Zeta.Extreme {
 				result.InvalidateCacheKey();
 				return result;
 			}
+		}
+
+		/// <summary>
+		/// 	Создает дельту из результатов регекса со стандартными именами групп
+		/// </summary>
+		/// <param name="match"> </param>
+		/// <returns> </returns>
+		public static ZexQueryDelta CreateFromMatch(Match match) {
+			var delta = new ZexQueryDelta();
+			var s = match.Groups["s"].Value != "-";
+			var r = match.Groups["r"].Value;
+			var c = match.Groups["c"].Value;
+			var y = match.Groups["y"].Value.ToInt();
+			var ys = match.Groups["ys"].Value != "-";
+			if (!ys) {
+				y = -y;
+			}
+			var p = match.Groups["p"].Value.ToInt();
+			var ps = match.Groups["ps"].Value != "-";
+			if (!ps) {
+				p = -p;
+			}
+			if (!s) {
+				delta.Multiplicator = -1;
+			}
+			if (!string.IsNullOrWhiteSpace(r)) {
+				var _r = RowCache.get(r);
+				if (null != _r) {
+					delta.Row = _r;
+				}
+				else {
+					delta.RowCode = r;
+				}
+			}
+			if (!string.IsNullOrWhiteSpace(c)) {
+				var _c = ColumnCache.get(c);
+				if (null != _c) {
+					delta.Col = _c;
+				}
+				delta.ColCode = c;
+			}
+			if (0 != y) {
+				delta.Year = y;
+			}
+			if (0 != p) {
+				delta.Period = p;
+			}
+			return delta;
+		}
+
+		/// <summary>
+		/// 	Конвертирует дельту в C# - конструктор для генерации формул
+		/// </summary>
+		/// <param name="infunctionName"> Опциональное имя метода в который надо обернуть конструктор </param>
+		/// <returns> </returns>
+		public string ToCSharpString(string infunctionName = "") {
+			var s = new StringBuilder();
+			if (!string.IsNullOrWhiteSpace(infunctionName)) {
+				s.Append(infunctionName);
+				s.Append("(");
+			}
+			s.Append(" new " + GetType().FullName + "{ ");
+			var rcode = RowCode;
+			if (null != Row) {
+				rcode = Row.Code;
+			}
+			if (!string.IsNullOrWhiteSpace(rcode)) {
+				s.Append("RowCode = \"" + rcode + "\", ");
+			}
+			var ccode = ColCode;
+			if (null != Col) {
+				ccode = Col.Code;
+			}
+			if (!string.IsNullOrWhiteSpace(ccode)) {
+				s.Append("ColCode = \"" + ccode + "\", ");
+			}
+
+			var objid = ObjId;
+			if (null != Obj) {
+				objid = Obj.Id;
+			}
+			if (0 != objid) {
+				s.Append("ObjId = " + objid + ", ");
+			}
+			if (Year != 0) {
+				s.Append("Year = " + Year + ", ");
+			}
+			if (Period != 0) {
+				s.Append("Period = " + Period + ", ");
+			}
+			s.Append("}");
+			if (!string.IsNullOrWhiteSpace(infunctionName)) {
+				s.Append(")");
+			}
+			return s.ToString();
 		}
 
 		private void MoveTime(ZexQuery result) {
@@ -62,18 +160,18 @@ namespace Zeta.Extreme {
 		}
 
 		private void MoveColumn(ZexQuery result) {
-			if (null != Column) {
-				if (Column != result.Col.Native) {
-					result.Col = new ColumnHandler {Native = Column};
+			if (null != Col) {
+				if (Col != result.Col.Native) {
+					result.Col = new ColumnHandler {Native = Col};
 				}
 			}
-			else if (!string.IsNullOrWhiteSpace(ColumCode)) {
-				if (ColumCode != result.Col.Code) {
+			else if (!string.IsNullOrWhiteSpace(ColCode)) {
+				if (ColCode != result.Col.Code) {
 					result.Col = result.Col.Copy();
 					if (null != result.Col.Native) {
 						result.Col.Native = null;
 					}
-					result.Col.Code = ColumCode;
+					result.Col.Code = ColCode;
 				}
 			}
 		}
@@ -120,7 +218,7 @@ namespace Zeta.Extreme {
 			if (0 != Year && Math.Abs(Year) < 1900) {
 				return false; //смещение года
 			}
-			if (null != Column && Column != target.Col.Native) {
+			if (null != Col && Col != target.Col.Native) {
 				return false;
 			}
 			if (null != Row && Row != target.Row.Native) {
@@ -129,7 +227,7 @@ namespace Zeta.Extreme {
 			if (null != Obj && Obj != target.Obj.Native) {
 				return false;
 			}
-			if (!string.IsNullOrWhiteSpace(ColumCode) && ColumCode != target.Col.Code) {
+			if (!string.IsNullOrWhiteSpace(ColCode) && ColCode != target.Col.Code) {
 				return false;
 			}
 			if (!string.IsNullOrWhiteSpace(RowCode) && RowCode != target.Row.Code) {
@@ -148,14 +246,14 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// 	Смещение по колонке (код) или пустое значение для отсутствия смещения
-		/// </summary>
-		public string ColumCode;
-
-		/// <summary>
 		/// 	Смещение по колонке (прямое) или null
 		/// </summary>
-		public IZetaColumn Column;
+		public IZetaColumn Col;
+
+		/// <summary>
+		/// 	Смещение по колонке (код) или пустое значение для отсутствия смещения
+		/// </summary>
+		public string ColCode;
 
 		/// <summary>
 		/// 	Множитель при расчете значений

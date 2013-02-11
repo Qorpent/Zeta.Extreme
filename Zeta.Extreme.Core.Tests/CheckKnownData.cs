@@ -145,8 +145,7 @@ namespace Zeta.Extreme.Core.Tests
 			var q = new ZexQuery
 				{Row = {Code = rowcode}, Col = {Code = colcode}, Obj = {Id = obj}, Time = {Year = year, Period = period}};
 			var t = session.RegisterAsync(q);
-			session.WaitPreparation();
-			session.WaitEvaluation();
+			session.Execute();
 			if(null!=t.Result) {
 				var result = t.Result.GetResult().NumericResult;
 				Console.WriteLine(result);

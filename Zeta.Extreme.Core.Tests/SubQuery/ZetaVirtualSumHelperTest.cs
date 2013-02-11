@@ -56,7 +56,7 @@ namespace Zeta.Extreme.Core.Tests.SubQuery
 			var result = h.GetSumDelta(r);
 			Assert.AreEqual(3,result.Length);
 			Assert.AreEqual("r1",result[0].RowCode);
-			Assert.AreEqual("c1", result[0].ColumCode);
+			Assert.AreEqual("c1", result[0].ColCode);
 			Assert.AreEqual(-1, result[0].Year);
 			Assert.AreEqual(-3, result[0].Period);
 			Assert.AreEqual(-1,result[2].Multiplicator);

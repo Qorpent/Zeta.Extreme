@@ -36,18 +36,7 @@ namespace Zeta.Extreme {
 			Obj = new ObjHandler();
 			Valuta = "NONE";
 		}
-		/// <summary>
-		/// Позволяет синхронизировать запросы в подсессиях
-		/// </summary>
-		public void WaitPrepare() {
-			if (PrepareTask != null)
-			{
-				if (!PrepareTask.IsCompleted)
-				{
-					PrepareTask.Wait();
-				}
-			}
-		}
+
 		/// <summary>
 		/// 	Условие на время
 		/// </summary>
@@ -125,11 +114,22 @@ namespace Zeta.Extreme {
 		public string SqlRequest { get; set; }
 
 		/// <summary>
-		/// Back-reference to preparation tasks
+		/// 	Back-reference to preparation tasks
 		/// </summary>
 		public Task PrepareTask { get; set; }
 
-		
+		/// <summary>
+		/// 	Позволяет синхронизировать запросы в подсессиях
+		/// </summary>
+		public void WaitPrepare() {
+			if (PrepareTask != null) {
+				if (!PrepareTask.IsCompleted) {
+					PrepareTask.Wait();
+				}
+			}
+		}
+
+
 		/// <summary>
 		/// 	Функция непосредственного вычисления кэшевой строки
 		/// </summary>
@@ -232,7 +232,7 @@ namespace Zeta.Extreme {
 		/// 	Синхронизатор результата
 		/// </summary>
 		public void WaitResult() {
-			if(null==Result && null==GetResultTask) {
+			if (null == Result && null == GetResultTask) {
 				Thread.Sleep(20);
 			}
 			if (null != GetResultTask) {

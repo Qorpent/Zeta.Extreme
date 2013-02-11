@@ -213,7 +213,7 @@ namespace Zeta.Extreme {
 			}
 
 			if (null != session) {
-				session.ReturnPeriodEvaluator(periodEvaluator);
+				session.Return(periodEvaluator);
 			}
 		}
 

@@ -31,6 +31,8 @@ namespace Zeta.Extreme {
 	/// 	Сессия работает с максимальным использованием async - оптимизации
 	/// </remarks>
 	public class ZexSession {
+		private static int ID;
+
 		/// <summary>
 		/// 	Конструктор по умолчанию
 		/// </summary>
@@ -46,14 +48,9 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Уникальный идентификатор сессии в процессе
+		/// 	Уникальный идентификатор сессии в процессе
 		/// </summary>
 		public int Id { get; set; }
-		private static int ID;
-		/// <summary>
-		/// Объект блокировки для последовательного доступа
-		/// </summary>
-		protected internal object _sync_serial_access_lock = new object();
 
 		/// <summary>
 		/// 	Главный реестр запросов
@@ -63,47 +60,11 @@ namespace Zeta.Extreme {
 		/// 	здесь, в MainQueryRegistry мы можем на уровне Value иметь дубляжи запросов
 		/// </remarks>
 		public ConcurrentDictionary<string, ZexQuery> Registry { get; private set; }
-		/// <summary>
-		/// Формирует дочернюю подсессию (например для формул)
-		/// Дочерняя сессия имеет доступ к кэшу запросов,
-		/// но задача обработки этих запросов полностью ложится на дочку
-		/// </summary>
-		/// <returns></returns>
-		public ISerialSession GetSubSession() {
-			lock(this) {
-				ISerialSession result;
-				if(_subsessionpool.TryPop(out result)) return result;
-				var copy = new ZexSession(CollectStatistics)
-					{
-						Registry = this.Registry, 
-						ActiveSet = this.ActiveSet, 
-						MasterSession = this,
-						
-					};
-				if(CollectStatistics) {
-					Stat_SubSession_Count ++;
-				}
-				//share query cache
-				//but not task queues
-				result = copy.AsSerial(); //we not allow use it on non-serial way
-				return result;
-			}
-		}
 
 		/// <summary>
-		/// Родительская сессия
+		/// 	Родительская сессия
 		/// </summary>
 		protected internal ZexSession MasterSession { get; set; }
-
-		/// <summary>
-		/// Позволяет вернуть использованную подсессию в пул
-		/// </summary>
-		/// <param name="session"></param>
-		public void ReturnSubSession(ISerialSession session) {
-			_subsessionpool.Push(session);
-		}
-
-		private ConcurrentStack<ISerialSession> _subsessionpool = new ConcurrentStack<ISerialSession>();
 
 
 		/// <summary>
@@ -117,6 +78,42 @@ namespace Zeta.Extreme {
 		/// 	ключ - хэшкей
 		/// </summary>
 		protected internal ConcurrentDictionary<string, ZexQuery> ActiveSet { get; private set; }
+
+		/// <summary>
+		/// 	Формирует дочернюю подсессию (например для формул)
+		/// 	Дочерняя сессия имеет доступ к кэшу запросов,
+		/// 	но задача обработки этих запросов полностью ложится на дочку
+		/// </summary>
+		/// <returns> </returns>
+		public ISerialSession GetSubSession() {
+			lock (this) {
+				ISerialSession result;
+				if (_subsessionpool.TryPop(out result)) {
+					return result;
+				}
+				var copy = new ZexSession(CollectStatistics)
+					{
+						Registry = Registry,
+						ActiveSet = ActiveSet,
+						MasterSession = this,
+					};
+				if (CollectStatistics) {
+					Stat_SubSession_Count ++;
+				}
+				//share query cache
+				//but not task queues
+				result = copy.AsSerial(); //we not allow use it on non-serial way
+				return result;
+			}
+		}
+
+		/// <summary>
+		/// 	Позволяет вернуть использованную подсессию в пул
+		/// </summary>
+		/// <param name="session"> </param>
+		protected internal void Return(ISerialSession session) {
+			_subsessionpool.Push(session);
+		}
 
 
 		/// <summary>
@@ -139,7 +136,7 @@ namespace Zeta.Extreme {
 				sb.AppendLine("==================================");
 				sb.AppendLine("Sub-Sessions:");
 				var subs = _subsessionpool.ToArray();
-				foreach(var s in subs) {
+				foreach (var s in subs) {
 					var ses = s.GetUnderlinedSession();
 					sb.AppendLine("Subsession: " + ses.Id);
 					sb.Append(ses.GetStatisticString());
@@ -147,7 +144,6 @@ namespace Zeta.Extreme {
 				}
 			}
 			return sb.ToString();
-			
 		}
 
 		/// <summary>
@@ -219,7 +215,7 @@ namespace Zeta.Extreme {
 						try {
 							var preparator = GetPreparator();
 							preparator.Prepare(query);
-							ReturnPreparator(preparator);
+							Return(preparator);
 						}
 						finally {
 							Task t;
@@ -238,49 +234,43 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Ожидает окончания всех процессов асинхронной регистрации
 		/// </summary>
-		protected internal void WaitPreparation()
-		{
-	
-				while (!_preEvalTaskAgenda.IsEmpty) {
-					SyncPreEval();
-					Thread.Sleep(20);
-				}
-			
+		protected internal void WaitPreparation() {
+			while (!_preEvalTaskAgenda.IsEmpty) {
+				SyncPreEval();
+				Thread.Sleep(20);
+			}
 		}
 
 		/// <summary>
 		/// 	Ожидает окончания всех процессов асинхронной регистрации
 		/// </summary>
 		protected internal void WaitEvaluation() {
+			RunSqlBatch(); // выполняем остаточные запросы
 
-				RunSqlBatch(); // выполняем остаточные запросы
+			Task.WaitAll(_evalTaskAgenda.Values.Where(_ => _.Status != TaskStatus.Created).ToArray());
+			//	Thread.Sleep(20);
 
-				Task.WaitAll(_evalTaskAgenda.Values.Where(_ => _.Status != TaskStatus.Created).ToArray());
-				//	Thread.Sleep(20);
-
-				while (_evalTaskAgenda.Any(_ => _.Value.Status == TaskStatus.Created)) {
-					// так как это поздние задачи и по идее не длительные,
-					// то мы разбираем их как очередь, без распаралелливания
-					// при этом подзадачи каскадом активируются сами по формулам
-					// и суммам через WaitResult на дочках
-					var task = _evalTaskAgenda.FirstOrDefault().Value;
-					if (null != task) {
-						if (task.Status == TaskStatus.Created) {
-							try {
-								task.Start();
-							}
-							catch {}
+			while (_evalTaskAgenda.Any(_ => _.Value.Status == TaskStatus.Created)) {
+				// так как это поздние задачи и по идее не длительные,
+				// то мы разбираем их как очередь, без распаралелливания
+				// при этом подзадачи каскадом активируются сами по формулам
+				// и суммам через WaitResult на дочках
+				var task = _evalTaskAgenda.FirstOrDefault().Value;
+				if (null != task) {
+					if (task.Status == TaskStatus.Created) {
+						try {
+							task.Start();
 						}
-						task.Wait();
+						catch {}
 					}
-
+					task.Wait();
 				}
+			}
 
-				while (!_evalTaskAgenda.IsEmpty) {
-					Task.WaitAll(_evalTaskAgenda.Values.ToArray());
-					//	Thread.Sleep(20);
-				}
-		
+			while (!_evalTaskAgenda.IsEmpty) {
+				Task.WaitAll(_evalTaskAgenda.Values.ToArray());
+				//	Thread.Sleep(20);
+			}
 		}
 
 		/// <summary>
@@ -305,7 +295,7 @@ namespace Zeta.Extreme {
 		/// 	Возвращает препроцессор в пул
 		/// </summary>
 		/// <param name="preparator"> </param>
-		private void ReturnPreparator(IZexQueryPreparator preparator) {
+		private void Return(IZexQueryPreparator preparator) {
 			_preparators.Push(preparator);
 		}
 
@@ -358,7 +348,7 @@ namespace Zeta.Extreme {
 		/// 	Возвращает препроцессор в пул
 		/// </summary>
 		/// <param name="processor"> </param>
-		protected internal void ReturnPreloadPreprocessor(IZexPreloadProcessor processor) {
+		protected internal void Return(IZexPreloadProcessor processor) {
 			_preloadprocesspool.Push(processor);
 		}
 
@@ -385,7 +375,7 @@ namespace Zeta.Extreme {
 		/// 	Возвращает препроцессор в пул
 		/// </summary>
 		/// <param name="periodEvaluator"> </param>
-		protected internal void ReturnPeriodEvaluator(IPeriodEvaluator periodEvaluator) {
+		protected internal void Return(IPeriodEvaluator periodEvaluator) {
 			_periodevalpool.Push(periodEvaluator);
 		}
 
@@ -448,7 +438,7 @@ namespace Zeta.Extreme {
 		/// 	Возвращает препроцессор в пул
 		/// </summary>
 		/// <param name="sqlbuilder"> </param>
-		protected internal void ReturnPreloadPreprocessor(IZexSqlBuilder sqlbuilder) {
+		protected internal void Return(IZexSqlBuilder sqlbuilder) {
 			_sqlbuilders.Push(sqlbuilder);
 		}
 
@@ -572,6 +562,16 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	Выполняет синхронизацию и расчет значений в сессии
+		/// </summary>
+		public void Execute() {
+			lock (syncexecute) {
+				WaitPreparation();
+				WaitEvaluation();
+			}
+		}
+
+		/// <summary>
 		/// 	Если включено, службы накапливают статистические данные по работе сессии
 		/// </summary>
 		public readonly bool CollectStatistics;
@@ -588,6 +588,8 @@ namespace Zeta.Extreme {
 
 		private readonly ConcurrentStack<IZexRegistryHelper> _registryhelperpool = new ConcurrentStack<IZexRegistryHelper>();
 		private readonly ConcurrentStack<IZexSqlBuilder> _sqlbuilders = new ConcurrentStack<IZexSqlBuilder>();
+		private readonly ConcurrentStack<ISerialSession> _subsessionpool = new ConcurrentStack<ISerialSession>();
+		private readonly object syncexecute = new object();
 		private readonly object syncsqlawait = new object();
 
 		/// <summary>
@@ -706,9 +708,19 @@ namespace Zeta.Extreme {
 		public int Stat_Row_Redirections;
 
 		/// <summary>
+		/// 	Статистика созданных под-сессий
+		/// </summary>
+		public int Stat_SubSession_Count;
+
+		/// <summary>
 		/// 	Статистика общего времени выполнения
 		/// </summary>
 		public TimeSpan Stat_Time_Total;
+
+		/// <summary>
+		/// 	Задача текущего асинхронного последовательного доступа
+		/// </summary>
+		protected internal Task<QueryResult> _async_serial_acess_task;
 
 		private Task<QueryResult> _currentSqlBatchTask;
 
@@ -721,26 +733,9 @@ namespace Zeta.Extreme {
 
 		private ConcurrentBag<ZexQuery> _sqlDataAwaiters = new ConcurrentBag<ZexQuery>();
 
-		private object syncexecute = new object();
 		/// <summary>
-		/// Задача текущего асинхронного последовательного доступа
+		/// 	Объект блокировки для последовательного доступа
 		/// </summary>
-		protected internal Task<QueryResult> _async_serial_acess_task;
-
-		/// <summary>
-		/// Статистика созданных под-сессий
-		/// </summary>
-		public int Stat_SubSession_Count;
-
-		/// <summary>
-		/// Выполняет синхронизацию и расчет значений в сессии
-		/// </summary>
-		public void Execute() {
-			lock(syncexecute) {
-				WaitPreparation();
-				WaitEvaluation();
-				
-			}
-		}
+		protected internal object _sync_serial_access_lock = new object();
 	}
 }

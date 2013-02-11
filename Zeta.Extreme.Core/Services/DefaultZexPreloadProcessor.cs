@@ -24,6 +24,7 @@ namespace Zeta.Extreme {
 		/// <exception cref="NotImplementedException"></exception>
 		public DefaultZexPreloadProcessor(ZexSession zexSession) {
 			_session = zexSession;
+			_sumh = new ZetaVirtualSumHelper();
 		}
 
 		/// <summary>
@@ -50,10 +51,22 @@ namespace Zeta.Extreme {
 				}
 			}
 
+			if (null != internalquery.Row.Native && internalquery.Row.IsFormula && !_sumh.IsSum(internalquery.Row.Native)) {
+				FormulaStorage.Default.Register(new FormulaRequest
+					{
+						Key = internalquery.Row.Formula.Trim(),
+						Formula = internalquery.Row.Formula,
+						Language = internalquery.Row.FormulaType,
+						Tags = internalquery.Row.Tag,
+						Marks = internalquery.Row.Native.MarkCache
+					});
+			}
 
 			return internalquery;
 		}
 
+
+		private readonly ZetaVirtualSumHelper _sumh;
 
 		/// <summary>
 		/// 	обратная ссылка на сессию

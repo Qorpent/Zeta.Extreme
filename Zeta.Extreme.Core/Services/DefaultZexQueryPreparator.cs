@@ -57,16 +57,18 @@ namespace Zeta.Extreme {
 				Interlocked.Increment(ref _session.Stat_QueryType_Formula);
 			}
 			var key = query.Row.Formula.Trim();
-			var formula = FormulaStorage.Default.GetFormula(key,false);
-			if(null==formula) {
+			var formula = FormulaStorage.Default.GetFormula(key, false);
+			if (null == formula) {
 				query.Result = new QueryResult {IsComplete = true, Error = new Exception("formula not found")};
+				return;
 			}
-			var resulttask = new Func<QueryResult>(()=>
+			var resulttask = new Func<QueryResult>(() =>
 				{
 					formula.Init(query);
 					try {
 						return formula.Eval();
-					}finally {
+					}
+					finally {
 						formula.CleanUp();
 						FormulaStorage.Default.Return(key, formula);
 					}

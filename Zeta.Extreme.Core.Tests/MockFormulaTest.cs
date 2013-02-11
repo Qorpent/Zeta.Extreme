@@ -76,7 +76,7 @@ namespace Zeta.Extreme.Core.Tests
 
 			public void CleanUp() {
 				if(null!=_mastersession && null!=_session) {
-					_mastersession.ReturnSubSession(_session);
+					_mastersession.Return(_session);
 				}
 			}
 		}

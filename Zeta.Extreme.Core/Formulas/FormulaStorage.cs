@@ -1,70 +1,119 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region LICENSE
 
-namespace Zeta.Extreme
-{
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : FormulaStorage.cs
+// Project: Zeta.Extreme.Core
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Zeta.Extreme {
 	/// <summary>
-	/// Хранилище формул
+	/// 	Хранилище формул
 	/// </summary>
 	/// <remarks>
-	/// Новое хранилище формул работает в асинхронном режиме и старается 
-	/// при этом как можно больше распаралелить и ускорить компиляцию и уменьшить
-	/// кол-во сборок
+	/// 	Новое хранилище формул работает в асинхронном режиме и старается 
+	/// 	при этом как можно больше распаралелить и ускорить компиляцию и уменьшить
+	/// 	кол-во сборок
 	/// </remarks>
 	public class FormulaStorage : IFormulaStorage {
-		private object _register_lock = new object(); //синхронизатор регистрации
-		private object _get_lock = new object(); //синхронизатор получения формулы
-		private object _compile_lock = new object(); //синхронизатор компилятора
+		private static IFormulaStorage _default;
+
 		/// <summary>
-		/// 
+		/// 	Конструктор по умолчанию, также формирует простой препроцессор
 		/// </summary>
-		/// <param name="request"></param>
+		public FormulaStorage() {
+			AddPreprocessor(new DefaultDeltaPreprocessor());
+		}
+
+		/// <summary>
+		/// 	Статическое хранилище формул по умолчанию
+		/// </summary>
+		public static IFormulaStorage Default {
+			get { return _default ?? (_default = new FormulaStorage()); }
+			set { _default = value; }
+		}
+
+		/// <summary>
+		/// </summary>
+		/// <param name="request"> </param>
 		/// <exception cref="NotImplementedException"></exception>
 		public string Register(FormulaRequest request) {
 			//STUB FOR NOW
 			lock (_register_lock)
-			{
-				if(string.IsNullOrWhiteSpace(request.Key)) {
-					request.Key = request.Formula.Trim();
-				}
-				if(_registry.ContainsKey(request.Key)) {
-					var existed = _registry[request.Key];
-					if(null==existed.PreparedType && null!=request.PreparedType) {
-						existed.PreparedType = request.PreparedType;
+				lock (_compile_lock) //нельзя во время регистрации еще и компилировать
+				{
+					if (string.IsNullOrWhiteSpace(request.Key)) {
+						request.Key = request.Formula.Trim();
 					}
-				}else {
-					_registry[request.Key] = request;
+					if (_registry.ContainsKey(request.Key)) {
+						var existed = _registry[request.Key];
+						if (null == existed.PreparedType && null != request.PreparedType) {
+							existed.PreparedType = request.PreparedType;
+						}
+						if (existed.Formula != request.Formula) {
+							// обслуживаем обновление формул
+							existed.PreparedType = request.PreparedType;
+							existed.PreprocessedFormula = request.PreprocessedFormula;
+							existed.Cache.Clear();
+							if (null == existed.PreparedType && string.IsNullOrWhiteSpace(existed.PreprocessedFormula)) {
+								Preprocess(existed);
+							}
+						}
+					}
+					else {
+						_registry[request.Key] = request;
+						if (null == request.PreparedType && string.IsNullOrWhiteSpace(request.PreprocessedFormula)) {
+							Preprocess(request);
+						}
+					}
+					var waitbatchsize = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).Count();
+					if (BatchSize <= waitbatchsize) {
+						StartAsyncCompilation();
+					}
+					return request.Key;
 				}
-
-				return request.Key;
-			}
 		}
+
 		/// <summary>
-		/// коллекция запросов
+		/// 	Регистрирует препроцессор в хранилище
 		/// </summary>
-		private IDictionary<string, FormulaRequest> _registry = new Dictionary<string, FormulaRequest>();
+		/// <param name="preprocessor"> </param>
+		/// <returns> </returns>
+		public void AddPreprocessor(IFormulaPreprocessor preprocessor) {
+			_preprocessors.Add(preprocessor);
+			_preprocessors.Sort((f, s) => f.Idx.CompareTo(s.Idx));
+		}
 
 
 		/// <summary>
-		/// Возвращает экземпляр формулы по ключу 
+		/// 	Возвращает экземпляр формулы по ключу
 		/// </summary>
-		/// <param name="key"></param>
-		/// <param name="throwErrorOnNotFound">false если надо возвращать NULL при отсутствии формулы </param>
-		/// <returns></returns>
-		public IFormula GetFormula(string key, bool throwErrorOnNotFound = true)
-		{
-			lock(_register_lock) {
-				lock(_get_lock) {
-					if(!_registry.ContainsKey(key)) {
-						if(throwErrorOnNotFound) {
+		/// <param name="key"> </param>
+		/// <param name="throwErrorOnNotFound"> false если надо возвращать NULL при отсутствии формулы </param>
+		/// <returns> </returns>
+		public IFormula GetFormula(string key, bool throwErrorOnNotFound = true) {
+			lock (_register_lock) {
+				lock (_get_lock) {
+					if (!_registry.ContainsKey(key)) {
+						if (throwErrorOnNotFound) {
 							throw new Exception("formula with key " + key + " not registered");
 						}
 						return null;
 					}
 					var request = _registry[key];
 					IFormula result;
-					if(request.Cache.TryPop(out result)) return result; //try get from cache
-					if(request.PreparedType==null) {
+					if (request.Cache.TryPop(out result)) {
+						return result; //try get from cache
+					}
+					if (request.PreparedType == null) {
 						ForceCompilation(request);
 					}
 					var instance = Activator.CreateInstance(request.PreparedType) as IFormula;
@@ -74,30 +123,66 @@ namespace Zeta.Extreme
 		}
 
 		/// <summary>
-		/// Возвращает формулу обратно хранилищу, может использовать для реализации кэша формул
+		/// 	Возвращает формулу обратно хранилищу, может использовать для реализации кэша формул
 		/// </summary>
-		/// <param name="key"></param>
-		/// <param name="formula"></param>
+		/// <param name="key"> </param>
+		/// <param name="formula"> </param>
 		public void Return(string key, IFormula formula) {
-			lock(_register_lock) {
-				if(!_registry.ContainsKey(key)) return;//nowhere to store
-				_registry[key].Cache.Push(formula);	
+			lock (_register_lock) {
+				if (!_registry.ContainsKey(key)) {
+					return; //nowhere to store
+				}
+				_registry[key].Cache.Push(formula);
 			}
 		}
 
-		private void ForceCompilation(FormulaRequest request) {
-			throw new NotImplementedException();
+		private void StartAsyncCompilation() {
+			lock (_compile_lock) {
+				var batch = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).ToArray();
+				var t = Task.Run(() => new FormulaCompiler().Compile(batch));
+				foreach (var f in batch) {
+					f.FormulaCompilationTask = t;
+				}
+			}
 		}
 
-		
-
-		private static IFormulaStorage _default;
 		/// <summary>
-		/// Статическое хранилище формул по умолчанию
+		/// 	Позволяет подготовить формулу к компиляции
 		/// </summary>
-		public static IFormulaStorage Default {
-			get { return _default ?? (_default = new FormulaStorage()); }
-			set { _default = value; }
+		/// <param name="request"> </param>
+		public void Preprocess(FormulaRequest request) {
+			var result = request.Formula;
+			foreach (var p in _preprocessors) {
+				result = p.Preprocess(result, request);
+			}
+			request.PreprocessedFormula = result;
 		}
+
+		private void ForceCompilation(FormulaRequest request) {
+			lock (_compile_lock) {
+				if (null != request.FormulaCompilationTask) {
+					//сначала прверяем - вдруг формула уже на компиляции, просто дожидаемся
+					request.FormulaCompilationTask.Wait();
+					return;
+				}
+				// все, значит мы синхронно должны закомпилить это дело
+				new FormulaCompiler().Compile(new[] {request});
+			}
+		}
+
+		private readonly object _compile_lock = new object(); //синхронизатор компилятора
+		private readonly object _get_lock = new object(); //синхронизатор получения формулы
+		private readonly List<IFormulaPreprocessor> _preprocessors = new List<IFormulaPreprocessor>();
+		private readonly object _register_lock = new object(); //синхронизатор регистрации
+
+		/// <summary>
+		/// 	коллекция запросов
+		/// </summary>
+		private readonly IDictionary<string, FormulaRequest> _registry = new Dictionary<string, FormulaRequest>();
+
+		/// <summary>
+		/// 	Размер батча для асинхронной компиляции
+		/// </summary>
+		public int BatchSize = 5;
 	}
 }

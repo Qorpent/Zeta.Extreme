@@ -1,15 +1,24 @@
-﻿namespace Zeta.Extreme
-{
+﻿#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : SerialAccessExtensions.cs
+// Project: Zeta.Extreme.Core
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
+namespace Zeta.Extreme {
 	/// <summary>
-	/// Расширения для последовательного API сессии
+	/// 	Расширения для последовательного API сессии
 	/// </summary>
-	public static class SerialAccessExtensions
-	{
+	public static class SerialAccessExtensions {
 		/// <summary>
-		/// Создает объект API последовательного синхронного доступа
+		/// 	Создает объект API последовательного синхронного доступа
 		/// </summary>
-		/// <param name="session"></param>
-		/// <returns></returns>
+		/// <param name="session"> </param>
+		/// <returns> </returns>
 		public static ISerialSession AsSerial(this ZexSession session) {
 			return new SerialSession(session);
 		}

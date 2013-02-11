@@ -1,18 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using NUnit.Core;
 
 namespace Zeta.Extreme.Core.Tests.SubQuery
 {
-	
-
 	[TestFixture]
 	public class ZexQueryDeltaTest
 	{
+		[Test]
+		public void CanConvertToCSharp() {
+			var d = new ZexQueryDelta { RowCode = "Y" , };
+			Assert.AreEqual(" new Zeta.Extreme.ZexQueryDelta{ RowCode = \"Y\", }",d.ToCSharpString());
+			Assert.AreEqual("Eval( new Zeta.Extreme.ZexQueryDelta{ RowCode = \"Y\", })", d.ToCSharpString("Eval"));
+		}
+
+		[Test]
+		public void CanBeParsedFromRealWorldFormula() {
+			var preprocessor = new DefaultDeltaPreprocessor();
+			var result =
+				preprocessor.Preprocess(@"f.If ( year == 2011 and periodin ( 4,112 ) and colin (""Б1"",""PLAN"") , { - $m1111216@DELTA? - $r2161111@Ok.P4? - $r2161131@Ok.P4? } , {
+f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) ) , { f.If ( colin(""PLANC"") , { $m1111216@PLANC? }, { f.If ( colin (""Б1"",""PLAN""), { - $m1111216@DELTA? } ) } ) }, { f.If ( year < 2011 , { f.If ( colin(""PLANC"") , { $m211216@PLANC? }, { f.If ( colin (""Б1"",""PLAN""), { - $m211216@DELTA? } ) } ) } , { f.If ( colin (""Б1"",""PLAN""), { $r2161200@Rd? - $r2161200@Pd? } ) } ) } ) } )
+", new FormulaRequest {Language = "boo"});
+			Console.WriteLine(result);
+			Assert.AreEqual(@"f.If ( year == 2011 and periodin ( 4,112 ) and colin (""Б1"",""PLAN"") , { - EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) - EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""r2161111"", ColCode = ""Ok"", Period = 4, }) - EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""r2161131"", ColCode = ""Ok"", Period = 4, }) } , {
+f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) ) , { f.If ( colin(""PLANC"") , { EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""m1111216"", ColCode = ""PLANC"", }) }, { f.If ( colin (""Б1"",""PLAN""), { - EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) } ) } ) }, { f.If ( year < 2011 , { f.If ( colin(""PLANC"") , { EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""m211216"", ColCode = ""PLANC"", }) }, { f.If ( colin (""Б1"",""PLAN""), { - EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""m211216"", ColCode = ""DELTA"", }) } ) } ) } , { f.If ( colin (""Б1"",""PLAN""), { EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""r2161200"", ColCode = ""Rd"", }) - EvalDelta( new Zeta.Extreme.ZexQueryDelta{ RowCode = ""r2161200"", ColCode = ""Pd"", }) } ) } ) } ) } )".Trim(),result.Trim());
+		}
+
+
 		[Test]
 		public void RowMove() {
 			var q = new ZexQuery {Row = {Code = "X"}};
@@ -27,7 +44,7 @@ namespace Zeta.Extreme.Core.Tests.SubQuery
 		public void ColMove()
 		{
 			var q = new ZexQuery { Col = { Code = "X" } };
-			var d = new ZexQueryDelta { ColumCode = "Y" };
+			var d = new ZexQueryDelta { ColCode = "Y" };
 			var dq = d.Apply(q);
 			Assert.AreNotSame(q, dq);
 			Assert.AreSame(q.Row, dq.Row);
@@ -93,7 +110,7 @@ namespace Zeta.Extreme.Core.Tests.SubQuery
 								var d = new ZexQueryDelta
 									{
 										RowCode = r + "+",
-										ColumCode = c + "+",
+										ColCode = c + "+",
 										ObjId = o + 10,
 										Year = y + 1,
 										Period = p + 1
