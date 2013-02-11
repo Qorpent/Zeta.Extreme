@@ -22,8 +22,8 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			}
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
-			Console.WriteLine(session.MainQueryRegistry.Count);
-			Assert.AreEqual(10000,session.MainQueryRegistry.Count);
+			Console.WriteLine(session.Registry.Count);
+			Assert.AreEqual(10000,session.Registry.Count);
 			Assert.Less(sw.ElapsedMilliseconds, 100000);
 		}
 
@@ -40,8 +40,8 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			session.WaitPreparation();
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
-			Console.WriteLine(session.MainQueryRegistry.Count);
-			Assert.AreEqual(10000, session.MainQueryRegistry.Count);
+			Console.WriteLine(session.Registry.Count);
+			Assert.AreEqual(10000, session.Registry.Count);
 			Assert.AreEqual(10000, session.ActiveSet.Count);
 			Assert.Less(sw.ElapsedMilliseconds, 100000);
 		}
@@ -61,8 +61,8 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			session.WaitPreparation();
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
-			Console.WriteLine(session.MainQueryRegistry.Count);
-			Assert.AreEqual(500, session.MainQueryRegistry.Count);
+			Console.WriteLine(session.Registry.Count);
+			Assert.AreEqual(500, session.Registry.Count);
 			Assert.AreEqual(500, session.ActiveSet.Count);
 			Assert.Less(sw.ElapsedMilliseconds, 100000);
 		}
@@ -82,8 +82,8 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
 			var asynctime = sw.ElapsedMilliseconds;
-			Console.WriteLine(session.MainQueryRegistry.Count);
-			Assert.AreEqual(cnt*2, session.MainQueryRegistry.Count);
+			Console.WriteLine(session.Registry.Count);
+			Assert.AreEqual(cnt*2, session.Registry.Count);
 			Console.WriteLine(session.GetStatisticString());
 		
 			session = new ZexSession(true);
@@ -96,8 +96,8 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
 			var synctime = sw.ElapsedMilliseconds;
-			Console.WriteLine(session.MainQueryRegistry.Count);
-			Assert.AreEqual(cnt*2, session.MainQueryRegistry.Count);
+			Console.WriteLine(session.Registry.Count);
+			Assert.AreEqual(cnt*2, session.Registry.Count);
 			Assert.Less(asynctime, synctime);
 			Console.WriteLine(session.GetStatisticString());
 

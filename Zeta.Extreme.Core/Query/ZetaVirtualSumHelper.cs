@@ -180,7 +180,11 @@ namespace Zeta.Extreme {
 			foreach(var p in pluses) {
 				if(RowCache.bygroup.ContainsKey(p)) {
 					foreach (var r in RowCache.bygroup[p]) {
-						yield return new ZexQueryDelta { Row = r };
+						if(r.IsMarkSeted("0MINUS")) {
+							yield return new ZexQueryDelta { Row = r,Multiplicator = -1};	
+						}else {
+							yield return new ZexQueryDelta {Row = r};
+						}
 					} 
 				}
 			}
@@ -190,7 +194,11 @@ namespace Zeta.Extreme {
 				{
 					foreach (var r in RowCache.bygroup[m])
 					{
-						yield return new ZexQueryDelta { Row = r, Multiplicator = -1};
+						if(r.IsMarkSeted("0MINUS")) {
+							yield return new ZexQueryDelta { Row = r};	
+						}else {
+							yield return new ZexQueryDelta {Row = r, Multiplicator = -1};
+						}
 					}
 				}
 			}

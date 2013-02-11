@@ -71,14 +71,14 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			RunForm(2000);
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
-			Assert.AreEqual(996,session.MainQueryRegistry.Where(x=>x.Key!=x.Value.GetCacheKey()).Count());
+			Assert.AreEqual(996,session.Registry.Where(x=>x.Key!=x.Value.GetCacheKey()).Count());
 			Assert.AreEqual(1038,session.Stat_Registry_Started_User);
 			Assert.AreEqual(1038 
 				- CAPT_COUNT * periods.Length
 				- OBS_COUNT * periods.Length 
 				,session.Stat_Registry_User);
 
-			Assert.True(session.MainQueryRegistry.Values.Any(_=>_.Row.IsSum && _.Result.NumericResult >0));
+			Assert.True(session.Registry.Values.Any(_=>_.Row.IsSum && _.Result.NumericResult >0));
 
 		}
 
@@ -92,14 +92,14 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			RunForm(1000);
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
-			Assert.AreEqual(996, session.MainQueryRegistry.Where(x => x.Key != x.Value.GetCacheKey()).Count());
+			Assert.AreEqual(996, session.Registry.Where(x => x.Key != x.Value.GetCacheKey()).Count());
 			Assert.AreEqual(1038, session.Stat_Registry_Started_User);
 			Assert.AreEqual(1038
 				- CAPT_COUNT * periods.Length
 				- OBS_COUNT * periods.Length
 				, session.Stat_Registry_User);
 
-			Assert.True(session.MainQueryRegistry.Values.Any(_ => _.Row.IsSum && _.GetResult().NumericResult > 0));
+			Assert.True(session.Registry.Values.Any(_ => _.Row.IsSum && _.GetResult().NumericResult > 0));
 
 		}
 
@@ -324,7 +324,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			session.RegisterAsync(q, "test");
 			session.WaitPreparation();
 
-			var q1 = session.MainQueryRegistry["test"];
+			var q1 = session.Registry["test"];
 			Assert.AreEqual("r590610",q1.Row.Code); //redirect performed
 			Assert.AreEqual(1,session.Stat_Row_Redirections); //statistics acounted
 

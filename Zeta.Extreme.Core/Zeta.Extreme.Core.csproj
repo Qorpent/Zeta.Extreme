@@ -39,12 +39,15 @@
     <Compile Include="Abstracts\CacheKeyGeneratorBase.cs" />
     <Compile Include="Abstracts\CachedItemHandlerBase.cs" />
     <Compile Include="Abstracts\IZexQueryPreparator.cs" />
+    <Compile Include="Extensions\ISerialSessionApi.cs" />
+    <Compile Include="Extensions\SerialAccessExtensions.cs" />
+    <Compile Include="Extensions\SerialSessionApi.cs" />
     <Compile Include="Query\ZetaVirtualSumHelper.cs" />
     <Compile Include="Query\ZexQueryDelta.cs" />
     <Compile Include="Services\DefaultZexSqlBuilder.cs" />
     <Compile Include="Abstracts\IZexSqlBuilder.cs" />
     <Compile Include="Services\DefaultZexQueryPreparator.cs" />
-    <Compile Include="QueryResult.cs" />
+    <Compile Include="Query\QueryResult.cs" />
     <Compile Include="Query\ColumnHandler.cs" />
     <Compile Include="Query\DefaultPeriodEvaluator.cs" />
     <Compile Include="Query\IPeriodEvaluator.cs" />

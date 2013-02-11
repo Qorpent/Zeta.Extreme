@@ -39,10 +39,14 @@ namespace Zeta.Extreme {
 		/// </remarks>
 		public ZexSession(bool collectStatistics = false) {
 			CollectStatistics = collectStatistics;
-			MainQueryRegistry = new ConcurrentDictionary<string, ZexQuery>();
+			Registry = new ConcurrentDictionary<string, ZexQuery>();
 			ActiveSet = new ConcurrentDictionary<string, ZexQuery>();
 			KeyMap = new ConcurrentDictionary<string, string>();
 		}
+		/// <summary>
+		/// Объект блокировки для последовательного доступа
+		/// </summary>
+		protected internal object _sync_serial_access_lock = new object();
 
 		/// <summary>
 		/// 	Главный реестр запросов
@@ -51,20 +55,48 @@ namespace Zeta.Extreme {
 		/// 	При регистрации каждому запросу присваивается или передается UID
 		/// 	здесь, в MainQueryRegistry мы можем на уровне Value иметь дубляжи запросов
 		/// </remarks>
-		public ConcurrentDictionary<string, ZexQuery> MainQueryRegistry { get; private set; }
+		public ConcurrentDictionary<string, ZexQuery> Registry { get; private set; }
+		/// <summary>
+		/// Формирует дочернюю подсессию (например для формул)
+		/// Дочерняя сессия имеет доступ к кэшу запросов,
+		/// но задача обработки этих запросов полностью ложится на дочку
+		/// </summary>
+		/// <returns></returns>
+		public ISerialSession CreateSubSession() {
+			lock(this) {
+				ISerialSession result;
+				if(_subsessionpool.TryPop(out result)) return result;
+				var copy = new ZexSession();
+				//share query cache
+				copy.Registry = this.Registry; 
+				copy.ActiveSet = this.ActiveSet;
+				//but not task queues
+				result = copy.AsSerial(); //we not allow use it on non-serial way
+				return result;
+			}
+		}
+		/// <summary>
+		/// Позволяет вернуть использованную подсессию в пул
+		/// </summary>
+		/// <param name="session"></param>
+		public void ReturnSubSession(ISerialSession session) {
+			_subsessionpool.Push(session);
+		}
+
+		private ConcurrentStack<ISerialSession> _subsessionpool = new ConcurrentStack<ISerialSession>();
 
 
 		/// <summary>
 		/// 	Оптимизационный мапинг ключей между входным и отпрепроцессорным
 		/// 	запросом
 		/// </summary>
-		public ConcurrentDictionary<string, string> KeyMap { get; private set; }
+		protected internal ConcurrentDictionary<string, string> KeyMap { get; private set; }
 
 		/// <summary>
 		/// 	Набор всех уникальных, еще не обработанных запросов (агенда)
 		/// 	ключ - хэшкей
 		/// </summary>
-		public ConcurrentDictionary<string, ZexQuery> ActiveSet { get; private set; }
+		protected internal ConcurrentDictionary<string, ZexQuery> ActiveSet { get; private set; }
 
 
 		/// <summary>
@@ -147,7 +179,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		/// <returns> </returns>
-		public Task PrepareAsync(ZexQuery query) {
+		protected internal Task PrepareAsync(ZexQuery query) {
 			lock (this) {
 				var id = _preEvalTaskCounter++;
 				var task = new Task(() =>
@@ -174,45 +206,49 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Ожидает окончания всех процессов асинхронной регистрации
 		/// </summary>
-		public void WaitPreparation() {
-			while (!_preEvalTaskAgenda.IsEmpty) {
-				SyncPreEval();
-				Thread.Sleep(20);
-			}
+		protected internal void WaitPreparation()
+		{
+	
+				while (!_preEvalTaskAgenda.IsEmpty) {
+					SyncPreEval();
+					Thread.Sleep(20);
+				}
+			
 		}
 
 		/// <summary>
 		/// 	Ожидает окончания всех процессов асинхронной регистрации
 		/// </summary>
-		public void WaitEvaluation() {
-			RunSqlBatch(); // выполняем остаточные запросы
+		protected internal void WaitEvaluation() {
 
-			Task.WaitAll(_evalTaskAgenda.Values.Where(_ => _.Status != TaskStatus.Created).ToArray());
-			//	Thread.Sleep(20);
+				RunSqlBatch(); // выполняем остаточные запросы
 
-			while (_evalTaskAgenda.Any(_ => _.Value.Status == TaskStatus.Created)) {
-				// так как это поздние задачи и по идее не длительные,
-				// то мы разбираем их как очередь, без распаралелливания
-				// при этом подзадачи каскадом активируются сами по формулам
-				// и суммам через WaitResult на дочках
-				var task = _evalTaskAgenda.FirstOrDefault().Value;
-				if(null!=task) {
-					if(task.Status==TaskStatus.Created) {
-						try {
-							task.Start();
-						}catch {
-							
-						}
-					}
-					task.Wait();
-				}
-				
-			}
-
-			while (!_evalTaskAgenda.IsEmpty) {
-				Task.WaitAll(_evalTaskAgenda.Values.ToArray());
+				Task.WaitAll(_evalTaskAgenda.Values.Where(_ => _.Status != TaskStatus.Created).ToArray());
 				//	Thread.Sleep(20);
-			}
+
+				while (_evalTaskAgenda.Any(_ => _.Value.Status == TaskStatus.Created)) {
+					// так как это поздние задачи и по идее не длительные,
+					// то мы разбираем их как очередь, без распаралелливания
+					// при этом подзадачи каскадом активируются сами по формулам
+					// и суммам через WaitResult на дочках
+					var task = _evalTaskAgenda.FirstOrDefault().Value;
+					if (null != task) {
+						if (task.Status == TaskStatus.Created) {
+							try {
+								task.Start();
+							}
+							catch {}
+						}
+						task.Wait();
+					}
+
+				}
+
+				while (!_evalTaskAgenda.IsEmpty) {
+					Task.WaitAll(_evalTaskAgenda.Values.ToArray());
+					//	Thread.Sleep(20);
+				}
+		
 		}
 
 		/// <summary>
@@ -273,7 +309,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
-		public IZexPreloadProcessor GetPreloadProcessor() {
+		protected internal IZexPreloadProcessor GetPreloadProcessor() {
 			lock (this) {
 				IZexPreloadProcessor result;
 				if (_preloadprocesspool.TryPop(out result)) {
@@ -290,7 +326,7 @@ namespace Zeta.Extreme {
 		/// 	Возвращает препроцессор в пул
 		/// </summary>
 		/// <param name="processor"> </param>
-		public void ReturnPreloadPreprocessor(IZexPreloadProcessor processor) {
+		protected internal void ReturnPreloadPreprocessor(IZexPreloadProcessor processor) {
 			_preloadprocesspool.Push(processor);
 		}
 
@@ -300,7 +336,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
-		public IPeriodEvaluator GetPeriodEvaluator() {
+		protected internal IPeriodEvaluator GetPeriodEvaluator() {
 			lock (this) {
 				IPeriodEvaluator result;
 				if (_periodevalpool.TryPop(out result)) {
@@ -317,7 +353,7 @@ namespace Zeta.Extreme {
 		/// 	Возвращает препроцессор в пул
 		/// </summary>
 		/// <param name="periodEvaluator"> </param>
-		public void ReturnPeriodEvaluator(IPeriodEvaluator periodEvaluator) {
+		protected internal void ReturnPeriodEvaluator(IPeriodEvaluator periodEvaluator) {
 			_periodevalpool.Push(periodEvaluator);
 		}
 
@@ -327,7 +363,7 @@ namespace Zeta.Extreme {
 		/// <param name="resulttask"> </param>
 		/// <param name="hot"> немедленный запуск </param>
 		/// <returns> </returns>
-		public Task<QueryResult> RegisterEvalTask(Func<QueryResult> resulttask, bool hot) {
+		protected internal Task<QueryResult> RegisterEvalTask(Func<QueryResult> resulttask, bool hot) {
 			lock (this) {
 				var id = _evalTaskCounter++;
 				var task = new Task<QueryResult>(() =>
@@ -354,7 +390,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Быстро синхронизирует вызывающий поток с текущими задачами подготовки
 		/// </summary>
-		public void SyncPreEval() {
+		protected internal void SyncPreEval() {
 			Task.WaitAll(_preEvalTaskAgenda.Values.ToArray());
 		}
 
@@ -380,7 +416,7 @@ namespace Zeta.Extreme {
 		/// 	Возвращает препроцессор в пул
 		/// </summary>
 		/// <param name="sqlbuilder"> </param>
-		public void ReturnPreloadPreprocessor(IZexSqlBuilder sqlbuilder) {
+		protected internal void ReturnPreloadPreprocessor(IZexSqlBuilder sqlbuilder) {
 			_sqlbuilders.Push(sqlbuilder);
 		}
 
@@ -390,7 +426,7 @@ namespace Zeta.Extreme {
 		/// <param name="query"> </param>
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
-		public Task<QueryResult> RegisterSqlRequest(ZexQuery query) {
+		protected internal Task<QueryResult> RegisterSqlRequest(ZexQuery query) {
 			lock (syncsqlawait) {
 				_sqlDataAwaiters.Add(query);
 
@@ -652,5 +688,22 @@ namespace Zeta.Extreme {
 		private int _preEvalTaskCounter;
 
 		private ConcurrentBag<ZexQuery> _sqlDataAwaiters = new ConcurrentBag<ZexQuery>();
+
+		private object syncexecute = new object();
+		/// <summary>
+		/// Задача текущего асинхронного последовательного доступа
+		/// </summary>
+		protected internal Task<QueryResult> _async_serial_acess_task;
+
+		/// <summary>
+		/// Выполняет синхронизацию и расчет значений в сессии
+		/// </summary>
+		public void Execute() {
+			lock(syncexecute) {
+				WaitPreparation();
+				WaitEvaluation();
+				
+			}
+		}
 	}
 }

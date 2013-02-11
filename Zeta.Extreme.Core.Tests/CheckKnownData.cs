@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Comdiv.Zeta.Data.Minimal;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 
@@ -133,6 +134,12 @@ namespace Zeta.Extreme.Core.Tests
 			UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue);
 		}
 
+		[Test]
+		public void CheckZatr_352_PLAN_301_Single_Call()
+		{
+			MakeSingleCallOnCases("CheckZatr_352_PLAN_301");
+		}
+
 		private void UnifiedStandardExistedValueTest(string rowcode, string colcode, int obj, int year, int period,
 		                                             decimal checkvalue) {
 			var q = new ZexQuery
@@ -144,7 +151,7 @@ namespace Zeta.Extreme.Core.Tests
 				var result = t.Result.GetResult().NumericResult;
 				Console.WriteLine(result);
 				if (checkvalue != result) {
-					foreach (var query in session.MainQueryRegistry) {
+					foreach (var query in session.Registry) {
 						Console.WriteLine(query.Value.Row.Code + "\t" + query.Value.Result.NumericResult);
 					}
 				}
@@ -153,6 +160,8 @@ namespace Zeta.Extreme.Core.Tests
 				Assert.Ignore("filtered rows");
 			}
 		}
+
+
 
 		[TestCase("m1122100", "PLAN", 1046, 2012, 301, 301064.000000)]
 		[TestCase("m1122110", "PLAN", 1046, 2012, 301, 17514311.000000)]
@@ -173,6 +182,38 @@ namespace Zeta.Extreme.Core.Tests
 		public void Check_Prib_352_PLAN_301(string rowcode, string colcode, int obj, int year, int period, decimal checkvalue)
 		{
 			UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue);
+		}
+		[Test]
+		public void Check_Prib_352_PLAN_301_Single_Call() {
+			MakeSingleCallOnCases("Check_Prib_352_PLAN_301");
+		}
+
+		private void MakeSingleCallOnCases(string methodname) {
+			var sources =
+				this.GetType().GetMethod(methodname).GetCustomAttributes(typeof (TestCaseAttribute), true).OfType
+					<TestCaseAttribute>().ToArray();
+			session = new ZexSession(true);
+			int i = 0;
+			IDictionary<string, decimal> checkvalues = new Dictionary<string, decimal>();
+			foreach (var s in sources) {
+				i++;
+				var key = i.ToString();
+				var r = (string) s.Arguments[0];
+				var c = (string) s.Arguments[1];
+				var o = (int) s.Arguments[2];
+				var y = (int) s.Arguments[3];
+				var p = (int) s.Arguments[4];
+				var v = (decimal) ((double) s.Arguments[5]);
+				checkvalues[key] = v;
+				var q = new ZexQuery {Row = {Code = r}, Col = {Code = c}, Obj = {Id = o}, Time = {Year = y, Period = p}};
+				session.RegisterAsync(q, key);
+			}
+			session.Execute();
+			foreach (var v in checkvalues) {
+				Assert.True(session.Registry.ContainsKey(v.Key));
+				var res = session.Registry[v.Key];
+				Assert.AreEqual(v.Value, res.GetResult().NumericResult);
+			}
 		}
 
 		[TestCase("m111110", "PLAN", 1046, 2012, 301, 361453.000000)]
@@ -222,6 +263,20 @@ namespace Zeta.Extreme.Core.Tests
 		[TestCase("m111801", "PLAN", 1046, 2012, 301, 55993.000000)]
 		[TestCase("m111802", "PLAN", 1046, 2012, 301, -303733.000000)]
 		public void Check_Balans_MIX_PLAN_301(string rowcode, string colcode, int obj, int year, int period, decimal checkvalue)
+		{
+			UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue);
+		}
+
+		[Test]
+		public void Check_Balans_MIX_PLAN_301_Single_Call()
+		{
+			MakeSingleCallOnCases("Check_Balans_MIX_PLAN_301");
+		}
+
+		[TestCase("m111800", "PLAN", 1046, 2012, 301, -247740.000000)]
+		[TestCase("m111801", "PLAN", 1046, 2012, 301, 55993.000000)]
+		[TestCase("m111802", "PLAN", 1046, 2012, 301, -303733.000000)]
+		public void Check_Balans_BUG_PLAN_301(string rowcode, string colcode, int obj, int year, int period, decimal checkvalue)
 		{
 			UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue);
 		}

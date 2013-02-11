@@ -72,7 +72,7 @@ namespace Zeta.Extreme {
 			// и в завершении прописываем запрос собственно в основных регистраторах
 			// пользовательский мапинг uid->запрос
 			// и KeyMap для быстрого кэширования
-			_session.MainQueryRegistry[uid] = result;
+			_session.Registry[uid] = result;
 			_session.KeyMap[preloadkey] = uid;
 			return result;
 		}
@@ -94,7 +94,7 @@ namespace Zeta.Extreme {
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_Registry_New);
 			}
-			_session.PrepareAsync(result); //инициируем следующую фазу обработки
+			result.PrepareTask = _session.PrepareAsync(result); //инициируем следующую фазу обработки
 			return result;
 		}
 
@@ -108,7 +108,7 @@ namespace Zeta.Extreme {
 		}
 
 		private bool TryReturnAlreadyRegistered(string uid, out ZexQuery result) {
-			if (_session.MainQueryRegistry.TryGetValue(uid, out result)) {
+			if (_session.Registry.TryGetValue(uid, out result)) {
 				if (_stat) {
 					Interlocked.Increment(ref _session.Stat_Registry_Resolved_By_Uid);
 				}
@@ -152,12 +152,12 @@ namespace Zeta.Extreme {
 					Interlocked.Increment(ref _session.Stat_Registry_Resolved_By_Map_Key);
 				}
 
-				result = _session.MainQueryRegistry[mappedkey];
+				result = _session.Registry[mappedkey];
 				if (!string.IsNullOrWhiteSpace(uid) && mappedkey != uid) {
 					if (_stat) {
 						Interlocked.Increment(ref _session.Stat_Registry_User);
 					}
-					_session.MainQueryRegistry[uid] = result;
+					_session.Registry[uid] = result;
 				}
 				return true;
 				

@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Comdiv.Zeta.Model;
 
@@ -35,7 +36,18 @@ namespace Zeta.Extreme {
 			Obj = new ObjHandler();
 			Valuta = "NONE";
 		}
-
+		/// <summary>
+		/// Позволяет синхронизировать запросы в подсессиях
+		/// </summary>
+		public void WaitPrepare() {
+			if (PrepareTask != null)
+			{
+				if (!PrepareTask.IsCompleted)
+				{
+					PrepareTask.Wait();
+				}
+			}
+		}
 		/// <summary>
 		/// 	Условие на время
 		/// </summary>
@@ -111,6 +123,11 @@ namespace Zeta.Extreme {
 		/// 	Кэшированный запрос SQL
 		/// </summary>
 		public string SqlRequest { get; set; }
+
+		/// <summary>
+		/// Back-reference to preparation tasks
+		/// </summary>
+		public Task PrepareTask { get; set; }
 
 		/// <summary>
 		/// 	Функция непосредственного вычисления кэшевой строки
@@ -214,6 +231,9 @@ namespace Zeta.Extreme {
 		/// 	Синхронизатор результата
 		/// </summary>
 		public void WaitResult() {
+			if(null==Result && null==GetResultTask) {
+				Thread.Sleep(20);
+			}
 			if (null != GetResultTask) {
 				if (GetResultTask.Status == TaskStatus.Created) {
 					try {

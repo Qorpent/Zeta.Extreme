@@ -16,10 +16,10 @@ namespace Zeta.Extreme.Core.Tests.CoreTests
 			session.WaitPreparation();
 			var rq = rqt.Result;
 		///	Assert.AreEqual(q, rq);
-			Assert.AreSame(rq, session.MainQueryRegistry[q.GetCacheKey()]);
+			Assert.AreSame(rq, session.Registry[q.GetCacheKey()]);
 			Assert.AreSame(rq, session.ActiveSet[q.GetCacheKey()]);
 			Assert.AreEqual(1, session.ActiveSet.Count);
-			Assert.AreEqual(1, session.MainQueryRegistry.Count);
+			Assert.AreEqual(1, session.Registry.Count);
 		}
 
 		[Test(Description = "самая базовая проверка - просто поместить запрос сессию")]
@@ -30,7 +30,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests
 				session.RegisterAsync(q, "uid"+i);
 			}
 			session.WaitPreparation();
-			foreach (var zexQuery in session.MainQueryRegistry) {
+			foreach (var zexQuery in session.Registry) {
 				Assert.AreEqual(zexQuery.Value.CustomHashPrefix,zexQuery.Key.Substring(3));
 			}
 		}
@@ -39,10 +39,10 @@ namespace Zeta.Extreme.Core.Tests.CoreTests
 		public void CanRegisterOneQuerySynchronously() {
 			var q = new ZexQuery {CustomHashPrefix = "CanRegisterOneQuerySynchronously"};
 			var rq = session.Register(q);
-			Assert.AreSame(rq,session.MainQueryRegistry[q.GetCacheKey()]);
+			Assert.AreSame(rq,session.Registry[q.GetCacheKey()]);
 			Assert.AreSame(rq, session.ActiveSet[q.GetCacheKey()]);
 			Assert.AreEqual(1,session.ActiveSet.Count);
-			Assert.AreEqual(1, session.MainQueryRegistry.Count);
+			Assert.AreEqual(1, session.Registry.Count);
 		}
 
 		[Test(Description = "самая базовая проверка - просто поместить запрос сессию")]
@@ -51,10 +51,10 @@ namespace Zeta.Extreme.Core.Tests.CoreTests
 			var q = new ZexQuery { CustomHashPrefix = "hash" };
 			var rq = session.Register(q, "CanRegisterOneQuerySynchronouslyWithCustomUid");
 		//	Assert.AreEqual(q, rq);
-			Assert.AreSame(rq, session.MainQueryRegistry["CanRegisterOneQuerySynchronouslyWithCustomUid"]);
+			Assert.AreSame(rq, session.Registry["CanRegisterOneQuerySynchronouslyWithCustomUid"]);
 			Assert.AreSame(rq, session.ActiveSet[q.GetCacheKey()]);
 			Assert.AreEqual(1, session.ActiveSet.Count);
-			Assert.AreEqual(1, session.MainQueryRegistry.Count);
+			Assert.AreEqual(1, session.Registry.Count);
 		}
 
 		[Test(Description = "самая базовая проверка - просто поместить запрос сессию")]
@@ -65,12 +65,12 @@ namespace Zeta.Extreme.Core.Tests.CoreTests
 			q = new ZexQuery { CustomHashPrefix = "hash" }; //имитируем другой, но аналогичный запрос
 			var rq2 = session.Register(q, "CanRegisterOneQuerySynchronouslyWithCustomUid2");
 			Assert.AreSame(rq, rq2); // проверяем, что оба раза вернули тот-же запрос
-			Assert.AreSame(rq, session.MainQueryRegistry["CanRegisterOneQuerySynchronouslyWithCustomUid"]);
-			Assert.AreSame(rq, session.MainQueryRegistry["CanRegisterOneQuerySynchronouslyWithCustomUid2"]);
+			Assert.AreSame(rq, session.Registry["CanRegisterOneQuerySynchronouslyWithCustomUid"]);
+			Assert.AreSame(rq, session.Registry["CanRegisterOneQuerySynchronouslyWithCustomUid2"]);
 			//проверили что на всех "пользовательских ветках" один и тот же запрос
 			Assert.AreSame(rq, session.ActiveSet[rq.GetCacheKey()]);
 			Assert.AreEqual(1, session.ActiveSet.Count);
-			Assert.AreEqual(2, session.MainQueryRegistry.Count);
+			Assert.AreEqual(2, session.Registry.Count);
 		}
 	}
 }
