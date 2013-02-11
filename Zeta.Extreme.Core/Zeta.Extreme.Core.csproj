@@ -39,9 +39,13 @@
     <Compile Include="Abstracts\CacheKeyGeneratorBase.cs" />
     <Compile Include="Abstracts\CachedItemHandlerBase.cs" />
     <Compile Include="Abstracts\IZexQueryPreparator.cs" />
-    <Compile Include="Extensions\ISerialSessionApi.cs" />
+    <Compile Include="Extensions\ISerialSession.cs" />
     <Compile Include="Extensions\SerialAccessExtensions.cs" />
-    <Compile Include="Extensions\SerialSessionApi.cs" />
+    <Compile Include="Extensions\SerialSession.cs" />
+    <Compile Include="Formulas\FormulaRequest.cs" />
+    <Compile Include="Formulas\FormulaStorage.cs" />
+    <Compile Include="Formulas\IFormula.cs" />
+    <Compile Include="Formulas\IFormulaStorage.cs" />
     <Compile Include="Query\ZetaVirtualSumHelper.cs" />
     <Compile Include="Query\ZexQueryDelta.cs" />
     <Compile Include="Services\DefaultZexSqlBuilder.cs" />

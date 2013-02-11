@@ -72,5 +72,13 @@ namespace Zeta.Extreme {
 
 			}
 		}
+
+		/// <summary>
+		/// Возвращает ссылку на реальную сессию
+		/// </summary>
+		/// <returns></returns>
+		public ZexSession GetUnderlinedSession() {
+			return _session;
+		}
 	}
 }

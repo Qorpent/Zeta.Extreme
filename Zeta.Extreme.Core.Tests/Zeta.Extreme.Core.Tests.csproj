@@ -21,6 +21,7 @@
     <Compile Include="CoreTests\QueryCacheKeySensibilityTest.cs" />
     <Compile Include="CoreTests\SessionTestBase.cs" />
     <Compile Include="CoreTests\ZatrSimpleTest.cs" />
+    <Compile Include="MockFormulaTest.cs" />
     <Compile Include="SerialAcessTest.cs" />
     <Compile Include="SubQuery\ZetaVirtualSumHelperTest.cs" />
     <Compile Include="SubQuery\ZexQueryDeltaTest.cs" />

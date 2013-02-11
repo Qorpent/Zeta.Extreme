@@ -45,5 +45,19 @@ namespace Zeta.Extreme {
 		/// 	Строчный результат
 		/// </summary>
 		public string StringResult;
+		/// <summary>
+		/// Конструктор по умолчанию
+		/// </summary>
+		public QueryResult() {
+			
+		}
+		/// <summary>
+		/// Конструктор простого численного результата
+		/// </summary>
+		/// <param name="result"></param>
+		public QueryResult(decimal result) {
+			IsComplete = true;
+			NumericResult = result;
+		}
 	}
 }

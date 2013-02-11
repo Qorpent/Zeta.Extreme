@@ -19,5 +19,10 @@ namespace Zeta.Extreme {
 		/// <param name="query"></param>
 		/// <returns></returns>
 		Task<QueryResult> EvalAsync(ZexQuery query);
+		/// <summary>
+		/// Возвращает ссылку на реальную сессию
+		/// </summary>
+		/// <returns></returns>
+		ZexSession GetUnderlinedSession();
 	}
 }

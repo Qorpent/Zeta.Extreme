@@ -44,6 +44,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		[SetUp]
 		public virtual void setup() {
 			this.session = new ZexSession(true);
+			_serial = session.AsSerial();
 			
 		}
 
@@ -57,6 +58,8 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 
 		private static Task loadrowcahe;
 		private static bool wascallnhibernate ;
+		protected ISerialSession _serial;
+
 		[TestFixtureSetUp]
 		public virtual void FixtureSetup() {
 			if(!wascallnhibernate) {

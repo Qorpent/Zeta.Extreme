@@ -129,6 +129,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public Task PrepareTask { get; set; }
 
+		
 		/// <summary>
 		/// 	Функция непосредственного вычисления кэшевой строки
 		/// </summary>

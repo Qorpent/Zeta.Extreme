@@ -38,11 +38,18 @@ namespace Zeta.Extreme {
 		/// 	Инициирует основные коллекции
 		/// </remarks>
 		public ZexSession(bool collectStatistics = false) {
+			Id = ++ID;
 			CollectStatistics = collectStatistics;
 			Registry = new ConcurrentDictionary<string, ZexQuery>();
 			ActiveSet = new ConcurrentDictionary<string, ZexQuery>();
 			KeyMap = new ConcurrentDictionary<string, string>();
 		}
+
+		/// <summary>
+		/// Уникальный идентификатор сессии в процессе
+		/// </summary>
+		public int Id { get; set; }
+		private static int ID;
 		/// <summary>
 		/// Объект блокировки для последовательного доступа
 		/// </summary>
@@ -62,19 +69,32 @@ namespace Zeta.Extreme {
 		/// но задача обработки этих запросов полностью ложится на дочку
 		/// </summary>
 		/// <returns></returns>
-		public ISerialSession CreateSubSession() {
+		public ISerialSession GetSubSession() {
 			lock(this) {
 				ISerialSession result;
 				if(_subsessionpool.TryPop(out result)) return result;
-				var copy = new ZexSession();
+				var copy = new ZexSession(CollectStatistics)
+					{
+						Registry = this.Registry, 
+						ActiveSet = this.ActiveSet, 
+						MasterSession = this,
+						
+					};
+				if(CollectStatistics) {
+					Stat_SubSession_Count ++;
+				}
 				//share query cache
-				copy.Registry = this.Registry; 
-				copy.ActiveSet = this.ActiveSet;
 				//but not task queues
 				result = copy.AsSerial(); //we not allow use it on non-serial way
 				return result;
 			}
 		}
+
+		/// <summary>
+		/// Родительская сессия
+		/// </summary>
+		protected internal ZexSession MasterSession { get; set; }
+
 		/// <summary>
 		/// Позволяет вернуть использованную подсессию в пул
 		/// </summary>
@@ -115,7 +135,19 @@ namespace Zeta.Extreme {
 			sb.AppendLine("pppool:" + _preloadprocesspool.Count);
 			sb.AppendLine("preppool:" + _preparators.Count);
 			sb.AppendLine("sqlpool:" + _sqlbuilders.Count);
+			if (!_subsessionpool.IsEmpty) {
+				sb.AppendLine("==================================");
+				sb.AppendLine("Sub-Sessions:");
+				var subs = _subsessionpool.ToArray();
+				foreach(var s in subs) {
+					var ses = s.GetUnderlinedSession();
+					sb.AppendLine("Subsession: " + ses.Id);
+					sb.Append(ses.GetStatisticString());
+					sb.AppendLine("--------------------------");
+				}
+			}
 			return sb.ToString();
+			
 		}
 
 		/// <summary>
@@ -694,6 +726,11 @@ namespace Zeta.Extreme {
 		/// Задача текущего асинхронного последовательного доступа
 		/// </summary>
 		protected internal Task<QueryResult> _async_serial_acess_task;
+
+		/// <summary>
+		/// Статистика созданных под-сессий
+		/// </summary>
+		public int Stat_SubSession_Count;
 
 		/// <summary>
 		/// Выполняет синхронизацию и расчет значений в сессии
