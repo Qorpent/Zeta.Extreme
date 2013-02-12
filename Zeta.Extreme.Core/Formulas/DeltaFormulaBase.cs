@@ -25,6 +25,7 @@ namespace Zeta.Extreme {
 		/// </remarks>
 		public override QueryResult Eval() {
 			try {
+				IsInPlayBack = false;
 				var result = EvaluateExpression();
 				if(result==null) return new QueryResult();
 				if(result is decimal || result is int) {
@@ -41,6 +42,19 @@ namespace Zeta.Extreme {
 				return new QueryResult {IsComplete = false, Error = e};
 			}
 		}
+		/// <summary>
+		/// Флаг нахождения в режиме проигрывания формулы
+		/// </summary>
+		protected bool IsInPlayBack;
+
+		/// <summary>
+		/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
+		/// </summary>
+		public override void Playback() {
+			IsInPlayBack = true;
+			EvaluateExpression();
+		}
+
 
 		/// <summary>
 		/// 	Основной промежуточный метод , все приводит к числу
@@ -48,11 +62,17 @@ namespace Zeta.Extreme {
 		/// <param name="delta"> </param>
 		protected internal decimal EvalDelta(ZexQueryDelta delta) {
 			var query = delta.Apply(Query);
-			var result = Session.Eval(query);
-			if (null == result) {
-				return 0;
+			if(IsInPlayBack) {
+				Mastersesion.Register(query);
+				return 1; //fail-free value
 			}
-			return result.NumericResult;
+			else {
+				var result = Session.Eval(query);
+				if (null == result) {
+					return 0;
+				}
+				return result.NumericResult;
+			}
 		}
 
 		/// <summary>

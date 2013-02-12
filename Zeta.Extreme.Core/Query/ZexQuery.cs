@@ -84,6 +84,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public bool IsPrimary {
 			get { return Obj.IsPrimary() && Col.IsPrimary() && Row.IsPrimary(); }
+		
 		}
 
 		/// <summary>
@@ -117,6 +118,11 @@ namespace Zeta.Extreme {
 		/// 	Back-reference to preparation tasks
 		/// </summary>
 		public Task PrepareTask { get; set; }
+
+		/// <summary>
+		/// Sign that primary was not set
+		/// </summary>
+		public bool HavePrimary;
 
 		/// <summary>
 		/// 	Позволяет синхронизировать запросы в подсессиях
@@ -247,11 +253,15 @@ namespace Zeta.Extreme {
 			}
 			if (null != GetResultTask) {
 				if(GetResultTask.Status==TaskStatus.Created)
-					try {
-						GetResultTask.Start();
+					if(IsPrimary) {
+						Session.RunSqlBatch();
+					}else {
+						try {
+							GetResultTask.Start();
+						}
+						catch {}
 					}
-					catch {}
-				
+
 				GetResultTask.Wait();
 			}
 		}

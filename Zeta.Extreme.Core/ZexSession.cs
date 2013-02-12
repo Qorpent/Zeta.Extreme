@@ -51,8 +51,8 @@ namespace Zeta.Extreme {
 			KeyMap = new ConcurrentDictionary<string, string>();
 		}
 
-		
 
+		private object thissync = new object();
 		/// <summary>
 		/// 	Уникальный идентификатор сессии в процессе
 		/// </summary>
@@ -92,7 +92,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <returns> </returns>
 		public ISerialSession GetSubSession() {
-			lock (this) {
+			lock(thissync) {
 				ISerialSession result;
 				if (_subsessionpool.TryPop(out result)) {
 					result.GetUnderlinedSession()._preEvalTaskAgenda.Clear();
@@ -106,7 +106,8 @@ namespace Zeta.Extreme {
 						KeyMap = KeyMap,
 						MasterSession = this,
 						TraceQuery = TraceQuery,
-						//_register_lock =  this._register_lock
+						thissync = thissync,
+						syncsqlawait = syncsqlawait
 					};
 				if (CollectStatistics) {
 					Stat_SubSession_Count ++;
@@ -172,7 +173,7 @@ namespace Zeta.Extreme {
 		/// </remarks>
 		/// <exception cref="NotImplementedException"></exception>
 		public ZexQuery Register(ZexQuery query, string uid = null) {
-			lock (this) {
+			lock(thissync) {
 				var helper = GetRegistryHelper();
 				var result = helper.Register(query, uid);
 				ReturnRegistryHelper(helper);
@@ -191,7 +192,7 @@ namespace Zeta.Extreme {
 		/// 	возвращается именно итоговый запрос
 		/// </remarks>
 		public Task<ZexQuery> RegisterAsync(ZexQuery query, string uid = null) {
-			lock (this) {
+			lock(thissync) {
 				var id = _preEvalTaskCounter++;
 				var task = new Task<ZexQuery>(() =>
 					{
@@ -222,7 +223,7 @@ namespace Zeta.Extreme {
 		/// <param name="query"> </param>
 		/// <returns> </returns>
 		protected internal Task PrepareAsync(ZexQuery query) {
-			lock (this) {
+			lock(thissync) {
 				var id = _preEvalTaskCounter++;
 				var task = new Task(() =>
 					{
@@ -257,16 +258,29 @@ namespace Zeta.Extreme {
 
 		
 		}
+		/// <summary>
+		/// Метод синхронизации с SQL
+		/// </summary>
+		protected internal void WaitSql() {
+			
+			if(null!=MasterSession) {
+				MasterSession.WaitSql();
+				return;
+			}
+
+			RunSqlBatch(); // выполняем остаточные запросы
+			
+			
+			
+		}
 
 		/// <summary>
 		/// 	Ожидает окончания всех процессов асинхронной регистрации
 		/// </summary>
 		protected internal void WaitEvaluation() {
-			RunSqlBatch(); // выполняем остаточные запросы
-
-			Task.WaitAll(_evalTaskAgenda.Values.Where(_ => _.Status != TaskStatus.Created).ToArray());
+			WaitSql();
 			//	Thread.Sleep(20);
-
+			Task.WaitAll(_evalTaskAgenda.Values.Where(_ => _.Status != TaskStatus.Created).ToArray());
 			while (_evalTaskAgenda.Any()) {
 				// так как это поздние задачи и по идее не длительные,
 				// то мы разбираем их как очередь, без распаралелливания
@@ -298,7 +312,7 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
 		public IZexQueryPreparator GetPreparator() {
-			lock (this) {
+			lock(thissync) {
 				IZexQueryPreparator result;
 				if (_preparators.TryPop(out result)) {
 					return result;
@@ -325,7 +339,7 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
 		private IZexRegistryHelper GetRegistryHelper() {
-			lock (this) {
+			lock(thissync) {
 				IZexRegistryHelper result;
 				if (_registryhelperpool.TryPop(out result)) {
 					return result;
@@ -351,7 +365,7 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
 		protected internal IZexPreloadProcessor GetPreloadProcessor() {
-			lock (this) {
+			lock(thissync) {
 				IZexPreloadProcessor result;
 				if (_preloadprocesspool.TryPop(out result)) {
 					return result;
@@ -378,7 +392,7 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
 		protected internal IPeriodEvaluator GetPeriodEvaluator() {
-			lock (this) {
+			lock(thissync) {
 				IPeriodEvaluator result;
 				if (_periodevalpool.TryPop(out result)) {
 					return result;
@@ -405,7 +419,7 @@ namespace Zeta.Extreme {
 		/// <param name="hot"> немедленный запуск </param>
 		/// <returns> </returns>
 		protected internal Task<QueryResult> RegisterEvalTask(Func<QueryResult> resulttask, bool hot) {
-			lock (this) {
+			lock(thissync) {
 				var id = _evalTaskCounter++;
 				var task = new Task<QueryResult>(() =>
 					{
@@ -441,7 +455,7 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
 		public IZexSqlBuilder GetSqlBuilder() {
-			lock (this) {
+			lock(thissync) {
 				IZexSqlBuilder result;
 				if (_sqlbuilders.TryPop(out result)) {
 					return result;
@@ -469,16 +483,18 @@ namespace Zeta.Extreme {
 		/// <exception cref="NotImplementedException"></exception>
 		protected internal Task<QueryResult> RegisterSqlRequest(ZexQuery query) {
 			lock (syncsqlawait) {
+				if(null!=MasterSession) {
+					return MasterSession.RegisterSqlRequest(query);
+				}
 				_sqlDataAwaiters.Add(query);
-
 				if (null == _currentSqlBatchTask) {
 					_currentSqlBatchTask = CreateNewSqlBatchTask();
 				}
-
+				var result = _currentSqlBatchTask;
 				if (_sqlDataAwaiters.Count >= BatchSize) {
 					return RunSqlBatch();
 				}
-				return _currentSqlBatchTask;
+				return result;
 			}
 		}
 
@@ -492,6 +508,11 @@ namespace Zeta.Extreme {
 						}
 						_myrequests = _sqlDataAwaiters.ToArray().Distinct().ToDictionary(_ => _.UID, _ => _);
 						_sqlDataAwaiters = new ConcurrentBag<ZexQuery>();
+					}
+					if(TraceQuery) {
+						foreach(var q in _myrequests.Values) {
+							q.TraceList.Add("Session " +Id + " added to primreq ");
+						}
 					}
 					Stopwatch sw = null;
 					if (CollectStatistics) {
@@ -537,6 +558,10 @@ namespace Zeta.Extreme {
 									if (CollectStatistics) {
 										Interlocked.Increment(ref Stat_Primary_Affected);
 									}
+									if(TraceQuery) {
+										target.TraceList.Add("primary found " + value);
+									}
+									target.HavePrimary = true;
 									target.Result = new QueryResult {IsComplete = true, NumericResult = value, CellId = id};
 								}
 							}
@@ -550,7 +575,11 @@ namespace Zeta.Extreme {
 							Stat_Batch_Time += sw.Elapsed;
 						}
 					}
-					foreach (var myrequest in _myrequests.Values.Where(_ => null == _.Result)) {
+					foreach (var myrequest in _myrequests.Values.Where(_ => !_.HavePrimary)) {
+						if (TraceQuery)
+						{
+							myrequest.TraceList.Add("primary not found ");
+						}
 						myrequest.Result = new QueryResult {IsComplete = true, IsNull = true};
 					}
 
@@ -562,7 +591,11 @@ namespace Zeta.Extreme {
 		/// 	Стартует текущую задачу по SQL
 		/// </summary>
 		public Task<QueryResult> RunSqlBatch() {
-			lock (this) {
+			lock (syncsqlawait)
+			{
+				if(null!=MasterSession) {
+					return MasterSession.RunSqlBatch();
+				}
 				var task = _currentSqlBatchTask;
 				if (null == task) {
 					task = CreateNewSqlBatchTask();
@@ -609,7 +642,7 @@ namespace Zeta.Extreme {
 		private readonly ConcurrentStack<IZexSqlBuilder> _sqlbuilders = new ConcurrentStack<IZexSqlBuilder>();
 		private readonly ConcurrentStack<ISerialSession> _subsessionpool = new ConcurrentStack<ISerialSession>();
 		private readonly object syncexecute = new object();
-		private readonly object syncsqlawait = new object();
+		private object syncsqlawait = new object();
 
 		/// <summary>
 		/// 	Размер батча

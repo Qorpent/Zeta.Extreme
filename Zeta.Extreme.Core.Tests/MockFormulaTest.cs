@@ -29,6 +29,13 @@ namespace Zeta.Extreme.Core.Tests
 			}
 
 			/// <summary>
+			/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
+			/// </summary>
+			public void Playback() {
+				
+			}
+
+			/// <summary>
 			/// Команда вычисления результата
 			/// </summary>
 			/// <returns></returns>
@@ -63,6 +70,13 @@ namespace Zeta.Extreme.Core.Tests
 					_mastersession = query.Session;
 					_session = query.Session.GetSubSession();
 				}
+			}
+
+			/// <summary>
+			/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
+			/// </summary>
+			public void Playback() {
+				
 			}
 
 			/// <summary>

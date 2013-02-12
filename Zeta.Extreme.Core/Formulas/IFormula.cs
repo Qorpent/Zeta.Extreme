@@ -19,7 +19,10 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		void Init(ZexQuery query);
-
+		/// <summary>
+		/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
+		/// </summary>
+		void Playback();
 		/// <summary>
 		/// 	Команда вычисления результата
 		/// </summary>

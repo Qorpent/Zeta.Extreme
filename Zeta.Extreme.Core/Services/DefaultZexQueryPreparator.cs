@@ -62,6 +62,7 @@ namespace Zeta.Extreme {
 				query.Result = new QueryResult {IsComplete = true, Error = new Exception("formula not found")};
 				return;
 			}
+			formula.Playback();
 			var resulttask = new Func<QueryResult>(() =>
 				{
 					formula.Init(query);
@@ -121,7 +122,10 @@ namespace Zeta.Extreme {
 
 			sqlbuilder.PrepareSqlRequest(query);
 			query.GetResultTask = _session.RegisterSqlRequest(query);
-			query.Result = new QueryResult {IsComplete = true, Error = new Exception("primaries not supproted by now")};
+			if(_session.TraceQuery) {
+				query.TraceList.Add(_session.Id + " preq taskid: " + query.GetResultTask.Id);
+			}
+		//	query.Result = new QueryResult {IsComplete = true, Error = new Exception("primaries not supproted by now")};
 		}
 
 		private readonly ZexSession _session;

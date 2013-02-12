@@ -152,19 +152,21 @@ namespace Zeta.Extreme.Core.Tests
 			session.TraceQuery = true;
 			UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue);
 		}
-		
-		//[Timeout(4000)]
-		//public void Zatr_Problem_Zone(string rowcode, string colcode, int obj, int year, int period, decimal checkvalue) {
-		//	var row = RowCache.get(rowcode);
-		//	Console.WriteLine(row.Formula);
-		//	var req = new FormulaRequest {Formula = row.Formula, Language = "boo"};
-		//	new FormulaStorage().Preprocess(req);
-		//	Console.WriteLine(req.PreprocessedFormula);
-		//	foreach(var r in new ZetaVirtualSumHelper().CollectSumDelta(row)) {
-		//		Console.WriteLine(r.Row.Code);
-		//	}
-		//	UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue);
-		//}
+		[TestCase("m2601341", "PLAN", 1046, 2012, 301, 1100.000000)]
+		[Timeout(4000)]
+		public void Zatr_Problem_Zone(string rowcode, string colcode, int obj, int year, int period, decimal checkvalue)
+		{
+			var row = RowCache.get(rowcode);
+			Console.WriteLine(row.Formula);
+			var req = new FormulaRequest { Formula = row.Formula, Language = "boo" };
+			new FormulaStorage().Preprocess(req);
+			Console.WriteLine(req.PreprocessedFormula);
+			foreach (var r in new ZetaVirtualSumHelper().CollectSumDelta(row))
+			{
+				Console.WriteLine(r.Row.Code);
+			}
+			UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue);
+		}
 
 		[Test]
 		public void CheckZatr_352_PLAN_301_Single_Call()

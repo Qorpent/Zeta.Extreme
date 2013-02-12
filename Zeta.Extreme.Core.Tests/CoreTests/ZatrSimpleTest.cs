@@ -112,7 +112,15 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			int rsn = 0;
 			ExecuteFormBatch(timespan, rsn, batchsize, count,5);
 		}
-
+		[Test]
+		[Explicit]
+		public void NoIZatrBatch() {
+			int batchsize = 2000;
+			int count = 4;
+			int timespan = 10000;
+			int rsn = 0;
+			ExecuteFormBatch(timespan, rsn, batchsize, count,5);
+		}
 		[Test]
 		[Explicit]
 		public void BalansBatch()

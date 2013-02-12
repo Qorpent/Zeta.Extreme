@@ -31,6 +31,11 @@ namespace Zeta.Extreme {
 			}
 		}
 
+		/// <summary>
+		/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
+		/// </summary>
+		public abstract void Playback();
+
 
 		/// <summary>
 		/// 	Команда вычисления результата
