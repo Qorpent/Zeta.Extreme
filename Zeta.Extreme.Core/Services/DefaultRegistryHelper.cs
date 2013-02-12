@@ -17,14 +17,14 @@ namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Стандартная реализация хелпера для регистрации запросов в системе
 	/// </summary>
-	public class DefaultZexRegistryHelper : IZexRegistryHelper {
+	public class DefaultRegistryHelper : IRegistryHelper {
 		private static long QUERYID;
 
 		/// <summary>
 		/// 	Конструирует хелпер, в присоединении к сессии
 		/// </summary>
 		/// <param name="session"> </param>
-		public DefaultZexRegistryHelper(ZexSession session) {
+		public DefaultRegistryHelper(Session session) {
 			_session = session;
 			_stat = session.CollectStatistics;
 		}
@@ -36,12 +36,12 @@ namespace Zeta.Extreme {
 		/// <param name="srcquery"> исзодный запрос </param>
 		/// <param name="uid"> </param>
 		/// <returns> итоговый запрос после регистрации </returns>
-		public virtual ZexQuery Register(ZexQuery srcquery, string uid) {
+		public virtual Query Register(Query srcquery, string uid) {
 			//lock(ZexSession._register_lock) {
 				WriteInitialStatistics(uid);
 
 				var query = srcquery;
-				ZexQuery result;
+				Query result;
 				var preloadkey = srcquery.GetCacheKey();
 
 				// мы сразу ловим ключ запроса на тот случай, если он уже 
@@ -105,13 +105,13 @@ namespace Zeta.Extreme {
 		//	}
 		}
 
-		private ZexQuery RegisterRequestInAgendaAndStart(ZexQuery query, string key) {
+		private Query RegisterRequestInAgendaAndStart(Query query, string key) {
 			//lock(ZexSession._register_lock) {
-				ZexQuery result;
+				Query result;
 				query.Session = _session; //надо установить сессию раз новый запрос
 				query = _session.ActiveSet.GetOrAdd(key, query);
 				result = query;
-				lock (typeof (DefaultZexRegistryHelper)) {
+				lock (typeof (DefaultRegistryHelper)) {
 					result.UID = ++QUERYID;
 				}
 				if (_stat) {
@@ -127,7 +127,7 @@ namespace Zeta.Extreme {
 		//	}
 		}
 
-		private bool TryGetFromActiveAgenda(string key, out ZexQuery result) {
+		private bool TryGetFromActiveAgenda(string key, out Query result) {
 		//	lock(ZexSession._register_lock) {
 				bool found;
 				found = _session.ActiveSet.TryGetValue(key, out result);
@@ -138,7 +138,7 @@ namespace Zeta.Extreme {
 		//	}
 		}
 
-		private bool TryReturnAlreadyRegistered(string uid, out ZexQuery result) {
+		private bool TryReturnAlreadyRegistered(string uid, out Query result) {
 		//	lock(ZexSession._register_lock) {
 				if (_session.Registry.TryGetValue(uid, out result)) {
 					if (_stat) {
@@ -152,7 +152,7 @@ namespace Zeta.Extreme {
 		//	}
 		}
 
-		private bool CheckNullQuery(ZexQuery query) {
+		private bool CheckNullQuery(Query query) {
 		//	lock(ZexSession._register_lock) {
 				if (null == query) {
 					if (_stat) {
@@ -164,7 +164,7 @@ namespace Zeta.Extreme {
 		//	}
 		}
 
-		private ZexQuery PreprocessQuery(ZexQuery query) {
+		private Query PreprocessQuery(Query query) {
 	//		lock(ZexSession._register_lock) {
 				var preprocessor = _session.GetPreloadProcessor();
 				try {
@@ -180,7 +180,7 @@ namespace Zeta.Extreme {
 	//		}
 		}
 
-		private bool TryResolveByKeyMap(string uid, string preloadkey, out ZexQuery result) {
+		private bool TryResolveByKeyMap(string uid, string preloadkey, out Query result) {
 	//		lock(ZexSession._register_lock) {
 				result = null;
 				string mappedkey;
@@ -213,7 +213,7 @@ namespace Zeta.Extreme {
 	//		}
 		}
 
-		private readonly ZexSession _session;
+		private readonly Session _session;
 		private readonly bool _stat;
 	}
 }

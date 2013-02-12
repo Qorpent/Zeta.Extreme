@@ -30,7 +30,7 @@ namespace Zeta.Extreme {
 		/// 	Нормализует колонку до нормали
 		/// </summary>
 		/// <param name="session"> </param>
-		public void Normalize(ZexSession session) {
+		public void Normalize(Session session) {
 			if (IsStandaloneSingletonDefinition()) {
 				//try load native
 				Native = ColumnCache.get(0 == Id ? (object) Code : Id);

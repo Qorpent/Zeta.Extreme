@@ -16,15 +16,15 @@ namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Препроцессор до загрузки по умолчанию
 	/// </summary>
-	public class DefaultZexPreloadProcessor : IZexPreloadProcessor {
+	public class DefaultPreloadProcessor : IPreloadProcessor {
 		/// <summary>
 		/// 	Конструктор по умолчнию в привязке к сессии
 		/// </summary>
-		/// <param name="zexSession"> </param>
+		/// <param name="session"> </param>
 		/// <exception cref="NotImplementedException"></exception>
-		public DefaultZexPreloadProcessor(ZexSession zexSession) {
-			_session = zexSession;
-			_sumh = new ZetaVirtualSumHelper();
+		public DefaultPreloadProcessor(Session session) {
+			_session = session;
+			_sumh = new StrongSumProvider();
 		}
 
 		/// <summary>
@@ -32,7 +32,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		/// <returns> </returns>
-		public virtual ZexQuery Process(ZexQuery query) {
+		public virtual Query Process(Query query) {
 			var internalquery = query.Copy(true);
 			// внутри сессии работаем только с копиями
 			// ибо иначе отконтроллировать изменения препроцессора по сути невозможно
@@ -66,11 +66,11 @@ namespace Zeta.Extreme {
 		}
 
 
-		private readonly ZetaVirtualSumHelper _sumh;
+		private readonly StrongSumProvider _sumh;
 
 		/// <summary>
 		/// 	обратная ссылка на сессию
 		/// </summary>
-		protected ZexSession _session;
+		protected Session _session;
 	}
 }

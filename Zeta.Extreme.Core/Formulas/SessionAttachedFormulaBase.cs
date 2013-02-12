@@ -18,7 +18,7 @@ namespace Zeta.Extreme {
 		/// 	Настраивает формулу на конкретный переданный запрос
 		/// </summary>
 		/// <param name="query"> </param>
-		public void Init(ZexQuery query) {
+		public void Init(Query query) {
 			Query = query;
 			Mastersession = Query.Session;
 			//if (null == Mastersession) {
@@ -35,7 +35,7 @@ namespace Zeta.Extreme {
 		/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 		/// </summary>
 		/// <param name="query"> </param>
-		public abstract void Playback(ZexQuery query);
+		public abstract void Playback(Query query);
 
 
 		/// <summary>
@@ -64,12 +64,12 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Базовая сессия
 		/// </summary>
-		protected internal ZexSession Mastersession;
+		protected internal Session Mastersession;
 
 		/// <summary>
 		/// 	Исходный запрос
 		/// </summary>
-		protected internal ZexQuery Query;
+		protected internal Query Query;
 
 		/// <summary>
 		/// 	Рабочая сессия

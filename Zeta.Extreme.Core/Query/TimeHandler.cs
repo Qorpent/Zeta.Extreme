@@ -174,7 +174,7 @@ namespace Zeta.Extreme {
 		/// 	Нормализует формульные года и периоды
 		/// </summary>
 		/// <param name="session"> </param>
-		public void Normalize(ZexSession session = null) {
+		public void Normalize(Session session = null) {
 			if (!IsYearDefinied()) {
 				ResolveYear();
 			}
@@ -189,7 +189,7 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		private void ResolvePeriod(ZexSession session) {
+		private void ResolvePeriod(Session session) {
 			//TODO: fix to real logic, должен вызывать функцию
 			if (0 == Period) {
 				Period = BasePeriod;

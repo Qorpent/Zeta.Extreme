@@ -22,7 +22,7 @@ namespace Zeta.Extreme {
 	/// 	Класс, отвечающий за простраивание и вывод структур дельт для
 	/// 	строк, отвечает за обработку простых формул
 	/// </summary>
-	public class ZetaVirtualSumHelper {
+	public class StrongSumProvider {
 		/// <summary>
 		/// 	Возвращает кэшированное значение проверки строки на 
 		/// 	суммируемость или вычисляет и кэширует
@@ -79,9 +79,9 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public ZexQueryDelta[] GetSumDelta(IZetaRow r) {
+		public QueryDelta[] GetSumDelta(IZetaRow r) {
 			if (r.LocalProperties.ContainsKey("_zvs")) {
-				return (ZexQueryDelta[]) r.LocalProperties["_zvs"];
+				return (QueryDelta[]) r.LocalProperties["_zvs"];
 			}
 			var result = CollectSumDelta(r).ToArray();
 			r.LocalProperties["_zvs"] = result;
@@ -93,7 +93,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="row"> </param>
 		/// <returns> </returns>
-		public IEnumerable<ZexQueryDelta> CollectSumDelta(IZetaRow row) {
+		public IEnumerable<QueryDelta> CollectSumDelta(IZetaRow row) {
 			if (!IsSum(row)) {
 				yield break;
 			}
@@ -116,12 +116,12 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		private IEnumerable<ZexQueryDelta> GetFormulaSumDelta(IZetaRow row) {
+		private IEnumerable<QueryDelta> GetFormulaSumDelta(IZetaRow row) {
 			var matches = Regex.Matches(row.Formula, FormulaParserConstants.PseudoSumVector, RegexOptions.Compiled);
-			return from Match match in matches select ZexQueryDelta.CreateFromMatch(match);
+			return from Match match in matches select QueryDelta.CreateFromMatch(match);
 		}
 
-		private IEnumerable<ZexQueryDelta> GetGroupSumDelta(IZetaRow row) {
+		private IEnumerable<QueryDelta> GetGroupSumDelta(IZetaRow row) {
 			var groups = row.Group.split(false, true, '/', ';').Distinct();
 			var pluses = groups.Where(_ => !_.StartsWith("-")).ToArray();
 			var minuses = groups.Where(_ => _.StartsWith("-")).Select(_ => _.Substring(1)).ToArray();
@@ -129,10 +129,10 @@ namespace Zeta.Extreme {
 				if (RowCache.bygroup.ContainsKey(p)) {
 					foreach (var r in RowCache.bygroup[p]) {
 						if (r.IsMarkSeted("0MINUS")) {
-							yield return new ZexQueryDelta {Row = r, Multiplicator = -1};
+							yield return new QueryDelta {Row = r, Multiplicator = -1};
 						}
 						else {
-							yield return new ZexQueryDelta {Row = r};
+							yield return new QueryDelta {Row = r};
 						}
 					}
 				}
@@ -141,17 +141,17 @@ namespace Zeta.Extreme {
 				if (RowCache.bygroup.ContainsKey(m)) {
 					foreach (var r in RowCache.bygroup[m]) {
 						if (r.IsMarkSeted("0MINUS")) {
-							yield return new ZexQueryDelta {Row = r};
+							yield return new QueryDelta {Row = r};
 						}
 						else {
-							yield return new ZexQueryDelta {Row = r, Multiplicator = -1};
+							yield return new QueryDelta {Row = r, Multiplicator = -1};
 						}
 					}
 				}
 			}
 		}
 
-		private IEnumerable<ZexQueryDelta> GetNativeSumDelta(IZetaRow row) {
+		private IEnumerable<QueryDelta> GetNativeSumDelta(IZetaRow row) {
 			foreach (var c in row.Children) {
 				if (c.IsMarkSeted("0CAPTION")) {
 					continue;
@@ -162,7 +162,7 @@ namespace Zeta.Extreme {
 				if(!IsSum(c) && 0!= c.Children.Count) {
 					continue;
 				}
-				yield return new ZexQueryDelta { Row = c };
+				yield return new QueryDelta { Row = c };
 
 			}
 		}

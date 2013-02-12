@@ -20,7 +20,7 @@ namespace Zeta.Extreme {
 		/// 	Формирует API в привязке к сессии
 		/// </summary>
 		/// <param name="session"> </param>
-		public SerialSession(ZexSession session) {
+		public SerialSession(Session session) {
 			_session = session;
 		}
 
@@ -29,12 +29,12 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		/// <returns> </returns>
-		public QueryResult Eval(ZexQuery query) {
+		public QueryResult Eval(Query query) {
 			lock (_session._sync_serial_access_lock) {
 				if (null != _session._async_serial_acess_task) {
 					_session._async_serial_acess_task.Wait();
 				}
-				ZexQuery realquery = null;
+				Query realquery = null;
 				
 				realquery = _session.Register(query);
 				
@@ -54,7 +54,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		/// <returns> </returns>
-		public Task<QueryResult> EvalAsync(ZexQuery query) {
+		public Task<QueryResult> EvalAsync(Query query) {
 			lock (_session._sync_serial_access_lock) {
 				if (null != _session._async_serial_acess_task) {
 					_session._async_serial_acess_task.Wait();
@@ -85,10 +85,10 @@ namespace Zeta.Extreme {
 		/// 	Возвращает ссылку на реальную сессию
 		/// </summary>
 		/// <returns> </returns>
-		public ZexSession GetUnderlinedSession() {
+		public Session GetUnderlinedSession() {
 			return _session;
 		}
 
-		private readonly ZexSession _session;
+		private readonly Session _session;
 	}
 }

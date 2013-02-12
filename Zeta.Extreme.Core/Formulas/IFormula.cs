@@ -18,13 +18,13 @@ namespace Zeta.Extreme {
 		/// 	Настраивает формулу на конкретный переданный запрос
 		/// </summary>
 		/// <param name="query"> </param>
-		void Init(ZexQuery query);
+		void Init(Query query);
 
 		/// <summary>
 		/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 		/// </summary>
 		/// <param name="query"> </param>
-		void Playback(ZexQuery query);
+		void Playback(Query query);
 		/// <summary>
 		/// 	Команда вычисления результата
 		/// </summary>

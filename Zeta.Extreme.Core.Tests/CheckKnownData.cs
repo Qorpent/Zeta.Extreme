@@ -1,19 +1,25 @@
-﻿using System;
+﻿#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : CheckKnownData.cs
+// Project: Zeta.Extreme.Core.Tests
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Comdiv.Zeta.Data.Minimal;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 
-namespace Zeta.Extreme.Core.Tests
-{
+namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]
-	public class CheckKnownData : SessionTestBase
-	{
-
-
+	public class CheckKnownData : SessionTestBase {
 		[TestCase("m260830", "PLAN", 1046, 2012, 301, 596254.16794090452660986449002)]
 		[TestCase("m260", "PLAN", 1046, 2012, 301, 301749.000000)]
 		[TestCase("m260100", "PLAN", 536, 2012, 301, 604812.000000)]
@@ -88,10 +94,6 @@ namespace Zeta.Extreme.Core.Tests
 		[TestCase("m260565", "PLAN", 467, 2012, 301, 8936.000000)]
 		[TestCase("m260589", "PLAN", 1046, 2012, 301, 28420.000000)]
 		[TestCase("m260600", "PLAN", 1046, 2012, 301, 301749.000000)]
-
-
-
-
 		[TestCase("m260700", "PLAN", 1046, 2012, 301, 3758.000000)]
 		[TestCase("m260701", "PLAN", 536, 2012, 301, 73527.000000)]
 		[TestCase("m260702", "PLAN", 536, 2012, 301, 10393.000000)]
@@ -118,15 +120,11 @@ namespace Zeta.Extreme.Core.Tests
 		[TestCase("m260826", "PLAN", 1046, 2012, 301, 17514311.000000)]
 		[TestCase("m260827", "PLAN", 1046, 2012, 301, 15854.000000)]
 		[TestCase("m260828", "PLAN", 1046, 2012, 301, 99.909480)]
-
-
 		[TestCase("m260831", "PLAN", 536, 2012, 301, 604862.000000)]
 		[TestCase("m2608311", "PLAN", 536, 2012, 301, 604812.000000)]
 		[TestCase("m2608312", "PLAN", 536, 2012, 301, 50.000000)]
 		[TestCase("m260832", "PLAN", 1046, 2012, 301, 7248.000000)]
 		[TestCase("m260833", "PLAN", 1046, 2012, 301, 2008.000000)]
-
-
 		[TestCase("m260834", "PLAN", 1046, 2012, 301, 1100.000000)]
 		[TestCase("m2608341", "PLAN", 536, 2012, 301, 961630.000000)]
 		[TestCase("m2608342", "PLAN", 536, 2012, 301, 167131.000000)]
@@ -152,40 +150,28 @@ namespace Zeta.Extreme.Core.Tests
 			session.TraceQuery = true;
 			UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue);
 		}
+
 		[TestCase("m2601341", "PLAN", 1046, 2012, 301, 1100.000000)]
 		[Timeout(4000)]
-		public void Zatr_Problem_Zone(string rowcode, string colcode, int obj, int year, int period, decimal checkvalue)
-		{
+		public void Zatr_Problem_Zone(string rowcode, string colcode, int obj, int year, int period, decimal checkvalue) {
 			var row = RowCache.get(rowcode);
 			Console.WriteLine(row.Formula);
-			var req = new FormulaRequest { Formula = row.Formula, Language = "boo" };
+			var req = new FormulaRequest {Formula = row.Formula, Language = "boo"};
 			new FormulaStorage().Preprocess(req);
 			Console.WriteLine(req.PreprocessedFormula);
-			foreach (var r in new ZetaVirtualSumHelper().CollectSumDelta(row))
-			{
+			foreach (var r in new StrongSumProvider().CollectSumDelta(row)) {
 				Console.WriteLine(r.Row.Code);
 			}
 			UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue);
 		}
 
-		[Test]
-		public void CheckZatr_352_PLAN_301_Single_Call()
-		{
-			MakeSingleCallOnCases("CheckZatr_352_PLAN_301");
-		}
-		[Test]
-		public void CheckZatr_352_PLAN_301_Single_Call_Serial()
-		{
-			MakeSingleCallOnCasesSerial("CheckZatr_352_PLAN_301");
-		}
-
 		private void UnifiedStandardExistedValueTest(string rowcode, string colcode, int obj, int year, int period,
 		                                             decimal checkvalue) {
-			var q = new ZexQuery
+			var q = new Query
 				{Row = {Code = rowcode}, Col = {Code = colcode}, Obj = {Id = obj}, Time = {Year = year, Period = period}};
 			var t = session.RegisterAsync(q);
 			session.Execute();
-			if(null!=t.Result) {
+			if (null != t.Result) {
 				var result = t.Result.GetResult().NumericResult;
 				Console.WriteLine(result);
 				if (checkvalue != result) {
@@ -193,12 +179,12 @@ namespace Zeta.Extreme.Core.Tests
 						Console.WriteLine(query.Value.Row.Code + "\t" + query.Value.Result.NumericResult);
 					}
 				}
-				Assert.AreEqual(Math.Round(checkvalue,2),Math.Round(result,2));
-			}else {
+				Assert.AreEqual(Math.Round(checkvalue, 2), Math.Round(result, 2));
+			}
+			else {
 				Assert.Ignore("filtered rows");
 			}
 		}
-
 
 
 		[TestCase("m1122100", "PLAN", 1046, 2012, 301, 301064.000000)]
@@ -217,25 +203,20 @@ namespace Zeta.Extreme.Core.Tests
 		[TestCase("m1122500", "PLAN", 1046, 2012, 301, 1727.000000)]
 		[TestCase("m212203", "PLAN", 536, 2012, 301, 823417.000000)]
 		[TestCase("m212270", "PLAN", 1046, 2012, 301, 9420.000000)]
-		public void Check_Prib_352_PLAN_301(string rowcode, string colcode, int obj, int year, int period, decimal checkvalue)
-		{
+		public void Check_Prib_352_PLAN_301(string rowcode, string colcode, int obj, int year, int period, decimal checkvalue) {
 			UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue);
-		}
-		[Test]
-		public void Check_Prib_352_PLAN_301_Single_Call() {
-			MakeSingleCallOnCases("Check_Prib_352_PLAN_301");
 		}
 
 		private void MakeSingleCallOnCases(string methodname) {
 			var sources =
-				this.GetType().GetMethod(methodname).GetCustomAttributes(typeof (TestCaseAttribute), true).OfType
-					<TestCaseAttribute>().OrderBy(_=>_.Arguments[0]).ToArray();
-			session = new ZexSession(true);
+				GetType().GetMethod(methodname).GetCustomAttributes(typeof (TestCaseAttribute), true).OfType
+					<TestCaseAttribute>().OrderBy(_ => _.Arguments[0]).ToArray();
+			session = new Session(true);
 			session.TraceQuery = true;
-			int i = 0;
+			var i = 0;
 			IDictionary<string, decimal> checkvalues = new Dictionary<string, decimal>();
 			foreach (var s in sources) {
-				i++;				
+				i++;
 				var r = (string) s.Arguments[0];
 				var c = (string) s.Arguments[1];
 				var o = (int) s.Arguments[2];
@@ -244,61 +225,59 @@ namespace Zeta.Extreme.Core.Tests
 				var v = (decimal) ((double) s.Arguments[5]);
 				var key = r;
 				checkvalues[key] = v;
-				var q = new ZexQuery {Row = {Code = r}, Col = {Code = c}, Obj = {Id = o}, Time = {Year = y, Period = p}};
+				var q = new Query {Row = {Code = r}, Col = {Code = c}, Obj = {Id = o}, Time = {Year = y, Period = p}};
 				session.RegisterAsync(q, key);
 			}
 			session.Execute();
-			bool fail = false;
+			var fail = false;
 			foreach (var v in checkvalues) {
-				Assert.True(session.Registry.ContainsKey(v.Key),v.Key);
+				Assert.True(session.Registry.ContainsKey(v.Key), v.Key);
 				var res = session.Registry[v.Key];
 				var equal = Math.Round(v.Value, 2) == Math.Round(res.GetResult().NumericResult, 2);
-				if(!equal) {
+				if (!equal) {
 					fail = true;
-					Console.WriteLine(v.Key + " "+res.UID+ " : " + Math.Round(v.Value, 2) + " : " + Math.Round(res.GetResult().NumericResult, 2));
-					if(null!=res.TraceList) {
-						foreach(var s in res.TraceList) {
+					Console.WriteLine(v.Key + " " + res.UID + " : " + Math.Round(v.Value, 2) + " : " +
+					                  Math.Round(res.GetResult().NumericResult, 2));
+					if (null != res.TraceList) {
+						foreach (var s in res.TraceList) {
 							Console.WriteLine(s);
 						}
 					}
 				}
 			}
-			if(fail) {
+			if (fail) {
 				Assert.Fail("errors in comparison");
 			}
 		}
-		private void MakeSingleCallOnCasesSerial(string methodname)
-		{
+
+		private void MakeSingleCallOnCasesSerial(string methodname) {
 			var sources =
-				this.GetType().GetMethod(methodname).GetCustomAttributes(typeof(TestCaseAttribute), true).OfType
+				GetType().GetMethod(methodname).GetCustomAttributes(typeof (TestCaseAttribute), true).OfType
 					<TestCaseAttribute>().ToArray();
-			session = new ZexSession(true);
+			session = new Session(true);
 			var serial = session.AsSerial();
-			int i = 0;
+			var i = 0;
 			IDictionary<string, decimal> checkvalues = new Dictionary<string, decimal>();
-			bool fail = false;
-			foreach (var s in sources)
-			{
+			var fail = false;
+			foreach (var s in sources) {
 				i++;
 
-				var r = (string)s.Arguments[0];
-				var c = (string)s.Arguments[1];
-				var o = (int)s.Arguments[2];
-				var y = (int)s.Arguments[3];
-				var p = (int)s.Arguments[4];
-				var v = (decimal)((double)s.Arguments[5]);
-				var q = new ZexQuery { Row = { Code = r }, Col = { Code = c }, Obj = { Id = o }, Time = { Year = y, Period = p } };
+				var r = (string) s.Arguments[0];
+				var c = (string) s.Arguments[1];
+				var o = (int) s.Arguments[2];
+				var y = (int) s.Arguments[3];
+				var p = (int) s.Arguments[4];
+				var v = (decimal) ((double) s.Arguments[5]);
+				var q = new Query {Row = {Code = r}, Col = {Code = c}, Obj = {Id = o}, Time = {Year = y, Period = p}};
 				var res = serial.Eval(q);
 				var equal = Math.Round(v, 2) == Math.Round(res.NumericResult, 2);
-				if (!equal)
-				{
+				if (!equal) {
 					fail = true;
 					Console.WriteLine(r + " : " + Math.Round(v, 2) + " : " + Math.Round(res.NumericResult, 2));
 				}
 			}
-			
-			if (fail)
-			{
+
+			if (fail) {
 				Assert.Fail("errors in comparison");
 			}
 		}
@@ -348,24 +327,38 @@ namespace Zeta.Extreme.Core.Tests
 		[TestCase("m1111530", "PLAN", 467, 2012, 301, 3795.000000)]
 		[TestCase("m111800", "PLAN", 1046, 2012, 301, 55993.000000)]
 		[TestCase("m111801", "PLAN", 1046, 2012, 301, 55993.000000)]
-		public void Check_Balans_MIX_PLAN_301(string rowcode, string colcode, int obj, int year, int period, decimal checkvalue)
-		{
-			var t =Task.Run(()=>UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue));
+		public void Check_Balans_MIX_PLAN_301(string rowcode, string colcode, int obj, int year, int period,
+		                                      decimal checkvalue) {
+			var t = Task.Run(() => UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue));
 			t.Wait(1000);
-		}
-
-		[Test]
-		public void Check_Balans_MIX_PLAN_301_Single_Call()
-		{
-			MakeSingleCallOnCases("Check_Balans_MIX_PLAN_301");
 		}
 
 		[TestCase("m111800", "PLAN", 1046, 2012, 301, 55993.000000)]
 		[TestCase("m111801", "PLAN", 1046, 2012, 301, 55993.000000)]
 		[TestCase("m111802", "PLAN", 1046, 2012, 301, -303733.000000)] //obsolete
-		public void Check_Balans_BUG_PLAN_301(string rowcode, string colcode, int obj, int year, int period, decimal checkvalue)
-		{
+		public void Check_Balans_BUG_PLAN_301(string rowcode, string colcode, int obj, int year, int period,
+		                                      decimal checkvalue) {
 			UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue);
+		}
+
+		[Test]
+		public void CheckZatr_352_PLAN_301_Single_Call() {
+			MakeSingleCallOnCases("CheckZatr_352_PLAN_301");
+		}
+
+		[Test]
+		public void CheckZatr_352_PLAN_301_Single_Call_Serial() {
+			MakeSingleCallOnCasesSerial("CheckZatr_352_PLAN_301");
+		}
+
+		[Test]
+		public void Check_Balans_MIX_PLAN_301_Single_Call() {
+			MakeSingleCallOnCases("Check_Balans_MIX_PLAN_301");
+		}
+
+		[Test]
+		public void Check_Prib_352_PLAN_301_Single_Call() {
+			MakeSingleCallOnCases("Check_Prib_352_PLAN_301");
 		}
 
 		//[TestCase("m260531", "PLAN", 536, 2012, 301, 21600.000000)]

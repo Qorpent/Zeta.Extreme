@@ -1,3 +1,14 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : SerialAcessTest.cs
+// Project: Zeta.Extreme.Core.Tests
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,20 +21,7 @@ using Zeta.Extreme.Core.Tests.CoreTests;
 
 namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]
-	public class SerialAcessTest :SessionTestBase
-	{
-		private IZetaRow _row;
-		private IZetaColumn _col;
-		private IZetaMainObject _obj;
-		private ISerialSession _serial;
-
-		IEnumerable<ZexQuery> _getQueries() {
-			foreach(var r in _row.AllChildren) {
-				yield return
-					new ZexQuery {Row = {Native = r}, Col = {Native = _col}, Obj = {Native = _obj}, Time = {Year = 2012, Period = 301}}
-					;
-			}
-		}
+	public class SerialAcessTest : SessionTestBase {
 		[SetUp]
 		public override void setup() {
 			base.setup();
@@ -33,51 +31,21 @@ namespace Zeta.Extreme.Core.Tests {
 			_serial = session.AsSerial();
 		}
 
-		[Test]
-		public void SynchronousModeWorks() {
-			var controlsum = RunSync();
-			Console.WriteLine(controlsum);
-		}
+		private IZetaRow _row;
+		private IZetaColumn _col;
+		private IZetaMainObject _obj;
+		private ISerialSession _serial;
 
-		[Test]
-		public void AsynchronousModeWorks()
-		{
-			var controlsum = RunAsync();
-			Console.WriteLine(controlsum);
-		}
-		[Test]
-		[Explicit]
-		public void TestBenchmark() {
-			RunSync();//remove cache issues
-			var sw = Stopwatch.StartNew();
-			for(var i=0;i<50;i++) {
-				Console.Write(".");
-				RunSync(20);
-				
+		private IEnumerable<Query> _getQueries() {
+			foreach (var r in _row.AllChildren) {
+				yield return
+					new Query {Row = {Native = r}, Col = {Native = _col}, Obj = {Native = _obj}, Time = {Year = 2012, Period = 301}}
+					;
 			}
-			sw.Stop();
-			Console.WriteLine();
-			Console.WriteLine("====================");
-			Console.WriteLine();
-			var synctime = sw.Elapsed;
-			Console.WriteLine("synctime: " +synctime );
-
-			sw = Stopwatch.StartNew();
-			for (var i = 0; i < 50; i++)
-			{
-				Console.Write(".");
-				RunAsync(20);
-			}
-			sw.Stop();
-			var asynctime = sw.Elapsed;
-			Console.WriteLine();
-			Console.WriteLine("====================");
-			Console.WriteLine();
-			Console.WriteLine("asynctime: " + asynctime);
 		}
 
 		private decimal RunSync(int lag = 0) {
-			session = new ZexSession(true);
+			session = new Session(true);
 			var controlsum = 0m;
 			foreach (var q in _getQueries()) {
 				var result = _serial.Eval(q).NumericResult;
@@ -88,8 +56,7 @@ namespace Zeta.Extreme.Core.Tests {
 			return controlsum;
 		}
 
-		private decimal RunAsync(int lag = 0)
-		{
+		private decimal RunAsync(int lag = 0) {
 			var controlsum = 0m;
 			foreach (var q in _getQueries()) {
 				var t = _serial.EvalAsync(q);
@@ -101,8 +68,49 @@ namespace Zeta.Extreme.Core.Tests {
 				controlsum += result.NumericResult;
 			}
 
-			
+
 			return controlsum;
+		}
+
+		[Test]
+		public void AsynchronousModeWorks() {
+			var controlsum = RunAsync();
+			Console.WriteLine(controlsum);
+		}
+
+		[Test]
+		public void SynchronousModeWorks() {
+			var controlsum = RunSync();
+			Console.WriteLine(controlsum);
+		}
+
+		[Test]
+		[Explicit]
+		public void TestBenchmark() {
+			RunSync(); //remove cache issues
+			var sw = Stopwatch.StartNew();
+			for (var i = 0; i < 50; i++) {
+				Console.Write(".");
+				RunSync(20);
+			}
+			sw.Stop();
+			Console.WriteLine();
+			Console.WriteLine("====================");
+			Console.WriteLine();
+			var synctime = sw.Elapsed;
+			Console.WriteLine("synctime: " + synctime);
+
+			sw = Stopwatch.StartNew();
+			for (var i = 0; i < 50; i++) {
+				Console.Write(".");
+				RunAsync(20);
+			}
+			sw.Stop();
+			var asynctime = sw.Elapsed;
+			Console.WriteLine();
+			Console.WriteLine("====================");
+			Console.WriteLine();
+			Console.WriteLine("asynctime: " + asynctime);
 		}
 	}
 }

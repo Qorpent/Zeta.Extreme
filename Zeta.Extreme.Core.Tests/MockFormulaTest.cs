@@ -1,127 +1,126 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : MockFormulaTest.cs
+// Project: Zeta.Extreme.Core.Tests
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 
-namespace Zeta.Extreme.Core.Tests
-{
+namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]
-	public class MockFormulaTest:SessionTestBase
-	{
-		private ZexQuery _mquery;
-		private ZexQuery _mquery_ss;
+	public class MockFormulaTest : SessionTestBase {
+		[SetUp]
+		public override void setup() {
+			base.setup();
+			FormulaStorage.Default.Register(new FormulaRequest {Key = "r1", PreparedType = typeof (MockFormula)});
+			FormulaStorage.Default.Register(new FormulaRequest {Key = "r2", PreparedType = typeof (MockSubsessionFormula)});
+			//need uppercase code for RowCache propose
+			RowCache.bycode["R1"] = new row {Id = -123, Code = "r1", IsFormula = true, Formula = "f1", FormulaEvaluator = "mock"};
+			RowCache.bycode["R2"] = new row {Id = -124, Code = "r2", IsFormula = true, Formula = "f2", FormulaEvaluator = "mock"};
+			_mquery = new Query {Row = {Code = "r1"}};
+			_mquery_ss = new Query
+				{Row = {Code = "r2"}, Col = {Code = "PLAN"}, Obj = {Id = 352}, Time = {Year = 2012, Period = 301}};
+		}
+
+		private Query _mquery;
+		private Query _mquery_ss;
 
 		public class MockFormula : IFormula {
-			
-			private int _result;
-
 			/// <summary>
-			/// Настраивает формулу на конкретный переданный запрос
+			/// 	Настраивает формулу на конкретный переданный запрос
 			/// </summary>
-			/// <param name="query"></param>
-			public void Init(ZexQuery query) {
+			/// <param name="query"> </param>
+			public void Init(Query query) {
 				_result = query.Row.Id;
 			}
 
 			/// <summary>
-			/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
+			/// 	Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 			/// </summary>
 			/// <param name="query"> </param>
-			public void Playback(ZexQuery query) {
-				
-			}
+			public void Playback(Query query) {}
 
 			/// <summary>
-			/// Команда вычисления результата
+			/// 	Команда вычисления результата
 			/// </summary>
-			/// <returns></returns>
-			/// <remarks>В принципе кроме вычисления результата формула не должна ничего уметь</remarks>
+			/// <returns> </returns>
+			/// <remarks>
+			/// 	В принципе кроме вычисления результата формула не должна ничего уметь
+			/// </remarks>
 			public QueryResult Eval() {
 				return new QueryResult(_result);
 			}
 
 			/// <summary>
-			/// Выполняет очистку ресурсов формулы после использования
+			/// 	Выполняет очистку ресурсов формулы после использования
 			/// </summary>
-			public void CleanUp() {
-				
-			}
+			public void CleanUp() {}
+
+			private int _result;
 		}
 
 		public class MockSubsessionFormula : IFormula {
-			private ZexQuery _subquery;
-			private ISerialSession _session;
-			private ZexSession _mastersession;
-
-
 			/// <summary>
-			/// Настраивает формулу на конкретный переданный запрос
+			/// 	Настраивает формулу на конкретный переданный запрос
 			/// </summary>
-			/// <param name="query"></param>
-			public void Init(ZexQuery query) {
-				_subquery = new ZexQueryDelta {RowCode = "m1122350",ObjId = 1046}.Apply(query);
-				if(null==query.Session) {
-					_session = new ZexSession().AsSerial();
-				}else {
+			/// <param name="query"> </param>
+			public void Init(Query query) {
+				_subquery = new QueryDelta {RowCode = "m1122350", ObjId = 1046}.Apply(query);
+				if (null == query.Session) {
+					_session = new Session().AsSerial();
+				}
+				else {
 					_mastersession = query.Session;
 					_session = query.Session.GetSubSession();
 				}
 			}
 
 			/// <summary>
-			/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
+			/// 	Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 			/// </summary>
 			/// <param name="query"> </param>
-			public void Playback(ZexQuery query) {
-				
-			}
+			public void Playback(Query query) {}
 
 			/// <summary>
-			/// Команда вычисления результата
+			/// 	Команда вычисления результата
 			/// </summary>
-			/// <returns></returns>
-			/// <remarks>В принципе кроме вычисления результата формула не должна ничего уметь</remarks>
+			/// <returns> </returns>
+			/// <remarks>
+			/// 	В принципе кроме вычисления результата формула не должна ничего уметь
+			/// </remarks>
 			public QueryResult Eval() {
 				return _session.Eval(_subquery);
 			}
 
 			public void CleanUp() {
-				if(null!=_mastersession && null!=_session) {
+				if (null != _mastersession && null != _session) {
 					_mastersession.Return(_session);
 				}
 			}
-		}
 
-		[SetUp]
-		public override void setup() {
-			base.setup();
-			FormulaStorage.Default.Register(new FormulaRequest {Key = "f1", PreparedType = typeof (MockFormula)});
-			FormulaStorage.Default.Register(new FormulaRequest { Key = "f2", PreparedType = typeof(MockSubsessionFormula) });
-			//need uppercase code for RowCache propose
-			RowCache.bycode["R1"] = new row {Id = -123, Code = "r1", IsFormula = true, Formula = "f1",FormulaEvaluator = "mock"};
-			RowCache.bycode["R2"] = new row { Id = -124, Code = "r1", IsFormula = true, Formula = "f2", FormulaEvaluator = "mock" };
-			_mquery = new ZexQuery {Row = {Code = "r1"}};
-			_mquery_ss = new ZexQuery { Row = { Code = "r2" }, Col={Code="PLAN"},Obj={Id=352},Time={Year=2012,Period=301} };
-			
+			private Session _mastersession;
+			private ISerialSession _session;
+			private Query _subquery;
 		}
 
 		[Test]
 		public void CanEvalMockFormula() {
 			var result = _serial.Eval(_mquery);
-			Assert.AreEqual(-123,result.NumericResult);
+			Assert.AreEqual(-123, result.NumericResult);
 		}
 
 		[Test]
-		public void CanEvalMockSubsessionFormula()
-		{
+		public void CanEvalMockSubsessionFormula() {
 			var result = _serial.Eval(_mquery_ss);
 			Assert.AreEqual(11840m, result.NumericResult);
 		}
-
 	}
 }

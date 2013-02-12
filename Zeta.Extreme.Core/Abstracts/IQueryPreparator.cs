@@ -2,7 +2,7 @@
 
 // Copyright 2012-2013 Media Technology LTD 
 // Solution: Qorpent.TextExpert
-// Original file : IZexPreloadProcessor.cs
+// Original file : IZexQueryPreparator.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -11,15 +11,14 @@
 
 namespace Zeta.Extreme {
 	/// <summary>
-	/// 	Интерфейс службы, выполняющей работы по доводке запроса ДО входа в расчетчик
-	/// 	и ДО определения кэша запроса
+	/// 	Описывает исполнителя фазы подготовки запроса
 	/// </summary>
-	public interface IZexPreloadProcessor {
+	public interface IQueryPreparator {
 		/// <summary>
-		/// 	выполняет препроцессинг
+		/// 	Выполняет подготовку запроса к выполнению
+		/// 	выполняется после препроцессора и проверок
 		/// </summary>
 		/// <param name="query"> </param>
-		/// <returns> </returns>
-		ZexQuery Process(ZexQuery query);
+		void Prepare(Query query);
 	}
 }

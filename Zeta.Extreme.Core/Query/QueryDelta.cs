@@ -21,14 +21,14 @@ namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Описывает потенциальный подзапрос для оптимизации расчета сумм и простых формул
 	/// </summary>
-	public sealed class ZexQueryDelta {
+	public sealed class QueryDelta {
 		/// <summary>
 		/// 	Применяет смещение к целевому запросу
 		/// 	Если есть изменения - то правильно создает копии и переписывает кэш-строку
 		/// </summary>
 		/// <param name="target"> </param>
 		/// <returns> </returns>
-		public ZexQuery Apply(ZexQuery target) {
+		public Query Apply(Query target) {
 			lock (this) {
 				if (NoChanges(target)) {
 					return target;
@@ -48,8 +48,8 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="match"> </param>
 		/// <returns> </returns>
-		public static ZexQueryDelta CreateFromMatch(Match match) {
-			var delta = new ZexQueryDelta();
+		public static QueryDelta CreateFromMatch(Match match) {
+			var delta = new QueryDelta();
 			var s = match.Groups["s"].Value != "-";
 			var r = match.Groups["r"].Value;
 			var c = match.Groups["c"].Value;
@@ -138,7 +138,7 @@ namespace Zeta.Extreme {
 			return s.ToString();
 		}
 
-		private void MoveTime(ZexQuery result) {
+		private void MoveTime(Query result) {
 			if ((Year != 0 && Year != result.Time.Year) || (Period != 0 && Period != result.Time.Period)) {
 				result.Time = result.Time.Copy();
 				if (0 != Year && Year < 1900) {
@@ -160,7 +160,7 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		private void MoveColumn(ZexQuery result) {
+		private void MoveColumn(Query result) {
 			if (null != Col) {
 				if (Col != result.Col.Native) {
 					result.Col = new ColumnHandler {Native = Col};
@@ -177,7 +177,7 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		private void MoveRow(ZexQuery result) {
+		private void MoveRow(Query result) {
 			if (null != Row) {
 				if (Row != result.Row.Native) {
 					result.Row = new RowHandler {Native = Row};
@@ -194,7 +194,7 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		private void MoveObj(ZexQuery result) {
+		private void MoveObj(Query result) {
 			if (null != Obj) {
 				if (Obj != result.Obj.Native) {
 					result.Obj = new ObjHandler {Native = Obj};
@@ -212,7 +212,7 @@ namespace Zeta.Extreme {
 		}
 
 
-		private bool NoChanges(ZexQuery target) {
+		private bool NoChanges(Query target) {
 			if (0 > Period) {
 				return false; //формульный период
 			}

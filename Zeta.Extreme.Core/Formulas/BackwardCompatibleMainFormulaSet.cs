@@ -25,7 +25,7 @@ namespace Zeta.Extreme {
 		/// <param name="deltas"></param>
 		/// <remarks>При портировании убрали неопределенности типов - привели к дельтам и числам</remarks>
 		/// <returns></returns>
-		public decimal choose(params ZexQueryDelta[] deltas)
+		public decimal choose(params QueryDelta[] deltas)
 		{
 			foreach(var d in deltas) {
 				var qr = _host.EvalDelta(d);
@@ -113,7 +113,7 @@ namespace Zeta.Extreme {
 		/// <param name="main"></param>
 		/// <param name="other"></param>
 		/// <returns></returns>
-		public object onperiods<T>(int[] periods, ZexQuery query, Func<T> main, Func<T> other)
+		public object onperiods<T>(int[] periods, Query query, Func<T> main, Func<T> other)
 		{
 			if (periods.Contains(query.Time.Period))
 			{
@@ -155,7 +155,7 @@ namespace Zeta.Extreme {
 		/// <param name="main"></param>
 		/// <param name="other"></param>
 		/// <returns></returns>
-		public object onperiods<T>(int[] periods, ZexQueryDelta delta, Func<T> main, Func<T> other)
+		public object onperiods<T>(int[] periods, QueryDelta delta, Func<T> main, Func<T> other)
 		{
 			if (periods.Contains(delta.Apply(_host.Query).Time.Period))
 			{

@@ -81,7 +81,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="session"> </param>
 		/// <param name="column"> </param>
-		public void Normalize(ZexSession session, IZetaColumn column) {
+		public void Normalize(Session session, IZetaColumn column) {
 			if (IsStandaloneSingletonDefinition()) {
 				//try load native
 				Native = RowCache.get(0 == Id ? (object) Code : Id);
@@ -89,7 +89,7 @@ namespace Zeta.Extreme {
 			NormalizeReferencedRows(session, column);
 		}
 
-		private void NormalizeReferencedRows(ZexSession session, IZetaColumn column) {
+		private void NormalizeReferencedRows(Session session, IZetaColumn column) {
 			var initialcode = Code;
 			var proceed = true;
 			while (proceed) {

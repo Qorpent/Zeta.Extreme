@@ -125,7 +125,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="session"> </param>
 		/// <exception cref="NotImplementedException"></exception>
-		public void Normalize(ZexSession session) {
+		public void Normalize(Session session) {
 			if (IsStandaloneSingletonDefinition()) {
 				switch (Type) {
 					case ObjType.Obj:

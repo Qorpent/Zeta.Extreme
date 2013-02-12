@@ -22,19 +22,19 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		/// <returns> </returns>
-		QueryResult Eval(ZexQuery query);
+		QueryResult Eval(Query query);
 
 		/// <summary>
 		/// 	Гарантирует синхронный, последовательный доступ к сессии, вычисляет значение
 		/// </summary>
 		/// <param name="query"> </param>
 		/// <returns> </returns>
-		Task<QueryResult> EvalAsync(ZexQuery query);
+		Task<QueryResult> EvalAsync(Query query);
 
 		/// <summary>
 		/// 	Возвращает ссылку на реальную сессию
 		/// </summary>
 		/// <returns> </returns>
-		ZexSession GetUnderlinedSession();
+		Session GetUnderlinedSession();
 	}
 }

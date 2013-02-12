@@ -51,7 +51,7 @@ namespace Zeta.Extreme {
 		/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 		/// </summary>
 		/// <param name="query"> </param>
-		public override void Playback(ZexQuery query) {
+		public override void Playback(Query query) {
 			Mastersession = query.Session;
 			Query = query;
 			IsInPlayBack = true;
@@ -65,7 +65,7 @@ namespace Zeta.Extreme {
 		/// 	Основной промежуточный метод , все приводит к числу
 		/// </summary>
 		/// <param name="delta"> </param>
-		protected internal decimal EvalDelta(ZexQueryDelta delta) {
+		protected internal decimal EvalDelta(QueryDelta delta) {
 			var query = delta.Apply(Query);
 			if(IsInPlayBack) {
 				Mastersession.Register(query);

@@ -62,7 +62,7 @@ namespace Zeta.Extreme {
 						}
 						if (existed.Formula != request.Formula) {
 							// обслуживаем обновление формул
-							existed.PreparedType = request.PreparedType;
+							existed.PreparedType = request.PreparedType ?? existed.PreparedType;
 							existed.PreprocessedFormula = request.PreprocessedFormula;
 							existed.Cache.Clear();
 							if (null == existed.PreparedType && string.IsNullOrWhiteSpace(existed.PreprocessedFormula)) {

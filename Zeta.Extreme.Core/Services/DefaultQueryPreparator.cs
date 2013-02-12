@@ -24,15 +24,15 @@ namespace Zeta.Extreme {
 	/// 	в том, что запрос полностью нормализован,
 	/// 	уникален и прописан во всех требуемых списках
 	/// </remarks>
-	public class DefaultZexQueryPreparator : IZexQueryPreparator {
+	public class DefaultQueryPreparator : IQueryPreparator {
 		/// <summary>
 		/// 	Основной конструктор, связывает с сессией
 		/// </summary>
 		/// <param name="session"> </param>
-		public DefaultZexQueryPreparator(ZexSession session) {
+		public DefaultQueryPreparator(Session session) {
 			_session = session;
 			_stat = _session.CollectStatistics;
-			_sumh = new ZetaVirtualSumHelper();
+			_sumh = new StrongSumProvider();
 		}
 
 		/// <summary>
@@ -40,7 +40,7 @@ namespace Zeta.Extreme {
 		/// 	выполняется после препроцессора и проверок
 		/// </summary>
 		/// <param name="query"> </param>
-		public void Prepare(ZexQuery query) {
+		public void Prepare(Query query) {
 			if (query.IsPrimary) {
 				RegisterPrimaryRequest(query);
 			}
@@ -52,7 +52,7 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		private void PrepareFormulas(ZexQuery query) {
+		private void PrepareFormulas(Query query) {
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Formula);
 			}
@@ -78,16 +78,16 @@ namespace Zeta.Extreme {
 			query.GetResultTask = _session.RegisterEvalTask(resulttask, false);
 		}
 
-		private void ExpandSum(ZexQuery query) {
+		private void ExpandSum(Query query) {
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Sum);
 			}
-			var subqueries = new List<Tuple<decimal,ZexQuery>>();
+			var subqueries = new List<Tuple<decimal,Query>>();
 			foreach (var r in _sumh.GetSumDelta(query.Row.Native)) {
 				var sq = r.Apply(query);
 				sq = _session.Register(sq);
 				if(null==sq) continue;
-				subqueries.Add(new Tuple<decimal,ZexQuery>(r.Multiplicator,sq));
+				subqueries.Add(new Tuple<decimal,Query>(r.Multiplicator,sq));
 			}
 			var subq = subqueries.ToArray();
 			if (subq.Length == 0) {
@@ -114,23 +114,18 @@ namespace Zeta.Extreme {
 		/// 	Регистрирует первичный запрос
 		/// </summary>
 		/// <param name="query"> </param>
-		protected virtual void RegisterPrimaryRequest(ZexQuery query) {
+		protected virtual void RegisterPrimaryRequest(Query query) {
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Primary);
 			}
-
-			var sqlbuilder = _session.GetSqlBuilder();
-
-			sqlbuilder.PrepareSqlRequest(query);
 			query.GetResultTask = _session.RegisterSqlRequest(query);
 			if(_session.TraceQuery) {
 				query.TraceList.Add(_session.Id + " preq taskid: " + query.GetResultTask.Id);
 			}
-		//	query.Result = new QueryResult {IsComplete = true, Error = new Exception("primaries not supproted by now")};
 		}
 
-		private readonly ZexSession _session;
+		private readonly Session _session;
 		private readonly bool _stat;
-		private readonly ZetaVirtualSumHelper _sumh;
+		private readonly StrongSumProvider _sumh;
 	}
 }

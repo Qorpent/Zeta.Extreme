@@ -25,11 +25,11 @@ namespace Zeta.Extreme {
 	/// 	интерфейсов IQuery, IQueryBuilder, наоборот ZexQuery
 	/// 	создан с учетом оптимизации и минимальной мутации
 	/// </remarks>
-	public sealed class ZexQuery : CacheKeyGeneratorBase {
+	public sealed class Query : CacheKeyGeneratorBase {
 		/// <summary>
 		/// 	Конструктор запроса по умолчанию
 		/// </summary>
-		public ZexQuery() {
+		public Query() {
 			Time = new TimeHandler();
 			Row = new RowHandler();
 			Col = new ColumnHandler();
@@ -65,19 +65,19 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Дочерние запросы
 		/// </summary>
-		public IList<ZexQuery> Children {
-			get { return _children ?? (_children = new List<ZexQuery>()); }
+		public IList<Query> Children {
+			get { return _children ?? (_children = new List<Query>()); }
 		}
 
 		/// <summary>
 		/// 	Родительский запрос
 		/// </summary>
-		public ZexQuery Parent { get; set; }
+		public Query Parent { get; set; }
 
 		/// <summary>
 		/// 	Обратная ссылка на сессию
 		/// </summary>
-		public ZexSession Session { get; set; }
+		public Session Session { get; set; }
 
 		/// <summary>
 		/// 	Проверяет "первичность запроса"
@@ -169,8 +169,8 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="deep"> Если да, то делает копии вложенных измерений </param>
 		/// <returns> </returns>
-		public ZexQuery Copy(bool deep = false) {
-			var result = (ZexQuery) MemberwiseClone();
+		public Query Copy(bool deep = false) {
+			var result = (Query) MemberwiseClone();
 			result.PrepareTask = null;
 			result.GetResultTask = null;
 			result.Result = null;
@@ -191,7 +191,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Стандартная процедура нормализации
 		/// </summary>
-		public void Normalize(ZexSession session = null) {
+		public void Normalize(Session session = null) {
 			var objt = Task.Run(() => Obj.Normalize(session ?? Session)); //объекты зачастую из БД догружаются
 			Time.Normalize(session ?? Session);
 			Col.Normalize(session ?? Session);
@@ -243,7 +243,7 @@ namespace Zeta.Extreme {
 		/// <param name="zetaRow"> </param>
 		/// <param name="selfcopy"> </param>
 		/// <param name="rowcopy"> </param>
-		public ZexQuery ToRow(IZetaRow zetaRow, bool selfcopy = false, bool rowcopy = false) {
+		public Query ToRow(IZetaRow zetaRow, bool selfcopy = false, bool rowcopy = false) {
 			var q = this;
 			if (selfcopy) {
 				q = Copy();
@@ -284,7 +284,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public string CustomHashPrefix;
 
-		private IList<ZexQuery> _children;
+		private IList<Query> _children;
 
 		/// <summary>
 		/// Реестр трассы

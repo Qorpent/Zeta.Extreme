@@ -14,7 +14,7 @@ namespace Zeta.Extreme {
 	/// 	Вспомогательный интерфейс класса для
 	/// 	регистрации запроса в сессии
 	/// </summary>
-	public interface IZexRegistryHelper {
+	public interface IRegistryHelper {
 		/// <summary>
 		/// 	Выполняет регистрацию запроса
 		/// 	возвращает запрос, в итоге зарегистрированный в системе
@@ -22,6 +22,6 @@ namespace Zeta.Extreme {
 		/// <param name="query"> исзодный запрос </param>
 		/// <param name="uid"> </param>
 		/// <returns> итоговый запрос после регистрации </returns>
-		ZexQuery Register(ZexQuery query, string uid);
+		Query Register(Query query, string uid);
 	}
 }

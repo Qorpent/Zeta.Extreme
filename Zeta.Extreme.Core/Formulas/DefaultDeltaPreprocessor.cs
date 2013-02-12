@@ -34,9 +34,9 @@ namespace Zeta.Extreme {
 			if (request.Language == "boo" || request.Language == "cs") {
 				//ограничитель на язык
 				var result = Regex.Replace(currentResult, FormulaParserConstants.FormulaValueVector,
-				                     m => ZexQueryDelta.CreateFromMatch(m).ToCSharpString("EvalDelta"));
+				                     m => QueryDelta.CreateFromMatch(m).ToCSharpString("EvalDelta"));
 				result =  Regex.Replace(result, FormulaParserConstants.FormulaOnlyDeltaVector,
-									 m => ZexQueryDelta.CreateFromMatch(m).ToCSharpString());
+									 m => QueryDelta.CreateFromMatch(m).ToCSharpString());
 									 // совместимость с формулами типа f.choose
 				return result;
 			}

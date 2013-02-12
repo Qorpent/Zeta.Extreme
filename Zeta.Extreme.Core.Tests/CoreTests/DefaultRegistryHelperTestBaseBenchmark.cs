@@ -1,40 +1,61 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : DefaultRegistryHelperTestBaseBenchmark.cs
+// Project: Zeta.Extreme.Core.Tests
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System;
 using System.Diagnostics;
-using System.Threading;
-using Comdiv.Application;
-using Comdiv.Persistence;
-using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
 using NUnit.Framework;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
 	[TestFixture]
-	public class DefaultRegistryHelperTestBaseBenchmark:SessionTestBase {
-	
-		[Explicit]
-		[Test]
-		public void SyncRegistryOf10000Queries() {
-			
-			var sw = Stopwatch.StartNew();
-			for(var i=0;i<10000;i++) {
-				var q = new ZexQuery {CustomHashPrefix = i.ToString()};
+	public class DefaultRegistryHelperTestBaseBenchmark : SessionTestBase {
+		private void prepareQueries(int i, bool async) {
+			var q = new Query
+				{
+					CustomHashPrefix = i.ToString(),
+					Row = {Codes = new[] {"1", "2", "3"}},
+					Col = {Codes = new[] {"1", "2", "3"}},
+					Obj = {Codes = new[] {"1", "2", "3"}},
+					Time = {Years = new[] {2001, 2002, 2003}, Periods = new[] {1, 2, 3, 4, 5}}
+				};
+			//it forces more complicated behavior
+			if (async) {
+				session.RegisterAsync(q);
+			}
+			else {
 				session.Register(q);
 			}
-			sw.Stop();
-			Console.WriteLine(sw.ElapsedMilliseconds);
-			Console.WriteLine(session.Registry.Count);
-			Assert.AreEqual(10000,session.Registry.Count);
-			Assert.Less(sw.ElapsedMilliseconds, 100000);
+			q = new Query
+				{
+					CustomHashPrefix = i.ToString() + "x",
+					Time = {BasePeriod = 12, Period = -204, BaseYear = 2012, Year = -1},
+					Row = {Code = "m260113"},
+					Col = {Code = "Á1"},
+					Obj = {Id = 352, Type = ObjType.Obj}
+				};
+
+			//it forces more complicated behavior
+			if (async) {
+				session.RegisterAsync(q);
+			}
+			else {
+				session.Register(q);
+			}
 		}
 
 		[Explicit]
 		[Test]
-		public void ASyncRegistryOf10000Queries()
-		{
+		public void ASyncRegistryOf10000Queries() {
 			var sw = Stopwatch.StartNew();
-			for (var i = 0; i < 10000; i++)
-			{
-				var q = new ZexQuery { CustomHashPrefix = i.ToString() };
+			for (var i = 0; i < 10000; i++) {
+				var q = new Query {CustomHashPrefix = i.ToString()};
 				session.RegisterAsync(q);
 			}
 			session.WaitPreparation();
@@ -48,14 +69,11 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 
 		[Explicit]
 		[Test]
-		public void ASyncRegistryOf10000QueriesDoubles()
-		{
-
+		public void ASyncRegistryOf10000QueriesDoubles() {
 			var sw = Stopwatch.StartNew();
-			for (var i = 0; i < 10000; i++)
-			{
-				var q = new ZexQuery { CustomHashPrefix = (i % 500).ToString() };
-				
+			for (var i = 0; i < 10000; i++) {
+				var q = new Query {CustomHashPrefix = (i%500).ToString()};
+
 				session.RegisterAsync(q);
 			}
 			session.WaitPreparation();
@@ -69,14 +87,10 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 
 		[Explicit]
 		[Test]
-		public void ComplexRegistryTest([Values(20000,10000, 30000, 40000, 50000, 100000)]int cnt)
-		{
-			
-			
+		public void ComplexRegistryTest([Values(20000, 10000, 30000, 40000, 50000, 100000)] int cnt) {
 			var sw = Stopwatch.StartNew();
-			for (var i = 0; i < cnt; i++)
-			{
-				prepareQueries(i,true);
+			for (var i = 0; i < cnt; i++) {
+				prepareQueries(i, true);
 			}
 			session.WaitPreparation();
 			sw.Stop();
@@ -85,13 +99,12 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			Console.WriteLine(session.Registry.Count);
 			Assert.AreEqual(cnt*2, session.Registry.Count);
 			Console.WriteLine(session.GetStatisticString());
-		
-			session = new ZexSession(true);
+
+			session = new Session(true);
 
 			sw = Stopwatch.StartNew();
-			for (var i = 0; i < cnt; i++)
-			{
-				prepareQueries(i,false);
+			for (var i = 0; i < cnt; i++) {
+				prepareQueries(i, false);
 			}
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
@@ -104,30 +117,19 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			//Assert.Greater(synctime/3,asynctime);
 		}
 
-		private void prepareQueries(int i, bool async) {
-			var q = new ZexQuery
-				{
-					CustomHashPrefix = i.ToString(),
-					Row = {Codes = new[] {"1", "2", "3"}},
-					Col = {Codes = new[] {"1", "2", "3"}},
-					Obj = {Codes = new[] {"1", "2", "3"}},
-					Time = {Years = new[] {2001, 2002, 2003}, Periods = new[] {1, 2, 3, 4, 5}}
-				};
-			//it forces more complicated behavior
-			if(async)session.RegisterAsync(q);
-			else session.Register(q);
-			q = new ZexQuery
-				{
-					CustomHashPrefix = i.ToString() + "x", 
-					Time = {BasePeriod = 12, Period = -204, BaseYear = 2012, Year = -1},
-					Row = { Code = "m260113" },
-					Col = { Code = "Á1" },
-					Obj = { Id = 352, Type = ObjType.Obj }
-				};
-
-			//it forces more complicated behavior
-			if (async) session.RegisterAsync(q);
-			else session.Register(q);
+		[Explicit]
+		[Test]
+		public void SyncRegistryOf10000Queries() {
+			var sw = Stopwatch.StartNew();
+			for (var i = 0; i < 10000; i++) {
+				var q = new Query {CustomHashPrefix = i.ToString()};
+				session.Register(q);
+			}
+			sw.Stop();
+			Console.WriteLine(sw.ElapsedMilliseconds);
+			Console.WriteLine(session.Registry.Count);
+			Assert.AreEqual(10000, session.Registry.Count);
+			Assert.Less(sw.ElapsedMilliseconds, 100000);
 		}
 	}
 }

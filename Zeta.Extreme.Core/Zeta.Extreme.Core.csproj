@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="Abstracts\CacheKeyGeneratorBase.cs" />
     <Compile Include="Abstracts\CachedItemHandlerBase.cs" />
-    <Compile Include="Abstracts\IZexQueryPreparator.cs" />
+    <Compile Include="Abstracts\IQueryPreparator.cs" />
     <Compile Include="Extensions\ISerialSession.cs" />
     <Compile Include="Extensions\SerialAccessExtensions.cs" />
     <Compile Include="Extensions\SerialSession.cs" />
@@ -63,26 +63,24 @@
     <Compile Include="Formulas\IFormulaStorage.cs" />
     <Compile Include="Formulas\FormulaParserConstants.cs" />
     <Compile Include="Formulas\SessionAttachedFormulaBase.cs" />
-    <Compile Include="Query\ZetaVirtualSumHelper.cs" />
-    <Compile Include="Query\ZexQueryDelta.cs" />
-    <Compile Include="Services\DefaultZexSqlBuilder.cs" />
-    <Compile Include="Abstracts\IZexSqlBuilder.cs" />
-    <Compile Include="Services\DefaultZexQueryPreparator.cs" />
+    <Compile Include="Query\StrongSumProvider.cs" />
+    <Compile Include="Query\QueryDelta.cs" />
+    <Compile Include="Services\DefaultQueryPreparator.cs" />
     <Compile Include="Query\QueryResult.cs" />
     <Compile Include="Query\ColumnHandler.cs" />
     <Compile Include="Query\DefaultPeriodEvaluator.cs" />
     <Compile Include="Query\IPeriodEvaluator.cs" />
     <Compile Include="Query\RowTreeUsage.cs" />
     <Compile Include="Query\ObjType.cs" />
-    <Compile Include="Services\DefaultZexPreloadProcessor.cs" />
-    <Compile Include="Services\DefaultZexRegistryHelper.cs" />
-    <Compile Include="Abstracts\IZexPreloadProcessor.cs" />
-    <Compile Include="Abstracts\IZexRegistryHelper.cs" />
+    <Compile Include="Services\DefaultPreloadProcessor.cs" />
+    <Compile Include="Services\DefaultRegistryHelper.cs" />
+    <Compile Include="Abstracts\IPreloadProcessor.cs" />
+    <Compile Include="Abstracts\IRegistryHelper.cs" />
     <Compile Include="Query\RowHandler.cs" />
     <Compile Include="Query\TimeHandler.cs" />
-    <Compile Include="Query\ZexQuery.cs" />
+    <Compile Include="Query\Query.cs" />
     <Compile Include="Query\ObjHandler.cs" />
-    <Compile Include="ZexSession.cs" />
+    <Compile Include="Session.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data" />
