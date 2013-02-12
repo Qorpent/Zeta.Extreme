@@ -43,6 +43,14 @@ namespace Zeta.Extreme.Core.Tests {
 			}
 
 			/// <summary>
+			/// Устанавливает контекст использования формулы
+			/// </summary>
+			/// <param name="request"></param>
+			public void SetContext(FormulaRequest request) {
+				
+			}
+
+			/// <summary>
 			/// 	Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 			/// </summary>
 			/// <param name="query"> </param>
@@ -81,6 +89,14 @@ namespace Zeta.Extreme.Core.Tests {
 					_mastersession = query.Session;
 					_session = query.Session.GetSubSession();
 				}
+			}
+
+			/// <summary>
+			/// Устанавливает контекст использования формулы
+			/// </summary>
+			/// <param name="request"></param>
+			public void SetContext(FormulaRequest request) {
+				
 			}
 
 			/// <summary>

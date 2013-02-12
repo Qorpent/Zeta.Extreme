@@ -19,6 +19,11 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		void Init(Query query);
+		/// <summary>
+		/// Устанавливает контекст использования формулы
+		/// </summary>
+		/// <param name="request"></param>
+		void SetContext(FormulaRequest request);
 
 		/// <summary>
 		/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений

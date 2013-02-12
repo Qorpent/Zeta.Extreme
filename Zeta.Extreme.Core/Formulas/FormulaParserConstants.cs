@@ -14,33 +14,83 @@ namespace Zeta.Extreme {
 	/// 	Содержит различные константы для парсинга формул и псевдо-сумм
 	/// </summary>
 	public static class FormulaParserConstants {
+
+
+		/// <summary>
+		/// Таг, который может использоваться в строке или столбце для обозначения игнорируемых формул
+		/// </summary>
+		public const string IgnoreFormulaTag = "noextreme";
+
+		/// <summary>
+		/// Паттерн смещения по строке
+		/// </summary>
+		public const string RowPattern = @"\$(?<r>[\w\d]+)";
+
+		/// <summary>
+		/// Паттерн смещения по колонке
+		/// </summary>
+		public const string ColPattern = @"\@(?<c>[\w\d]+)";
+
+		/// <summary>
+		/// Паттерн смещения по объекту
+		/// </summary>
+		public const string ObjPattern = @"((\.toobj\(\s*(?<o>\d+)\s*\))?)"; //сразу настраивается как опицональный
+
+		/// <summary>
+		/// Паттерн смещения по году
+		/// </summary>
+		public const string YearPattern = @"((\.Y(?<ys>-)?(?<y>\d+))?)";
+
+		/// <summary>
+		/// Паттерн по одному периоду
+		/// </summary>
+		public const string PeriodPattern = @"((\.P(?<ps>-)?(?<p>\d+))?)";
+
+		/// <summary>
+		/// Паттерн на несколько периодов
+		/// </summary>
+		public const string PeriodsPattern = @"((\.P\((?<pds>[\d,]+)\))?)";
+
+		/// <summary>
+		/// Паттерн смещения по строке
+		/// </summary>
+		public const string ColOrRowPattern ="(("+RowPattern+")|("+ColPattern+"))";
+
+		/// <summary>
+		/// Паттерн смещения по строке
+		/// </summary>
+		public const string ColOrRowOptionalPattern = "("+ColOrRowPattern + "?"+")";
+
+		/// <summary>
+		/// Вариант между одним или несколькими периодами
+		/// </summary>
+		public const string PeriodOrPeriodsPattern = "(((" + PeriodPattern + ")|(" + PeriodsPattern + "))?)";
+
+		/// <summary>
+		/// Общий паттерн выражения дельты
+		/// </summary>
+		public const string DeltaPattern = 
+				ColOrRowPattern+
+				ColOrRowOptionalPattern+
+				ObjPattern+
+				YearPattern+
+				PeriodOrPeriodsPattern;
+
+		/// <summary>
+		/// Шаблон вызова дельты
+		/// </summary>
+		public const string CallDeltaPattern = DeltaPattern + "\\?";
 		/// <summary>
 		/// 	Регулярное выражение оценки и разбора суммовых формул
 		/// </summary>
-		public const string PseudoSumPattern =
-			@"^\s*(-?\s*\$[\w\d]+(@[\w\d]+)?(\.toobj\(\s*\d+\s*\))?(\.Y-?\d+)?(\.P-?\d+)?\?)(((\s*[+-]\s*)|\s+)\$[\w\d]+(@[\w\d]+)?(\.Y-?\d+)?(\.P-?\d+)?\?)*\s*$";
+		public const string PseudoSumPattern = @"^\s*-?\s*"+CallDeltaPattern+@"(((\s*[+-]\s*)|\s+)"+CallDeltaPattern+@")*\s*$";
 
 		/// <summary>
 		/// 	Регулярное выражение для выборки отдельного элемента приводимой к сумме формулы
 		/// </summary>
-		public const string PseudoSumVector =
-			@"(?<s>[-+])?\s*\$(?<r>[\w\d]+)(@(?<c>[\w\d]+))?(\.toobj\(\s*(?<o>\d+)\s*\))?(\.Y(?<ys>-)?(?<y>\d+))?(\.P(?<ps>-)?(?<p>\d+))?\?";
+		public const string PseudoSumVector = @"(?<s>[-+])?\s*"+CallDeltaPattern;
 
-		/// <summary>
-		/// 	Регулярное выражение для выборки отдельного элемента формулы
-		/// </summary>
-		public const string FormulaValueVector =
-			@"\$(?<r>[\w\d]+)(@(?<c>[\w\d]+))?(\.toobj\(\s*(?<o>\d+)\s*\))?(\.Y(?<ys>-)?(?<y>\d+))?(\.P(?<ps>-)?(?<p>\d+))?\?";
-		/// <summary>
-		/// 	Регулярное выражение для выборки отдельного элемента формулы
-		/// </summary>
-		public const string FormulaValueVectorColStart =
-			@"@(?<c>[\w\d]+)(\.toobj\(\s*(?<o>\d+)\s*\))?(\.Y(?<ys>-)?(?<y>\d+))?(\.P(?<ps>-)?(?<p>\d+))?\?";
-
-		/// <summary>
-		/// 	Регулярное выражение для выборки отдельного элемента формулы (без вопроса)
-		/// </summary>
-		public const string FormulaOnlyDeltaVector =
-			@"\$(?<r>[\w\d]+)(@(?<c>[\w\d]+))?(\.toobj\(\s*(?<o>\d+)\s*\))?(\.Y(?<ys>-)?(?<y>\d+))?(\.P(?<ps>-)?(?<p>\d+))?";
+		
+		
 	}
 }

@@ -15,7 +15,7 @@ namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Базовая основа для формул, оснванных на переходах исходного запроса
 	/// </summary>
-	public abstract class DeltaFormulaBase : SessionAttachedFormulaBase {
+	public abstract class DeltaFormulaBase : FormulaBase {
 		/// <summary>
 		/// 	Команда вычисления результата - игнорирует деление на ноль, возвращает в этом случае строковый результат
 		/// </summary>
@@ -23,9 +23,12 @@ namespace Zeta.Extreme {
 		/// <remarks>
 		/// 	В принципе кроме вычисления результата формула не должна ничего уметь
 		/// </remarks>
-		public override QueryResult Eval() {
+		protected override QueryResult InternalEval() {
+			if(IsInPlaybackMode) {
+				EvaluateExpression();
+				return null;
+			}
 			try {
-				IsInPlayBack = false;
 				var result = EvaluateExpression();
 				if(result==null) return new QueryResult();
 				if(result is decimal || result is int) {
@@ -42,36 +45,18 @@ namespace Zeta.Extreme {
 				return new QueryResult {IsComplete = false, Error = e};
 			}
 		}
-		/// <summary>
-		/// Флаг нахождения в режиме проигрывания формулы
-		/// </summary>
-		protected bool IsInPlayBack;
-
-		/// <summary>
-		/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
-		/// </summary>
-		/// <param name="query"> </param>
-		public override void Playback(Query query) {
-			Mastersession = query.Session;
-			Query = query;
-			IsInPlayBack = true;
-			EvaluateExpression();
-			Query = null;
-			Mastersession = null;
-		}
-
-
+	
 		/// <summary>
 		/// 	Основной промежуточный метод , все приводит к числу
 		/// </summary>
 		/// <param name="delta"> </param>
-		protected internal decimal EvalDelta(QueryDelta delta) {
+		protected internal decimal Eval(QueryDelta delta) {
 			var query = delta.Apply(Query);
-			if(IsInPlayBack) {
-				Mastersession.Register(query);
-				return 1; //fail-free value
+			if(IsInPlaybackMode) {
+				Session.Register(query);
+				return 0;
 			}
-			var realq = Mastersession.Register(query);
+			var realq = Session.Register(query);
 			if(null==realq) return 0m;
 			var result = realq.GetResult();
 			if(null!=result) {

@@ -13,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -72,8 +74,12 @@ namespace Zeta.Extreme {
 					}
 					else {
 						_registry[request.Key] = request;
-						if (null == request.PreparedType && string.IsNullOrWhiteSpace(request.PreprocessedFormula)) {
-							Preprocess(request);
+						if(TagHelper.Value(request.Tags,FormulaParserConstants.IgnoreFormulaTag).ToBool()) {
+							request.PreparedType = typeof (NoExtremeFormulaStub);
+						}else {
+							if (null == request.PreparedType && string.IsNullOrWhiteSpace(request.PreprocessedFormula)) {
+								Preprocess(request);
+							}
 						}
 					}
 					var waitbatchsize = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).Count();
@@ -119,6 +125,7 @@ namespace Zeta.Extreme {
 						ForceCompilation(request);
 					}
 					var instance = Activator.CreateInstance(request.PreparedType) as IFormula;
+					instance.SetContext(request);
 					return instance;
 				}
 			}
@@ -144,9 +151,24 @@ namespace Zeta.Extreme {
 		public void StartAsyncCompilation() {
 			lock (_compile_lock) {
 				var batch = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).ToArray();
-				var t = Task.Run(() => new FormulaCompiler().Compile(batch));
+				var t = Task.Run(() => DoCompile(batch));
 				foreach (var f in batch) {
 					f.FormulaCompilationTask = t;
+				}
+			}
+		}
+		/// <summary>
+		/// Обертка над вызовом компилятора с корректной обработкой ошибок компиляции
+		/// </summary>
+		/// <param name="batch"></param>
+		protected internal static void DoCompile(FormulaRequest[] batch) {
+			try {
+				new FormulaCompiler().Compile(batch);
+			}
+			catch (Exception e) {
+				foreach (var formulaRequest in batch) {
+					formulaRequest.ErrorInCompilation = e;
+					formulaRequest.PreparedType = typeof (CompileErrorFormulaStub);
 				}
 			}
 		}
@@ -162,7 +184,7 @@ namespace Zeta.Extreme {
 		public void CompileAll() {
 			lock (_compile_lock) {
 				var batch = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).ToArray();
-				new FormulaCompiler().Compile(batch);
+				DoCompile(batch);
 			}
 		}
 
@@ -186,7 +208,7 @@ namespace Zeta.Extreme {
 					return;
 				}
 				// все, значит мы синхронно должны закомпилить это дело
-				new FormulaCompiler().Compile(new[] {request});
+				DoCompile(new[] { request });
 			}
 		}
 

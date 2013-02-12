@@ -28,7 +28,7 @@ namespace Zeta.Extreme {
 		public decimal choose(params QueryDelta[] deltas)
 		{
 			foreach(var d in deltas) {
-				var qr = _host.EvalDelta(d);
+				var qr = _host.Eval(d);
 				if(0!=qr) return qr;
 			}
 			return 0m;

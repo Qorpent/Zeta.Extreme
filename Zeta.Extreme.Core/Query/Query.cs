@@ -65,14 +65,9 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Дочерние запросы
 		/// </summary>
-		public IList<Query> Children {
+		public IList<Query> Dependency {
 			get { return _children ?? (_children = new List<Query>()); }
 		}
-
-		/// <summary>
-		/// 	Родительский запрос
-		/// </summary>
-		public Query Parent { get; set; }
 
 		/// <summary>
 		/// 	Обратная ссылка на сессию

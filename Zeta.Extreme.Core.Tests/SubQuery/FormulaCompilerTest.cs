@@ -38,8 +38,8 @@ f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) 
 			storage.Preprocess(request);
 
 			Console.WriteLine(request.PreprocessedFormula);
-			Assert.AreEqual(@"f.If ( year == 2011 && periodin ( 4,112 ) && colin (""Б1"",""PLAN"") , ()=>( - EvalDelta( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) - EvalDelta( new QueryDelta{ RowCode = ""r2161111"", ColCode = ""Ok"", Period = 4, }) - EvalDelta( new QueryDelta{ RowCode = ""r2161131"", ColCode = ""Ok"", Period = 4, }) ) , ()=>(
-f.If ( year == 2011 || (  year == 2012 && periodin ( 301,251,252,303,306,309 ) ) , ()=>( f.If ( colin(""PLANC"") , ()=>( EvalDelta( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""PLANC"", }) ), ()=>( f.If ( colin (""Б1"",""PLAN""), ()=>( - EvalDelta( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) ) ) ) ) ), ()=>( f.If ( year < 2011 , ()=>( f.If ( colin(""PLANC"") , ()=>( EvalDelta( new QueryDelta{ RowCode = ""m211216"", ColCode = ""PLANC"", }) ), ()=>( f.If ( colin (""Б1"",""PLAN""), ()=>( - EvalDelta( new QueryDelta{ RowCode = ""m211216"", ColCode = ""DELTA"", }) ) ) ) ) ) , ()=>( f.If ( colin (""Б1"",""PLAN""), ()=>( EvalDelta( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Rd"", }) - EvalDelta( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Pd"", }) ) ) ) ) ) ) ) )
+			Assert.AreEqual(@"f.If ( year == 2011 && periodin ( 4,112 ) && colin (""Б1"",""PLAN"") , ()=>( - Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) - Eval( new QueryDelta{ RowCode = ""r2161111"", ColCode = ""Ok"", Period = 4, }) - Eval( new QueryDelta{ RowCode = ""r2161131"", ColCode = ""Ok"", Period = 4, }) ) , ()=>(
+f.If ( year == 2011 || (  year == 2012 && periodin ( 301,251,252,303,306,309 ) ) , ()=>( f.If ( colin(""PLANC"") , ()=>( Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""PLANC"", }) ), ()=>( f.If ( colin (""Б1"",""PLAN""), ()=>( - Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) ) ) ) ) ), ()=>( f.If ( year < 2011 , ()=>( f.If ( colin(""PLANC"") , ()=>( Eval( new QueryDelta{ RowCode = ""m211216"", ColCode = ""PLANC"", }) ), ()=>( f.If ( colin (""Б1"",""PLAN""), ()=>( - Eval( new QueryDelta{ RowCode = ""m211216"", ColCode = ""DELTA"", }) ) ) ) ) ) , ()=>( f.If ( colin (""Б1"",""PLAN""), ()=>( Eval( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Rd"", }) - Eval( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Pd"", }) ) ) ) ) ) ) ) )
 ".Trim(), request.PreprocessedFormula.Trim());
 		}
 
@@ -56,7 +56,7 @@ f.If ( year == 2011 || (  year == 2012 && periodin ( 301,251,252,303,306,309 ) )
 			storage.Preprocess(request);
 
 			Console.WriteLine(request.PreprocessedFormula);
-			Assert.AreEqual(@"f.If ( ! colin( ""REVISION"" ), ()=>( EvalDelta( new QueryDelta{ RowCode = ""m111110"", }) - EvalDelta( new QueryDelta{ RowCode = ""m111130"", }) ) )
+			Assert.AreEqual(@"f.If ( ! colin( ""REVISION"" ), ()=>( Eval( new QueryDelta{ RowCode = ""m111110"", }) - Eval( new QueryDelta{ RowCode = ""m111130"", }) ) )
 ".Trim(), request.PreprocessedFormula.Trim());
 		}
 
@@ -73,7 +73,7 @@ f.If ( year == 2011 || (  year == 2012 && periodin ( 301,251,252,303,306,309 ) )
 			storage.Preprocess(request);
 
 			Console.WriteLine(request.PreprocessedFormula);
-			Assert.AreEqual(@"f.If ( ! colin( ""REVISION"" ), ()=>( EvalDelta( new QueryDelta{ ColCode = ""m111110"", }) - EvalDelta( new QueryDelta{ ColCode = ""m111130"", }) ) )
+			Assert.AreEqual(@"f.If ( ! colin( ""REVISION"" ), ()=>( Eval( new QueryDelta{ ColCode = ""m111110"", }) - Eval( new QueryDelta{ ColCode = ""m111130"", }) ) )
 ".Trim(), request.PreprocessedFormula.Trim());
 		}
 
@@ -90,9 +90,10 @@ f.If ( year == 2011 || (  year == 2012 && periodin ( 301,251,252,303,306,309 ) )
 			storage.Preprocess(request);
 
 			Console.WriteLine(request.PreprocessedFormula);
-			Assert.AreEqual(@"f.If ( ! colin( ""REVISION"" ), ()=>( EvalDelta( new QueryDelta{ ColCode = ""m111110"", ObjId = 345, }) - EvalDelta( new QueryDelta{ RowCode = ""m111130"", ObjId = 333, }) ) )
+			Assert.AreEqual(@"f.If ( ! colin( ""REVISION"" ), ()=>( Eval( new QueryDelta{ ColCode = ""m111110"", ObjId = 345, }) - Eval( new QueryDelta{ RowCode = ""m111130"", ObjId = 333, }) ) )
 ".Trim(), request.PreprocessedFormula.Trim());
 		}
+
 
 		[Test]
 		public void CanBeParsed_Deltas_FromRealWorldFormula() {
@@ -103,8 +104,8 @@ f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) 
 ", new FormulaRequest {Language = "boo"});
 			Console.WriteLine(result);
 			Assert.AreEqual(
-				@"f.If ( year == 2011 and periodin ( 4,112 ) and colin (""Б1"",""PLAN"") , { - EvalDelta( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) - EvalDelta( new QueryDelta{ RowCode = ""r2161111"", ColCode = ""Ok"", Period = 4, }) - EvalDelta( new QueryDelta{ RowCode = ""r2161131"", ColCode = ""Ok"", Period = 4, }) } , {
-f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) ) , { f.If ( colin(""PLANC"") , { EvalDelta( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""PLANC"", }) }, { f.If ( colin (""Б1"",""PLAN""), { - EvalDelta( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) } ) } ) }, { f.If ( year < 2011 , { f.If ( colin(""PLANC"") , { EvalDelta( new QueryDelta{ RowCode = ""m211216"", ColCode = ""PLANC"", }) }, { f.If ( colin (""Б1"",""PLAN""), { - EvalDelta( new QueryDelta{ RowCode = ""m211216"", ColCode = ""DELTA"", }) } ) } ) } , { f.If ( colin (""Б1"",""PLAN""), { EvalDelta( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Rd"", }) - EvalDelta( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Pd"", }) } ) } ) } ) } )"
+				@"f.If ( year == 2011 and periodin ( 4,112 ) and colin (""Б1"",""PLAN"") , { - Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) - Eval( new QueryDelta{ RowCode = ""r2161111"", ColCode = ""Ok"", Period = 4, }) - Eval( new QueryDelta{ RowCode = ""r2161131"", ColCode = ""Ok"", Period = 4, }) } , {
+f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) ) , { f.If ( colin(""PLANC"") , { Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""PLANC"", }) }, { f.If ( colin (""Б1"",""PLAN""), { - Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) } ) } ) }, { f.If ( year < 2011 , { f.If ( colin(""PLANC"") , { Eval( new QueryDelta{ RowCode = ""m211216"", ColCode = ""PLANC"", }) }, { f.If ( colin (""Б1"",""PLAN""), { - Eval( new QueryDelta{ RowCode = ""m211216"", ColCode = ""DELTA"", }) } ) } ) } , { f.If ( colin (""Б1"",""PLAN""), { Eval( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Rd"", }) - Eval( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Pd"", }) } ) } ) } ) } )"
 					.Trim(), result.Trim());
 		}
 
@@ -222,13 +223,13 @@ f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) 
 			var colformulas = (
 								  from c in myapp.storage.AsQueryable<col>()
 								  where c.IsFormula && c.FormulaEvaluator == "boo" && !c.Formula.Contains("~") && !c.Formula.Contains("*?") //unsupported feature
-								  select new { c = c.Code, f = c.Formula }
+								  select new { c = c.Code, f = c.Formula, t =c.Tag }
 							  ).ToArray();
 
 
 			foreach (var c in colformulas)
 			{
-				var req = new FormulaRequest { Key = c.c, Formula = c.f, Language = "boo" };
+				var req = new FormulaRequest { Key = c.c, Formula = c.f, Language = "boo" ,Tags = c.t};
 				storage.Register(req);
 				try
 				{
@@ -244,5 +245,29 @@ f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) 
 
 			if(fail)Assert.Fail("не все компилируется");
 		}
+
+
+		[Test]
+		public void CanCheckNoExtremeTag() {
+			var fs = new FormulaStorage();
+			var req = new FormulaRequest {Key = "test", Formula = "xxx", Tags = "/noextreme:1/", Language = "boo"};
+			var r = fs.Register(req);
+			Assert.AreEqual(typeof(NoExtremeFormulaStub),req.PreparedType);
+			var formula = fs.GetFormula(r);
+			Assert.IsInstanceOf<NotSupportedException>(formula.Eval().Error);
+		}
+
+		[Test]
+		public void CanMarkNotCompiledMark()
+		{
+			var fs = new FormulaStorage();
+			var req = new FormulaRequest { Key = "test", Formula = "error code",  Language = "boo" };
+			var r = fs.Register(req);
+			var formula = fs.GetFormula(r);
+			Assert.IsInstanceOf<CompileErrorFormulaStub>(formula);
+			Assert.NotNull(formula.Eval().Error);
+		}
 	}
+
+	
 }

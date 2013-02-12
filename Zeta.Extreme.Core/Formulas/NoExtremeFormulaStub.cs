@@ -1,19 +1,22 @@
+using System;
+
 namespace Zeta.Extreme {
 	/// <summary>
 	/// Специальная заглушка для возврата псевдозначения
 	/// </summary>
-	public class CompileErrorFormulaStub : FormulaBase {
-		/// <summary>
-		/// Устанавливает контекст использования формулы
-		/// </summary>
-		/// <param name="request"></param>
+	public class NoExtremeFormulaStub : FormulaBase
+	{
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="request"></param>
 		public override void SetContext(FormulaRequest request)
 		{
 			base.SetContext(request);
-			Result = new QueryResult {IsComplete = false, Error = request.ErrorInCompilation};
+			Result = new QueryResult { IsComplete = false, Error = new NotSupportedException("formula ignored by noextreme tag") };
 		}
 		/// <summary>
-		///Константный результат данной формулы
+		/// Константный результат для данной формулы
 		/// </summary>
 		protected QueryResult Result;
 
@@ -21,7 +24,8 @@ namespace Zeta.Extreme {
 		/// 	Метод для перекрытия при формировании динамической формулы
 		/// </summary>
 		/// <returns> </returns>
-		protected override QueryResult InternalEval () {
+		protected override QueryResult InternalEval()
+		{
 			return Result;
 		}
 	}

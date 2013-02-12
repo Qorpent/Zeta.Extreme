@@ -55,6 +55,7 @@
     <Compile Include="Formulas\DefaultDeltaPreprocessor.cs" />
     <Compile Include="Formulas\DeltaFormulaBase.cs" />
     <Compile Include="Formulas\FormulaAttribute.cs" />
+    <Compile Include="Formulas\FormulaBase.cs" />
     <Compile Include="Formulas\FormulaCompiler.cs" />
     <Compile Include="Formulas\FormulaRequest.cs" />
     <Compile Include="Formulas\FormulaStorage.cs" />
@@ -62,7 +63,7 @@
     <Compile Include="Formulas\IFormulaPreprocessor.cs" />
     <Compile Include="Formulas\IFormulaStorage.cs" />
     <Compile Include="Formulas\FormulaParserConstants.cs" />
-    <Compile Include="Formulas\SessionAttachedFormulaBase.cs" />
+    <Compile Include="Formulas\NoExtremeFormulaStub.cs" />
     <Compile Include="Query\StrongSumProvider.cs" />
     <Compile Include="Query\QueryDelta.cs" />
     <Compile Include="Services\DefaultQueryPreparator.cs" />
