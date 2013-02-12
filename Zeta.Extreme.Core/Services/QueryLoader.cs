@@ -50,16 +50,40 @@ namespace Zeta.Extreme {
 				}
 			}
 
-			if (null != internalquery.Row.Native && internalquery.Row.IsFormula && !_sumh.IsSum(internalquery.Row.Native)) {
+			if (internalquery.Row.IsFormula && !_sumh.IsSum(query.Row)) {
 				FormulaStorage.Default.Register(new FormulaRequest
 					{
-						Key = internalquery.Row.Code,
+						Key = "row:"+ internalquery.Row.Code,
 						Formula = internalquery.Row.Formula,
 						Language = internalquery.Row.FormulaType,
 						Tags = internalquery.Row.Tag,
-						Marks = internalquery.Row.Native.MarkCache
+						Marks = internalquery.Row.Native==null?"": internalquery.Row.Native.MarkCache
 					});
 			}
+
+			if (internalquery.Col.IsFormula && !_sumh.IsSum(query.Col))
+			{
+				FormulaStorage.Default.Register(new FormulaRequest
+				{
+					Key = "col:" + internalquery.Col.Code,
+					Formula = internalquery.Col.Formula,
+					Language = internalquery.Col.FormulaType,
+					Tags = internalquery.Col.Tag,
+					Marks = internalquery.Col.Native == null ? "" : internalquery.Col.Native.MarkCache
+				});
+			}
+
+			if (internalquery.Obj.IsFormula && !_sumh.IsSum(query.Obj))
+			{
+				FormulaStorage.Default.Register(new FormulaRequest
+				{
+					Key = "obj:" + internalquery.Obj.Code,
+					Formula = internalquery.Obj.Formula,
+					Language = internalquery.Obj.FormulaType,
+					Tags = internalquery.Obj.Tag
+				});
+			}
+
 
 			return internalquery;
 		}

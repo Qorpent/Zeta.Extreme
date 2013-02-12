@@ -22,6 +22,12 @@
     <Compile Include="CoreTests\SessionTestBase.cs" />
     <Compile Include="CoreTests\ZatrSimpleTest.cs" />
     <Compile Include="CoreTests\ZetaMinimalMode.cs" />
+    <Compile Include="DatabaseIgnorancePureZeta\BothColumnAndRowFormula.cs" />
+    <Compile Include="DatabaseIgnorancePureZeta\DoExRefBaseTest.cs" />
+    <Compile Include="DatabaseIgnorancePureZeta\PrimaryEchoTest.cs" />
+    <Compile Include="DatabaseIgnorancePureZeta\PureZetaTestFixtureBase.cs" />
+    <Compile Include="DatabaseIgnorancePureZeta\RowColAndObjFormula.cs" />
+    <Compile Include="DatabaseIgnorancePureZeta\SimpleHardLink.cs" />
     <Compile Include="MockFormulaTest.cs" />
     <Compile Include="SerialAcessTest.cs" />
     <Compile Include="SubQuery\ExistedFormulasParsingTest.cs" />

@@ -51,10 +51,11 @@ namespace Zeta.Extreme.DyncamicFormulas {
 			var codeprovider = new CSharpCodeProvider();
 			var parameters = new CompilerParameters
 			{
-				IncludeDebugInformation = true,
+				IncludeDebugInformation = false,
 				GenerateInMemory = true,
 				TreatWarningsAsErrors = false,
-				OutputAssembly = ((DateTime.Now - new DateTime(1979,1,23)).TotalMilliseconds).ToString(),
+				
+				//OutputAssembly = ((DateTime.Now - new DateTime(1979,1,23)).TotalMilliseconds).ToString(),
 			};
 			parameters.ReferencedAssemblies.Add("mscorlib.dll");
 			parameters.ReferencedAssemblies.Add("System.dll");

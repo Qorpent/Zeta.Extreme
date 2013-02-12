@@ -10,18 +10,30 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Comdiv.Model.Interfaces;
 using Comdiv.Olap.Model;
+using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Базовый класс обертки измерения
 	/// </summary>
 	/// <typeparam name="TItem"> </typeparam>
-	public class CachedItemHandlerBase<TItem> : CacheKeyGeneratorBase
+	public class CachedItemHandlerBase<TItem> : CacheKeyGeneratorBase, IZetaQueryDimension
 		where TItem : class, IWithCode, IWithId, IWithNewTags {
+		private string _name;
+
+		private string _comment;
+
+		private DateTime _version = new DateTime();
+
+		private string _parsedFormula;
+
+		private IDictionary<string, object> _localProperties;
+
 		/// <summary>
 		/// 	Набор кодов элемента
 		/// </summary>
@@ -169,6 +181,17 @@ namespace Zeta.Extreme {
 				InvalidateCacheKey();
 			}
 		}
+
+		string IWithFormula.ParsedFormula {
+			get { return _parsedFormula; }
+			set { _parsedFormula = value; }
+		}
+
+		string IWithFormula.FormulaEvaluator {
+			get { return FormulaType; }
+			set {FormulaType = value; }
+		}
+
 
 		/// <summary>
 		/// 	Тип формулы
@@ -339,5 +362,27 @@ namespace Zeta.Extreme {
 		private bool _isFormula;
 		private TItem _native;
 		private string _tag;
+
+
+		string IWithName.Name {
+			get { return _name; }
+			set { _name = value; }
+		}
+
+		string IWithComment.Comment {
+			get { return _comment; }
+			set { _comment = value; }
+		}
+
+		DateTime IWithVersion.Version {
+			get { return _version; }
+		}
+
+		IDictionary<string, object> IZetaQueryDimension.LocalProperties {
+			get {
+				if(null!=Native) return ((IZetaQueryDimension) Native).LocalProperties;
+				return _localProperties ?? (_localProperties=new Dictionary<string, object>());
+			}
+		}
 		}
 }

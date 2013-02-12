@@ -47,7 +47,15 @@ namespace Zeta.Extreme {
 				return result;
 			}
 		}
+		/// <summary>
+		/// If false - first error - no more native, true - will try again and again
+		/// </summary>
+		public bool OptimisticOnNativeError;
 
+		/// <summary>
+		/// Признак того что с нативом что-то не так
+		/// </summary>
+		protected bool NativeIsError;
 		/// <summary>
 		/// 	Сохранить объект в хранилище
 		/// </summary>
@@ -56,7 +64,7 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		public IMetaCache Set<T>(T item) where T : class, IEntityDataPattern {
 			lock (this) {
-				var type = NormalizeType(typeof (T));
+				var type = NormalizeType(item.GetType());
 				if (!_byid.ContainsKey(type)) {
 					_byid[type] = new Dictionary<int, object>();
 					_bycode[type] = new Dictionary<string, object>();
@@ -68,6 +76,8 @@ namespace Zeta.Extreme {
 			}
 		}
 
+
+	
 		private Type NormalizeType(Type type) {
 			if(typeof(IZetaRow).IsAssignableFrom(type)) return typeof (IZetaRow);
 			if (typeof(IZetaColumn).IsAssignableFrom(type)) return typeof(IZetaColumn);
@@ -77,6 +87,7 @@ namespace Zeta.Extreme {
 
 		private T GetNative<T>(object id) where T : class {
 			try {
+				if(NativeIsError && !OptimisticOnNativeError) return null;
 				if (typeof (IZetaRow).IsAssignableFrom(typeof (T))) {
 					return (T) RowCache.get(id);
 				}
@@ -86,6 +97,7 @@ namespace Zeta.Extreme {
 				return myapp.storage.Get<T>().Load(id);
 			}
 			catch {
+				NativeIsError = true;
 				return null;
 			}
 		}

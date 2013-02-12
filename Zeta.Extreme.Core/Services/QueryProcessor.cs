@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Comdiv.Olap.Model;
 using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme {
@@ -55,20 +56,20 @@ namespace Zeta.Extreme {
 		}
 
 		private IZetaQueryDimension GetMostPriorityNoPrimarySource(Query query) {
-			if (query.Obj.IsFormula || (query.Obj.IsForObj && _sumh.IsSum(query.Obj.ObjRef))) {
-				return query.Obj.ObjRef;
+			if (query.Obj.IsFormula || (query.Obj.IsForObj && _sumh.IsSum(query.Obj))) {
+				return (query.Obj.ObjRef) ?? (IZetaQueryDimension)query.Obj;
 			}
 			if (query.Col.IsFormula || _sumh.IsSum(query.Col.Native)) {
-				return query.Col.Native;
+				return query.Col.Native ?? (IZetaQueryDimension)query.Col;
 			}
-			return query.Col.Native;
+			return query.Row.Native ?? (IZetaQueryDimension)query.Row;
 		}
 
 		private void PrepareFormulas(Query query, IZetaQueryDimension mostpriority) {
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Formula);
 			}
-			var key = mostpriority.Code;
+			var key = GetKey(mostpriority);
 			var formula = FormulaStorage.Default.GetFormula(key, false);
 			if (null == formula) {
 				query.Result = new QueryResult {IsComplete = true, Error = new Exception("formula not found")};
@@ -90,12 +91,26 @@ namespace Zeta.Extreme {
 			query.GetResultTask = _session.RegisterEvalTask(resulttask, false);
 		}
 
+		private static string GetKey(IZetaQueryDimension mostpriority) {
+			var key = mostpriority.Code ?? Guid.NewGuid().ToString();
+			if (mostpriority is RowHandler || mostpriority is IZetaRow) {
+				key = "row:" + key;
+			}
+			else if (mostpriority is ColumnHandler || mostpriority is IZetaColumn) {
+				key = "col:" + key;
+			}
+			else if (mostpriority is ObjHandler || mostpriority is IZetaMainObject) {
+				key = "obj:" + key;
+			}
+			return key;
+		}
+
 		private void ExpandSum(Query query, IZetaQueryDimension mostpriority) {
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Sum);
 			}
 			var subqueries = new List<Tuple<decimal, Query>>();
-			foreach (var r in _sumh.GetSumDelta(query.Row.Native)) {
+			foreach (var r in _sumh.GetSumDelta(mostpriority)) {
 				var sq = r.Apply(query);
 				sq = _session.Register(sq);
 				if (null == sq) {
@@ -140,6 +155,8 @@ namespace Zeta.Extreme {
 					query.Result = new QueryResult
 						{IsComplete = false, Error = new Exception("no sql or sql stub supported by session")};
 				}
+
+				return;
 			}
 			query.GetResultTask = _session.RegisterSqlRequest(query);
 			if (_session.TraceQuery) {

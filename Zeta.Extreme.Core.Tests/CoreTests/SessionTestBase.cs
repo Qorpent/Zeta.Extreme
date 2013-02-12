@@ -52,16 +52,9 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				var formulas = RowCache.byid.Values.Where(_ => _.IsFormula && !_sumh.IsSum(_)).ToArray();
 
 				foreach (var f in formulas) {
-					var req = new FormulaRequest {Key = f.Code, Formula = f.Formula, Language = f.FormulaEvaluator};
+					var req = new FormulaRequest {Key ="row:"+ f.Code, Formula = f.Formula, Language = f.FormulaEvaluator};
 					FormulaStorage.Default.Register(req);
-					try {
-						FormulaStorage.Default.CompileAll();
-					}
-					catch (Exception e) {
-						Console.WriteLine(f.Code + ":" + e.Message);
-						req.PreparedType = typeof (CompileErrorFormulaStub);
-						req.ErrorInCompilation = e;
-					}
+					
 				}
 
 				var colformulas = (
@@ -73,20 +66,11 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 
 				foreach (var c in colformulas)
 				{
-					var req = new FormulaRequest { Key = c.c, Formula = c.f, Language = "boo" };
+					var req = new FormulaRequest { Key = "col:"+c.c, Formula = c.f, Language = "boo" };
 					FormulaStorage.Default.Register(req);
-					try
-					{
-						FormulaStorage.Default.CompileAll();
-					}
-					catch (Exception e)
-					{
-						Console.WriteLine(c.c + ":" + e.Message);
-						req.PreparedType = typeof(CompileErrorFormulaStub);
-						req.ErrorInCompilation = e;
-					}
+					
 				}
-
+				FormulaStorage.Default.CompileAll();
 				FormulaStorage.Default.AutoBatchCompile = true;
 				ColumnCache.start();
 				wascallnhibernate = true;

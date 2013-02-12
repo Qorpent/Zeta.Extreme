@@ -54,7 +54,7 @@ namespace Zeta.Extreme {
 			var query = delta.Apply(Query);
 			if(IsInPlaybackMode) {
 				Session.Register(query);
-				return 0;
+				return 1;
 			}
 			var realq = Session.Register(query);
 			if(null==realq) return 0m;

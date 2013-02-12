@@ -67,7 +67,7 @@ namespace Zeta.Extreme {
 			if (!s) {
 				delta.Multiplicator = -1;
 			}
-			if (!string.IsNullOrWhiteSpace(r)) {
+			if (!string.IsNullOrWhiteSpace(r) && "_"!=r) { // оставляем писать возможность формулы в синтаксисе типа $_.toobj(...)
 				var _r = RowCache.get(r);
 				if (null != _r) {
 					delta.Row = _r;
@@ -173,11 +173,7 @@ namespace Zeta.Extreme {
 			}
 			else if (!string.IsNullOrWhiteSpace(ColCode)) {
 				if (ColCode != result.Col.Code) {
-					result.Col = result.Col.Copy();
-					if (null != result.Col.Native) {
-						result.Col.Native = null;
-					}
-					result.Col.Code = ColCode;
+					result.Col = new ColumnHandler {Code = ColCode};
 				}
 			}
 		}
@@ -190,11 +186,7 @@ namespace Zeta.Extreme {
 			}
 			else if (!string.IsNullOrWhiteSpace(RowCode)) {
 				if (RowCode != result.Row.Code) {
-					result.Row = result.Row.Copy();
-					if (null != result.Row.Native) {
-						result.Row.Native = null;
-					}
-					result.Row.Code = RowCode;
+					result.Row = new RowHandler {Code = RowCode};
 				}
 			}
 		}
@@ -207,11 +199,7 @@ namespace Zeta.Extreme {
 			}
 			else if (0 != ObjId) {
 				if (ObjId != result.Obj.Id) {
-					result.Obj = result.Obj.Copy();
-					if (null != result.Obj.Native) {
-						result.Obj.Native = null;
-					}
-					result.Obj.Id = ObjId;
+					result.Obj = new ObjHandler {Id = ObjId};
 				}
 			}
 		}
