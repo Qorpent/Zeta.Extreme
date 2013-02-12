@@ -13,33 +13,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Comdiv.Application;
-using Comdiv.Model.Mapping;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
-using FluentNHibernate;
-using NHibernate.Cfg;
 using NUnit.Framework;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
-	public class ZetaMinimalMode : PersistenceModel, IConfigurationBoundedModel {
-		public ZetaMinimalMode() {
-			Add(new rowmap());
-			Add(new colmap());
-			Add(new objmap("/standalone/", 1));
-			Add(new PeriodMap());
-		}
-
-		public bool IsFor(Configuration cfg) {
-			if (cfg.Properties.ContainsKey("__connection")) {
-				if (cfg.Properties["__connection"].ToLower().Contains("postgres")) {
-					return false;
-				}
-			}
-			return true;
-		}
-	}
-
 	public class SessionTestBase {
 		private static Task loadrowcahe;
 		private static bool wascallnhibernate;

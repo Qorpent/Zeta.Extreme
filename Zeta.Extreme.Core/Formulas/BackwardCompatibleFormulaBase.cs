@@ -24,6 +24,11 @@ namespace Zeta.Extreme {
 		/// </summary>
 		protected Query q { get { return Query; } }
 		/// <summary>
+		/// шоткат для совместимости со старыми формулами
+		/// </summary>
+		
+		protected Query query { get { return Query; } }
+		/// <summary>
 		/// акцессор к совместимому расширенному формуласету
 		/// </summary>
 		protected BackwardCompatibleMainFormulaSet f;

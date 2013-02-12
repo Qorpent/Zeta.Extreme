@@ -318,11 +318,11 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			RunForm(2000);
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
-			Assert.AreEqual(996, session.Registry.Where(x => x.Key != x.Value.GetCacheKey()).Count());
-			Assert.AreEqual(1038, session.Stat_Registry_Started_User);
-			Assert.AreEqual(1038
+			Assert.AreEqual(990, session.Registry.Where(x => x.Key != x.Value.GetCacheKey()).Count());
+			Assert.AreEqual(1032, session.Stat_Registry_Started_User);
+			Assert.AreEqual(1032
 			                - CAPT_COUNT*periods.Length
-			                - OBS_COUNT*periods.Length - 6
+			                - OBS_COUNT*periods.Length
 			                , session.Stat_Registry_User);
 
 			Assert.True(session.Registry.Values.Any(_ => _.Row.IsSum && _.Result.NumericResult > 0));

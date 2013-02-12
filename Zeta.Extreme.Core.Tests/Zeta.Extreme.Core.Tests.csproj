@@ -21,12 +21,13 @@
     <Compile Include="CoreTests\QueryCacheKeySensibilityTest.cs" />
     <Compile Include="CoreTests\SessionTestBase.cs" />
     <Compile Include="CoreTests\ZatrSimpleTest.cs" />
+    <Compile Include="CoreTests\ZetaMinimalMode.cs" />
     <Compile Include="MockFormulaTest.cs" />
     <Compile Include="SerialAcessTest.cs" />
     <Compile Include="SubQuery\ExistedFormulasParsingTest.cs" />
     <Compile Include="SubQuery\FormulaCompilerTest.cs" />
     <Compile Include="SubQuery\ZetaVirtualSumHelperTest.cs" />
-    <Compile Include="SubQuery\ZexQueryDeltaTest.cs" />
+    <Compile Include="SubQuery\QueryDeltaTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">
