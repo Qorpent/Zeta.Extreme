@@ -1,3 +1,5 @@
+using Comdiv.Extensions;
+
 namespace Zeta.Extreme {
 	/// <summary>
 	/// Конвертирует фигурные скобки с ламбдами BOO в С# ламбды
@@ -29,6 +31,10 @@ namespace Zeta.Extreme {
 						.Replace(" or "," || ")
 						.Replace(" not "," ! ")
 						.Replace("'","\"")
+						.replace(@"(\.0+)","$1m")
+						.Replace(".Column.Period",".Time.Period")
+						.Replace("q.Column", "q.Col")
+						.Replace("query.Column","q.Col")
 						;
 
 			}

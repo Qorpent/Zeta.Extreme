@@ -68,7 +68,7 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 		public void CanConvertToCSharp() {
 			var d = new QueryDelta {RowCode = "Y",};
 			Assert.AreEqual(" new Zeta.Extreme.QueryDelta{ RowCode = \"Y\", }", d.ToCSharpString());
-			Assert.AreEqual("Eval( new Zeta.Extreme.QueryDelta{ RowCode = \"Y\", })", d.ToCSharpString("Eval"));
+			Assert.AreEqual("Eval( new Zeta.Extreme.QueryDelta{ RowCode = \"Y\", })", d.ToCSharpString(true,"Eval"));
 		}
 
 

@@ -59,6 +59,8 @@ namespace Zeta.Extreme.DyncamicFormulas {
 			parameters.ReferencedAssemblies.Add("mscorlib.dll");
 			parameters.ReferencedAssemblies.Add("System.dll");
 			parameters.ReferencedAssemblies.Add("System.Core.dll");
+			parameters.ReferencedAssemblies.Add("Comdiv.Core.dll");
+			parameters.ReferencedAssemblies.Add("Comdiv.Zeta.Model.dll");
 			parameters.ReferencedAssemblies.Add("Zeta.Extreme.Core.dll");
 
 			var result = codeprovider.CompileAssemblyFromSource(parameters, codefiles.ToArray());

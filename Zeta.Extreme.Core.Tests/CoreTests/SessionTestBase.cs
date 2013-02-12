@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Comdiv.Application;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Data.Minimal;
+using Comdiv.Zeta.Model;
 using NUnit.Framework;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
@@ -59,6 +60,29 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 					catch (Exception e) {
 						Console.WriteLine(f.Code + ":" + e.Message);
 						req.PreparedType = typeof (CompileErrorFormulaStub);
+						req.ErrorInCompilation = e;
+					}
+				}
+
+				var colformulas = (
+					                  from c in myapp.storage.AsQueryable<col>()
+					                  where c.IsFormula && c.FormulaEvaluator == "boo"
+					                  select new {c = c.Code, f = c.Formula}
+				                  ).ToArray();
+
+
+				foreach (var c in colformulas)
+				{
+					var req = new FormulaRequest { Key = c.c, Formula = c.f, Language = "boo" };
+					FormulaStorage.Default.Register(req);
+					try
+					{
+						FormulaStorage.Default.CompileAll();
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine(c.c + ":" + e.Message);
+						req.PreparedType = typeof(CompileErrorFormulaStub);
 						req.ErrorInCompilation = e;
 					}
 				}

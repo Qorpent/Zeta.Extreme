@@ -53,6 +53,7 @@ namespace Zeta.Extreme {
 			var s = match.Groups["s"].Value != "-";
 			var r = match.Groups["r"].Value;
 			var c = match.Groups["c"].Value;
+			var o = match.Groups["o"].Value.ToInt();
 			var y = match.Groups["y"].Value.ToInt();
 			var ys = match.Groups["ys"].Value != "-";
 			if (!ys) {
@@ -75,6 +76,9 @@ namespace Zeta.Extreme {
 					delta.RowCode = r;
 				}
 			}
+			if(0!=o) {
+				delta.ObjId = o;
+			}
 			if (!string.IsNullOrWhiteSpace(c)) {
 				var _c = ColumnCache.get(c);
 				if (null != _c) {
@@ -94,15 +98,16 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Конвертирует дельту в C# - конструктор для генерации формул
 		/// </summary>
+		/// <param name="shortName"> </param>
 		/// <param name="infunctionName"> Опциональное имя метода в который надо обернуть конструктор </param>
 		/// <returns> </returns>
-		public string ToCSharpString(string infunctionName = "") {
+		public string ToCSharpString(bool shortName = true, string infunctionName = "") {
 			var s = new StringBuilder();
 			if (!string.IsNullOrWhiteSpace(infunctionName)) {
 				s.Append(infunctionName);
 				s.Append("(");
 			}
-			s.Append(" new " + GetType().FullName + "{ ");
+			s.Append(" new " + (shortName? GetType().Name: GetType().FullName) + "{ ");
 			var rcode = RowCode;
 			if (null != Row) {
 				rcode = Row.Code;
