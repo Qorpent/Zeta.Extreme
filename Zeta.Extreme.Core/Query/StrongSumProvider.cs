@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Comdiv.Extensions;
+using Comdiv.Olap.Model;
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 
@@ -29,7 +30,8 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public bool IsSum(IZetaRow r) {
+		public bool IsSum(IZetaQueryDimension r) {
+			if(null==r) return false;
 			lock (r.LocalProperties) {
 				if (r.LocalProperties.ContainsKey("_zvs_h_t")) {
 					return true;
@@ -48,21 +50,29 @@ namespace Zeta.Extreme {
 			}
 		}
 
+
+
 		/// <summary>
 		/// </summary>
-		/// <param name="zetaRow"> </param>
+		/// <param name="item"> </param>
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
-		public bool EvalIsSum(IZetaRow zetaRow) {
-			if (zetaRow.IsMarkSeted("0SA")) {
+		public bool EvalIsSum(IZetaQueryDimension item) {
+			var row = item as IZetaRow;
+			if(null!=row) {
+				if (row.IsMarkSeted("0SA")) {
+					return true;
+				}
+			}
+			if (item.IsFormula && item.FormulaEvaluator == "boo" && IsSumableFormula(item.Formula))
+			{
 				return true;
 			}
-			if (zetaRow.IsFormula && zetaRow.FormulaEvaluator == "boo" && IsSumableFormula(zetaRow.Formula)) {
-				return true;
-			}
+
 			return false;
 		}
 
+		
 		/// <summary>
 		/// 	Если формула состоит только из простых дельт и действий + и -
 		/// 	то такая формула рассматривается как аналог суммы
@@ -79,7 +89,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public QueryDelta[] GetSumDelta(IZetaRow r) {
+		public QueryDelta[] GetSumDelta(IZetaQueryDimension r) {
 			if (r.LocalProperties.ContainsKey("_zvs")) {
 				return (QueryDelta[]) r.LocalProperties["_zvs"];
 			}
@@ -91,32 +101,52 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Возвращает набор исходных производных запросов для суммирования
 		/// </summary>
-		/// <param name="row"> </param>
+		/// <param name="anywithformula"> </param>
 		/// <returns> </returns>
-		public IEnumerable<QueryDelta> CollectSumDelta(IZetaRow row) {
-			if (!IsSum(row)) {
+		public IEnumerable<QueryDelta> CollectSumDelta(IWithFormula anywithformula) {
+			return GetFormulaSumDelta(anywithformula);
+		}
+
+
+		/// <summary>
+		/// 	Возвращает набор исходных производных запросов для суммирования
+		/// </summary>
+		/// <param name="item"> </param>
+		/// <returns> </returns>
+		public IEnumerable<QueryDelta> CollectSumDelta(IZetaQueryDimension item) {
+			if (!IsSum(item)) {
 				yield break;
 			}
-			if (row.IsMarkSeted("0SA")) {
-				if (string.IsNullOrWhiteSpace(row.Group)) {
-					foreach (var i in GetNativeSumDelta(row)) {
-						yield return i;
+			if(item is IZetaRow) {
+				var row = item as IZetaRow;
+				if (row.IsMarkSeted("0SA")) {
+					if (string.IsNullOrWhiteSpace(row.Group)) {
+						foreach (var i in GetNativeSumDelta(row)) {
+							yield return i;
+						}
+					}
+					else {
+						foreach (var i in GetGroupSumDelta(row)) {
+							yield return i;
+						}
 					}
 				}
+
 				else {
-					foreach (var i in GetGroupSumDelta(row)) {
+					foreach (var i in GetFormulaSumDelta(row)) {
 						yield return i;
 					}
 				}
 			}
 			else {
-				foreach (var i in GetFormulaSumDelta(row)) {
+				foreach (var i in GetFormulaSumDelta(item))
+				{
 					yield return i;
 				}
 			}
 		}
 
-		private IEnumerable<QueryDelta> GetFormulaSumDelta(IZetaRow row) {
+		private IEnumerable<QueryDelta> GetFormulaSumDelta(IWithFormula row) {
 			var matches = Regex.Matches(row.Formula, FormulaParserConstants.PseudoSumVector, RegexOptions.Compiled);
 			return from Match match in matches select QueryDelta.CreateFromMatch(match);
 		}

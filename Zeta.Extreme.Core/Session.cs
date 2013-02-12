@@ -38,6 +38,16 @@ namespace Zeta.Extreme {
 		public bool TraceQuery = false;
 
 		/// <summary>
+		/// True - отладочный режим, вместо расчета реальных значений будет подставлять стаб-значения
+		/// </summary>
+		public bool DoNotExecuteRealSql;
+		/// <summary>
+		/// Отладочный делегат для имитации работы БД
+		/// </summary>
+		public Func<Query, QueryResult> StubDataGenerator; 
+
+		
+		/// <summary>
 		/// 	Конструктор по умолчанию
 		/// </summary>
 		/// <remarks>
@@ -49,6 +59,29 @@ namespace Zeta.Extreme {
 			Registry = new ConcurrentDictionary<string, Query>();
 			ActiveSet = new ConcurrentDictionary<string, Query>();
 			KeyMap = new ConcurrentDictionary<string, string>();
+		}
+
+		/// <summary>
+		/// Локальный кэш объектных данных
+		/// </summary>
+		public IMetaCache MetaCache {
+			get {
+				lock (this) {
+					if(null!=MasterSession) {
+						return MasterSession.MetaCache;
+					}
+					return _metaCache ?? (_metaCache = Extreme.MetaCache.Default);
+				}
+				
+			}
+			set {
+				lock(this) {
+					if (null != MasterSession) {
+						throw new Exception("cannot set on child session");
+					}
+					_metaCache = value;
+				}
+			}
 		}
 
 
@@ -320,7 +353,7 @@ namespace Zeta.Extreme {
 				if (null != CustomPreparatorClass) {
 					return Activator.CreateInstance(CustomPreparatorClass, this) as IQueryPreparator;
 				}
-				return new DefaultQueryPreparator(this);
+				return new QueryProcessor(this);
 			}
 		}
 
@@ -347,7 +380,7 @@ namespace Zeta.Extreme {
 				if (null != CustomRegistryHelperClass) {
 					return Activator.CreateInstance(CustomRegistryHelperClass, this) as IRegistryHelper;
 				}
-				return new DefaultRegistryHelper(this);
+				return new QuerySessionRegistrator(this);
 			}
 		}
 
@@ -373,7 +406,7 @@ namespace Zeta.Extreme {
 				if (null != CustomPreloadProcessorClass) {
 					return Activator.CreateInstance(CustomRegistryHelperClass, this) as IPreloadProcessor;
 				}
-				return new DefaultPreloadProcessor(this);
+				return new QueryLoader(this);
 			}
 		}
 
@@ -462,6 +495,8 @@ namespace Zeta.Extreme {
 				if(null!=MasterSession) {
 					return MasterSession.RegisterSqlRequest(query);
 				}
+
+
 				_sqlDataAwaiters.Add(query);
 				if (null == _currentSqlBatchTask) {
 					_currentSqlBatchTask = CreateNewSqlBatchTask();
@@ -764,6 +799,7 @@ namespace Zeta.Extreme {
 		/// 	Объект блокировки для последовательного доступа
 		/// </summary>
 		protected internal object _sync_serial_access_lock = new object();
-	
+
+		private IMetaCache _metaCache;
 	}
 }

@@ -127,15 +127,16 @@ namespace Zeta.Extreme {
 		/// <exception cref="NotImplementedException"></exception>
 		public void Normalize(Session session) {
 			if (IsStandaloneSingletonDefinition()) {
+				var cache = session == null ? MetaCache.Default : session.MetaCache;
 				switch (Type) {
 					case ObjType.Obj:
-						Native = myapp.storage.Get<IZetaMainObject>().Load(GetEffectiveKey());
+						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
 						break;
 					case ObjType.Div:
-						Native = myapp.storage.Get<IZetaMainObject>().Load(GetEffectiveKey());
+						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
 						break;
 					case ObjType.Grp:
-						Native = myapp.storage.Get<IZetaMainObject>().Load(GetEffectiveKey());
+						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
 						break;
 				}
 			}

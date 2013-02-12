@@ -2,7 +2,7 @@
 
 // Copyright 2012-2013 Media Technology LTD 
 // Solution: Qorpent.TextExpert
-// Original file : DefaultZexPreloadProcessor.cs
+// Original file : QueryLoader.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -16,13 +16,13 @@ namespace Zeta.Extreme {
 	/// <summary>
 	/// 	ѕрепроцессор до загрузки по умолчанию
 	/// </summary>
-	public class DefaultPreloadProcessor : IPreloadProcessor {
+	public class QueryLoader : IPreloadProcessor {
 		/// <summary>
 		/// 	 онструктор по умолчнию в прив€зке к сессии
 		/// </summary>
 		/// <param name="session"> </param>
 		/// <exception cref="NotImplementedException"></exception>
-		public DefaultPreloadProcessor(Session session) {
+		public QueryLoader(Session session) {
 			_session = session;
 			_sumh = new StrongSumProvider();
 		}
@@ -38,7 +38,6 @@ namespace Zeta.Extreme {
 			// ибо иначе отконтроллировать изменени€ препроцессора по сути невозможно
 
 			//сначала вызываем стандартную процедуру нормализации запроса
-
 
 			internalquery.Normalize(_session);
 			if (internalquery.Row.Native != null && internalquery.Row.Native.IsMarkSeted("0CAPTION")) {

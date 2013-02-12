@@ -31,9 +31,10 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="session"> </param>
 		public void Normalize(Session session) {
+			var cache = session == null ? MetaCache.Default : session.MetaCache;
 			if (IsStandaloneSingletonDefinition()) {
 				//try load native
-				Native = ColumnCache.get(0 == Id ? (object) Code : Id);
+				Native = cache.Get<IZetaColumn>(0 == Id ? (object) Code : Id);
 			}
 			ResolveSingleColFormula();
 		}

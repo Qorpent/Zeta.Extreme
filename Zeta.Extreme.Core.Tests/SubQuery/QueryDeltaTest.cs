@@ -71,6 +71,11 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 			Assert.AreEqual("Eval( new Zeta.Extreme.QueryDelta{ RowCode = \"Y\", })", d.ToCSharpString(true,"Eval"));
 		}
 
+		[Test]
+		public void CanBuildSubTreeOnAllFormulaSplits() {
+			
+		}
+
 
 		[Test]
 		public void Can_Keep_Simple_Deltas() {

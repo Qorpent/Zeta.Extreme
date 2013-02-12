@@ -102,17 +102,21 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Автоматический код запроса, присваиваемый системой
 		/// </summary>
-		public long UID { get; set; }
+		public long UID;
 
 		/// <summary>
 		/// 	Кэшированный запрос SQL
 		/// </summary>
-		public string SqlRequest { get; set; }
+		public string SqlRequest;
 
 		/// <summary>
 		/// 	Back-reference to preparation tasks
 		/// </summary>
 		public Task PrepareTask { get; set; }
+		/// <summary>
+		/// Формула, которая присоединяется к запросу на фазе подготовки
+		/// </summary>
+		public IFormula AssignedFormula;
 
 		/// <summary>
 		/// Sign that primary was not set

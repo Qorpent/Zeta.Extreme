@@ -82,12 +82,15 @@ namespace Zeta.Extreme {
 		/// <param name="session"> </param>
 		/// <param name="column"> </param>
 		public void Normalize(Session session, IZetaColumn column) {
+			var cache = session == null ? MetaCache.Default : session.MetaCache;
 			if (IsStandaloneSingletonDefinition()) {
 				//try load native
-				Native = RowCache.get(0 == Id ? (object) Code : Id);
+				Native =cache.Get<IZetaRow>(0 == Id ? (object) Code : Id);
 			}
 			NormalizeReferencedRows(session, column);
 		}
+
+
 
 		private void NormalizeReferencedRows(Session session, IZetaColumn column) {
 			var initialcode = Code;
