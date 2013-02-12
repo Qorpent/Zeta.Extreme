@@ -197,6 +197,19 @@ namespace Zeta.Extreme {
 			Col.Normalize(session ?? Session);
 			var rowt = Task.Run(() => Row.Normalize(session ?? Session, Col.Native)); //тут формулы парсим простые как рефы			
 			Task.WaitAll(objt, rowt);
+			InvalidateCacheKey();
+		}
+
+		/// <summary>
+		/// 	Сбрасывает кэш-строку
+		/// </summary>
+		public override void InvalidateCacheKey()
+		{
+			base.InvalidateCacheKey();
+			Row.InvalidateCacheKey();
+			Col.InvalidateCacheKey();
+			Time.InvalidateCacheKey();
+			Obj.InvalidateCacheKey();
 		}
 
 		/// <summary>

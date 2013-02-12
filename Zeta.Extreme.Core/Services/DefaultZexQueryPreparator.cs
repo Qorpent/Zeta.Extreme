@@ -62,10 +62,11 @@ namespace Zeta.Extreme {
 				query.Result = new QueryResult {IsComplete = true, Error = new Exception("formula not found")};
 				return;
 			}
-			formula.Playback();
+			
+			formula.Playback(query);
 			var resulttask = new Func<QueryResult>(() =>
 				{
-					formula.Init(query);
+					formula.Init(query);		
 					try {
 						return formula.Eval();
 					}

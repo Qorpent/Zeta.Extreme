@@ -31,7 +31,8 @@ namespace Zeta.Extreme.Core.Tests
 			/// <summary>
 			/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 			/// </summary>
-			public void Playback() {
+			/// <param name="query"> </param>
+			public void Playback(ZexQuery query) {
 				
 			}
 
@@ -75,7 +76,8 @@ namespace Zeta.Extreme.Core.Tests
 			/// <summary>
 			/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 			/// </summary>
-			public void Playback() {
+			/// <param name="query"> </param>
+			public void Playback(ZexQuery query) {
 				
 			}
 

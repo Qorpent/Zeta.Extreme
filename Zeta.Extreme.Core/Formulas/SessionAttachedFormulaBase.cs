@@ -20,21 +20,22 @@ namespace Zeta.Extreme {
 		/// <param name="query"> </param>
 		public void Init(ZexQuery query) {
 			Query = query;
-			Mastersesion = Query.Session;
-			if (null == Mastersesion) {
-				Mastersesion = new ZexSession();
-				Session = Mastersesion.AsSerial();
-			}
-			else {
-				IsSubSession = true;
-				Session = Mastersesion.GetSubSession();
-			}
+			Mastersession = Query.Session;
+			//if (null == Mastersession) {
+			//	Mastersession = new ZexSession();
+			//	Session = Mastersession.AsSerial();
+			//}
+			//else {
+			//	IsSubSession = true;
+			//	Session = Mastersession.GetSubSession();
+			//}
 		}
 
 		/// <summary>
 		/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 		/// </summary>
-		public abstract void Playback();
+		/// <param name="query"> </param>
+		public abstract void Playback(ZexQuery query);
 
 
 		/// <summary>
@@ -51,7 +52,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public void CleanUp() {
 			if (IsSubSession) {
-				Mastersesion.Return(Session);
+				Mastersession.Return(Session);
 			}
 		}
 
@@ -63,7 +64,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Базовая сессия
 		/// </summary>
-		protected internal ZexSession Mastersesion;
+		protected internal ZexSession Mastersession;
 
 		/// <summary>
 		/// 	Исходный запрос

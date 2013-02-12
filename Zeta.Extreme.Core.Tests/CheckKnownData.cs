@@ -235,8 +235,7 @@ namespace Zeta.Extreme.Core.Tests
 			int i = 0;
 			IDictionary<string, decimal> checkvalues = new Dictionary<string, decimal>();
 			foreach (var s in sources) {
-				i++;
-				
+				i++;				
 				var r = (string) s.Arguments[0];
 				var c = (string) s.Arguments[1];
 				var o = (int) s.Arguments[2];
@@ -246,8 +245,7 @@ namespace Zeta.Extreme.Core.Tests
 				var key = r;
 				checkvalues[key] = v;
 				var q = new ZexQuery {Row = {Code = r}, Col = {Code = c}, Obj = {Id = o}, Time = {Year = y, Period = p}};
-				Console.WriteLine(r);
-				session.Register(q, key);
+				session.RegisterAsync(q, key);
 			}
 			session.Execute();
 			bool fail = false;

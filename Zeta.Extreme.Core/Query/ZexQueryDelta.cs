@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using Comdiv.Zeta.Data.Minimal;
@@ -29,11 +30,10 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		public ZexQuery Apply(ZexQuery target) {
 			lock (this) {
-				var result = target.Copy();
 				if (NoChanges(target)) {
-					return result;
+					return target;
 				}
-				
+				var result = target.Copy();
 				MoveColumn(result);
 				MoveRow(result);
 				MoveObj(result);

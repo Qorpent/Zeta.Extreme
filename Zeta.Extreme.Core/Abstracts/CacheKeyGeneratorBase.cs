@@ -41,7 +41,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Сбрасывает кэш-строку
 		/// </summary>
-		public void InvalidateCacheKey() {
+		public virtual void InvalidateCacheKey() {
 			_cacheKey = null;
 		}
 

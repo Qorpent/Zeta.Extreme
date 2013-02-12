@@ -50,9 +50,14 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 		/// </summary>
-		public override void Playback() {
+		/// <param name="query"> </param>
+		public override void Playback(ZexQuery query) {
+			Mastersession = query.Session;
+			Query = query;
 			IsInPlayBack = true;
 			EvaluateExpression();
+			Query = null;
+			Mastersession = null;
 		}
 
 
@@ -63,16 +68,16 @@ namespace Zeta.Extreme {
 		protected internal decimal EvalDelta(ZexQueryDelta delta) {
 			var query = delta.Apply(Query);
 			if(IsInPlayBack) {
-				Mastersesion.Register(query);
+				Mastersession.Register(query);
 				return 1; //fail-free value
 			}
-			else {
-				var result = Session.Eval(query);
-				if (null == result) {
-					return 0;
-				}
+			var realq = Mastersession.Register(query);
+			if(null==realq) return 0m;
+			var result = realq.GetResult();
+			if(null!=result) {
 				return result.NumericResult;
 			}
+			return 0m;
 		}
 
 		/// <summary>
