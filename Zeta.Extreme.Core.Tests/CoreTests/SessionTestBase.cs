@@ -59,7 +59,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 
 				var colformulas = (
 					                  from c in myapp.storage.AsQueryable<col>()
-					                  where c.IsFormula && c.FormulaEvaluator == "boo"
+					                  where c.IsFormula && c.FormulaEvaluator == "boo" && null!=c.Formula && ""!=c.Formula
 					                  select new {c = c.Code, f = c.Formula}
 				                  ).ToArray();
 
