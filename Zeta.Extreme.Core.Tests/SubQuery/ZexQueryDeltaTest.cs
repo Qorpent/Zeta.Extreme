@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using NUnit.Core;
-
 namespace Zeta.Extreme.Core.Tests.SubQuery
 {
 	[TestFixture]
