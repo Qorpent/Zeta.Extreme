@@ -45,11 +45,11 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 
 		[Test]
 		public void CanRetrieveValidDeltasFromFormula() {
-			const string formula = "-$r1@c1.Y-1.P-3? + $r2@c2.Y2014? - $r3.P1?";
+			const string formula = "-$r100@c1.Y-1.P-3? + $r2@c2.Y2014? - $r3.P1?";
 			var r = new row {IsFormula = true, Formula = formula, FormulaEvaluator = "boo"};
 			var result = h.GetSumDelta(r);
 			Assert.AreEqual(3, result.Length);
-			Assert.AreEqual("r1", result[0].RowCode);
+			Assert.AreEqual("r100", result[0].RowCode);
 			Assert.AreEqual("c1", result[0].ColCode);
 			Assert.AreEqual(-1, result[0].Year);
 			Assert.AreEqual(-3, result[0].Period);
