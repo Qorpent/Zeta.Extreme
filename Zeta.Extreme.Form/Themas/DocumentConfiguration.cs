@@ -17,8 +17,15 @@
 using Comdiv.Extensions;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Конфигуратор документов темы
+	/// </summary>
     public class DocumentConfiguration : ItemConfigurationBase<IDocument>{
-        public override IDocument Configure(){
+		/// <summary>
+		/// Команда на конфигурирование документа
+		/// </summary>
+		/// <returns></returns>
+		public override IDocument Configure(){
             return new Document().bindfrom(this);
         }
     }

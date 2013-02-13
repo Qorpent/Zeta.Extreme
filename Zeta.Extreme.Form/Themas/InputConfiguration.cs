@@ -20,54 +20,139 @@ using System.Linq;
 using System.Xml.Linq;
 using Comdiv.Extensions;
 using Comdiv.Zeta.Data;
+using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Web.InputTemplates;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Описатель конфигурации формы ввода
+	/// </summary>
     public class InputConfiguration : ItemConfigurationBase<IInputTemplate>{
+		/// <summary>
+		/// Признак зависимости от объектов
+		/// </summary>
 		public bool IsObjectDependent { get; set; }
+		/// <summary>
+		/// Коды источников
+		/// </summary>
         public string[] Sources { get; set; }
+		/// <summary>
+		/// Параметр блокировки
+		/// </summary>
         public string Lock { get; set; }
+
+		/// <summary>
+		/// Параметр привязки к периодам
+		/// </summary>
         public string ForPeriods { get; set; }
+		/// <summary>
+		/// Параметр настройки автозаполнения
+		/// </summary>
         public string AutoFill { get; set; }
+		/// <summary>
+		/// Класс расписания заполнения
+		/// </summary>
         public string ScheduleClass { get; set; }
+		/// <summary>
+		/// Признак требования групп предприятия
+		/// </summary>
         public string ForGroup { get; set; }
+		/// <summary>
+		/// Фиксированные строки
+		/// </summary>
         public string FixRows { get; set; }
+		/// <summary>
+		/// Требование выполнения скрипта перед загрузкой
+		/// </summary>
         public bool NeedPreloadScript { get; set; }
+		/// <summary>
+		/// Статус формы по умолчанию
+		/// </summary>
         public string DefaultState { get; set; }
+		/// <summary>
+		/// Смещение расписания
+		/// </summary>
         public int ScheduleDelta { get; set; }
+		/// <summary>
+		/// Вид таблицы
+		/// </summary>
         public string TableView { get; set; }
+		/// <summary>
+		/// Избранные строки по деталям (видимо для m140)
+		/// </summary>
         public bool DetailFavorite { get; set; }
+		/// <summary>
+		/// Показывать колонку с единицами
+		/// </summary>
         public bool ShowMeasureColumn { get; set; }
+		/// <summary>
+		/// Периоды требования файлов
+		/// </summary>
         public string NeedFilesPeriods { get; set; }
+		/// <summary>
+		/// Признак требования файловв
+		/// </summary>
         public string NeedFiles { get; set; }
+		/// <summary>
+		/// Дополнительные документы
+		/// </summary>
         public string AdvDocs { get; set; }
+		/// <summary>
+		/// Расширенные строки для матриц (устар! больше эти матрицы не используются)
+		/// </summary>
         public string MatrixExRows { get; set; }
+		/// <summary>
+		/// Фиксированный объект
+		/// </summary>
         public string FixedObj { get; set; }
+		/// <summary>
+		/// Ссылка на форму BIZTRAN
+		/// </summary>
 		public string Biztran { get; set; }
+		/// <summary>
+		/// ФОрма для деталей
+		/// </summary>
         public bool InputForDetail { get; set; }
+		/// <summary>
+		/// XML - определения колонок
+		/// </summary>
         public XElement[] ColumnDefinitions { get; set; }
+		/// <summary>
+		/// XML - определения строк
+		/// </summary>
         public XElement[] RowDefinitions { get; set; }
+		/// <summary>
+		/// Признак использования матриц (устар!!)
+		/// </summary>
         public bool UseFormMatrix { get; set; }
+		/// <summary>
+		/// Признак использования только избранных строк
+		/// </summary>
         public bool FavoriteRowsOnly { get; set; }
 
+		/// <summary>
+		/// Перевод периодов
+		/// </summary>
         public string PeriodRedirect { get; set; }
-
+		/// <summary>
+		/// Роль на подписание
+		/// </summary>
         public string UnderwriteRole { get; set; }
-
+		/// <summary>
+		/// Корневая строка
+		/// </summary>
         public string RootCode { get; set; }
-
+		/// <summary>
+		/// SQL оптимизация
+		/// </summary>
         public string SqlOptimization { get; set; }
 
-        protected override bool getErrorInternal(){
-            //if (Template == "empty.in"){
-            //    if (ColumnDefinitions.no()){
-            //        return true;
-            //    }
-            //}
-            return base.getErrorInternal();
-        }
 
-        public override IInputTemplate Configure(){
+		/// <summary>
+		/// Команда на конфигурирование
+		/// </summary>
+		/// <returns></returns>
+		public override IInputTemplate Configure(){
             var txs = new InputTemplateXmlSerializer();
             var template = txs.Read(TemplateXml).First();
             template.UnderwriteCode = Lock;
@@ -91,7 +176,7 @@ namespace Comdiv.Zeta.Web.Themas{
             template.DetailFavorite = DetailFavorite;
         	template.IgnorePeriodState = IgnorePeriodState;
         	template.IsObjectDependent = this.IsObjectDependent;
-            template.TableView = TableView;
+           // template.TableView = TableView;
             template.NeedFiles = NeedFiles;
             template.NeedPreloadScript = this.NeedPreloadScript;
             template.DocumentRoot = this.DocumentRoot;
@@ -144,18 +229,33 @@ namespace Comdiv.Zeta.Web.Themas{
         }
 
         private IDictionary<string, string> _documents = new Dictionary<string, string>();
+        /// <summary>
+        /// Документы
+        /// </summary>
         public IDictionary<string, string> Documents
         {
             get { return _documents; }
             set { _documents = value; }
         }
 
+        /// <summary>
+        /// Корневая строка
+        /// </summary>
         public string DocumentRoot { get; set; }
 
+        /// <summary>
+        /// Хинт устаревшей матрицы
+        /// </summary>
         public string MatrixExSqlHint { get; set; }
 
+        /// <summary>
+        /// Использовать быстрое обновление
+        /// </summary>
         public bool UseQuickUpdate { get; set; }
 
+    	/// <summary>
+    	/// Игнорировать статус периодов
+    	/// </summary>
     	public bool IgnorePeriodState { get; set; }
     }
 }

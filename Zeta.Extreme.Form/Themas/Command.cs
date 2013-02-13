@@ -15,14 +15,27 @@
 // // 
 // // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Команда темы
+	/// </summary>
     public class Command : ICommand{
-        #region ICommand Members
 
+        /// <summary>
+        /// Код
+        /// </summary>
         public string Code { get; set; }
+        /// <summary>
+        /// Название
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// Роль доступа
+        /// </summary>
         public string Role { get; set; }
+		/// <summary>
+		/// Выполняемый URL
+		/// </summary>
         public string Url { get; set; }
 
-        #endregion
     }
 }

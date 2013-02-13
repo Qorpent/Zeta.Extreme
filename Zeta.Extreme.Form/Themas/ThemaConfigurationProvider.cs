@@ -29,9 +29,13 @@ using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.IO;
 using Comdiv.Zeta.Data;
+using Comdiv.Zeta.Data.Minimal;
 using Qorpent.Bxl;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Провайдер конфигураций
+	/// </summary>
     public class ThemaConfigurationProvider : IThemaConfigurationProvider{
         private readonly IDictionary<string, string> globals = new Dictionary<string, string>();
 
@@ -43,15 +47,22 @@ namespace Comdiv.Zeta.Web.Themas{
         private XslCompiledTransform xsltcompiler;
     	private DateTime cfgVersion;
 
+    	/// <summary>
+    	/// Папка с откомпилированными файлами
+    	/// </summary>
     	public string CompileFolder { get; set; }
-
+		/// <summary>
+		/// Создает стандартный конфигуратор
+		/// </summary>
         public ThemaConfigurationProvider(){
             ThemaConfigurationFile = "data/root.xml";
             this.CompileFolder = "compiled_themas";
             this.xsltcompiler = new XslCompiledTransform();
             this.xsltcompiler.Load(myapp.files.Resolve("~/sys/themaxmlcompiler.xslt"),XsltSettings.TrustedXslt,new XmlUrlResolver());
         }
-
+		/// <summary>
+		/// Обратная ссылка на контейнер
+		/// </summary>
         public IInversionContainer Container{
             get{
                 if (_container.invalid()){
@@ -65,7 +76,9 @@ namespace Comdiv.Zeta.Web.Themas{
             }
             set { _container = value; }
         }
-
+		/// <summary>
+		/// Резольвер файлов
+		/// </summary>
         public IFilePathResolver PathResolver{
             get{
                 lock (this){
@@ -77,14 +90,24 @@ namespace Comdiv.Zeta.Web.Themas{
             }
             set { _pathResolver = value; }
         }
-
+		/// <summary>
+		/// Файл конфигурации
+		/// </summary>
         public string ThemaConfigurationFile { get; set; }
 
+        /// <summary>
+        /// Прямой XML
+        /// </summary>
         public string DirectXml { get; set; }
 
-        #region IThemaConfigurationProvider Members
 
-        public void Set(string themacode, string parameter, object value){
+		/// <summary>
+		/// Установить значение параметра для конкретной темы
+		/// </summary>
+		/// <param name="themacode"></param>
+		/// <param name="parameter"></param>
+		/// <param name="value"></param>
+		public void Set(string themacode, string parameter, object value){
             lock (this){
                 value = value ?? "";
                 var type = ReflectionExtensions.ResolveWellKnownName(value.GetType());
@@ -111,7 +134,11 @@ namespace Comdiv.Zeta.Web.Themas{
         }
 
 
-        public IThemaFactoryConfiguration Get() {
+		/// <summary>
+		/// Получить конфигурацию
+		/// </summary>
+		/// <returns></returns>
+		public IThemaFactoryConfiguration Get() {
         	this.cfgVersion = DateTime.Now;
             XElement compiledxml = null;
 
@@ -272,7 +299,6 @@ namespace Comdiv.Zeta.Web.Themas{
             }
         }
 
-        #endregion
 
         private void applyRenames(IDictionary<string, ThemaConfiguration> configurations){
             foreach (var configuration in configurations.Values){

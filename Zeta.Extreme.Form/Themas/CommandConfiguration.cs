@@ -17,8 +17,15 @@
 using Comdiv.Extensions;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Конфигуратор команды
+	/// </summary>
     public class CommandConfiguration : ItemConfigurationBase<ICommand>{
-        public override ICommand Configure(){
+		/// <summary>
+		/// Команда на конфигурирование команды
+		/// </summary>
+		/// <returns></returns>
+		public override ICommand Configure(){
             return new Command().bindfrom(this);
         }
     }

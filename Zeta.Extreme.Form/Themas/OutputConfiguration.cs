@@ -19,23 +19,56 @@ using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.Reporting;
-using Comdiv.Zeta.Report;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Конфигурация отчетов - НА ДАННЫЙ МОМЕНТ С Extreme не РАБОТАЕТ
+	/// </summary>
     public class OutputConfiguration : ItemConfigurationBase<IReportDefinition>{
-       
+       /// <summary>
+       /// Класс генератора
+       /// </summary>
         public string PrepareViewGenerator { get; set; }
+		/// <summary>
+		/// Класс отрисовщика
+		/// </summary>
         public string RenderViewGenerator { get; set; }
+		/// <summary>
+		/// Вид генератора
+		/// </summary>
         public string PrepareView { get; set; }
+		/// <summary>
+		/// Вид отрисовщика
+		/// </summary>
         public string RenderView { get; set; }
+		/// <summary>
+		/// Условия на периоды
+		/// </summary>
         public string ForPeriods { get; set; }
+		/// <summary>
+		/// Коды источников (библиотек)
+		/// </summary>
         public string[] Sources { get; set; }
+		/// <summary>
+		/// Редиректор периодов
+		/// </summary>
         public string PeriodRedirect { get; set; }
-
+		/// <summary>
+		/// Признак использования матриц (устар!!)
+		/// </summary>
         public bool UseFormMatrix { get; set; }
+		/// <summary>
+		/// Расширения строк матрицы (устар !!)
+		/// </summary>
         public string MatrixExRows { get; set; }
+		/// <summary>
+		/// Хинты матрицы (устар!!)
+		/// </summary>
         public string MatrixExSqlHint { get; set; }
-
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
         protected override bool getErrorInternal(){
             //if (Template == "empty.out"){
             //    var isvalid = TemplateXml.Elements("isvalid");
@@ -49,8 +82,13 @@ namespace Comdiv.Zeta.Web.Themas{
             return base.getErrorInternal();
         }
 
-        public override IReportDefinition Configure(){
-            var def = new ZetaReportDefinition();
+		/// <summary>
+		/// Команда на конфигурирование
+		/// </summary>
+		/// <returns></returns>
+		public override IReportDefinition Configure(){
+			throw new NotImplementedException("пока для Zeta.Extreme отсутствут реализация отчетов");
+            /*var def = new ZetaReportDefinition();
             def.ReadFromXml(TemplateXml);
             def.bindfrom(this, true);
             def.Configuration = this;
@@ -77,7 +115,7 @@ namespace Comdiv.Zeta.Web.Themas{
             if (def.Name.noContent()){
                 def.Name = Thema.Name;
             }
-            return def;
+            return def;*/
         }
     }
 }

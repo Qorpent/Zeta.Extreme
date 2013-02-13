@@ -15,8 +15,21 @@
 // // 
 // // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Фабричный интерфейс для конфигураций темы
+	/// </summary>
     public interface IThemaConfigurationProvider{
+		/// <summary>
+		/// Получить конфигурацию
+		/// </summary>
+		/// <returns></returns>
         IThemaFactoryConfiguration Get();
+		/// <summary>
+		/// Установить значение параметра для конкретной темы
+		/// </summary>
+		/// <param name="themacode"></param>
+		/// <param name="parameter"></param>
+		/// <param name="value"></param>
         void Set(string themacode, string parameter, object value);
     }
 }

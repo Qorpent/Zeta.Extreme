@@ -20,17 +20,18 @@ using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Model;
 using Comdiv.Model.Interfaces;
+using Zeta.Extreme.Form.Themas;
 
 namespace Comdiv.Zeta.Web.Themas{
     public class ListDefinitionHqlGenerator : XmlGeneratorBase{
         public string Query { get; set; }
 
-        protected override void prepare(XElement call){
-            base.prepare(call);
+        protected override void Prepare(XElement call){
+            base.Prepare(call);
             Query = call.attr("query");
         }
 
-        protected override object[] internalGenerate(){
+        protected override object[] InternalGenerate(){
             var items =
                 Enumerable.ToArray<IEntityDataPattern>(
                     myapp.storage.GetDefault().Query(Query).Cast<IEntityDataPattern>().OrderBy(

@@ -25,36 +25,65 @@ using Comdiv.Reporting;
 using Comdiv.Zeta.Web.InputTemplates;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Фабрика тем
+	/// </summary>
     public class ThemaFactory : IThemaFactory{
+        /// <summary>
+        /// Кэш тем
+        /// </summary>
         public readonly IList<IThema> Themas = new List<IThema>();
 
         private readonly IDictionary<string, object> cache = new Dictionary<string, object>();
 
- 
 
-        #region IThemaFactory Members
+		/// <summary>
+		/// Исходный XML
+		/// </summary>
+		public string SrcXml { get; set; }
 
-        public string SrcXml { get; set; }
-
-        public IThema Get(string code) {
+		/// <summary>
+		/// Получить тему по коду
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns></returns>
+		public IThema Get(string code) {
             return Themas.FirstOrDefault(x => x.Code == code);
         }
 
-        public IDictionary<string, object> Cache{
+		/// <summary>
+		/// Кэш тем
+		/// </summary>
+		public IDictionary<string, object> Cache{
             get { return cache; }
         }
 
-    	public DateTime Version { get; set; }
+		/// <summary>
+		/// Версия
+		/// </summary>
+		public DateTime Version { get; set; }
 
-    	public IEnumerable<IThema> GetAll(){
+		/// <summary>
+		/// Получить все темы
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<IThema> GetAll(){
             return new List<IThema>(Themas);
         }
 
-        public IEnumerable<IThema> GetForUser(){
+		/// <summary>
+		/// Получить тему в адаптации на текущего пользователя
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<IThema> GetForUser(){
             return GetForUser(myapp.usr);
         }
 
-        public void CleanUser(string usrname) {
+		/// <summary>
+		/// Очистить кэш пользователя
+		/// </summary>
+		/// <param name="usrname"></param>
+		public void CleanUser(string usrname) {
             lock (this) {
                 if (cache.ContainsKey(usrname))
                 {
@@ -64,12 +93,23 @@ namespace Comdiv.Zeta.Web.Themas{
             
         }
 
-        public IEnumerable<IThema> GetForUser(IPrincipal usr){
+		/// <summary>
+		/// Получить тему в адаптации на конкретного пользователя
+		/// </summary>
+		/// <param name="usr"></param>
+		/// <returns></returns>
+		public IEnumerable<IThema> GetForUser(IPrincipal usr){
             return cache.get(usr.Identity.Name, () => internalGetForUser(usr));
         }
 
 
-        public IInputTemplate GetForm(string code,bool throwerror = false){
+		/// <summary>
+		/// Получить шаблон формы
+		/// </summary>
+		/// <param name="code"></param>
+		/// <param name="throwerror"></param>
+		/// <returns></returns>
+		public IInputTemplate GetForm(string code,bool throwerror = false){
             return cache.get(code + ".in", () =>{
                                                var thema =
                                                    Themas.OrderByDescending(x => x.Code.Length).FirstOrDefault(
@@ -86,7 +126,12 @@ namespace Comdiv.Zeta.Web.Themas{
                 );
         }
 
-        public IReportDefinition GetReport(string code){
+		/// <summary>
+		/// Получить дефиницию отчета
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns></returns>
+		public IReportDefinition GetReport(string code){
             return cache.get(code + ".out", () =>{
                                                 var thema =
                                                     Themas.OrderByDescending(x => x.Code.Length).FirstOrDefault(
@@ -98,7 +143,7 @@ namespace Comdiv.Zeta.Web.Themas{
                                             }, true);
         }
 
-        #endregion
+
 
         private IEnumerable<IThema> internalGetForUser(IPrincipal usr){
             var personalized = Themas.Select(x => x.Personalize(usr)).ToArray();
@@ -108,12 +153,15 @@ namespace Comdiv.Zeta.Web.Themas{
             return active;
         }
 
-        #region Nested type: themaidxcomparer
-
         private class themaidxcomparer : IComparer<IThema>{
-            #region IComparer<IThema> Members
-
-            public int Compare(IThema x, IThema y){
+	        /// <summary>
+	        /// Сравнивает два объекта и возвращает значение, показывающее, что один объект меньше или больше другого или равен ему.
+	        /// </summary>
+	        /// <returns>
+	        /// Знаковое целое число, которое определяет относительные значения <paramref name="x"/> и <paramref name="y"/>, как показано в следующей таблице. Значение  Значение  Меньше нуля Значение параметра <paramref name="x"/> меньше значения параметра <paramref name="y"/>. Zero Значение параметра <paramref name="x"/> равно значению параметра <paramref name="y"/>. Больше нуля. Значение <paramref name="x"/> больше значения <paramref name="y"/>.
+	        /// </returns>
+	        /// <param name="x">Первый сравниваемый объект.</param><param name="y">Второй сравниваемый объект.</param>
+	        public int Compare(IThema x, IThema y){
                 if (x.Parent.hasContent() && y.Parent.noContent()){
                     return -1;
                 }
@@ -132,10 +180,8 @@ namespace Comdiv.Zeta.Web.Themas{
                 return x.Idx.CompareTo(y.Idx);
             }
 
-            #endregion
         }
 
-        #endregion
 
         public void Dispose(){
             foreach (var thema in Themas){

@@ -1,115 +1,138 @@
-// // Copyright 2007-2010 Comdiv (F. Sadykov) - http://code.google.com/u/fagim.sadykov/
-// // Supported by Media Technology LTD 
-// //  
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //  
-// //      http://www.apache.org/licenses/LICENSE-2.0
-// //  
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
-// // 
-// // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : XmlGeneratorBase.cs
+// Project: Zeta.Extreme.Form
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Comdiv.Extensions;
 using Comdiv.Xml;
 
-namespace Comdiv.Zeta.Web.Themas{
-    /// <summary>
-    /// Абстрактный генератор XML	
-    /// </summary>
-    public abstract class XmlGeneratorBase : IXmlGenerator{
-        /// <summary>
-        /// Внутренний генератор ИД
-        /// </summary>
-        public static int id;
+namespace Zeta.Extreme.Form.Themas {
+	/// <summary>
+	/// 	Абстрактный генератор XML
+	/// </summary>
+	public abstract class XmlGeneratorBase : IXmlGenerator {
+		/// <summary>
+		/// 	Внутренний генератор ИД
+		/// </summary>
+		public static int id;
 
 		/// <summary>
-		/// Словарь условий
+		/// 	Словарь условий
 		/// </summary>
-        protected IDictionary<string, string> Conditionmap { get; set; }
+		protected IDictionary<string, string> Conditionmap { get; set; }
 
 		/// <summary>
-		/// Элемент для включения
+		/// 	Элемент для включения
 		/// </summary>
-        protected XElement Include { get; set; }
+		protected XElement Include { get; set; }
 
-        /// <summary>
-        /// Фильтрующее условие
-        /// </summary>
-        public string FilterCondition { get; set; }
+		/// <summary>
+		/// 	Фильтрующее условие
+		/// </summary>
+		public string FilterCondition { get; set; }
 
-        #region IXmlGenerator Members
+		/// <summary>
+		/// 	Основной метод генерации XML - контента
+		/// </summary>
+		/// <param name="call"> </param>
+		/// <returns> </returns>
+		public object[] Generate(XElement call) {
+			Prepare(call);
 
-        public object[] Generate(XElement call){
-            prepare(call);
+			return InternalGenerate();
+		}
 
-            return internalGenerate();
-        }
+		/// <summary>
+		/// 	Возвращает расчитанное значение условия
+		/// </summary>
+		/// <param name="code"> </param>
+		/// <returns> </returns>
+		protected virtual string GetCondition(string code) {
+			var self = GetSelfCondition(code);
 
-        #endregion
+			if (!Conditionmap.ContainsKey(code)) {
+				return self;
+			}
+			var mask = Conditionmap[code];
+			if (mask.Contains("$SELF")) {
+				return mask.Replace("$SELF", self);
+			}
+			return mask + "," + self;
+		}
 
-        protected virtual string getCondition(string code){
-            var self = getSelfCondition(code);
+		/// <summary>
+		/// 	Возвращает условие на себя
+		/// </summary>
+		/// <param name="code"> </param>
+		/// <returns> </returns>
+		protected virtual string GetSelfCondition(string code) {
+			//stub
+			return "";
+		}
 
-            if (!Conditionmap.ContainsKey(code)){
-                return self;
-            }
-            var mask = Conditionmap[code];
-            if (mask.Contains("$SELF")){
-                return mask.Replace("$SELF", self);
-            }
-            return mask + "," + self;
-        }
+		/// <summary>
+		/// 	Подготовка к генерации
+		/// </summary>
+		/// <param name="call"> </param>
+		protected virtual void Prepare(XElement call) {
+			var x = call.Element("filter");
+			if (null != x) {
+				FilterCondition = x.attr("id", "");
+			}
+			Include = call.Element("include");
+			Conditionmap = new Dictionary<string, string>();
+			ProcessIncludes();
+			ProcessConditions(call);
+		}
 
-        protected virtual string getSelfCondition(string code){
-            return "";
-        }
+		/// <summary>
+		/// 	Необходимый при перекрытии метод внутренней генарции
+		/// </summary>
+		/// <returns> </returns>
+		protected abstract object[] InternalGenerate();
 
-        protected virtual void prepare(XElement call){
-            var x = call.Element("filter");
-            if (null != x){
-                FilterCondition = x.attr("id", "");
-            }
-            Include = call.Element("include");
-            Conditionmap = new Dictionary<string, string>();
-            processIncludes();
-            processConditions(call);
-        }
+		private void ProcessConditions(XElement call) {
+			foreach (var element in call.Elements("condition")) {
+				var cond = element.attr("id");
 
-        protected abstract object[] internalGenerate();
+				var list = element.Value.split();
+				if (element.Value.noContent()) {
+					list = GetTargetCodes();
+				}
 
-        private void processConditions(XElement call){
-            foreach (var element in call.Elements("condition")){
-                var cond = element.attr("id");
+				foreach (var code in list) {
+					var existed = Conditionmap.get(code, "");
+					if (existed.hasContent()) {
+						existed += ",";
+					}
+					existed += cond;
+					Conditionmap[code] = existed;
+				}
+			}
+		}
 
-                var list = element.Value.split();
-                if (element.Value.noContent()){
-                    list = getTargetCodes();
-                }
+		/// <summary>
+		/// 	Вернуть список целевых кодов
+		/// </summary>
+		/// <returns> </returns>
+		protected virtual IList<string> GetTargetCodes() {
+			//NOTE:  что это вообще за метод и зачем
+			return new string[] {};
+		}
 
-                foreach (var code in list){
-                    var existed = Conditionmap.get(code, "");
-                    if (existed.hasContent()){
-                        existed += ",";
-                    }
-                    existed += cond;
-                    Conditionmap[code] = existed;
-                }
-            }
-        }
-
-
-        protected virtual IList<string> getTargetCodes(){
-            return new string[]{};
-        }
-
-        protected virtual void processIncludes(){
-        }
-    }
+		/// <summary>
+		/// 	Применение дополнительных включений
+		/// </summary>
+		protected virtual void ProcessIncludes() {
+			//заготовка
+		}
+	}
 }

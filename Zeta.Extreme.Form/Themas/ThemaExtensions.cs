@@ -20,7 +20,16 @@ using Comdiv.Application;
 using Comdiv.Extensions;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Вспомогательные расширения тем
+	/// </summary>
     public static class ThemaExtensions{
+        /// <summary>
+        /// Привязать родительские темы
+        /// </summary>
+        /// <param name="active"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static IEnumerable<T> BindParents<T>(this IEnumerable<T> active) where T : IThema{
             var full = active.UnGroup();
             foreach (var thema in full){
@@ -34,6 +43,12 @@ namespace Comdiv.Zeta.Web.Themas{
             return active;
         }
 
+        /// <summary>
+        /// Проверить избранное
+        /// </summary>
+        /// <param name="active"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static IEnumerable<T> CheckFavorities<T>(this IEnumerable<T> active) where T : class, IThema{
             var onlyfav = myapp.getProfile().Get("show_only_favorite_themas", false);
             var src = active.UnGroup().ToArray();
@@ -91,6 +106,12 @@ namespace Comdiv.Zeta.Web.Themas{
             return active;
         }
 
+        /// <summary>
+        /// Разгруппировать темы
+        /// </summary>
+        /// <param name="active"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static IEnumerable<T> UnGroup<T>(this IEnumerable<T> active) where T : IThema{
             foreach (var t in active){
                 yield return t;

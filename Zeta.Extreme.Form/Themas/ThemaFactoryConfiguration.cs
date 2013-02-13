@@ -19,23 +19,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Comdiv.Application;
 using Comdiv.Extensions;
-using Comdiv.IO;
-using Comdiv.Zeta.Report;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Конфигурация фабрики тем
+	/// </summary>
     public class ThemaFactoryConfiguration : IThemaFactoryConfiguration{
         private readonly IList<IThemaConfiguration> _configurations = new List<IThemaConfiguration>();
 
-        #region IThemaFactoryConfiguration Members
 
-        public IList<IThemaConfiguration> Configurations{
+		/// <summary>
+		/// Список конфигурации
+		/// </summary>
+		public IList<IThemaConfiguration> Configurations{
             get { return _configurations; }
         }
 
-        public XElement SrcXml { get; set; }
+		/// <summary>
+		/// Исходный XML
+		/// </summary>
+		public XElement SrcXml { get; set; }
 
+    	/// <summary>
+    	/// Версия
+    	/// </summary>
     	public DateTime Version { get; set; }
 
     	public IThemaFactory Configure(){
@@ -60,6 +68,8 @@ namespace Comdiv.Zeta.Web.Themas{
             }
 
             foreach (var thema in result.Themas){
+				//NOTE: пока с отчетами не работаем
+				/*
                 foreach (var r in thema.GetAllReports()){
                     if (r is ZetaReportDefinitionBase){
                         var zr = (ZetaReportDefinition) r;
@@ -72,7 +82,7 @@ namespace Comdiv.Zeta.Web.Themas{
                         }
                     }
                 }
-
+				*/
                 foreach (var r in thema.GetAllForms()){
                    
                         var c = r.Configuration;
@@ -88,9 +98,12 @@ namespace Comdiv.Zeta.Web.Themas{
 
             foreach (Thema thema in result.Themas){
                 thema.Configuration = null;
+				//NOTE: пока с отчетами не работаем
+				/*
                 foreach (ZetaReportDefinition rd in thema.Reports.Values){
                     rd.Configuration = null;
                 }
+				 */
                  foreach (var it in thema.Forms.Values){
                     it.Configuration = null;
                 }
@@ -108,7 +121,7 @@ namespace Comdiv.Zeta.Web.Themas{
             return result;
         }
 
-        #endregion
+
 
 
     }
