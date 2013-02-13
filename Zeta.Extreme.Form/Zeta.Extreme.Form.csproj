@@ -61,27 +61,23 @@
     <Compile Include="InputTemplates\AttachedFileType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\AutoFill.cs">
+    <Compile Include="SaveSupport\AutoFill.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\AutoFillType.cs">
+    <Compile Include="SaveSupport\AutoFillType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\ICustomFormSaver.cs" />
-    <Compile Include="InputTemplates\StateRule.cs" />
-    <Compile Include="SaveSupport\Cell.cs" />
+    <Compile Include="SaveSupport\ICustomFormSaver.cs" />
+    <Compile Include="StateManagement\StateRule.cs" />
     <Compile Include="SaveSupport\CellFixingValidator.cs" />
     <Compile Include="SaveSupport\CellsAreOfTargetOrg.cs" />
     <Compile Include="SaveSupport\CellSaver.cs" />
     <Compile Include="SaveSupport\CellSerializer.cs" />
-    <Compile Include="InputTemplates\ControlPointResult.cs" />
-    <Compile Include="SaveSupport\Column.cs" />
-    <Compile Include="SaveSupport\ColumnAggregatePosition.cs" />
+    <Compile Include="StateManagement\ControlPointResult.cs" />
     <Compile Include="SaveSupport\DataSaveLock.cs" />
-    <Compile Include="InputTemplates\IAutoFillExecutor.cs">
+    <Compile Include="SaveSupport\IAutoFillExecutor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SaveSupport\Form.cs" />
     <Compile Include="SaveSupport\FormElement.cs" />
     <Compile Include="SaveSupport\ICellFixingValidator.cs" />
     <Compile Include="SaveSupport\ICheckRequestObject.cs" />
@@ -92,13 +88,10 @@
     <Compile Include="InputTemplates\IInputTemplate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\ILockPeriodMapper.cs">
+    <Compile Include="StateManagement\ILockPeriodMapper.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="InputTemplates\IMvcBasedInputTemplate.cs" />
-    <Compile Include="InputTemplates\InputTarget.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="InputTemplates\InputTemplate.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -106,38 +99,37 @@
     <Compile Include="InputTemplates\InputTemplateXmlSerializer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\IPeriodStateManager.cs" />
-    <Compile Include="InputTemplates\IRecreateCellValidator.cs" />
-    <Compile Include="InputTemplates\IScheduleChecker.cs">
+    <Compile Include="StateManagement\IPeriodStateManager.cs" />
+    <Compile Include="SaveSupport\IRecreateCellValidator.cs" />
+    <Compile Include="StateManagement\IScheduleChecker.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\IStateCheckInterceptor.cs">
+    <Compile Include="StateManagement\IStateCheckInterceptor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\IStateManager.cs">
+    <Compile Include="StateManagement\IStateManager.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\LockOperation.cs">
+    <Compile Include="StateManagement\LockOperation.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\LockPeriodMapper.cs">
+    <Compile Include="StateManagement\LockPeriodMapper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\PeriodStateManager.cs" />
-    <Compile Include="InputTemplates\PeriodStateRecord.cs" />
+    <Compile Include="StateManagement\PeriodStateManager.cs" />
+    <Compile Include="StateManagement\PeriodStateRecord.cs" />
     <Compile Include="SaveSupport\InputRowHelper.cs" />
     <Compile Include="SaveSupport\RecreateCellValidator.cs" />
-    <Compile Include="InputTemplates\ScheduleOvertime.cs">
+    <Compile Include="StateManagement\ScheduleOvertime.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\ScheduleState.cs">
+    <Compile Include="StateManagement\ScheduleState.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\SqlAutoFiller.cs">
+    <Compile Include="SaveSupport\SqlAutoFiller.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\StateManager.cs" />
-    <Compile Include="SaveSupport\Row.cs" />
+    <Compile Include="StateManagement\StateManager.cs" />
     <Compile Include="Themas\Command.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -1,3 +1,14 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : CellSerializer.cs
+// Project: Zeta.Extreme.Form
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,29 +22,23 @@ using Comdiv.Persistence;
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 
-namespace Comdiv.Zeta.Web.InputTemplates {
+namespace Zeta.Extreme.Form.SaveSupport {
 	/// <summary>
-	/// —ериализатор €чеек из XML
+	/// 	—ериализатор €чеек из XML
 	/// </summary>
-	public class CellSerializer
-	{
-		private readonly StorageWrapper<IPkg> storage;
-
+	public class CellSerializer {
 		/// <summary>
-		/// 
 		/// </summary>
-		public CellSerializer()
-		{
+		public CellSerializer() {
 			storage = myapp.storage.Get<IPkg>();
 		}
 
 		/// <summary>
-		/// —читывает €чейки из XML
+		/// 	—читывает €чейки из XML
 		/// </summary>
-		/// <param name="xml"></param>
-		/// <returns></returns>
-		public IEnumerable<IWithId> ReadXml(string xml)
-		{
+		/// <param name="xml"> </param>
+		/// <returns> </returns>
+		public IEnumerable<IWithId> ReadXml(string xml) {
 			var doc = new XPathDocument(new StringReader(xml));
 			var nav = doc.CreateNavigator();
 			var main = nav.Select("/data/item");
@@ -48,21 +53,17 @@ namespace Comdiv.Zeta.Web.InputTemplates {
             pkg.Name = pkg.Code;
             yield return pkg;
 #endif
-			while (main.MoveNext())
-			{
+			while (main.MoveNext()) {
 				var n = main.Current.Clone();
 				var val = n.GetAttribute("value", string.Empty);
-				if (val.Trim() == "-")
-				{
+				if (val.Trim() == "-") {
 					val = "";
 				}
 				IZetaCell cell = null;
 				var id = n.GetAttribute("id", string.Empty).toInt();
-				if (0 != id)
-				{
+				if (0 != id) {
 					cell = storage.Load<IZetaCell>(id);
-					if (val.Trim() == "--")
-					{
+					if (val.Trim() == "--") {
 						cell.Tag = "delete";
 						yield return cell;
 						continue;
@@ -70,31 +71,25 @@ namespace Comdiv.Zeta.Web.InputTemplates {
 					val = val.Replace("\xa0", "");
 					cell.Value = val;
 				}
-				else
-				{
-					if (val.Trim() == "--")
-					{
+				else {
+					if (val.Trim() == "--") {
 						continue;
 					}
 					cell = storage.New<IZetaCell>();
 					var valueType = n.GetAttribute("valueType", string.Empty);
-					if (Regex.IsMatch(valueType, "^\\d+$"))
-					{
+					if (Regex.IsMatch(valueType, "^\\d+$")) {
 						cell.Column = ColumnCache.get(valueType.toInt());
 					}
-					else
-					{
+					else {
 						//valueType = SpecialObjectHelper.ResolveCode(valueType);
 						cell.Column = ColumnCache.get(valueType);
 					}
 
 					var meta = n.GetAttribute("meta", string.Empty);
-					if (Regex.IsMatch(meta, "^\\d+$"))
-					{
+					if (Regex.IsMatch(meta, "^\\d+$")) {
 						cell.Row = RowCache.get(meta.toInt());
 					}
-					else
-					{
+					else {
 						//meta = SpecialObjectHelper.ResolveCode(meta);
 						cell.Row = RowCache.get(meta);
 					}
@@ -112,12 +107,10 @@ namespace Comdiv.Zeta.Web.InputTemplates {
 
 					var org = n.GetAttribute("org", string.Empty);
 
-					if (org.hasContent())
-					{
+					if (org.hasContent()) {
 						cell.Object = storage.Load<IZetaMainObject>(org.toInt());
 					}
-					if (subpart.hasContent() && "0" != subpart)
-					{
+					if (subpart.hasContent() && "0" != subpart) {
 						cell.DetailObject = storage.Load<IZetaDetailObject>(subpart.toInt());
 						cell.Object = cell.DetailObject.Object;
 						cell.AltObj = cell.DetailObject.AltObject;
@@ -126,49 +119,40 @@ namespace Comdiv.Zeta.Web.InputTemplates {
 					cell.Valuta = "RUB";
 
 
-
 					var orgvaluta = cell.Object.Valuta;
-					if (orgvaluta.hasContent() && orgvaluta != "NONE")
-					{
+					if (orgvaluta.hasContent() && orgvaluta != "NONE") {
 						cell.Valuta = orgvaluta;
 					}
 
-					string detailvaluta = "";
-					if (cell.DetailObject != null)
-					{
+					var detailvaluta = "";
+					if (cell.DetailObject != null) {
 						detailvaluta = cell.DetailObject.Valuta;
-						if (detailvaluta.hasContent() && detailvaluta != "NONE")
-						{
+						if (detailvaluta.hasContent() && detailvaluta != "NONE") {
 							cell.Valuta = detailvaluta;
 						}
 					}
 					var rowvaluta = cell.Row.Valuta;
-					if (rowvaluta.hasContent() && rowvaluta != "NONE")
-					{
+					if (rowvaluta.hasContent() && rowvaluta != "NONE") {
 						cell.Valuta = rowvaluta;
 					}
 					var colvaluta = cell.Column.Valuta;
-					if (colvaluta.hasContent() && colvaluta != "NONE")
-					{
+					if (colvaluta.hasContent() && colvaluta != "NONE") {
 						cell.Valuta = colvaluta;
 					}
 
 					var vattr = n.GetAttribute("valuta", "");
-					if (vattr.hasContent())
-					{
+					if (vattr.hasContent()) {
 						cell.Valuta = vattr;
 					}
 
 
-					if (null == cell.Object && null != cell.DetailObject)
-					{
+					if (null == cell.Object && null != cell.DetailObject) {
 						cell.Object = cell.DetailObject.Object;
 					}
 
 
 					cell.Year = year.toInt();
-					if (kvart.hasContent())
-					{
+					if (kvart.hasContent()) {
 						cell.Period = kvart.toInt();
 					}
 
@@ -180,31 +164,24 @@ namespace Comdiv.Zeta.Web.InputTemplates {
 					//row.Month = 0;
 
 					cell.DirectDate = new DateTime(1900, 1, 1);
-					if (directdate.hasContent())
-					{
+					if (directdate.hasContent()) {
 						cell.DirectDate = DateTime.ParseExact(directdate, "d.M.yyyy", CultureInfo.InvariantCulture);
-						if (cell.DirectDate != DateExtensions.Begin)
-						{
+						if (cell.DirectDate != DateExtensions.Begin) {
 							cell.Year = cell.DirectDate.Year;
 							cell.Period = 365;
 						}
 					}
-					if (cell.DirectDate.Year <= 1900)
-					{
+					if (cell.DirectDate.Year <= 1900) {
 						var pd = Periods.Get(cell.Period);
-						if (null != pd && !pd.IsDayPeriod)
-						{
+						if (null != pd && !pd.IsDayPeriod) {
 							var edate = pd.EndDate;
-							if (edate.Year == 1899)
-							{
+							if (edate.Year == 1899) {
 								edate = new DateTime(cell.Year, edate.Month, edate.Day);
 							}
-							else if (edate.Year == 1898)
-							{
+							else if (edate.Year == 1898) {
 								edate = new DateTime(cell.Year - 1, edate.Month, edate.Day);
 							}
-							if (edate.Month == 2 && edate.Day == 28)
-							{
+							if (edate.Month == 2 && edate.Day == 28) {
 								edate = new DateTime(edate.Year, 3, 1).AddDays(-1);
 							}
 							cell.DirectDate = edate;
@@ -224,5 +201,7 @@ namespace Comdiv.Zeta.Web.InputTemplates {
 				yield return cell;
 			}
 		}
+
+		private readonly StorageWrapper<IPkg> storage;
 	}
 }

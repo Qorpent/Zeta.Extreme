@@ -1,33 +1,49 @@
-﻿using System;
+﻿#region LICENSE
 
-namespace Comdiv.Zeta.Web.InputTemplates {
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : AttachedFileType.cs
+// Project: Zeta.Extreme.Form
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
+using System;
+
+namespace Zeta.Extreme.Form.InputTemplates {
 	/// <summary>
-	/// Тип присоединенного файла
+	/// 	Тип присоединенного файла
 	/// </summary>
 	[Flags]
 	public enum AttachedFileType {
 		/// <summary>
-		/// Никакой
+		/// 	Никакой
 		/// </summary>
 		None = 0,
+
 		/// <summary>
-		/// По умолчанию
+		/// 	По умолчанию
 		/// </summary>
 		Default = 1,
+
 		/// <summary>
-		/// Дополнительный
+		/// 	Дополнительный
 		/// </summary>
 		Advanced = 2,
+
 		/// <summary>
-		/// Ссылочный
+		/// 	Ссылочный
 		/// </summary>
 		Correlated = 4,
+
 		/// <summary>
-		/// Все
+		/// 	Все
 		/// </summary>
 		All = 8,
+
 		/// <summary>
-		/// Связанный
+		/// 	Связанный
 		/// </summary>
 		Related = 16,
 	}

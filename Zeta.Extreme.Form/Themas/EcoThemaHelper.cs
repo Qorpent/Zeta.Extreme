@@ -1,19 +1,14 @@
-// // Copyright 2007-2010 Comdiv (F. Sadykov) - http://code.google.com/u/fagim.sadykov/
-// // Supported by Media Technology LTD 
-// //  
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //  
-// //      http://www.apache.org/licenses/LICENSE-2.0
-// //  
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
-// // 
-// // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : EcoThemaHelper.cs
+// Project: Zeta.Extreme.Form
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System;
 using System.Linq;
 using Comdiv.Application;
@@ -24,66 +19,918 @@ using Comdiv.Reporting;
 using Comdiv.Security;
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
-using Comdiv.Zeta.Web.InputTemplates;
+using Zeta.Extreme.Form.InputTemplates;
+using Zeta.Extreme.Form.StateManagement;
 
-namespace Comdiv.Zeta.Web.Themas{
+namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
-	/// Вспомогательный класс для темы
+	/// 	Вспомогательный класс для темы
 	/// </summary>
-    public class EcoThemaHelper{
-        private readonly IReportDefinition _cpreport;
-        private readonly IReportDefinition _creport;
-        private readonly IReportDefinition _dpreport;
-        private readonly IReportDefinition _dreport;
-        private readonly IDocument _help;
-        private readonly bool _invtarget;
-        private readonly IReportDefinition _spreport;
-        private readonly IReportDefinition _sreport;
-        private readonly IStateManager statemanager;
-        private readonly IThema thema;
+	public class EcoThemaHelper {
 		/// <summary>
-		/// Основная форма
+		/// 	Создает всомогательный класс хелпера Eco для форм
 		/// </summary>
-        public IInputTemplate main;
+		/// <param name="thema"> </param>
+		public EcoThemaHelper(IThema thema) {
+			this.thema = thema;
+			statemanager = ioc.get<IStateManager>();
+			main = GetMainForm();
+			plan = thema.GetForm(thema.Code + "-plan") ?? thema.GetForm("B");
+			planc = thema.GetForm(thema.Code + "-plan-c") ?? thema.GetForm("C");
+			_dreport = thema.GetReport(thema.Code + "-p") ?? thema.GetReport("Ab");
+			_dpreport = thema.GetReport(thema.Code + "-plan-p") ?? thema.GetReport("Bb");
+			_sreport = thema.GetReport(thema.Code) ?? thema.GetReport("Aa");
+			_spreport = thema.GetReport(thema.Code + "-plan") ?? thema.GetReport("Ba");
+			_creport = thema.GetReport(thema.Code + "-plan-c") ?? thema.GetReport("Ca");
+			_cpreport = thema.GetReport(thema.Code + "-plan-c-p") ?? thema.GetReport("Cb");
+			_help = thema.GetDocument(thema.Code);
+			_invtarget = thema.Parameters.get("invalidtargetobject", false);
+		}
+
 		/// <summary>
-		/// Плановая форма
+		/// 	Период главной формы
 		/// </summary>
-        public IInputTemplate plan;
+		public string mainperiod {
+			get { return getperiod(mainform, orgreport); }
+		}
+
 		/// <summary>
-		/// Форма корректива
+		/// 	Период плановой формы
 		/// </summary>
-        public IInputTemplate planc;
-		/// <summary>
-		/// Период главной формы
-		/// </summary>
-    	public string mainperiod {
-    		get { return getperiod(mainform, orgreport); }
-    	}
-		/// <summary>
-		/// Период плановой формы
-		/// </summary>
-		public string planperiod
-		{
+		public string planperiod {
 			get { return getperiod(planform, orgplanreport); }
 		}
+
 		/// <summary>
-		/// Период формы корректива
+		/// 	Период формы корректива
 		/// </summary>
-		public string plancperiod
-		{
+		public string plancperiod {
 			get { return getperiod(plancform, orgplancreport); }
 		}
+
 		/// <summary>
-		/// Получает строку с периодом (???)
+		/// 	Целевой объект
 		/// </summary>
-		/// <param name="form"></param>
-		/// <param name="report"></param>
-		/// <returns></returns>
-    	private string getperiod(IInputTemplate form, IReportDefinition report) {
-    		var period = 0;
-			if(null!=form) {
+		public IZetaMainObject Object { get; set; }
+
+		/// <summary>
+		/// 	Признак того, что тема для деталей
+		/// </summary>
+		public bool isdetail {
+			get { return thema.Parameters.get("isdetail", false); }
+		}
+
+		/// <summary>
+		/// 	Класс деталей
+		/// </summary>
+		public string DetailClasses {
+			get { return thema.Parameters.get("detailclasses", ""); }
+		}
+
+		/// <summary>
+		/// 	Возврашает элемент со списком деталей
+		/// </summary>
+		public HtmlListDefinition listdefinition {
+			get {
+				if (!isdetail) {
+					return null;
+				}
+				return myapp.ioc.get<IThemaFactoryProvider>().Get().Cache.get(thema.Code + "_listdefinition_" + Object.Code,
+				                                                              () =>
+					                                                              {
+						                                                              var result = new HtmlListDefinition
+							                                                              {Id = thema.Code + "_detail"};
+						                                                              var classes = DetailClasses.hasContent()
+							                                                                            ? DetailClasses.split().Select(
+								                                                                            x =>
+								                                                                            myapp.storage.Get
+									                                                                            <IDetailObjectClass>().
+									                                                                            Load(x))
+								                                                                              .Where(x => x != null).ToArray()
+							                                                                            : myapp.storage.Get
+								                                                                              <IDetailObjectClass>().All().
+								                                                                              ToArray();
+						                                                              foreach (var cls  in classes) {
+							                                                              var details =
+								                                                              myapp.storage.Get<IZetaDetailObject>().Query(
+									                                                              "Type.Class = ? and Org = ?", cls, Object).
+									                                                              ToArray();
+
+							                                                              if (details.Length != 0) {
+								                                                              //var _cls = result.Add(cls.Code, cls.Name);
+
+								                                                              foreach (var type in cls.Types) {
+									                                                              var typedetails =
+										                                                              details.Where(
+											                                                              x => ModelExtensions.Code(x.Type) == type.Code)
+											                                                              .
+											                                                              ToArray();
+									                                                              if (typedetails.Length > 0) {
+										                                                              var _type = result.Add(type.Code,
+										                                                                                     type.Name);
+
+										                                                              foreach (var detail in typedetails) {
+											                                                              _type.Add(detail.Id.ToString(), detail.Name);
+										                                                              }
+									                                                              }
+								                                                              }
+							                                                              }
+						                                                              }
+
+						                                                              return result;
+					                                                              });
+			}
+		}
+
+		/// <summary>
+		/// 	Призанк использования плановой формы
+		/// </summary>
+		public bool useplanform {
+			get { return plan != null; }
+		}
+
+		/// <summary>
+		/// 	Форма коррективов
+		/// </summary>
+		public IInputTemplate plancform {
+			get { return planc; }
+		}
+
+		/// <summary>
+		/// 	Признак использования коррективной формы
+		/// </summary>
+		public bool useplancform {
+			get { return planc != null; }
+		}
+
+		/// <summary>
+		/// 	Признак видимости главной формы
+		/// </summary>
+		public bool mainformvisible {
+			get { return thema.Parameters.get("f_visibleA", true); }
+		}
+
+		/// <summary>
+		/// 	Признак видимости блокиратора плановой формы
+		/// </summary>
+		public bool planlockvisible {
+			get { return thema.Parameters.get("fl_visibleB", true); }
+		}
+
+		/// <summary>
+		/// 	Признак видимости сводного планового отчета
+		/// </summary>
+		public bool plansvodvisible {
+			get { return thema.Parameters.get("ra_visibleB", true); }
+		}
+
+		/// <summary>
+		/// 	Признак видимости блокиратора коррективов
+		/// </summary>
+		public bool planclockvisible {
+			get { return thema.Parameters.get("fl_visibleC", true); }
+		}
+
+		/// <summary>
+		/// 	Признак видимости сводного коррективного отчета
+		/// </summary>
+		public bool plancsvodvisible {
+			get { return thema.Parameters.get("ra_visibleC", true); }
+		}
+
+		/// <summary>
+		/// 	Признак видимости главного сводного отчета
+		/// </summary>
+		public bool mainsvodvisible {
+			get { return thema.Parameters.get("ra_visibleA", true); }
+		}
+
+		/// <summary>
+		/// 	Признак видимости плановой формы
+		/// </summary>
+		public bool planformvisible {
+			get { return thema.Parameters.get("f_visibleB", true); }
+		}
+
+		/// <summary>
+		/// 	Признак видимости коррективной формы
+		/// </summary>
+		public bool plancformvisible {
+			get { return thema.Parameters.get("f_visibleC", true); }
+		}
+
+		/// <summary>
+		/// 	Признак видимости главного отчета предприятия
+		/// </summary>
+		public bool mainreportvisible {
+			get { return thema.Parameters.get("rb_visibleA", true); }
+		}
+
+		/// <summary>
+		/// 	Признак видимости планового отчета предприятия
+		/// </summary>
+		public bool planreportvisible {
+			get { return thema.Parameters.get("rb_visibleB", true); }
+		}
+
+
+		/// <summary>
+		/// 	Признак видимости коррективного отчета предприятия
+		/// </summary>
+		public bool plancreportvisible {
+			get { return thema.Parameters.get("rb_visibleC", true); }
+		}
+
+		/// <summary>
+		/// 	Признак видимости блокиратора главной формы
+		/// </summary>
+		public bool mainlockvisible {
+			get { return thema.Parameters.get("fl_visibleA", true); }
+		}
+
+		/// <summary>
+		/// 	Плановая форма
+		/// </summary>
+		public IInputTemplate planform {
+			get { return plan; }
+		}
+
+		/// <summary>
+		/// 	Признак использования главной формы
+		/// </summary>
+		public bool usemainform {
+			get { return main != null; }
+		}
+
+		/// <summary>
+		/// 	Главная форма
+		/// </summary>
+		public IInputTemplate mainform {
+			get { return main; }
+		}
+
+		/// <summary>
+		/// 	Признак использования отчета предприятия
+		/// </summary>
+		public bool useorgreport {
+			get { return _dreport != null; }
+		}
+
+		/// <summary>
+		/// 	Ссылка на отчет предприятия
+		/// </summary>
+		public IReportDefinition orgreport {
+			get { return _dreport; }
+		}
+
+		///<summary>
+		///	Признак видимости планового отчета предприятия
+		///</summary>
+		public bool useorgplanreport {
+			get { return _dpreport != null; }
+		}
+
+		/// <summary>
+		/// 	Плановый отчет предприятия
+		/// </summary>
+		public IReportDefinition orgplanreport {
+			get { return _dpreport; }
+		}
+
+		/// <summary>
+		/// 	Признак использования основного сводного отчета
+		/// </summary>
+		public bool usesvodreport {
+			get { return _sreport != null; }
+		}
+
+		/// <summary>
+		/// 	Признак использования сводного планового отчета
+		/// </summary>
+		public bool usesvodplanreport {
+			get { return _spreport != null; }
+		}
+
+
+		/// <summary>
+		/// 	Признак использования коррективного отчета предприятия
+		/// </summary>
+		public bool useorgplancreport {
+			get { return _cpreport != null; }
+		}
+
+		/// <summary>
+		/// 	Коррективный отчт предприятия
+		/// </summary>
+		public IReportDefinition orgplancreport {
+			get { return _cpreport; }
+		}
+
+
+		/// <summary>
+		/// 	Признак использования сводного коррективного отчета
+		/// </summary>
+		public bool usesvodplancreport {
+			get { return _creport != null; }
+		}
+
+
+		/// <summary>
+		/// 	Признак использования коррективного отчета предприятия
+		/// </summary>
+		public bool useplancreport {
+			get { return _cpreport != null; }
+		}
+
+		/// <summary>
+		/// 	Сводный отчет по коррективам
+		/// </summary>
+		public IReportDefinition svodplancreport {
+			get { return _creport; }
+		}
+
+		///////////////////////////////
+
+
+		/// <summary>
+		/// 	Главный сводный отчет
+		/// </summary>
+		public IReportDefinition svodreport {
+			get { return _sreport; }
+		}
+
+		/// <summary>
+		/// 	Признак использования планового отчета
+		/// </summary>
+		public bool useplanreport {
+			get { return _dpreport != null; }
+		}
+
+		/// <summary>
+		/// 	Плановый сводный отчет
+		/// </summary>
+		public IReportDefinition svodplanreport {
+			get { return _spreport; }
+		}
+
+		/// <summary>
+		/// 	Видимость темы
+		/// </summary>
+		public bool isvisible {
+			get {
+				if (myapp.roles.IsAdmin()) {
+					return true;
+				}
+				if (invalidtarget) {
+					return false;
+				}
+
+				return null != (main ?? plan ?? (object) _dreport ?? _dpreport ?? svodreport ?? svodplanreport);
+			}
+		}
+
+		/// <summary>
+		/// 	Главная форма открыта
+		/// </summary>
+		public bool ismainopen {
+			get {
+				if (!UseMainForm()) {
+					if (UseDefaultReport()) {
+						return getreportstate(orgreport);
+					}
+					return false;
+				}
+				return main.IsOpen;
+			}
+		}
+
+		/// <summary>
+		/// 	признак открытости плана
+		/// </summary>
+		public bool isplanopen {
+			get {
+				if (!useplanform) {
+					if (useplanreport) {
+						return getreportstate(orgplanreport);
+					}
+					return false;
+				}
+				return plan.IsOpen;
+			}
+		}
+
+		/// <summary>
+		/// 	Признак открытости корректива
+		/// </summary>
+		public bool isplancopen {
+			get {
+				if (!useplancform) {
+					if (useplancreport) {
+						return getreportstate(orgplancreport);
+					}
+					return false;
+				}
+				return planc.IsOpen;
+			}
+		}
+
+		/// <summary>
+		/// 	Признак утверждения главной формы
+		/// </summary>
+		public bool ismainchecked {
+			get {
+				if (!UseMainForm()) {
+					if (UseDefaultReport()) {
+						return getreportstate(orgreport, "0ISCHECKED");
+					}
+					return false;
+				}
+				return main.IsChecked;
+			}
+		}
+
+		/// <summary>
+		/// 	Признак утверждения плана
+		/// </summary>
+		public bool isplanchecked {
+			get {
+				if (!useplanform) {
+					if (useplanreport) {
+						return getreportstate(orgplanreport, "0ISCHECKED");
+					}
+					return false;
+				}
+				return plan.IsChecked;
+			}
+		}
+
+		/// <summary>
+		/// 	Признак утверждения корректива
+		/// </summary>
+		public bool isplancchecked {
+			get {
+				if (!useplancform) {
+					if (useplancreport) {
+						return getreportstate(orgplancreport, "0ISCHECKED");
+					}
+					return false;
+				}
+				return planc.IsChecked;
+			}
+		}
+
+
+		/// <summary>
+		/// 	Команда откр
+		/// </summary>
+		public string openmaincommand {
+			get {
+				if (null == main) {
+					return "comdiv.modal.alert('Вам не доступно управление формой ввода!');";
+				}
+				return string.Format("Zeta.form.open('{0}','{1}','{2}');", main.Code, thema.Code, main.Period);
+			}
+		}
+
+		/// <summary>
+		/// 	Заголовок команды открытия главной формы
+		/// </summary>
+		public string openmaintitle {
+			get {
+				if (null == main) {
+					return "Форма ввода (недоступно)";
+				}
+				if (ismainopen) {
+					return "Заполнить форму ввода";
+				}
+				return "Просмотреть форму ввода";
+			}
+		}
+
+		/// <summary>
+		/// 	Команда блокировки главной формы
+		/// </summary>
+		public string lockmaincommand {
+			get { return getLockCommand(usemainunderwrite, ismainopen, main); }
+		}
+
+		/// <summary>
+		/// 	Заголовок команды блокировки главной формы
+		/// </summary>
+		public string lockmaintitle {
+			get {
+				if (!usemainunderwrite) {
+					return "Управление блокировкой (недоступно)";
+				}
+				if (ismainopen) {
+					return "Блокировать форму ввода";
+				}
+				return "Снять блокировку";
+			}
+		}
+
+
+		/// <summary>
+		/// 	Команда открытия плана
+		/// </summary>
+		public string openplancommand {
+			get {
+				if (null == plan) {
+					return "comdiv.modal.alert('Вам не доступно управление формой ввода плана!');";
+				}
+				return string.Format("Zeta.form.open('{0}','{1}','{2}');", plan.Code, thema.Code, plan.Period);
+			}
+		}
+
+		/// <summary>
+		/// 	Заголовок команды открытия плана
+		/// </summary>
+		public string openplantitle {
+			get {
+				if (null == plan) {
+					return "Форма ввода плана (недоступно)";
+				}
+				if (isplanopen) {
+					return "Заполнить форму ввода плана";
+				}
+				return "Просмотреть форму ввода плана";
+			}
+		}
+
+		/// <summary>
+		/// 	Команда закрытия корректива
+		/// </summary>
+		public string lockplancommand {
+			get { return getLockCommand(useplanunderwrite, isplanopen, plan); }
+		}
+
+		/// <summary>
+		/// 	Заголовок команды блокирования плана
+		/// </summary>
+		public string lockplantitle {
+			get {
+				if (!useplanunderwrite) {
+					return "Управление блокировкой плановой формы (недоступно)";
+				}
+				if (isplanopen) {
+					return "Блокировать форму ввода плана";
+				}
+				return "Снять блокировку (форма плана)";
+			}
+		}
+
+		/// <summary>
+		/// 	Команда открытия корректива
+		/// </summary>
+		public string openplanccommand {
+			get {
+				if (null == planc) {
+					return "comdiv.modal.alert('Вам не доступно управление формой ввода корректив плана!');";
+				}
+				return string.Format("Zeta.form.open('{0}','{1}','{2}');", planc.Code, thema.Code, planc.Period);
+			}
+		}
+
+		/// <summary>
+		/// 	Заголовок команды открытия корректива
+		/// </summary>
+		public string openplanctitle {
+			get {
+				if (null == planc) {
+					return "Форма ввода корректив (недоступно)";
+				}
+				if (isplancopen) {
+					return "Заполнить форму ввода корректив";
+				}
+				return "Просмотреть форму ввода корректив";
+			}
+		}
+
+		/// <summary>
+		/// 	Команда закрытия корректива
+		/// </summary>
+		public string lockplanccommand {
+			get { return getLockCommand(useplancunderwrite, isplancopen, planc); }
+		}
+
+		/// <summary>
+		/// 	Заголовок команды закртыия корректива
+		/// </summary>
+		public string lockplanctitle {
+			get {
+				if (!useplancunderwrite) {
+					return "Управление блокировкой формы корректив (недоступно)";
+				}
+				if (isplancopen) {
+					return "Блокировать форму ввода корректив";
+				}
+				return "Снять блокировку (форма корректива)";
+			}
+		}
+
+
+		///////////////////////////////////
+
+		/// <summary>
+		/// 	Команда открытия простого отчета
+		/// </summary>
+		public string orgreportcommand {
+			get {
+				if (!UseDefaultReport()) {
+					return "comdiv.modal.alert('Вам не доступeн вызов стандартного отчета!');";
+				}
+
+				return "Zeta.report.open('" + _dreport.Code + "','" + thema.Code + "');";
+			}
+		}
+
+		/// <summary>
+		/// 	Заголовок команды открытия простого отчета
+		/// </summary>
+		public string orgreporttitle {
+			get {
+				if (!UseDefaultReport()) {
+					return "Базовый отчет (недоступно)";
+				}
+
+				return "Сформировать базовый отчет";
+			}
+		}
+
+		/// <summary>
+		/// 	Команда открытия планового отчета
+		/// </summary>
+		public string orgplanreportcommand {
+			get {
+				if (!useorgplanreport) {
+					return "comdiv.modal.alert('Вам не доступeн вызов стандартного планового отчета!');";
+				}
+
+				return "Zeta.report.open('" + _dpreport.Code + "','" + thema.Code + "');";
+			}
+		}
+
+		/// <summary>
+		/// 	Заголовок команды открытия планового отчета
+		/// </summary>
+		public string orgplanreporttitle {
+			get {
+				if (!useorgplanreport) {
+					return "Базовый плановый отчет (недоступно)";
+				}
+
+				return "Сформировать базовый плановый отчет";
+			}
+		}
+
+		/// <summary>
+		/// 	Команда открытия отчета по коррективам
+		/// </summary>
+		public string orgplancreportcommand {
+			get {
+				if (!useorgplancreport) {
+					return "comdiv.modal.alert('Вам не доступeн вызов стандартного отчета корректив!');";
+				}
+
+				return "Zeta.report.open('" + _cpreport.Code + "','" + thema.Code + "');";
+			}
+		}
+
+		/// <summary>
+		/// 	Заголовок открытия отчета по коррективам
+		/// </summary>
+		public string orgplancreporttitle {
+			get {
+				if (!useorgplancreport) {
+					return "Отчет корректив (недоступно)";
+				}
+
+				return "Сформировать отчет корректив";
+			}
+		}
+
+
+		/////
+
+		/// <summary>
+		/// 	Команда получения справки
+		/// </summary>
+		public string helpcommand {
+			get { return "zeta.workbench.loadthemadetails('" + thema.Code + "');"; }
+		}
+
+		/// <summary>
+		/// 	Заголовок справки
+		/// </summary>
+		public string helptitle {
+			get {
+				if (!usehelp) {
+					return "Дополнительная информация (недоступно)";
+				}
+
+				return "Дополнительная информация";
+			}
+		}
+
+		/// <summary>
+		/// 	Признак использования справки
+		/// </summary>
+		public bool usehelp {
+			get { return _help != null; }
+		}
+
+		/// <summary>
+		/// 	Команда открытия свода
+		/// </summary>
+		public string svodreportcommand {
+			get {
+				if (!UseSvodReport()) {
+					return "comdiv.modal.alert('Вам не доступeн вызов сводного отчета!');";
+				}
+
+				return "Zeta.report.prepare('" + _sreport.Code + "','" + thema.Code + "');";
+			}
+		}
+
+		/// <summary>
+		/// 	Заголовок команды открытия свода
+		/// </summary>
+		public string svodreporttitle {
+			get {
+				if (!UseSvodReport()) {
+					return "Сводный отчет (недоступно)";
+				}
+
+				return "Сформировать сводный отчет";
+			}
+		}
+
+
+		///<summary>
+		///	Команда открытия сводного корректива
+		///</summary>
+		public string svodplancreportcommand {
+			get {
+				if (!usesvodplancreport) {
+					return "comdiv.modal.alert('Вам не доступeн вызов сводного планового отчета!');";
+				}
+
+				return "Zeta.report.prepare('" + _creport.Code + "','" + thema.Code + "');";
+			}
+		}
+
+		/// <summary>
+		/// 	Заголовок команды открытия сводного корректива
+		/// </summary>
+		public string svodplancreporttitle {
+			get {
+				if (!usesvodplancreport) {
+					return "Сводный плановый отчет (недоступно)";
+				}
+
+				return "Сформировать сводный плановый отчет";
+			}
+		}
+
+
+		///////
+
+		/// <summary>
+		/// 	Использовать главный блокиратор
+		/// </summary>
+		public bool usemainunderwrite {
+			get {
+				if (!UseMainForm()) {
+					return false;
+				}
+				if (main.UnderwriteCode.noContent()) {
+					return false;
+				}
+				if (main.UnderwriteRole.noContent()) {
+					return myapp.roles.IsAdmin();
+				}
+
+				if (ismainopen) {
+					var state = main.GetScheduleState();
+					if (!state.Date.isNull()) {
+						var from = new DateTime(state.Date.Year, state.Date.Month, 1);
+						if (DateTime.Today < (from.AddDays(-10))) {
+							return false;
+						}
+					}
+				}
+
+				return getUnderwriteByRoles(main);
+			}
+		}
+
+
+		/// <summary>
+		/// 	Команда свода по плану
+		/// </summary>
+		public string svodplanreportcommand {
+			get {
+				if (!usesvodplanreport) {
+					return "comdiv.modal.alert('Вам не доступeн вызов сводного планового отчета!');";
+				}
+
+				return "Zeta.report.prepare('" + _spreport.Code + "','" + thema.Code + "');";
+			}
+		}
+
+		/// <summary>
+		/// 	Заголовок свода по плану
+		/// </summary>
+		public string svodplanreporttitle {
+			get {
+				if (!usesvodplanreport) {
+					return "Сводный плановый отчет (недоступно)";
+				}
+
+				return "Сформировать сводный плановый отчет";
+			}
+		}
+
+		/// <summary>
+		/// 	Использовать блокиратор плана
+		/// </summary>
+		public bool useplanunderwrite {
+			get {
+				if (!useplanform) {
+					return false;
+				}
+				if (plan.UnderwriteCode.noContent()) {
+					return false;
+				}
+				if (plan.UnderwriteRole.noContent()) {
+					return myapp.roles.IsAdmin();
+				}
+
+
+				if (isplanopen) {
+					var state = plan.GetScheduleState();
+					if (state.Date.Year < 2500) {
+						var from = new DateTime(state.Date.Year, state.Date.Month, 1);
+						if (DateTime.Today < from) {
+							return false;
+						}
+					}
+				}
+
+				var form = plan;
+				return getUnderwriteByRoles(form);
+			}
+		}
+
+		/// <summary>
+		/// 	Использовать блокиратор корректива
+		/// </summary>
+		public bool useplancunderwrite {
+			get {
+				if (!useplancform) {
+					return false;
+				}
+				if (planc.UnderwriteCode.noContent()) {
+					return false;
+				}
+				if (planc.UnderwriteRole.noContent()) {
+					return myapp.roles.IsAdmin();
+				}
+
+
+				if (isplancopen) {
+					var state = planc.GetScheduleState();
+					if (state.Date.Year < 2500) {
+						var from = new DateTime(state.Date.Year, state.Date.Month, 1);
+						if (DateTime.Today < from) {
+							return false;
+						}
+					}
+				}
+
+				return getUnderwriteByRoles(planc);
+			}
+		}
+
+		/// <summary>
+		/// 	Неверная цель (объект)
+		/// </summary>
+		public bool invalidtarget {
+			get { return _invtarget; }
+		}
+
+		/// <summary>
+		/// 	Получает строку с периодом (???)
+		/// </summary>
+		/// <param name="form"> </param>
+		/// <param name="report"> </param>
+		/// <returns> </returns>
+		private string getperiod(IInputTemplate form, IReportDefinition report) {
+			var period = 0;
+			if (null != form) {
 				period = form.Period;
-			}else {
+			}
+			else {
 				//NOTE: Extreme пока не поддерживает отчетов
 				/*
 				if(null!=report) {
@@ -96,351 +943,14 @@ namespace Comdiv.Zeta.Web.Themas{
 				}
 				 */
 			}
-			if (0 == period) return "";
-    		return Periods.GetName(period) + ":";
-    	}
-		/// <summary>
-		/// Создает всомогательный класс хелпера Eco для форм
-		/// </summary>
-		/// <param name="thema"></param>
-    	public EcoThemaHelper(IThema thema){
-            this.thema = thema;
-            statemanager = ioc.get<IStateManager>();
-            main = GetMainForm();
-            plan = thema.GetForm(thema.Code + "-plan") ?? thema.GetForm("B");
-            planc = thema.GetForm(thema.Code + "-plan-c") ?? thema.GetForm("C");
-            _dreport = thema.GetReport(thema.Code + "-p") ?? thema.GetReport("Ab");
-            _dpreport = thema.GetReport(thema.Code + "-plan-p") ?? thema.GetReport("Bb");
-            _sreport = thema.GetReport(thema.Code) ?? thema.GetReport("Aa");
-            _spreport = thema.GetReport(thema.Code + "-plan") ?? thema.GetReport("Ba");
-            _creport = thema.GetReport(thema.Code + "-plan-c") ?? thema.GetReport("Ca");
-            _cpreport = thema.GetReport(thema.Code + "-plan-c-p") ?? thema.GetReport("Cb");
-            _help = thema.GetDocument(thema.Code);
-            _invtarget = thema.Parameters.get("invalidtargetobject", false);
-        }
-		/// <summary>
-		/// Целевой объект
-		/// </summary>
-        public IZetaMainObject Object { get; set; }
-		/// <summary>
-		/// Признак того, что тема для деталей
-		/// </summary>
-        public bool isdetail{
-            get { return thema.Parameters.get("isdetail", false); }
-        }
-		/// <summary>
-		/// Класс деталей
-		/// </summary>
-        public string DetailClasses{
-            get { return thema.Parameters.get("detailclasses", ""); }
-        }
+			if (0 == period) {
+				return "";
+			}
+			return Periods.GetName(period) + ":";
+		}
 
-		/// <summary>
-		/// Возврашает элемент со списком деталей
-		/// </summary>
-        public HtmlListDefinition listdefinition{
-            get{
-                if (!isdetail){
-                    return null;
-                }
-                return myapp.ioc.get<IThemaFactoryProvider>().Get().Cache.get(thema.Code + "_listdefinition_" + Object.Code,
-                                               () =>{
-                                                   var result = new HtmlListDefinition{Id = thema.Code + "_detail"};
-                                                   var classes = DetailClasses.hasContent()
-                                                                     ? DetailClasses.split().Select(
-                                                                         x =>
-                                                                         myapp.storage.Get<IDetailObjectClass>().
-                                                                             Load(x))
-                                                                           .Where(x => x != null).ToArray()
-                                                                     : myapp.storage.Get<IDetailObjectClass>().All().
-                                                                           ToArray();
-                                                   foreach (var cls  in classes){
-                                                       var details =
-                                                           myapp.storage.Get<IZetaDetailObject>().Query(
-                                                               "Type.Class = ? and Org = ?", cls, Object).ToArray();
-
-                                                       if (details.Length != 0){
-                                                           //var _cls = result.Add(cls.Code, cls.Name);
-
-                                                           foreach (var type in cls.Types){
-                                                               var typedetails =
-                                                                   details.Where(
-                                                                       x => ModelExtensions.Code(x.Type) == type.Code).
-                                                                       ToArray();
-                                                               if (typedetails.Length > 0){
-                                                                   var _type = result.Add(type.Code,
-                                                                                          type.Name);
-
-                                                                   foreach (var detail in typedetails){
-                                                                       _type.Add(detail.Id.ToString(), detail.Name);
-                                                                   }
-                                                               }
-                                                           }
-                                                       }
-                                                   }
-
-                                                   return result;
-                                               });
-            }
-        }
-
-		/// <summary>
-		/// Призанк использования плановой формы
-		/// </summary>
-        public bool useplanform{
-            get { return plan != null; }
-        }
-
-		/// <summary>
-		/// Форма коррективов
-		/// </summary>
-    	public IInputTemplate plancform {
-			get { return planc; }
-    	}
-		/// <summary>
-		/// Признак использования коррективной формы
-		/// </summary>
-        public bool useplancform{
-            get { return planc != null; }
-        }
-		/// <summary>
-		/// Признак видимости главной формы
-		/// </summary>
-        public bool mainformvisible{
-            get { return thema.Parameters.get("f_visibleA", true); }
-        }
-		/// <summary>
-		/// Признак видимости блокиратора плановой формы
-		/// </summary>
-        public bool planlockvisible{
-            get { return thema.Parameters.get("fl_visibleB", true); }
-        }
-
-		/// <summary>
-		/// Признак видимости сводного планового отчета
-		/// </summary>
-        public bool plansvodvisible{
-            get { return thema.Parameters.get("ra_visibleB", true); }
-        }
-		/// <summary>
-		/// Признак видимости блокиратора коррективов
-		/// </summary>
-        public bool planclockvisible{
-            get { return thema.Parameters.get("fl_visibleC", true); }
-        }
-
-		/// <summary>
-		/// Признак видимости сводного коррективного отчета
-		/// </summary>
-        public bool plancsvodvisible{
-            get { return thema.Parameters.get("ra_visibleC", true); }
-        }
-
-		/// <summary>
-		/// Признак видимости главного сводного отчета
-		/// </summary>
-        public bool mainsvodvisible{
-            get { return thema.Parameters.get("ra_visibleA", true); }
-        }
-		/// <summary>
-		/// Признак видимости плановой формы
-		/// </summary>
-        public bool planformvisible{
-            get { return thema.Parameters.get("f_visibleB", true); }
-        }
-		/// <summary>
-		/// Признак видимости коррективной формы
-		/// </summary>
-        public bool plancformvisible{
-            get { return thema.Parameters.get("f_visibleC", true); }
-        }
-		/// <summary>
-		/// Признак видимости главного отчета предприятия
-		/// </summary>
-        public bool mainreportvisible{
-            get { return thema.Parameters.get("rb_visibleA", true); }
-        }
-
-        /// <summary>
-        /// Признак видимости планового отчета предприятия
-        /// </summary>
-        public bool planreportvisible{
-            get { return thema.Parameters.get("rb_visibleB", true); }
-        }
-
-
-        /// <summary>
-        /// Признак видимости коррективного отчета предприятия
-        /// </summary>
-        public bool plancreportvisible{
-            get { return thema.Parameters.get("rb_visibleC", true); }
-        }
-		
-        /// <summary>
-        /// Признак видимости блокиратора главной формы
-        /// </summary>
-        public bool mainlockvisible{
-            get { return thema.Parameters.get("fl_visibleA", true); }
-        }
-
-        /// <summary>
-        /// Плановая форма
-        /// </summary>
-        public IInputTemplate planform{
-            get { return plan; }
-        }
-
-        /// <summary>
-        /// Признак использования главной формы
-        /// </summary>
-        public bool usemainform{
-            get { return main != null; }
-        }
-
-        /// <summary>
-        /// Главная форма
-        /// </summary>
-        public IInputTemplate mainform{
-            get { return main; }
-        }
-
-        /// <summary>
-        /// Признак использования отчета предприятия
-        /// </summary>
-        public bool useorgreport{
-            get { return _dreport != null; }
-        }
-
-        /// <summary>
-        /// Ссылка на отчет предприятия
-        /// </summary>
-        public IReportDefinition orgreport{
-            get { return _dreport; }
-        }
-
-        /// <summary>
-        ///Признак видимости планового отчета предприятия
-        /// </summary>
-        public bool useorgplanreport{
-            get { return _dpreport != null; }
-        }
-		
-        /// <summary>
-        /// Плановый отчет предприятия
-        /// </summary>
-        public IReportDefinition orgplanreport{
-            get { return _dpreport; }
-        }
-		
-        /// <summary>
-        /// Признак использования основного сводного отчета
-        /// </summary>
-        public bool usesvodreport{
-            get { return _sreport != null; }
-        }
-
-        /// <summary>
-        /// Признак использования сводного планового отчета
-        /// </summary>
-        public bool usesvodplanreport{
-            get { return _spreport != null; }
-        }
-
-
-        /// <summary>
-        /// Признак использования коррективного отчета предприятия
-        /// </summary>
-        public bool useorgplancreport{
-            get { return _cpreport != null; }
-        }
-
-        /// <summary>
-        /// Коррективный отчт предприятия
-        /// </summary>
-        public IReportDefinition orgplancreport{
-            get { return _cpreport; }
-        }
-
-
-        /// <summary>
-        /// Признак использования сводного коррективного отчета
-        /// </summary>
-        public bool usesvodplancreport{
-            get { return _creport != null; }
-        }
-
-		
-        /// <summary>
-        /// Признак использования коррективного отчета предприятия
-        /// </summary>
-        public bool useplancreport{
-            get { return _cpreport != null; }
-        }
-
-        /// <summary>
-        /// Сводный отчет по коррективам
-        /// </summary>
-        public IReportDefinition svodplancreport{
-            get { return _creport; }
-        }
-
-        ///////////////////////////////
-
-
-        /// <summary>
-        /// Главный сводный отчет
-        /// </summary>
-        public IReportDefinition svodreport{
-            get { return _sreport; }
-        }
-
-        /// <summary>
-        /// Признак использования планового отчета
-        /// </summary>
-        public bool useplanreport{
-            get { return _dpreport != null; }
-        }
-
-        /// <summary>
-        /// Плановый сводный отчет
-        /// </summary>
-        public IReportDefinition svodplanreport{
-            get { return _spreport; }
-        }
-
-        /// <summary>
-        /// Видимость темы
-        /// </summary>
-        public bool isvisible{
-            get{
-                if (myapp.roles.IsAdmin()){
-                    return true;
-                }
-                if (invalidtarget){
-                    return false;
-                }
-
-                return null != (main ?? plan ?? (object) _dreport ?? _dpreport ?? svodreport ?? svodplanreport);
-            }
-        }
-
-        /// <summary>
-        /// Главная форма открыта
-        /// </summary>
-        public bool ismainopen{
-            get{
-                if (!UseMainForm()){
-					if(UseDefaultReport()) {
-						return getreportstate(orgreport);
-					}
-                	return false;
-                }
-                return main.IsOpen;
-            }
-        }
-
-    	private bool getreportstate(IReportDefinition report, string  statetocheck="0ISOPEN") {
-    		return false;
+		private bool getreportstate(IReportDefinition report, string statetocheck = "0ISOPEN") {
+			return false;
 			//NOTE: на данный момент отчеты в Extreme не работают
 			/*
 			if (null == report) return false;
@@ -448,588 +958,113 @@ namespace Comdiv.Zeta.Web.Themas{
     			((ZetaReportDefinition) report).GetState(((Thema) thema).Object, ((Thema) thema).Year, ((Thema) thema).Period) ==
 				statetocheck;
 			 */
-    	}
-
-    	/// <summary>
-    	/// признак открытости плана
-    	/// </summary>
-    	public bool isplanopen{
-            get{
-                if (!useplanform){
-                    if(useplanreport) {
-						return getreportstate(orgplanreport);
-					}
-                	return false;
-                }
-                return plan.IsOpen;
-            }
-        }
-
-        /// <summary>
-        /// Признак открытости корректива
-        /// </summary>
-        public bool isplancopen{
-            get{
-                if (!useplancform){
-					if (useplancreport)
-					{
-						return getreportstate(orgplancreport);
-					}
-                    return false;
-                }
-                return planc.IsOpen;
-            }
-        }
-
-        /// <summary>
-        /// Признак утверждения главной формы
-        /// </summary>
-        public bool ismainchecked{
-            get{
-                if (!UseMainForm()){
-					if (UseDefaultReport())
-					{
-						return getreportstate(orgreport,"0ISCHECKED");
-					}
-                    return false;
-                }
-                return main.IsChecked;
-            }
-        }
-
-        /// <summary>
-        /// Признак утверждения плана
-        /// </summary>
-        public bool isplanchecked{
-            get{
-                if (!useplanform){
-					if (useplanreport)
-					{
-						return getreportstate(orgplanreport,"0ISCHECKED");
-					}
-                    return false;
-                }
-                return plan.IsChecked;
-            }
-        }
-
-        /// <summary>
-        /// Признак утверждения корректива
-        /// </summary>
-        public bool isplancchecked{
-            get{
-                if (!useplancform){
-					if (useplancreport)
-					{
-						return getreportstate(orgplancreport, "0ISCHECKED");
-					}
-                    return false;
-                }
-                return planc.IsChecked;
-            }
-        }
-
-
-        /// <summary>
-        /// Команда откр
-        /// </summary>
-        public string openmaincommand{
-            get{
-                if (null == main){
-                    return "comdiv.modal.alert('Вам не доступно управление формой ввода!');";
-                }
-                return string.Format("Zeta.form.open('{0}','{1}','{2}');", main.Code, thema.Code, main.Period);
-            }
-        }
-		/// <summary>
-		/// Заголовок команды открытия главной формы
-		/// </summary>
-        public string openmaintitle{
-            get{
-                if (null == main){
-                    return "Форма ввода (недоступно)";
-                }
-                if (ismainopen){
-                    return "Заполнить форму ввода";
-                }
-                return "Просмотреть форму ввода";
-            }
-        }
-
-        /// <summary>
-        /// Команда блокировки главной формы
-        /// </summary>
-        public string lockmaincommand{
-            get { return getLockCommand(usemainunderwrite, ismainopen, main); }
-        }
-		/// <summary>
-		/// Заголовок команды блокировки главной формы
-		/// </summary>
-        public string lockmaintitle{
-            get{
-                if (!usemainunderwrite){
-                    return "Управление блокировкой (недоступно)";
-                }
-                if (ismainopen){
-                    return "Блокировать форму ввода";
-                }
-                return "Снять блокировку";
-            }
-        }
-
-
-        /// <summary>
-        /// Команда открытия плана
-        /// </summary>
-        public string openplancommand{
-            get{
-                if (null == plan){
-                    return "comdiv.modal.alert('Вам не доступно управление формой ввода плана!');";
-                }
-                return string.Format("Zeta.form.open('{0}','{1}','{2}');", plan.Code, thema.Code, plan.Period);
-            }
-        }
-		/// <summary>
-		/// Заголовок команды открытия плана
-		/// </summary>
-        public string openplantitle{
-            get{
-                if (null == plan){
-                    return "Форма ввода плана (недоступно)";
-                }
-                if (isplanopen){
-                    return "Заполнить форму ввода плана";
-                }
-                return "Просмотреть форму ввода плана";
-            }
-        }
-		/// <summary>
-		/// Команда закрытия корректива
-		/// </summary>
-        public string lockplancommand{
-            get { return getLockCommand(useplanunderwrite, isplanopen, plan); }
-        }
-		/// <summary>
-		/// Заголовок команды блокирования плана
-		/// </summary>
-        public string lockplantitle{
-            get{
-                if (!useplanunderwrite){
-                    return "Управление блокировкой плановой формы (недоступно)";
-                }
-                if (isplanopen){
-                    return "Блокировать форму ввода плана";
-                }
-                return "Снять блокировку (форма плана)";
-            }
-        }
-
-        /// <summary>
-        ///   Команда открытия корректива
-        /// </summary>
-        public string openplanccommand{
-            get{
-                if (null == planc){
-                    return "comdiv.modal.alert('Вам не доступно управление формой ввода корректив плана!');";
-                }
-                return string.Format("Zeta.form.open('{0}','{1}','{2}');", planc.Code, thema.Code, planc.Period);
-            }
-        }
-		/// <summary>
-		/// Заголовок команды открытия корректива
-		/// </summary>
-        public string openplanctitle{
-            get{
-                if (null == planc){
-                    return "Форма ввода корректив (недоступно)";
-                }
-                if (isplancopen){
-                    return "Заполнить форму ввода корректив";
-                }
-                return "Просмотреть форму ввода корректив";
-            }
-        }
-		/// <summary>
-		/// Команда закрытия корректива
-		/// </summary>
-        public string lockplanccommand{
-            get { return getLockCommand(useplancunderwrite, isplancopen, planc); }
-        }
-		/// <summary>
-		/// Заголовок команды закртыия корректива
-		/// </summary>
-        public string lockplanctitle{
-            get{
-                if (!useplancunderwrite){
-                    return "Управление блокировкой формы корректив (недоступно)";
-                }
-                if (isplancopen){
-                    return "Блокировать форму ввода корректив";
-                }
-                return "Снять блокировку (форма корректива)";
-            }
-        }
-
-
-        ///////////////////////////////////
+		}
 
 		/// <summary>
-		/// Команда открытия простого отчета
+		/// 	Использовать главную форму
 		/// </summary>
-        public string orgreportcommand{
-            get{
-                if (!UseDefaultReport()){
-                    return "comdiv.modal.alert('Вам не доступeн вызов стандартного отчета!');";
-                }
-
-                return "Zeta.report.open('" + _dreport.Code + "','" + thema.Code + "');";
-            }
-        }
+		/// <returns> </returns>
+		public bool UseMainForm() {
+			return main != null;
+		}
 
 		/// <summary>
-		/// Заголовок команды открытия простого отчета
+		/// 	Использовать базовый отчет
 		/// </summary>
-        public string orgreporttitle{
-            get{
-                if (!UseDefaultReport()){
-                    return "Базовый отчет (недоступно)";
-                }
-
-                return "Сформировать базовый отчет";
-            }
-        }
+		/// <returns> </returns>
+		public bool UseDefaultReport() {
+			return _dreport != null;
+		}
 
 		/// <summary>
-		/// Команда открытия планового отчета
+		/// 	Использовать сводный отчет
 		/// </summary>
-        public string orgplanreportcommand{
-            get{
-                if (!useorgplanreport){
-                    return "comdiv.modal.alert('Вам не доступeн вызов стандартного планового отчета!');";
-                }
+		/// <returns> </returns>
+		public bool UseSvodReport() {
+			return _sreport != null;
+		}
 
-                return "Zeta.report.open('" + _dpreport.Code + "','" + thema.Code + "');";
-            }
-        }
+		private IInputTemplate GetMainForm() {
+			return thema.GetForm(thema.Code) ?? thema.GetForm("A");
+		}
+
+		private string getLockCommand(bool useunderwrite, bool isopen, IInputTemplate target) {
+			if (!useunderwrite) {
+				return "comdiv.modal.alert('Вам не доступно управлений блокировкой формы ввода!');";
+			}
+			if (isopen) {
+				//if ((message = target.CanSetState(Object, null, "0ISBLOCK")).noContent()){
+				return string.Format("Zeta.form.lock('{0}',true,'{1}','{2}',{3},'{4}');", target.Code, target.Period
+				                     , target.Name, target.Year, Periods.Get(target.Period).Name);
+				//}
+				//else{
+				//   return "comdiv.modal.alert('На данный момент форму нельзя блокировать (" +
+				//         message.Replace("'", "&apos;") + ")!');";
+				// }
+			}
+			//if ((message = target.CanSetState(Object, null, "0ISOPEN")).noContent()){
+			var deps = statemanager.GetDependentTemplates(target);
+			if (deps.Count() == 0) {
+				return string.Format("Zeta.form.lock('{0}',false,'{1}');", target.Code, target.Period);
+			}
+			else {
+				return
+					string.Format(
+						"if (confirm('Данное действие также откроет:\" {2} \", вы уверены?'))Zeta.form.lock('{0}',false,'{1}');",
+						target.Code
+						, target.Period, deps.Select(x => x.Name.Replace("'", "\\'")).concat(", "));
+			}
+			//}
+			//else{
+			//   return "comdiv.modal.alert('На данный момент форму нельзя открыть (" + message.Replace("'", "&apos;") +
+			//         ")!');";
+			//}
+		}
+
+		private bool getUnderwriteByRoles(IInputTemplate form) {
+			if (myapp.roles.IsAdmin()) {
+				return true;
+			}
+			if (myapp.roles.IsInRole("HOLDUNDERWRITER")) {
+				return true;
+			}
+			if (!myapp.roles.IsInRole(form.UnderwriteRole)) {
+				return false;
+			}
+			var s = form.GetState(Object, null);
+			if (s == "0ISOPEN") {
+				return true;
+			}
+			if (s == "0ISBLOCK" && myapp.roles.IsInRole("DIVUNDERWRITER")) {
+				return true;
+			}
+			return false;
+		}
+
+		private readonly IReportDefinition _cpreport;
+		private readonly IReportDefinition _creport;
+		private readonly IReportDefinition _dpreport;
+		private readonly IReportDefinition _dreport;
+		private readonly IDocument _help;
+		private readonly bool _invtarget;
+		private readonly IReportDefinition _spreport;
+		private readonly IReportDefinition _sreport;
+		private readonly IStateManager statemanager;
+		private readonly IThema thema;
 
 		/// <summary>
-		/// Заголовок команды открытия планового отчета
+		/// 	Основная форма
 		/// </summary>
-        public string orgplanreporttitle{
-            get{
-                if (!useorgplanreport){
-                    return "Базовый плановый отчет (недоступно)";
-                }
-
-                return "Сформировать базовый плановый отчет";
-            }
-        }
-
-        /// <summary>
-        /// Команда открытия отчета по коррективам
-        /// </summary>
-        public string orgplancreportcommand{
-            get{
-                if (!useorgplancreport){
-                    return "comdiv.modal.alert('Вам не доступeн вызов стандартного отчета корректив!');";
-                }
-
-                return "Zeta.report.open('" + _cpreport.Code + "','" + thema.Code + "');";
-            }
-        }
+		public IInputTemplate main;
 
 		/// <summary>
-		/// Заголовок открытия отчета по коррективам
+		/// 	Плановая форма
 		/// </summary>
-        public string orgplancreporttitle{
-            get{
-                if (!useorgplancreport){
-                    return "Отчет корректив (недоступно)";
-                }
-
-                return "Сформировать отчет корректив";
-            }
-        }
-
-
-        /////
+		public IInputTemplate plan;
 
 		/// <summary>
-		/// Команда получения справки
+		/// 	Форма корректива
 		/// </summary>
-        public string helpcommand{
-            get { return "zeta.workbench.loadthemadetails('" + thema.Code + "');"; }
-        }
-		/// <summary>
-		/// Заголовок справки
-		/// </summary>
-        public string helptitle{
-            get{
-                if (!usehelp){
-                    return "Дополнительная информация (недоступно)";
-                }
-
-                return "Дополнительная информация";
-            }
-        }
-		/// <summary>
-		/// Признак использования справки
-		/// </summary>
-        public bool usehelp{
-            get { return _help != null; }
-        }
-
-		/// <summary>
-		/// Команда открытия свода
-		/// </summary>
-        public string svodreportcommand{
-            get{
-                if (!UseSvodReport()){
-                    return "comdiv.modal.alert('Вам не доступeн вызов сводного отчета!');";
-                }
-
-                return "Zeta.report.prepare('" + _sreport.Code + "','" + thema.Code + "');";
-            }
-        }
-		/// <summary>
-		/// Заголовок команды открытия свода
-		/// </summary>
-        public string svodreporttitle{
-            get{
-                if (!UseSvodReport()){
-                    return "Сводный отчет (недоступно)";
-                }
-
-                return "Сформировать сводный отчет";
-            }
-        }
-
-
-        /// <summary>
-        ///Команда открытия сводного корректива
-        /// </summary>
-        public string svodplancreportcommand{
-            get{
-                if (!usesvodplancreport){
-                    return "comdiv.modal.alert('Вам не доступeн вызов сводного планового отчета!');";
-                }
-
-                return "Zeta.report.prepare('" + _creport.Code + "','" + thema.Code + "');";
-            }
-        }
-		/// <summary>
-		/// Заголовок команды открытия сводного корректива
-		/// </summary>
-        public string svodplancreporttitle{
-            get{
-                if (!usesvodplancreport){
-                    return "Сводный плановый отчет (недоступно)";
-                }
-
-                return "Сформировать сводный плановый отчет";
-            }
-        }
-
-
-        ///////
-
-		/// <summary>
-		/// Использовать главный блокиратор
-		/// </summary>
-        public bool usemainunderwrite{
-            get{
-                if (!UseMainForm()){
-                    return false;
-                }
-                if (main.UnderwriteCode.noContent()){
-                    return false;
-                }
-                if (main.UnderwriteRole.noContent()){
-                    return myapp.roles.IsAdmin();
-                }
-
-                if (ismainopen){
-                    var state = main.GetScheduleState();
-                    if (!state.Date.isNull()){
-                        var from = new DateTime(state.Date.Year, state.Date.Month, 1);
-                        if (DateTime.Today < (from.AddDays(-10))){
-                            return false;
-                        }
-                    }
-                }
-
-                return getUnderwriteByRoles(main);
-            }
-        }
-
-
-        /// <summary>
-        /// Команда свода по плану
-        /// </summary>
-        public string svodplanreportcommand{
-            get{
-                if (!usesvodplanreport){
-                    return "comdiv.modal.alert('Вам не доступeн вызов сводного планового отчета!');";
-                }
-
-                return "Zeta.report.prepare('" + _spreport.Code + "','" + thema.Code + "');";
-            }
-        }
-		/// <summary>
-		/// Заголовок свода по плану
-		/// </summary>
-        public string svodplanreporttitle{
-            get{
-                if (!usesvodplanreport){
-                    return "Сводный плановый отчет (недоступно)";
-                }
-
-                return "Сформировать сводный плановый отчет";
-            }
-        }
-		/// <summary>
-		/// Использовать блокиратор плана
-		/// </summary>
-        public bool useplanunderwrite{
-            get{
-                if (!useplanform){
-                    return false;
-                }
-                if (plan.UnderwriteCode.noContent()){
-                    return false;
-                }
-                if (plan.UnderwriteRole.noContent()){
-                    return myapp.roles.IsAdmin();
-                }
-
-
-                if (isplanopen){
-                    var state = plan.GetScheduleState();
-                    if (state.Date.Year < 2500){
-                        var from = new DateTime(state.Date.Year, state.Date.Month, 1);
-                        if (DateTime.Today < from){
-                            return false;
-                        }
-                    }
-                }
-
-                var form = plan;
-                return getUnderwriteByRoles(form);
-            }
-        }
-
-		/// <summary>
-		/// Использовать блокиратор корректива
-		/// </summary>
-        public bool useplancunderwrite{
-            get{
-                if (!useplancform){
-                    return false;
-                }
-                if (planc.UnderwriteCode.noContent()){
-                    return false;
-                }
-                if (planc.UnderwriteRole.noContent()){
-                    return myapp.roles.IsAdmin();
-                }
-
-
-                if (isplancopen){
-                    var state = planc.GetScheduleState();
-                    if (state.Date.Year < 2500){
-                        var from = new DateTime(state.Date.Year, state.Date.Month, 1);
-                        if (DateTime.Today < from){
-                            return false;
-                        }
-                    }
-                }
-
-                return getUnderwriteByRoles(planc);
-            }
-        }
-		/// <summary>
-		/// Неверная цель (объект)
-		/// </summary>
-        public bool invalidtarget{
-            get { return _invtarget; }
-        }
-		/// <summary>
-		/// Использовать главную форму
-		/// </summary>
-		/// <returns></returns>
-        public bool UseMainForm(){
-            return main != null;
-        }
-		/// <summary>
-		/// Использовать базовый отчет
-		/// </summary>
-		/// <returns></returns>
-        public bool UseDefaultReport(){
-            return _dreport != null;
-        }
-		/// <summary>
-		/// Использовать сводный отчет
-		/// </summary>
-		/// <returns></returns>
-        public bool UseSvodReport(){
-            return _sreport != null;
-        }
-
-        private IInputTemplate GetMainForm(){
-            return thema.GetForm(thema.Code) ?? thema.GetForm("A");
-        }
-
-        private string getLockCommand(bool useunderwrite, bool isopen, IInputTemplate target){
-            if (!useunderwrite){
-                return "comdiv.modal.alert('Вам не доступно управлений блокировкой формы ввода!');";
-            }
-	        if (isopen){
-                //if ((message = target.CanSetState(Object, null, "0ISBLOCK")).noContent()){
-                    return string.Format("Zeta.form.lock('{0}',true,'{1}','{2}',{3},'{4}');", target.Code, target.Period
-                                         , target.Name, target.Year, Periods.Get(target.Period).Name);
-                //}
-                //else{
-                 //   return "comdiv.modal.alert('На данный момент форму нельзя блокировать (" +
-                  //         message.Replace("'", "&apos;") + ")!');";
-               // }
-            }
-            //if ((message = target.CanSetState(Object, null, "0ISOPEN")).noContent()){
-                var deps = statemanager.GetDependentTemplates(target);
-                if (deps.Count() == 0){
-                    return string.Format("Zeta.form.lock('{0}',false,'{1}');", target.Code, target.Period);
-                }
-                else{
-                    return
-                        string.Format(
-                            "if (confirm('Данное действие также откроет:\" {2} \", вы уверены?'))Zeta.form.lock('{0}',false,'{1}');",
-                            target.Code
-                            , target.Period, deps.Select(x => x.Name.Replace("'","\\'")).concat(", "));
-                }
-            //}
-            //else{
-             //   return "comdiv.modal.alert('На данный момент форму нельзя открыть (" + message.Replace("'", "&apos;") +
-              //         ")!');";
-            //}
-        }
-
-        private bool getUnderwriteByRoles(IInputTemplate form){
-            if (myapp.roles.IsAdmin()){
-                return true;
-            }
-            if (myapp.roles.IsInRole("HOLDUNDERWRITER")){
-                return true;
-            }
-            if (!myapp.roles.IsInRole(form.UnderwriteRole)){
-                return false;
-            }
-            var s = form.GetState(Object, null);
-            if (s == "0ISOPEN"){
-                return true;
-            }
-            if (s == "0ISBLOCK" && myapp.roles.IsInRole("DIVUNDERWRITER")){
-                return true;
-            }
-            return false;
-        }
-    }
+		public IInputTemplate planc;
+	}
 }

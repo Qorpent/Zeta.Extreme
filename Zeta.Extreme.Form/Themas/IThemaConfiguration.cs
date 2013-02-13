@@ -1,54 +1,54 @@
-// // Copyright 2007-2010 Comdiv (F. Sadykov) - http://code.google.com/u/fagim.sadykov/
-// // Supported by Media Technology LTD 
-// //  
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //  
-// //      http://www.apache.org/licenses/LICENSE-2.0
-// //  
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
-// // 
-// // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : IThemaConfiguration.cs
+// Project: Zeta.Extreme.Form
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System.Collections.Generic;
 using Comdiv.Model.Interfaces;
 
-namespace Comdiv.Zeta.Web.Themas{
+namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
-	/// Интерфейс конфигурации темы
+	/// 	Интерфейс конфигурации темы
 	/// </summary>
-    public interface IThemaConfiguration : IWithCode, IWithName, IWithIdx{
+	public interface IThemaConfiguration : IWithCode, IWithName, IWithIdx {
 		/// <summary>
-		/// Признак активности конфигурации
+		/// 	Признак активности конфигурации
 		/// </summary>
-        bool Active { get; set; }
+		bool Active { get; set; }
+
 		/// <summary>
-		/// Роль элемента по умолчанию
+		/// 	Роль элемента по умолчанию
 		/// </summary>
-        string DefaultElementRole { get; set; }
+		string DefaultElementRole { get; set; }
+
 		/// <summary>
-		/// Импортированные конфигурации
+		/// 	Импортированные конфигурации
 		/// </summary>
-        IList<IThemaConfiguration> Imports { get; set; }
+		IList<IThemaConfiguration> Imports { get; set; }
+
 		/// <summary>
-		/// Строка, описывающая происхождение конфигурации
+		/// 	Строка, описывающая происхождение конфигурации
 		/// </summary>
-        string Evidence { get; }
+		string Evidence { get; }
+
 		/// <summary>
-		/// Метод конструирования темы
+		/// 	Метод конструирования темы
 		/// </summary>
-		/// <returns></returns>
-        IThema Configure();
+		/// <returns> </returns>
+		IThema Configure();
+
 		/// <summary>
-		/// Метод разрешения параметра
+		/// 	Метод разрешения параметра
 		/// </summary>
-		/// <param name="name"></param>
-		/// <param name="def"></param>
-		/// <returns></returns>
-        TypedParameter ResolveParameter(string name, object  def = null);
-    }
+		/// <param name="name"> </param>
+		/// <param name="def"> </param>
+		/// <returns> </returns>
+		TypedParameter ResolveParameter(string name, object def = null);
+	}
 }

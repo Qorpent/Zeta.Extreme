@@ -1,19 +1,13 @@
-// // Copyright 2007-2010 Comdiv (F. Sadykov) - http://code.google.com/u/fagim.sadykov/
-// // Supported by Media Technology LTD 
-// //  
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //  
-// //      http://www.apache.org/licenses/LICENSE-2.0
-// //  
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
-// // 
-// // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : IThema.cs
+// Project: Zeta.Extreme.Form
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
 
 using System;
 using System.Collections.Generic;
@@ -21,162 +15,189 @@ using System.Security.Principal;
 using Comdiv.Model.Interfaces;
 using Comdiv.Reporting;
 using Comdiv.Zeta.Model;
-using Comdiv.Zeta.Web.InputTemplates;
+using Zeta.Extreme.Form.InputTemplates;
 
-namespace Comdiv.Zeta.Web.Themas{
+namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
-	/// Базовый интерфейс темы
+	/// 	Базовый интерфейс темы
 	/// </summary>
-    public interface IThema : IPseudoThema{
+	public interface IThema : IPseudoThema {
 		/// <summary>
-		/// Ссылка на фабрику, создавшую тему
+		/// 	Ссылка на фабрику, создавшую тему
 		/// </summary>
-        IThemaFactory Factory { get; set; }
-		/// <summary>
-		/// Роль доступа к теме
-		/// </summary>
-        string Role { get; set; }
-		/// <summary>
-		/// Признак того, что тема - группа
-		/// </summary>
-        bool IsGroup { get; set; }
-		/// <summary>
-		/// Имя группы
-		/// </summary>
-        string Group { get; set; }
+		IThemaFactory Factory { get; set; }
 
 		/// <summary>
-		/// Параметры темы
+		/// 	Роль доступа к теме
 		/// </summary>
-        IDictionary<string, object> Parameters { get; }
+		string Role { get; set; }
+
 		/// <summary>
-		/// Признак видимости
+		/// 	Признак того, что тема - группа
 		/// </summary>
-        bool Visible { get; set; }
+		bool IsGroup { get; set; }
+
 		/// <summary>
-		/// Порядок в списках
+		/// 	Имя группы
 		/// </summary>
-        int Idx { get; set; }
+		string Group { get; set; }
+
 		/// <summary>
-		/// Признак того - что тема - шаблон
+		/// 	Параметры темы
 		/// </summary>
-        bool IsTemplate { get; set; }
+		IDictionary<string, object> Parameters { get; }
+
 		/// <summary>
-		/// Родительская тема
+		/// 	Признак видимости
 		/// </summary>
-        IThema ParentThema { get; set; }
+		bool Visible { get; set; }
+
 		/// <summary>
-		/// Имя родительской темы
+		/// 	Порядок в списках
 		/// </summary>
-        string Parent { get; set; }
+		int Idx { get; set; }
+
 		/// <summary>
-		/// Дочерние темы
+		/// 	Признак того - что тема - шаблон
 		/// </summary>
-        IList<IThema> Children { get; }
+		bool IsTemplate { get; set; }
+
 		/// <summary>
-		/// Признак избранной темы (для локальной копии)
+		/// 	Родительская тема
 		/// </summary>
-        bool IsFavorite { get; set; }
+		IThema ParentThema { get; set; }
+
 		/// <summary>
-		/// Контейнер ошибки, возникшей при обработке темы
+		/// 	Имя родительской темы
 		/// </summary>
-    	Exception Error { get; set; }
+		string Parent { get; set; }
+
 		/// <summary>
-		/// Получить все формы
+		/// 	Дочерние темы
 		/// </summary>
-		/// <returns></returns>
-    	IEnumerable<IInputTemplate> GetAllForms();
+		IList<IThema> Children { get; }
+
 		/// <summary>
-		/// Получить все отчеты
+		/// 	Признак избранной темы (для локальной копии)
 		/// </summary>
-		/// <returns></returns>
-        IEnumerable<IReportDefinition> GetAllReports();
+		bool IsFavorite { get; set; }
+
 		/// <summary>
-		/// Получить конкретную форму
+		/// 	Контейнер ошибки, возникшей при обработке темы
 		/// </summary>
-		/// <param name="code"></param>
-		/// <returns></returns>
-        IInputTemplate GetForm(string code);
+		Exception Error { get; set; }
+
 		/// <summary>
-		/// Получить конкретный отчет
+		/// 	Получить все формы
 		/// </summary>
-		/// <param name="code"></param>
-		/// <returns></returns>
-        IReportDefinition GetReport(string code);
+		/// <returns> </returns>
+		IEnumerable<IInputTemplate> GetAllForms();
+
 		/// <summary>
-		/// Сделать копию темы для конкретного пользователя
+		/// 	Получить все отчеты
 		/// </summary>
-		/// <param name="usr"></param>
-		/// <returns></returns>
-        IThema Personalize(IPrincipal usr);
+		/// <returns> </returns>
+		IEnumerable<IReportDefinition> GetAllReports();
+
 		/// <summary>
-		/// Получить все встроенные документы
+		/// 	Получить конкретную форму
 		/// </summary>
-		/// <returns></returns>
-        IEnumerable<IDocument> GetAllDocuments();
+		/// <param name="code"> </param>
+		/// <returns> </returns>
+		IInputTemplate GetForm(string code);
+
 		/// <summary>
-		/// Получить все встроенные команды
+		/// 	Получить конкретный отчет
 		/// </summary>
-		/// <returns></returns>
-        IEnumerable<ICommand> GetAllCommands();
+		/// <param name="code"> </param>
+		/// <returns> </returns>
+		IReportDefinition GetReport(string code);
+
 		/// <summary>
-		/// Приспособить тему под конкретный период
+		/// 	Сделать копию темы для конкретного пользователя
 		/// </summary>
-		/// <param name="obj"></param>
-		/// <param name="year"></param>
-		/// <param name="period"></param>
-		/// <returns></returns>
-        IThema Accomodate(IZetaMainObject obj, int year, int period);
+		/// <param name="usr"> </param>
+		/// <returns> </returns>
+		IThema Personalize(IPrincipal usr);
+
 		/// <summary>
-		/// Расширенный метод подготовки темы к периоду с учетом кэша состояний
+		/// 	Получить все встроенные документы
 		/// </summary>
-		/// <param name="obj"></param>
-		/// <param name="year"></param>
-		/// <param name="period"></param>
-		/// <param name="statecache"></param>
-		/// <returns></returns>
-        IThema Accomodate(IZetaMainObject obj, int year, int period,IDictionary<string ,object >statecache);
+		/// <returns> </returns>
+		IEnumerable<IDocument> GetAllDocuments();
+
 		/// <summary>
-		/// Получить конкретный документ
+		/// 	Получить все встроенные команды
 		/// </summary>
-		/// <param name="code"></param>
-		/// <returns></returns>
-        IDocument GetDocument(string code);
+		/// <returns> </returns>
+		IEnumerable<ICommand> GetAllCommands();
+
 		/// <summary>
-		/// Получить конкретную команду
+		/// 	Приспособить тему под конкретный период
 		/// </summary>
-		/// <param name="code"></param>
-		/// <returns></returns>
-        ICommand GetCommand(string code);
+		/// <param name="obj"> </param>
+		/// <param name="year"> </param>
+		/// <param name="period"> </param>
+		/// <returns> </returns>
+		IThema Accomodate(IZetaMainObject obj, int year, int period);
+
 		/// <summary>
-		/// Получить состав группы
+		/// 	Расширенный метод подготовки темы к периоду с учетом кэша состояний
 		/// </summary>
-		/// <returns></returns>
-        IEnumerable<IThema> GetGroup();
+		/// <param name="obj"> </param>
+		/// <param name="year"> </param>
+		/// <param name="period"> </param>
+		/// <param name="statecache"> </param>
+		/// <returns> </returns>
+		IThema Accomodate(IZetaMainObject obj, int year, int period, IDictionary<string, object> statecache);
+
 		/// <summary>
-		/// Признак активности темы для конкретного пользователя
+		/// 	Получить конкретный документ
 		/// </summary>
-		/// <param name="usr"></param>
-		/// <returns></returns>
-        bool IsActive(IPrincipal usr);
+		/// <param name="code"> </param>
+		/// <returns> </returns>
+		IDocument GetDocument(string code);
+
 		/// <summary>
-		/// Расчет видимости темы для текущего пользователя
+		/// 	Получить конкретную команду
 		/// </summary>
-		/// <returns></returns>
-        bool IsVisible();
+		/// <param name="code"> </param>
+		/// <returns> </returns>
+		ICommand GetCommand(string code);
+
 		/// <summary>
-		/// Расчет видимости темы для указанного пользователя
+		/// 	Получить состав группы
 		/// </summary>
-		/// <param name="usr"></param>
-		/// <returns></returns>
-        bool IsVisible(IPrincipal usr);
+		/// <returns> </returns>
+		IEnumerable<IThema> GetGroup();
+
 		/// <summary>
-		/// Типизированная оболочка расчета параметра
+		/// 	Признак активности темы для конкретного пользователя
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="code"></param>
-		/// <param name="def"></param>
-		/// <returns></returns>
-        T GetParameter<T>(string code, T def);
-    }
+		/// <param name="usr"> </param>
+		/// <returns> </returns>
+		bool IsActive(IPrincipal usr);
+
+		/// <summary>
+		/// 	Расчет видимости темы для текущего пользователя
+		/// </summary>
+		/// <returns> </returns>
+		bool IsVisible();
+
+		/// <summary>
+		/// 	Расчет видимости темы для указанного пользователя
+		/// </summary>
+		/// <param name="usr"> </param>
+		/// <returns> </returns>
+		bool IsVisible(IPrincipal usr);
+
+		/// <summary>
+		/// 	Типизированная оболочка расчета параметра
+		/// </summary>
+		/// <typeparam name="T"> </typeparam>
+		/// <param name="code"> </param>
+		/// <param name="def"> </param>
+		/// <returns> </returns>
+		T GetParameter<T>(string code, T def);
+	}
 }

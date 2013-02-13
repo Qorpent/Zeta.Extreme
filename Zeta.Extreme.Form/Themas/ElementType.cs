@@ -1,38 +1,55 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : ElementType.cs
+// Project: Zeta.Extreme.Form
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System;
 
-namespace Comdiv.Zeta.Web.Themas {
+namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
-	/// Тип элемента темы
+	/// 	Тип элемента темы
 	/// </summary>
 	[Flags]
 	public enum ElementType {
 		/// <summary>
-		/// Неопределенный
+		/// 	Неопределенный
 		/// </summary>
-		None= 0,
+		None = 0,
+
 		/// <summary>
-		/// Формы
+		/// 	Формы
 		/// </summary>
 		Form = 1,
+
 		/// <summary>
-		/// Отчеты
+		/// 	Отчеты
 		/// </summary>
 		Report = 2,
+
 		/// <summary>
-		/// Документы
+		/// 	Документы
 		/// </summary>
 		Document = 4,
+
 		/// <summary>
-		/// Команды
+		/// 	Команды
 		/// </summary>
 		Command = 8,
+
 		/// <summary>
-		/// Пользовательские нестандартные элементы
+		/// 	Пользовательские нестандартные элементы
 		/// </summary>
 		Custom = 16,
+
 		/// <summary>
-		/// Шоткат для описания всех элементов
+		/// 	Шоткат для описания всех элементов
 		/// </summary>
-		All = Form | Report|Document|Command|Custom,
+		All = Form | Report | Document | Command | Custom,
 	}
 }

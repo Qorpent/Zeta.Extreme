@@ -1,67 +1,65 @@
-// // Copyright 2007-2010 Comdiv (F. Sadykov) - http://code.google.com/u/fagim.sadykov/
-// // Supported by Media Technology LTD 
-// //  
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //  
-// //      http://www.apache.org/licenses/LICENSE-2.0
-// //  
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
-// // 
-// // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : OutputConfiguration.cs
+// Project: Zeta.Extreme.Form
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Inversion;
 using Comdiv.Reporting;
 
-namespace Comdiv.Zeta.Web.Themas{
+namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
-	/// Конфигурация отчетов - НА ДАННЫЙ МОМЕНТ С Extreme не РАБОТАЕТ
+	/// 	Конфигурация отчетов - НА ДАННЫЙ МОМЕНТ С Extreme не РАБОТАЕТ
 	/// </summary>
-    public class OutputConfiguration : ItemConfigurationBase<IReportDefinition>{
-       /// <summary>
-       /// Класс генератора
-       /// </summary>
-        public string PrepareViewGenerator { get; set; }
+	public class OutputConfiguration : ItemConfigurationBase<IReportDefinition> {
 		/// <summary>
-		/// Класс отрисовщика
+		/// 	Класс генератора
 		/// </summary>
-        public string RenderViewGenerator { get; set; }
+		public string PrepareViewGenerator { get; set; }
+
 		/// <summary>
-		/// Вид генератора
+		/// 	Класс отрисовщика
 		/// </summary>
-        public string PrepareView { get; set; }
+		public string RenderViewGenerator { get; set; }
+
 		/// <summary>
-		/// Вид отрисовщика
+		/// 	Вид генератора
 		/// </summary>
-        public string RenderView { get; set; }
+		public string PrepareView { get; set; }
+
 		/// <summary>
-		/// Условия на периоды
+		/// 	Вид отрисовщика
 		/// </summary>
-        public string ForPeriods { get; set; }
+		public string RenderView { get; set; }
+
 		/// <summary>
-		/// Коды источников (библиотек)
+		/// 	Условия на периоды
 		/// </summary>
-        public string[] Sources { get; set; }
+		public string ForPeriods { get; set; }
+
 		/// <summary>
-		/// Редиректор периодов
+		/// 	Коды источников (библиотек)
 		/// </summary>
-        public string PeriodRedirect { get; set; }
+		public string[] Sources { get; set; }
+
+		/// <summary>
+		/// 	Редиректор периодов
+		/// </summary>
+		public string PeriodRedirect { get; set; }
 
 
 		/// <summary>
-		/// Команда на конфигурирование
+		/// 	Команда на конфигурирование
 		/// </summary>
-		/// <returns></returns>
-		public override IReportDefinition Configure(){
+		/// <returns> </returns>
+		public override IReportDefinition Configure() {
 			throw new NotImplementedException("пока для Zeta.Extreme отсутствут реализация отчетов");
-            /*var def = new ZetaReportDefinition();
+			/*var def = new ZetaReportDefinition();
             def.ReadFromXml(TemplateXml);
             def.bindfrom(this, true);
             def.Configuration = this;
@@ -89,6 +87,6 @@ namespace Comdiv.Zeta.Web.Themas{
                 def.Name = Thema.Name;
             }
             return def;*/
-        }
-    }
+		}
+	}
 }

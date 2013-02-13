@@ -1,82 +1,85 @@
-// // Copyright 2007-2010 Comdiv (F. Sadykov) - http://code.google.com/u/fagim.sadykov/
-// // Supported by Media Technology LTD 
-// //  
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //  
-// //      http://www.apache.org/licenses/LICENSE-2.0
-// //  
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
-// // 
-// // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : IThemaFactory.cs
+// Project: Zeta.Extreme.Form
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
-using System.Xml.Linq;
 using Comdiv.Reporting;
-using Comdiv.Zeta.Web.InputTemplates;
+using Zeta.Extreme.Form.InputTemplates;
 
-namespace Comdiv.Zeta.Web.Themas{
+namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
-	/// Фабрика тем
+	/// 	Фабрика тем
 	/// </summary>
-    public interface IThemaFactory:IDisposable {
+	public interface IThemaFactory : IDisposable {
 		/// <summary>
-		/// Получить тему по коду
+		/// 	Кэш тем
 		/// </summary>
-		/// <param name="code"></param>
-		/// <returns></returns>
-        IThema Get(string code);
+		IDictionary<string, object> Cache { get; }
+
 		/// <summary>
-		/// Кэш тем
+		/// 	Исходный XML
 		/// </summary>
-        IDictionary<string, object> Cache { get; }
+		string SrcXml { get; set; }
+
 		/// <summary>
-		/// Исходный XML
+		/// 	Версия
 		/// </summary>
-        string SrcXml { get; set; }
+		DateTime Version { get; set; }
+
 		/// <summary>
-		/// Версия
+		/// 	Получить тему по коду
 		/// </summary>
-    	DateTime Version { get; set; }
+		/// <param name="code"> </param>
+		/// <returns> </returns>
+		IThema Get(string code);
+
 		/// <summary>
-		/// Получить все темы
+		/// 	Получить все темы
 		/// </summary>
-		/// <returns></returns>
-    	IEnumerable<IThema> GetAll();
+		/// <returns> </returns>
+		IEnumerable<IThema> GetAll();
+
 		/// <summary>
-		/// Получить дефиницию отчета
+		/// 	Получить дефиницию отчета
 		/// </summary>
-		/// <param name="code"></param>
-		/// <returns></returns>
-        IReportDefinition GetReport(string code);
+		/// <param name="code"> </param>
+		/// <returns> </returns>
+		IReportDefinition GetReport(string code);
+
 		/// <summary>
-		/// Получить тему в адаптации на текущего пользователя
+		/// 	Получить тему в адаптации на текущего пользователя
 		/// </summary>
-		/// <returns></returns>
-        IEnumerable<IThema> GetForUser();
+		/// <returns> </returns>
+		IEnumerable<IThema> GetForUser();
+
 		/// <summary>
-		/// Получить тему в адаптации на конкретного пользователя
+		/// 	Получить тему в адаптации на конкретного пользователя
 		/// </summary>
-		/// <param name="usr"></param>
-		/// <returns></returns>
-        IEnumerable<IThema> GetForUser(IPrincipal usr);
+		/// <param name="usr"> </param>
+		/// <returns> </returns>
+		IEnumerable<IThema> GetForUser(IPrincipal usr);
+
 		/// <summary>
-		/// Получить шаблон формы
+		/// 	Получить шаблон формы
 		/// </summary>
-		/// <param name="code"></param>
-		/// <param name="throwerror"></param>
-		/// <returns></returns>
-        IInputTemplate GetForm(string code,bool throwerror = false);
+		/// <param name="code"> </param>
+		/// <param name="throwerror"> </param>
+		/// <returns> </returns>
+		IInputTemplate GetForm(string code, bool throwerror = false);
+
 		/// <summary>
-		/// Очистить кэш пользователя
+		/// 	Очистить кэш пользователя
 		/// </summary>
-		/// <param name="usrname"></param>
-        void CleanUser(string usrname);
-    }
+		/// <param name="usrname"> </param>
+		void CleanUser(string usrname);
+	}
 }

@@ -1,39 +1,35 @@
-﻿// // Copyright 2007-2010 Comdiv (F. Sadykov) - http://code.google.com/u/fagim.sadykov/
-// // Supported by Media Technology LTD 
-// //  
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //  
-// //      http://www.apache.org/licenses/LICENSE-2.0
-// //  
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
-// // 
-// // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
+﻿#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Solution: Qorpent.TextExpert
+// Original file : IDocument.cs
+// Project: Zeta.Extreme.Form
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using Comdiv.Model.Interfaces;
 using Comdiv.Security;
 
-namespace Comdiv.Zeta.Web.Themas{
+namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
-	/// Описатель документа темы
+	/// 	Описатель документа темы
 	/// </summary>
-    public interface IDocument : IWithCode, IWithName, IWithRole{	
+	public interface IDocument : IWithCode, IWithName, IWithRole {
 		/// <summary>
-		/// Тип документа
+		/// 	Тип документа
 		/// </summary>
-        string Type { get; set; }
+		string Type { get; set; }
 
 		/// <summary>
-		/// Ссылка на документ
+		/// 	Ссылка на документ
 		/// </summary>
-        string Url { get; set; }
+		string Url { get; set; }
+
 		/// <summary>
-		/// Значение
+		/// 	Значение
 		/// </summary>
-        string Value { get; set; }
-    }
+		string Value { get; set; }
+	}
 }
