@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,18 @@ namespace Zeta.Extreme.Form.Tests
 		public void LimitThemaSet()
 		{
 			Assert.AreEqual(6,_efp.Factory.GetAll().Count());
+		}
+
+		[Test]
+		public void TimeToReloadMustBeMinimal() {
+			var sw = Stopwatch.StartNew();
+			for(var i=0;i<20;i++) {
+				_efp.Reload();
+				var f = _efp.Factory;
+			}
+			sw.Stop();
+			Console.WriteLine(sw.Elapsed);
+			Assert.Less(sw.ElapsedMilliseconds,10000);
 		} 
 	}
 }

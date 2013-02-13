@@ -36,7 +36,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <summary>
 		/// 	Исходный XML
 		/// </summary>
-		public XElement SrcXml { get; set; }
+		public XElement[] SrcXml { get; set; }
 
 		/// <summary>
 		/// 	Вызов метода конфигурации фабрики
@@ -106,9 +106,13 @@ namespace Zeta.Extreme.Form.Themas {
 				}
 			}
 			var newx = new XElement("root");
-			foreach (var x in SrcXml.XPathSelectElements("//*[@preservexml]")) {
-				newx.Add(x);
+			foreach (var e in SrcXml) {
+				foreach (var x in e.XPathSelectElements("//*[@preservexml]"))
+				{
+					newx.Add(x);
+				}	
 			}
+			
 
 			result.SrcXml = newx.ToString();
 

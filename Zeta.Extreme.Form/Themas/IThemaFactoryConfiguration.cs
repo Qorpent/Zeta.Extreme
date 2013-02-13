@@ -25,7 +25,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <summary>
 		/// 	Исходный XML
 		/// </summary>
-		XElement SrcXml { get; set; }
+		XElement[] SrcXml { get; set; }
 
 		/// <summary>
 		/// 	Вызов метода конфигурации фабрики

@@ -8,7 +8,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <summary>
 		/// Принудительная перезагрузка фабрики
 		/// </summary>
-		void Reload();
+		void Reload(bool async=false);
 
 		/// <summary>
 		/// Получить шаблон по коду

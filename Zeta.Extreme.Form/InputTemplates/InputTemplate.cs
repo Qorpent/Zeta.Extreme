@@ -37,8 +37,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public InputTemplate() {
 			Values = new List<ColumnDesc>();
 			FixedRowCodes = new List<string>();
-			StateInterceptors = Container.all<IStateCheckInterceptor>().ToList();
-			StateManager = Container.get<IStateManager>();
+			
 		}
 
 		/// <summary>
@@ -64,7 +63,16 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		}
 
 
-		private IStateManager StateManager { get; set; }
+		private IStateManager StateManager {
+			get {
+				return _stateManager ?? (_stateManager= Container.get<IStateManager>());
+				
+				
+			}
+			set {
+				_stateManager = value;
+			}
+		}
 
 		/// <summary>
 		/// 	Кэш SQL - убрать!
@@ -1660,7 +1668,10 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <summary>
 		/// 	Список перехватчиков проверки статусов
 		/// </summary>
-		public IList<IStateCheckInterceptor> StateInterceptors;
+		public IList<IStateCheckInterceptor> StateInterceptors {
+			get { return _stateInterceptors ??(_stateInterceptors= Container.all<IStateCheckInterceptor>().ToList()); }
+			set { _stateInterceptors = value; }
+		}
 
 		private IList<ColumnDesc> _cachedcolumns;
 		private IInversionContainer _container;
@@ -1675,5 +1686,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		private string cachedState;
 		private IDetailFilter detailFilter;
 		private IDictionary<string, string> parameters = new Dictionary<string, string>();
+		private IStateManager _stateManager;
+		private IList<IStateCheckInterceptor> _stateInterceptors;
 	}
 }

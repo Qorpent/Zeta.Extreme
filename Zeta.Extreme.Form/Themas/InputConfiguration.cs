@@ -185,8 +185,9 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		/// <returns> </returns>
 		public override IInputTemplate Configure() {
-			var txs = new InputTemplateXmlSerializer();
-			var template = txs.Read(TemplateXml).First();
+			//var txs = new InputTemplateXmlSerializer();
+			//var template = txs.Read(TemplateXml).First();
+			var template = new InputTemplate();
 			template.UnderwriteCode = Lock;
 			template.Code = Code;
 			template.ForGroup = ForGroup;

@@ -40,10 +40,14 @@ namespace Zeta.Extreme.Form.Themas
 		/// <summary>
 		/// Принудительная перезагрузка фабрики
 		/// </summary>
-		public void Reload() {
-			_loadTask.Wait();
+		public void Reload(bool async =false) {
+			if(null!=_loadTask)_loadTask.Wait();
 			lock(_loadsync) {
-				_loadTask = Task.Run(() => DoLoad());
+				if(async) {
+					_loadTask = Task.Run(() => DoLoad());
+					return;
+				}
+				DoLoad();
 			}
 		}
 		/// <summary>
@@ -58,8 +62,9 @@ namespace Zeta.Extreme.Form.Themas
 		/// </summary>
 		public IThemaFactory Factory {
 			get {
-				lock (_loadsync) {
-					_loadTask.Wait();
+				if(null!=_loadTask)_loadTask.Wait();
+				lock (_loadsync)
+				{
 					return _factory;	
 				}
 				
@@ -77,7 +82,7 @@ namespace Zeta.Extreme.Form.Themas
 		/// <param name="code"></param>
 		/// <returns></returns>
 		public IInputTemplate Get(string code) {
-			_loadTask.Wait(); //синхронизируемся с загрузчиком
+			if(null!=_loadTask)_loadTask.Wait(); //синхронизируемся с загрузчиком
 			lock(_loadsync) {
 				if (null == Factory) {
 					throw new Exception("something wrong with factory");

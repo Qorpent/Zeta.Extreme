@@ -123,8 +123,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <returns> </returns>
 		public IThemaFactoryConfiguration Get() {
 			_cfgVersion = DateTime.Now;
-			XElement compiledxml = null;
-			compiledxml = LoadCompiled();
+			var compiledxml = LoadCompiled().ToArray();
 
 
 			IDictionary<string, ThemaConfiguration> configurations2 = new Dictionary<string, ThemaConfiguration>();
@@ -148,24 +147,32 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Загружает откомпилированные темы
 		/// </summary>
 		/// <returns> </returns>
-		public XElement LoadCompiled() {
+		public IEnumerable<XElement> LoadCompiled() {
 			var filters = LoadCompileFilters.split();
-			var result = new XElement("root");
 			_cfgVersion = new DateTime();
-			foreach (
-				var f in myapp.files.ResolveAll(Options.RootDirectory, "*.xml").OrderBy(x => Path.GetFileNameWithoutExtension(x))
-				) {
+			string[] files = null;
+			if(Path.IsPathRooted(Options.RootDirectory)) {
+				files = Directory.GetFiles(Options.RootDirectory, "*.xml");
+			}
+			else {
+				files =  myapp.files.ResolveAll(Options.RootDirectory, "*.xml").ToArray();
+			}
+			files = files.OrderBy(x => Path.GetFileNameWithoutExtension(x)).ToArray();
+			foreach (var f in files) {
 				if (File.GetLastWriteTime(f) > _cfgVersion) {
 					_cfgVersion = File.GetLastWriteTime(f);
 				}
-				var x = XElement.Load(f);
+				var txt = File.ReadAllText(f);
+				
 				if(!string.IsNullOrWhiteSpace(Options.FilterParameters)) {
-					if(Options.LoadLibraries && x.Attr("code").Contains("lib")) {
-						result.Add(x);
+					if(Options.LoadLibraries && txt.Substring(0,30).Contains("lib\"")) {
+						yield return XElement.Load(f);
 						continue;
 					}
 
-					foreach (var flag in Options.FilterParameters.SmartSplit()) {
+					foreach (var flag in Options.FilterParameters.Split(',')) {
+						if(!txt.Contains("<param id=\""+flag+"\""))continue;
+						var x = XElement.Load(f);
 						var e = x.Elements("param").FirstOrDefault(_ => _.Attr("id") == flag);
 						if(null==e)continue;
 						var val = e.Value;
@@ -173,7 +180,7 @@ namespace Zeta.Extreme.Form.Themas {
 							val = e.Attr("value");
 						}
 						if(val.ToBool()) {
-							result.Add(x);
+							yield return x;
 							break;
 						}
 					}
@@ -181,19 +188,19 @@ namespace Zeta.Extreme.Form.Themas {
 					continue;
 				}
 				if (filters.Count == 0) {
-					result.Add(x);
+					yield return XElement.Load(f);
 				}
 				else {
 					if (null != filters.FirstOrDefault(_ => f.like(_))) {
-						result.Add(x);
+						yield return XElement.Load(f);
 					}
 				}
 			}
-			return result;
+			
 		}
 
 
-		private void readParameters(IDictionary<string, ThemaConfiguration> configurations2, XElement compiledxml) {
+		private void readParameters(IDictionary<string, ThemaConfiguration> configurations2, XElement[] compiledxml) {
 			foreach (var cfg in configurations2.Values) {
 				var parameters = cfg.SrcXml.Elements("param");
 				var idx = 0;
@@ -236,7 +243,7 @@ namespace Zeta.Extreme.Form.Themas {
 		}
 
 
-		private void readAll(IDictionary<string, ThemaConfiguration> configurations, XElement descriptor) {
+		private void readAll(IDictionary<string, ThemaConfiguration> configurations, XElement[] descriptor) {
 			foreach (var configuration in configurations.Values) {
 				configuration.Name = configuration.SrcXml.attr("name", configuration.Code);
 				applyPseudoProperties(configuration);
@@ -347,7 +354,8 @@ namespace Zeta.Extreme.Form.Themas {
 				if (!input.Active) {
 					continue;
 				}
-
+				/*input.TemplateXml = new XElement("input");
+//NOTE: редкостная блуда для совместимости, просто редкостная
 				var exfile = PathResolver.ResolveAll("data", input.Template + ".xml", true).FirstOrDefault();
 				if (null == exfile) {
 					input.Template = "empty.in";
@@ -365,24 +373,24 @@ namespace Zeta.Extreme.Form.Themas {
 					else {
 						input.TemplateXml =
 							XElement.Parse(PathResolver.ReadXml(templateFile, null,
-							                                    new ReadXmlOptions
-								                                    {UseIncludes = true, IncludeRoot = "data/include/"}));
+																new ReadXmlOptions
+																	{UseIncludes = true, IncludeRoot = "data/include/"}));
 #if ADAPT_TO_OLD_INPUT_TEMPLATES
-                        foreach (var info in input.GetType().GetProperties()){
-                            var name = "form." + info.Name.ToLower();
-                            configuration.Parameters[name] = new TypedParameter{
-                                                                                   Name = name,
-                                                                                   Type = info.PropertyType,
-                                                                                   Value =
-                                                                                       input.getPropertySafe<string>(
-                                                                                           info.Name)
-                                                                               };
-                        }
+						foreach (var info in input.GetType().GetProperties()){
+							var name = "form." + info.Name.ToLower();
+							configuration.Parameters[name] = new TypedParameter{
+																				   Name = name,
+																				   Type = info.PropertyType,
+																				   Value =
+																					   input.getPropertySafe<string>(
+																						   info.Name)
+																			   };
+						}
 
 #endif
 						embedParametersIntoXml(configuration, input.TemplateXml);
 					}
-				}
+				}*/
 				input.Sources = element.Elements("uselib").Select(x => x.attr("id")).Where(x => x.hasContent()).ToArray();
 				input.ColumnDefinitions = element.XPathSelectElements("./col").ToArray();
 				input.RowDefinitions = element.XPathSelectElements("./row").ToArray();
@@ -549,8 +557,8 @@ namespace Zeta.Extreme.Form.Themas {
 			return p;
 		}
 
-		private void prepareEmpty(IDictionary<string, ThemaConfiguration> configurations, XElement descriptor) {
-			var themas = descriptor.XPathSelectElements("./thema");
+		private void prepareEmpty(IDictionary<string, ThemaConfiguration> configurations, XElement[] themas) {
+			
 			foreach (var thema in themas) {
 				
 				var desc = new ThemaConfiguration

@@ -40,7 +40,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			}
 			foreach (var i in i_) {
 				var result = new InputTemplate();
-				result.DetailSplit = i.attr("split").toBool();
+				result.DetailSplit = false;
 				result.SourceXmlConfiguration = xpath.CreateNavigator();
 				result.Code = i.attr("id");
 				result.Name = i.attr("name");
@@ -156,10 +156,70 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public void BindColumns(IInputTemplate result, IEnumerable<XElement> cols) {
 			if (null != cols) {
 				foreach (var x in cols) {
-					var col = new ColumnDesc {Code = x.attr("code"), Title = x.attr("name")};
+					var col = new ColumnDesc();
+					col.Period = -10000; //mark not setted
+					col.Editable = true; //default
+					col.Visible = true;
+					col.MatrixFormulaType = "sum";
+					col.FormulaEvaluator = "boo";
+					foreach (var attribute in x.Attributes().ToArray()) {
+						var n = attribute.Name.LocalName;
+						var v = attribute.Value;
+						switch (n) {
+							case "code":col.Code = v;break;
+							case "name":col.Title = v; break;
+							case "year":col.Year = v.toInt();break;
+							case "period": col.Period = v.toInt(); break;
+							case "_file": col.File = v; break;
+							case "_line": col.Line = v; break;
+							case "condition": col.Condition = v; break;
+							case "lockyear":col.LockYear = true;break;
+							case "lockperiod": col.LockPeriod = true; break;
+							case "autocalc":col.AutoCalc = v.toBool();break;
+							case "fixed":col.Editable = false;break;
+							case "auto": col.IsAuto = true; break;
+							case "valuta":col.Valuta = v;break;
+							case "group":col.Group = v;break;
+							case "visible":col.Visible = v.toBool();break;
+							case "cssclass":goto case "css-class";
+							case "css-class":col.CssClass = v;break;
+							case "style": goto case "css-style";
+							case "css-style": col.CssStyle = v; break;
+							case "tag":col.Tag = v;break;
+							case "format":col.NumberFormat = v;break;
+							case "validation": col.Validation = v; break;
+							case "wavg": col.WAvg = v; break;
+							case "useobj": col.UseObj = v.toBool(); break;
+							case "matrixforrows": col.MatrixForRows = v; break;
+							case "colgroup": col.ColGroup = v; break;
+							case "translaterows": col.TranslateRows = v; break;
+							case "lookupFilter": col.LookupFilter = v; break;
+							case "editforrole": col.EditForRole = v; break;
+							case "forrole": col.ForRole = v; break;
+							case "forgroup": col.ForGroup = v; break;
+							case "customview": col.CustomView = v; break;
+							case "valuereplacer": col.ValueReplacer = v; break;
+							case "matrixid": col.MatrixId = v; break;
+							case "matrixformula": col.MatrixFormula = v; break;
+							case "matrixtotalformula": col.MatrixTotalFormula = v; break;
+							case "usethema": col.UseThema = v.toBool(); break;
+							case "valuetocssclass": col.ValueToCssClass = v.toBool(); break;
+							case "controlpoint": col.ControlPoint = v.toBool(); break;
+							case "evaluator":goto case "formulatype";
+							case "formulatype":col.FormulaEvaluator = v;break;
+							case "calcidx":col.CalcIdx = v.toInt();break;
+							case "matrixformulatype": col.MatrixFormulaType = v; break;
+							case "formula": 
+								col.Formula = v; 
+								if(!string.IsNullOrWhiteSpace(v)) {
+									col.IsFormula = true;
+								}
+								break;
+							case "forperiods":col.ForPeriods=v.split().Select(s => s.toInt()).ToArray();break;
+							case "customCode":col.CustomCode = v;break;
+						}
+					}
 
-					col.Year = x.value("year", 0);
-					col.Period = x.value("period", -10000);
 					if (col.Period == -10000) {
 						col.NeedPeriodPreparation = true;
 						col.Period = 0;
@@ -167,69 +227,29 @@ namespace Zeta.Extreme.Form.InputTemplates {
 					if (col.Period < 0) {
 						col.NeedPeriodPreparation = true;
 					}
-					col.File = x.attr("_file");
-					col.Line = x.attr("_line");
+
+					if (null == col.ForPeriods)
+					{
+						col.ForPeriods = new int[] { };
+					}
+
 					col.ConditionMatcher = (IConditionMatcher) result;
 					col.RowCheckConditions = x.Elements("checkrule").serialize<ColumnRowCheckCondition>().ToArray();
-					col.LockYear = x.hasAttribute("lockyear");
-					col.AutoCalc = x.attr("autocalc", false);
-					col.LockPeriod = x.hasAttribute("lockperiod");
-					col.Editable = !x.hasAttribute("fixed");
-					col.IsAuto = x.hasAttribute("auto");
-					col.Valuta = x.attr("valuta");
-					col.Group = x.attr("group");
-					col.Visible = x.attr("visible", true);
-					col.CssClass = x.chooseAttr("cssclass", "css-class");
-					col.CssStyle = x.chooseAttr("style", "css-style");
-					col.Tag = x.attr("tag", "");
-					col.NumberFormat = x.attr("format");
-					col.Validation = x.attr("validation");
-					col.WAvg = x.attr("wavg");
-					col.UseObj = x.attr("useobj", false);
-					col.Lookup = x.attr("lookup");
-					col.MatrixForRows = x.attr("matrixforrows");
-					col.ColGroup = x.attr("colgroup");
-					col.TranslateRows = x.attr("translaterows");
-					col.LookupFilter = x.attr("lookupFilter");
-					col.EditForRole = x.attr("editforrole");
-					col.ForRole = x.attr("forrole");
-					col.ForGroup = x.attr("forgroup");
-					col.CustomView = x.attr("customview");
-					col.ValueReplacer = x.attr("valuereplacer");
-					col.ValueToCssClass = x.attr("valuetocssclass", false);
-					col.FormulaEvaluator = x.chooseAttr("evaluator", "formulatype");
-					col.ControlPoint = x.attr("controlpoint", false);
-					col.UseThema = x.attr("usethema", false);
-					col.MatrixId = x.attr("matrixid");
-					col.CalcIdx = x.attr("calcidx", 0);
-					col.MatrixFormula = x.attr("matrixformula");
-					col.MatrixTotalFormula = x.attr("matrixtotalformula");
-					col.MatrixFormulaType = x.attr("matrixformulatype", "sum");
-					col.Condition = x.attr("condition", "");
 
-					if (col.FormulaEvaluator.noContent()) {
-						col.FormulaEvaluator = "boo";
-					}
-					col.ForPeriods = x.attr("forperiods", "").split().Select(s => s.toInt()).ToArray();
+					
+
 					//if (null != storage){
 					col.Target = ColumnCache.get(col.Code);
 					//}
 					if (col.Year < 1000) {
 						col.NeedYearPreparation = true;
 					}
-					var formula = x.attr("formula");
-					if (formula.hasContent()) {
-						col.IsFormula = true;
-						col.Formula = formula;
+
+					if (!string.IsNullOrWhiteSpace(col.CustomCode)) {
+						col.InitialCode = col.Code;
+						col.Code = col.CustomCode;
 					}
-					if (x.attr("customCode").hasContent()) {
-						col.Code = x.attr("customCode");
-					}
-					/*
-					var uid = result.Code + "_" + idx++;
-					col.Uid = uid;
-					 //olduid def
-					 */
+			
 
 					var uid = "[" + col.Code + "_" + col.Year + "_" + col.Period + "]";
 					col.Uid = uid;
