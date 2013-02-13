@@ -94,6 +94,9 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="throwerror"> </param>
 		/// <returns> </returns>
 		public IInputTemplate GetForm(string code, bool throwerror = false) {
+			if(code.EndsWith(".in")) {
+				code = code.Replace(".in", "");
+			}
 			return cache.get(code + ".in", () =>
 				{
 					var thema =

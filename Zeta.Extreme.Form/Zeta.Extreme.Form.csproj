@@ -34,6 +34,10 @@
       <Project>{381DEC86-5709-4A64-BD9F-462E792884CE}</Project>
       <Name>Qorpent.Bxl</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
+      <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
+      <Name>Qorpent.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Comdiv.Zeta.Data.Minimal\Comdiv.Zeta.Data.Minimal.csproj">
       <Project>{d964fb40-aa23-4ec6-aef0-f418303ff5de}</Project>
       <Name>Comdiv.Zeta.Data.Minimal</Name>
@@ -149,6 +153,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Themas\ElementType.cs" />
+    <Compile Include="Themas\ExtremeFormProvider.cs" />
     <Compile Include="Themas\HtmlListDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -161,6 +166,7 @@
     <Compile Include="Themas\IDocument.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Themas\IExtremeFormProvider.cs" />
     <Compile Include="Themas\InputConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -213,6 +219,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Themas\ThemaFactoryProvider.cs" />
+    <Compile Include="Themas\ThemaLoaderOptions.cs" />
     <Compile Include="Themas\TypedParameter.cs">
       <SubType>Code</SubType>
     </Compile>

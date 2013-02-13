@@ -32,6 +32,8 @@ namespace Zeta.Extreme.Form.Themas {
 			if (!string.IsNullOrWhiteSpace(rootdirectory)) {
 				result.RootDirectory = rootdirectory;
 			}
+			result.LoadLibraries = false; //библиотеки тоже надо помечать на совместимость
+			result.ElementTypes = ElementType.Form;
 			result.LoadIerarchy = false;
 			result.FilterParameters = "extreme";
 			result.ClassRedirectMap["Comdiv.Zeta.Web.Themas.EcoThema, Comdiv.Zeta.Web"] = typeof (EcoThema).AssemblyQualifiedName;
@@ -66,6 +68,10 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		public string RootDirectory = "~/tmp/compiled_themas";
 
+		/// <summary>
+		/// Замещения классов, упомянутых в темах
+		/// </summary>
 		public IDictionary<string, string> ClassRedirectMap { get; private set; }
+
 	}
 }

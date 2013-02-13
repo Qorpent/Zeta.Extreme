@@ -26,13 +26,6 @@ namespace Zeta.Extreme.Form.InputTemplates {
 	/// </summary>
 	public class InputTemplateXmlSerializer {
 		/// <summary>
-		/// 	Конструктор по умолчанию
-		/// </summary>
-		public InputTemplateXmlSerializer() {
-			storage = myapp.storage.Get<IZetaCell>(false);
-		}
-
-		/// <summary>
 		/// 	Основной метод - считывает шаблон из XML
 		/// </summary>
 		/// <param name="xpath"> </param>
@@ -246,6 +239,5 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			}
 		}
 
-		private readonly StorageWrapper<IZetaCell> storage;
 	}
 }
