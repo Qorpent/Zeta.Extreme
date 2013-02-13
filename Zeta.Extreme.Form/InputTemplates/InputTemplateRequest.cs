@@ -17,17 +17,20 @@
 using System;
 using System.Collections.Generic;
 using Comdiv.Application;
-using Comdiv.Dbfs;
 using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.Persistence;
 using Comdiv.Useful;
 using Comdiv.Zeta.Data;
+using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using NHibernate;
 using Comdiv.Security;
 
 namespace Comdiv.Zeta.Web.InputTemplates{
+	/// <summary>
+	/// Запрос на форму
+	/// </summary>
     public class InputTemplateRequest{
         private readonly IDictionary<string, string> parameters = new Dictionary<string, string>();
         private readonly StorageWrapper<IZetaCell> storage;
@@ -38,10 +41,16 @@ namespace Comdiv.Zeta.Web.InputTemplates{
         private IInputTemplate template;
         private string templateCode;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public InputTemplateRequest(){
             storage = myapp.storage.Get<IZetaCell>();
         }
 
+        /// <summary>
+        /// Проверяет, не является ли форма read-only
+        /// </summary>
         public bool IsReadOnly{
             get{
                 
@@ -52,6 +61,9 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             }
         }
 
+        /// <summary>
+        /// Код формы
+        /// </summary>
         public string TemplateCode{
             get { return templateCode; }
             set{
@@ -61,15 +73,23 @@ namespace Comdiv.Zeta.Web.InputTemplates{
                 }
             }
         }
+        /// <summary>
+        /// Проверка активности формы
+        /// </summary>
+        /// <param name="full"></param>
+        /// <exception cref="Exception"></exception>
         public void CheckFormLive(bool full = false)
         {
-            if (this.Task.HaveToTerminate ||  ( full && (null != this.Task.Context && !this.Task.Context.Response.IsClientConnected)))
+            if (this.Task.HaveToTerminate ||  ( full && (null != Task.Context && !this.Task.Context.Response.IsClientConnected)))
             {
                 this.Task.Terminate();
                 throw new Exception("Выполнение формы было отменено (noerrc)");
             }
         }
 
+        /// <summary>
+        /// ID детали
+        /// </summary>
         public object DetailId{
             get { return detailId; }
             set{
@@ -80,6 +100,9 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             }
         }
 
+        /// <summary>
+        /// ID объекта
+        /// </summary>
         public object ObjectId{
             get { return objectId; }
             set{
@@ -89,11 +112,22 @@ namespace Comdiv.Zeta.Web.InputTemplates{
                 }
             }
         }
-
+		/// <summary>
+		/// Год
+		/// </summary>
         public int Year { get; set; }
+        /// <summary>
+        /// Период
+        /// </summary>
         public int Period { get; set; }
+        /// <summary>
+        /// Прямая дата
+        /// </summary>
         public DateTime Date { get; set; }
 
+        /// <summary>
+        /// Деталь
+        /// </summary>
         public IZetaDetailObject Detail{
             get{
                 if (null == detail && null != detailId){
@@ -104,6 +138,9 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             set { detail = value; }
         }
 
+        /// <summary>
+        /// Объект
+        /// </summary>
         public IZetaMainObject Object{
             get{
                 if (null == @object && null != ObjectId){
@@ -116,6 +153,9 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             set { @object = value; }
         }
 
+        /// <summary>
+        /// Шаблон
+        /// </summary>
         public IInputTemplate Template{
             get{
                 if (null == template && TemplateCode.hasContent()){
@@ -126,16 +166,24 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             set { template = value; }
         }
 
+        /// <summary>
+        /// Параметры
+        /// </summary>
         public IDictionary<string, string> Parameters{
             get { return parameters; }
         }
 
+        /// <summary>
+        /// Создает копию
+        /// </summary>
+        /// <returns></returns>
         public InputTemplateRequest Copy(){
             var result = (InputTemplateRequest) MemberwiseClone();
             result.cachedPkg = null;
             return result;
         }
-
+		//NOTE: атаченные файлы пока не портированы
+/*
         public IList<IFile> GetAttachedFiles(){
            // var pkg = GetDefaultPkg();
 
@@ -155,10 +203,17 @@ namespace Comdiv.Zeta.Web.InputTemplates{
                                                                    {"obj",this.ObjectId.ToString()},
                                                                });
         }
-
+		*/
         private IPkg cachedPkg = null;
+        /// <summary>
+        /// Связанная длительная задача
+        /// </summary>
         public LongTask Task { get; set; }
 
+        /// <summary>
+        /// Готовит пакет по умолчанию
+        /// </summary>
+        /// <returns></returns>
         public IPkg GetDefaultPkg(){
             if (null == cachedPkg) {
                 using (var s = new TemporaryTransactionSession()) {
@@ -199,11 +254,23 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             return cachedPkg;
         }
 
-        public override string ToString(){
+		/// <summary>
+		/// Возвращает строку, которая представляет текущий объект.
+		/// </summary>
+		/// <returns>
+		/// Строка, представляющая текущий объект.
+		/// </returns>
+		/// <filterpriority>2</filterpriority>
+		public override string ToString(){
             return string.Format("FORM REQUEST T:{0},O:{1},D:{2}, Y:{3},P:{4},D:{5}", TemplateCode, ObjectId, DetailId,
                                  Year, Period, Date.ToString("ddMMyyyyHHmmss"));
         }
 
+        /// <summary>
+        /// Производит сохранение данных
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <exception cref="Exception"></exception>
         public void Save(string xml){
             ReloadTemplate();
             Task.PhaseFinished("prepare template");
@@ -257,42 +324,59 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             }
         }
 
+        /// <summary>
+        /// Перегрузить шаблон
+        /// </summary>
         public void ReloadTemplate(){
             ReloadTemplate(true);
         }
 
         // static object sync = new object();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keepParameters"></param>
+        /// <exception cref="NotSupportedException"></exception>
         public void ReloadTemplate(bool keepParameters){
-            lock (typeof (InputTemplateRequest)){
-                var oldParameters = template != null ? template.Parameters : null;
-                if(@object == null && 0!= @objectId.toInt()) {
-                    @object = myapp.storage.Get<IZetaMainObject>().Load(@objectId);
-                }
-                template = new InputTemplateRepository().GetTemplate(TemplateCode).PrepareForPeriod(Year, Period, Date,
-                                                                                                    @object);
-                    //myapp.storage.Get<IInputTemplate>().Load(TemplateCode).PrepareForPeriod(Year, Period, Date);
-                foreach (var row in template.Rows){
-                    row.Target = RowCache.get(row.Code);
-                }
+			throw new NotSupportedException("not ported in extreme");
+			//lock (typeof (InputTemplateRequest)){
+			//	var oldParameters = template != null ? template.Parameters : null;
+			//	if(@object == null && 0!= @objectId.toInt()) {
+			//		@object = myapp.storage.Get<IZetaMainObject>().Load(@objectId);
+			//	}
+			//	template = new InputTemplateRepository().GetTemplate(TemplateCode).PrepareForPeriod(Year, Period, Date,
+			//																						@object);
+			//		//myapp.storage.Get<IInputTemplate>().Load(TemplateCode).PrepareForPeriod(Year, Period, Date);
+			//	foreach (var row in template.Rows){
+			//		row.Target = RowCache.get(row.Code);
+			//	}
 
-                foreach (var parameter in Parameters){
-                    template.Parameters[parameter.Key] = parameter.Value;
-                }
+			//	foreach (var parameter in Parameters){
+			//		template.Parameters[parameter.Key] = parameter.Value;
+			//	}
 
-                if (keepParameters && null != oldParameters){
-                    foreach (var parameter in oldParameters){
-                        template.Parameters[parameter.Key] = parameter.Value;
-                    }
-                }
-            }
+			//	if (keepParameters && null != oldParameters){
+			//		foreach (var parameter in oldParameters){
+			//			template.Parameters[parameter.Key] = parameter.Value;
+			//		}
+			//	}
+			//}
         }
 
 
+        /// <summary>
+        /// Установить объект
+        /// </summary>
+        /// <param name="object"></param>
         public void SetObject(IZetaMainObject @object){
             ObjectId = @object.Code;
             Object = @object;
         }
 
+        /// <summary>
+        /// Установить шаблон
+        /// </summary>
+        /// <param name="template"></param>
         public void SetTemplate(IInputTemplate template){
             TemplateCode = template.Code;
             Template = template;

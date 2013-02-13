@@ -21,17 +21,19 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using Comdiv.Application;
 using Comdiv.Common;
-using Comdiv.Dbfs;
 using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.Olap.Model;
 using Comdiv.Persistence;
-using Comdiv.Z3.BizProc;
 using Comdiv.Zeta.Data;
+using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using Comdiv.Zeta.Web.Themas;
 
 namespace Comdiv.Zeta.Web.InputTemplates{
+    /// <summary>
+    /// Стандартный менеджер статусов
+    /// </summary>
     public class StateManager : IStateManager{
         private readonly IDictionary<int, int> perioddependency = new Dictionary<int, int>();
         private IInversionContainer _container;
@@ -42,16 +44,29 @@ namespace Comdiv.Zeta.Web.InputTemplates{
         private List<StateRule> rules;
     	private List<XElement> primaries;
 
+    	/// <summary>
+    	/// 
+    	/// </summary>
     	public StateManager():this(true) {
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="withreload"></param>
         public StateManager(bool withreload){
             myapp.OnReload += Reload;
         }
 
+        /// <summary>
+        /// Поставщик фабики тем
+        /// </summary>
         public IThemaFactoryProvider FactoryProvider { get; set; }
 
+        /// <summary>
+        /// Обратная ссылка на контейнер
+        /// </summary>
         public IInversionContainer Container{
             get{
                 if (_container.invalid()){
@@ -66,6 +81,14 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             set { _container = value; }
         }
 
+        /// <summary>
+        /// Получает кэш статусов
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="year"></param>
+        /// <param name="period"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public IDictionary<string,object > GetStateCache(IZetaMainObject obj, int year, int period) {
             if(null==obj)return new Dictionary<string, object>();
             using(var c = myapp.ioc.getConnection()) {
@@ -80,9 +103,21 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             }
         }
 
-        #region IStateManager Members
 
-        public int DoSet(int objid, int year, int period, string template,string templatecode, string usr, string state, string comment,
+	    /// <summary>
+	    /// Выполнить установку статуса
+	    /// </summary>
+	    /// <param name="objid"></param>
+	    /// <param name="year"></param>
+	    /// <param name="period"></param>
+	    /// <param name="template"></param>
+	    /// <param name="templatecode"></param>
+	    /// <param name="usr"></param>
+	    /// <param name="state"></param>
+	    /// <param name="comment"></param>
+	    /// <param name="parent"></param>
+	    /// <returns></returns>
+	    public int DoSet(int objid, int year, int period, string template,string templatecode, string usr, string state, string comment,
                          int parent){
             using (var c = myapp.ioc.getConnection()){
                 c.WellOpen();
@@ -112,7 +147,15 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             }
         }
 
-        public string DoGet(int objid, int year, int period, string template){
+	    /// <summary>
+	    /// Выполнить установку статуса
+	    /// </summary>
+	    /// <param name="objid"></param>
+	    /// <param name="year"></param>
+	    /// <param name="period"></param>
+	    /// <param name="template"></param>
+	    /// <returns></returns>
+	    public string DoGet(int objid, int year, int period, string template){
             using (var c = myapp.ioc.getConnection()){
                 c.WellOpen();
                 var result = c.ExecuteScalar<string>(
@@ -132,7 +175,12 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             }
         }
 
-        public IInputTemplate[] GetDependentTemplates(IInputTemplate source){
+	    /// <summary>
+	    /// Найти зависимые формы
+	    /// </summary>
+	    /// <param name="source"></param>
+	    /// <returns></returns>
+	    public IInputTemplate[] GetDependentTemplates(IInputTemplate source){
             lock (this){
                 checkinit();
                 return dependences.Where(x => x.attr("source") == source.Code)
@@ -150,15 +198,33 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             }
         }
 
-        public int GetPeriodState(int year, int period) {
+	    /// <summary>
+	    /// Получить статус периода
+	    /// </summary>
+	    /// <param name="year"></param>
+	    /// <param name="period"></param>
+	    /// <returns></returns>
+	    public int GetPeriodState(int year, int period) {
             return new PeriodStateManager().Get(year, period).State ? 1 : 0;
         }
 
-        public void SetPeriodState(int year, int period, int state)
+	    /// <summary>
+	    /// Установить статус периода
+	    /// </summary>
+	    /// <param name="year"></param>
+	    /// <param name="period"></param>
+	    /// <param name="state"></param>
+	    public void SetPeriodState(int year, int period, int state)
         {
             new PeriodStateManager().UpdateState(new PeriodStateRecord{Year = year,Period = period,State = state==0?false:true});
         }
 
+		/// <summary>
+		/// Простой вариант расчета форм - источников
+		/// </summary>
+		/// <param name="target"></param>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
 		public IInputTemplate[] GetSourceTemplatesSimple(IInputTemplate target) {
 			lock (this)
 			{
@@ -178,6 +244,12 @@ namespace Comdiv.Zeta.Web.InputTemplates{
 			}
 		}
 
+		/// <summary>
+		/// Получает набор входных первичных форм
+		/// </summary>
+		/// <param name="target"></param>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
 		public IInputTemplate[] GetPrimaryTemplatesSimple(IInputTemplate target)
 		{
 			lock (this)
@@ -198,6 +270,12 @@ namespace Comdiv.Zeta.Web.InputTemplates{
 			}
 		}
 
+		/// <summary>
+		/// Получает формы - расширения
+		/// </summary>
+		/// <param name="target"></param>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
 		public IInputTemplate[] GetExtensionTemplatesSimple(IInputTemplate target)
 		{
 			lock (this)
@@ -218,7 +296,13 @@ namespace Comdiv.Zeta.Web.InputTemplates{
 			}
 		}
 
-        public IInputTemplate[] GetSourceTemplates(IInputTemplate target, IZetaMainObject obj){
+	    /// <summary>
+	    /// Найти формы от которых зависит текущая
+	    /// </summary>
+	    /// <param name="target"></param>
+	    /// <param name="obj"></param>
+	    /// <returns></returns>
+	    public IInputTemplate[] GetSourceTemplates(IInputTemplate target, IZetaMainObject obj){
             lock (this){
                 checkinit();
                 return dependences.Where(x => x.attr("target") == target.Code)
@@ -248,7 +332,12 @@ namespace Comdiv.Zeta.Web.InputTemplates{
 			return y >= tsy && y <= tey;
 		}
 
-        public IInputTemplate GetMainTemplate(IInputTemplate safer){
+	    /// <summary>
+	    /// Определить главную форму
+	    /// </summary>
+	    /// <param name="safer"></param>
+	    /// <returns></returns>
+	    public IInputTemplate GetMainTemplate(IInputTemplate safer){
             lock (this){
                 checkinit();
                 var maine = safers.FirstOrDefault(x => x.attr("safer") == safer.Code);
@@ -260,7 +349,12 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             }
         }
 
-        public IInputTemplate GetSaferTemplate(IInputTemplate main){
+	    /// <summary>
+	    /// Определеить форму-сейфер
+	    /// </summary>
+	    /// <param name="main"></param>
+	    /// <returns></returns>
+	    public IInputTemplate GetSaferTemplate(IInputTemplate main){
             lock (this){
                 checkinit();
                 var safere = safers.FirstOrDefault(x => x.attr("main") == main.Code);
@@ -272,17 +366,44 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             }
         }
 
-        public bool CanSet(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state){
+	    /// <summary>
+	    /// Признак возможности установить статус
+	    /// </summary>
+	    /// <param name="template"></param>
+	    /// <param name="obj"></param>
+	    /// <param name="detail"></param>
+	    /// <param name="state"></param>
+	    /// <returns></returns>
+	    public bool CanSet(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state){
             string cause;
             return CanSet(template, obj, detail, state, out cause);
         }
 
-        public bool CanSet(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state,
+	    /// <summary>
+	    /// Определяет возможность установить статус
+	    /// </summary>
+	    /// <param name="template"></param>
+	    /// <param name="obj"></param>
+	    /// <param name="detail"></param>
+	    /// <param name="state"></param>
+	    /// <param name="cause"></param>
+	    /// <returns></returns>
+	    public bool CanSet(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state,
                            out string cause) {
             return CanSet(template, obj, detail, state, out cause, 0);
         }
 
-        public bool CanSet(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state,
+	    /// <summary>
+	    /// Еще один вариант проверки возможности установки статуса
+	    /// </summary>
+	    /// <param name="template"></param>
+	    /// <param name="obj"></param>
+	    /// <param name="detail"></param>
+	    /// <param name="state"></param>
+	    /// <param name="cause"></param>
+	    /// <param name="parent"></param>
+	    /// <returns></returns>
+	    public bool CanSet(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state,
                            out string cause, int parent){
             lock (this){
 				
@@ -352,10 +473,13 @@ namespace Comdiv.Zeta.Web.InputTemplates{
                         req.Detail = detail;
                         req.DetailId = detail.Id();
                         req.Date = DateExtensions.Begin;
-                        var pkg = req.GetDefaultPkg();
-                        var files =
-                            myapp.ioc.get<IDbfsRepository>().Search(new Dictionary<string, string>
-                                                                    {{"pkg", pkg.Id.ToString()}});
+
+						/*
+						 * var pkg = req.GetDefaultPkg();
+						var files =
+							myapp.ioc.get<IDbfsRepository>().Search(new Dictionary<string, string>
+																	{{"pkg", pkg.Id.ToString()}});
+						 * 
                         var tags = template.NeedFiles.split();
                         var proceed = true;
                         var badtag = "";
@@ -370,7 +494,8 @@ namespace Comdiv.Zeta.Web.InputTemplates{
                         if (!proceed){
                             cause = "не хватает файла с меткой " + badtag;
                             return false;
-                        }
+                        }*/
+						//файлы пока не портируем
                     }
                 }
 
@@ -431,7 +556,7 @@ namespace Comdiv.Zeta.Web.InputTemplates{
                         else if (state == "0ISOPEN")
                         {
                             op = LockOperation.Open;
-                            ;
+                            
                         }
                         toperiods = periodmapper.GetLockingPeriods(op, template.Period);
                     }
@@ -465,10 +590,15 @@ namespace Comdiv.Zeta.Web.InputTemplates{
         }
 
 
-
-
-
-        public void Process(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state, int parent){
+	    /// <summary>
+	    /// ВЫполнить установку статуса
+	    /// </summary>
+	    /// <param name="template"></param>
+	    /// <param name="obj"></param>
+	    /// <param name="detail"></param>
+	    /// <param name="state"></param>
+	    /// <param name="parent"></param>
+	    public void Process(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state, int parent){
             /* на выполнение процесса у нас одно единственное правило - "если открывать, то с зависимыми*/
             lock (this){
                 checkinit();
@@ -500,26 +630,9 @@ namespace Comdiv.Zeta.Web.InputTemplates{
                     }
                 }
 
-                //if (state == "0ISCHECKED"){
-                    //    /*только для обычных форм, пока косвенное определение*/
-                    //    if (template.Rows.Count == 1){
-                    //        using (var c = myapp.ioc.getConnection()){
-                    //            c.ExecuteNonQuery(
-                    //                "exec usm.makecheckpoint @root=@root, @org = @org, @year=@year, @period=@period",
-                    //                new Dictionary<string, object>{
-                    //                                                  {"root", template.Rows[0].Code},
-                    //                                                  {"org", obj.Id},
-                    //                                                  {"year", template.Year},
-                    //                                                  {"period", template.Period}
-                    //                                              }
-                    //                );
-                    //        }
-                    //    }
-                    //}
                 }
         }
 
-        #endregion
 
         private void Reload(object sender, EventWithDataArgs<int> args){
             lock (this){
@@ -527,6 +640,12 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             }
         }
 
+        /// <summary>
+        /// Получить формы - финализаторы
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public IInputTemplate[] GetFinalTemplates(IInputTemplate source){
             lock (this){
                 checkinit();
@@ -542,15 +661,27 @@ namespace Comdiv.Zeta.Web.InputTemplates{
                     .Select(x => update(x, source)).ToArray();
             }
         }
-
-        protected IInputTemplate update(IInputTemplate target, IInputTemplate src){
+		/// <summary>
+		/// Обновляет целевлй шаблон из исходного
+		/// </summary>
+		/// <param name="target"></param>
+		/// <param name="src"></param>
+		/// <returns></returns>
+		private IInputTemplate update(IInputTemplate target, IInputTemplate src){
             target.Year = src.Year;
             target.Period = src.Period;
             target.DirectDate = src.DirectDate;
             return target;
-        }
+        }// вот с какой радости это здесь
 
-        protected StateRule[] GetMathchedRules(IInputTemplate target, string state, IZetaMainObject obj) {
+		/// <summary>
+		/// Получить набор правил
+		/// </summary>
+		/// <param name="target"></param>
+		/// <param name="state"></param>
+		/// <param name="obj"></param>
+		/// <returns></returns>
+	    private StateRule[] GetMathchedRules(IInputTemplate target, string state, IZetaMainObject obj) {
             return this.rules.Where(x =>
                                         
                                             (x.ResultState.noContent() || x.ResultState==state)
@@ -586,7 +717,7 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             }
         }
 
-    	protected List<XElement> extensions;
+	    private List<XElement> extensions;
 
     	private static bool checkByControlPoints(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail,
                                                  RowDescriptor root, out string cp) {
@@ -632,14 +763,5 @@ namespace Comdiv.Zeta.Web.InputTemplates{
             }
             return result;
         }
-    }
-
-    public class StateRule   {
-        public string Current { get; set; }
-        public string Target { get; set; }
-        public string Type { get; set; }
-        public string Action { get; set; }
-        public string CurrentState { get; set; }
-        public string ResultState { get; set; }
     }
 }

@@ -20,6 +20,9 @@ using System.Threading;
 using Comdiv.Extensions;
 
 namespace Comdiv.Zeta.Web.InputTemplates{
+	/// <summary>
+	/// Устаревший механизм паралельной блокировки сохранения
+	/// </summary>
     public class DataSaveLock : IDisposable{
         private static readonly object sync = new object();
 
@@ -39,16 +42,30 @@ namespace Comdiv.Zeta.Web.InputTemplates{
 
         #region IDisposable Members
 
-        public void Dispose(){
+		/// <summary>
+		/// Выполняет определяемые приложением задачи, связанные с высвобождением или сбросом неуправляемых ресурсов.
+		/// </summary>
+		/// <filterpriority>2</filterpriority>
+		public void Dispose(){
             mutex.ReleaseMutex();
         }
 
         #endregion
 
+        /// <summary>
+        /// Получить в пользование объект блокировки
+        /// </summary>
+        /// <returns></returns>
         public static DataSaveLock Get(){
             return Get(-1);
         }
 
+        /// <summary>
+        /// Получить блокировку с задержкой
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        /// <exception cref="TimeoutException"></exception>
         public static DataSaveLock Get(int timeout){
             lock (sync){
                 var result = mutex.WaitOne(timeout, false);

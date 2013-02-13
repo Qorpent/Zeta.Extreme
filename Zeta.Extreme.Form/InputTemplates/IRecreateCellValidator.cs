@@ -14,10 +14,10 @@
 // // limitations under the License.
 // // 
 // // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
-namespace Comdiv.Zeta.Web.Themas{
-    public class MainGroupObjectXmlGenerator : MainGroupOrientedXmlGenerator{
-        protected override object[] InternalGenerate(){
-            return generateObjects();
-        }
+namespace Comdiv.Zeta.Web{
+    /// <summary>
+    /// Проверка конкурентной перезаписи ячейки
+    /// </summary>
+    public interface IRecreateCellValidator : IFormDataValidator{
     }
 }

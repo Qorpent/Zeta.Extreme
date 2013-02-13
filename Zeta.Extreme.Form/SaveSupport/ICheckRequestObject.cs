@@ -14,12 +14,11 @@
 // // limitations under the License.
 // // 
 // // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
-using Comdiv.Zeta.Model;
+namespace Comdiv.Zeta.Web{
 
-namespace Comdiv.Zeta.Web.Themas{
-    public abstract class MainGroupOrientedXmlGenerator : GenericObjectGenerator<IZetaObjectGroup>{
-        public MainGroupOrientedXmlGenerator(){
-            Prefix = "OG";
-        }
+    /// <summary>
+    /// проверка соответствия объекта при сохранении
+    /// </summary>
+    public interface ICheckRequestObject : IFormDataValidator{
     }
 }

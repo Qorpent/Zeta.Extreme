@@ -23,9 +23,18 @@ using Comdiv.Reporting;
 using Comdiv.Zeta.Web.InputTemplates;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Построитель фабрики тем
+	/// </summary>
     public class ThemaFactoryProvider : IThemaFactoryProvider{
+		/// <summary>
+		/// Кэшированная фабрика
+		/// </summary>
         protected internal IThemaFactory factory;
 
+        /// <summary>
+        /// стандартная фабрика фабрики
+        /// </summary>
         public ThemaFactoryProvider(){
             myapp.OnReload += myapp_OnReload;
         }
@@ -39,7 +48,10 @@ namespace Comdiv.Zeta.Web.Themas{
 
         }
 
-        public void Reload() {
+		/// <summary>
+		/// Перегрузить фабрику
+		/// </summary>
+		public void Reload() {
 #if TC
             factory = null;
 #else
@@ -47,11 +59,17 @@ namespace Comdiv.Zeta.Web.Themas{
 #endif
         }
 
+        /// <summary>
+        /// Ссылка на конфигуратор тем
+        /// </summary>
         public IThemaConfigurationProvider ConfigurationProvider { get; set; }
 
-        #region IThemaFactoryProvider Members
 
-        public IThemaFactory Get(){
+		/// <summary>
+		/// Получить фабрику
+		/// </summary>
+		/// <returns></returns>
+		public IThemaFactory Get(){
             lock (this){
                 if (null == factory 
                     #if !TC
@@ -104,8 +122,14 @@ namespace Comdiv.Zeta.Web.Themas{
         }
 
 #endif
-        #endregion
+ 
 
+        /// <summary>
+        /// Возвращает стандартным способом типовой элемент
+        /// </summary>
+        /// <param name="code"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static T GetDefault<T>(string code  ) where T:class {
             var factory = myapp.ioc.get<IThemaFactoryProvider>().Get();
             if(typeof(IThema).IsAssignableFrom(typeof(T)))return factory.Get(code) as T;

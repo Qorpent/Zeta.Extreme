@@ -14,10 +14,10 @@
 // // limitations under the License.
 // // 
 // // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
-namespace Comdiv.Zeta.Web.Themas{
-    public class MainGroupConditionXmlGenerator : MainGroupOrientedXmlGenerator{
-        protected override object[] InternalGenerate(){
-            return getListDefinition();
-        }
+namespace Comdiv.Zeta.Web{
+    /// <summary>
+    /// интерфейс проеврки фикса ячеек
+    /// </summary>
+    public interface ICellFixingValidator : IFormDataValidator{
     }
 }
