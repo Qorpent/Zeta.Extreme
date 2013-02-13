@@ -10,12 +10,9 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using System.Xml.XPath;
 using Comdiv.Extensions;
 
 namespace Zeta.Extreme.Form.Themas {
@@ -170,6 +167,10 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Роль элемента по умолчанию
 		/// </summary>
 		public string DefaultElementRole { get; set; }
+		/// <summary>
+		/// Обратная ссылка на конфигуратор
+		/// </summary>
+		public ThemaConfigurationProvider ConfigurationProvider { get; set; }
 
 
 		/// <summary>
@@ -179,7 +180,11 @@ namespace Zeta.Extreme.Form.Themas {
 		public IThema Configure() {
 			var type = typeof (Thema);
 			if (ClassName.hasContent()) {
-				type = Type.GetType(ClassName, true);
+				var clsname = ClassName;
+				if(ConfigurationProvider.Options.ClassRedirectMap.ContainsKey(clsname)) {
+					clsname = ConfigurationProvider.Options.ClassRedirectMap[clsname];
+				}
+				type = Type.GetType(clsname, true);
 			}
 			var result = type.create<Thema>();
 			result.Configuration = this;
@@ -187,13 +192,16 @@ namespace Zeta.Extreme.Form.Themas {
 			result.Name = Name;
 			result.Role = Role;
 			result.Idx = Idx;
-			result.IsGroup = IsGroup;
-			result.Group = Group;
+			if(ConfigurationProvider.Options.LoadIerarchy) {
+				result.IsGroup = IsGroup;
+				result.Group = Group;	
+			}
 			result.Layout = Layout;
 			result.Visible = Visible;
 			result.IsTemplate = IsTemplate;
-			result.Parent = Parent;
-
+			if(ConfigurationProvider.Options.LoadIerarchy) {
+				result.Parent = Parent;
+			}
 
 			try {
 				foreach (var output in Outputs.Values) {
@@ -246,75 +254,6 @@ namespace Zeta.Extreme.Form.Themas {
 			return Code + " " + Name;
 		}
 
-		/// <summary>
-		/// 	Производит обработку импортируемых конфигураций
-		/// </summary>
-		public void ProcessImports() {
-			if (ImportsProcessed) {
-				return;
-			}
-			var firstelement = SrcXml.Elements().FirstOrDefault();
-			foreach (ThemaConfiguration import in Imports) {
-				import.ProcessImports();
-
-				foreach (var element in import.SrcXml.Elements()) {
-					XElement subelement = null;
-					//if(element.Name.LocalName=="param" && !element.Attribute("id").Value.Contains(".")){
-					//    subelement = new XElement(element);
-					//    subelement.Attribute("id").Value = import.Code + "." + subelement.Attribute("id").Value;
-					//}
-					if (firstelement != null) {
-						firstelement.AddBeforeSelf(element);
-						if (subelement != null) {
-							firstelement.AddBeforeSelf(subelement);
-						}
-					}
-					else {
-						SrcXml.Add(new XElement(element));
-						if (subelement != null) {
-							SrcXml.Add(new XElement(subelement));
-						}
-					}
-				}
-			}
-			embedEarlyParametersIntoXml(this, SrcXml);
-			ImportsProcessed = true;
-		}
-
-		private void embedEarlyParametersIntoXml(ThemaConfiguration configuration, XElement x) {
-			foreach (XAttribute attr in ((IEnumerable) x.XPathEvaluate(".//@*"))) {
-				attr.Value = embedEarlyParameters(configuration, attr.Value);
-				//escapes some custom constructions, that must use ${...} constructions further
-				//attr.Value = attr.Value.Replace("#{", "${");
-			}
-			foreach (XText e in ((IEnumerable) x.XPathEvaluate(".//text()"))) {
-				e.Value = embedEarlyParameters(configuration, e.Value);
-				//escapes some custom constructions, that must use ${...} constructions further
-				//e.Value = e.Value.Replace("#{", "${");
-			}
-		}
-
-		private string embedEarlyParameters(ThemaConfiguration configuration, string val) {
-			if (val.like(@"ZZ([\.\w]+)ZZ")) {
-				val = val.replace(@"ZZ([\.\w]+)ZZ", m =>
-					{
-						var par =
-							configuration.SrcXml.XPathSelectElements("./param[@id='" +
-							                                         m.Groups[1].Value +
-							                                         "']").
-								LastOrDefault();
-						if (null == par) {
-							return m.Value;
-						}
-						var v = par.attr("value");
-						if (v.noContent()) {
-							v = par.Value;
-						}
-						return v;
-					});
-			}
-			return val;
-		}
 
 		///<summary>
 		///	Конфигурации команд

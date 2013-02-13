@@ -21,7 +21,7 @@ using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.IO;
 using Comdiv.Inversion;
-
+using Qorpent.Utils.Extensions;
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
 	/// 	Провайдер конфигураций
@@ -30,17 +30,11 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <summary>
 		/// 	Создает стандартный конфигуратор
 		/// </summary>
-		public ThemaConfigurationProvider() {
-			ThemaConfigurationFile = "data/root.xml";
-			CompileFolder = "compiled_themas";
-			_xsltcompiler = new XslCompiledTransform();
-			_xsltcompiler.Load(myapp.files.Resolve("~/sys/themaxmlcompiler.xslt"), XsltSettings.TrustedXslt, new XmlUrlResolver());
+		public ThemaConfigurationProvider(ThemaLoaderOptions options = null) {
+			this.Options = options ?? new ThemaLoaderOptions();
 		}
 
-		/// <summary>
-		/// 	Папка с откомпилированными файлами
-		/// </summary>
-		public string CompileFolder { get; set; }
+
 
 		/// <summary>
 		/// 	Обратная ссылка на контейнер
@@ -75,11 +69,6 @@ namespace Zeta.Extreme.Form.Themas {
 		}
 
 		/// <summary>
-		/// 	Файл конфигурации
-		/// </summary>
-		public string ThemaConfigurationFile { get; set; }
-
-		/// <summary>
 		/// 	Прямой XML
 		/// </summary>
 		public string DirectXml { get; set; }
@@ -88,6 +77,11 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Загружаемые фильтры компиляции
 		/// </summary>
 		public string LoadCompileFilters { get; set; }
+
+		/// <summary>
+		/// Опции зашгрузки темы
+		/// </summary>
+		public ThemaLoaderOptions Options { get; set; }
 
 
 		/// <summary>
@@ -99,7 +93,7 @@ namespace Zeta.Extreme.Form.Themas {
 		public void Set(string themacode, string parameter, object value) {
 			lock (this) {
 				value = value ?? "";
-				var type = ReflectionExtensions.ResolveWellKnownName(value.GetType());
+				var type = Comdiv.Extensions.ReflectionExtensions.ResolveWellKnownName(value.GetType());
 				var overfile = PathResolver.Resolve("data/override.xml");
 				if (null == overfile) {
 					overfile = PathResolver.Resolve("~/usr/data/override.xml", false);
@@ -159,17 +153,39 @@ namespace Zeta.Extreme.Form.Themas {
 			var result = new XElement("root");
 			_cfgVersion = new DateTime();
 			foreach (
-				var f in myapp.files.ResolveAll("~/tmp/" + CompileFolder, "*.xml").OrderBy(x => Path.GetFileNameWithoutExtension(x))
+				var f in myapp.files.ResolveAll(Options.RootDirectory, "*.xml").OrderBy(x => Path.GetFileNameWithoutExtension(x))
 				) {
 				if (File.GetLastWriteTime(f) > _cfgVersion) {
 					_cfgVersion = File.GetLastWriteTime(f);
 				}
+				var x = XElement.Load(f);
+				if(!string.IsNullOrWhiteSpace(Options.FilterParameters)) {
+					if(Options.LoadLibraries && x.Attr("code").Contains("lib")) {
+						result.Add(x);
+						continue;
+					}
+
+					foreach (var flag in Options.FilterParameters.SmartSplit()) {
+						var e = x.Elements("param").FirstOrDefault(_ => _.Attr("id") == flag);
+						if(null==e)continue;
+						var val = e.Value;
+						if(string.IsNullOrWhiteSpace(val)) {
+							val = e.Attr("value");
+						}
+						if(val.ToBool()) {
+							result.Add(x);
+							break;
+						}
+					}
+
+					continue;
+				}
 				if (filters.Count == 0) {
-					result.Add(XElement.Load(f));
+					result.Add(x);
 				}
 				else {
-					if (null != filters.FirstOrDefault(x => f.like(x))) {
-						result.Add(XElement.Load(f));
+					if (null != filters.FirstOrDefault(_ => f.like(_))) {
+						result.Add(x);
 					}
 				}
 			}
@@ -224,10 +240,18 @@ namespace Zeta.Extreme.Form.Themas {
 			foreach (var configuration in configurations.Values) {
 				configuration.Name = configuration.SrcXml.attr("name", configuration.Code);
 				applyPseudoProperties(configuration);
-				readCommands(configuration);
-				readDocuments(configuration);
-				readInputs(configuration);
-				readOutputs(configuration);
+				if(Options.ElementTypes.HasFlag(ElementType.Command)) {
+					readCommands(configuration);
+				}
+				if(Options.ElementTypes.HasFlag(ElementType.Document)) {
+					readDocuments(configuration);
+				}
+				if(Options.ElementTypes.HasFlag(ElementType.Form)) {
+					readInputs(configuration);
+				}
+				if(Options.ElementTypes.HasFlag(ElementType.Report)) {
+					readOutputs(configuration);
+				}
 			}
 		}
 
@@ -517,7 +541,7 @@ namespace Zeta.Extreme.Form.Themas {
 		private TypedParameter readParameter(XElement parameter) {
 			var p = new TypedParameter
 				{
-					Type = ReflectionExtensions.ResolveTypeByWellKnownName(parameter.attr("type", "str")),
+					Type = Comdiv.Extensions.ReflectionExtensions.ResolveTypeByWellKnownName(parameter.attr("type", "str")),
 					Value = parameter.attr("value", null) ?? parameter.Value,
 					Name = parameter.idorcode(),
 					Mode = parameter.attr("mode", "static")
@@ -528,6 +552,7 @@ namespace Zeta.Extreme.Form.Themas {
 		private void prepareEmpty(IDictionary<string, ThemaConfiguration> configurations, XElement descriptor) {
 			var themas = descriptor.XPathSelectElements("./thema");
 			foreach (var thema in themas) {
+				
 				var desc = new ThemaConfiguration
 					{
 						Code = thema.idorcode("default"),
@@ -543,11 +568,11 @@ namespace Zeta.Extreme.Form.Themas {
 				if (desc.Abstract) {
 					desc.Active = false;
 				}
+				desc.ConfigurationProvider = this;
 				configurations[desc.Code] = desc;
 			}
 		}
 
-		private readonly XslCompiledTransform _xsltcompiler;
 		private DateTime _cfgVersion;
 		private IInversionContainer _container;
 

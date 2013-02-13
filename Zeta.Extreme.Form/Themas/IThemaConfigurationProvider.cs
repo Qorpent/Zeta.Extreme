@@ -27,5 +27,10 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="parameter"> </param>
 		/// <param name="value"> </param>
 		void Set(string themacode, string parameter, object value);
+
+		/// <summary>
+		/// Опции зашгрузки темы
+		/// </summary>
+		ThemaLoaderOptions Options { get; set; }
 	}
 }
