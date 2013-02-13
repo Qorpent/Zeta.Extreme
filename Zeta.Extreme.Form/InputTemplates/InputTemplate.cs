@@ -240,7 +240,7 @@ namespace Comdiv.Zeta.Web.InputTemplates {
 			return false;
 		}
 
-      //  public Form FormMatrix { get; set; }
+
 	  //NOTE: более не поддерживается и не портиется - старые формы
     	private string biztran = "";
     	/// <summary>
@@ -497,27 +497,17 @@ namespace Comdiv.Zeta.Web.InputTemplates {
             return GetRowChecks(row, obj, col).Select(x => x.CellStyle).Where(x => x.hasContent()).concat(" ");
         } 
 
-		/// <summary>
-		/// Убрать как можно быстрее - оставлено для совместимости
-		/// </summary>
-        public bool UseFormMatrix { get; set; }
 		
 		/// <summary>
 		/// Применять курс значения
 		/// </summary>
 		public bool ApplyValueCourse { get; set; }
-        /// <summary>
-		/// Убрать как можно быстрее - оставлено для совместимости
-        /// </summary>
-        public string MatrixExRows { get; set; }
+       
 		/// <summary>
 		/// Код фиксированного объекта
 		/// </summary>
         public string FixedObjectCode { get; set; }
-		/// <summary>
-		/// Убрать как можно быстрее - оставлено для совместимости
-		/// </summary>
-        public string MatrixExSqlHint { get; set; }
+
     	private bool _ignorePeriodState;
 		/// <summary>
 		/// Признак игнора статуса периода

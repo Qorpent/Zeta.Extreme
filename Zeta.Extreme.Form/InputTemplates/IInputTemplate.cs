@@ -217,20 +217,7 @@ namespace Comdiv.Zeta.Web.InputTemplates{
 		/// Документы
 		/// </summary>
         IDictionary<string, string> Documents { get; set; }
-		/// <summary>
-		/// УСТАР
-		/// </summary>
-        bool UseFormMatrix { get; set; }
-		/// <summary>
-		/// УСТАР
-		/// </summary>
-        
-        string MatrixExRows { get; set; }
-		/// <summary>
-		/// УСТАР
-		/// </summary>
-        
-        string MatrixExSqlHint { get; set; }
+
 		/// <summary>
 		/// Фиксированный код объекта
 		/// </summary>
@@ -247,7 +234,7 @@ namespace Comdiv.Zeta.Web.InputTemplates{
 		/// Используется быстрое обновление
 		/// </summary>
         bool UseQuickUpdate { get; set; }
-       // Form FormMatrix { get; set; } // не переносится
+
     	/// <summary>
     	/// Игнорируется статус периода
     	/// </summary>

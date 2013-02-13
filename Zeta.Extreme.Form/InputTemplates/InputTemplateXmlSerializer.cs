@@ -64,8 +64,6 @@ namespace Comdiv.Zeta.Web.InputTemplates{
                 result.Controller = i.attr("controller", "default");
                 result.CustomView = i.attr("customView");
                 result.CustomSave = i.attr("customSave");
-                result.UseFormMatrix = i.attr("useformmatrix",false);
-                result.MatrixExRows = i.attr("matrixexrows", "");
                 result.ShowMeasureColumn = i.attr("showmeasurecolumn", false);
                 result.CustomControllerType = i.attr("customController");
                 result.SaveMethod = i.attr("saveMethod", "save");

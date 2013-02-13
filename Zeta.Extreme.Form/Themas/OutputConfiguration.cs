@@ -53,34 +53,7 @@ namespace Comdiv.Zeta.Web.Themas{
 		/// Редиректор периодов
 		/// </summary>
         public string PeriodRedirect { get; set; }
-		/// <summary>
-		/// Признак использования матриц (устар!!)
-		/// </summary>
-        public bool UseFormMatrix { get; set; }
-		/// <summary>
-		/// Расширения строк матрицы (устар !!)
-		/// </summary>
-        public string MatrixExRows { get; set; }
-		/// <summary>
-		/// Хинты матрицы (устар!!)
-		/// </summary>
-        public string MatrixExSqlHint { get; set; }
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns></returns>
-        protected override bool getErrorInternal(){
-            //if (Template == "empty.out"){
-            //    var isvalid = TemplateXml.Elements("isvalid");
-            //    if (isvalid.no()){
-            //        var cols = TemplateXml.Elements("col");
-            //        if (cols.no()){
-            //            return true;
-            //        }
-            //    }
-            //}
-            return base.getErrorInternal();
-        }
+
 
 		/// <summary>
 		/// Команда на конфигурирование

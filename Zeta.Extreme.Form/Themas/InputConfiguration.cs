@@ -97,10 +97,7 @@ namespace Comdiv.Zeta.Web.Themas{
 		/// Дополнительные документы
 		/// </summary>
         public string AdvDocs { get; set; }
-		/// <summary>
-		/// Расширенные строки для матриц (устар! больше эти матрицы не используются)
-		/// </summary>
-        public string MatrixExRows { get; set; }
+
 		/// <summary>
 		/// Фиксированный объект
 		/// </summary>
@@ -121,10 +118,7 @@ namespace Comdiv.Zeta.Web.Themas{
 		/// XML - определения строк
 		/// </summary>
         public XElement[] RowDefinitions { get; set; }
-		/// <summary>
-		/// Признак использования матриц (устар!!)
-		/// </summary>
-        public bool UseFormMatrix { get; set; }
+
 		/// <summary>
 		/// Признак использования только избранных строк
 		/// </summary>
@@ -162,9 +156,6 @@ namespace Comdiv.Zeta.Web.Themas{
             template.SqlOptimization = SqlOptimization;
             template.PeriodRedirect = PeriodRedirect;
             template.Name = Name;
-            template.UseFormMatrix = this.UseFormMatrix;
-            template.MatrixExRows = this.MatrixExRows;
-            template.MatrixExSqlHint = this.MatrixExSqlHint;
             template.ForPeriods = ForPeriods.split().Select(x => x.toInt()).ToArray();
             template.AutoFillDescription = AutoFill;
             template.UnderwriteRole = UnderwriteRole;
@@ -243,12 +234,7 @@ namespace Comdiv.Zeta.Web.Themas{
         /// </summary>
         public string DocumentRoot { get; set; }
 
-        /// <summary>
-        /// Хинт устаревшей матрицы
-        /// </summary>
-        public string MatrixExSqlHint { get; set; }
-
-        /// <summary>
+		/// <summary>
         /// Использовать быстрое обновление
         /// </summary>
         public bool UseQuickUpdate { get; set; }

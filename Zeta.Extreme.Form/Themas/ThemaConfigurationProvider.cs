@@ -306,9 +306,8 @@ namespace Comdiv.Zeta.Web.Themas{
                 element.update(input, "id", "name", "code", "role", "template");
             	input.IgnorePeriodState = element.attr("ignoreperiodstate", false);
             	input.IsObjectDependent = element.attr("isobjectdependent", false);
-                input.UseFormMatrix = element.elementOrAttr("useformmatrix", false);
-                input.MatrixExRows = element.elementOrAttr("matrixexrows", "");
-                input.MatrixExSqlHint = element.elementOrAttr("matrixexsqlhint", "");
+                
+                
                 input.FixedObj = element.elementOrAttr("fixedobj", "");
 			
             	input.Biztran = element.attr("biztran","");
@@ -420,9 +419,7 @@ namespace Comdiv.Zeta.Web.Themas{
                 output.Type = element.attr("type", "call");
                 output.Template = element.attr("template", output.Template ?? output.Code);
                 output.Sources = element.Elements("uselib").Select(x => x.idorcode()).Where(x=>x.hasContent()).ToArray();
-                output.UseFormMatrix = element.elementOrAttr("useformmatrix", false);
-                output.MatrixExRows = element.elementOrAttr("matrixexrows", "");
-                output.MatrixExSqlHint = element.elementOrAttr("matrixexsqlhint", "");
+              
                 if (!output.Template.EndsWith(".out")){
                     output.Template += ".out";
                 }
