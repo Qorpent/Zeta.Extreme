@@ -15,8 +15,18 @@
 // // 
 // // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Простой интерфейс поставщика фабрики тем
+	/// </summary>
 	public interface IThemaFactoryProvider{
+		/// <summary>
+		/// Получить фабрику
+		/// </summary>
+		/// <returns></returns>
         IThemaFactory Get();
+		/// <summary>
+		/// Перегрузить фабрику
+		/// </summary>
         void Reload();
     }
 }

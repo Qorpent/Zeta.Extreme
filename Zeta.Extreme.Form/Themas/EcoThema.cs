@@ -22,14 +22,29 @@ using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.Zeta.Data;
+using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Стандартная ЭКО -тема
+	/// </summary>
     public class EcoThema : Thema{
+		/// <summary>
+		/// Подписанты
+		/// </summary>
         public IZetaUnderwriter[] Underwriters { get; set; }
+		/// <summary>
+		/// Операторы
+		/// </summary>
         public IZetaUnderwriter[] Operators { get; set; }
+		/// <summary>
+		/// Читатели темы
+		/// </summary>
         public IZetaUnderwriter[] Readers { get; set; }
-
+		/// <summary>
+		/// Префикс роли
+		/// </summary>
         public string Roleprefix{
             get { return Parameters.get("roleprefix", ""); }
             set { Parameters["roleprefix"] = value; }
@@ -73,70 +88,103 @@ namespace Comdiv.Zeta.Web.Themas{
             return false;
             //но в любых прочих случаях - шаблон не подходит
         }
-
+		/// <summary>
+		/// Ответственность основная
+		/// </summary>
         public IUsrThemaMap Responsibility{
             get { return Parameters.get<IUsrThemaMap>("responsibility", null); }
             set { Parameters["responsibility"] = value; }
         }
-
+		/// <summary>
+		/// Ответственность дополнительная
+		/// </summary>
         public IUsrThemaMap Responsibility2{
             get { return Parameters.get<IUsrThemaMap>("responsibility2", null); }
             set { Parameters["responsibility2"] = value; }
         }
 
+		/// <summary>
+		/// Отвественность холдинга
+		/// </summary>
         public IUsrThemaMap HoldResponsibility{
             get { return Parameters.get<IUsrThemaMap>("holdresponsibility", null); }
             set { Parameters["holdresponsibility"] = value; }
         }
-
+		/// <summary>
+		/// Признак невалидности целевого объекта для 
+		/// </summary>
         public bool InvalidTargetObject{
             get { return Parameters.get("invalidtargetobject", false); }
             set { Parameters["invalidtargetobject"] = value; }
         }
-
+		/// <summary>
+		/// Признак темы для детали
+		/// </summary>
         public bool IsDetail{
             get { return Parameters.get("isdetail", false); }
             set { Parameters["isdetail"] = value; }
         }
-
+		/// <summary>
+		/// Класс для деталей
+		/// </summary>
         public string DetailClasses{
             get { return Parameters.get("detailclasses", ""); }
             set { Parameters["detailclasses"] = value; }
         }
-
+		/// <summary>
+		/// Корневая строка
+		/// </summary>
         public string RootRow{
             get { return Parameters.get("rootrow", ""); }
             set { Parameters["rootrow"] = value; }
         }
-
+		/// <summary>
+		/// Признак принадлежности к группе
+		/// </summary>
         public string ForGroup{
             get { return Parameters.get("forgroup", ""); }
             set { Parameters["forgroup"] = value; }
         }
 
-
+		/// <summary>
+		/// Требование наличия ответственности
+		/// </summary>
         public bool NeedResponsibility{
             get { return Parameters.get("needresponsibility", false); }
             set { Parameters["needresponsibility"] = value; }
         }
 
+    	/// <summary>
+    	/// Групповая тема
+    	/// </summary>
     	public IThema GroupThema { get; set; }
-
+		/// <summary>
+		/// Проверка активности
+		/// </summary>
+		/// <param name="principal"></param>
+		/// <returns></returns>
     	protected override bool internalIsActive(IPrincipal principal){
             return new EcoThemaHelper(this).isvisible;
         }
 
-        public override IThema Accomodate(IZetaMainObject obj, int year, int period){
+		/// <summary>
+		/// Приспособить тему под конкретный период
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <param name="year"></param>
+		/// <param name="period"></param>
+		/// <returns></returns>
+		public override IThema Accomodate(IZetaMainObject obj, int year, int period){
             var result = (EcoThema) base.Accomodate(obj, year, period);
             if (obj != null){
                 if (result.NeedResponsibility){
-                    result.Responsibility = myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility(Code, obj);
-                    result.Responsibility2 = myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility2(Code, obj);
+                    result.Responsibility = myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility(Code, "Default", obj);
+					result.Responsibility2 = myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility2(Code, "Default", obj);
                 }
                 var h = "0CH".asObject();
                 if (null != h){
                     result.HoldResponsibility =
-                        myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility(Code, h);
+						myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility(Code, "Default", h);
                 }
                 if (obj.Id() == h.Id()){
                     result.Responsibility = result.HoldResponsibility;
@@ -150,6 +198,9 @@ namespace Comdiv.Zeta.Web.Themas{
             return result;
         }
 
+        /// <summary>
+        /// Подготовка деталей (ролей??)
+        /// </summary>
         public void SetupDetails(){
             IList<IZetaUnderwriter> unds = new List<IZetaUnderwriter>();
             IList<IZetaUnderwriter> ops = new List<IZetaUnderwriter>();

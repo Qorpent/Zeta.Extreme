@@ -20,14 +20,15 @@ using System.Xml.Linq;
 using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.IO;
+using Zeta.Extreme.Form.Themas;
 
 namespace Comdiv.Zeta.Web.Themas{
     public class GraphTypeConditionXmlGenerator : XmlGeneratorBase{
-        protected override string getSelfCondition(string code){
+        protected override string GetSelfCondition(string code){
             return "";
         }
 
-        protected override object[] internalGenerate(){
+        protected override object[] InternalGenerate(){
             var result = "";
             var filenames = myapp.files.ResolveAll("~/scripts/graph/charts", "*.swf");
             var types =

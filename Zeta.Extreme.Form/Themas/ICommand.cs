@@ -18,7 +18,13 @@ using Comdiv.Model.Interfaces;
 using Comdiv.Security;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Интерфейс команды темы
+	/// </summary>
     public interface ICommand : IWithCode, IWithName, IWithRole{
+		/// <summary>
+		/// URL, описывающий некий вызов
+		/// </summary>
         string Url { get; set; }
     }
 }

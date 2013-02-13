@@ -249,8 +249,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 					Obj = {Native = obj}
 				};
 			session.RegisterAsync(q, "test");
-			session.WaitPreparation();
-			session.WaitEvaluation();
+			session.Execute();
 		}
 
 		[Test]

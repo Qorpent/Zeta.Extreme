@@ -19,18 +19,44 @@ using System.Reflection;
 using Comdiv.Extensions;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Типизированный параметр темы
+	/// </summary>
     public class TypedParameter{
+		/// <summary>
+		/// Конструктор по умолчанию
+		/// </summary>
         public TypedParameter(){
             Type = typeof (Missing);
         }
 
-        public string Name { get; set; }
-        public Type Type { get; set; }
-        public int Idx { get; set; }
-        public string Value { get; set; }
+		/// <summary>
+		/// Имя параметра
+		/// </summary>
+		public string Name;
 
-        public string Mode { get; set; }
+		/// <summary>
+		/// Тип параметра
+		/// </summary>
+		public Type Type;
 
+		/// <summary>
+		/// Порядковый номер параметра
+		/// </summary>
+		public int Idx;
+
+		/// <summary>
+		/// Значение параметра
+		/// </summary>
+		public string Value;
+		/// <summary>
+		/// Режим параметра
+		/// </summary>
+        public string Mode; //NOTE: что еще за режим?
+		/// <summary>
+		/// Расчитать итоговое значение
+		/// </summary>
+		/// <returns></returns>
         public object GetValue(){
             if (Value != null && Type == typeof(Missing)){
                 Type = typeof (string);

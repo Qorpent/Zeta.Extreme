@@ -14,65 +14,6 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Themas\Command.cs" />
-    <Compile Include="Themas\CommandConfiguration.cs" />
-    <Compile Include="Themas\Document.cs" />
-    <Compile Include="Themas\DocumentConfiguration.cs" />
-    <Compile Include="Themas\EcoThema.cs" />
-    <Compile Include="Themas\EcoThemaHelper.cs" />
-    <Compile Include="Themas\GenericObjectGenerator.cs" />
-    <Compile Include="Themas\GraphTypeConditionXmlGenerator.cs" />
-    <Compile Include="Themas\GroupConditionXmlGenerator.cs" />
-    <Compile Include="Themas\GroupObjectXmlGenerator.cs" />
-    <Compile Include="Themas\GroupOrientedXmlGenerator.cs" />
-    <Compile Include="Themas\HtmlListDefinition.cs" />
-    <Compile Include="Themas\ICommand.cs" />
-    <Compile Include="Themas\IConfiguration.cs" />
-    <Compile Include="Themas\IDocument.cs" />
-    <Compile Include="Themas\InputConfiguration.cs" />
-    <Compile Include="Themas\IResponsibilityProvider.cs" />
-    <Compile Include="Themas\ItemConfigurationBase.cs" />
-    <Compile Include="Themas\IThema.cs" />
-    <Compile Include="Themas\IThemaConfiguration.cs" />
-    <Compile Include="Themas\IThemaConfigurationProvider.cs" />
-    <Compile Include="Themas\IThemaFactory.cs" />
-    <Compile Include="Themas\IThemaFactoryConfiguration.cs" />
-    <Compile Include="Themas\IThemaFactoryProvider.cs" />
-    <Compile Include="Themas\IThemaHelper.cs" />
-    <Compile Include="Themas\IUsrThemaMapRepository.cs" />
-    <Compile Include="Themas\ListDefinitionHqlGenerator.cs" />
-    <Compile Include="Themas\MainGroupConditionXmlGenerator.cs" />
-    <Compile Include="Themas\MainGroupObjectXmlGenerator.cs" />
-    <Compile Include="Themas\MainGroupOrientedXmlGenerator.cs" />
-    <Compile Include="Themas\OutputConfiguration.cs" />
-    <Compile Include="Themas\RegionConditionXmlGenerator.cs" />
-    <Compile Include="Themas\RegionObjectXmlGenerator.cs" />
-    <Compile Include="Themas\RegionOrientedXmlGenerator.cs" />
-    <Compile Include="Themas\ResponsibilityProvider.cs" />
-    <Compile Include="Themas\RoleConditionXmlGenerator.cs" />
-    <Compile Include="Themas\RoleObjectXmlGenerator.cs" />
-    <Compile Include="Themas\RoleOrientedXmlGenerator.cs" />
-    <Compile Include="Themas\RowListGenerator.cs" />
-    <Compile Include="Themas\Thema.cs" />
-    <Compile Include="Themas\ThemaConfiguration.cs" />
-    <Compile Include="Themas\ThemaConfigurationProvider.cs" />
-    <Compile Include="Themas\ThemaExtensions.cs" />
-    <Compile Include="Themas\ThemaFactory.cs" />
-    <Compile Include="Themas\ThemaFactoryConfiguration.cs" />
-    <Compile Include="Themas\ThemaFactoryProvider.cs" />
-    <Compile Include="Themas\ThemaFactoryVersionProvider.cs" />
-    <Compile Include="Themas\ThemaHelper.cs" />
-    <Compile Include="Themas\ThemaRedirectRuleLoader.cs" />
-    <Compile Include="Themas\ThemaReportFactory.cs" />
-    <Compile Include="Themas\ThemaXmlReader.cs" />
-    <Compile Include="Themas\TypedParameter.cs" />
-    <Compile Include="Themas\UsrThemaMapRepository.cs" />
-    <Compile Include="Themas\UsrThemaMapRepositoryExtension.cs" />
-    <Compile Include="Themas\XmlGeneratorBase.cs" />
-    <Compile Include="Themas\ZoneConditionXmlGenerator.cs" />
-    <Compile Include="Themas\ZoneOrientedXmlGenerator.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">
       <Project>{c51304fd-0406-48e0-833e-eedc67425bc8}</Project>
       <Name>Comdiv.Core</Name>
@@ -81,9 +22,17 @@
       <Project>{6e58c87c-2522-4aa5-9211-6109305b2d7b}</Project>
       <Name>Comdiv.Dependency</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\core\Comdiv.Extensibility\Comdiv.Extensibility.csproj">
+      <Project>{C1944938-B798-478A-BA1C-FDA8BA152FF3}</Project>
+      <Name>Comdiv.Extensibility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\core\Comdiv.Reporting\Comdiv.Reporting.csproj">
       <Project>{053ae040-0545-4ed0-927a-69b3423ba66d}</Project>
       <Name>Comdiv.Reporting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Bxl\Qorpent.Bxl.csproj">
+      <Project>{381DEC86-5709-4A64-BD9F-462E792884CE}</Project>
+      <Name>Qorpent.Bxl</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Comdiv.Zeta.Data.Minimal\Comdiv.Zeta.Data.Minimal.csproj">
       <Project>{d964fb40-aa23-4ec6-aef0-f418303ff5de}</Project>
@@ -93,6 +42,154 @@
       <Project>{f939564a-d5a9-4bee-b8f2-47c384358afc}</Project>
       <Name>Comdiv.Zeta.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Boo.Lang.Compiler, Version=2.0.9.4, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\exras\lib\Boo.Lang.Compiler.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL" />
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="InputTemplates\AttachedFileType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\AutoFill.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\AutoFillType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\ControlPointResult.cs" />
+    <Compile Include="InputTemplates\IAutoFillExecutor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\IDetailFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\IInputTemplate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\ILockPeriodMapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\IMvcBasedInputTemplate.cs" />
+    <Compile Include="InputTemplates\InputTarget.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\InputTemplate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\InputTemplateXmlSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\IPeriodStateManager.cs" />
+    <Compile Include="InputTemplates\IScheduleChecker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\IStateCheckInterceptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\IStateManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\LockOperation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\LockPeriodMapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\PeriodStateManager.cs" />
+    <Compile Include="InputTemplates\PeriodStateRecord.cs" />
+    <Compile Include="InputTemplates\ScheduleOvertime.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\ScheduleState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputTemplates\SqlAutoFiller.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\Command.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\CommandConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\Document.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\DocumentConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\EcoThema.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\EcoThemaHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\ElementType.cs" />
+    <Compile Include="Themas\HtmlListDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\ICommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\IConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\IDocument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\InputConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\IResponsibilityProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\ItemConfigurationBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\IThema.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\IThemaConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\IThemaConfigurationProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\IThemaFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\IThemaFactoryConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\IThemaFactoryProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\IThemaHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\IUsrThemaMapRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\OutputConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\Thema.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\ThemaConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\TypedParameter.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

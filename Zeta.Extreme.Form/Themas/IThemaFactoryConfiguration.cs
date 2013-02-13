@@ -18,9 +18,22 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Интерфейс конфигуратора фабрики тем
+	/// </summary>
     public interface IThemaFactoryConfiguration{
+		/// <summary>
+		/// Список конфигурации
+		/// </summary>
         IList<IThemaConfiguration> Configurations { get; }
+		/// <summary>
+		/// Исходный XML
+		/// </summary>
         XElement SrcXml { get; set; }
+		/// <summary>
+		/// Вызов метода конфигурации фабрики
+		/// </summary>
+		/// <returns></returns>
         IThemaFactory Configure();
     }
 }

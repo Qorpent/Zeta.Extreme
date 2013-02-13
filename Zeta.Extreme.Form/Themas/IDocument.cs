@@ -18,9 +18,22 @@ using Comdiv.Model.Interfaces;
 using Comdiv.Security;
 
 namespace Comdiv.Zeta.Web.Themas{
-    public interface IDocument : IWithCode, IWithName, IWithRole{
+	/// <summary>
+	/// Описатель документа темы
+	/// </summary>
+    public interface IDocument : IWithCode, IWithName, IWithRole{	
+		/// <summary>
+		/// Тип документа
+		/// </summary>
         string Type { get; set; }
+
+		/// <summary>
+		/// Ссылка на документ
+		/// </summary>
         string Url { get; set; }
+		/// <summary>
+		/// Значение
+		/// </summary>
         string Value { get; set; }
     }
 }

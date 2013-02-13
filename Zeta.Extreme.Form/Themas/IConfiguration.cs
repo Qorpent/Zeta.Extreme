@@ -14,16 +14,44 @@
 // // limitations under the License.
 // // 
 // // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
+
+using Comdiv.Model.Interfaces;
+
 namespace Comdiv.Zeta.Web.Themas{
-    public interface IConfiguration<T>{
+	/// <summary>
+	/// Интерфейс конфигурации типизированной темы (конкретного типа)
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+    public interface IConfiguration<T>:IWithCode,IWithName{
+		/// <summary>
+		/// Тип темы (имя)
+		/// </summary>
         string Type { get; set; }
+
+		/// <summary>
+		/// Роль доступа
+		/// </summary>
         string Role { get; set; }
-        string Code { get; set; }
+		/// <summary>
+		/// Ссылка
+		/// </summary>
         string Url { get; set; }
-        string Name { get; set; }
+		/// <summary>
+		/// Шаблон
+		/// </summary>
         string Template { get; set; }
+		/// <summary>
+		/// Признак наличия ошибки
+		/// </summary>
         bool IsError { get; set; }
+		/// <summary>
+		/// Конфигурация темы
+		/// </summary>
         IThemaConfiguration Thema { get; set; }
+		/// <summary>
+		/// Команда на формирование конфигурации
+		/// </summary>
+		/// <returns></returns>
         T Configure();
     }
 }

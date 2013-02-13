@@ -15,16 +15,39 @@
 // // 
 // // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Документ темы
+	/// </summary>
     public class Document : IDocument{
-        #region IDocument Members
 
+	
+        /// <summary>
+        /// Код
+        /// </summary>
         public string Code { get; set; }
+        /// <summary>
+        /// Название
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// Роль доступа
+        /// </summary>
         public string Role { get; set; }
-        public string Type { get; set; }
-        public string Url { get; set; }
-        public string Value { get; set; }
 
-        #endregion
+		/// <summary>
+		/// Тип документа
+		/// </summary>
+		public string Type { get; set; }
+
+		/// <summary>
+		/// Ссылка на документ
+		/// </summary>
+		public string Url { get; set; }
+
+		/// <summary>
+		/// Значение
+		/// </summary>
+		public string Value { get; set; }
+
     }
 }

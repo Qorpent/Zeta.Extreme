@@ -23,60 +23,129 @@ using Comdiv.Extensions;
 using Comdiv.Reporting;
 using Comdiv.Security;
 using Comdiv.Security.Acl;
-using Comdiv.Zeta.Data;
+using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
-using Comdiv.Zeta.Report;
 using Comdiv.Zeta.Web.InputTemplates;
 
 namespace Comdiv.Zeta.Web.Themas{
+	/// <summary>
+	/// Базовая инкапсуляция темы
+	/// </summary>
     public class Thema : IThema{
+		/// <summary>
+		/// Команды темы
+		/// </summary>
         public readonly IDictionary<string, ICommand> Commands = new Dictionary<string, ICommand>();
+		/// <summary>
+		/// Документы темы
+		/// </summary>
         public readonly IDictionary<string, IDocument> Documents = new Dictionary<string, IDocument>();
+		/// <summary>
+		/// Формы темы
+		/// </summary>
         public readonly IDictionary<string, IInputTemplate> Forms = new Dictionary<string, IInputTemplate>();
+		/// <summary>
+		/// Состав группы (для групповой темы)
+		/// </summary>
         public readonly IList<IThema> GroupMembers = new List<IThema>();
+		/// <summary>
+		/// Отчеты
+		/// </summary>
         public readonly IDictionary<string, IReportDefinition> Reports = new Dictionary<string, IReportDefinition>();
+
         private readonly IList<IThema> _children = new List<IThema>();
         private readonly IDictionary<string, object> _parameters = new Dictionary<string, object>();
 
+		/// <summary>
+		/// Конструктор по умолчанию
+		/// </summary>
         public Thema(){
             Visible = true;
         }
-
+		/// <summary>
+		/// Период (темповый для копий)
+		/// </summary>
     	public int Period { get; set; }
-
+		/// <summary>
+		/// Год (темповый для копий)
+		/// </summary>
     	public int Year { get; set; }
-
+		/// <summary>
+		/// Объект (темповый для копий)
+		/// </summary>
     	public IZetaMainObject Object { get; set; }
+		/// <summary>
+		/// Brail для отрисовки рамки темы на стартере
+		/// </summary>
         public string Layout { get; set; }
-
+		/// <summary>
+		/// Конфигурация темы
+		/// </summary>
         public ThemaConfiguration Configuration { get; set; }
 
-        #region IThema Members
-
+     
+        /// <summary>
+        /// Код темы
+        /// </summary>
         public string Code { get; set; }
 
-        public bool IsFavorite { get; set; }
+		/// <summary>
+		/// Признак избранной темы (для локальной копии)
+		/// </summary>
+		public bool IsFavorite { get; set; }
 
-        public IThema ParentThema { get; set; }
+		/// <summary>
+		/// Родительская тема
+		/// </summary>
+		public IThema ParentThema { get; set; }
 
-        public string Parent { get; set; }
+		/// <summary>
+		/// Имя родительской темы
+		/// </summary>
+		public string Parent { get; set; }
 
-        public bool IsTemplate { get; set; }
+		/// <summary>
+		/// Признак того - что тема - шаблон
+		/// </summary>
+		public bool IsTemplate { get; set; }
 
-        public IEnumerable<IDocument> GetAllDocuments(){
+		/// <summary>
+		/// Получить все встроенные документы
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<IDocument> GetAllDocuments(){
             return Documents.Values;
         }
 
-        public IEnumerable<ICommand> GetAllCommands(){
+		/// <summary>
+		/// Получить все встроенные команды
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<ICommand> GetAllCommands(){
             return Commands.Values;
         }
 
 
-        public virtual IThema Accomodate(IZetaMainObject obj, int year, int period) {
+		/// <summary>
+		/// Приспособить тему под конкретный период
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <param name="year"></param>
+		/// <param name="period"></param>
+		/// <returns></returns>
+		public virtual IThema Accomodate(IZetaMainObject obj, int year, int period) {
             return Accomodate(obj, year, period, null);
         }
 
-        public virtual IThema Accomodate(IZetaMainObject obj, int year, int period,IDictionary<string ,object > statecache){
+		/// <summary>
+		/// Расширенный метод подготовки темы к периоду с учетом кэша состояний
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <param name="year"></param>
+		/// <param name="period"></param>
+		/// <param name="statecache"></param>
+		/// <returns></returns>
+		public virtual IThema Accomodate(IZetaMainObject obj, int year, int period,IDictionary<string ,object > statecache){
             var result = (Thema) Clone(true);
             result.Object = obj;
             result.Year = year;
@@ -108,14 +177,15 @@ namespace Comdiv.Zeta.Web.Themas{
             foreach (var list in realadd){
                 result.Forms[list.Code] = list;
             }
-
+			//NOTE: обработка отчетов на данный момент недоступна в Extreme!!!
+			/*
             var reportstoremove =
                 result.Reports.Values.OfType<ZetaReportDefinitionBase>().Where(x => !x.IsPeriodMatch(period, obj)).
                     Select(x => x.Code).ToArray();
             foreach (var s in reportstoremove){
                 result.Reports.Remove(s);
             }
-
+			*/
             var members = result.GroupMembers.ToArray().Select(x => x.Accomodate(obj, year, period, statecache));
             result.GroupMembers.Clear();
             foreach (var member in members){
@@ -127,19 +197,38 @@ namespace Comdiv.Zeta.Web.Themas{
         }
 
 
-        public bool Visible { get; set; }
+		/// <summary>
+		/// Признак видимости
+		/// </summary>
+		public bool Visible { get; set; }
 
-        public IThemaFactory Factory { get; set; }
+		/// <summary>
+		/// Ссылка на фабрику, создавшую тему
+		/// </summary>
+		public IThemaFactory Factory { get; set; }
 
-        public IEnumerable<IInputTemplate> GetAllForms(){
+		/// <summary>
+		/// Получить все формы
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<IInputTemplate> GetAllForms(){
             return Forms.Values;
         }
 
-        public IEnumerable<IReportDefinition> GetAllReports(){
+		/// <summary>
+		/// Получить все отчеты
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<IReportDefinition> GetAllReports(){
             return Reports.Values;
         }
 
-        public IInputTemplate GetForm(string code){
+		/// <summary>
+		/// Получить конкретную форму
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns></returns>
+		public IInputTemplate GetForm(string code){
             if (!code.EndsWith(".in")){
                 code += ".in";
             }
@@ -154,7 +243,12 @@ namespace Comdiv.Zeta.Web.Themas{
         	return result;
         }
 
-        public IDocument GetDocument(string code){
+		/// <summary>
+		/// Получить конкретный документ
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns></returns>
+		public IDocument GetDocument(string code){
             if (!code.EndsWith(".doc")){
                 code += ".doc";
             }
@@ -167,7 +261,12 @@ namespace Comdiv.Zeta.Web.Themas{
             return Documents[code];
         }
 
-        public ICommand GetCommand(string code){
+		/// <summary>
+		/// Получить конкретную команду
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns></returns>
+		public ICommand GetCommand(string code){
             if (!code.EndsWith(".cmd")){
                 code += ".cmd";
             }
@@ -180,18 +279,33 @@ namespace Comdiv.Zeta.Web.Themas{
             return Commands[code];
         }
 
-        public bool IsGroup { get; set; }
+		/// <summary>
+		/// Признак того, что тема - группа
+		/// </summary>
+		public bool IsGroup { get; set; }
 
-        public IEnumerable<IThema> GetGroup(){
+		/// <summary>
+		/// Получить состав группы
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<IThema> GetGroup(){
             if (!IsGroup){
                 return new IThema[]{};
             }
             return GroupMembers.OrderBy(x => x.Idx).ToArray();
         }
 
-        public string Group { get; set; }
+		/// <summary>
+		/// Имя группы
+		/// </summary>
+		public string Group { get; set; }
 
-        public bool IsActive(IPrincipal usr){
+		/// <summary>
+		/// Признак активности темы для конкретного пользователя
+		/// </summary>
+		/// <param name="usr"></param>
+		/// <returns></returns>
+		public bool IsActive(IPrincipal usr){
             if (Role.hasContent()){
                 if (!myapp.roles.IsAdmin(usr)){
                     var hasrole = false;
@@ -215,11 +329,20 @@ namespace Comdiv.Zeta.Web.Themas{
         }
 
 
-        public bool IsVisible(){
+		/// <summary>
+		/// Расчет видимости темы для текущего пользователя
+		/// </summary>
+		/// <returns></returns>
+		public bool IsVisible(){
             return IsVisible(myapp.usr);
         }
 
-        public bool IsVisible(IPrincipal usr){
+		/// <summary>
+		/// Расчет видимости темы для указанного пользователя
+		/// </summary>
+		/// <param name="usr"></param>
+		/// <returns></returns>
+		public bool IsVisible(IPrincipal usr){
             if (!IsActive(usr)){
                 return false;
             }
@@ -232,7 +355,12 @@ namespace Comdiv.Zeta.Web.Themas{
             return null != GroupMembers.FirstOrDefault(x => x.Visible);
         }
 
-        public IReportDefinition GetReport(string code){
+		/// <summary>
+		/// Получить конкретный отчет
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns></returns>
+		public IReportDefinition GetReport(string code){
             if (!code.EndsWith(".out")){
                 code += ".out";
             }
@@ -245,11 +373,22 @@ namespace Comdiv.Zeta.Web.Themas{
             return Reports[code];
         }
 
+        /// <summary>
+        /// Название темы
+        /// </summary>
         public string Name { get; set; }
 
-        public string Role { get; set; }
+		/// <summary>
+		/// Роль доступа к теме
+		/// </summary>
+		public string Role { get; set; }
 
-        public IThema Personalize(IPrincipal usr){
+		/// <summary>
+		/// Сделать копию темы для конкретного пользователя
+		/// </summary>
+		/// <param name="usr"></param>
+		/// <returns></returns>
+		public IThema Personalize(IPrincipal usr){
             var result = Clone(false) as Thema;
             foreach (var form in result.Forms.Values.ToArray()){
                 if (!acl.get(form, null, null, usr, false)){
@@ -290,10 +429,18 @@ namespace Comdiv.Zeta.Web.Themas{
             return result;
         }
 
-        public IDictionary<string, object> Parameters{
+		/// <summary>
+		/// Параметры темы
+		/// </summary>
+		public IDictionary<string, object> Parameters{
             get { return _parameters; }
         }
 
+        /// <summary>
+        /// Получает скорректированное значение параметра по коду, с учетом this.
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public object GetParameter(string code){
 			if (code == "this.code") return this.Code;
 			if(code=="this.name") return this.Name;
@@ -301,7 +448,14 @@ namespace Comdiv.Zeta.Web.Themas{
             return Parameters.get(code);
         }
 
-        public T GetParameter<T>(string code, T def)
+		/// <summary>
+		/// Типизированная оболочка расчета параметра
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="code"></param>
+		/// <param name="def"></param>
+		/// <returns></returns>
+		public T GetParameter<T>(string code, T def)
         {
             var p = GetParameter(code);
             if(p.no())
@@ -311,20 +465,37 @@ namespace Comdiv.Zeta.Web.Themas{
             return p.to<T>();
         }
 
-        public int Idx { get; set; }
+		/// <summary>
+		/// Порядок в списках
+		/// </summary>
+		public int Idx { get; set; }
 
-        public IList<IThema> Children{
+		/// <summary>
+		/// Дочерние темы
+		/// </summary>
+		public IList<IThema> Children{
             get { return _children; }
         }
 
-    	public Exception Error { get; set; }
+		/// <summary>
+		/// Контейнер ошибки, возникшей при обработке темы
+		/// </summary>
+		public Exception Error { get; set; }
 
-    	#endregion
-
+ 
+		/// <summary>
+		/// Простая перегрузка 
+		/// </summary>
+		/// <returns></returns>
         public override string ToString(){
             return string.Format("{0} : {1}", Code, Name);
         }
 
+        /// <summary>
+        /// Получает текст документа
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public string GetDocText(string code){
             if (!code.StartsWith(Code)){
                 code = Code + code;
@@ -338,11 +509,20 @@ namespace Comdiv.Zeta.Web.Themas{
             }
             return doc.Value;
         }
-
+		/// <summary>
+		/// Внутренняя проверка активности темы
+		/// </summary>
+		/// <param name="principal"></param>
+		/// <returns></returns>
         protected virtual bool internalIsActive(IPrincipal principal){
             return true;
         }
 
+		/// <summary>
+		/// Создает клон темы
+		/// </summary>
+		/// <param name="full"></param>
+		/// <returns></returns>
         public IThema Clone(bool full){
 			lock(this) {
 				var result = GetType().create<Thema>();

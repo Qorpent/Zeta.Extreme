@@ -16,7 +16,7 @@
 // // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
 namespace Comdiv.Zeta.Web.Themas{
     public class RoleConditionXmlGenerator : RoleOrientedXmlGenerator{
-        protected override object[] internalGenerate(){
+        protected override object[] InternalGenerate(){
             return getListDefinition();
         }
     }

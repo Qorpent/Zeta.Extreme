@@ -21,23 +21,24 @@ using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Model.Interfaces;
 using Comdiv.Model;
+using Zeta.Extreme.Form.Themas;
 
 namespace Comdiv.Zeta.Web.Themas{
     public abstract class GenericObjectGenerator<T> : XmlGeneratorBase where T : IEntityDataPattern{
         protected T[] objects { get; set; }
         public string Prefix { get; set; }
 
-        protected override IList<string> getTargetCodes(){
+        protected override IList<string> GetTargetCodes(){
             IList<string> list;
             list = objects.Select(x => x.Code).ToList();
             return list;
         }
 
-        protected override string getSelfCondition(string code){
+        protected override string GetSelfCondition(string code){
             return Prefix + code.Replace("(", "_").Replace(")", "_").ToUpper();
         }
 
-        protected override void processIncludes(){
+        protected override void ProcessIncludes(){
             if (Include != null){
                 objects =
                     Enumerable.ToArray<T>(
@@ -49,7 +50,7 @@ namespace Comdiv.Zeta.Web.Themas{
         }
 
         protected string getBaseCondition(T otr){
-            var result = "(( " + getCondition(otr.Code.Replace("(", "_").Replace(")", "_")) + ") or ALL_" + Prefix + ")";
+            var result = "(( " + GetCondition(otr.Code.Replace("(", "_").Replace(")", "_")) + ") or ALL_" + Prefix + ")";
             if (FilterCondition.hasContent()){
                 result += " and " + FilterCondition;
             }
@@ -84,7 +85,7 @@ namespace Comdiv.Zeta.Web.Themas{
                 if (cond.hasContent()){
                     cond += ",";
                 }
-                cond += getSelfCondition(otr.Code);
+                cond += GetSelfCondition(otr.Code);
                 result += cond;
                 result += ":";
                 result += otr.Name;

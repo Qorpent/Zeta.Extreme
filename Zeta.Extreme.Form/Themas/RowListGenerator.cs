@@ -24,6 +24,7 @@ using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.Zeta.Data;
 using Comdiv.Zeta.Model;
+using Zeta.Extreme.Form.Themas;
 
 namespace Comdiv.Zeta.Web.Themas{
     public class RowListGenerator : XmlGeneratorBase{
@@ -68,8 +69,8 @@ namespace Comdiv.Zeta.Web.Themas{
 
         public string CustomView { get; set; }
 
-        protected override void prepare(XElement call){
-            base.prepare(call);
+        protected override void Prepare(XElement call){
+            base.Prepare(call);
             Root = call.attr("root", "");
             Mark = call.attr("mark", "");
             Value = call.attr("value", "");
@@ -139,7 +140,7 @@ namespace Comdiv.Zeta.Web.Themas{
 
         public string Tab { get; set; }
 
-        protected override object[] internalGenerate(){
+        protected override object[] InternalGenerate(){
             var result = new List<XElement>();
             foreach (var row in Rows){
                 if (Root.hasContent() && row.Code == Root){
