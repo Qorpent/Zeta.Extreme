@@ -187,6 +187,18 @@
     <Compile Include="Themas\ThemaConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Themas\ThemaConfigurationProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\ThemaExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\ThemaFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themas\ThemaFactoryConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Themas\TypedParameter.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -46,7 +46,11 @@ namespace Comdiv.Zeta.Web.Themas{
     	/// </summary>
     	public DateTime Version { get; set; }
 
-    	public IThemaFactory Configure(){
+		/// <summary>
+		/// Вызов метода конфигурации фабрики
+		/// </summary>
+		/// <returns></returns>
+		public IThemaFactory Configure(){
             var result = new ThemaFactory();
     		result.Version = this.Version;
             result.SrcXml = SrcXml.ToString();

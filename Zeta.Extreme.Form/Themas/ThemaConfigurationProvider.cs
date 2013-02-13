@@ -24,28 +24,21 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Xml.Xsl;
 using Comdiv.Application;
-using Comdiv.Booxml;
 using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.IO;
 using Comdiv.Zeta.Data;
-using Comdiv.Zeta.Data.Minimal;
-using Qorpent.Bxl;
 
 namespace Comdiv.Zeta.Web.Themas{
 	/// <summary>
 	/// Провайдер конфигураций
 	/// </summary>
     public class ThemaConfigurationProvider : IThemaConfigurationProvider{
-        private readonly IDictionary<string, string> globals = new Dictionary<string, string>();
-
-    
-        private readonly IList<string> lateglobals = new List<string>();
-        private IInversionContainer _container;
+		private IInversionContainer _container;
 
         private IFilePathResolver _pathResolver;
-        private XslCompiledTransform xsltcompiler;
-    	private DateTime cfgVersion;
+        private readonly XslCompiledTransform _xsltcompiler;
+    	private DateTime _cfgVersion;
 
     	/// <summary>
     	/// Папка с откомпилированными файлами
@@ -57,8 +50,8 @@ namespace Comdiv.Zeta.Web.Themas{
         public ThemaConfigurationProvider(){
             ThemaConfigurationFile = "data/root.xml";
             this.CompileFolder = "compiled_themas";
-            this.xsltcompiler = new XslCompiledTransform();
-            this.xsltcompiler.Load(myapp.files.Resolve("~/sys/themaxmlcompiler.xslt"),XsltSettings.TrustedXslt,new XmlUrlResolver());
+            this._xsltcompiler = new XslCompiledTransform();
+            this._xsltcompiler.Load(myapp.files.Resolve("~/sys/themaxmlcompiler.xslt"),XsltSettings.TrustedXslt,new XmlUrlResolver());
         }
 		/// <summary>
 		/// Обратная ссылка на контейнер
@@ -139,14 +132,10 @@ namespace Comdiv.Zeta.Web.Themas{
 		/// </summary>
 		/// <returns></returns>
 		public IThemaFactoryConfiguration Get() {
-        	this.cfgVersion = DateTime.Now;
+        	this._cfgVersion = DateTime.Now;
             XElement compiledxml = null;
-
-            if (needCompilation()){
-                compiledxml = CompileXml();
-            }else{
-                compiledxml = LoadCompiled();
-            }
+			compiledxml = LoadCompiled();
+         
 
             IDictionary<string, ThemaConfiguration> configurations2 = new Dictionary<string, ThemaConfiguration>();
             prepareEmpty(configurations2, compiledxml);
@@ -159,34 +148,22 @@ namespace Comdiv.Zeta.Web.Themas{
             }
             result.SrcXml = compiledxml;
 
-        	result.Version = cfgVersion;
+        	result.Version = _cfgVersion;
 
             return result;
         }
+		
 
-        public bool RecompileAlways { get; set; }
-
-        private bool needCompilation(){
-#if TC
-            return RecompileAlways;
-#else
-            if(! myapp.files.Exists("~/tmp/compiled_themas/.compilestamp")) return true;
-            var cdate = myapp.files.LastWriteTime("~/tmp/compiled_themas/", "*.xml");
-            var sdate = myapp.files.LastWriteTime("data", "*.bxl");
-            if (sdate > cdate){
-                return true;
-            }
-            return false;
-#endif
-        }
-
-
+        /// <summary>
+        /// Загружает откомпилированные темы
+        /// </summary>
+        /// <returns></returns>
         public XElement LoadCompiled() {
         	var filters = LoadCompileFilters.split();
             var result = new XElement("root");
-			cfgVersion = new DateTime();
+			_cfgVersion = new DateTime();
             foreach (var f in myapp.files.ResolveAll("~/tmp/"+CompileFolder, "*.xml").OrderBy(x=>Path.GetFileNameWithoutExtension(x))){
-				if (File.GetLastWriteTime(f) > cfgVersion) cfgVersion = File.GetLastWriteTime(f);
+				if (File.GetLastWriteTime(f) > _cfgVersion) _cfgVersion = File.GetLastWriteTime(f);
 				if (filters.Count == 0) {
 					result.Add(XElement.Load(f));
 				}else {
@@ -199,91 +176,7 @@ namespace Comdiv.Zeta.Web.Themas{
         }
 
 
-
-        private XElement CompileXml(){
-            var compiledxml = new XElement("root");
-            var descriptor = readBaseXml();
-            var y = DateTime.Today.Year;
-
-            ApplyGlobalsAndSubstitutionsStep.prepareGlobals(descriptor, globals, lateglobals);
-            globals["ТЕКУЩИЙГОД"] = y.ToString();
-            globals["CURRENTYEAR"] = globals["ТЕКУЩИЙГОД"];
-            globals["СПИСОКГОДОВ"] = y.range(y - 4).concat("|") + "|--|" + 1990.range(y + 3).concat("|");
-            globals["YEARLIST"] = globals["СПИСОКГОДОВ"];
-            globals["ТЕКУЩИЙПЕРИОД"] = Periods.ForMonth(DateTime.Today.Month).ToString();
-            globals["CURRENTPERIOD"] = globals["ТЕКУЩИЙПЕРИОД"];
-            ApplyGlobalsAndSubstitutionsStep.applyGlobals(descriptor, globals);
-            ApplyGlobalsAndSubstitutionsStep.applyGenerators(descriptor);
-            ApplyGlobalsAndSubstitutionsStep.prepareLateGlobals(descriptor, globals, lateglobals);
-            ApplyGlobalsAndSubstitutionsStep.applyGlobals(descriptor, globals);
-            ApplyGlobalsAndSubstitutionsStep.resolveSubstitutions(descriptor);
-            ApplyGlobalsAndSubstitutionsStep.resolveSubstitutions(descriptor);
-
-            IDictionary<string, ThemaConfiguration> configurations = new Dictionary<string, ThemaConfiguration>();
-            instantiateDescendants(descriptor);
-            overrideFromOverrideFile(descriptor);
-            //read list of themas with codes and parameters
-            prepareEmpty(configurations, descriptor);
-
-
-            //resolve import dependencies
-            resolveImports(configurations, descriptor);
-            //replace ${xxx} constructions in parameters
-            
-            prepareParameters(configurations, descriptor,false);
-            cleanupParameters(configurations, descriptor);
-            processEmbeds(configurations, descriptor);
-            prepareParameters(configurations, descriptor,false);
-
-
-            //read all other content of themas
-            readAll(configurations, descriptor);
-            applyRenames(configurations);
-
-            foreach(var f in myapp.files.ResolveAll("~/tmp/"+CompileFolder+"/","*.*"))
-            {
-                File.Delete(f);
-            }
-
-            int idx = 10;
-            foreach (var configuration in configurations.Values){
-                if(configuration.Abstract)continue;
-                var xml = configuration.SrcXml;
-                var sw = new StringWriter();
-                using (var xw = XmlWriter.Create(sw,new XmlWriterSettings{Indent = true,OmitXmlDeclaration = true})){
-                    xsltcompiler.Transform(xml.CreateReader(),xw); 
-                    xw.Flush();
-                }
-                var x = sw.ToString();
-                myapp.files.Write("~/tmp/"+CompileFolder+"/"+idx.ToString("0000_")+configuration.Code+".xml",x);
-                idx += 10;
-                compiledxml.Add(XElement.Parse(x));
-            }
-            
-            foreach (var e in descriptor.XPathSelectElements("//*[@preservexml]")){
-                 myapp.files.Write("~/tmp/"+CompileFolder+"/"+idx.ToString("ZEXT_")+idx+".xml",e.ToString());
-                idx++;
-                compiledxml.Add(e);
-            }
-
-
-            myapp.files.Write("~/tmp/"+CompileFolder+"/.compilestamp",DateTime.Now.ToString());
-
-            return compiledxml;
-        }
-
-        private void cleanupParameters(IDictionary<string, ThemaConfiguration> configurations, XElement descriptor) {
-            foreach (var conf in configurations) {
-                foreach (var p in conf.Value.Parameters.Keys.ToArray()) {
-                    var par = conf.Value.Parameters[p];
-                    if(string.IsNullOrEmpty(par.Value)||par.Value=="false") {
-                        conf.Value.Parameters.Remove(p);
-                    }
-                }
-            }
-        }
-
-        private void readParameters(IDictionary<string, ThemaConfiguration> configurations2, XElement compiledxml){
+		private void readParameters(IDictionary<string, ThemaConfiguration> configurations2, XElement compiledxml){
             foreach (var cfg in configurations2.Values){
                 var parameters = cfg.SrcXml.Elements("param");
                 int idx = 0;
@@ -326,85 +219,7 @@ namespace Comdiv.Zeta.Web.Themas{
         }
 
 
-        private void processEmbeds(IDictionary<string, ThemaConfiguration> configurations, XElement descriptor){
-            foreach (var configuration in configurations.Values){
-                configuration.SrcXml = configuration.SrcXml.processIncludes("embed", descriptor);
-            }
-        }
-
-        private void overrideFromOverrideFile(XElement descriptor){
-            var over = PathResolver.Read("data/override.xml");
-            if (over.hasContent()){
-                var ox = XElement.Parse(over);
-                var overridedthemas = ox.Elements("thema").ToArray();
-                foreach (var element in overridedthemas){
-                    var target = descriptor.XPathSelectElement("./thema[@id='" + element.attr("id") + "']");
-                    if (null != target){
-                        foreach (var e in element.Elements()){
-                            target.Add(e);
-                        }
-                    }
-                }
-            }
-        }
-
-        public void instantiateDescendants(XElement descriptor){
-            var absts = descriptor.XPathSelectElements("./thema[@abst='true' or @abst = '1']").ToArray();
-            foreach (var element in absts){
-                var id = element.attr("id");
-                var childs = descriptor.XPathSelectElements("./" + id).ToArray();
-                foreach (var child in childs){
-                    var newelement = new XElement("thema");
-                    newelement.Add(new XElement("import", new XAttribute("id", id)));
-                    bindData(child, newelement);
-                    child.ReplaceWith(newelement);
-                }
-            }
-        }
-
-        private void bindData(XElement from, XElement to){
-            foreach (var e in from.Elements()){
-                to.Add(e);
-            }
-            foreach (var a in from.Attributes()){
-                if (a.Name == "imports"){
-                    var imports = a.Value.split();
-                    foreach (var import in imports){
-                        to.Add(new XElement("import", new XAttribute("id", import)));
-                    }
-                    continue;
-                }
-                var selfprop = typeof (ThemaConfiguration).resolveProperty(a.Name.LocalName);
-                if (selfprop != null || a.Name.LocalName == "id" || a.Name.LocalName == "code" || a.Name == "abst" ||
-                    a.Name == "active"){
-                    to.Add(a);
-                }
-                else{
-                    var param = new XElement("param");
-                    var name = a.Name.LocalName;
-                    if (name.StartsWith("this.")){
-                        name = name.Substring(4);
-                    }
-
-                    if (name.EndsWith(".bool")){
-                        name = name.Substring(0, name.Length - 5);
-                        param.SetAttributeValue("type", "bool");
-                    }
-
-                    if (name.EndsWith(".int")){
-                        name = name.Substring(0, name.Length - 4);
-                        param.SetAttributeValue("type", "int");
-                    }
-
-                    param.SetAttributeValue("id", name);
-                    param.SetAttributeValue("value", a.Value);
-                    to.Add(param);
-                }
-            }
-        }
-
-
-        private void readAll(IDictionary<string, ThemaConfiguration> configurations, XElement descriptor){
+		private void readAll(IDictionary<string, ThemaConfiguration> configurations, XElement descriptor){
             foreach (var configuration in configurations.Values){
                 configuration.Name = configuration.SrcXml.attr("name", configuration.Code);
                 applyPseudoProperties(configuration);
@@ -704,87 +519,20 @@ namespace Comdiv.Zeta.Web.Themas{
         }
 
 
-        private void prepareParameters(IDictionary<string, ThemaConfiguration> configurations, XElement descriptor, bool embedonly){
-            foreach (var configuration in configurations.Values){
-                if (!embedonly) {
-                    foreach (var parameter in GetValidOrder(configuration)) {
-                        // parameter.Name = embedParameters(configuration, parameter.Name);
-                        if (parameter.Value.IndexOf('$') != -1) {
-                            parameter.Value = embedParameters(configuration, parameter.Value);
-                        }
-                    }
-                }
-                embedParametersIntoXml(configuration, configuration.SrcXml);
-            }
-        }
-
-
-        private TypedParameter[] GetValidOrder(ThemaConfiguration configuration){
-            var parameters = configuration.Parameters.Values.ToArray();
-            var groupped = parameters.GroupBy(x => x.Name);
-            var orderedGroups = groupped.OrderBy(x => x.Min(p => p.Idx)).ToArray();
-            var result = orderedGroups.SelectMany(x => x.Select(p => p).OrderBy(p => p.Idx)).ToArray();
-            return result;
-        }
-
-        private string embedParameters(ThemaConfiguration configuration, string val){
+		private string embedParameters(ThemaConfiguration configuration, string val){
            return val.replace(@"\$\{([\.\w]+)\}", m => configuration.ResolveParameter(m.Groups[1].Value).Value);
         }
 
 
-        private void resolveImports(IDictionary<string, ThemaConfiguration> configurations, XElement descriptor){
-            foreach (var cfg in configurations){
-                var imports = cfg.Value.SrcXml.Elements("import").Union(cfg.Value.SrcXml.Elements("imports")).ToArray();
-                foreach (var import in imports){
-                    var code = import.idorcode("default");
-                    if(!configurations.ContainsKey(code)) {
-                        throw new Exception(string.Format("невозможно произвести импорт темы {0} в тему {1} ({2})",code, cfg.Value.Code, cfg.Value.Evidence));
-                    }
-                    var thema = configurations[code];
-                    cfg.Value.Imports.Add(thema);
-                }
-            }
-            IList<ThemaConfiguration> autos = configurations.Values.Where(x => x.AutoImport).ToArray();
-            foreach (var cfg in configurations.Values){
-                foreach (var auto in autos){
-                    if (cfg == auto){
-                        continue;
-                    }
-                    if (null != cfg.Imports.OfType<ThemaConfiguration>().FirstOrDefault(x => x.Code == auto.Code)){
-                        continue;
-                    }
-                    cfg.Imports.Add(auto);
-                }
-            }
-            foreach (var cfg in configurations.Values){
-                cfg.ProcessImports();
-            }
-
-
-            foreach (var cfg in configurations.Values){
-                var idx = 1;
-                var parameters = cfg.SrcXml.XPathSelectElements("./param");
-                foreach (var parameter in parameters){
-                    var p = readParameter(parameter);
-                    p.Idx = idx;
-                    if (cfg.Parameters.ContainsKey(p.Name)){
-                        cfg.Parameters[p.Name].Value = p.Value;
-                    }
-                    else{
-                        cfg.Parameters[p.Name] = p;
-                    }
-                    idx++;
-                }
-            }
-        }
-
-        private TypedParameter readParameter(XElement parameter){
-            var p = new TypedParameter();
-            p.Type = ReflectionExtensions.ResolveTypeByWellKnownName(parameter.attr("type", "str"));
-            p.Value = parameter.attr("value", null) ?? parameter.Value;
-            p.Name = parameter.idorcode();
-            p.Mode = parameter.attr("mode", "static");
-            return p;
+		private TypedParameter readParameter(XElement parameter){
+            var p = new TypedParameter
+	            {
+		            Type = ReflectionExtensions.ResolveTypeByWellKnownName(parameter.attr("type", "str")),
+		            Value = parameter.attr("value", null) ?? parameter.Value,
+		            Name = parameter.idorcode(),
+		            Mode = parameter.attr("mode", "static")
+	            };
+			return p;
         }
 
         private void prepareEmpty(IDictionary<string, ThemaConfiguration> configurations, XElement descriptor){
@@ -808,58 +556,9 @@ namespace Comdiv.Zeta.Web.Themas{
             }
         }
 
-    	protected virtual XElement readBaseXml(){
-#if OLDPARSER
-            var booparser = new BooxmlParser();
-#else
-    		var booparser = new BxlParser();
-#endif
-            if (DirectXml.hasContent()){
-                return XElement.Parse(DirectXml);
-            }
-            var result = new XElement("root");
-            var allthemas = PathResolver.ResolveAll("data", "*.thema.xml");
-            foreach (var thema in allthemas){
-                var x = XElement.Parse(PathResolver.ReadXml(thema));
-                foreach (var element in x.Elements()){
-                    result.Add(element);
-                }
-            }
-            allthemas =PathResolver.ResolveAll("data", "*.bxl");
-            foreach (var thema in allthemas){
-                if (thema.Contains(".bak")) continue;
-                var name = Path.GetFileName(thema);
-                IDictionary<string, string> defines = new Dictionary<string, string>();
-                var y = DateTime.Today.Year;
-                defines["__do_not_apply_globals"] = "";
-                defines["ТЕКУЩИЙГОД"] = y.ToString();
-                defines["CURRENTYEAR"] = y.ToString();
-                defines["СПИСОКГОДОВ"] = 1990.range(y + 3).concat("|");
-                defines["YEARLIST"] = 1990.range(y + 3).concat("|");
-                defines["ТЕКУЩИЙПЕРИОД"] = Periods.ForMonth(DateTime.Today.Month).ToString();
-                defines["CURRENTPERIOD"] = Periods.ForMonth(DateTime.Today.Month).ToString();
-#if OLDPARSER
-                var x = booparser.Parse(Path.GetFileNameWithoutExtension(thema), PathResolver.ReadXml(thema), defines);
-#else
-				var x = booparser.Parse( PathResolver.ReadXml(thema), Path.GetFileNameWithoutExtension(thema));
-#endif
-                foreach (var element in x.Elements()){
-                    element.SetAttributeValue("evidence", name);
-                    result.Add(element);
-                }
-            }
-
-            var themas = result.Elements("thema").ToArray();
-            foreach (var thema in themas){
-                var rewrite = new XElement("thema");
-                bindData(thema, rewrite);
-                thema.ReplaceWith(rewrite);
-            }
-
-            result = result.processIncludes(PathResolver, "data/include/");
-            return result;
-        }
-
+		/// <summary>
+		/// Загружаемые фильтры компиляции
+		/// </summary>
 		public string LoadCompileFilters { get; set; }
     }
 

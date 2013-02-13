@@ -183,7 +183,11 @@ namespace Comdiv.Zeta.Web.Themas{
         }
 
 
-        public void Dispose(){
+		/// <summary>
+		/// ¬ыполн€ет определ€емые приложением задачи, св€занные с высвобождением или сбросом неуправл€емых ресурсов.
+		/// </summary>
+		/// <filterpriority>2</filterpriority>
+		public void Dispose(){
             foreach (var thema in Themas){
                 ((Thema)thema).Reports.Clear();
                 ((Thema)thema).Forms.Clear();
