@@ -170,9 +170,9 @@ namespace Zeta.Extreme.Core.Tests {
 			var q = new Query
 				{Row = {Code = rowcode}, Col = {Code = colcode}, Obj = {Id = obj}, Time = {Year = year, Period = period}};
 			var t = session.RegisterAsync(q);
-			session.Execute();
+			session.Execute(TODO);
 			if (null != t.Result) {
-				var result = t.Result.GetResult().NumericResult;
+				var result = t.Result.GetResult(TODO).NumericResult;
 				Console.WriteLine(result);
 				if (checkvalue != result) {
 					foreach (var query in session.Registry) {
@@ -228,16 +228,16 @@ namespace Zeta.Extreme.Core.Tests {
 				var q = new Query {Row = {Code = r}, Col = {Code = c}, Obj = {Id = o}, Time = {Year = y, Period = p}};
 				session.RegisterAsync(q, key);
 			}
-			session.Execute();
+			session.Execute(TODO);
 			var fail = false;
 			foreach (var v in checkvalues) {
 				Assert.True(session.Registry.ContainsKey(v.Key), v.Key);
 				var res = session.Registry[v.Key];
-				var equal = Math.Round(v.Value, 2) == Math.Round(res.GetResult().NumericResult, 2);
+				var equal = Math.Round(v.Value, 2) == Math.Round(res.GetResult(TODO).NumericResult, 2);
 				if (!equal) {
 					fail = true;
 					Console.WriteLine(v.Key + " " + res.UID + " : " + Math.Round(v.Value, 2) + " : " +
-					                  Math.Round(res.GetResult().NumericResult, 2));
+					                  Math.Round(res.GetResult(TODO).NumericResult, 2));
 					if (null != res.TraceList) {
 						foreach (var s in res.TraceList) {
 							Console.WriteLine(s);
@@ -269,7 +269,7 @@ namespace Zeta.Extreme.Core.Tests {
 				var p = (int) s.Arguments[4];
 				var v = (decimal) ((double) s.Arguments[5]);
 				var q = new Query {Row = {Code = r}, Col = {Code = c}, Obj = {Id = o}, Time = {Year = y, Period = p}};
-				var res = serial.Eval(q);
+				var res = serial.Eval(q, TODO);
 				var equal = Math.Round(v, 2) == Math.Round(res.NumericResult, 2);
 				if (!equal) {
 					fail = true;

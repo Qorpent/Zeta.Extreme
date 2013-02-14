@@ -164,17 +164,23 @@ namespace Zeta.Extreme {
 		/// Обертка над вызовом компилятора с корректной обработкой ошибок компиляции
 		/// </summary>
 		/// <param name="batch"></param>
-		protected internal static void DoCompile(FormulaRequest[] batch) {
+		protected internal  void DoCompile(FormulaRequest[] batch) {
 			try {
 				new FormulaCompiler().Compile(batch);
 			}
 			catch (Exception e) {
+				LastCompileError = e;
 				foreach (var formulaRequest in batch) {
+					
 					formulaRequest.ErrorInCompilation = e;
 					formulaRequest.PreparedType = typeof (CompileErrorFormulaStub);
 				}
 			}
 		}
+		/// <summary>
+		/// Последняя ошибка компиляции
+		/// </summary>
+		public Exception LastCompileError { get; set; }
 
 		/// <summary>
 		/// True - включен режим автоматического батча
@@ -189,6 +195,12 @@ namespace Zeta.Extreme {
 				var batch = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).ToArray();
 				DoCompile(batch);
 			}
+		}
+		/// <summary>
+		/// Количество формул
+		/// </summary>
+		public int Count {
+			get { return _registry.Count; }
 		}
 
 		/// <summary>

@@ -20,11 +20,13 @@
     <Compile Include="FormServer.cs" />
     <Compile Include="FormSession.cs" />
     <Compile Include="FormStartAction.cs" />
-    <Compile Include="FormStarterStatus.cs" />
+    <Compile Include="FormServerStateAction.cs" />
     <Compile Include="GetDataAction.cs" />
+    <Compile Include="GetStructureAction.cs" />
     <Compile Include="OutCell.cs" />
     <Compile Include="ReadyToServeAction.cs" />
     <Compile Include="SessionStatusAction.cs" />
+    <Compile Include="StructureItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FluentNHibernate, Version=1.3.0.0, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL" />

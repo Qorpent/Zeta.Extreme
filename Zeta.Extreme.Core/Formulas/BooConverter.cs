@@ -36,7 +36,7 @@ namespace Zeta.Extreme {
 						.Replace("q.Column", "q.Col")
 						.Replace("query.Column","q.Col")
 						;
-				result = Regex.Replace(result, @"(\d+\.\d+)", "$1m", RegexOptions.Compiled);
+				
 				return result;
 			}
 			else

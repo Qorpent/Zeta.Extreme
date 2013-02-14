@@ -126,13 +126,18 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Позволяет синхронизировать запросы в подсессиях
 		/// </summary>
-		public void WaitPrepare() {	
+		/// <param name="timeout"> </param>
+		public void WaitPrepare(int timeout=-1) {	
 			while(null==PrepareTask) {
 				Thread.Sleep(30);
 			}
 			if (PrepareTask != null) {
 				if (!PrepareTask.IsCompleted) {
-					PrepareTask.Wait();
+					if(timeout>0) {
+						PrepareTask.Wait(timeout);
+					}else {
+						PrepareTask.Wait();
+					}
 				}
 			}
 		}
@@ -214,10 +219,11 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Обеспечивает возврат результата запроса
 		/// </summary>
+		/// <param name="timeout"> </param>
 		/// <returns> </returns>
 		/// <exception cref="Exception"></exception>
-		public QueryResult GetResult() {
-			WaitResult();
+		public QueryResult GetResult(int timeout =-1) {
+			WaitResult(timeout);
 			if (null != Result) {
 				return Result;
 			}
@@ -258,8 +264,9 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Синхронизатор результата
 		/// </summary>
-		public void WaitResult() {
-			WaitPrepare();
+		/// <param name="timeout"> </param>
+		public void WaitResult(int timeout) {
+			WaitPrepare(timeout);
 			while(null == Result && null == GetResultTask) {
 				Thread.Sleep(5);
 			}
@@ -273,8 +280,11 @@ namespace Zeta.Extreme {
 						}
 						catch {}
 					}
-
-				GetResultTask.Wait();
+				if(timeout>0) {
+					GetResultTask.Wait(timeout);
+				}else {
+					GetResultTask.Wait();
+				}
 			}
 		}
 

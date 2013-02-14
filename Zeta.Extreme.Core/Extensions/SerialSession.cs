@@ -28,8 +28,9 @@ namespace Zeta.Extreme {
 		/// 	Гарантирует синхронный, последовательный доступ к сессии, вычисляет значение
 		/// </summary>
 		/// <param name="query"> </param>
+		/// <param name="timeout"> </param>
 		/// <returns> </returns>
-		public QueryResult Eval(Query query) {
+		public QueryResult Eval(Query query, int timeout =-1) {
 			lock (_session._sync_serial_access_lock) {
 				if (null != _session._async_serial_acess_task) {
 					_session._async_serial_acess_task.Wait();
@@ -42,10 +43,10 @@ namespace Zeta.Extreme {
 					return new QueryResult();
 				}
 				if (realquery.Session != _session) {
-					realquery.WaitPrepare(); //it can be from another session
+					realquery.WaitPrepare(timeout); //it can be from another session
 				}
-				_session.Execute();
-				return realquery.GetResult() ?? new QueryResult();
+				_session.Execute(timeout);
+				return realquery.GetResult(timeout) ?? new QueryResult();
 			}
 		}
 
@@ -68,13 +69,13 @@ namespace Zeta.Extreme {
 							return null;
 						}
 						if (realquery.Session != _session) {
-							realquery.WaitPrepare(); //it can be from another session
+							realquery.WaitPrepare(-1); //it can be from another session
 						}
-						_session.Execute();
+						_session.Execute(-1);
 						// but here we not worry about another session
 						// because GetResult() will cause evaluation anyway
 						_session._async_serial_acess_task = null;
-						return realquery.GetResult();
+						return realquery.GetResult(-1);
 					});
 				_session._async_serial_acess_task = task;
 				return task;

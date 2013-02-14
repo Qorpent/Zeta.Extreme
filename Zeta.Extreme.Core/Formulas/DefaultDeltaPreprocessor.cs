@@ -38,6 +38,11 @@ namespace Zeta.Extreme {
 				result =  Regex.Replace(result, FormulaParserConstants.DeltaPattern,
 					m => QueryDelta.CreateFromMatch(m).ToCSharpString());
 									 // совместимость с формулами типа f.choose
+				result = Regex.Replace(result, @"(\d+\.\d+)", "$1m", RegexOptions.Compiled);
+				result = Regex.Replace(result, @"""___(\w+)""", "getn(\"$1\")", RegexOptions.Compiled);
+				result = Regex.Replace(result, @"___(\w+)", "getn(\"$1\")", RegexOptions.Compiled);
+				result = Regex.Replace(result, @"""__(\w+)""", "gets(\"$1\")", RegexOptions.Compiled);
+				result = Regex.Replace(result, @"__(\w+)", "gets(\"$1\")", RegexOptions.Compiled);
 				if (result.Contains("@") || result.Contains("$") || result.Contains("?"))
 				{
 					request.PreparedType = typeof(IllegalSyntaxFormulaStub);

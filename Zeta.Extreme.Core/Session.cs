@@ -282,10 +282,11 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Ожидает окончания всех процессов асинхронной регистрации
 		/// </summary>
-		protected internal void WaitPreparation() {
+		/// <param name="timeout"> </param>
+		protected internal void WaitPreparation(int timeout) {
 			
 			while (!_preEvalTaskAgenda.IsEmpty) {
-				SyncPreEval();
+				SyncPreEval(timeout);
 				Thread.Sleep(20);
 			}
 
@@ -310,7 +311,8 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Ожидает окончания всех процессов асинхронной регистрации
 		/// </summary>
-		protected internal void WaitEvaluation() {
+		/// <param name="timeout"> </param>
+		protected internal void WaitEvaluation(int timeout) {
 			WaitSql();
 			//	Thread.Sleep(20);
 			Task.WaitAll(_evalTaskAgenda.Values.Where(_ => _.Status != TaskStatus.Created).ToArray());
@@ -327,7 +329,11 @@ namespace Zeta.Extreme {
 						}
 						catch {}
 					}
-					task.Wait();
+					if(timeout>0) {
+						task.Wait(timeout);
+					}else {
+						task.Wait();
+					}
 				}
 			}
 
@@ -478,8 +484,13 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Быстро синхронизирует вызывающий поток с текущими задачами подготовки
 		/// </summary>
-		protected internal void SyncPreEval() {
-			Task.WaitAll(_preEvalTaskAgenda.Values.ToArray());
+		/// <param name="timeout"> </param>
+		protected internal void SyncPreEval(int timeout) {
+			if(timeout>0) {
+				Task.WaitAll(_preEvalTaskAgenda.Values.ToArray(), timeout);
+			}else {
+				Task.WaitAll(_preEvalTaskAgenda.Values.ToArray());
+			}
 		}
 
 	
@@ -627,10 +638,11 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Выполняет синхронизацию и расчет значений в сессии
 		/// </summary>
-		public void Execute() {
+		/// <param name="timeout"> </param>
+		public void Execute(int timeout =-1) {
 			lock (syncexecute) {
-				WaitPreparation();
-				WaitEvaluation();
+				WaitPreparation(timeout);
+				WaitEvaluation(timeout);
 			}
 		}
 

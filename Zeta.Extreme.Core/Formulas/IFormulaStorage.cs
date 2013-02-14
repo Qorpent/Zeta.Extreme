@@ -9,6 +9,8 @@
 
 #endregion
 
+using System;
+
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Интерфейс коллекции формул
@@ -51,6 +53,16 @@ namespace Zeta.Extreme {
 		/// True - включен режим автоматического батча
 		/// </summary>
 		bool AutoBatchCompile { get; set; }
+
+		/// <summary>
+		/// Последняя ошибка компиляции
+		/// </summary>
+		Exception LastCompileError { get; set; }
+
+		/// <summary>
+		/// Количество формул
+		/// </summary>
+		int Count { get; }
 
 		/// <summary>
 		/// Компилирует все формы в стеке
