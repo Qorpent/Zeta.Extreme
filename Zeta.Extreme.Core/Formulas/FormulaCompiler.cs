@@ -13,8 +13,13 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
+using Comdiv.Application;
+using Comdiv.Zeta.Model;
 using Microsoft.CSharp;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -60,9 +65,9 @@ namespace Zeta.Extreme.DyncamicFormulas {
 			parameters.ReferencedAssemblies.Add("mscorlib.dll");
 			parameters.ReferencedAssemblies.Add("System.dll");
 			parameters.ReferencedAssemblies.Add("System.Core.dll");
-			parameters.ReferencedAssemblies.Add("Comdiv.Core.dll");
-			parameters.ReferencedAssemblies.Add("Comdiv.Zeta.Model.dll");
-			parameters.ReferencedAssemblies.Add("Zeta.Extreme.Core.dll");
+			parameters.ReferencedAssemblies.Add(Assembly.GetAssembly(typeof(myapp)).CodeBase.Replace("file:///",""));
+			parameters.ReferencedAssemblies.Add(Assembly.GetAssembly(typeof(IZetaRow)).CodeBase.Replace("file:///", ""));
+			parameters.ReferencedAssemblies.Add(Assembly.GetAssembly(typeof(IFormula)).CodeBase.Replace("file:///", ""));
 
 			var result = codeprovider.CompileAssemblyFromSource(parameters, codefiles.ToArray());
 			if (result.Errors.Count > 0) {
@@ -75,8 +80,15 @@ namespace Zeta.Extreme.DyncamicFormulas {
 					sb.AppendLine("-------------------");
 				}
 				var message = sb.ToString();
+				message = Regex.Replace(message, @"\.(\d+)\.cs", m =>
+					{
+						var idx = m.Groups[1].Value.ToInt();
+						var fr = formulaRequests[idx].Key + "=" + formulaRequests[idx].Formula +"=" +formulaRequests[idx].PreprocessedFormula;
+						return m.Value + "(" + fr + ")";
+					});
 				if(err) throw new Exception("Formula compilation error:\r\n " + message);
 			}
+
 			var assembly = result.CompiledAssembly;
 			var types = assembly.GetTypes().Where(_ => typeof(IFormula).IsAssignableFrom(_));
 			foreach(var t in types) {

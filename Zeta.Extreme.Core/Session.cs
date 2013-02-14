@@ -543,7 +543,7 @@ namespace Zeta.Extreme {
 									time.p, time.y, cobj.c, cobj.o, rowids);
 						}
 					}
-					using (var c = myapp.sql.GetConnection("Default")) {
+					using (var c = Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection("Default")) {
 						c.Open();
 						var cmd = c.CreateCommand();
 						cmd.CommandText = script;

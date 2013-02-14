@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Comdiv.Extensions;
 
 namespace Zeta.Extreme {
@@ -10,7 +11,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public int Idx
 		{
-			get { return 10; }
+			get { return 5; }
 		}
 
 		/// <summary>
@@ -23,7 +24,7 @@ namespace Zeta.Extreme {
 			if (request.Language == "boo" )
 			{
 				//ограничитель на язык - только BOO
-				return 
+				var result = 
 					currentResult
 						.Replace("{", "()=>(")
 						.Replace("}", ")")
@@ -31,12 +32,12 @@ namespace Zeta.Extreme {
 						.Replace(" or "," || ")
 						.Replace(" not "," ! ")
 						.Replace("'","\"")
-						.replace(@"(\.0+)","$1m")
 						.Replace(".Column.Period",".Time.Period")
 						.Replace("q.Column", "q.Col")
 						.Replace("query.Column","q.Col")
 						;
-
+				result = Regex.Replace(result, @"(\d+\.\d+)", "$1m", RegexOptions.Compiled);
+				return result;
 			}
 			else
 			{

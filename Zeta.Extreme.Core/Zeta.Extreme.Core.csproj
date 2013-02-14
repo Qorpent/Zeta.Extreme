@@ -22,6 +22,10 @@
       <Project>{6E58C87C-2522-4AA5-9211-6109305B2D7B}</Project>
       <Name>Comdiv.Dependency</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
+      <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
+      <Name>Qorpent.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
       <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
       <Name>Qorpent.Utils</Name>
@@ -63,6 +67,7 @@
     <Compile Include="Formulas\IFormulaPreprocessor.cs" />
     <Compile Include="Formulas\IFormulaStorage.cs" />
     <Compile Include="Formulas\FormulaParserConstants.cs" />
+    <Compile Include="Formulas\IllegalSyntaxFormulaStub.cs" />
     <Compile Include="Formulas\NoExtremeFormulaStub.cs" />
     <Compile Include="Services\MetaCache.cs" />
     <Compile Include="Services\IMetaCache.cs" />
@@ -88,6 +93,7 @@
   <ItemGroup>
     <Reference Include="System.Data" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

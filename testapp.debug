@@ -6,7 +6,8 @@
 		<IsWeb>True</IsWeb>
 	</PropertyGroup>
 	<Import Project="testapp.base" />
-	<ItemGroup>
+	<ItemGroup>	
+	<!-- <Config Include="assoibdx-eco-as-default.db-connection"/> -->
 		<Config Include="..\..\qorpent\config\local-eco-as-default.db-connection"/>
 		<Config Include="..\..\qorpent\config\local-debug-sfo.rolemap.bxl"/>
 	</ItemGroup>

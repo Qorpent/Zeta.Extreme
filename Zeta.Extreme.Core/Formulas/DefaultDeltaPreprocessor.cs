@@ -38,6 +38,10 @@ namespace Zeta.Extreme {
 				result =  Regex.Replace(result, FormulaParserConstants.DeltaPattern,
 					m => QueryDelta.CreateFromMatch(m).ToCSharpString());
 									 // совместимость с формулами типа f.choose
+				if (result.Contains("@") || result.Contains("$") || result.Contains("?"))
+				{
+					request.PreparedType = typeof(IllegalSyntaxFormulaStub);
+				}
 				return result;
 			}
 			else {

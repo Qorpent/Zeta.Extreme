@@ -82,6 +82,9 @@ namespace Zeta.Extreme {
 							}
 						}
 					}
+
+					
+
 					var waitbatchsize = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).Count();
 					if (AutoBatchCompile && BatchSize <= waitbatchsize) {
 						StartAsyncCompilation();

@@ -12,6 +12,7 @@
 using System;
 using System.Linq;
 using Comdiv.Extensions;
+using Comdiv.Model;
 using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme {
@@ -67,6 +68,9 @@ namespace Zeta.Extreme {
 			if (q.Row.Native == null) return false;
 			return codes.Any(x => q.Row.Native.Path.Contains("/" + x + "/"));
 		}
+
+		
+
 		/// <summary>
 		/// Проверяет принадлежность текущей строки списку
 		/// </summary>
@@ -76,6 +80,113 @@ namespace Zeta.Extreme {
 		{
 			return Array.IndexOf(codes, q.Row.Code) != -1;
 		}
+		/// <summary>
+		/// Запрос строкового параметра
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		protected string gets(string name)
+		{
+			return getp(name).toStr();
+		}
+		/// <summary>
+		/// запрос числового параметра
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		protected decimal getn(string name)
+		{
+
+			return getp(name).toDecimal();
+		}
+
+		/// <summary>
+		/// Получение контекстного параметра
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		protected object getp(string name)
+		{
+			if(IsInPlaybackMode) return "STUB";
+			throw new NotSupportedException("extreme does not supports parameter-based conditions for now");
+			//object result = "";
+			//if (null != ParameterSource)
+			//{
+			//	result = ParameterSource.GetParameter(name);
+			//	if (null != result && result.toStr().hasContent())
+			//	{
+			//		return result;
+			//	}
+			//}
+			//var tag = q.Row.Target.ResolveTag(name);
+			//if (tag.hasContent()) return tag;
+			//if (null != q.Row.Target.RefTo)
+			//{
+			//	tag = q.Row.Target.RefTo.ResolveTag(name);
+			//}
+			//if (tag.noContent() && null != q.MasterRow)
+			//{
+			//	tag = q.MasterRow.ResolveTag(name);
+			//	if (tag.hasContent()) return tag;
+			//	if (null != q.MasterRow.RefTo)
+			//	{
+			//		tag = q.MasterRow.RefTo.ResolveTag(name);
+			//	}
+			//}
+
+
+			//if (tag.noContent() && (q.Zone.Item is ICanResolveTag))
+			//{
+
+			//	var rt = q.Zone.Item as ICanResolveTag;
+			//	tag = rt.ResolveTag(name);
+			//}
+			//return tag ?? "";
+
+		}
+		/// <summary>
+		/// Проверка маски тега
+		/// </summary>
+		/// <param name="tag"></param>
+		/// <param name="mask"></param>
+		/// <returns></returns>
+		protected bool taglike(string tag, string mask)
+		{
+			var tagvalue = q.Row.Native.ResolveTag(tag);
+			return tagvalue.like(mask);
+		}
+
+		/// <summary>
+		/// Проверка начала тега
+		/// </summary>
+		/// <param name="tag"></param>
+		/// <param name="mask"></param>
+		/// <returns></returns>
+		protected bool tagstart(string tag, string mask)
+		{
+			return taglike(tag, "^" + mask);
+		}
+		/// <summary>
+		/// Проверка конца тега
+		/// </summary>
+		/// <param name="tag"></param>
+		/// <param name="mask"></param>
+		/// <returns></returns>
+		protected bool tagend(string tag, string mask)
+		{
+			return taglike(tag, mask + "$");
+		}
+		/// <summary>
+		/// Проверка тега текущей строки
+		/// </summary>
+		/// <param name="tag"></param>
+		/// <param name="mask"></param>
+		/// <returns></returns>
+		protected bool tag(string tag, string mask)
+		{
+			return taglike(tag, "^" + mask + "$");
+		}
+
 		/// <summary>
 		/// Не поддерживаемя на данный момент опция проверки группы предприятий или деталей
 		/// </summary>
@@ -116,6 +227,7 @@ namespace Zeta.Extreme {
 		/// <param name="contostring"></param>
 		/// <returns></returns>
 		protected bool contoin(string contostring) {
+			if(IsInPlaybackMode) return false; //prevent ambigous queries
 			throw new NotSupportedException("на данный момент поддержка деталей и счетов в Zeta.Extreme отсутвует");
 			/*
 			var conts = contostring.split();

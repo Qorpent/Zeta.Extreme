@@ -1,1 +1,9 @@
-﻿mvc Zeta.Extreme.FrontEnd
+﻿using Zeta.Extreme.FrontEnd
+using Qorpent.Applications
+ref Qorpent.Core
+ref Zeta.Extreme.Frontend
+
+mvc Zeta.Extreme.FrontEnd
+transient "form.server" FormServer : IApplicationStartup
+	ThemaRootDirectory = "c:\\apps\\eco\\tmp\\compiled_themas"
+	ConnectionName = eco
