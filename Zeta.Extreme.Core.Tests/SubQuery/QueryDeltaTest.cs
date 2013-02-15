@@ -67,8 +67,8 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 		[Test]
 		public void CanConvertToCSharp() {
 			var d = new QueryDelta {RowCode = "Y",};
-			Assert.AreEqual(" new Zeta.Extreme.QueryDelta{ RowCode = \"Y\", }", d.ToCSharpString());
-			Assert.AreEqual("Eval( new Zeta.Extreme.QueryDelta{ RowCode = \"Y\", })", d.ToCSharpString(true,"Eval"));
+			Assert.AreEqual(" new QueryDelta{ RowCode = \"Y\", }", d.ToCSharpString());
+			Assert.AreEqual("Eval( new QueryDelta{ RowCode = \"Y\", })", d.ToCSharpString(true,"Eval"));
 		}
 
 		[Test]
@@ -90,7 +90,7 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 
 			Console.WriteLine(request.PreprocessedFormula);
 			Assert.AreEqual(
-				@"f.choose (  new Zeta.Extreme.QueryDelta{ RowCode = ""Ф2190р"", } ,  new Zeta.Extreme.QueryDelta{ RowCode = ""Ф2190ф"", } )"
+				@"f.choose (  new QueryDelta{ RowCode = ""Ф2190р"", } ,  new QueryDelta{ RowCode = ""Ф2190ф"", } )"
 					.Trim(), request.PreprocessedFormula.Trim());
 		}
 

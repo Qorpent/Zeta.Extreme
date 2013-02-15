@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -554,7 +555,8 @@ namespace Zeta.Extreme {
 									time.p, time.y, cobj.c, cobj.o, rowids);
 						}
 					}
-					using (var c = Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection("Default")) {
+					
+					using (var c = GetConnection()) {
 						c.Open();
 						var cmd = c.CreateCommand();
 						cmd.CommandText = script;
@@ -607,6 +609,16 @@ namespace Zeta.Extreme {
 
 					return null;
 				});
+		}
+
+		private IDbConnection GetConnection() {
+			try {
+				var result = Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection("Default");
+				if (null == result) return myapp.sql.GetConnection("Default");
+				return result;
+			}catch {
+				return myapp.sql.GetConnection("Default");
+			}
 		}
 
 		/// <summary>
