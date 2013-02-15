@@ -246,24 +246,10 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		private void RetrieveData() {
 			var sw = Stopwatch.StartNew();
 			IDictionary<string, Query> queries = new Dictionary<string, Query>();
-			foreach (var primaryrow in primaryrows) {
-				foreach (var primarycol in primarycols) {
-					var q = new Query
-						{
-							Row = {Native = primaryrow._},
-							Col = {Native = primarycol._.Target},
-							Obj = {Native = Object},
-							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
-						};
-					var key = primaryrow.i + ":" + primarycol.i;
-					queries[key] = DataSession.Register(q, key);
-				}
-			}
-			DataSession.Execute(500);
-			ProcessValues(queries);
+			LoadEditablePrimaryData(queries);
+			LoadNonEditablePrimaryData(queries);
 			TimeToPrimary = sw.Elapsed;
 			PrimaryCount = Data.Count;
-			//var cnt = 0;
 			foreach (var r in rows) {
 				foreach (var c in cols) {
 
@@ -291,6 +277,54 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			DataCount = Data.Count;
 			TimeToGetData = sw.Elapsed;
 		}
+
+		private void LoadEditablePrimaryData(IDictionary<string, Query> queries) {
+			BuildEditablePrimarySet(queries);
+			DataSession.Execute(500);
+			ProcessValues(queries);
+		}
+		private void LoadNonEditablePrimaryData(IDictionary<string, Query> queries)
+		{
+			BuildNonEditablePrimarySet(queries);
+			DataSession.Execute(500);
+			ProcessValues(queries);
+		}
+
+		private void BuildEditablePrimarySet(IDictionary<string, Query> queries) {
+			foreach (var primaryrow in primaryrows) {
+				foreach (var primarycol in primarycols) {
+					var q = new Query
+						{
+							Row = {Native = primaryrow._},
+							Col = {Native = primarycol._.Target},
+							Obj = {Native = Object},
+							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
+						};
+					var key = primaryrow.i + ":" + primarycol.i;
+					queries[key] = DataSession.Register(q, key);
+				}
+			}
+		}
+
+		private void BuildNonEditablePrimarySet(IDictionary<string, Query> queries)
+		{
+			foreach (var primaryrow in primaryrows)
+			{
+				foreach (var primarycol in neditprimarycols)
+				{
+					var q = new Query
+					{
+						Row = { Native = primaryrow._ },
+						Col = { Native = primarycol._.Target },
+						Obj = { Native = Object },
+						Time = { Year = primarycol._.Year, Period = primarycol._.Period }
+					};
+					var key = primaryrow.i + ":" + primarycol.i;
+					queries[key] = DataSession.Register(q, key);
+				}
+			}
+		}
+
 		/// <summary>
 		/// Общее количество запросов в обработке
 		/// </summary>
@@ -341,7 +375,9 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			}
 			cols = cols.Where(_ => _._.Target != null).ToArray(); //пока только хранимые колонки поддерживаем
 			primarycols = cols.Where(_ => _._.Editable && !_._.IsFormula).ToArray();
+			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
 			primaryrows = rows.Where(_ => !_._.IsFormula && 0 == _._.Children.Count && !_._.IsMarkSeted("0ISCAPTION")).ToArray();
+
 		}
 
 		#region Nested type: IdxCol
@@ -368,5 +404,6 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		private IdxRow[] primaryrows;
 		private IZetaRow rootrow;
 		private IdxRow[] rows;
+		private IdxCol[] neditprimarycols;
 	}
 }

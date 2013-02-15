@@ -1,0 +1,100 @@
+table.data {
+    border-collapse: collapse;
+    empty-cells: show;
+    table-layout: fixed;
+    border: 2px solid #555;
+    font-size: 10pt;
+    margin: 20px;
+}
+
+table.data td.editable {
+    background-color: #e6ffe1;
+}
+
+table.data th {
+    background-color: #555;
+    font-size: 80%;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+table.data thead.fixed {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+table.data th,
+table.data col,
+table.data td {
+    padding: 2px 4px;
+}
+
+table.data td {
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+
+table.data td:last-child {
+    border-right: none;
+}
+
+table.data tr:last-child td {
+    border-bottom: none;
+}
+
+table.data td.focused {
+
+}
+
+table.data td.active {
+    background-color: #fafad2;
+    display: block;
+    position: absolute;
+    border: 3px solid #000000 !important;
+    margin-top: -4px;
+    margin-left: -4px;
+}
+
+table.data td.active:after {
+    content: "";
+    display: block;
+    width: 6px;
+    height: 6px;
+    background-color: #000;
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    border: 1px solid #fff;
+}
+
+table.data tr[level="0"] td.name {
+	font-size : 14pt;
+	font-weight : bold;
+}
+table.data tr[level="1"] td.name {
+	padding-left : 30px;
+	font-size : 12pt;
+	font-weight : bold;
+}
+table.data tr[level="2"] td.name {
+	padding-left : 60px;
+	font-size : 12pt;
+}
+table.data tr[level="3"] td.name {
+	padding-left : 90px;
+	font-size : 10pt;
+	font-weight : bold;
+}
+table.data tr[level="4"] td.name {
+	padding-left : 120px;
+	font-size : 10pt;
+}
+table.data tr[level="5"] td.name {
+	padding-left : 150px;
+	font-size : 9pt;
+}
+
+table.data td.number {
+    text-align: right;
+}
