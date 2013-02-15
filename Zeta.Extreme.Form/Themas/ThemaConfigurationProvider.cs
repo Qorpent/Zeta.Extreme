@@ -21,6 +21,7 @@ using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.IO;
 using Comdiv.Inversion;
+using Qorpent.IO;
 using Qorpent.Utils.Extensions;
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -151,11 +152,11 @@ namespace Zeta.Extreme.Form.Themas {
 			var filters = LoadCompileFilters.split();
 			_cfgVersion = new DateTime();
 			string[] files = null;
-			if(Path.IsPathRooted(Options.RootDirectory)) {
+			if(!Options.RootDirectory.Contains("~") && Path.IsPathRooted(Options.RootDirectory)) {
 				files = Directory.GetFiles(Options.RootDirectory, "*.xml");
 			}
 			else {
-				files =  myapp.files.ResolveAll(Options.RootDirectory, "*.xml").ToArray();
+				files =  Qorpent.Applications.Application.Current.Files.ResolveAll(new FileSearchQuery{ExistedOnly = true,ProbeFiles =new[]{"*.xml"},ProbePaths = new[]{Options.RootDirectory},All = true,PathType = FileSearchResultType.FullPath}).ToArray();
 			}
 			files = files.OrderBy(x => Path.GetFileNameWithoutExtension(x)).ToArray();
 			foreach (var f in files) {

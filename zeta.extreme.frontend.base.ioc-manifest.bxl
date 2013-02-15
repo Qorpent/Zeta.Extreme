@@ -5,5 +5,5 @@ ref Zeta.Extreme.Frontend
 
 mvc Zeta.Extreme.FrontEnd
 transient "form.server" FormServer : IApplicationStartup
-	ThemaRootDirectory = "c:\\apps\\eco\\tmp\\compiled_themas"
+	ThemaRootDirectory = "~/themas"
 	ConnectionName = eco

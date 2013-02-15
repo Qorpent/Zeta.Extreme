@@ -113,6 +113,12 @@ namespace Zeta.Extreme {
 		/// 	Back-reference to preparation tasks
 		/// </summary>
 		public Task PrepareTask { get; set; }
+
+		/// <summary>
+		/// Client processed mark
+		/// </summary>
+		public bool Processed { get; set; }
+
 		/// <summary>
 		/// Формула, которая присоединяется к запросу на фазе подготовки
 		/// </summary>

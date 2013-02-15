@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Comdiv.Zeta.Data.Minimal;
@@ -154,7 +155,10 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// 	—тартует сессию
 		/// </summary>
 		public void Start() {
+			var sw = Stopwatch.StartNew();
 			PrepareMetaSets();
+			sw.Stop();
+			TimeToPrepare = sw.Elapsed;
 			PrepareStructureTask = new TaskWrapper(
 				Task.Run(() => { RetrieveStructura(); })
 				);
@@ -171,8 +175,14 @@ namespace Zeta.Extreme.FrontEnd.Session {
 				);
 			IsStarted = true;
 		}
+		/// <summary>
+		/// ¬рем€ подготовки
+		/// </summary>
+		[Serialize]
+		public TimeSpan TimeToPrepare { get; set; }
 
 		private void RetrieveStructura() {
+			var sw = Stopwatch.StartNew();
 			Structure =
 				(from ri in rows
 				 let r = ri._
@@ -196,11 +206,34 @@ namespace Zeta.Extreme.FrontEnd.Session {
 								 name = c.Title,
 								 idx = ci.i,
 								 isprimary = c.Editable && !c.IsFormula,
+								 year = c.Year,
+								 period = c.Period,
 							 })
 					).ToArray();
+			sw.Stop();
+			TimeToStructure = sw.Elapsed;
 		}
+		/// <summary>
+		/// ¬рем€ генерации структуры
+		/// </summary>
+		[Serialize]
+		public TimeSpan TimeToStructure { get; set; }
+
+		/// <summary>
+		/// ¬рем€ генерации первичных €чеек
+		/// </summary>
+		[Serialize]
+		public TimeSpan TimeToPrimary { get; set; }
+
+		/// <summary>
+		/// ¬рем€ генерации первичных €чеек
+		/// </summary>
+		[Serialize]
+		public TimeSpan TimeToGetData { get; set; }
+
 
 		private void RetrieveData() {
+			var sw = Stopwatch.StartNew();
 			IDictionary<string, Query> queries = new Dictionary<string, Query>();
 			foreach (var primaryrow in primaryrows) {
 				foreach (var primarycol in primarycols) {
@@ -216,24 +249,13 @@ namespace Zeta.Extreme.FrontEnd.Session {
 				}
 			}
 			DataSession.Execute(500);
-			foreach (var q in queries) {
-				var val = "";
-				var cellid = 0;
-				if (null != q.Value && null != q.Value.Result) {
-					val = q.Value.Result.NumericResult.ToString("#.#,##");
-					if (q.Value.Result.Error != null) {
-						val = q.Value.Result.Error.Message;
-					}
-					cellid = q.Value.Result.CellId;
-				}
-
-				lock (Data) {
-					Data.Add(new OutCell {i = q.Key, c = cellid, v = val});
-				}
-			}
-
+			ProcessValues(queries);
+			TimeToPrimary = sw.Elapsed;
+			PrimaryCount = Data.Count;
+			//var cnt = 0;
 			foreach (var r in rows) {
 				foreach (var c in cols) {
+
 					var key = r.i + ":" + c.i;
 					if (queries.ContainsKey(key)) {
 						continue;
@@ -245,19 +267,59 @@ namespace Zeta.Extreme.FrontEnd.Session {
 							Obj = {Native = Object},
 							Time = {Year = c._.Year, Period = c._.Period}
 						};
-					queries[key] = q = DataSession.Register(q, key);
-					var qr = Serial.Eval(q, 100);
-					var val = qr.NumericResult.ToString("#.#,##");
-					if (qr.Error != null) {
-						val = qr.Error.Message;
-					}
+					 q = DataSession.Register(q, key);
+					 if(null!=q) {
+						 queries[key] = q;
+					 }
+					//cnt++;
+					//if(cnt>=300) {
+					//	cnt = 0;
+					//	DataSession.Execute(500);
+					//	ProcessValues(queries);
+					//}
+				}
+			}
+			DataSession.Execute(500);
+			ProcessValues(queries);
+			QueriesCount = queries.Count;
+			DataSession = null;
+			DataCount = Data.Count;
+			TimeToGetData = sw.Elapsed;
+		}
+		/// <summary>
+		/// ќбщее количество запросов в обработке
+		/// </summary>
+		public int QueriesCount { get; set; }
 
-					lock (Data) {
-						Data.Add(new OutCell {i = key, c = 0, v = val});
+		private void ProcessValues(IDictionary<string, Query> queries) {
+			foreach (var q_ in queries.Where(_ =>null!=_.Value && _.Value.Processed == false)) {
+				q_.Value.Processed = true;
+				var val = "";
+				var cellid = 0;
+				if (null != q_.Value && null != q_.Value.Result) {
+					val = q_.Value.Result.NumericResult.ToString("#.#,##");
+					if (q_.Value.Result.Error != null) {
+						val = q_.Value.Result.Error.Message;
 					}
+					cellid = q_.Value.Result.CellId;
+				}
+
+				lock (Data) {
+					Data.Add(new OutCell {i = q_.Key, c = cellid, v = val});
 				}
 			}
 		}
+
+		/// <summary>
+		/// ќбщее количество €чеек
+		/// </summary>
+		public int DataCount { get; set; }
+
+		/// <summary>
+		///  оличество первичных €чеек
+		/// </summary>
+		
+		public int PrimaryCount { get; set; }
 
 		private void PrepareMetaSets() {
 			rootrow = MetaCache.Default.Get<IZetaRow>(Template.Form.Code);

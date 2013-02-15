@@ -50,5 +50,15 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// 	r or c
 		/// </summary>
 		public string type;
+		/// <summary>
+		/// Год для колонок
+		/// </summary>
+		[SerializeNotNullOnly]
+		public int year;
+		/// <summary>
+		/// Период для колонок
+		/// </summary>
+		[SerializeNotNullOnly]
+		public int period;
 	}
 }
