@@ -36,7 +36,7 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 		/// <param name="queries"></param>
 		protected virtual IEnumerable<Query> Execute(Query[] queries ) {
 			foreach (var query in queries) {
-				query.Result = _serial.Eval(query, TODO);
+				query.Result = _serial.Eval(query);
 				yield return query;
 			}
 		}

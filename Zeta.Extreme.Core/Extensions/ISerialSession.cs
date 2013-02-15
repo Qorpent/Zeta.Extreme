@@ -23,7 +23,7 @@ namespace Zeta.Extreme {
 		/// <param name="query"> </param>
 		/// <param name="timeout"> </param>
 		/// <returns> </returns>
-		QueryResult Eval(Query query, int timeout);
+		QueryResult Eval(Query query, int timeout=-1);
 
 		/// <summary>
 		/// 	Гарантирует синхронный, последовательный доступ к сессии, вычисляет значение

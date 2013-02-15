@@ -48,7 +48,7 @@ namespace Zeta.Extreme.Core.Tests {
 			session = new Session(true);
 			var controlsum = 0m;
 			foreach (var q in _getQueries()) {
-				var result = _serial.Eval(q, TODO).NumericResult;
+				var result = _serial.Eval(q).NumericResult;
 				Thread.Sleep(lag);
 				controlsum += result;
 				//Console.WriteLine(q.Row.Code+" "+result);

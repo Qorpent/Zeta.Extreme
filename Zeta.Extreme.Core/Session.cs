@@ -283,7 +283,7 @@ namespace Zeta.Extreme {
 		/// 	Ожидает окончания всех процессов асинхронной регистрации
 		/// </summary>
 		/// <param name="timeout"> </param>
-		protected internal void WaitPreparation(int timeout) {
+		protected internal void WaitPreparation(int timeout=-1) {
 			
 			while (!_preEvalTaskAgenda.IsEmpty) {
 				SyncPreEval(timeout);
@@ -312,7 +312,7 @@ namespace Zeta.Extreme {
 		/// 	Ожидает окончания всех процессов асинхронной регистрации
 		/// </summary>
 		/// <param name="timeout"> </param>
-		protected internal void WaitEvaluation(int timeout) {
+		protected internal void WaitEvaluation(int timeout=-1) {
 			WaitSql();
 			//	Thread.Sleep(20);
 			Task.WaitAll(_evalTaskAgenda.Values.Where(_ => _.Status != TaskStatus.Created).ToArray());

@@ -199,9 +199,9 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				}
 			}
 			Console.WriteLine("wait prepare " + id);
-			_session.WaitPreparation(TODO);
+			_session.WaitPreparation();
 			Console.WriteLine("wait eval " + id);
-			_session.WaitEvaluation(TODO);
+			_session.WaitEvaluation();
 			Console.WriteLine("finish " + id);
 			sw.Stop();
 			_session.Stat_Time_Total = sw.Elapsed;
@@ -232,7 +232,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 					Obj = {Native = obj}
 				};
 			session.RegisterAsync(q, "test");
-			session.WaitPreparation(TODO);
+			session.WaitPreparation();
 
 			var q1 = session.Registry["test"];
 			Assert.AreEqual("r590610", q1.Row.Code); //redirect performed
@@ -249,7 +249,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 					Obj = {Native = obj}
 				};
 			session.RegisterAsync(q, "test");
-			session.Execute(TODO);
+			session.Execute();
 		}
 
 		[Test]
@@ -257,7 +257,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			var q = new Query
 				{Row = {Code = "m260"}, Col = {Code = "Á1"}, Time = {Year = 2012, Period = 13}, Obj = {Id = 352}};
 			session.RegisterAsync(q);
-			session.WaitPreparation(TODO);
+			session.WaitPreparation();
 			//session.WaitEvaluation();
 		}
 
@@ -343,7 +343,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			                - OBS_COUNT*periods.Length
 			                , session.Stat_Registry_User);
 
-			Assert.True(session.Registry.Values.Any(_ => _.Row.IsSum && _.GetResult(TODO).NumericResult > 0));
+			Assert.True(session.Registry.Values.Any(_ => _.Row.IsSum && _.GetResult().NumericResult > 0));
 		}
 
 		[Test]

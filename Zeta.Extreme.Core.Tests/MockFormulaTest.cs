@@ -113,7 +113,7 @@ namespace Zeta.Extreme.Core.Tests {
 			/// 	В принципе кроме вычисления результата формула не должна ничего уметь
 			/// </remarks>
 			public QueryResult Eval() {
-				return _session.Eval(_subquery, TODO);
+				return _session.Eval(_subquery);
 			}
 
 			public void CleanUp() {
@@ -129,13 +129,13 @@ namespace Zeta.Extreme.Core.Tests {
 
 		[Test]
 		public void CanEvalMockFormula() {
-			var result = _serial.Eval(_mquery, TODO);
+			var result = _serial.Eval(_mquery);
 			Assert.AreEqual(-123, result.NumericResult);
 		}
 
 		[Test]
 		public void CanEvalMockSubsessionFormula() {
-			var result = _serial.Eval(_mquery_ss, TODO);
+			var result = _serial.Eval(_mquery_ss);
 			Assert.AreEqual(11840m, result.NumericResult);
 		}
 	}
