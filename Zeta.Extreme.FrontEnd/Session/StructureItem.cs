@@ -60,5 +60,16 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// </summary>
 		[SerializeNotNullOnly]
 		public int period;
+		/// <summary>
+		/// Номер строки
+		/// </summary>
+		[SerializeNotNullOnly]
+		public string number;
+
+		/// <summary>
+		///Единица измерения
+		/// </summary>
+		[SerializeNotNullOnly]
+		public string measure;
 	}
 }

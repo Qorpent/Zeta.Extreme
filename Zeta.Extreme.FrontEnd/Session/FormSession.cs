@@ -37,7 +37,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			DataSession = new Extreme.Session();
 			Serial = DataSession.AsSerial();
 			Created = DateTime.Now;
-			Template = form.PrepareForPeriod(year, period, DateTime.Now, Object);
+			Template = form.PrepareForPeriod(year, period, new DateTime(1900,1,1), Object);
 			Year = Template.Year;
 			Period = Template.Period;
 			Object = obj;
@@ -46,7 +46,12 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			IsStarted = false;
 			ObjInfo = new {Object.Id, Object.Code, Object.Name};
 			FormInfo = new {Template.Code, Template.Name};
+			NeedMeasure = Template.ShowMeasureColumn;
 		}
+		/// <summary>
+		/// Признак требования показывать колонку с единицей измерения
+		/// </summary>
+		public bool NeedMeasure { get; set; }
 
 		private ISerialSession Serial { get; set; }
 
@@ -162,17 +167,21 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			PrepareStructureTask = new TaskWrapper(
 				Task.Run(() => { RetrieveStructura(); })
 				);
-			PrepareDataTask = new TaskWrapper(
-				Task.Run(() =>
-					{
-						try {
-							RetrieveData();
-						}
-						catch (Exception ex) {
-							Error = ex;
-						}
-					})
-				);
+			if(IsLazy) {
+				PrepareDataTask = new TaskWrapper(Task.FromResult(true));
+			}else {
+				PrepareDataTask = new TaskWrapper(
+					Task.Run(() =>
+						{
+							try {
+								RetrieveData();
+							}
+							catch (Exception ex) {
+								Error = ex;
+							}
+						})
+					) {SelfWait = 30000};
+			}
 			IsStarted = true;
 		}
 		/// <summary>
@@ -194,7 +203,9 @@ namespace Zeta.Extreme.FrontEnd.Session {
 						 idx = ri.i,
 						 iscaption = r.IsMarkSeted("0CAPTION"),
 						 isprimary = !r.IsFormula && !r.IsMarkSeted("0SA") && 0 == r.Children.Count,
-						 level = r.Level
+						 level = r.Level,
+						 number = r.OuterCode,
+						 measure = NeedMeasure ? r.ResolveMeasure() : "",
 					 })
 					.Union(
 						(from ci in cols
@@ -271,12 +282,6 @@ namespace Zeta.Extreme.FrontEnd.Session {
 					 if(null!=q) {
 						 queries[key] = q;
 					 }
-					//cnt++;
-					//if(cnt>=300) {
-					//	cnt = 0;
-					//	DataSession.Execute(500);
-					//	ProcessValues(queries);
-					//}
 				}
 			}
 			DataSession.Execute(500);
@@ -320,6 +325,10 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// </summary>
 		
 		public int PrimaryCount { get; set; }
+		/// <summary>
+		/// Запускает режим ленивой сессии (без данных)
+		/// </summary>
+		public bool IsLazy { get; set; }
 
 		private void PrepareMetaSets() {
 			rootrow = MetaCache.Default.Get<IZetaRow>(Template.Form.Code);

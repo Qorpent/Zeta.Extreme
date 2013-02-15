@@ -197,6 +197,13 @@ namespace Zeta.Extreme {
 			}
 		}
 		/// <summary>
+		/// Очистка кэша
+		/// </summary>
+		public void Clear() {
+			_registry.Clear();
+		}
+
+		/// <summary>
 		/// Количество формул
 		/// </summary>
 		public int Count {

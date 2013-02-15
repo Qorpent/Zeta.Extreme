@@ -68,5 +68,9 @@ namespace Zeta.Extreme {
 		/// Компилирует все формы в стеке
 		/// </summary>
 		void CompileAll();
+		/// <summary>
+		/// Очистка кэша формул
+		/// </summary>
+		void Clear();
 	}
 }

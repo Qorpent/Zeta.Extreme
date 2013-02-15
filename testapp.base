@@ -8,7 +8,5 @@
 		<Package Include="qorpent.kernel"/>
 		<Package Include="qorpent.sys"/>
 		<Package Include="Zeta.Extreme" />			
-		<Package Include="Zeta.Base.UI" />	
-		<Package Include="Zeta.Form.UI" />	
 	</ItemGroup>
 </Project>

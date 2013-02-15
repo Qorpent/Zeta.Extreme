@@ -9,6 +9,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Comdiv.Zeta.Model;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
@@ -47,7 +49,7 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			var session = new FormSession(_realform, year, period, _realobj);
+			var session = new FormSession(_realform, year, period, _realobj) {IsLazy = lazy};
 			FormServer.Default.Sessions.Add(session);
 			session.Start();
 			return session;
@@ -59,5 +61,6 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		[Bind(Required = true)] private int obj = 0;
 		[Bind(Required = true)] private int period = 0;
 		[Bind(Required = true)] private int year = 0;
+		[Bind] private bool lazy = false;
 	}
 }

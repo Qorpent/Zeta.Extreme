@@ -129,10 +129,30 @@ namespace Zeta.Extreme.FrontEnd {
 			ReadyToServeForms.Run();
 		}
 
+		/// <summary>
+		/// Перезагрузка системы
+		/// </summary>
+		public void Reload() {
+			
+			LoadThemas = new TaskWrapper(GetLoadThemasTask());
+			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask(), HibernateLoad);
+			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
+			ReadyToServeForms = new TaskWrapper(Task.FromResult(true), 
+												HibernateLoad, 
+												LoadThemas, 
+												MetaCacheLoad,
+												CompileFormulas);
+			MetaCacheLoad.Run();
+			CompileFormulas.Run();
+			LoadThemas.Run();
+			ReadyToServeForms.Run();
+		}
+
 		private Task GetCompileFormulasTask() {
 			return new Task(() =>
 				{
 					FormulaStorage.Default.AutoBatchCompile = false;
+					FormulaStorage.Default.Clear();
 					var _sumh = new StrongSumProvider();
 					var formulas = RowCache.byid.Values.Where(_ => _.IsFormula && !_sumh.IsSum(_)).ToArray();
 
