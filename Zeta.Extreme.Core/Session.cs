@@ -343,7 +343,7 @@ namespace Zeta.Extreme {
 				//	Thread.Sleep(20);
 			}
 
-			foreach (var query in Registry.Values.Where(_=>_.EvaluationType!=QueryEvaluationType.Primary && null==_.Result)) {
+			foreach (var query in Registry.Values.Where(_=>null==_.Result)) {
 				query.GetResult();
 			}
 		
