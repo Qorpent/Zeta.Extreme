@@ -106,37 +106,31 @@ namespace Zeta.Extreme {
 		}
 
 		private void ExpandSum(Query query, IZetaQueryDimension mostpriority) {
+			query.EvaluationType = QueryEvaluationType.Summa;
+			
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Sum);
 			}
-			var subqueries = new List<Tuple<decimal, Query>>();
+		
 			foreach (var r in _sumh.GetSumDelta(mostpriority)) {
 				var sq = r.Apply(query);
 				sq = _session.Register(sq);
 				if (null == sq) {
 					continue;
 				}
-				subqueries.Add(new Tuple<decimal, Query>(r.Multiplicator, sq));
+				query.SummaDependency.Add(new Tuple<decimal, Query>(r.Multiplicator, sq));
 			}
-			var subq = subqueries.ToArray();
-			if (subq.Length == 0) {
+
+			if (query.SummaDependency.Count == 0) {
 				query.Result = new QueryResult {IsComplete = true, NumericResult = 0m};
 				return;
 			}
 
-			var resulttask = new Func<QueryResult>(() =>
-				{
-					var result = 0m;
-					foreach (var sq in subq) {
-						var val = sq.Item2.GetResult();
-						if (null != val) {
-							result += val.NumericResult*sq.Item1;
-						}
-					}
-
-					return new QueryResult {IsComplete = true, NumericResult = result};
-				});
-			query.GetResultTask = _session.RegisterEvalTask(resulttask, false);
+			//var resulttask = new Func<QueryResult>(() =>
+			//	{
+					
+			//	});
+			//query.GetResultTask = _session.RegisterEvalTask(resulttask, false);
 		}
 
 		/// <summary>

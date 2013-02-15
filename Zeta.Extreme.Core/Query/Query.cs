@@ -198,6 +198,9 @@ namespace Zeta.Extreme {
 			result.PrepareTask = null;
 			result.GetResultTask = null;
 			result.Result = null;
+			result.EvaluationType = QueryEvaluationType.Unknown;
+			result._summaDependency = null;
+			result._formulaDependency = null;
 			if(null!=TraceList) {
 				result.TraceList = new List<string>();
 			}
@@ -243,6 +246,22 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		/// <exception cref="Exception"></exception>
 		public QueryResult GetResult(int timeout =-1) {
+			if(EvaluationType==QueryEvaluationType.Summa) {
+				var result = 0m;
+				foreach (var sq in SummaDependency)
+				{
+					var val = sq.Item2.GetResult();
+					if (null != val)
+					{
+						result += val.NumericResult * sq.Item1;
+					}
+				}
+
+				Result = new QueryResult { IsComplete = true, NumericResult = result };
+				return Result;
+			}
+
+
 			WaitResult(timeout);
 			if (null != Result) {
 				return Result;
