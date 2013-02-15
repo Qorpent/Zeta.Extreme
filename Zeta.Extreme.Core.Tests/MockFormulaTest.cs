@@ -134,6 +134,7 @@ namespace Zeta.Extreme.Core.Tests {
 		}
 
 		[Test]
+		[Ignore("Subsessions are not actual feature")]
 		public void CanEvalMockSubsessionFormula() {
 			var result = _serial.Eval(_mquery_ss);
 			Assert.AreEqual(11840m, result.NumericResult);

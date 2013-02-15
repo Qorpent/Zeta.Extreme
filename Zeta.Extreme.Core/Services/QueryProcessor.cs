@@ -66,6 +66,8 @@ namespace Zeta.Extreme {
 		}
 
 		private void PrepareFormulas(Query query, IZetaQueryDimension mostpriority) {
+			query.EvaluationType = QueryEvaluationType.Formula;
+			
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Formula);
 			}
@@ -77,18 +79,18 @@ namespace Zeta.Extreme {
 			}
 			query.AssignedFormula = formula;
 			formula.Playback(query);
-			var resulttask = new Func<QueryResult>(() =>
-				{
-					formula.Init(query);
-					try {
-						return formula.Eval();
-					}
-					finally {
-						formula.CleanUp();
-						FormulaStorage.Default.Return(key, formula);
-					}
-				});
-			query.GetResultTask = _session.RegisterEvalTask(resulttask, false);
+			//var resulttask = new Func<QueryResult>(() =>
+			//	{
+			//		formula.Init(query);
+			//		try {
+			//			return formula.Eval();
+			//		}
+			//		finally {
+			//			formula.CleanUp();
+			//			FormulaStorage.Default.Return(key, formula);
+			//		}
+			//	});
+			//query.GetResultTask = _session.RegisterEvalTask(resulttask, false);
 		}
 
 		private static string GetKey(IZetaQueryDimension mostpriority) {
@@ -126,11 +128,6 @@ namespace Zeta.Extreme {
 				return;
 			}
 
-			//var resulttask = new Func<QueryResult>(() =>
-			//	{
-					
-			//	});
-			//query.GetResultTask = _session.RegisterEvalTask(resulttask, false);
 		}
 
 		/// <summary>

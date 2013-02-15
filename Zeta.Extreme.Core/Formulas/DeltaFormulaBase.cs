@@ -29,6 +29,7 @@ namespace Zeta.Extreme {
 				return null;
 			}
 			try {
+				playbackCounter = 0;
 				var result = EvaluateExpression();
 				if(result==null) return new QueryResult();
 				if(result is decimal || result is int) {
@@ -45,6 +46,10 @@ namespace Zeta.Extreme {
 				return new QueryResult {IsComplete = false, Error = e};
 			}
 		}
+		/// <summary>
+		/// Счетчик смещений на плейбэках
+		/// </summary>
+		protected  int playbackCounter ;
 	
 		/// <summary>
 		/// 	Основной промежуточный метод , все приводит к числу
@@ -53,10 +58,11 @@ namespace Zeta.Extreme {
 		protected internal decimal Eval(QueryDelta delta) {
 			var query = delta.Apply(Query);
 			if(IsInPlaybackMode) {
-				Session.Register(query);
+				Query.FormulaDependency.Add(Session.Register(query));
 				return 1;
 			}
-			var realq = Session.Register(query);
+			var realq = Query.FormulaDependency[playbackCounter];
+			playbackCounter++;
 			if(null==realq) return 0m;
 			var result = realq.GetResult();
 			if(null!=result) {
