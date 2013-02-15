@@ -65,8 +65,8 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Дочерние запросы
 		/// </summary>
-		public IList<Query> Dependency {
-			get { return _children ?? (_children = new List<Query>()); }
+		public IList<Query> FormulaDependency {
+			get { return _formulaDependency ?? (_formulaDependency = new List<Query>()); }
 		}
 
 		/// <summary>
@@ -118,6 +118,20 @@ namespace Zeta.Extreme {
 		/// Client processed mark
 		/// </summary>
 		public bool Processed { get; set; }
+
+		/// <summary>
+		/// Зависимости для суммовых запросов
+		/// </summary>
+		public IList<Tuple<decimal, Query>> SummaDependency {
+			get { return _summaDependency ?? (_summaDependency = new List<Tuple<decimal, Query>>()); }
+		
+		}
+
+
+		/// <summary>
+		/// Тип вычисления запроса
+		/// </summary>
+		public QueryEvaluationType EvaluationType;
 
 		/// <summary>
 		/// Формула, которая присоединяется к запросу на фазе подготовки
@@ -299,12 +313,13 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public string CustomHashPrefix;
 
-		private IList<Query> _children;
+		private IList<Query> _formulaDependency;
 
 		/// <summary>
 		/// Реестр трассы
 		/// </summary>
 		public List<string> TraceList;
-		
+
+		private IList<Tuple<decimal, Query>> _summaDependency;
 	}
 }
