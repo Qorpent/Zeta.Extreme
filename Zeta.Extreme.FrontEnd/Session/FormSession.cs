@@ -250,10 +250,10 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			LoadNonEditablePrimaryData(queries);
 			TimeToPrimary = sw.Elapsed;
 			PrimaryCount = Data.Count;
-			int cnt = 0;
-			foreach (var r in rows) {
-				foreach (var c in cols) {
-					cnt++;
+			
+			foreach (var c in cols) {
+				foreach (var r in rows)
+				{
 					var key = r.i + ":" + c.i;
 					if (queries.ContainsKey(key)) {
 						continue;
@@ -269,15 +269,12 @@ namespace Zeta.Extreme.FrontEnd.Session {
 					 if(null!=q) {
 						 queries[key] = q;
 					 }
-					 if(cnt==20) {
-						 DataSession.Execute(500);
-						 ProcessValues(queries);
-						 cnt = 0;
-					 }
+					
 				}
+				DataSession.Execute(500);
+				ProcessValues(queries);
 			}
-			DataSession.Execute(500);
-			ProcessValues(queries);
+			
 			QueriesCount = queries.Count;
 			DataSession = null;
 			DataCount = Data.Count;

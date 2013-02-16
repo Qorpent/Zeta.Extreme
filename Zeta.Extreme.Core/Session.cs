@@ -340,13 +340,13 @@ namespace Zeta.Extreme {
 
 			while (!_evalTaskAgenda.IsEmpty) {
 				Task.WaitAll(_evalTaskAgenda.Values.ToArray());
-				//	Thread.Sleep(20);
 			}
-
+			/*
 			foreach (var query in Registry.Values.Where(_=>null==_.Result)) {
 				query.GetResult();
 			}
-		
+			*/
+			Registry.Values.AsParallel().Where(_=>null==_.Result).ForAll(_=>_.GetResult());
 		}
 
 		/// <summary>

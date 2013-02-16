@@ -1,10 +1,34 @@
+body {
+    margin: 20px;
+}
+
 table.data {
     border-collapse: collapse;
     empty-cells: show;
-    table-layout: fixed;
-    border: 2px solid #555;
+    /*table-layout: fixed;*/
+    /*border: 2px solid #555;*/
     font-size: 10pt;
     margin: 20px;
+}
+
+table.data col.number,
+table.data th.number {
+    width: 1%; /*Будет занимать минимум места*/
+}
+
+table.data col.name,
+table.data th.name {
+    width: 400px; /*Тут не важно сколько, главное > 6%*/
+}
+
+table.data col.measure,
+table.data th.measure {
+
+}
+
+table.data col,
+table.data th.data {
+    width: 6%; /*Нормально смотрится при ширине от 1980 до 1000*/
 }
 
 table.data td.editable {
@@ -35,12 +59,23 @@ table.data td {
     border-bottom: 1px solid #cccccc;
 }
 
-table.data td:last-child {
-    border-right: none;
+table.data td.data {
+    text-align: right;
+}
+
+table.data td:last-child,
+table.data th:last-child {
+    border-right: 2px solid #555;
 }
 
 table.data tr:last-child td {
-    border-bottom: none;
+    border-bottom: 2px solid #555;
+}
+
+
+table.data td:first-child,
+table.data th:first-child {
+    border-left: 2px solid #555;
 }
 
 table.data td.focused {
@@ -69,30 +104,26 @@ table.data td.active:after {
 }
 
 table.data tr[level="0"] td.name {
-	font-size : 14pt;
+	font-size : 11pt;
 	font-weight : bold;
 }
 table.data tr[level="1"] td.name {
 	padding-left : 30px;
-	font-size : 12pt;
+	font-size : 10pt;
 	font-weight : bold;
 }
 table.data tr[level="2"] td.name {
 	padding-left : 60px;
-	font-size : 12pt;
 }
 table.data tr[level="3"] td.name {
 	padding-left : 90px;
-	font-size : 10pt;
 	font-weight : bold;
 }
 table.data tr[level="4"] td.name {
 	padding-left : 120px;
-	font-size : 10pt;
 }
 table.data tr[level="5"] td.name {
 	padding-left : 150px;
-	font-size : 9pt;
 }
 
 table.data td.number {

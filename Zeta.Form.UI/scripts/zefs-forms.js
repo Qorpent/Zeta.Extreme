@@ -36,8 +36,16 @@
         }, this));
         $(window).scroll($.proxy(function(e) {
             var theadScreenOut = this.isOutScreen(this.table);
-            if (theadScreenOut == "top") this.fixHeader();
+            if (theadScreenOut == "top") {
+                if (!$(this.table.find("thead")).hasClass("fixed")) this.fixHeader();
+            }
             else this.unfixHeader();
+        },this));
+        $(window).resize($.proxy(function(e) {
+            if ($(this.table.find("thead")).hasClass("fixed")) {
+                this.unfixHeader();
+                this.fixHeader();
+            }
         },this));
     };
 
@@ -58,6 +66,7 @@
 
     Zefs.prototype.activateCell = function($cell) {
         var $cell = $($cell);
+        if (!$cell.hasClass("editable")) return $cell;
         if (this.isOutScreen($cell) == "top") {
             $(window).scrollTop($cell.offset().top);
         }
@@ -74,7 +83,7 @@
             $(td).parent().css("height", "");
         }, this));
         $cell.parent().css("height", $cell.height());
-        $col.css("width", $(this.table.find("th")[$colindex]).outerWidth());
+//        $col.css("width", $(this.table.find("th")[$colindex]).outerWidth());
         $cell.css("min-width", $cell.width());
         $cell.css("height", $cell.height());
         $cell.addClass("active");

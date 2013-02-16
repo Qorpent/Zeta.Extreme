@@ -247,55 +247,54 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		/// <exception cref="Exception"></exception>
 		public QueryResult GetResult(int timeout =-1) {
-			if(null!=Result) return Result;
-			if(EvaluationType==QueryEvaluationType.Summa && null==Result) {
-				var result = 0m;
-				foreach (var sq in SummaDependency)
-				{
-					var val = sq.Item2.GetResult();
-					if (null != val)
-					{
-						result += val.NumericResult * sq.Item1;
+			lock (this) {
+				if (null != Result) return Result;
+				if (EvaluationType == QueryEvaluationType.Summa && null == Result) {
+					var result = 0m;
+					foreach (var sq in SummaDependency) {
+						var val = sq.Item2.GetResult();
+						if (null != val) {
+							result += val.NumericResult*sq.Item1;
+						}
 					}
+
+					Result = new QueryResult {IsComplete = true, NumericResult = result};
+					return Result;
 				}
 
-				Result = new QueryResult { IsComplete = true, NumericResult = result };
-				return Result;
-			}
-
-			if (EvaluationType == QueryEvaluationType.Formula && null==Result) {
-				AssignedFormula.Init(this);
-				try
-				{
-					Result = AssignedFormula.Eval();
+				if (EvaluationType == QueryEvaluationType.Formula && null == Result) {
+					AssignedFormula.Init(this);
+					try {
+						Result = AssignedFormula.Eval();
+					}
+					finally {
+						AssignedFormula.CleanUp();
+						//FormulaStorage.Default.Return(key, formula);
+					}
+					return Result;
 				}
-				finally
-				{
-					AssignedFormula.CleanUp();
-					//FormulaStorage.Default.Return(key, formula);
+
+
+				WaitResult(timeout);
+				if (null != Result) {
+					return Result;
+				}
+				if (null == GetResultTask) {
+					throw new Exception("cannot retrieve result - no process or direct result attached");
+				}
+
+				if (GetResultTask.Status == TaskStatus.Faulted) {
+					throw new Exception("cannot retrieve result - some problems int getresult task - faulted ", GetResultTask.Exception);
+				}
+
+				if (null != GetResultTask) {
+					//некоторые задачи выставляют результат собственными средствами
+					Result = GetResultTask.Result;
 				}
 				return Result;
 			}
-
-
-			WaitResult(timeout);
-			if (null != Result) {
-				return Result;
-			}
-			if (null == GetResultTask) {
-				throw new Exception("cannot retrieve result - no process or direct result attached");
-			}
-
-			if (GetResultTask.Status == TaskStatus.Faulted) {
-				throw new Exception("cannot retrieve result - some problems int getresult task - faulted ", GetResultTask.Exception);
-			}
-
-			if (null != GetResultTask) {
-				//некоторые задачи выставляют результат собственными средствами
-				Result = GetResultTask.Result;
-			}
-			return Result;
-		}
+		
+	}
 
 		/// <summary>
 		/// 	Переводит строку (по нативу)
