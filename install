@@ -66,12 +66,12 @@
 			<Library Include="Zeta.Extreme.Form" />
 			<Library Include="Zeta.Extreme.FrontEnd" />
 			<Config Include="*.base.ioc-manifest.bxl"/>
-			
+		<!--	
 			<Script Include="Zeta.Form.UI\scripts\*.js"/>
 			<Style Include="Zeta.Form.UI\styles\*.css"/>
 			<Image Include="Zeta.Form.UI\images\*.*"/>
 			<RootFile Include="Zeta.Form.UI\*.html"/>
-			
+			-->
 			<!--dependency -->
 			<Library Include="Comdiv.Zeta.Model" />
 			<Library Include="Comdiv.Zeta.Data.Minimal" />

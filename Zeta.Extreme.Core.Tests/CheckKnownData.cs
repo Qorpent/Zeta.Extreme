@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Comdiv.Collections;
 using Comdiv.Zeta.Data.Minimal;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
@@ -184,6 +185,22 @@ namespace Zeta.Extreme.Core.Tests {
 			else {
 				Assert.Ignore("filtered rows");
 			}
+		}
+
+
+		[Test]
+		public void ProblemWithm2608342HaveNullInResult() {
+			var q =
+				session.Register(new Query
+					{
+						Row = {Native = RowCache.get("m2608342")},
+						Col = {Code = "Б1"},
+						Obj = {Id = 352},
+						Time = {Year = 2012, Period = 13}
+					},"x");
+			session.Execute();
+			Assert.True(session.Registry.ContainsKey("x"));
+
 		}
 
 

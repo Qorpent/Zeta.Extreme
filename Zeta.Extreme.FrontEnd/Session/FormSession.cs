@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Comdiv.Extensions;
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using Qorpent.Applications;
@@ -332,10 +333,11 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// Общее количество запросов в обработке
 		/// </summary>
 		public int QueriesCount { get; set; }
-
+		IDictionary<string,Query> _processed = new Dictionary<string, Query>();  
 		private void ProcessValues(IDictionary<string, Query> queries) {
-			foreach (var q_ in queries.Where(_ =>null!=_.Value && _.Value.Processed == false)) {
-				q_.Value.Processed = true;
+			foreach (var q_ in queries.Where(_ =>null!=_.Value)) {
+				if(_processed.ContainsKey(q_.Key))continue;
+				_processed[q_.Key] = q_.Value;
 				var val = "";
 				var cellid = 0;
 				if (null != q_.Value && null != q_.Value.Result) {
@@ -369,7 +371,11 @@ namespace Zeta.Extreme.FrontEnd.Session {
 
 		private void PrepareMetaSets() {
 			rootrow = MetaCache.Default.Get<IZetaRow>(Template.Form.Code);
-			rows = rootrow.AllChildren.OrderBy(_ => _.Path).Select((_, i) => new IdxRow {i = i, _ = _}).ToArray();
+			rows = rootrow.AllChildren
+					.Where(_=>!_.IsObsolete(Year))
+					.Where(_=>null==_.Object || _.Object.Id==Object.Id)
+					.OrderBy(_ => _.Path)
+					.Select((_, i) => new IdxRow {i = i, _ = _}).ToArray();
 			cols = Template.GetAllColumns().Where(_ => _.GetIsVisible(Object)).Select((_, i) => new IdxCol {i = i, _ = _});
 			foreach (var columnDesc in cols) {
 				if (null == columnDesc._.Target) {
