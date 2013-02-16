@@ -87,6 +87,9 @@ namespace Zeta.Extreme {
 				key = "row:" + key;
 			}
 			else if (mostpriority is ColumnHandler || mostpriority is IZetaColumn) {
+				if(mostpriority is ColumnHandler && null==((ColumnHandler)mostpriority).Native) {
+					key = "dyncol:" + mostpriority.Formula;
+				}
 				key = "col:" + key;
 			}
 			else if (mostpriority is ObjHandler || mostpriority is IZetaMainObject) {
