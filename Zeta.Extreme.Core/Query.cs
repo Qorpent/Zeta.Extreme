@@ -1,8 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
-// Original file : ZexQuery.cs
+// Original file : Query.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -71,16 +70,10 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// 	Обратная ссылка на сессию
-		/// </summary>
-		public Session Session;
-
-		/// <summary>
 		/// 	Проверяет "первичность запроса"
 		/// </summary>
 		public bool IsPrimary {
 			get { return Obj.IsPrimary() && Col.IsPrimary() && Row.IsPrimary(); }
-		
 		}
 
 
@@ -91,69 +84,36 @@ namespace Zeta.Extreme {
 
 
 		/// <summary>
-		/// 	Автоматический код запроса, присваиваемый системой
-		/// </summary>
-		public long UID;
-
-		/// <summary>
-		/// 	Кэшированный запрос SQL
-		/// </summary>
-		public string SqlRequest;
-
-
-		/// <summary>
-		/// Статус по подготовке
-		/// </summary>
-		public PrepareState PrepareState;
-
-		/// <summary>
 		/// 	Back-reference to preparation tasks
 		/// </summary>
 		public Task PrepareTask { get; set; }
 
 
-
-
 		/// <summary>
-		/// Client processed mark
+		/// 	Client processed mark
 		/// </summary>
 		public bool Processed { get; set; }
 
 		/// <summary>
-		/// Зависимости для суммовых запросов
+		/// 	Зависимости для суммовых запросов
 		/// </summary>
 		public IList<Tuple<decimal, Query>> SummaDependency {
 			get { return _summaDependency ?? (_summaDependency = new List<Tuple<decimal, Query>>()); }
-		
 		}
 
-
-		/// <summary>
-		/// Тип вычисления запроса
-		/// </summary>
-		public QueryEvaluationType EvaluationType;
-
-		/// <summary>
-		/// Формула, которая присоединяется к запросу на фазе подготовки
-		/// </summary>
-		public IFormula AssignedFormula;
-
-		/// <summary>
-		/// Sign that primary was not set
-		/// </summary>
-		public bool HavePrimary;
 
 		/// <summary>
 		/// 	Позволяет синхронизировать запросы в подсессиях
 		/// </summary>
 		/// <param name="timeout"> </param>
-		public void WaitPrepare(int timeout=-1) {	
-			while(PrepareState.Prepared!=PrepareState) {
+		public void WaitPrepare(int timeout = -1) {
+			while (PrepareState.Prepared != PrepareState) {
 				if (PrepareTask != null) {
 					if (!PrepareTask.IsCompleted) {
 						PrepareTask.Wait();
 					}
-				}else {
+				}
+				else {
 					Thread.Sleep(20);
 				}
 			}
@@ -200,8 +160,8 @@ namespace Zeta.Extreme {
 			result._formulaDependency = null;
 			result.AssignedFormula = null;
 			result.PrepareState = PrepareState.None;
-			
-			if(null!=TraceList) {
+
+			if (null != TraceList) {
 				result.TraceList = new List<string>();
 			}
 			if (deep) {
@@ -230,8 +190,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Сбрасывает кэш-строку
 		/// </summary>
-		public override void InvalidateCacheKey()
-		{
+		public override void InvalidateCacheKey() {
 			base.InvalidateCacheKey();
 			Row.InvalidateCacheKey();
 			Col.InvalidateCacheKey();
@@ -245,11 +204,15 @@ namespace Zeta.Extreme {
 		/// <param name="timeout"> </param>
 		/// <returns> </returns>
 		/// <exception cref="Exception"></exception>
-		public QueryResult GetResult(int timeout =-1) {
+		public QueryResult GetResult(int timeout = -1) {
 			lock (this) {
-				if (null != Result) return Result;
+				if (null != Result) {
+					return Result;
+				}
 				if (EvaluationType == QueryEvaluationType.Summa && null == Result) {
-					var result = (from sq in SummaDependency let val = sq.Item2.GetResult() where null != val select val.NumericResult*sq.Item1).Sum();
+					var result =
+						(from sq in SummaDependency let val = sq.Item2.GetResult() where null != val select val.NumericResult*sq.Item1).
+							Sum();
 					Result = new QueryResult {IsComplete = true, NumericResult = result};
 					return Result;
 				}
@@ -272,8 +235,7 @@ namespace Zeta.Extreme {
 				}
 				return Result;
 			}
-		
-	}
+		}
 
 		/// <summary>
 		/// 	Переводит строку (по нативу)
@@ -300,22 +262,57 @@ namespace Zeta.Extreme {
 		/// <param name="timeout"> </param>
 		public void WaitResult(int timeout) {
 			WaitPrepare(timeout);
-			if(IsPrimary && null==Result) {
+			if (IsPrimary && null == Result) {
 				Session.PrimarySource.Wait();
 			}
 		}
+
+		/// <summary>
+		/// 	Формула, которая присоединяется к запросу на фазе подготовки
+		/// </summary>
+		public IFormula AssignedFormula;
 
 		/// <summary>
 		/// 	Модификатор кэш-строки (префикс)
 		/// </summary>
 		public string CustomHashPrefix;
 
-		private IList<Query> _formulaDependency;
+		/// <summary>
+		/// 	Тип вычисления запроса
+		/// </summary>
+		public QueryEvaluationType EvaluationType;
 
 		/// <summary>
-		/// Реестр трассы
+		/// 	Sign that primary was not set
+		/// </summary>
+		public bool HavePrimary;
+
+		/// <summary>
+		/// 	Статус по подготовке
+		/// </summary>
+		public PrepareState PrepareState;
+
+		/// <summary>
+		/// 	Обратная ссылка на сессию
+		/// </summary>
+		public Session Session;
+
+		/// <summary>
+		/// 	Кэшированный запрос SQL
+		/// </summary>
+		public string SqlRequest;
+
+		/// <summary>
+		/// 	Реестр трассы
 		/// </summary>
 		public List<string> TraceList;
+
+		/// <summary>
+		/// 	Автоматический код запроса, присваиваемый системой
+		/// </summary>
+		public long UID;
+
+		private IList<Query> _formulaDependency;
 
 		private IList<Tuple<decimal, Query>> _summaDependency;
 	}

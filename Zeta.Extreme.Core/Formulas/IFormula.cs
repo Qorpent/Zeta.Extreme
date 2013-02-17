@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : IFormula.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -19,17 +18,19 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		void Init(Query query);
+
 		/// <summary>
-		/// Устанавливает контекст использования формулы
+		/// 	Устанавливает контекст использования формулы
 		/// </summary>
-		/// <param name="request"></param>
+		/// <param name="request"> </param>
 		void SetContext(FormulaRequest request);
 
 		/// <summary>
-		/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
+		/// 	Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 		/// </summary>
 		/// <param name="query"> </param>
 		void Playback(Query query);
+
 		/// <summary>
 		/// 	Команда вычисления результата
 		/// </summary>

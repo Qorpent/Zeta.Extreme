@@ -46,9 +46,9 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 				}
 				var max = _session.Data.Count - 1;
 				if (_session.Data.Count <= startidx) {
-					return new {state,ei=max};
+					return new {state, ei = max};
 				}
-				
+
 				var cnt = max - startidx + 1;
 
 				return

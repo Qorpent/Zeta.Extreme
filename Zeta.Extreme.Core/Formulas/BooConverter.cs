@@ -1,16 +1,22 @@
-using System.Text.RegularExpressions;
-using Comdiv.Extensions;
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : BooConverter.cs
+// Project: Zeta.Extreme.Core
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
 
 namespace Zeta.Extreme {
 	/// <summary>
-	/// Конвертирует фигурные скобки с ламбдами BOO в С# ламбды
+	/// 	Конвертирует фигурные скобки с ламбдами BOO в С# ламбды
 	/// </summary>
 	public class BooConverter : IFormulaPreprocessor {
 		/// <summary>
 		/// 	Индекс препроцессора
 		/// </summary>
-		public int Idx
-		{
+		public int Idx {
 			get { return 5; }
 		}
 
@@ -21,26 +27,24 @@ namespace Zeta.Extreme {
 		/// <param name="request"> </param>
 		/// <returns> </returns>
 		public string Preprocess(string currentResult, FormulaRequest request) {
-			if (request.Language == "boo" )
-			{
+			if (request.Language == "boo") {
 				//ограничитель на язык - только BOO
-				var result = 
+				var result =
 					currentResult
 						.Replace("{", "()=>(")
 						.Replace("}", ")")
-						.Replace(" and "," && ")
-						.Replace(" or "," || ")
-						.Replace(" not "," ! ")
-						.Replace("'","\"")
-						.Replace(".Column.Period",".Time.Period")
+						.Replace(" and ", " && ")
+						.Replace(" or ", " || ")
+						.Replace(" not ", " ! ")
+						.Replace("'", "\"")
+						.Replace(".Column.Period", ".Time.Period")
 						.Replace("q.Column", "q.Col")
-						.Replace("query.Column","q.Col")
-						;
-				
+						.Replace("query.Column", "q.Col")
+					;
+
 				return result;
 			}
-			else
-			{
+			else {
 				return currentResult;
 			}
 		}

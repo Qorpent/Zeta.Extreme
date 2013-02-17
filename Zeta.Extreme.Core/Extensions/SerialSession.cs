@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : SerialSession.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -30,15 +29,15 @@ namespace Zeta.Extreme {
 		/// <param name="query"> </param>
 		/// <param name="timeout"> </param>
 		/// <returns> </returns>
-		public QueryResult Eval(Query query, int timeout =-1) {
+		public QueryResult Eval(Query query, int timeout = -1) {
 			lock (_session._sync_serial_access_lock) {
 				if (null != _session._async_serial_acess_task) {
 					_session._async_serial_acess_task.Wait();
 				}
 				Query realquery = null;
-				
+
 				realquery = _session.Register(query);
-				
+
 				if (null == realquery) {
 					return new QueryResult();
 				}

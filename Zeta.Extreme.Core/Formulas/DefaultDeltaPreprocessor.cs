@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : DefaultDeltaPreprocessor.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -34,18 +33,17 @@ namespace Zeta.Extreme {
 			if (request.Language == "boo" || request.Language == "cs") {
 				//ограничитель на язык
 				var result = Regex.Replace(currentResult, FormulaParserConstants.CallDeltaPattern,
-				                     m => QueryDelta.CreateFromMatch(m).ToCSharpString(true,"Eval"));
-				result =  Regex.Replace(result, FormulaParserConstants.DeltaPattern,
-					m => QueryDelta.CreateFromMatch(m).ToCSharpString());
-									 // совместимость с формулами типа f.choose
+				                           m => QueryDelta.CreateFromMatch(m).ToCSharpString(true, "Eval"));
+				result = Regex.Replace(result, FormulaParserConstants.DeltaPattern,
+				                       m => QueryDelta.CreateFromMatch(m).ToCSharpString());
+				// совместимость с формулами типа f.choose
 				result = Regex.Replace(result, @"(\d+\.\d+)", "$1m", RegexOptions.Compiled);
 				result = Regex.Replace(result, @"""___(\w+)""", "getn(\"$1\")", RegexOptions.Compiled);
 				result = Regex.Replace(result, @"___(\w+)", "getn(\"$1\")", RegexOptions.Compiled);
 				result = Regex.Replace(result, @"""__(\w+)""", "gets(\"$1\")", RegexOptions.Compiled);
 				result = Regex.Replace(result, @"__(\w+)", "gets(\"$1\")", RegexOptions.Compiled);
-				if (result.Contains("@") || result.Contains("$") || result.Contains("?"))
-				{
-					request.PreparedType = typeof(IllegalSyntaxFormulaStub);
+				if (result.Contains("@") || result.Contains("$") || result.Contains("?")) {
+					request.PreparedType = typeof (IllegalSyntaxFormulaStub);
 				}
 				return result;
 			}

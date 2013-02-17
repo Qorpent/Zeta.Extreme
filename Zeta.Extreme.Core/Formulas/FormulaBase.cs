@@ -1,10 +1,28 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : FormulaBase.cs
+// Project: Zeta.Extreme.Core
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System;
 
 namespace Zeta.Extreme {
 	/// <summary>
-	/// Базовая абстрактная формула
+	/// 	Базовая абстрактная формула
 	/// </summary>
-	public abstract class FormulaBase : IFormula,IDisposable {
+	public abstract class FormulaBase : IFormula, IDisposable {
+		/// <summary>
+		/// 	Выполняет определяемые приложением задачи, связанные с высвобождением или сбросом неуправляемых ресурсов.
+		/// </summary>
+		/// <filterpriority>2</filterpriority>
+		public void Dispose() {
+			CleanUp();
+		}
+
 		/// <summary>
 		/// 	Настраивает формулу на конкретный переданный запрос
 		/// </summary>
@@ -13,35 +31,17 @@ namespace Zeta.Extreme {
 			Query = query;
 			Session = query.Session;
 		}
-		/// <summary>
-		/// Ссылка на контекст текущего запроса
-		/// </summary>
-		protected internal Query Query;
 
 		/// <summary>
-		/// Ссылка на контекст вызова и конструирования формулы
+		/// 	Устанавливает контекст использования формулы
 		/// </summary>
-		protected FormulaRequest Descriptor;
-		/// <summary>
-		/// Флаг нахождения в режиме плейбэка
-		/// </summary>
-		protected bool IsInPlaybackMode;
-
-		/// <summary>
-		/// 	Базовая сессия
-		/// </summary>
-		protected internal Session Session;
-
-		/// <summary>
-		/// Устанавливает контекст использования формулы
-		/// </summary>
-		/// <param name="request"></param>
+		/// <param name="request"> </param>
 		public virtual void SetContext(FormulaRequest request) {
 			Descriptor = request;
 		}
 
 		/// <summary>
-		/// Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
+		/// 	Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 		/// </summary>
 		/// <param name="query"> </param>
 		public void Playback(Query query) {
@@ -63,11 +63,6 @@ namespace Zeta.Extreme {
 			IsInPlaybackMode = false;
 			return InternalEval();
 		}
-		/// <summary>
-		/// Заготовка внутренней реализации вычисления
-		/// </summary>
-		/// <returns></returns>
-		protected abstract QueryResult InternalEval();
 
 		/// <summary>
 		/// 	Выполняет очистку ресурсов формулы после использования
@@ -78,11 +73,29 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Выполняет определяемые приложением задачи, связанные с высвобождением или сбросом неуправляемых ресурсов.
+		/// 	Заготовка внутренней реализации вычисления
 		/// </summary>
-		/// <filterpriority>2</filterpriority>
-		public void Dispose() {
-			CleanUp();
-		}
+		/// <returns> </returns>
+		protected abstract QueryResult InternalEval();
+
+		/// <summary>
+		/// 	Ссылка на контекст вызова и конструирования формулы
+		/// </summary>
+		protected FormulaRequest Descriptor;
+
+		/// <summary>
+		/// 	Флаг нахождения в режиме плейбэка
+		/// </summary>
+		protected bool IsInPlaybackMode;
+
+		/// <summary>
+		/// 	Ссылка на контекст текущего запроса
+		/// </summary>
+		protected internal Query Query;
+
+		/// <summary>
+		/// 	Базовая сессия
+		/// </summary>
+		protected internal Session Session;
 	}
 }

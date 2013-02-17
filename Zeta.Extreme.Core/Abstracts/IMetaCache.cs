@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : IMetaCache.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -23,7 +22,7 @@ namespace Zeta.Extreme {
 		/// <param name="id"> </param>
 		/// <returns> </returns>
 		T Get<T>(object id) where T : class, IEntityDataPattern;
-		
+
 		/// <summary>
 		/// 	Сохранить объект в хранилище
 		/// </summary>

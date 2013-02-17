@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : ObjHandler.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -10,7 +9,6 @@
 #endregion
 
 using System;
-using Comdiv.Application;
 using Comdiv.Olap.Model;
 using Comdiv.Zeta.Model;
 
@@ -42,20 +40,21 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Ўоткат дл€ быстрой проверки что речь идет о предпри€тии
+		/// 	Ўоткат дл€ быстрой проверки что речь идет о предпри€тии
 		/// </summary>
 		public bool IsForObj {
 			get { return Type == ObjType.Obj; }
 		}
+
 		/// <summary>
-		/// Ўоткат дл€ быстрой проверки что речь идет не о предпри€тии
+		/// 	Ўоткат дл€ быстрой проверки что речь идет не о предпри€тии
 		/// </summary>
-		public bool IsNotForObj
-		{
+		public bool IsNotForObj {
 			get { return Type != ObjType.Obj; }
 		}
+
 		/// <summary>
-		/// —сылка на реальный экземпл€р старшего объекта
+		/// 	—сылка на реальный экземпл€р старшего объекта
 		/// </summary>
 		public IZetaMainObject ObjRef {
 			get { return Native as IZetaMainObject; }

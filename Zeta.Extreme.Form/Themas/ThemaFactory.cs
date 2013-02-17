@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : ThemaFactory.cs
 // Project: Zeta.Extreme.Form
 // This code cannot be used without agreement from 
@@ -94,7 +93,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="throwerror"> </param>
 		/// <returns> </returns>
 		public IInputTemplate GetForm(string code, bool throwerror = false) {
-			if(code.EndsWith(".in")) {
+			if (code.EndsWith(".in")) {
 				code = code.Replace(".in", "");
 			}
 			return cache.get(code + ".in", () =>

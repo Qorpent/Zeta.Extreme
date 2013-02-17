@@ -1,8 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
-// Original file : DefaultMetaCache.cs
+// Original file : MetaCache.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -21,11 +20,11 @@ namespace Zeta.Extreme {
 	/// 	Стандартная реализация, работает как с временным, так и реальными хранилищами
 	/// </summary>
 	public class MetaCache : IMetaCache {
+		///<summary>
+		///	Экземпляр по умолчанию
+		///</summary>
+		public static readonly IMetaCache Default = new MetaCache();
 
-		/// <summary>
-		///Экземпляр по умолчанию
-		/// </summary>
-		public readonly static IMetaCache Default = new MetaCache();
 		/// <summary>
 		/// 	Получить объект из хранилища
 		/// </summary>
@@ -47,15 +46,7 @@ namespace Zeta.Extreme {
 				return result;
 			}
 		}
-		/// <summary>
-		/// If false - first error - no more native, true - will try again and again
-		/// </summary>
-		public bool OptimisticOnNativeError;
 
-		/// <summary>
-		/// Признак того что с нативом что-то не так
-		/// </summary>
-		protected bool NativeIsError;
 		/// <summary>
 		/// 	Сохранить объект в хранилище
 		/// </summary>
@@ -77,17 +68,24 @@ namespace Zeta.Extreme {
 		}
 
 
-	
 		private Type NormalizeType(Type type) {
-			if(typeof(IZetaRow).IsAssignableFrom(type)) return typeof (IZetaRow);
-			if (typeof(IZetaColumn).IsAssignableFrom(type)) return typeof(IZetaColumn);
-			if (typeof(IZetaMainObject).IsAssignableFrom(type)) return typeof(IZetaMainObject);
+			if (typeof (IZetaRow).IsAssignableFrom(type)) {
+				return typeof (IZetaRow);
+			}
+			if (typeof (IZetaColumn).IsAssignableFrom(type)) {
+				return typeof (IZetaColumn);
+			}
+			if (typeof (IZetaMainObject).IsAssignableFrom(type)) {
+				return typeof (IZetaMainObject);
+			}
 			return type;
 		}
 
 		private T GetNative<T>(object id) where T : class {
 			try {
-				if(NativeIsError && !OptimisticOnNativeError) return null;
+				if (NativeIsError && !OptimisticOnNativeError) {
+					return null;
+				}
 				if (typeof (IZetaRow).IsAssignableFrom(typeof (T))) {
 					return (T) RowCache.get(id);
 				}
@@ -103,18 +101,17 @@ namespace Zeta.Extreme {
 		}
 
 		private T GetById<T>(int id) where T : class {
-			var type = NormalizeType(typeof(T));
+			var type = NormalizeType(typeof (T));
 			if (_byid.ContainsKey(type)) {
-				if (_byid[type].ContainsKey(id))
-				{
-					return (T)_byid[type][id];
+				if (_byid[type].ContainsKey(id)) {
+					return (T) _byid[type][id];
 				}
 			}
 			return null;
 		}
 
 		private T GetByCode<T>(string code) where T : class {
-			var type = NormalizeType(typeof(T));
+			var type = NormalizeType(typeof (T));
 			if (_bycode.ContainsKey(type)) {
 				if (_bycode[type].ContainsKey(code)) {
 					return (T) _bycode[type][code];
@@ -127,5 +124,15 @@ namespace Zeta.Extreme {
 			new Dictionary<Type, IDictionary<string, object>>();
 
 		private readonly IDictionary<Type, IDictionary<int, object>> _byid = new Dictionary<Type, IDictionary<int, object>>();
+
+		/// <summary>
+		/// 	Признак того что с нативом что-то не так
+		/// </summary>
+		protected bool NativeIsError;
+
+		/// <summary>
+		/// 	If false - first error - no more native, true - will try again and again
+		/// </summary>
+		public bool OptimisticOnNativeError;
 	}
 }

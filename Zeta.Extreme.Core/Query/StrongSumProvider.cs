@@ -1,8 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
-// Original file : ZetaVirtualSumHelper.cs
+// Original file : StrongSumProvider.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -31,7 +30,9 @@ namespace Zeta.Extreme {
 		/// <param name="r"> </param>
 		/// <returns> </returns>
 		public bool IsSum(IZetaQueryDimension r) {
-			if(null==r) return false;
+			if (null == r) {
+				return false;
+			}
 			lock (r.LocalProperties) {
 				if (r.LocalProperties.ContainsKey("_zvs_h_t")) {
 					return true;
@@ -51,7 +52,6 @@ namespace Zeta.Extreme {
 		}
 
 
-
 		/// <summary>
 		/// </summary>
 		/// <param name="item"> </param>
@@ -59,20 +59,19 @@ namespace Zeta.Extreme {
 		/// <exception cref="NotImplementedException"></exception>
 		public bool EvalIsSum(IZetaQueryDimension item) {
 			var row = item as IZetaRow;
-			if(null!=row) {
+			if (null != row) {
 				if (row.IsMarkSeted("0SA")) {
 					return true;
 				}
 			}
-			if (item.IsFormula && item.FormulaEvaluator == "boo" && IsSumableFormula(item.Formula))
-			{
+			if (item.IsFormula && item.FormulaEvaluator == "boo" && IsSumableFormula(item.Formula)) {
 				return true;
 			}
 
 			return false;
 		}
 
-		
+
 		/// <summary>
 		/// 	Если формула состоит только из простых дельт и действий + и -
 		/// 	то такая формула рассматривается как аналог суммы
@@ -117,7 +116,7 @@ namespace Zeta.Extreme {
 			if (!IsSum(item)) {
 				yield break;
 			}
-			if(item is IZetaRow) {
+			if (item is IZetaRow) {
 				var row = item as IZetaRow;
 				if (row.IsMarkSeted("0SA")) {
 					if (string.IsNullOrWhiteSpace(row.Group)) {
@@ -139,8 +138,7 @@ namespace Zeta.Extreme {
 				}
 			}
 			else {
-				foreach (var i in GetFormulaSumDelta(item))
-				{
+				foreach (var i in GetFormulaSumDelta(item)) {
 					yield return i;
 				}
 			}
@@ -189,11 +187,10 @@ namespace Zeta.Extreme {
 				if (c.IsMarkSeted("0NOSUM")) {
 					continue;
 				}
-				if(!IsSum(c) && 0!= c.Children.Count) {
+				if (!IsSum(c) && 0 != c.Children.Count) {
 					continue;
 				}
-				yield return new QueryDelta { Row = c };
-
+				yield return new QueryDelta {Row = c};
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : QueryProcessor.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -10,9 +9,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Threading;
-using Comdiv.Olap.Model;
 using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme {
@@ -42,7 +39,7 @@ namespace Zeta.Extreme {
 		/// <param name="query"> </param>
 		public void Prepare(Query query) {
 			query.PrepareState = PrepareState.InPrepare;
-			
+
 			if (query.IsPrimary) {
 				RegisterPrimaryRequest(query);
 			}
@@ -60,23 +57,23 @@ namespace Zeta.Extreme {
 
 		private IZetaQueryDimension GetMostPriorityNoPrimarySource(Query query) {
 			if (query.Obj.IsFormula || (query.Obj.IsForObj && _sumh.IsSum(query.Obj))) {
-				return (query.Obj.ObjRef) ?? (IZetaQueryDimension)query.Obj;
+				return (query.Obj.ObjRef) ?? (IZetaQueryDimension) query.Obj;
 			}
 			if (query.Col.IsFormula || _sumh.IsSum(query.Col.Native)) {
-				return query.Col.Native ?? (IZetaQueryDimension)query.Col;
+				return query.Col.Native ?? (IZetaQueryDimension) query.Col;
 			}
-			return query.Row.Native ?? (IZetaQueryDimension)query.Row;
+			return query.Row.Native ?? (IZetaQueryDimension) query.Row;
 		}
 
 		private void PrepareFormulas(Query query, IZetaQueryDimension mostpriority) {
 			query.EvaluationType = QueryEvaluationType.Formula;
-			
+
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Formula);
 			}
 			var key = GetKey(mostpriority);
 			var formula = FormulaStorage.Default.GetFormula(key, false);
-			if(null==formula) {
+			if (null == formula) {
 				FormulaStorage.Default.Register(new FormulaRequest
 					{Formula = mostpriority.Formula, Language = mostpriority.FormulaEvaluator, Key = key});
 				formula = FormulaStorage.Default.GetFormula(key, false);
@@ -96,9 +93,10 @@ namespace Zeta.Extreme {
 				key = "row:" + key;
 			}
 			else if (mostpriority is ColumnHandler || mostpriority is IZetaColumn) {
-				if(mostpriority is ColumnHandler && null==((ColumnHandler)mostpriority).Native) {
+				if (mostpriority is ColumnHandler && null == ((ColumnHandler) mostpriority).Native) {
 					key = "dyncol:" + mostpriority.Formula;
-				}else {
+				}
+				else {
 					key = "col:" + key;
 				}
 			}
@@ -110,11 +108,11 @@ namespace Zeta.Extreme {
 
 		private void ExpandSum(Query query, IZetaQueryDimension mostpriority) {
 			query.EvaluationType = QueryEvaluationType.Summa;
-			
+
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Sum);
 			}
-		
+
 			foreach (var r in _sumh.GetSumDelta(mostpriority)) {
 				var sq = r.Apply(query);
 				sq = _session.Register(sq);
@@ -128,7 +126,6 @@ namespace Zeta.Extreme {
 				query.Result = new QueryResult {IsComplete = true, NumericResult = 0m};
 				return;
 			}
-
 		}
 
 		/// <summary>
@@ -143,7 +140,6 @@ namespace Zeta.Extreme {
 			if (_session.TraceQuery) {
 				query.TraceList.Add(_session.Id + " registered to primary ");
 			}
-			
 		}
 
 		private readonly Session _session;

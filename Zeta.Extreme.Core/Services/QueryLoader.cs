@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : QueryLoader.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -53,38 +52,37 @@ namespace Zeta.Extreme {
 			if (internalquery.Row.IsFormula && !_sumh.IsSum(query.Row)) {
 				FormulaStorage.Default.Register(new FormulaRequest
 					{
-						Key = "row:"+ internalquery.Row.Code,
+						Key = "row:" + internalquery.Row.Code,
 						Formula = internalquery.Row.Formula,
 						Language = internalquery.Row.FormulaType,
 						Tags = internalquery.Row.Tag,
-						Marks = internalquery.Row.Native==null?"": internalquery.Row.Native.MarkCache
+						Marks = internalquery.Row.Native == null ? "" : internalquery.Row.Native.MarkCache
 					});
 			}
 
 			if (internalquery.Col.IsFormula && !_sumh.IsSum(query.Col)) {
 				var key = "col:" + internalquery.Col.Code;
-				if(null==internalquery.Col.Native) {
+				if (null == internalquery.Col.Native) {
 					key = "dyncol:" + internalquery.Col.Formula;
 				}
 				FormulaStorage.Default.Register(new FormulaRequest
-				{
-					Key =key,
-					Formula = internalquery.Col.Formula,
-					Language = internalquery.Col.FormulaType,
-					Tags = internalquery.Col.Tag,
-					Marks = internalquery.Col.Native == null ? "" : internalquery.Col.Native.MarkCache
-				});
+					{
+						Key = key,
+						Formula = internalquery.Col.Formula,
+						Language = internalquery.Col.FormulaType,
+						Tags = internalquery.Col.Tag,
+						Marks = internalquery.Col.Native == null ? "" : internalquery.Col.Native.MarkCache
+					});
 			}
 
-			if (internalquery.Obj.IsFormula && !_sumh.IsSum(query.Obj))
-			{
+			if (internalquery.Obj.IsFormula && !_sumh.IsSum(query.Obj)) {
 				FormulaStorage.Default.Register(new FormulaRequest
-				{
-					Key = "obj:" + internalquery.Obj.Code,
-					Formula = internalquery.Obj.Formula,
-					Language = internalquery.Obj.FormulaType,
-					Tags = internalquery.Obj.Tag
-				});
+					{
+						Key = "obj:" + internalquery.Obj.Code,
+						Formula = internalquery.Obj.Formula,
+						Language = internalquery.Obj.FormulaType,
+						Tags = internalquery.Obj.Tag
+					});
 			}
 
 

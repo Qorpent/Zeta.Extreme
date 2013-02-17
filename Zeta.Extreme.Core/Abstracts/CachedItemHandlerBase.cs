@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : CachedItemHandlerBase.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -24,16 +23,6 @@ namespace Zeta.Extreme {
 	/// <typeparam name="TItem"> </typeparam>
 	public class CachedItemHandlerBase<TItem> : CacheKeyGeneratorBase, IZetaQueryDimension
 		where TItem : class, IWithCode, IWithId, IWithNewTags {
-		private string _name;
-
-		private string _comment;
-
-		private DateTime _version = new DateTime();
-
-		private string _parsedFormula;
-
-		private IDictionary<string, object> _localProperties;
-
 		/// <summary>
 		/// 	Набор кодов элемента
 		/// </summary>
@@ -66,6 +55,49 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	Множественный набор идентификаторов
+		/// </summary>
+		public int[] Ids {
+			get { return _ids; }
+			set {
+				if (null != Native) {
+					throw new Exception("cannot assign ids on natived condition");
+				}
+				if (value == _ids) {
+					return;
+				}
+				_ids = value;
+				InvalidateCacheKey();
+			}
+		}
+
+		/// <summary>
+		/// 	Тип формулы
+		/// </summary>
+		public string FormulaType {
+			get {
+				if (null != Native) {
+					var isformula = Native as IWithFormula;
+					if (null != isformula) {
+						return isformula.FormulaEvaluator;
+					}
+					return string.Empty;
+				}
+				return _formulaType;
+			}
+			set {
+				if (null != Native) {
+					throw new Exception("cannot assign formulatype on natived condition");
+				}
+				if (value == _formulaType) {
+					return;
+				}
+				_formulaType = value;
+				InvalidateCacheKey();
+			}
+		}
+
+		/// <summary>
 		/// 	Ид объекта
 		/// </summary>
 		public int Id {
@@ -84,23 +116,6 @@ namespace Zeta.Extreme {
 				}
 				InvalidateCacheKey();
 				_id = value;
-			}
-		}
-
-		/// <summary>
-		/// 	Множественный набор идентификаторов
-		/// </summary>
-		public int[] Ids {
-			get { return _ids; }
-			set {
-				if (null != Native) {
-					throw new Exception("cannot assign ids on natived condition");
-				}
-				if (value == _ids) {
-					return;
-				}
-				_ids = value;
-				InvalidateCacheKey();
 			}
 		}
 
@@ -182,42 +197,13 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		string IWithFormula.ParsedFormula {
-			get { return _parsedFormula; }
-			set { _parsedFormula = value; }
-		}
+		string IWithFormula.ParsedFormula { get; set; }
 
 		string IWithFormula.FormulaEvaluator {
 			get { return FormulaType; }
-			set {FormulaType = value; }
+			set { FormulaType = value; }
 		}
 
-
-		/// <summary>
-		/// 	Тип формулы
-		/// </summary>
-		public string FormulaType {
-			get {
-				if (null != Native) {
-					var isformula = Native as IWithFormula;
-					if (null != isformula) {
-						return isformula.FormulaEvaluator;
-					}
-					return string.Empty;
-				}
-				return _formulaType;
-			}
-			set {
-				if (null != Native) {
-					throw new Exception("cannot assign formulatype on natived condition");
-				}
-				if (value == _formulaType) {
-					return;
-				}
-				_formulaType = value;
-				InvalidateCacheKey();
-			}
-		}
 
 		/// <summary>
 		/// </summary>
@@ -237,6 +223,23 @@ namespace Zeta.Extreme {
 				}
 				_tag = value;
 				InvalidateCacheKey();
+			}
+		}
+
+		string IWithName.Name { get; set; }
+
+		string IWithComment.Comment { get; set; }
+
+		DateTime IWithVersion.Version {
+			get { return _version; }
+		}
+
+		IDictionary<string, object> IZetaQueryDimension.LocalProperties {
+			get {
+				if (null != Native) {
+					return ((IZetaQueryDimension) Native).LocalProperties;
+				}
+				return _localProperties ?? (_localProperties = new Dictionary<string, object>());
 			}
 		}
 
@@ -353,6 +356,8 @@ namespace Zeta.Extreme {
 			return null;
 		}
 
+		private readonly DateTime _version = new DateTime();
+
 		private string _code;
 		private string[] _codes;
 		private string _formula;
@@ -360,29 +365,8 @@ namespace Zeta.Extreme {
 		private int _id;
 		private int[] _ids;
 		private bool _isFormula;
+		private IDictionary<string, object> _localProperties;
 		private TItem _native;
 		private string _tag;
-
-
-		string IWithName.Name {
-			get { return _name; }
-			set { _name = value; }
-		}
-
-		string IWithComment.Comment {
-			get { return _comment; }
-			set { _comment = value; }
-		}
-
-		DateTime IWithVersion.Version {
-			get { return _version; }
-		}
-
-		IDictionary<string, object> IZetaQueryDimension.LocalProperties {
-			get {
-				if(null!=Native) return ((IZetaQueryDimension) Native).LocalProperties;
-				return _localProperties ?? (_localProperties=new Dictionary<string, object>());
-			}
-		}
 		}
 }

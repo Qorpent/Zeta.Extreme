@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : IFormulaStorage.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -16,6 +15,21 @@ namespace Zeta.Extreme {
 	/// 	Интерфейс коллекции формул
 	/// </summary>
 	public interface IFormulaStorage {
+		/// <summary>
+		/// 	True - включен режим автоматического батча
+		/// </summary>
+		bool AutoBatchCompile { get; set; }
+
+		/// <summary>
+		/// 	Последняя ошибка компиляции
+		/// </summary>
+		Exception LastCompileError { get; set; }
+
+		/// <summary>
+		/// 	Количество формул
+		/// </summary>
+		int Count { get; }
+
 		///<summary>
 		///</summary>
 		///<param name="request"> </param>
@@ -45,31 +59,17 @@ namespace Zeta.Extreme {
 		void Return(string key, IFormula formula);
 
 		/// <summary>
-		/// Асинхронно выполняет полную компиляцию формул
+		/// 	Асинхронно выполняет полную компиляцию формул
 		/// </summary>
 		void StartAsyncCompilation();
 
 		/// <summary>
-		/// True - включен режим автоматического батча
-		/// </summary>
-		bool AutoBatchCompile { get; set; }
-
-		/// <summary>
-		/// Последняя ошибка компиляции
-		/// </summary>
-		Exception LastCompileError { get; set; }
-
-		/// <summary>
-		/// Количество формул
-		/// </summary>
-		int Count { get; }
-
-		/// <summary>
-		/// Компилирует все формы в стеке
+		/// 	Компилирует все формы в стеке
 		/// </summary>
 		void CompileAll();
+
 		/// <summary>
-		/// Очистка кэша формул
+		/// 	Очистка кэша формул
 		/// </summary>
 		void Clear();
 	}

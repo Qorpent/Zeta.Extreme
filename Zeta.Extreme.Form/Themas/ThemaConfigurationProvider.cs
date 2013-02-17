@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : ThemaConfigurationProvider.cs
 // Project: Zeta.Extreme.Form
 // This code cannot be used without agreement from 
@@ -13,16 +12,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using System.Xml.Xsl;
 using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.IO;
 using Comdiv.Inversion;
+using Qorpent.Applications;
 using Qorpent.IO;
-using Qorpent.Utils.Extensions;
+using ConvertExtensions = Qorpent.Utils.Extensions.ConvertExtensions;
+using XmlExtensions = Qorpent.Utils.Extensions.XmlExtensions;
+
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
 	/// 	Провайдер конфигураций
@@ -32,9 +32,8 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Создает стандартный конфигуратор
 		/// </summary>
 		public ThemaConfigurationProvider(ThemaLoaderOptions options = null) {
-			this.Options = options ?? new ThemaLoaderOptions();
+			Options = options ?? new ThemaLoaderOptions();
 		}
-
 
 
 		/// <summary>
@@ -80,7 +79,7 @@ namespace Zeta.Extreme.Form.Themas {
 		public string LoadCompileFilters { get; set; }
 
 		/// <summary>
-		/// Опции зашгрузки темы
+		/// 	Опции зашгрузки темы
 		/// </summary>
 		public ThemaLoaderOptions Options { get; set; }
 
@@ -94,7 +93,7 @@ namespace Zeta.Extreme.Form.Themas {
 		public void Set(string themacode, string parameter, object value) {
 			lock (this) {
 				value = value ?? "";
-				var type = Comdiv.Extensions.ReflectionExtensions.ResolveWellKnownName(value.GetType());
+				var type = ReflectionExtensions.ResolveWellKnownName(value.GetType());
 				var overfile = PathResolver.Resolve("data/override.xml");
 				if (null == overfile) {
 					overfile = PathResolver.Resolve("~/usr/data/override.xml", false);
@@ -152,11 +151,19 @@ namespace Zeta.Extreme.Form.Themas {
 			var filters = LoadCompileFilters.split();
 			_cfgVersion = new DateTime();
 			string[] files = null;
-			if(!Options.RootDirectory.Contains("~") && Path.IsPathRooted(Options.RootDirectory)) {
+			if (!Options.RootDirectory.Contains("~") && Path.IsPathRooted(Options.RootDirectory)) {
 				files = Directory.GetFiles(Options.RootDirectory, "*.xml");
 			}
 			else {
-				files =  Qorpent.Applications.Application.Current.Files.ResolveAll(new FileSearchQuery{ExistedOnly = true,ProbeFiles =new[]{"*.xml"},ProbePaths = new[]{Options.RootDirectory},All = true,PathType = FileSearchResultType.FullPath}).ToArray();
+				files =
+					Application.Current.Files.ResolveAll(new FileSearchQuery
+						{
+							ExistedOnly = true,
+							ProbeFiles = new[] {"*.xml"},
+							ProbePaths = new[] {Options.RootDirectory},
+							All = true,
+							PathType = FileSearchResultType.FullPath
+						}).ToArray();
 			}
 			files = files.OrderBy(x => Path.GetFileNameWithoutExtension(x)).ToArray();
 			foreach (var f in files) {
@@ -164,23 +171,27 @@ namespace Zeta.Extreme.Form.Themas {
 					_cfgVersion = File.GetLastWriteTime(f);
 				}
 				var txt = File.ReadAllText(f);
-				
-				if(!string.IsNullOrWhiteSpace(Options.FilterParameters)) {
-					if(Options.LoadLibraries && txt.Substring(0,30).Contains("lib\"")) {
+
+				if (!string.IsNullOrWhiteSpace(Options.FilterParameters)) {
+					if (Options.LoadLibraries && txt.Substring(0, 30).Contains("lib\"")) {
 						yield return XElement.Load(f);
 						continue;
 					}
 
 					foreach (var flag in Options.FilterParameters.Split(',')) {
-						if(!txt.Contains("<param id=\""+flag+"\""))continue;
-						var x = XElement.Load(f);
-						var e = x.Elements("param").FirstOrDefault(_ => _.Attr("id") == flag);
-						if(null==e)continue;
-						var val = e.Value;
-						if(string.IsNullOrWhiteSpace(val)) {
-							val = e.Attr("value");
+						if (!txt.Contains("<param id=\"" + flag + "\"")) {
+							continue;
 						}
-						if(val.ToBool()) {
+						var x = XElement.Load(f);
+						var e = x.Elements("param").FirstOrDefault(_ => XmlExtensions.Attr(_, "id") == flag);
+						if (null == e) {
+							continue;
+						}
+						var val = e.Value;
+						if (string.IsNullOrWhiteSpace(val)) {
+							val = XmlExtensions.Attr(e, "value");
+						}
+						if (ConvertExtensions.ToBool(val)) {
 							yield return x;
 							break;
 						}
@@ -197,7 +208,6 @@ namespace Zeta.Extreme.Form.Themas {
 					}
 				}
 			}
-			
 		}
 
 
@@ -248,16 +258,16 @@ namespace Zeta.Extreme.Form.Themas {
 			foreach (var configuration in configurations.Values) {
 				configuration.Name = configuration.SrcXml.attr("name", configuration.Code);
 				applyPseudoProperties(configuration);
-				if(Options.ElementTypes.HasFlag(ElementType.Command)) {
+				if (Options.ElementTypes.HasFlag(ElementType.Command)) {
 					readCommands(configuration);
 				}
-				if(Options.ElementTypes.HasFlag(ElementType.Document)) {
+				if (Options.ElementTypes.HasFlag(ElementType.Document)) {
 					readDocuments(configuration);
 				}
-				if(Options.ElementTypes.HasFlag(ElementType.Form)) {
+				if (Options.ElementTypes.HasFlag(ElementType.Form)) {
 					readInputs(configuration);
 				}
-				if(Options.ElementTypes.HasFlag(ElementType.Report)) {
+				if (Options.ElementTypes.HasFlag(ElementType.Report)) {
 					readOutputs(configuration);
 				}
 			}
@@ -550,7 +560,7 @@ namespace Zeta.Extreme.Form.Themas {
 		private TypedParameter readParameter(XElement parameter) {
 			var p = new TypedParameter
 				{
-					Type = Comdiv.Extensions.ReflectionExtensions.ResolveTypeByWellKnownName(parameter.attr("type", "str")),
+					Type = ReflectionExtensions.ResolveTypeByWellKnownName(parameter.attr("type", "str")),
 					Value = parameter.attr("value", null) ?? parameter.Value,
 					Name = parameter.idorcode(),
 					Mode = parameter.attr("mode", "static")
@@ -559,9 +569,7 @@ namespace Zeta.Extreme.Form.Themas {
 		}
 
 		private void prepareEmpty(IDictionary<string, ThemaConfiguration> configurations, XElement[] themas) {
-			
 			foreach (var thema in themas) {
-				
 				var desc = new ThemaConfiguration
 					{
 						Code = thema.idorcode("default"),

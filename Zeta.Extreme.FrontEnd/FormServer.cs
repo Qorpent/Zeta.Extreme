@@ -130,18 +130,17 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		/// <summary>
-		/// Перезагрузка системы
+		/// 	Перезагрузка системы
 		/// </summary>
 		public void Reload() {
-			
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask(), HibernateLoad);
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
-			ReadyToServeForms = new TaskWrapper(Task.FromResult(true), 
-												HibernateLoad, 
-												LoadThemas, 
-												MetaCacheLoad,
-												CompileFormulas);
+			ReadyToServeForms = new TaskWrapper(Task.FromResult(true),
+			                                    HibernateLoad,
+			                                    LoadThemas,
+			                                    MetaCacheLoad,
+			                                    CompileFormulas);
 			MetaCacheLoad.Run();
 			CompileFormulas.Run();
 			LoadThemas.Run();

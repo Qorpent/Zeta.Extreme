@@ -1,7 +1,6 @@
 ﻿#region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : ThemaLoaderOptions.cs
 // Project: Zeta.Extreme.Form
 // This code cannot be used without agreement from 
@@ -17,11 +16,17 @@ namespace Zeta.Extreme.Form.Themas {
 	/// </summary>
 	public class ThemaLoaderOptions {
 		/// <summary>
-		/// Опции провайдера тем по умолчанию
+		/// 	Опции провайдера тем по умолчанию
 		/// </summary>
 		public ThemaLoaderOptions() {
-			this.ClassRedirectMap = new Dictionary<string, string>();
+			ClassRedirectMap = new Dictionary<string, string>();
 		}
+
+		/// <summary>
+		/// 	Замещения классов, упомянутых в темах
+		/// </summary>
+		public IDictionary<string, string> ClassRedirectMap { get; private set; }
+
 		/// <summary>
 		/// 	Формирует стандартные опции загрузки тем для Zeta.Extreme форм
 		/// </summary>
@@ -67,11 +72,5 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Папка для загрузки тем
 		/// </summary>
 		public string RootDirectory = "~/tmp/compiled_themas";
-
-		/// <summary>
-		/// Замещения классов, упомянутых в темах
-		/// </summary>
-		public IDictionary<string, string> ClassRedirectMap { get; private set; }
-
 	}
 }

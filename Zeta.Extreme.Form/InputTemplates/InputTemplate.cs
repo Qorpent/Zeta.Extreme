@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : InputTemplate.cs
 // Project: Zeta.Extreme.Form
 // This code cannot be used without agreement from 
@@ -37,7 +36,6 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public InputTemplate() {
 			Values = new List<ColumnDesc>();
 			FixedRowCodes = new List<string>();
-			
 		}
 
 		/// <summary>
@@ -64,14 +62,8 @@ namespace Zeta.Extreme.Form.InputTemplates {
 
 
 		private IStateManager StateManager {
-			get {
-				return _stateManager ?? (_stateManager= Container.get<IStateManager>());
-				
-				
-			}
-			set {
-				_stateManager = value;
-			}
+			get { return _stateManager ?? (_stateManager = Container.get<IStateManager>()); }
+			set { _stateManager = value; }
 		}
 
 		/// <summary>
@@ -130,6 +122,14 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				}
 				return _redirectPeriodMap;
 			}
+		}
+
+		/// <summary>
+		/// 	Список перехватчиков проверки статусов
+		/// </summary>
+		public IList<IStateCheckInterceptor> StateInterceptors {
+			get { return _stateInterceptors ?? (_stateInterceptors = Container.all<IStateCheckInterceptor>().ToList()); }
+			set { _stateInterceptors = value; }
 		}
 
 		object ICloneable.Clone() {
@@ -1665,14 +1665,6 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		///</summary>
 		public Task CanSetTask;
 
-		/// <summary>
-		/// 	Список перехватчиков проверки статусов
-		/// </summary>
-		public IList<IStateCheckInterceptor> StateInterceptors {
-			get { return _stateInterceptors ??(_stateInterceptors= Container.all<IStateCheckInterceptor>().ToList()); }
-			set { _stateInterceptors = value; }
-		}
-
 		private IList<ColumnDesc> _cachedcolumns;
 		private IInversionContainer _container;
 		private IDictionary<string, string> _documents = new Dictionary<string, string>();
@@ -1681,12 +1673,12 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		private bool _ignorePeriodState;
 		private IDictionary<string, int> _redirectPeriodMap;
 		private IScheduleChecker _scheduleChecker;
+		private IList<IStateCheckInterceptor> _stateInterceptors;
+		private IStateManager _stateManager;
 		private bool _useBizTranMatrix;
 		private string biztran = "";
 		private string cachedState;
 		private IDetailFilter detailFilter;
 		private IDictionary<string, string> parameters = new Dictionary<string, string>();
-		private IStateManager _stateManager;
-		private IList<IStateCheckInterceptor> _stateInterceptors;
 	}
 }

@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : BackwardCompatibleFormulaBase.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -12,102 +11,152 @@
 using System;
 using System.Linq;
 using Comdiv.Extensions;
-using Comdiv.Model;
-using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Базовая формула для режима совместимости с BOO формулами предыдущего поколения
 	/// </summary>
 	public abstract class BackwardCompatibleFormulaBase : DeltaFormulaBase {
+		private static readonly int[] months = new[] {11, 12, 13, 14, 15, 16, 17, 18, 19, 110, 111, 112};
+		private static readonly int[] aggs = new[] {22, 1, 24, 25, 2, 27, 28, 3, 210, 211, 4};
+		private static readonly int[] plans = new[] {301, 303, 306, 309, 251, 252, 253, 254};
+		private static readonly int[] ozhids = new[] {401, 403, 406, 409};
+
+		private static readonly int[] korrektives = new[]
+			{31, 32, 33, 34, 311, 312, 313, 314, 321, 322, 323, 324, 331, 332, 333, 334, 341, 342, 343, 344};
+
 		/// <summary>
-		/// шоткат для совместимости со старыми формулами
-		/// </summary>
-		protected Query q { get { return Query; } }
-		/// <summary>
-		/// шоткат для совместимости со старыми формулами
-		/// </summary>
-		
-		protected Query query { get { return Query; } }
-		/// <summary>
-		/// акцессор к совместимому расширенному формуласету
-		/// </summary>
-		protected BackwardCompatibleMainFormulaSet f;
-		/// <summary>
-		/// Конструктор по умолчанию - инициирует часть старых сервисов
+		/// 	Конструктор по умолчанию - инициирует часть старых сервисов
 		/// </summary>
 		public BackwardCompatibleFormulaBase() {
 			f = new BackwardCompatibleMainFormulaSet(this);
 		}
 
+		/// <summary>
+		/// 	шоткат для совместимости со старыми формулами
+		/// </summary>
+		protected Query q {
+			get { return Query; }
+		}
 
 		/// <summary>
-		/// Быстрый акцессор к году запроса
+		/// 	шоткат для совместимости со старыми формулами
 		/// </summary>
-		public int year
-		{
+		protected Query query {
+			get { return Query; }
+		}
+
+
+		/// <summary>
+		/// 	Быстрый акцессор к году запроса
+		/// </summary>
+		public int year {
 			get { return q.Time.Year; }
 		}
+
 		/// <summary>
-		/// Проверяет соотвествие кодов колонки запроса
+		/// 	относится ли период к месяцам
 		/// </summary>
-		/// <param name="codes"></param>
-		/// <returns></returns>
-		protected bool colin(params string[] codes)
-		{
-			return codes.Select(x => x.ToUpper()).Any(x => x.ToUpper() == q.Col.Code.ToUpper() || (q.Col.Native != null && q.Col.Native.Code.ToUpper() == x.ToUpper()));
+		protected bool ismonth {
+			get { return Array.IndexOf(months, q.Time.Period) != -1; }
+		}
+
+		/// <summary>
+		/// 	относится ли период к кварталам
+		/// </summary>
+		protected int monthInKvart {
+			get { return f.monthInKvart(q.Time.Period); }
+		}
+
+		/// <summary>
+		/// 	относится ли период к коррективам
+		/// </summary>
+		protected bool iskorrperiod {
+			get { return Array.IndexOf(korrektives, q.Time.Period) != -1; }
+		}
+
+		/// <summary>
+		/// 	относится ли период к суммовым
+		/// </summary>
+		protected bool issumperiod {
+			get { return Array.IndexOf(aggs, q.Time.Period) != -1; }
+		}
+
+		/// <summary>
+		/// 	относится ля период к плановым
+		/// </summary>
+		protected bool isplanperiod {
+			get { return Array.IndexOf(plans, q.Time.Period) != -1; }
+		}
+
+		/// <summary>
+		/// 	Относится ли период к ожидаемым
+		/// </summary>
+		protected bool isozhidperiod {
+			get { return Array.IndexOf(ozhids, q.Time.Period) != -1; }
+		}
+
+		/// <summary>
+		/// 	Проверяет соотвествие кодов колонки запроса
+		/// </summary>
+		/// <param name="codes"> </param>
+		/// <returns> </returns>
+		protected bool colin(params string[] codes) {
+			return
+				codes.Select(x => x.ToUpper()).Any(
+					x => x.ToUpper() == q.Col.Code.ToUpper() || (q.Col.Native != null && q.Col.Native.Code.ToUpper() == x.ToUpper()));
 			//return Array.IndexOf(codes, q.Column.Code) != -1;
 		}
+
 		/// <summary>
-		/// Проверяет соотвтетсвие строки путям
+		/// 	Проверяет соотвтетсвие строки путям
 		/// </summary>
-		/// <param name="codes"></param>
-		/// <returns></returns>
-		protected bool pathin(params string[] codes)
-		{
-			if (q.Row.Native == null) return false;
+		/// <param name="codes"> </param>
+		/// <returns> </returns>
+		protected bool pathin(params string[] codes) {
+			if (q.Row.Native == null) {
+				return false;
+			}
 			return codes.Any(x => q.Row.Native.Path.Contains("/" + x + "/"));
 		}
 
-		
 
 		/// <summary>
-		/// Проверяет принадлежность текущей строки списку
+		/// 	Проверяет принадлежность текущей строки списку
 		/// </summary>
-		/// <param name="codes"></param>
-		/// <returns></returns>
-		protected bool rowin(params string[] codes)
-		{
+		/// <param name="codes"> </param>
+		/// <returns> </returns>
+		protected bool rowin(params string[] codes) {
 			return Array.IndexOf(codes, q.Row.Code) != -1;
 		}
+
 		/// <summary>
-		/// Запрос строкового параметра
+		/// 	Запрос строкового параметра
 		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		protected string gets(string name)
-		{
+		/// <param name="name"> </param>
+		/// <returns> </returns>
+		protected string gets(string name) {
 			return getp(name).toStr();
 		}
-		/// <summary>
-		/// запрос числового параметра
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		protected decimal getn(string name)
-		{
 
+		/// <summary>
+		/// 	запрос числового параметра
+		/// </summary>
+		/// <param name="name"> </param>
+		/// <returns> </returns>
+		protected decimal getn(string name) {
 			return getp(name).toDecimal();
 		}
 
 		/// <summary>
-		/// Получение контекстного параметра
+		/// 	Получение контекстного параметра
 		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		protected object getp(string name)
-		{
-			if(IsInPlaybackMode) return "STUB";
+		/// <param name="name"> </param>
+		/// <returns> </returns>
+		protected object getp(string name) {
+			if (IsInPlaybackMode) {
+				return "STUB";
+			}
 			throw new NotSupportedException("extreme does not supports parameter-based conditions for now");
 			//object result = "";
 			//if (null != ParameterSource)
@@ -142,58 +191,55 @@ namespace Zeta.Extreme {
 			//	tag = rt.ResolveTag(name);
 			//}
 			//return tag ?? "";
-
 		}
+
 		/// <summary>
-		/// Проверка маски тега
+		/// 	Проверка маски тега
 		/// </summary>
-		/// <param name="tag"></param>
-		/// <param name="mask"></param>
-		/// <returns></returns>
-		protected bool taglike(string tag, string mask)
-		{
+		/// <param name="tag"> </param>
+		/// <param name="mask"> </param>
+		/// <returns> </returns>
+		protected bool taglike(string tag, string mask) {
 			var tagvalue = q.Row.Native.ResolveTag(tag);
 			return tagvalue.like(mask);
 		}
 
 		/// <summary>
-		/// Проверка начала тега
+		/// 	Проверка начала тега
 		/// </summary>
-		/// <param name="tag"></param>
-		/// <param name="mask"></param>
-		/// <returns></returns>
-		protected bool tagstart(string tag, string mask)
-		{
+		/// <param name="tag"> </param>
+		/// <param name="mask"> </param>
+		/// <returns> </returns>
+		protected bool tagstart(string tag, string mask) {
 			return taglike(tag, "^" + mask);
 		}
+
 		/// <summary>
-		/// Проверка конца тега
+		/// 	Проверка конца тега
 		/// </summary>
-		/// <param name="tag"></param>
-		/// <param name="mask"></param>
-		/// <returns></returns>
-		protected bool tagend(string tag, string mask)
-		{
+		/// <param name="tag"> </param>
+		/// <param name="mask"> </param>
+		/// <returns> </returns>
+		protected bool tagend(string tag, string mask) {
 			return taglike(tag, mask + "$");
 		}
+
 		/// <summary>
-		/// Проверка тега текущей строки
+		/// 	Проверка тега текущей строки
 		/// </summary>
-		/// <param name="tag"></param>
-		/// <param name="mask"></param>
-		/// <returns></returns>
-		protected bool tag(string tag, string mask)
-		{
+		/// <param name="tag"> </param>
+		/// <param name="mask"> </param>
+		/// <returns> </returns>
+		protected bool tag(string tag, string mask) {
 			return taglike(tag, "^" + mask + "$");
 		}
 
 		/// <summary>
-		/// Не поддерживаемя на данный момент опция проверки группы предприятий или деталей
+		/// 	Не поддерживаемя на данный момент опция проверки группы предприятий или деталей
 		/// </summary>
-		/// <param name="groups"></param>
-		/// <returns></returns>
-		protected bool groupin(params string[] groups)
-		{
+		/// <param name="groups"> </param>
+		/// <returns> </returns>
+		protected bool groupin(params string[] groups) {
 			throw new NotSupportedException("на данный момент поддержка этой опции в Zeta.Extreme отсутвует");
 			/*
 			foreach (var g in groups)
@@ -211,23 +257,25 @@ namespace Zeta.Extreme {
 			return false;
 			 */
 		}
-	/// <summary>
-	/// Проверяет соотвествие периодов запроса набору
-	/// </summary>
-	/// <param name="periods"></param>
-	/// <returns></returns>
-		protected bool periodin(params int[] periods)
-		{
+
+		/// <summary>
+		/// 	Проверяет соотвествие периодов запроса набору
+		/// </summary>
+		/// <param name="periods"> </param>
+		/// <returns> </returns>
+		protected bool periodin(params int[] periods) {
 			return Array.IndexOf(periods, q.Time.Period) != -1;
 		}
 
 		/// <summary>
-		/// Проверяет на каком счете числится текущая деталь
+		/// 	Проверяет на каком счете числится текущая деталь
 		/// </summary>
-		/// <param name="contostring"></param>
-		/// <returns></returns>
+		/// <param name="contostring"> </param>
+		/// <returns> </returns>
 		protected bool contoin(string contostring) {
-			if(IsInPlaybackMode) return false; //prevent ambigous queries
+			if (IsInPlaybackMode) {
+				return false; //prevent ambigous queries
+			}
 			throw new NotSupportedException("на данный момент поддержка деталей и счетов в Zeta.Extreme отсутвует");
 			/*
 			var conts = contostring.split();
@@ -260,283 +308,278 @@ namespace Zeta.Extreme {
 			 */
 		}
 
-		private static readonly int[] months = new int[] { 11, 12, 13, 14, 15, 16, 17, 18, 19, 110, 111, 112 };
-		private static readonly int[] aggs = new int[] { 22, 1, 24, 25, 2, 27, 28, 3, 210, 211, 4 };
-		private static readonly int[] plans = new int[] { 301, 303, 306, 309, 251, 252, 253, 254 };
-		private static readonly int[] ozhids = new int[] { 401, 403, 406, 409 };
-		private static readonly int[] korrektives = new int[] { 31, 32, 33, 34, 311, 312, 313, 314, 321, 322, 323, 324, 331, 332, 333, 334, 341, 342, 343, 344 };
 
 		/// <summary>
-		/// относится ли период к месяцам
+		/// 	соответствие строки группе
 		/// </summary>
-		protected bool ismonth
-		{
-			get { return Array.IndexOf(months, q.Time.Period) != -1; }
-		}
-
-		/// <summary>
-		/// относится ли период к кварталам
-		/// </summary>
-		protected int monthInKvart
-		{
-			get { return f.monthInKvart(q.Time.Period); }
-		}
-		/// <summary>
-		/// относится ли период к коррективам
-		/// </summary>
-		protected bool iskorrperiod
-		{
-			get { return Array.IndexOf(korrektives, q.Time.Period) != -1; }
-		}
-		/// <summary>
-		/// относится ли период к суммовым
-		/// </summary>
-		protected bool issumperiod
-		{
-			get { return Array.IndexOf(aggs, q.Time.Period) != -1; }
-		}
-
-		/// <summary>
-		/// относится ля период к плановым
-		/// </summary>
-		protected bool isplanperiod
-		{
-			get { return Array.IndexOf(plans, q.Time.Period) != -1; }
-		}
-		/// <summary>
-		/// Относится ли период к ожидаемым
-		/// </summary>
-		protected bool isozhidperiod
-		{
-			get { return Array.IndexOf(ozhids, q.Time.Period) != -1; }
-		}
-
-
-
-
-
-
-		/// <summary>
-		/// соответствие строки группе
-		/// </summary>
-		/// <param name="groups"></param>
-		/// <returns></returns>
-		protected bool rowgroupin(params string[] groups)
-		{
-			if (null == q.Row.Native) return false;
+		/// <param name="groups"> </param>
+		/// <returns> </returns>
+		protected bool rowgroupin(params string[] groups) {
+			if (null == q.Row.Native) {
+				return false;
+			}
 			var grps = q.Row.Native.Group.split(false, true, '/', ';');
-			if (0 == grps.Count) return false;
-			foreach (var g in groups)
-			{
-				if (grps.Any(x => x == g)) return true;
+			if (0 == grps.Count) {
+				return false;
+			}
+			foreach (var g in groups) {
+				if (grps.Any(x => x == g)) {
+					return true;
+				}
 			}
 			return false;
 		}
+
 		/// <summary>
-		/// соответствие дерева группе
+		/// 	соответствие дерева группе
 		/// </summary>
-		/// <param name="groups"></param>
-		/// <returns></returns>
-		protected bool treegroupin(params string[] groups)
-		{
+		/// <param name="groups"> </param>
+		/// <returns> </returns>
+		protected bool treegroupin(params string[] groups) {
 			var current = q.Row.Native;
-			if (null == current) return false;
+			if (null == current) {
+				return false;
+			}
 
-			while (null != current)
-			{
-
+			while (null != current) {
 				var grps = current.Group.split(false, true, '/', ';');
-				foreach (var g in groups)
-				{
-					if (grps.Any(x => x == g)) return true;
+				foreach (var g in groups) {
+					if (grps.Any(x => x == g)) {
+						return true;
+					}
 				}
 				current = current.Parent;
-			}
-			return false;
-		}
-		/// <summary>
-		/// соответствие строки метке
-		/// </summary>
-		/// <param name="marks"></param>
-		/// <returns></returns>
-		protected bool rowlabelin(params string[] marks)
-		{
-			if (null == q.Row.Native) return false;
-			foreach (var m in marks)
-			{
-				if (q.Row.Native.IsMarkSeted(m)) return true;
 			}
 			return false;
 		}
 
 		/// <summary>
-		/// соответствие дерева метке
+		/// 	соответствие строки метке
 		/// </summary>
-		/// <param name="marks"></param>
-		/// <returns></returns>
-		protected bool treelabelin(params string[] marks)
-		{
+		/// <param name="marks"> </param>
+		/// <returns> </returns>
+		protected bool rowlabelin(params string[] marks) {
+			if (null == q.Row.Native) {
+				return false;
+			}
+			foreach (var m in marks) {
+				if (q.Row.Native.IsMarkSeted(m)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// 	соответствие дерева метке
+		/// </summary>
+		/// <param name="marks"> </param>
+		/// <returns> </returns>
+		protected bool treelabelin(params string[] marks) {
 			var current = q.Row.Native;
-			if (null == current) return false;
-			while (null != current)
-			{
-				foreach (var m in marks)
-				{
-					if (current.IsMarkSeted(m)) return true;
+			if (null == current) {
+				return false;
+			}
+			while (null != current) {
+				foreach (var m in marks) {
+					if (current.IsMarkSeted(m)) {
+						return true;
+					}
 				}
 				current = current.Parent;
 			}
 			return false;
 		}
+
 		/// <summary>
-		/// соответсвие строки тагу
+		/// 	соответсвие строки тагу
 		/// </summary>
-		/// <param name="tag"></param>
-		/// <returns></returns>
-		protected bool rowtagin(params string[] tag)
-		{
-			if (null == tag) return false;
-			foreach (var s in tag)
-			{
+		/// <param name="tag"> </param>
+		/// <returns> </returns>
+		protected bool rowtagin(params string[] tag) {
+			if (null == tag) {
+				return false;
+			}
+			foreach (var s in tag) {
 				var test = TagHelper.Parse(s);
-				foreach (var testt in test)
-				{
+				foreach (var testt in test) {
 					var testval = testt.Value.ToLower();
 					var currentval = TagHelper.Value(q.Row.Tag, testt.Key).ToLower();
-					if (currentval.noContent()) return false;
-					if (testval == "*") return true;
-					if (testval != currentval) return false;
+					if (currentval.noContent()) {
+						return false;
+					}
+					if (testval == "*") {
+						return true;
+					}
+					if (testval != currentval) {
+						return false;
+					}
 				}
 			}
 			return true;
 		}
+
 		/// <summary>
-		/// соответствие дерева тагу
+		/// 	соответствие дерева тагу
 		/// </summary>
-		/// <param name="tag"></param>
-		/// <returns></returns>
-		protected bool treetagin(params string[] tag)
-		{
-			if (null == tag) return false;
-			if (q.Row.Native == null)
-			{
+		/// <param name="tag"> </param>
+		/// <returns> </returns>
+		protected bool treetagin(params string[] tag) {
+			if (null == tag) {
+				return false;
+			}
+			if (q.Row.Native == null) {
 				return rowtagin(tag);
 			}
-			foreach (var s in tag)
-			{
+			foreach (var s in tag) {
 				var test = TagHelper.Parse(s);
-				foreach (var testt in test)
-				{
+				foreach (var testt in test) {
 					var testval = testt.Value.ToLower();
 					var currentval = q.Row.Native.ResolveTag(testt.Key).ToLower();
-					if (currentval.noContent()) return false;
-					if (testval == "*") return true;
-					if (testval != currentval) return false;
+					if (currentval.noContent()) {
+						return false;
+					}
+					if (testval == "*") {
+						return true;
+					}
+					if (testval != currentval) {
+						return false;
+					}
 				}
 			}
 			return true;
 		}
+
 		/// <summary>
-		/// соответствие чего угодно на уровне данной строки тексту
+		/// 	соответствие чего угодно на уровне данной строки тексту
 		/// </summary>
-		/// <param name="txt"></param>
-		/// <returns></returns>
-		protected bool rowallin(params string[] txt)
-		{
-			if (rowlabelin(txt)) return true;
-			if (rowgroupin(txt)) return true;
-			if (rowtagin(txt)) return true;
+		/// <param name="txt"> </param>
+		/// <returns> </returns>
+		protected bool rowallin(params string[] txt) {
+			if (rowlabelin(txt)) {
+				return true;
+			}
+			if (rowgroupin(txt)) {
+				return true;
+			}
+			if (rowtagin(txt)) {
+				return true;
+			}
 			return false;
 		}
+
 		/// <summary>
-		/// соответствие чего угодно в дереве переданному тексту
+		/// 	соответствие чего угодно в дереве переданному тексту
 		/// </summary>
-		/// <param name="txt"></param>
-		/// <returns></returns>
-		protected bool treeallin(params string[] txt)
-		{
-			if (treelabelin(txt)) return true;
-			if (treegroupin(txt)) return true;
-			if (treetagin(txt)) return true;
+		/// <param name="txt"> </param>
+		/// <returns> </returns>
+		protected bool treeallin(params string[] txt) {
+			if (treelabelin(txt)) {
+				return true;
+			}
+			if (treegroupin(txt)) {
+				return true;
+			}
+			if (treetagin(txt)) {
+				return true;
+			}
 			return false;
 		}
-		
-
-
 
 
 		/// <summary>
-		/// Проверяет соответствие основного объекта набору
+		/// 	Проверяет соответствие основного объекта набору
 		/// </summary>
-		/// <param name="objids"></param>
-		/// <returns></returns>
-		protected bool objin(params int[] objids)
-		{ //#ZC-131
+		/// <param name="objids"> </param>
+		/// <returns> </returns>
+		protected bool objin(params int[] objids) {
+			//#ZC-131
 			return null != objids && q.Obj.IsForObj && -1 != Array.IndexOf(objids, q.Obj.Id);
 		}
 
 		/// <summary>
-		/// Проверяет соответствие любого тега набору
+		/// 	Проверяет соответствие любого тега набору
 		/// </summary>
-		/// <param name="tag"></param>
-		/// <returns></returns>
-		protected bool objtagin(string tag)
-		{ //#ZC-131
-			if (string.IsNullOrWhiteSpace(tag) || q.Obj.IsNotForObj) return false;
+		/// <param name="tag"> </param>
+		/// <returns> </returns>
+		protected bool objtagin(string tag) {
+			//#ZC-131
+			if (string.IsNullOrWhiteSpace(tag) || q.Obj.IsNotForObj) {
+				return false;
+			}
 			var objtags = TagHelper.Parse(q.Obj.Tag);
-			if (0 == objtags.Count) return false;
-			foreach (var test in TagHelper.Parse(tag))
-			{
-				if (!objtags.ContainsKey(test.Key)) continue;
-				if (test.Value == "*" || objtags[test.Key] == test.Value) return true;
+			if (0 == objtags.Count) {
+				return false;
+			}
+			foreach (var test in TagHelper.Parse(tag)) {
+				if (!objtags.ContainsKey(test.Key)) {
+					continue;
+				}
+				if (test.Value == "*" || objtags[test.Key] == test.Value) {
+					return true;
+				}
 			}
 			return false;
 		}
 
 		/// <summary>
-		/// Проверяет соответствие основного объекта всему набору тегов
+		/// 	Проверяет соответствие основного объекта всему набору тегов
 		/// </summary>
-		/// <param name="tag"></param>
-		/// <returns></returns>
-		protected bool allobjtagin(string tag)
-		{ //#ZC-131
-			if (string.IsNullOrWhiteSpace(tag) || q.Obj.IsNotForObj) return false;
+		/// <param name="tag"> </param>
+		/// <returns> </returns>
+		protected bool allobjtagin(string tag) {
+			//#ZC-131
+			if (string.IsNullOrWhiteSpace(tag) || q.Obj.IsNotForObj) {
+				return false;
+			}
 			var objtags = TagHelper.Parse(q.Obj.Tag);
-			if (0 == objtags.Count) return false;
-			foreach (var test in TagHelper.Parse(tag))
-			{
-				if (!objtags.ContainsKey(test.Key)) return false;
-				if (!(test.Value == "*" || objtags[test.Key] == test.Value)) return false;
+			if (0 == objtags.Count) {
+				return false;
+			}
+			foreach (var test in TagHelper.Parse(tag)) {
+				if (!objtags.ContainsKey(test.Key)) {
+					return false;
+				}
+				if (!(test.Value == "*" || objtags[test.Key] == test.Value)) {
+					return false;
+				}
 			}
 			return true;
 		}
 
 		/// <summary>
-		/// Проверяет соответствие основного объекта любой группе
+		/// 	Проверяет соответствие основного объекта любой группе
 		/// </summary>
-		/// <param name="codes"></param>
-		/// <returns></returns>
-		protected bool grpin(params string[] codes)
-		{ //#ZC-131
+		/// <param name="codes"> </param>
+		/// <returns> </returns>
+		protected bool grpin(params string[] codes) {
+			//#ZC-131
 			return null != codes && q.Obj.IsForObj && codes.Any(x => q.Obj.ObjRef.GroupCache.Contains("/" + x + "/"));
 		}
+
 		/// <summary>
-		/// Проверяет соответствие основного объекта всем группам
+		/// 	Проверяет соответствие основного объекта всем группам
 		/// </summary>
-		/// <param name="codes"></param>
-		/// <returns></returns>
-		protected bool allgrpin(params string[] codes)
-		{ //#ZC-131
+		/// <param name="codes"> </param>
+		/// <returns> </returns>
+		protected bool allgrpin(params string[] codes) {
+			//#ZC-131
 			return null != codes && q.Obj.IsForObj && codes.All(x => q.Obj.ObjRef.GroupCache.Contains("/" + x + "/"));
 		}
+
 		/// <summary>
-		/// Проверяет соответствие основного объекта любой группе
+		/// 	Проверяет соответствие основного объекта любой группе
 		/// </summary>
-		/// <param name="codes"></param>
-		/// <returns></returns>
-		protected bool divin(params string[] codes)
-		{ //#ZC-131
+		/// <param name="codes"> </param>
+		/// <returns> </returns>
+		protected bool divin(params string[] codes) {
+			//#ZC-131
 			return null != codes && q.Obj.IsForObj && codes.Any(x => q.Obj.ObjRef.Group.Code == x);
 		}
+
+		/// <summary>
+		/// 	акцессор к совместимому расширенному формуласету
+		/// </summary>
+		protected BackwardCompatibleMainFormulaSet f;
 	}
 }

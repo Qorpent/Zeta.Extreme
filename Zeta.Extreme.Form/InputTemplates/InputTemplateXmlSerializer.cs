@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : InputTemplateXmlSerializer.cs
 // Project: Zeta.Extreme.Form
 // This code cannot be used without agreement from 
@@ -13,12 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Comdiv.Application;
 using Comdiv.Extensibility;
 using Comdiv.Extensions;
-using Comdiv.Persistence;
 using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme.Form.InputTemplates {
 	/// <summary>
@@ -166,57 +162,144 @@ namespace Zeta.Extreme.Form.InputTemplates {
 						var n = attribute.Name.LocalName;
 						var v = attribute.Value;
 						switch (n) {
-							case "code":col.Code = v;break;
-							case "name":col.Title = v; break;
-							case "year":col.Year = v.toInt();break;
-							case "period": col.Period = v.toInt(); break;
-							case "_file": col.File = v; break;
-							case "_line": col.Line = v; break;
-							case "condition": col.Condition = v; break;
-							case "lockyear":col.LockYear = true;break;
-							case "lockperiod": col.LockPeriod = true; break;
-							case "autocalc":col.AutoCalc = v.toBool();break;
-							case "fixed":col.Editable = false;break;
-							case "auto": col.IsAuto = true; break;
-							case "valuta":col.Valuta = v;break;
-							case "group":col.Group = v;break;
-							case "visible":col.Visible = v.toBool();break;
-							case "cssclass":goto case "css-class";
-							case "css-class":col.CssClass = v;break;
-							case "style": goto case "css-style";
-							case "css-style": col.CssStyle = v; break;
-							case "tag":col.Tag = v;break;
-							case "format":col.NumberFormat = v;break;
-							case "validation": col.Validation = v; break;
-							case "wavg": col.WAvg = v; break;
-							case "useobj": col.UseObj = v.toBool(); break;
-							case "matrixforrows": col.MatrixForRows = v; break;
-							case "colgroup": col.ColGroup = v; break;
-							case "translaterows": col.TranslateRows = v; break;
-							case "lookupFilter": col.LookupFilter = v; break;
-							case "editforrole": col.EditForRole = v; break;
-							case "forrole": col.ForRole = v; break;
-							case "forgroup": col.ForGroup = v; break;
-							case "customview": col.CustomView = v; break;
-							case "valuereplacer": col.ValueReplacer = v; break;
-							case "matrixid": col.MatrixId = v; break;
-							case "matrixformula": col.MatrixFormula = v; break;
-							case "matrixtotalformula": col.MatrixTotalFormula = v; break;
-							case "usethema": col.UseThema = v.toBool(); break;
-							case "valuetocssclass": col.ValueToCssClass = v.toBool(); break;
-							case "controlpoint": col.ControlPoint = v.toBool(); break;
-							case "evaluator":goto case "formulatype";
-							case "formulatype":col.FormulaEvaluator = v;break;
-							case "calcidx":col.CalcIdx = v.toInt();break;
-							case "matrixformulatype": col.MatrixFormulaType = v; break;
-							case "formula": 
-								col.Formula = v; 
-								if(!string.IsNullOrWhiteSpace(v)) {
+							case "code":
+								col.Code = v;
+								break;
+							case "name":
+								col.Title = v;
+								break;
+							case "year":
+								col.Year = v.toInt();
+								break;
+							case "period":
+								col.Period = v.toInt();
+								break;
+							case "_file":
+								col.File = v;
+								break;
+							case "_line":
+								col.Line = v;
+								break;
+							case "condition":
+								col.Condition = v;
+								break;
+							case "lockyear":
+								col.LockYear = true;
+								break;
+							case "lockperiod":
+								col.LockPeriod = true;
+								break;
+							case "autocalc":
+								col.AutoCalc = v.toBool();
+								break;
+							case "fixed":
+								col.Editable = false;
+								break;
+							case "auto":
+								col.IsAuto = true;
+								break;
+							case "valuta":
+								col.Valuta = v;
+								break;
+							case "group":
+								col.Group = v;
+								break;
+							case "visible":
+								col.Visible = v.toBool();
+								break;
+							case "cssclass":
+								goto case "css-class";
+							case "css-class":
+								col.CssClass = v;
+								break;
+							case "style":
+								goto case "css-style";
+							case "css-style":
+								col.CssStyle = v;
+								break;
+							case "tag":
+								col.Tag = v;
+								break;
+							case "format":
+								col.NumberFormat = v;
+								break;
+							case "validation":
+								col.Validation = v;
+								break;
+							case "wavg":
+								col.WAvg = v;
+								break;
+							case "useobj":
+								col.UseObj = v.toBool();
+								break;
+							case "matrixforrows":
+								col.MatrixForRows = v;
+								break;
+							case "colgroup":
+								col.ColGroup = v;
+								break;
+							case "translaterows":
+								col.TranslateRows = v;
+								break;
+							case "lookupFilter":
+								col.LookupFilter = v;
+								break;
+							case "editforrole":
+								col.EditForRole = v;
+								break;
+							case "forrole":
+								col.ForRole = v;
+								break;
+							case "forgroup":
+								col.ForGroup = v;
+								break;
+							case "customview":
+								col.CustomView = v;
+								break;
+							case "valuereplacer":
+								col.ValueReplacer = v;
+								break;
+							case "matrixid":
+								col.MatrixId = v;
+								break;
+							case "matrixformula":
+								col.MatrixFormula = v;
+								break;
+							case "matrixtotalformula":
+								col.MatrixTotalFormula = v;
+								break;
+							case "usethema":
+								col.UseThema = v.toBool();
+								break;
+							case "valuetocssclass":
+								col.ValueToCssClass = v.toBool();
+								break;
+							case "controlpoint":
+								col.ControlPoint = v.toBool();
+								break;
+							case "evaluator":
+								goto case "formulatype";
+							case "formulatype":
+								col.FormulaEvaluator = v;
+								break;
+							case "calcidx":
+								col.CalcIdx = v.toInt();
+								break;
+							case "matrixformulatype":
+								col.MatrixFormulaType = v;
+								break;
+							case "formula":
+								col.Formula = v;
+								if (!string.IsNullOrWhiteSpace(v)) {
 									col.IsFormula = true;
 								}
 								break;
-							case "forperiods":col.ForPeriods=v.split().Select(s => s.toInt()).ToArray();break;
-							case "customCode":col.CustomCode = v;break;
+							case "forperiods":
+								col.ForPeriods = v.split().Select(s => s.toInt()).ToArray();
+								break;
+							case "customCode":
+								col.CustomCode = v;
+								break;
 						}
 					}
 
@@ -228,15 +311,13 @@ namespace Zeta.Extreme.Form.InputTemplates {
 						col.NeedPeriodPreparation = true;
 					}
 
-					if (null == col.ForPeriods)
-					{
-						col.ForPeriods = new int[] { };
+					if (null == col.ForPeriods) {
+						col.ForPeriods = new int[] {};
 					}
 
 					col.ConditionMatcher = (IConditionMatcher) result;
 					col.RowCheckConditions = x.Elements("checkrule").serialize<ColumnRowCheckCondition>().ToArray();
 
-					
 
 					//if (null != storage){
 					col.Target = ColumnCache.get(col.Code);
@@ -249,7 +330,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 						col.InitialCode = col.Code;
 						col.Code = col.CustomCode;
 					}
-			
+
 
 					var uid = "[" + col.Code + "_" + col.Year + "_" + col.Period + "]";
 					col.Uid = uid;
@@ -258,6 +339,5 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				}
 			}
 		}
-
 	}
 }

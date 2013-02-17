@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : FormulaRequest.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -27,6 +26,11 @@ namespace Zeta.Extreme {
 		/// 	Опциональный базовый класс
 		/// </summary>
 		public Type AssertedBaseType;
+
+		/// <summary>
+		/// 	Ошибка компиляции
+		/// </summary>
+		public Exception ErrorInCompilation;
 
 		/// <summary>
 		/// 	Текст формулы
@@ -67,10 +71,5 @@ namespace Zeta.Extreme {
 		/// 	Теги
 		/// </summary>
 		public string Tags;
-
-		/// <summary>
-		/// Ошибка компиляции
-		/// </summary>
-		public Exception ErrorInCompilation;
 	}
 }

@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : QuerySessionRegistrator.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -91,12 +90,11 @@ namespace Zeta.Extreme {
 			_session.Registry[uid] = result;
 			_session.KeyMap[preloadkey] = uid;
 
-			if (null==result.PrepareTask && PrepareState.Prepared != result.PrepareState) {
-					result.PrepareState = PrepareState.TaskStarted;
-					result.PrepareTask = _session.PrepareAsync(result);
-					
-				}
-			
+			if (null == result.PrepareTask && PrepareState.Prepared != result.PrepareState) {
+				result.PrepareState = PrepareState.TaskStarted;
+				result.PrepareTask = _session.PrepareAsync(result);
+			}
+
 			//if (result.Session != _session) result.WaitPrepare();
 			return result;
 			//	}

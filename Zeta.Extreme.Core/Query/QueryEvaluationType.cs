@@ -1,25 +1,38 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : QueryEvaluationType.cs
+// Project: Zeta.Extreme.Core
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System;
 
 namespace Zeta.Extreme {
 	/// <summary>
-	/// Тип вычисления запроса
+	/// 	Тип вычисления запроса
 	/// </summary>
 	[Flags]
 	public enum QueryEvaluationType {
 		/// <summary>
-		/// Неизвестный
+		/// 	Неизвестный
 		/// </summary>
 		Unknown,
+
 		/// <summary>
-		/// Первичный
+		/// 	Первичный
 		/// </summary>
 		Primary,
+
 		/// <summary>
-		/// Суммовой
+		/// 	Суммовой
 		/// </summary>
 		Summa,
+
 		/// <summary>
-		/// Формула
+		/// 	Формула
 		/// </summary>
 		Formula,
 	}

@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : RowHandler.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -85,11 +84,10 @@ namespace Zeta.Extreme {
 			var cache = session == null ? MetaCache.Default : session.MetaCache;
 			if (IsStandaloneSingletonDefinition()) {
 				//try load native
-				Native =cache.Get<IZetaRow>(0 == Id ? (object) Code : Id);
+				Native = cache.Get<IZetaRow>(0 == Id ? (object) Code : Id);
 			}
 			NormalizeReferencedRows(session, column);
 		}
-
 
 
 		private void NormalizeReferencedRows(Session session, IZetaColumn column) {

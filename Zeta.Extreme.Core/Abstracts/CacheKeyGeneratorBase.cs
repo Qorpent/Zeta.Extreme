@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : CacheKeyGeneratorBase.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -9,14 +8,11 @@
 
 #endregion
 
-using Comdiv.Zeta.Model;
-
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Базовый класс для запросов и условий, отвечает за целостность кэш-строки
 	/// </summary>
-	public abstract class CacheKeyGeneratorBase 
-	{
+	public abstract class CacheKeyGeneratorBase {
 		/// <summary>
 		/// 	Возвращает кэш-строку запроса
 		/// </summary>

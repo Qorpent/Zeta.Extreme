@@ -1,7 +1,6 @@
 ﻿#region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : ThemaConfiguration.cs
 // Project: Zeta.Extreme.Form
 // This code cannot be used without agreement from 
@@ -103,6 +102,11 @@ namespace Zeta.Extreme.Form.Themas {
 		public string Role { get; set; }
 
 		/// <summary>
+		/// 	Обратная ссылка на конфигуратор
+		/// </summary>
+		public ThemaConfigurationProvider ConfigurationProvider { get; set; }
+
+		/// <summary>
 		/// 	Код темы
 		/// </summary>
 		public string Code { get; set; }
@@ -167,10 +171,6 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Роль элемента по умолчанию
 		/// </summary>
 		public string DefaultElementRole { get; set; }
-		/// <summary>
-		/// Обратная ссылка на конфигуратор
-		/// </summary>
-		public ThemaConfigurationProvider ConfigurationProvider { get; set; }
 
 
 		/// <summary>
@@ -181,7 +181,7 @@ namespace Zeta.Extreme.Form.Themas {
 			var type = typeof (Thema);
 			if (ClassName.hasContent()) {
 				var clsname = ClassName;
-				if(ConfigurationProvider.Options.ClassRedirectMap.ContainsKey(clsname)) {
+				if (ConfigurationProvider.Options.ClassRedirectMap.ContainsKey(clsname)) {
 					clsname = ConfigurationProvider.Options.ClassRedirectMap[clsname];
 				}
 				type = Type.GetType(clsname, true);
@@ -192,14 +192,14 @@ namespace Zeta.Extreme.Form.Themas {
 			result.Name = Name;
 			result.Role = Role;
 			result.Idx = Idx;
-			if(ConfigurationProvider.Options.LoadIerarchy) {
+			if (ConfigurationProvider.Options.LoadIerarchy) {
 				result.IsGroup = IsGroup;
-				result.Group = Group;	
+				result.Group = Group;
 			}
 			result.Layout = Layout;
 			result.Visible = Visible;
 			result.IsTemplate = IsTemplate;
-			if(ConfigurationProvider.Options.LoadIerarchy) {
+			if (ConfigurationProvider.Options.LoadIerarchy) {
 				result.Parent = Parent;
 			}
 

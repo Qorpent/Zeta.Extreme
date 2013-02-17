@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : ThemaFactoryConfiguration.cs
 // Project: Zeta.Extreme.Form
 // This code cannot be used without agreement from 
@@ -107,12 +106,11 @@ namespace Zeta.Extreme.Form.Themas {
 			}
 			var newx = new XElement("root");
 			foreach (var e in SrcXml) {
-				foreach (var x in e.XPathSelectElements("//*[@preservexml]"))
-				{
+				foreach (var x in e.XPathSelectElements("//*[@preservexml]")) {
 					newx.Add(x);
-				}	
+				}
 			}
-			
+
 
 			result.SrcXml = newx.ToString();
 

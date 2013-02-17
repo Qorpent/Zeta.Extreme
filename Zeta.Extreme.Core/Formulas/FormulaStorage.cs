@@ -1,7 +1,6 @@
 ﻿#region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : FormulaStorage.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -74,16 +73,16 @@ namespace Zeta.Extreme {
 					}
 					else {
 						_registry[request.Key] = request;
-						if(TagHelper.Value(request.Tags,FormulaParserConstants.IgnoreFormulaTag).ToBool()) {
+						if (TagHelper.Value(request.Tags, FormulaParserConstants.IgnoreFormulaTag).ToBool()) {
 							request.PreparedType = typeof (NoExtremeFormulaStub);
-						}else {
+						}
+						else {
 							if (null == request.PreparedType && string.IsNullOrWhiteSpace(request.PreprocessedFormula)) {
 								Preprocess(request);
 							}
 						}
 					}
 
-					
 
 					var waitbatchsize = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).Count();
 					if (AutoBatchCompile && BatchSize <= waitbatchsize) {
@@ -149,7 +148,7 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Асинхронно выполняет полную компиляцию формул
+		/// 	Асинхронно выполняет полную компиляцию формул
 		/// </summary>
 		public void StartAsyncCompilation() {
 			lock (_compile_lock) {
@@ -160,35 +159,19 @@ namespace Zeta.Extreme {
 				}
 			}
 		}
+
 		/// <summary>
-		/// Обертка над вызовом компилятора с корректной обработкой ошибок компиляции
-		/// </summary>
-		/// <param name="batch"></param>
-		protected internal  void DoCompile(FormulaRequest[] batch) {
-			try {
-				new FormulaCompiler().Compile(batch);
-			}
-			catch (Exception e) {
-				LastCompileError = e;
-				foreach (var formulaRequest in batch) {
-					
-					formulaRequest.ErrorInCompilation = e;
-					formulaRequest.PreparedType = typeof (CompileErrorFormulaStub);
-				}
-			}
-		}
-		/// <summary>
-		/// Последняя ошибка компиляции
+		/// 	Последняя ошибка компиляции
 		/// </summary>
 		public Exception LastCompileError { get; set; }
 
 		/// <summary>
-		/// True - включен режим автоматического батча
+		/// 	True - включен режим автоматического батча
 		/// </summary>
 		public bool AutoBatchCompile { get; set; }
 
 		/// <summary>
-		/// Компилирует все формы в стеке
+		/// 	Компилирует все формы в стеке
 		/// </summary>
 		public void CompileAll() {
 			lock (_compile_lock) {
@@ -196,18 +179,36 @@ namespace Zeta.Extreme {
 				DoCompile(batch);
 			}
 		}
+
 		/// <summary>
-		/// Очистка кэша
+		/// 	Очистка кэша
 		/// </summary>
 		public void Clear() {
 			_registry.Clear();
 		}
 
 		/// <summary>
-		/// Количество формул
+		/// 	Количество формул
 		/// </summary>
 		public int Count {
 			get { return _registry.Count; }
+		}
+
+		/// <summary>
+		/// 	Обертка над вызовом компилятора с корректной обработкой ошибок компиляции
+		/// </summary>
+		/// <param name="batch"> </param>
+		protected internal void DoCompile(FormulaRequest[] batch) {
+			try {
+				new FormulaCompiler().Compile(batch);
+			}
+			catch (Exception e) {
+				LastCompileError = e;
+				foreach (var formulaRequest in batch) {
+					formulaRequest.ErrorInCompilation = e;
+					formulaRequest.PreparedType = typeof (CompileErrorFormulaStub);
+				}
+			}
 		}
 
 		/// <summary>
@@ -230,7 +231,7 @@ namespace Zeta.Extreme {
 					return;
 				}
 				// все, значит мы синхронно должны закомпилить это дело
-				DoCompile(new[] { request });
+				DoCompile(new[] {request});
 			}
 		}
 

@@ -1,7 +1,6 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
 // Original file : ISerialSession.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
@@ -23,7 +22,7 @@ namespace Zeta.Extreme {
 		/// <param name="query"> </param>
 		/// <param name="timeout"> </param>
 		/// <returns> </returns>
-		QueryResult Eval(Query query, int timeout=-1);
+		QueryResult Eval(Query query, int timeout = -1);
 
 		/// <summary>
 		/// 	Гарантирует синхронный, последовательный доступ к сессии, вычисляет значение

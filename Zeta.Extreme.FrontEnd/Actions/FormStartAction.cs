@@ -9,8 +9,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Comdiv.Zeta.Model;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
@@ -58,9 +56,9 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		private IInputTemplate _realform;
 		private IZetaMainObject _realobj;
 		[Bind(Required = true)] private string form = "";
+		[Bind] private bool lazy = false;
 		[Bind(Required = true)] private int obj = 0;
 		[Bind(Required = true)] private int period = 0;
 		[Bind(Required = true)] private int year = 0;
-		[Bind] private bool lazy = false;
 	}
 }

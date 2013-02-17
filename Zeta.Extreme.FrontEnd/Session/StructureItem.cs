@@ -41,35 +41,34 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// </summary>
 		[SerializeNotNullOnly] public int level;
 
+		///<summary>
+		///	Единица измерения
+		///</summary>
+		[SerializeNotNullOnly] public string measure;
+
 		/// <summary>
 		/// 	Название строки/колонки
 		/// </summary>
 		public string name;
 
 		/// <summary>
+		/// 	Номер строки
+		/// </summary>
+		[SerializeNotNullOnly] public string number;
+
+		/// <summary>
+		/// 	Период для колонок
+		/// </summary>
+		[SerializeNotNullOnly] public int period;
+
+		/// <summary>
 		/// 	r or c
 		/// </summary>
 		public string type;
-		/// <summary>
-		/// Год для колонок
-		/// </summary>
-		[SerializeNotNullOnly]
-		public int year;
-		/// <summary>
-		/// Период для колонок
-		/// </summary>
-		[SerializeNotNullOnly]
-		public int period;
-		/// <summary>
-		/// Номер строки
-		/// </summary>
-		[SerializeNotNullOnly]
-		public string number;
 
 		/// <summary>
-		///Единица измерения
+		/// 	Год для колонок
 		/// </summary>
-		[SerializeNotNullOnly]
-		public string measure;
+		[SerializeNotNullOnly] public int year;
 	}
 }

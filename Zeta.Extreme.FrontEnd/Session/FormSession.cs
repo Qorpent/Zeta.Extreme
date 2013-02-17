@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Comdiv.Extensions;
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using Qorpent.Applications;
@@ -38,7 +37,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			DataSession = new Extreme.Session();
 			Serial = DataSession.AsSerial();
 			Created = DateTime.Now;
-			Template = form.PrepareForPeriod(year, period, new DateTime(1900,1,1), Object);
+			Template = form.PrepareForPeriod(year, period, new DateTime(1900, 1, 1), Object);
 			Year = Template.Year;
 			Period = Template.Period;
 			Object = obj;
@@ -49,8 +48,9 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			FormInfo = new {Template.Code, Template.Name};
 			NeedMeasure = Template.ShowMeasureColumn;
 		}
+
 		/// <summary>
-		/// Признак требования показывать колонку с единицей измерения
+		/// 	Признак требования показывать колонку с единицей измерения
 		/// </summary>
 		public bool NeedMeasure { get; set; }
 
@@ -158,6 +158,46 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		[Serialize] public object FormInfo { get; private set; }
 
 		/// <summary>
+		/// 	Время подготовки
+		/// </summary>
+		[Serialize] public TimeSpan TimeToPrepare { get; set; }
+
+		/// <summary>
+		/// 	Время генерации структуры
+		/// </summary>
+		[Serialize] public TimeSpan TimeToStructure { get; set; }
+
+		/// <summary>
+		/// 	Время генерации первичных ячеек
+		/// </summary>
+		[Serialize] public TimeSpan TimeToPrimary { get; set; }
+
+		/// <summary>
+		/// 	Время генерации первичных ячеек
+		/// </summary>
+		[Serialize] public TimeSpan TimeToGetData { get; set; }
+
+		/// <summary>
+		/// 	Общее количество запросов в обработке
+		/// </summary>
+		public int QueriesCount { get; set; }
+
+		/// <summary>
+		/// 	Общее количество ячеек
+		/// </summary>
+		public int DataCount { get; set; }
+
+		/// <summary>
+		/// 	Количество первичных ячеек
+		/// </summary>
+		public int PrimaryCount { get; set; }
+
+		/// <summary>
+		/// 	Запускает режим ленивой сессии (без данных)
+		/// </summary>
+		public bool IsLazy { get; set; }
+
+		/// <summary>
 		/// 	Стартует сессию
 		/// </summary>
 		public void Start() {
@@ -168,9 +208,10 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			PrepareStructureTask = new TaskWrapper(
 				Task.Run(() => { RetrieveStructura(); })
 				);
-			if(IsLazy) {
+			if (IsLazy) {
 				PrepareDataTask = new TaskWrapper(Task.FromResult(true));
-			}else {
+			}
+			else {
 				PrepareDataTask = new TaskWrapper(
 					Task.Run(() =>
 						{
@@ -185,11 +226,6 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			}
 			IsStarted = true;
 		}
-		/// <summary>
-		/// Время подготовки
-		/// </summary>
-		[Serialize]
-		public TimeSpan TimeToPrepare { get; set; }
 
 		private void RetrieveStructura() {
 			var sw = Stopwatch.StartNew();
@@ -225,23 +261,6 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			sw.Stop();
 			TimeToStructure = sw.Elapsed;
 		}
-		/// <summary>
-		/// Время генерации структуры
-		/// </summary>
-		[Serialize]
-		public TimeSpan TimeToStructure { get; set; }
-
-		/// <summary>
-		/// Время генерации первичных ячеек
-		/// </summary>
-		[Serialize]
-		public TimeSpan TimeToPrimary { get; set; }
-
-		/// <summary>
-		/// Время генерации первичных ячеек
-		/// </summary>
-		[Serialize]
-		public TimeSpan TimeToGetData { get; set; }
 
 
 		private void RetrieveData() {
@@ -251,16 +270,15 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			LoadNonEditablePrimaryData(queries);
 			TimeToPrimary = sw.Elapsed;
 			PrimaryCount = Data.Count;
-			
+
 			foreach (var c in cols) {
-				foreach (var r in rows)
-				{
+				foreach (var r in rows) {
 					var key = r.i + ":" + c.i;
 					if (queries.ContainsKey(key)) {
 						continue;
 					}
 					var ch = new ColumnHandler {Native = c._.Target};
-					if(null==ch.Native) {
+					if (null == ch.Native) {
 						ch.Code = c._.Code;
 						ch.IsFormula = c._.IsFormula;
 						ch.Formula = c._.Formula;
@@ -273,16 +291,15 @@ namespace Zeta.Extreme.FrontEnd.Session {
 							Obj = {Native = Object},
 							Time = {Year = c._.Year, Period = c._.Period}
 						};
-					 q = DataSession.Register(q, key);
-					 if(null!=q) {
-						 queries[key] = q;
-					 }
-					
+					q = DataSession.Register(q, key);
+					if (null != q) {
+						queries[key] = q;
+					}
 				}
 				DataSession.Execute(500);
 				ProcessValues(queries);
 			}
-			
+
 			QueriesCount = queries.Count;
 			DataSession = null;
 			DataCount = Data.Count;
@@ -294,8 +311,8 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			DataSession.Execute(500);
 			ProcessValues(queries);
 		}
-		private void LoadNonEditablePrimaryData(IDictionary<string, Query> queries)
-		{
+
+		private void LoadNonEditablePrimaryData(IDictionary<string, Query> queries) {
 			BuildNonEditablePrimarySet(queries);
 			DataSession.Execute(500);
 			ProcessValues(queries);
@@ -317,33 +334,27 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			}
 		}
 
-		private void BuildNonEditablePrimarySet(IDictionary<string, Query> queries)
-		{
-			foreach (var primaryrow in primaryrows)
-			{
-				foreach (var primarycol in neditprimarycols)
-				{
+		private void BuildNonEditablePrimarySet(IDictionary<string, Query> queries) {
+			foreach (var primaryrow in primaryrows) {
+				foreach (var primarycol in neditprimarycols) {
 					var q = new Query
-					{
-						Row = { Native = primaryrow._ },
-						Col = { Native = primarycol._.Target },
-						Obj = { Native = Object },
-						Time = { Year = primarycol._.Year, Period = primarycol._.Period }
-					};
+						{
+							Row = {Native = primaryrow._},
+							Col = {Native = primarycol._.Target},
+							Obj = {Native = Object},
+							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
+						};
 					var key = primaryrow.i + ":" + primarycol.i;
 					queries[key] = DataSession.Register(q, key);
 				}
 			}
 		}
 
-		/// <summary>
-		/// Общее количество запросов в обработке
-		/// </summary>
-		public int QueriesCount { get; set; }
-		IDictionary<string,Query> _processed = new Dictionary<string, Query>();  
 		private void ProcessValues(IDictionary<string, Query> queries) {
-			foreach (var q_ in queries.Where(_ =>null!=_.Value)) {
-				if(_processed.ContainsKey(q_.Key))continue;
+			foreach (var q_ in queries.Where(_ => null != _.Value)) {
+				if (_processed.ContainsKey(q_.Key)) {
+					continue;
+				}
 				_processed[q_.Key] = q_.Value;
 				var val = "";
 				var cellid = 0;
@@ -361,28 +372,13 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			}
 		}
 
-		/// <summary>
-		/// Общее количество ячеек
-		/// </summary>
-		public int DataCount { get; set; }
-
-		/// <summary>
-		/// Количество первичных ячеек
-		/// </summary>
-		
-		public int PrimaryCount { get; set; }
-		/// <summary>
-		/// Запускает режим ленивой сессии (без данных)
-		/// </summary>
-		public bool IsLazy { get; set; }
-
 		private void PrepareMetaSets() {
 			rootrow = MetaCache.Default.Get<IZetaRow>(Template.Form.Code);
 			rows = rootrow.AllChildren
-					.Where(_=>!_.IsObsolete(Year))
-					.Where(_=>null==_.Object || _.Object.Id==Object.Id)
-					.OrderBy(_ => _.Path)
-					.Select((_, i) => new IdxRow {i = i, _ = _}).ToArray();
+				.Where(_ => !_.IsObsolete(Year))
+				.Where(_ => null == _.Object || _.Object.Id == Object.Id)
+				.OrderBy(_ => _.Path)
+				.Select((_, i) => new IdxRow {i = i, _ = _}).ToArray();
 			cols = Template.GetAllColumns().Where(_ => _.GetIsVisible(Object)).Select((_, i) => new IdxCol {i = i, _ = _});
 			foreach (var columnDesc in cols) {
 				if (null == columnDesc._.Target) {
@@ -393,7 +389,6 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			primarycols = cols.Where(_ => _._.Editable && !_._.IsFormula).ToArray();
 			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
 			primaryrows = rows.Where(_ => !_._.IsFormula && 0 == _._.Children.Count && !_._.IsMarkSeted("0ISCAPTION")).ToArray();
-
 		}
 
 		#region Nested type: IdxCol
@@ -414,12 +409,14 @@ namespace Zeta.Extreme.FrontEnd.Session {
 
 		#endregion
 
+		private readonly IDictionary<string, Query> _processed = new Dictionary<string, Query>();
+
 		private List<OutCell> _data;
 		private IEnumerable<IdxCol> cols;
+		private IdxCol[] neditprimarycols;
 		private IdxCol[] primarycols;
 		private IdxRow[] primaryrows;
 		private IZetaRow rootrow;
 		private IdxRow[] rows;
-		private IdxCol[] neditprimarycols;
 	}
 }

@@ -1,8 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
-// Original file : ZexQueryDelta.cs
+// Original file : QueryDelta.cs
 // Project: Zeta.Extreme.Core
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -21,7 +20,6 @@ namespace Zeta.Extreme {
 	/// 	Описывает потенциальный подзапрос для оптимизации расчета сумм и простых формул
 	/// </summary>
 	public sealed class QueryDelta {
-
 		/// <summary>
 		/// 	Применяет смещение к целевому запросу
 		/// 	Если есть изменения - то правильно создает копии и переписывает кэш-строку
@@ -29,18 +27,16 @@ namespace Zeta.Extreme {
 		/// <param name="target"> </param>
 		/// <returns> </returns>
 		public Query Apply(Query target) {
-			
-				if (NoChanges(target)) {
-					return target;
-				}
-				var result = target.Copy();
-				MoveColumn(result);
-				MoveRow(result);
-				MoveObj(result);
-				MoveTime(result);
-				result.InvalidateCacheKey();
-				return result;
-			
+			if (NoChanges(target)) {
+				return target;
+			}
+			var result = target.Copy();
+			MoveColumn(result);
+			MoveRow(result);
+			MoveObj(result);
+			MoveTime(result);
+			result.InvalidateCacheKey();
+			return result;
 		}
 
 		/// <summary>
@@ -67,7 +63,8 @@ namespace Zeta.Extreme {
 			if (!s) {
 				delta.Multiplicator = -1;
 			}
-			if (!string.IsNullOrWhiteSpace(r) && "_"!=r) { // оставляем писать возможность формулы в синтаксисе типа $_.toobj(...)
+			if (!string.IsNullOrWhiteSpace(r) && "_" != r) {
+				// оставляем писать возможность формулы в синтаксисе типа $_.toobj(...)
 				var zetaRow = RowCache.get(r);
 				if (null != zetaRow) {
 					delta.Row = zetaRow;
@@ -76,7 +73,7 @@ namespace Zeta.Extreme {
 					delta.RowCode = r;
 				}
 			}
-			if(0!=o) {
+			if (0 != o) {
 				delta.ObjId = o;
 			}
 			if (!string.IsNullOrWhiteSpace(c)) {
@@ -107,7 +104,7 @@ namespace Zeta.Extreme {
 				s.Append(infunctionName);
 				s.Append("(");
 			}
-			s.Append(" new " + (shortName? GetType().Name: GetType().FullName) + "{ ");
+			s.Append(" new " + (shortName ? GetType().Name : GetType().FullName) + "{ ");
 			var rcode = RowCode;
 			if (null != Row) {
 				rcode = Row.Code;
@@ -252,7 +249,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Множитель при расчете значений
 		/// </summary>
-		public decimal Multiplicator =1 ;
+		public decimal Multiplicator = 1;
 
 		/// <summary>
 		/// 	Прямое смещение по объекту
