@@ -18,50 +18,6 @@ using System.Threading.Tasks;
 
 namespace Zeta.Extreme {
 	/// <summary>
-	/// Асинхронная, Zeta.Extrem cecсия, базовый интерфейс
-	/// </summary>
-	public interface ISession {
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="key"></param>
-		/// <param name="timeout"> </param>
-		/// <returns></returns>
-		QueryResult Get(string key,int timeout =-1);
-
-		/// <summary>
-		/// 	Синхронная регистрация запроса в сессии
-		/// </summary>
-		/// <param name="query"> исходный запрос </param>
-		/// <param name="uid"> позволяет явно указать словарный код для составления синхронизируемой коллекции запросов </param>
-		/// <returns> запрос по итогам регистрации в сессии </returns>
-		/// <remarks>
-		/// 	При регистрации запроса, он проходит дополнительную оптимизацию и проверку на дубляж,
-		/// 	возвращается именно итоговый запрос
-		/// </remarks>
-		/// <exception cref="NotImplementedException"></exception>
-		Query Register(Query query, string uid = null);
-
-		/// <summary>
-		/// 	Асинхронная регистрация запроса в сессии
-		/// </summary>
-		/// <param name="query"> исходный запрос </param>
-		/// <param name="uid"> позволяет явно указать словарный код для составления синхронизируемой коллекции запросов </param>
-		/// <returns> задачу, по результатам которой возвращается запрос по итогам регистрации в сессии </returns>
-		/// <remarks>
-		/// 	При регистрации запроса, он проходит дополнительную оптимизацию и проверку на дубляж,
-		/// 	возвращается именно итоговый запрос
-		/// </remarks>
-		Task<Query> RegisterAsync(Query query, string uid = null);
-
-		/// <summary>
-		/// 	Выполняет синхронизацию и расчет значений в сессии
-		/// </summary>
-		/// <param name="timeout"> </param>
-		void Execute(int timeout = -1);
-	}
-
-	/// <summary>
 	/// 	Базовый класс сессии расчетов Zeta
 	/// </summary>
 	/// <remarks>
@@ -71,9 +27,22 @@ namespace Zeta.Extreme {
 	/// 	create session ==- register queries ==- evaluate  ==- collect result
 	/// 	Сессия работает с максимальным использованием async - оптимизации
 	/// </remarks>
-	public class Session : ISession {
+	public class Session : ISerializableSession {
 		private static int ID;
+		/// <summary>
+		/// Сериальная синхронизация
+		/// </summary>
+		public object SerialSync {
+			get { return _sync_serial_access_lock; }
+		}
 
+		/// <summary>
+		/// Задача для выполнения в асинхронном режиме из сериализованного доступа
+		/// </summary>
+		public Task<QueryResult> SerialTask {
+			get { return _async_serial_acess_task; }
+			set { _async_serial_acess_task = value; }
+		}
 		/// <summary>
 		/// 
 		/// </summary>
@@ -172,7 +141,7 @@ namespace Zeta.Extreme {
 			lock (thissync) {
 				ISerialSession result;
 				if (_subsessionpool.TryPop(out result)) {
-					result.GetUnderlinedSession()._preEvalTaskAgenda.Clear();
+					((Session)result.GetUnderlinedSession())._preEvalTaskAgenda.Clear();
 					return result;
 				}
 				var copy = new Session(CollectStatistics)
@@ -227,8 +196,8 @@ namespace Zeta.Extreme {
 				var subs = _subsessionpool.ToArray();
 				foreach (var s in subs) {
 					var ses = s.GetUnderlinedSession();
-					sb.AppendLine("Subsession: " + ses.Id);
-					sb.Append(ses.GetStatisticString());
+					sb.AppendLine("Subsession: " + ((Session)ses).Id);
+					sb.Append(((Session)ses).GetStatisticString());
 					sb.AppendLine("--------------------------");
 				}
 			}

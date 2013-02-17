@@ -123,7 +123,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// <summary>
 		/// 	Сессия работы с данными
 		/// </summary>
-		[IgnoreSerialize] public Extreme.Session DataSession { get; private set; }
+		[IgnoreSerialize] public ISession DataSession { get; private set; }
 
 		/// <summary>
 		/// 	Задача формирования структуры

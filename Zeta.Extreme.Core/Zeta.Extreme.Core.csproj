@@ -47,7 +47,7 @@
     <Compile Include="Abstracts\CacheKeyGeneratorBase.cs" />
     <Compile Include="Abstracts\CachedItemHandlerBase.cs" />
     <Compile Include="Abstracts\IQueryPreparator.cs" />
-    <Compile Include="Extensions\ISerialSession.cs" />
+    <Compile Include="Abstracts\ISerialSession.cs" />
     <Compile Include="Extensions\SerialAccessExtensions.cs" />
     <Compile Include="Extensions\SerialSession.cs" />
     <Compile Include="Formulas\BackwardCompatibleFormulaBase.cs" />
@@ -69,16 +69,18 @@
     <Compile Include="Formulas\FormulaParserConstants.cs" />
     <Compile Include="Formulas\IllegalSyntaxFormulaStub.cs" />
     <Compile Include="Formulas\NoExtremeFormulaStub.cs" />
+    <Compile Include="Abstracts\ISession.cs" />
+    <Compile Include="Abstracts\ISerializableSession.cs" />
     <Compile Include="Query\PrepareState.cs" />
     <Compile Include="Query\QueryEvaluationType.cs" />
     <Compile Include="Services\DefaultPrimarySource.cs" />
-    <Compile Include="Services\IPrimarySource.cs" />
+    <Compile Include="Abstracts\IPrimarySource.cs" />
     <Compile Include="Services\MetaCache.cs" />
-    <Compile Include="Services\IMetaCache.cs" />
+    <Compile Include="Abstracts\IMetaCache.cs" />
     <Compile Include="Query\StrongSumProvider.cs" />
     <Compile Include="Query\QueryDelta.cs" />
     <Compile Include="Services\QueryProcessor.cs" />
-    <Compile Include="Query\QueryResult.cs" />
+    <Compile Include="QueryResult.cs" />
     <Compile Include="Query\ColumnHandler.cs" />
     <Compile Include="Query\DefaultPeriodEvaluator.cs" />
     <Compile Include="Query\IPeriodEvaluator.cs" />
@@ -90,7 +92,7 @@
     <Compile Include="Abstracts\IRegistryHelper.cs" />
     <Compile Include="Query\RowHandler.cs" />
     <Compile Include="Query\TimeHandler.cs" />
-    <Compile Include="Query\Query.cs" />
+    <Compile Include="Query.cs" />
     <Compile Include="Query\ObjHandler.cs" />
     <Compile Include="Session.cs" />
   </ItemGroup>

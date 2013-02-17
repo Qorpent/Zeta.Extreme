@@ -8,6 +8,7 @@
 
 #endregion
 
+using System;
 using System.Threading.Tasks;
 
 namespace Zeta.Extreme {
@@ -19,8 +20,12 @@ namespace Zeta.Extreme {
 		/// 	Формирует API в привязке к сессии
 		/// </summary>
 		/// <param name="session"> </param>
-		public SerialSession(Session session) {
-			_session = session;
+		public SerialSession(ISession session) {
+			var _serial = session as ISerializableSession;
+			if(null==_serial) {
+				throw new Exception("only serializable sessions supproted");
+			}
+			_session = (ISerializableSession)session;
 		}
 
 		/// <summary>
@@ -30,9 +35,9 @@ namespace Zeta.Extreme {
 		/// <param name="timeout"> </param>
 		/// <returns> </returns>
 		public QueryResult Eval(Query query, int timeout = -1) {
-			lock (_session._sync_serial_access_lock) {
-				if (null != _session._async_serial_acess_task) {
-					_session._async_serial_acess_task.Wait();
+			lock (_session.SerialSync) {
+				if (null != _session.SerialTask) {
+					_session.SerialTask.Wait();
 				}
 				Query realquery = null;
 
@@ -55,9 +60,9 @@ namespace Zeta.Extreme {
 		/// <param name="query"> </param>
 		/// <returns> </returns>
 		public Task<QueryResult> EvalAsync(Query query) {
-			lock (_session._sync_serial_access_lock) {
-				if (null != _session._async_serial_acess_task) {
-					_session._async_serial_acess_task.Wait();
+			lock (_session.SerialSync) {
+				if (null != _session.SerialTask) {
+					_session.SerialTask.Wait();
 				}
 				var realquery_ = _session.RegisterAsync(query);
 				var task = Task.Run(() =>
@@ -73,10 +78,10 @@ namespace Zeta.Extreme {
 						_session.Execute(-1);
 						// but here we not worry about another session
 						// because GetResult() will cause evaluation anyway
-						_session._async_serial_acess_task = null;
+						_session.SerialTask = null;
 						return realquery.GetResult(-1);
 					});
-				_session._async_serial_acess_task = task;
+				_session.SerialTask = task;
 				return task;
 			}
 		}
@@ -85,10 +90,10 @@ namespace Zeta.Extreme {
 		/// 	Возвращает ссылку на реальную сессию
 		/// </summary>
 		/// <returns> </returns>
-		public Session GetUnderlinedSession() {
+		public ISession GetUnderlinedSession() {
 			return _session;
 		}
 
-		private readonly Session _session;
+		private readonly ISerializableSession _session;
 	}
 }

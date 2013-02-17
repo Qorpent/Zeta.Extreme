@@ -18,7 +18,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="session"> </param>
 		/// <returns> </returns>
-		public static ISerialSession AsSerial(this Session session) {
+		public static ISerialSession AsSerial(this ISession session) {
 			return new SerialSession(session);
 		}
 	}

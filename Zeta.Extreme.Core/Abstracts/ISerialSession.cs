@@ -35,6 +35,6 @@ namespace Zeta.Extreme {
 		/// 	Возвращает ссылку на реальную сессию
 		/// </summary>
 		/// <returns> </returns>
-		Session GetUnderlinedSession();
+		ISession GetUnderlinedSession();
 	}
 }
