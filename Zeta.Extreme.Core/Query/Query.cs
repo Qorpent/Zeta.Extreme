@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -72,7 +73,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Обратная ссылка на сессию
 		/// </summary>
-		public Session Session { get; set; }
+		public Session Session;
 
 		/// <summary>
 		/// 	Проверяет "первичность запроса"
@@ -82,22 +83,12 @@ namespace Zeta.Extreme {
 		
 		}
 
-		/// <summary>
-		/// 	Рабочий процесс получения результата
-		/// </summary>
-		public Task<QueryResult> GetResultTask { get; set; }
 
 		/// <summary>
 		/// 	Синхронный результат
 		/// </summary>
 		public QueryResult Result { get; set; }
 
-		/// <summary>
-		/// 	Проверяет готовность запроса к выполнению
-		/// </summary>
-		public bool IsNotPrepared {
-			get { return null == Result && null == GetResultTask; }
-		}
 
 		/// <summary>
 		/// 	Автоматический код запроса, присваиваемый системой
@@ -109,10 +100,19 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public string SqlRequest;
 
+
+		/// <summary>
+		/// Статус по подготовке
+		/// </summary>
+		public PrepareState PrepareState;
+
 		/// <summary>
 		/// 	Back-reference to preparation tasks
 		/// </summary>
 		public Task PrepareTask { get; set; }
+
+
+
 
 		/// <summary>
 		/// Client processed mark
@@ -148,18 +148,16 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="timeout"> </param>
 		public void WaitPrepare(int timeout=-1) {	
-			while(null==PrepareTask) {
-				Thread.Sleep(30);
-			}
-			if (PrepareTask != null) {
-				if (!PrepareTask.IsCompleted) {
-					if(timeout>0) {
-						PrepareTask.Wait(timeout);
-					}else {
+			while(PrepareState.Prepared!=PrepareState) {
+				if (PrepareTask != null) {
+					if (!PrepareTask.IsCompleted) {
 						PrepareTask.Wait();
 					}
+				}else {
+					Thread.Sleep(5);
 				}
 			}
+			PrepareTask = null;
 		}
 
 
@@ -196,12 +194,13 @@ namespace Zeta.Extreme {
 		public Query Copy(bool deep = false) {
 			var result = (Query) MemberwiseClone();
 			result.PrepareTask = null;
-			result.GetResultTask = null;
 			result.Result = null;
 			result.EvaluationType = QueryEvaluationType.Unknown;
 			result._summaDependency = null;
 			result._formulaDependency = null;
 			result.AssignedFormula = null;
+			result.PrepareState = PrepareState.None;
+			
 			if(null!=TraceList) {
 				result.TraceList = new List<string>();
 			}
@@ -250,14 +249,7 @@ namespace Zeta.Extreme {
 			lock (this) {
 				if (null != Result) return Result;
 				if (EvaluationType == QueryEvaluationType.Summa && null == Result) {
-					var result = 0m;
-					foreach (var sq in SummaDependency) {
-						var val = sq.Item2.GetResult();
-						if (null != val) {
-							result += val.NumericResult*sq.Item1;
-						}
-					}
-
+					var result = (from sq in SummaDependency let val = sq.Item2.GetResult() where null != val select val.NumericResult*sq.Item1).Sum();
 					Result = new QueryResult {IsComplete = true, NumericResult = result};
 					return Result;
 				}
@@ -274,22 +266,9 @@ namespace Zeta.Extreme {
 					return Result;
 				}
 
-
 				WaitResult(timeout);
 				if (null != Result) {
 					return Result;
-				}
-				if (null == GetResultTask) {
-					throw new Exception("cannot retrieve result - no process or direct result attached");
-				}
-
-				if (GetResultTask.Status == TaskStatus.Faulted) {
-					throw new Exception("cannot retrieve result - some problems int getresult task - faulted ", GetResultTask.Exception);
-				}
-
-				if (null != GetResultTask) {
-					//некоторые задачи выставляют результат собственными средствами
-					Result = GetResultTask.Result;
 				}
 				return Result;
 			}
@@ -321,26 +300,8 @@ namespace Zeta.Extreme {
 		/// <param name="timeout"> </param>
 		public void WaitResult(int timeout) {
 			WaitPrepare(timeout);
-			while(null == Result && null == GetResultTask) {
-				Thread.Sleep(5);
-			}
-			if(this.IsPrimary) {
-				if(null==Result) {
-					Session.PrimarySource.Wait();
-				}
-			}else {
-				if (null != GetResultTask) {
-					if (GetResultTask.Status == TaskStatus.Created) {
-
-						try {
-							GetResultTask.Start();
-						}
-						catch {}
-					}
-
-					GetResultTask.Wait(timeout);
-					
-				}
+			if(IsPrimary && null==Result) {
+				Session.PrimarySource.Wait();
 			}
 		}
 

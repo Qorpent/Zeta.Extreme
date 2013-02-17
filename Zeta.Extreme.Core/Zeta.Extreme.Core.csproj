@@ -69,6 +69,7 @@
     <Compile Include="Formulas\FormulaParserConstants.cs" />
     <Compile Include="Formulas\IllegalSyntaxFormulaStub.cs" />
     <Compile Include="Formulas\NoExtremeFormulaStub.cs" />
+    <Compile Include="Query\PrepareState.cs" />
     <Compile Include="Query\QueryEvaluationType.cs" />
     <Compile Include="Services\DefaultPrimarySource.cs" />
     <Compile Include="Services\IPrimarySource.cs" />

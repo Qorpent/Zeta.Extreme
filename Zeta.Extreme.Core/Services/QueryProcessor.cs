@@ -41,6 +41,8 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		public void Prepare(Query query) {
+			query.PrepareState = PrepareState.InPrepare;
+			
 			if (query.IsPrimary) {
 				RegisterPrimaryRequest(query);
 			}
@@ -53,6 +55,8 @@ namespace Zeta.Extreme {
 					PrepareFormulas(query, mostpriority);
 				}
 			}
+			query.PrepareState = PrepareState.Prepared;
+			//query.PrepareTask = null;
 		}
 
 		private IZetaQueryDimension GetMostPriorityNoPrimarySource(Query query) {

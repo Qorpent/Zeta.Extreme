@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using Comdiv.Zeta.Data.Minimal;
@@ -22,6 +21,7 @@ namespace Zeta.Extreme {
 	/// 	Описывает потенциальный подзапрос для оптимизации расчета сумм и простых формул
 	/// </summary>
 	public sealed class QueryDelta {
+
 		/// <summary>
 		/// 	Применяет смещение к целевому запросу
 		/// 	Если есть изменения - то правильно создает копии и переписывает кэш-строку
@@ -29,7 +29,7 @@ namespace Zeta.Extreme {
 		/// <param name="target"> </param>
 		/// <returns> </returns>
 		public Query Apply(Query target) {
-			lock (this) {
+			
 				if (NoChanges(target)) {
 					return target;
 				}
@@ -40,7 +40,7 @@ namespace Zeta.Extreme {
 				MoveTime(result);
 				result.InvalidateCacheKey();
 				return result;
-			}
+			
 		}
 
 		/// <summary>
@@ -68,9 +68,9 @@ namespace Zeta.Extreme {
 				delta.Multiplicator = -1;
 			}
 			if (!string.IsNullOrWhiteSpace(r) && "_"!=r) { // оставляем писать возможность формулы в синтаксисе типа $_.toobj(...)
-				var _r = RowCache.get(r);
-				if (null != _r) {
-					delta.Row = _r;
+				var zetaRow = RowCache.get(r);
+				if (null != zetaRow) {
+					delta.Row = zetaRow;
 				}
 				else {
 					delta.RowCode = r;
@@ -80,9 +80,9 @@ namespace Zeta.Extreme {
 				delta.ObjId = o;
 			}
 			if (!string.IsNullOrWhiteSpace(c)) {
-				var _c = ColumnCache.get(c);
-				if (null != _c) {
-					delta.Col = _c;
+				var zetaColumn = ColumnCache.get(c);
+				if (null != zetaColumn) {
+					delta.Col = zetaColumn;
 				}
 				delta.ColCode = c;
 			}
@@ -193,7 +193,7 @@ namespace Zeta.Extreme {
 
 		private void MoveObj(Query result) {
 			if (null != Obj) {
-				if (Obj != result.Obj.Native) {
+				if (!Equals(Obj, result.Obj.Native)) {
 					result.Obj = new ObjHandler {Native = Obj};
 				}
 			}
@@ -218,7 +218,7 @@ namespace Zeta.Extreme {
 			if (null != Row && Row != target.Row.Native) {
 				return false;
 			}
-			if (null != Obj && Obj != target.Obj.Native) {
+			if (null != Obj && !Equals(Obj, target.Obj.Native)) {
 				return false;
 			}
 			if (!string.IsNullOrWhiteSpace(ColCode) && ColCode != target.Col.Code) {
@@ -252,7 +252,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Множитель при расчете значений
 		/// </summary>
-		public decimal Multiplicator = 1;
+		public decimal Multiplicator =1 ;
 
 		/// <summary>
 		/// 	Прямое смещение по объекту
