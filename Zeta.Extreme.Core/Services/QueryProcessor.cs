@@ -140,21 +140,7 @@ namespace Zeta.Extreme {
 			if (_session.TraceQuery) {
 				query.TraceList.Add(_session.Id + " registered to primary ");
 			}
-			//if (_session.DoNotExecuteRealSql) {
-			//	if (null != _session.StubDataGenerator) {
-			//		query.Result = _session.StubDataGenerator(query);
-			//	}
-			//	else {
-			//		query.Result = new QueryResult
-			//			{IsComplete = false, Error = new Exception("no sql or sql stub supported by session")};
-			//	}
-
-			//	return;
-			//}
-			//query.GetResultTask = _session.RegisterSqlRequest(query);
-			//if (_session.TraceQuery) {
-			//	query.TraceList.Add(_session.Id + " preq taskid: " + query.GetResultTask.Id);
-			//}
+			
 		}
 
 		private readonly Session _session;

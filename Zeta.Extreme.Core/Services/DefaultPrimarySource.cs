@@ -88,7 +88,7 @@ namespace Zeta.Extreme {
 		}
 
 
-
+		ConcurrentBag<Task> _sqltasks = new ConcurrentBag<Task>(); 
 
 		/// <summary>
 		/// 	Стартует текущую задачу по SQL
@@ -103,16 +103,7 @@ namespace Zeta.Extreme {
 					task = CreateNewSqlBatchTask();
 				}
 				_currentSqlBatchTask = null;
-				if (null != _session)
-				{
-					var id = _session._evalTaskCounter++;
-					task.ContinueWith(t_ =>
-						{
-							Task t;
-							_session._evalTaskAgenda.TryRemove(id, out t);
-						});
-					_session._evalTaskAgenda[id] = task;
-				}
+				_sqltasks.Add(task);
 				task.Start();
 				return task;
 			} //NOTE: bad design - register something in agenda of session -co-dependency and bad design
@@ -225,6 +216,16 @@ namespace Zeta.Extreme {
 
 				return null;
 			});
+		}
+		/// <summary>
+		/// Выполняет все требуемые запросы в режиме ожидания
+		/// </summary>
+		public void Wait() {
+			RunSqlBatch();
+			Task t = null;
+			while(_sqltasks.TryTake(out t)) {
+				t.Wait();
+			}
 		}
 
 		private bool CollectStatistics {

@@ -33,5 +33,10 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <returns> </returns>
 		Task Collect();
+
+		/// <summary>
+		/// Выполняет все требуемые запросы в режиме ожидания
+		/// </summary>
+		void Wait();
 	}
 }

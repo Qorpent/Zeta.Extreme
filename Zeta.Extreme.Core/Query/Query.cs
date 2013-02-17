@@ -326,8 +326,7 @@ namespace Zeta.Extreme {
 			}
 			if(this.IsPrimary) {
 				if(null==Result) {
-					var t = Session.PrimarySource.Collect();
-					t.Wait();
+					Session.PrimarySource.Wait();
 				}
 			}else {
 				if (null != GetResultTask) {

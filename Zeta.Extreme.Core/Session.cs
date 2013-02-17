@@ -132,7 +132,6 @@ namespace Zeta.Extreme {
 				ISerialSession result;
 				if (_subsessionpool.TryPop(out result)) {
 					result.GetUnderlinedSession()._preEvalTaskAgenda.Clear();
-					result.GetUnderlinedSession()._evalTaskAgenda.Clear();
 					return result;
 				}
 				var copy = new Session(CollectStatistics)
@@ -295,59 +294,16 @@ namespace Zeta.Extreme {
 
 		
 		}
-		/// <summary>
-		/// Метод синхронизации с SQL
-		/// </summary>
-		protected internal void WaitSql() {
-			
-			if(null!=MasterSession) {
-				MasterSession.WaitSql();
-				return;
-			}
-
-			var t = PrimarySource.Collect(); // выполняем остаточные запросы
-			t.Wait();
-
-		}
+		
 
 		/// <summary>
 		/// 	Ожидает окончания всех процессов асинхронной регистрации
 		/// </summary>
 		/// <param name="timeout"> </param>
 		protected internal void WaitEvaluation(int timeout=-1) {
-			WaitSql();
-			//	Thread.Sleep(20);
-			Task.WaitAll(_evalTaskAgenda.Values.Where(_ => _.Status != TaskStatus.Created).ToArray());
-			while (_evalTaskAgenda.Any()) {
-				// так как это поздние задачи и по идее не длительные,
-				// то мы разбираем их как очередь, без распаралелливания
-				// при этом подзадачи каскадом активируются сами по формулам
-				// и суммам через WaitResult на дочках
-				var task = _evalTaskAgenda.FirstOrDefault().Value;
-				if (null != task) {
-					if (task.Status == TaskStatus.Created) {
-						try {
-							task.Start();
-						}
-						catch {}
-					}
-					if(timeout>0) {
-						task.Wait(timeout);
-					}else {
-						task.Wait();
-					}
-				}
-			}
-
-			while (!_evalTaskAgenda.IsEmpty) {
-				Task.WaitAll(_evalTaskAgenda.Values.ToArray());
-			}
-			/*
-			foreach (var query in Registry.Values.Where(_=>null==_.Result)) {
-				query.GetResult();
-			}
-			*/
-			Registry.Values.AsParallel().Where(_=>null==_.Result).ForAll(_=>_.GetResult());
+			PrimarySource.Wait();
+			ActiveSet.Values.AsParallel().Where(_=>null==_.Result).ForAll(_=>_.GetResult());
+			ActiveSet.Clear();
 		}
 
 		/// <summary>
@@ -456,35 +412,7 @@ namespace Zeta.Extreme {
 			_periodevalpool.Push(periodEvaluator);
 		}
 
-		/// <summary>
-		/// 	Регистриует в агенде задачу на вычисление
-		/// </summary>
-		/// <param name="resulttask"> </param>
-		/// <param name="hot"> немедленный запуск </param>
-		/// <returns> </returns>
-		protected internal Task<QueryResult> RegisterEvalTask(Func<QueryResult> resulttask, bool hot) {
-			lock(thissync) {
-				var id = _evalTaskCounter++;
-				var task = new Task<QueryResult>(() =>
-					{
-						try {
-							return resulttask();
-						}
-						finally {
-							Task t;
-							_evalTaskAgenda.TryRemove(id, out t);
-						}
-					});
-				_evalTaskAgenda[id] = task;
-				//должны делать в основном потоке, иначе 
-				//WaitRegistry может раньше отработать
-
-				if (hot) {
-					task.Start();
-				}
-				return task;
-			}
-		}
+		
 
 		/// <summary>
 		/// 	Быстро синхронизирует вызывающий поток с текущими задачами подготовки
@@ -520,7 +448,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public readonly bool CollectStatistics;
 
-		internal readonly ConcurrentDictionary<int, Task> _evalTaskAgenda = new ConcurrentDictionary<int, Task>();
+		
 
 		private readonly ConcurrentStack<IPeriodEvaluator> _periodevalpool = new ConcurrentStack<IPeriodEvaluator>();
 		private readonly ConcurrentDictionary<int, Task> _preEvalTaskAgenda = new ConcurrentDictionary<int, Task>();
@@ -664,10 +592,7 @@ namespace Zeta.Extreme {
 
 		
 
-		/// <summary>
-		/// 	Счетчик очереди выполнения
-		/// </summary>
-		internal int _evalTaskCounter;
+		
 
 		private int _preEvalTaskCounter;
 
