@@ -73,6 +73,12 @@ namespace Zeta.Extreme {
 			}
 			var key = GetKey(mostpriority);
 			var formula = FormulaStorage.Default.GetFormula(key, false);
+			if(null==formula) {
+				FormulaStorage.Default.Register(new FormulaRequest
+					{Formula = mostpriority.Formula, Language = mostpriority.FormulaEvaluator, Key = key});
+				formula = FormulaStorage.Default.GetFormula(key, false);
+			}
+
 			if (null == formula) {
 				query.Result = new QueryResult {IsComplete = true, Error = new Exception("formula not found")};
 				return;
@@ -89,8 +95,9 @@ namespace Zeta.Extreme {
 			else if (mostpriority is ColumnHandler || mostpriority is IZetaColumn) {
 				if(mostpriority is ColumnHandler && null==((ColumnHandler)mostpriority).Native) {
 					key = "dyncol:" + mostpriority.Formula;
+				}else {
+					key = "col:" + key;
 				}
-				key = "col:" + key;
 			}
 			else if (mostpriority is ObjHandler || mostpriority is IZetaMainObject) {
 				key = "obj:" + key;
@@ -129,21 +136,25 @@ namespace Zeta.Extreme {
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_QueryType_Primary);
 			}
-			if (_session.DoNotExecuteRealSql) {
-				if (null != _session.StubDataGenerator) {
-					query.Result = _session.StubDataGenerator(query);
-				}
-				else {
-					query.Result = new QueryResult
-						{IsComplete = false, Error = new Exception("no sql or sql stub supported by session")};
-				}
-
-				return;
-			}
-			query.GetResultTask = _session.RegisterSqlRequest(query);
+			_session.PrimarySource.Register(query);
 			if (_session.TraceQuery) {
-				query.TraceList.Add(_session.Id + " preq taskid: " + query.GetResultTask.Id);
+				query.TraceList.Add(_session.Id + " registered to primary ");
 			}
+			//if (_session.DoNotExecuteRealSql) {
+			//	if (null != _session.StubDataGenerator) {
+			//		query.Result = _session.StubDataGenerator(query);
+			//	}
+			//	else {
+			//		query.Result = new QueryResult
+			//			{IsComplete = false, Error = new Exception("no sql or sql stub supported by session")};
+			//	}
+
+			//	return;
+			//}
+			//query.GetResultTask = _session.RegisterSqlRequest(query);
+			//if (_session.TraceQuery) {
+			//	query.TraceList.Add(_session.Id + " preq taskid: " + query.GetResultTask.Id);
+			//}
 		}
 
 		private readonly Session _session;

@@ -70,6 +70,8 @@
     <Compile Include="Formulas\IllegalSyntaxFormulaStub.cs" />
     <Compile Include="Formulas\NoExtremeFormulaStub.cs" />
     <Compile Include="Query\QueryEvaluationType.cs" />
+    <Compile Include="Services\DefaultPrimarySource.cs" />
+    <Compile Include="Services\IPrimarySource.cs" />
     <Compile Include="Services\MetaCache.cs" />
     <Compile Include="Services\IMetaCache.cs" />
     <Compile Include="Query\StrongSumProvider.cs" />

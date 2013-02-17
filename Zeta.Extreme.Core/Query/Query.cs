@@ -324,20 +324,23 @@ namespace Zeta.Extreme {
 			while(null == Result && null == GetResultTask) {
 				Thread.Sleep(5);
 			}
-			if (null != GetResultTask) {
-				if(GetResultTask.Status==TaskStatus.Created)
-					if(IsPrimary) {
-						Session.RunSqlBatch();
-					}else {
+			if(this.IsPrimary) {
+				if(null==Result) {
+					var t = Session.PrimarySource.Collect();
+					t.Wait();
+				}
+			}else {
+				if (null != GetResultTask) {
+					if (GetResultTask.Status == TaskStatus.Created) {
+
 						try {
 							GetResultTask.Start();
 						}
 						catch {}
 					}
-				if(timeout>0) {
+
 					GetResultTask.Wait(timeout);
-				}else {
-					GetResultTask.Wait();
+					
 				}
 			}
 		}

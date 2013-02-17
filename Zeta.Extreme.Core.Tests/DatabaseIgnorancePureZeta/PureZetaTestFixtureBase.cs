@@ -16,8 +16,9 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 		[SetUp]
 		public virtual void Setup() {
 			_session = new Session();
-			_session.DoNotExecuteRealSql = true;
-			_session.StubDataGenerator = StubDataGenerator;
+			var _ps = _session.PrimarySource as DefaultPrimarySource;
+			_ps.DoNotExecuteRealSql = true;
+			_ps.StubDataGenerator = StubDataGenerator;
 			_metacache = new MetaCache();
 			_session.MetaCache = _metacache;
 			_serial = _session.AsSerial();

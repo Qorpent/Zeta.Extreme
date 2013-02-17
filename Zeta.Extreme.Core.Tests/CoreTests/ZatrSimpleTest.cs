@@ -156,7 +156,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			Console.WriteLine("start form " + id);
 			var _session = new Session(true);
 			session = _session;
-			_session.BatchSize = batchsize;
+			((DefaultPrimarySource)_session.PrimarySource).BatchSize = batchsize;
 			foreach (var row in rs
 				.OrderBy(x =>
 					{

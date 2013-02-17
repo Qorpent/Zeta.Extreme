@@ -61,11 +61,14 @@ namespace Zeta.Extreme {
 					});
 			}
 
-			if (internalquery.Col.IsFormula && !_sumh.IsSum(query.Col))
-			{
+			if (internalquery.Col.IsFormula && !_sumh.IsSum(query.Col)) {
+				var key = "col:" + internalquery.Col.Code;
+				if(null==internalquery.Col.Native) {
+					key = "dyncol:" + internalquery.Col.Formula;
+				}
 				FormulaStorage.Default.Register(new FormulaRequest
 				{
-					Key = "col:" + internalquery.Col.Code,
+					Key =key,
 					Formula = internalquery.Col.Formula,
 					Language = internalquery.Col.FormulaType,
 					Tags = internalquery.Col.Tag,
