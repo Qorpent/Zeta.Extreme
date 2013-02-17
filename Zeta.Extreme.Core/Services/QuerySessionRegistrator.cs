@@ -91,13 +91,12 @@ namespace Zeta.Extreme {
 			_session.Registry[uid] = result;
 			_session.KeyMap[preloadkey] = uid;
 
-			lock(result) {
-				if (null==result.PrepareTask && PrepareState.Prepared != result.PrepareState) {
+			if (null==result.PrepareTask && PrepareState.Prepared != result.PrepareState) {
 					result.PrepareState = PrepareState.TaskStarted;
 					result.PrepareTask = _session.PrepareAsync(result);
 					
 				}
-			}
+			
 			//if (result.Session != _session) result.WaitPrepare();
 			return result;
 			//	}

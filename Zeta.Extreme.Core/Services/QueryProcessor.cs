@@ -56,7 +56,6 @@ namespace Zeta.Extreme {
 				}
 			}
 			query.PrepareState = PrepareState.Prepared;
-			//query.PrepareTask = null;
 		}
 
 		private IZetaQueryDimension GetMostPriorityNoPrimarySource(Query query) {
