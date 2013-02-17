@@ -259,10 +259,17 @@ namespace Zeta.Extreme.FrontEnd.Session {
 					if (queries.ContainsKey(key)) {
 						continue;
 					}
+					var ch = new ColumnHandler {Native = c._.Target};
+					if(null==ch.Native) {
+						ch.Code = c._.Code;
+						ch.IsFormula = c._.IsFormula;
+						ch.Formula = c._.Formula;
+						ch.FormulaType = c._.FormulaEvaluator;
+					}
 					var q = new Query
 						{
 							Row = {Native = r._},
-							Col = {Native = c._.Target},
+							Col = ch,
 							Obj = {Native = Object},
 							Time = {Year = c._.Year, Period = c._.Period}
 						};
@@ -382,7 +389,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 					columnDesc._.Target = MetaCache.Default.Get<IZetaColumn>(columnDesc._.Code);
 				}
 			}
-			cols = cols.Where(_ => _._.Target != null).ToArray(); //пока только хранимые колонки поддерживаем
+			//cols = cols.Where(_ => _._.Target != null).ToArray(); //пока только хранимые колонки поддерживаем
 			primarycols = cols.Where(_ => _._.Editable && !_._.IsFormula).ToArray();
 			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
 			primaryrows = rows.Where(_ => !_._.IsFormula && 0 == _._.Children.Count && !_._.IsMarkSeted("0ISCAPTION")).ToArray();

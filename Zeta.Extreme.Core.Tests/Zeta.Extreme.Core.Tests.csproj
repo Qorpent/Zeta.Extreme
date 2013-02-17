@@ -27,6 +27,7 @@
     <Compile Include="DatabaseIgnorancePureZeta\PrimaryEchoTest.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\PureZetaTestFixtureBase.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\RowColAndObjFormula.cs" />
+    <Compile Include="DatabaseIgnorancePureZeta\SimpleFormula.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\SimpleHardLink.cs" />
     <Compile Include="MockFormulaTest.cs" />
     <Compile Include="SerialAcessTest.cs" />
