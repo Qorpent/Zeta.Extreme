@@ -163,7 +163,12 @@ namespace Zeta.Extreme {
 						var cmd = c.CreateCommand();
 						cmd.CommandText = script;
 						using (var r = cmd.ExecuteReader()) {
-							while (r.Read()) {
+							bool _nr = false;
+							while (r.Read()||(_nr =r.NextResult())) {
+								if(_nr) {
+									_nr = false;
+									continue;
+								}
 								var id = r.GetInt32(0);
 								
 								if (CollectStatistics) {
@@ -231,7 +236,7 @@ namespace Zeta.Extreme {
 					foreach (var cobj in colobj) {
 						script +=
 							string.Format(
-								"\r\nunion\r\nselect id,col,row,obj,year,period,decimalvalue from cell where period={0} and year={1} and col={2} and obj={3} and row in ({4})",
+								"\r\nselect id,col,row,obj,year,period,decimalvalue from cell where period={0} and year={1} and col={2} and obj={3} and row in ({4})",
 								time.p, time.y, cobj.c, cobj.o, rowids);
 					}
 				}
@@ -247,7 +252,7 @@ namespace Zeta.Extreme {
 					{
 						script +=
 							string.Format(
-								"\r\nunion\r\nselect 0,col,row,obj,year,{5},sum(decimalvalue) from cell where period in ({0}) and year={1} and col={2} and obj={3} and row in ({4}) group by col,row,obj,year ",
+								"\r\nselect 0,col,row,obj,year,{5},sum(decimalvalue) from cell where period in ({0}) and year={1} and col={2} and obj={3} and row in ({4}) group by col,row,obj,year ",
 								time.ps, time.y, cobj.c, cobj.o, sprowids,time.p);
 					}
 				}
