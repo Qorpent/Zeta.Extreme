@@ -386,11 +386,11 @@ namespace Zeta.Extreme.FrontEnd.Session {
 
 		private void PrepareMetaSets() {
 			rootrow = MetaCache.Default.Get<IZetaRow>(Template.Form.Code);
-			rows = rootrow.AllChildren
+			rows = new[]{new IdxRow{i=-1,_=rootrow}, }.Union( rootrow.AllChildren
 				.Where(_ => !_.IsObsolete(Year))
 				.Where(_ => null == _.Object || _.Object.Id == Object.Id)
 				.OrderBy(_ => _.Path)
-				.Select((_, i) => new IdxRow {i = i, _ = _}).ToArray();
+				.Select((_, i) => new IdxRow {i = i, _ = _})).ToArray();
 			cols = Template.GetAllColumns().Where(_ => _.GetIsVisible(Object)).Select((_, i) => new IdxCol {i = i, _ = _});
 			this.Colset = cols.Select(_ => _._).ToArray();
 			foreach (var columnDesc in cols) {
