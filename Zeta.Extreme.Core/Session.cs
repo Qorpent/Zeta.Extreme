@@ -216,12 +216,12 @@ namespace Zeta.Extreme {
 		/// </remarks>
 		/// <exception cref="NotImplementedException"></exception>
 		public Query Register(Query query, string uid = null) {
-			lock (thissync) {
+			//lock (thissync) {
 				var helper = GetRegistryHelper();
 				var result = helper.Register(query, uid);
 				ReturnRegistryHelper(helper);
 				return result;
-			}
+			//}
 		}
 
 		/// <summary>
@@ -317,7 +317,7 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
 		public IQueryPreparator GetPreparator() {
-			lock (thissync) {
+			//lock (thissync) {
 				IQueryPreparator result;
 				if (_preparators.TryPop(out result)) {
 					return result;
@@ -326,7 +326,7 @@ namespace Zeta.Extreme {
 					return Activator.CreateInstance(CustomPreparatorClass, this) as IQueryPreparator;
 				}
 				return new QueryProcessor(this);
-			}
+			//}
 		}
 
 		/// <summary>
@@ -344,7 +344,7 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
 		private IRegistryHelper GetRegistryHelper() {
-			lock (thissync) {
+		//	lock (thissync) {
 				IRegistryHelper result;
 				if (_registryhelperpool.TryPop(out result)) {
 					return result;
@@ -353,8 +353,10 @@ namespace Zeta.Extreme {
 					return Activator.CreateInstance(CustomRegistryHelperClass, this) as IRegistryHelper;
 				}
 				return new QuerySessionRegistrator(this);
-			}
+			//}
 		}
+
+	
 
 		/// <summary>
 		/// 	Возвращает препроцессор в пул
