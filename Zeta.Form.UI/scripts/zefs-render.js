@@ -18,7 +18,7 @@ $.extend(root,{
 				$('<th class="name"/>').text("Наименование")
 			));
 			if (session.getNeedMeasure()) {
-				thead.find("thead").append($('<th class="measure"/>').text("Ед. изм."));
+				$(thead.find("tr").first()).append($('<th class="measure"/>').text("Ед. изм."));
 			}
 			$.each(session.structure.cols, function(i,col) {
 				colgroup.append($('<col class="data"/>'));
@@ -68,6 +68,7 @@ $.extend(root,{
                     if (val != "") $cell.number(val,0,'.',' ');
                     $cell.removeClass("notloaded");
                     $cell.data("history", val);
+                    $cell.data("previous", val);
 				});
 				batch.wasFilled = true;
 				return session;

@@ -37,11 +37,15 @@ root.init = root.init ||
             data: params
         }).success($.proxy(function(d) {
             var session = options.asSession(d);
+            document.title = session.getFormInfo().getName();
             $('#sessionInfo').click(function(e) {
                 window.open(options.session_command + "?session=" + d.getUid(), '_blank');
             });
             $('#debugInfo').click(function(e) {
                 window.open(options.debug_command + "?session=" + d.getUid(), '_blank');
+            });
+            $('#restartInfo').click(function(e) {
+                window.open(options.debug_restart, '_blank');
             });
             Structure(session);
             window.setTimeout(function(){Data(session,0)},options.datadelay);    //первый запрос на данные

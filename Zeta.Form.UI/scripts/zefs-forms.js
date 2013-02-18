@@ -82,6 +82,20 @@
         }
     }
 
+    Zefs.prototype.rollbackValue = function() {
+        var $cell = this.getActiveCell();
+        this.clearNumberFormat($cell);
+        $cell.data("previous",$cell.text());
+        if ($cell.data("history") != "") {
+            $cell.text($cell.data("history"));
+            this.applyNumberFormat($cell);
+        } else {
+            $cell.text("");
+        }
+        $cell.removeClass("changed");
+        return $cell;
+    }
+
     Zefs.prototype.activateCell = function($cell) {
         var $cell = $($cell);
         if (!$cell.hasClass("editable")) return $cell;
@@ -107,20 +121,51 @@
     Zefs.prototype.deactivateCell = function(e) {
         $.each(this.getActiveCell(), $.proxy(function(i,td) {
             var $cell = $(td);
+            if (e != "esc" && $cell.hasClass('editing')) {
+                this.uninputCell();
+            }
             $cell.removeClass("active");
             $(this.table.find("col")[this.getColIndex($cell)]).css("width", "");
             $cell.css("min-width", "");
             $cell.css("height", "");
             $cell.parent().css("height", "");
-            if (!!e && e == "esc") {
-                $cell.text($cell.data("previous"));
-            } else {
-                $cell.data("previous", $cell.text());
-            }
+            this.clearNumberFormat($cell);
             if ($cell.text() != $cell.data("history")) $cell.addClass("changed");
             else $cell.removeClass("changed");
             this.applyNumberFormat($cell);
         }, this));
+    }
+
+    Zefs.prototype.inputCell = function($mode) {
+        var $cell = this.getActiveCell();
+        this.clearNumberFormat($cell);
+        var $val = "";
+        if ($mode == "edit") {
+            $val = $cell.text();
+        }
+        $cell.text("");
+        var $input = $('<input/>').css("width", $cell.width()).val($val);
+        $cell.append($input);
+        $input.focus();
+        $cell.addClass("editing");
+        return $cell;
+    }
+
+    Zefs.prototype.uninputCell = function(e) {
+        var $cell = this.getActiveCell();
+        var $input = $($cell.find('input').first());
+        if ($input.length != 0){
+            var $val = $input.val();
+            $input.remove();
+            $cell.text($val);
+        }
+        if (!!e && e == "esc") {
+            $cell.text($cell.data("previous"));
+        } else {
+            $cell.data("previous", $cell.text());
+        }
+        $cell.removeClass("editing");
+        return $cell;
     }
 
     Zefs.prototype.getActiveCell = function() {
@@ -213,6 +258,17 @@
                     e.preventDefault();
                     this.downCell();
                     break;
+                // F2 button
+                case 113 :
+                    e.preventDefault();
+                    this.inputCell("edit");
+                    break;
+                // Backspace button
+                case 8 :
+                    if (e.ctrlKey && !$(this.getActiveCell()).hasClass('editing')) {
+                        this.rollbackValue();
+                    }
+                    break;
                 // Tab button
                 case 9 :
                     e.preventDefault();
@@ -221,17 +277,18 @@
                 // Enter button
                 case 13 :
                     e.preventDefault();
-                    this.nextCell();
+                    this.downCell();
                     break;
                 // Escape button
                 case 27 :
                     e.preventDefault();
-                    this.deactivateCell("esc");
+                    this.uninputCell("esc");
                     break;
                 default :
                     if (!printable) return;
-                    var active = this.table.find("td.active");
-                    active.text(active.text() + String.fromCharCode(k));
+                    if (!$(this.getActiveCell()).hasClass('editing')) {
+                        this.inputCell("replace");
+                    }
             }
         },this));
     };

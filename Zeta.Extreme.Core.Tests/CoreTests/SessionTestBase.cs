@@ -46,10 +46,10 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 					//"Data Source=(local);Initial Catalog=eco;Integrated Security=True;Min Pool Size=5;Application Name=zeta3"),
 					new ZetaMinimalMode());
 				Periods.Get(12);
-				RowCache.start("m111", "m112", "m260", "m250", "m218", "r590", "m220");
+				RowCache.start();
 				FormulaStorage.Default.AutoBatchCompile = false;
 				var _sumh = new StrongSumProvider();
-				var formulas = RowCache.byid.Values.Where(_ => _.IsFormula && !_sumh.IsSum(_)).ToArray();
+				var formulas = RowCache.byid.Values.Where(_ => _.IsFormula && !_sumh.IsSum(_) && _.ResolveTag("extreme")=="1").ToArray();
 
 				foreach (var f in formulas) {
 					var req = new FormulaRequest {Key ="row:"+ f.Code, Formula = f.Formula, Language = f.FormulaEvaluator};

@@ -23,6 +23,7 @@ $.extend(options,(function(){
 		struct_command : "zefs/struct.json.qweb",
 		data_command : "zefs/data.json.qweb",
 		debug_command : "zefs/debuginfo.json.qweb",
+		debug_restart : "zefs/restart.json.qweb",
 
 		finished_state : "f",
 		inprocess_state : "w",

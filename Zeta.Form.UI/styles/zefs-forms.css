@@ -36,11 +36,13 @@ table.data th.data {
 }
 
 table.data td.editable {
-    background: #e6ffe1;
+    background: none;
+    background-color: #e6ffe1 !important;
 }
 
 table.data td.editable.changed {
-    background: #ffd8d5;
+    background: none;
+    background-color: #ffd8d5 !important;
 }
 
 table.data td.notloaded {
@@ -92,12 +94,18 @@ table.data th:first-child {
     border-left: 2px solid #555;
 }
 
-table.data td.focused {
-
+table.data td>input {
+    border: none;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
 }
 
 table.data td.active {
-    background-color: #fafad2;
+    background-color: #fafad2 !important;
     display: block;
     position: absolute;
     border: 3px solid #000000 !important;
@@ -123,8 +131,12 @@ table.data tr[level="0"] td.name {
 }
 
 table.data tr[level="0"] td {
-    background-color: #dedede;
+    background-color: #e9e9e9;
     font-weight: bold;
+}
+
+table.data tr[level="1"] td {
+    background-color: #e9e9e9;
 }
 
 table.data tr[level="1"] td.name {

@@ -225,8 +225,7 @@ namespace Zeta.Extreme {
 		public string GenerateScript(Query[] _myrequests) {
 			var usualperiods = _myrequests.Where(_ => _.Time.Periods == null).ToArray();
 			var sumperiods = _myrequests.Where(_ => _.Time.Periods != null).ToArray();
-			var script =
-					"select 0 as id, 0 as col, 0 as row, 0 as obj, 0 as year, 0 as period, cast(0 as decimal(18,6)) as value";
+			var script ="";
 			if(0!=usualperiods.Length) {
 				var times = usualperiods.Select(_ => new {y = _.Time.Year, p = _.Time.Period}).Distinct();
 				var colobj = usualperiods.Select(_ => new {o = _.Obj.Id, c = _.Col.Id}).Distinct();
@@ -236,7 +235,10 @@ namespace Zeta.Extreme {
 					foreach (var cobj in colobj) {
 						script +=
 							string.Format(
-								"\r\nselect id,col,row,obj,year,period,decimalvalue from cell where period={0} and year={1} and col={2} and obj={3} and row in ({4})",
+								@"
+								if exists(select top 1 id from cell where period={0} and year={1} and col={2} and obj={3} and row in ({4}))
+									select id,col,row,obj,year,period,decimalvalue 
+									from cell where period={0} and year={1} and col={2} and obj={3} and row in ({4})",
 								time.p, time.y, cobj.c, cobj.o, rowids);
 					}
 				}
