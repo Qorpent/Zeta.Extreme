@@ -39,6 +39,14 @@ namespace Zeta.Extreme {
 		public T Get<T>(object id) where T : class, IEntityDataPattern {
 			lock (this) {
 				T result = null;
+				if ( null != Parent) 
+				//сначала опрашивается родитель и это основной кейс, 
+				//так как кастом-коды редкость, плюс не надо чтобы кастом 
+				//коды перекрывали штатные
+				{ 
+					result = Parent.Get<T>(id);
+				}
+				if(null!=result) return result;
 				if (id is string) {
 					result = GetByCode<T>((string) id);
 				}
@@ -48,9 +56,7 @@ namespace Zeta.Extreme {
 				if (null == result) {
 					result = GetNative<T>(id);
 				}
-				if(null==result && null!=Parent) {
-					return Parent.Get<T>(id);
-				}
+				
 				return result;
 			}
 		}

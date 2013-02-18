@@ -29,12 +29,18 @@ namespace Zeta.Extreme {
 		public DefaultPrimarySource() {}
 
 		/// <summary>
+		/// Журнал выполненных SQL
+		/// </summary>
+		public IList<string> QueryLog { get; private set; }
+
+		/// <summary>
 		/// 	Конструктор с учетом сессии
 		/// </summary>
 		/// <param name="session"> </param>
 		public DefaultPrimarySource(Session session) {
 			_session = session;
 			TraceQuery = session.TraceQuery;
+			QueryLog = new List<string>();
 		}
 
 		/// <summary>
@@ -203,7 +209,9 @@ namespace Zeta.Extreme {
 
 					if (CollectStatistics) {
 						sw.Stop();
+						
 						lock (_syncsqlawait) {
+							QueryLog.Add("/* EXECUTE TIME " + sw.Elapsed + " */" + script);
 							_session.Stat_Batch_Time += sw.Elapsed;
 						}
 					}

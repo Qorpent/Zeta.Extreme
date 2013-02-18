@@ -34,7 +34,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// <param name="obj"> </param>
 		public FormSession(IInputTemplate form, int year, int period, IZetaMainObject obj) {
 			Uid = Guid.NewGuid().ToString();
-			DataSession = new Extreme.Session();
+			DataSession = new Extreme.Session(true);
 			Serial = DataSession.AsSerial();
 			Created = DateTime.Now;
 			Template = form.PrepareForPeriod(year, period, new DateTime(1900, 1, 1), Object);
@@ -161,6 +161,11 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// 	Время подготовки
 		/// </summary>
 		[Serialize] public TimeSpan TimeToPrepare { get; set; }
+
+		/// <summary>
+		/// Журнал выполненных SQL
+		/// </summary>
+		[IgnoreSerialize] public string[] SqlLog { get; set; }
 
 		/// <summary>
 		/// 	Время генерации структуры
@@ -307,6 +312,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 
 			QueriesCount = queries.Count;
 			DataStatistics = ((Extreme.Session) DataSession).GetStatisticString();
+			SqlLog = ((DefaultPrimarySource) ((Extreme.Session) DataSession).PrimarySource).QueryLog.ToArray();
 			DataSession = null;
 			DataCount = Data.Count;
 			TimeToGetData = sw.Elapsed;

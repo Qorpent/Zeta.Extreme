@@ -18,6 +18,7 @@
   <ItemGroup>
     <Compile Include="Actions\FormListAction.cs" />
     <Compile Include="Actions\FormServerRestart.cs" />
+    <Compile Include="Actions\SqlLogAction.cs" />
     <Compile Include="FormServer.cs" />
     <Compile Include="Session\FormSession.cs" />
     <Compile Include="Actions\FormStartAction.cs" />
