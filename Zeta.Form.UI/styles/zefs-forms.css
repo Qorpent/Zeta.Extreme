@@ -2,6 +2,10 @@ body {
     margin: 20px;
 }
 
+i {
+    margin-right: 2px;
+}
+
 table.data {
     border-collapse: collapse;
     empty-cells: show;
@@ -59,7 +63,7 @@ table.data thead.fixed {
 table.data th,
 table.data col,
 table.data td {
-    padding: 2px 4px;
+    padding: 0px 4px;
     cursor: default;
 }
 

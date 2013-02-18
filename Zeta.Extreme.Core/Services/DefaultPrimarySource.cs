@@ -156,19 +156,7 @@ namespace Zeta.Extreme {
 						sw = Stopwatch.StartNew();
 						Interlocked.Increment(ref _session.Stat_Batch_Count);
 					}
-					var times = _myrequests.Values.Select(_ => new {y = _.Time.Year, p = _.Time.Period}).Distinct();
-					var colobj = _myrequests.Values.Select(_ => new {o = _.Obj.Id, c = _.Col.Id}).Distinct();
-					var rowids = string.Join(",", _myrequests.Values.Select(_ => _.Row.Id).Distinct());
-					var script =
-						"select 0 as id, 0 as col, 0 as row, 0 as obj, 0 as year, 0 as period, cast(0 as decimal(18,6)) as value";
-					foreach (var time in times) {
-						foreach (var cobj in colobj) {
-							script +=
-								string.Format(
-									"\r\nunion\r\nselect id,col,row,obj,year,period,decimalvalue from cell where period={0} and year={1} and col={2} and obj={3} and row in ({4})",
-									time.p, time.y, cobj.c, cobj.o, rowids);
-						}
-					}
+					var script = GenerateScript(_myrequests.Values.ToArray());
 
 					using (var c = GetConnection()) {
 						c.Open();
@@ -177,9 +165,7 @@ namespace Zeta.Extreme {
 						using (var r = cmd.ExecuteReader()) {
 							while (r.Read()) {
 								var id = r.GetInt32(0);
-								if (0 == id) {
-									continue;
-								}
+								
 								if (CollectStatistics) {
 									Interlocked.Increment(ref _session.Stat_Primary_Catched);
 								}
@@ -224,6 +210,49 @@ namespace Zeta.Extreme {
 
 					return null;
 				});
+		}
+
+		/// <summary>
+		/// Генератор скриптов из  переданной коллекции запросов
+		/// </summary>
+		/// <param name="_myrequests"></param>
+		/// <returns></returns>
+		public string GenerateScript(Query[] _myrequests) {
+			var usualperiods = _myrequests.Where(_ => _.Time.Periods == null).ToArray();
+			var sumperiods = _myrequests.Where(_ => _.Time.Periods != null).ToArray();
+			var script =
+					"select 0 as id, 0 as col, 0 as row, 0 as obj, 0 as year, 0 as period, cast(0 as decimal(18,6)) as value";
+			if(0!=usualperiods.Length) {
+				var times = usualperiods.Select(_ => new {y = _.Time.Year, p = _.Time.Period}).Distinct();
+				var colobj = usualperiods.Select(_ => new {o = _.Obj.Id, c = _.Col.Id}).Distinct();
+				var rowids = string.Join(",", usualperiods.Select(_ => _.Row.Id).Distinct());
+				
+				foreach (var time in times) {
+					foreach (var cobj in colobj) {
+						script +=
+							string.Format(
+								"\r\nunion\r\nselect id,col,row,obj,year,period,decimalvalue from cell where period={0} and year={1} and col={2} and obj={3} and row in ({4})",
+								time.p, time.y, cobj.c, cobj.o, rowids);
+					}
+				}
+			}
+			if(0!=sumperiods.Length) {
+				var sptimes =
+					sumperiods.Select(_ => new {y = _.Time.Year, p = _.Time.Period, ps = string.Join(",", _.Time.Periods)}).Distinct();
+				var spcolobj = sumperiods.Select(_ => new {o = _.Obj.Id, c = _.Col.Id}).Distinct();
+				var sprowids = string.Join(",", sumperiods.Select(_ => _.Row.Id).Distinct());
+				foreach (var time in sptimes)
+				{
+					foreach (var cobj in spcolobj)
+					{
+						script +=
+							string.Format(
+								"\r\nunion\r\nselect 0,col,row,obj,year,{5},sum(decimalvalue) from cell where period in ({0}) and year={1} and col={2} and obj={3} and row in ({4}) group by col,row,obj,year ",
+								time.ps, time.y, cobj.c, cobj.o, sprowids,time.p);
+					}
+				}
+			}
+			return script;
 		}
 
 

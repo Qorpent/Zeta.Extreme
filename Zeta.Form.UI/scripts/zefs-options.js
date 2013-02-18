@@ -22,7 +22,8 @@ $.extend(options,(function(){
 		session_command : "zefs/session.json.qweb",
 		struct_command : "zefs/struct.json.qweb",
 		data_command : "zefs/data.json.qweb",
-		
+		debug_command : "zefs/debuginfo.json.qweb",
+
 		finished_state : "f",
 		inprocess_state : "w",
 		error_state : "e",
@@ -38,6 +39,7 @@ $.extend(options,(function(){
 			// Парсим параметры из хэша
 			var p = {};
 			var result = {};
+            if (location.hash == "") return null;
 			$.each(location.hash.substring(1).split("|"), function(i,e) {
 				p[e.split("=")[0]] = e.split("=")[1];
 			});
@@ -89,7 +91,7 @@ $.extend(options,(function(){
 			$.extend(obj.getFormInfo(),{
 				getId : function(){return this.Code;},
 				getCode : function(){return this.Code;},
-				getName : function(){return this.Name;},
+				getName : function(){return this.Name;}
 //                getNeedMeasure:function(){return !!this.NeedMeasure;} // Перенес выше в asSession
 			});
 			return obj;

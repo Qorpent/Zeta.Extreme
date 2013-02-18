@@ -71,6 +71,10 @@
         }
     }
 
+    /**
+     * Применяет к ячейке специальный чистоловой формат вида 1 000.00
+     * @param $cell
+     */
     Zefs.prototype.applyNumberFormat = function($cell) {
         $cell = $($cell);
         if ($cell.text() != "") {

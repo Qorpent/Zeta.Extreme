@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Comdiv.Zeta.Data.Minimal;
@@ -155,10 +156,18 @@ namespace Zeta.Extreme {
 					}
 					else {
 						var eval = Periods.Eval(result.Time.Year, result.Time.Period, Period);
+						
 						result.Time.Year = eval.Year;
-						result.Time.Period = eval.Periods[0];
+						if(eval.Periods.Length==1) {
+							result.Time.Period = eval.Periods[0];
+						}else {
+							
+							result.Time.Periods = eval.Periods.OrderBy(_=>_).ToArray();
+							result.Time.Period = 0;
+						}
 					}
 				}
+				result.Time.Normalize(result.Session);
 			}
 		}
 

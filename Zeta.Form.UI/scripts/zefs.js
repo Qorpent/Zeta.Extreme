@@ -37,6 +37,12 @@ root.init = root.init ||
             data: params
         }).success($.proxy(function(d) {
             var session = options.asSession(d);
+            $('#sessionInfo').click(function(e) {
+                window.open(options.session_command + "?session=" + d.getUid(), '_blank');
+            });
+            $('#debugInfo').click(function(e) {
+                window.open(options.debug_command + "?session=" + d.getUid(), '_blank');
+            });
             Structure(session);
             window.setTimeout(function(){Data(session,0)},options.datadelay);    //первый запрос на данные
         }));
@@ -94,7 +100,24 @@ root.init = root.init ||
     }
 	
 	 
-	
+	var RenderSession = function(session) {
+        var html = $('<p/>');
+        $.each(session, function(k,v) {
+            html.append($('<span/>').html('<strong>' + k + ':</strong>' + v), $('<br/>'));
+        });
+        var modal = $('<div class="modal fade" role="dialog" />');
+        var modalheader = $("<div/>", {"class":"modal-header"}).append(
+            $('<button type="button" class="close" data-dismiss="modal" aria-hidden="true" />')
+                .html("&times;"),
+            $('<h3/>').text("Текущее состояние сессии")
+        );
+        var modalbody = $('<div class="modal-body" />').html("<strong>UID:</strong>" + d.getUid());
+        var modalfooter = $('<div class="modal-footer"/>').append(
+            $('<a href="#" class="btn btn-primary" data-dismiss="modal" />')
+                .html("Закрыть")
+        );
+        modal.append(modalheader, modalbody, modalfooter);
+    }
 	
 	
 	var Render = render.renderStructure; //вынес в рендер - отдельный скрипт
@@ -106,8 +129,9 @@ root.init = root.init ||
     
 
 
-   
-	StartForm();
+    if (params != null){
+        StartForm();
+    }
 })(jQuery);
 
 })()

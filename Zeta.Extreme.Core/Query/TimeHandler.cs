@@ -8,6 +8,7 @@
 
 #endregion
 
+using System;
 using System.Linq;
 using System.Text;
 
@@ -182,6 +183,18 @@ namespace Zeta.Extreme {
 			}
 			if (null != _periods && 0 != _periods.Length) {
 				Periods = _periods.Distinct().OrderBy(_ => _).ToArray();
+				var intstr = string.Join("", Periods);
+				if(intstr.Length<=9) {
+					Period = Convert.ToInt32(intstr);
+				}else {
+					int val = 1;
+					for (var i=0;i<intstr.Length;i+=9) {
+						var chunk = intstr.Substring(i, intstr.Length - i);
+						val = val*Convert.ToInt32(chunk);
+					}
+					Period = val;
+				}
+
 			}
 			if (null != _years && 0 != _years.Length) {
 				Years = _years.Distinct().OrderBy(_ => _).ToArray();

@@ -45,6 +45,78 @@ namespace Zeta.Extreme.Core.Tests {
 			Assert.AreEqual(2012,query.FormulaDependency[0].Time.Year);
 		}
 
+		[Test]
+		public void ZC_233_Bug_PLANSNG1_InvalidData()
+		{
+			var query = new Query
+			{
+				Row = { Code = "m2601311" },
+				Col = { Code = "PLANSNG1" },
+				Time = { Year = 2012, Period = 1 },
+				Obj = {Id=352}
+			};
+
+
+
+			query = session.Register(query);
+			query.WaitPrepare();
+			Assert.AreEqual(1, query.FormulaDependency.Count);
+			Assert.AreEqual("m2601311", query.FormulaDependency[0].Row.Code);
+			Assert.AreEqual("PLAN", query.FormulaDependency[0].Col.Code);
+			Assert.AreEqual(303, query.FormulaDependency[0].Time.Period);
+			Assert.AreEqual(2012, query.FormulaDependency[0].Time.Year);
+
+			var result = _serial.Eval(query);
+			Assert.AreEqual(104343m,result.NumericResult);
+		}
+
+		[Test]
+		public void ZC_236_Invalid_m501_Period_Normalization()
+		{
+			var query = new Query
+				{
+					Obj = { Id = 352 },
+					Row = { Code = "m2601311" },
+					Col = { Code = "Б1" },
+					Time = { Year = 2012, Period = 13 },
+					Session = session,
+					
+				};
+			query = new QueryDelta {Period = -501}.Apply(query);
+			query.Normalize();
+			Console.WriteLine(query);
+			Assert.NotNull(query.Time.Periods);
+			Assert.AreEqual(3, query.Time.Periods.Length);
+			Assert.True(query.IsPrimary);
+			Assert.AreEqual(111213,query.Time.Period);
+
+			var perssource = session.PrimarySource as DefaultPrimarySource;
+			var script = perssource.GenerateScript(new[] {query});
+			Console.WriteLine(script);
+
+			var res = _serial.Eval(query);
+			Assert.AreEqual(77732m,res.NumericResult);
+
+		}
+
+		[Test]
+		public void ZC_235_Invalid_Result_In_Control()
+		{
+			var query = new Query
+			{
+				Obj = { Id = 352 },
+				Row = { Code = "m2601311" },
+				Col = { Code = "CUSTOM", Formula = " @Б1.P-201? - @Б1.P-501? ", IsFormula = true,FormulaType = "boo"},
+				Time = { Year = 2012, Period = 13 },
+				Session = session,
+
+			};
+			session.Register(query);
+			var res = _serial.Eval(query);
+			Assert.AreEqual(0, res.NumericResult);
+
+		}
+
 		[TestCase("m260830", "PLAN", 1046, 2012, 301, 596254.16794090452660986449002)]
 		[TestCase("m260", "PLAN", 1046, 2012, 301, 301749.000000)]
 		[TestCase("m260100", "PLAN", 536, 2012, 301, 604812.000000)]
