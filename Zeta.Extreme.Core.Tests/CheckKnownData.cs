@@ -19,8 +19,32 @@ using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 
 namespace Zeta.Extreme.Core.Tests {
+
+
+
 	[TestFixture]
 	public class CheckKnownData : SessionTestBase {
+
+		[Test]
+		public void ZC_233_Bug_PLANSNG1_Cause_0_Year_InPrimary_Test_One_Normalization() {
+			var query = new Query
+				{
+					Row = {Code = "m2601311"},
+					Col = {Code = "PLANSNG1"},
+					Time = {Year = 2012, Period = 13}
+				};
+			
+			
+			
+			query = session.Register(query);
+			query.WaitPrepare();
+			Assert.AreEqual(1,query.FormulaDependency.Count);
+			Assert.AreEqual("m2601311",query.FormulaDependency[0].Row.Code);
+			Assert.AreEqual("PLAN",query.FormulaDependency[0].Col.Code);
+			Assert.AreEqual(303,query.FormulaDependency[0].Time.Period);
+			Assert.AreEqual(2012,query.FormulaDependency[0].Time.Year);
+		}
+
 		[TestCase("m260830", "PLAN", 1046, 2012, 301, 596254.16794090452660986449002)]
 		[TestCase("m260", "PLAN", 1046, 2012, 301, 301749.000000)]
 		[TestCase("m260100", "PLAN", 536, 2012, 301, 604812.000000)]

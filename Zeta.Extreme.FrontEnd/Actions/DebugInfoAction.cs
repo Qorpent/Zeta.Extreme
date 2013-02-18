@@ -2,14 +2,15 @@ using System;
 using System.Linq;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.FrontEnd.Session;
 
 namespace Zeta.Extreme.FrontEnd.Actions {
 	/// <summary>
 	/// 	Возвращает информацию о сессии
 	/// </summary>
-	[Action("zefs.sqllog")]
-	public class SqlLogAction : ActionBase
+	[Action("zefs.debuginfo")]
+	public class DebugInfoAction : ActionBase
 	{
 		/// <summary>
 		/// 	Second phase - validate INPUT/REQUEST parameters here - it called before PREPARE so do not try validate
@@ -31,9 +32,11 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
-		protected override object MainProcess()
-		{
-			return _session.SqlLog;
+		protected override object MainProcess() {
+			var stats = string.IsNullOrWhiteSpace(_session.DataStatistics)
+				            ? null
+				            : _session.DataStatistics.SmartSplit(false, true, '\r', '\n').ToArray();
+			return new {colset = _session.Colset, stats, sql = _session.SqlLog};
 		}
 
 		private FormSession _session;

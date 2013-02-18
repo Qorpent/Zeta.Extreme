@@ -146,7 +146,7 @@ namespace Zeta.Extreme {
 				if (0 != Year && Year < 1900) {
 					result.Time.Year += Year;
 				}
-				else if (Year != result.Time.Year) {
+				else if (0!=Year && Year != result.Time.Year) {
 					result.Time.Year = Year;
 				}
 				if (0 != Period) {

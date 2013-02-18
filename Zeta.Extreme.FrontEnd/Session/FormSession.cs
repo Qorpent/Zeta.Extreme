@@ -185,7 +185,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// <summary>
 		/// Статистика сессии данных
 		/// </summary>
-		[Serialize] public string DataStatistics { get; set; }
+		[IgnoreSerialize] public string DataStatistics { get; set; }
 
 		/// <summary>
 		/// 	Общее количество запросов в обработке
@@ -392,6 +392,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 				.OrderBy(_ => _.Path)
 				.Select((_, i) => new IdxRow {i = i, _ = _}).ToArray();
 			cols = Template.GetAllColumns().Where(_ => _.GetIsVisible(Object)).Select((_, i) => new IdxCol {i = i, _ = _});
+			this.Colset = cols.Select(_ => _._).ToArray();
 			foreach (var columnDesc in cols) {
 				if (null == columnDesc._.Target) {
 					columnDesc._.Target = MetaCache.Default.Get<IZetaColumn>(columnDesc._.Code);
@@ -417,6 +418,11 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
 			primaryrows = rows.Where(_ => !_._.IsFormula && 0 == _._.Children.Count && !_._.IsMarkSeted("0ISCAPTION")).ToArray();
 		}
+
+		/// <summary>
+		/// Описатель реального колсета
+		/// </summary>
+		[IgnoreSerialize]public ColumnDesc[] Colset { get; set; }
 
 		#region Nested type: IdxCol
 
