@@ -148,6 +148,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		/// <returns> </returns>
 		public IEnumerable<XElement> LoadCompiled() {
+			
 			var filters = LoadCompileFilters.split();
 			_cfgVersion = new DateTime();
 			string[] files = null;

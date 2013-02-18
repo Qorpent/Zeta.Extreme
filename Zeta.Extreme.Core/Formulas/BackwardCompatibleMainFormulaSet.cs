@@ -29,6 +29,25 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// Расчет количества месяцев в периоде
+		/// </summary>
+		/// <param name="query"></param>
+		/// <returns></returns>
+		public int monthCount(Query query)
+		{
+			return monthCount(query.Time.Period);
+		}
+		/// <summary>
+		/// Расчет месяцев в периоде
+		/// </summary>
+		/// <param name="period"></param>
+		/// <returns></returns>
+		public int monthCount(int period)
+		{
+			var p = Periods.Get(period);
+			return p.MonthCount;
+		}
+		/// <summary>
 		/// 	Перебирает указанные дельты к запросу, пока не найдет не-нулевой
 		/// </summary>
 		/// <param name="deltas"> </param>

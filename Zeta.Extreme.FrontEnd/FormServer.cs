@@ -16,6 +16,8 @@ using Comdiv.Persistence;
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using Qorpent.Applications;
+using Qorpent.Events;
+using Qorpent.IO;
 using Qorpent.IoC;
 using Zeta.Extreme.Form.Themas;
 using Zeta.Extreme.FrontEnd.Session;
@@ -133,6 +135,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Перезагрузка системы
 		/// </summary>
 		public void Reload() {
+			((IResetable)((FileService) Application.Current.Files).GetResolver()).Reset(null);
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask(), HibernateLoad);
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
