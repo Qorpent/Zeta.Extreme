@@ -67,7 +67,7 @@ $.extend(root,{
                     }
                     if (val != "") $cell.number(val,0,'.',' ');
                     $cell.removeClass("notloaded");
-                    $cell.data("h", val);
+                    $cell.data("history", val);
 				});
 				batch.wasFilled = true;
 				return session;

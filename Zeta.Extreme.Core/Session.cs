@@ -85,12 +85,12 @@ namespace Zeta.Extreme {
 					if (null != MasterSession) {
 						return MasterSession.MetaCache;
 					}
-					return _metaCache ?? (_metaCache = Extreme.MetaCache.Default);
+					return _metaCache ?? (_metaCache = new MetaCache{Parent  = Extreme.MetaCache.Default});
 				}
 			}
 			set {
 				lock (this) {
-					if (null != MasterSession) {
+					if (null != MasterSession) { 
 						throw new Exception("cannot set on child session");
 					}
 					_metaCache = value;

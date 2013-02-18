@@ -64,9 +64,24 @@
         $(this.table.find("thead")).removeClass("fixed");
     }
 
+    Zefs.prototype.clearNumberFormat = function($cell) {
+        $cell = $($cell);
+        if ($cell.text() != "") {
+            $cell.number($cell.text(), 0, '', '');
+        }
+    }
+
+    Zefs.prototype.applyNumberFormat = function($cell) {
+        $cell = $($cell);
+        if ($cell.text() != "") {
+            $cell.number($cell.text(), 0, '.', ' ');
+        }
+    }
+
     Zefs.prototype.activateCell = function($cell) {
         var $cell = $($cell);
         if (!$cell.hasClass("editable")) return $cell;
+        if ($cell.hasClass("active")) return $cell;
         if (this.isOutScreen($cell) == "top") {
             $(window).scrollTop($cell.offset().top);
         }
@@ -77,11 +92,11 @@
         var $col = $(this.table.find("col")[$colindex]);
         this.deactivateCell();
         $cell.parent().css("height", $cell.height());
-//        $col.css("width", $(this.table.find("th")[$colindex]).outerWidth());
+//      $col.css("width", $(this.table.find("th")[$colindex]).outerWidth());
         $cell.css("min-width", $cell.width());
         $cell.css("height", $cell.height());
         $cell.addClass("active");
-        $cell.number($cell.text(), 0, '', '');
+        this.clearNumberFormat($cell);
         return $cell;
     }
 
@@ -93,12 +108,14 @@
             $cell.css("min-width", "");
             $cell.css("height", "");
             $cell.parent().css("height", "");
-            $cell.number($cell.text(),0,'.',' ');
             if (!!e && e == "esc") {
-                $cell.text($cell.data("h"));
+                $cell.text($cell.data("previous"));
             } else {
-                $cell.data("h", $cell.text());
+                $cell.data("previous", $cell.text());
             }
+            if ($cell.text() != $cell.data("history")) $cell.addClass("changed");
+            else $cell.removeClass("changed");
+            this.applyNumberFormat($cell);
         }, this));
     }
 

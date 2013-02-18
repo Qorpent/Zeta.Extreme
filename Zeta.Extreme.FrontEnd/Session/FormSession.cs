@@ -178,6 +178,11 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		[Serialize] public TimeSpan TimeToGetData { get; set; }
 
 		/// <summary>
+		/// —татистика сессии данных
+		/// </summary>
+		[Serialize] public string DataStatistics { get; set; }
+
+		/// <summary>
 		/// 	ќбщее количество запросов в обработке
 		/// </summary>
 		public int QueriesCount { get; set; }
@@ -301,6 +306,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			}
 
 			QueriesCount = queries.Count;
+			DataStatistics = ((Extreme.Session) DataSession).GetStatisticString();
 			DataSession = null;
 			DataCount = Data.Count;
 			TimeToGetData = sw.Elapsed;
@@ -383,6 +389,21 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			foreach (var columnDesc in cols) {
 				if (null == columnDesc._.Target) {
 					columnDesc._.Target = MetaCache.Default.Get<IZetaColumn>(columnDesc._.Code);
+				}
+				if(!string.IsNullOrWhiteSpace(columnDesc._.CustomCode)) {
+					var src = columnDesc._;
+					DataSession.MetaCache.Set(
+						new col
+							{
+								Code = src.CustomCode,
+								ForeignCode = src.InitialCode,
+								Year = src.Year,
+								Period = src.Period,
+								Formula = src.Formula,
+								FormulaEvaluator = src.FormulaEvaluator,
+								IsFormula = src.IsFormula
+							}
+						);
 				}
 			}
 			//cols = cols.Where(_ => _._.Target != null).ToArray(); //пока только хранимые колонки поддерживаем

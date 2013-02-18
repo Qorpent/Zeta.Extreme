@@ -45,6 +45,10 @@ namespace Zeta.Extreme {
 		/// <param name="timeout"> </param>
 		void Execute(int timeout = -1);
 
-		
+
+		/// <summary>
+		/// 	Локальный кэш объектных данных
+		/// </summary>
+		IMetaCache MetaCache { get;  }
 	}
 }

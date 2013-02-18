@@ -182,8 +182,16 @@ namespace Zeta.Extreme {
 			var objt = Task.Run(() => Obj.Normalize(session ?? Session)); //объекты зачастую из БД догружаются
 			Time.Normalize(session ?? Session);
 			Col.Normalize(session ?? Session);
-			var rowt = Task.Run(() => Row.Normalize(session ?? Session, Col.Native)); //тут формулы парсим простые как рефы			
-			Task.WaitAll(objt, rowt);
+			while(null!=Col.Native && !string.IsNullOrWhiteSpace(Col.Native.ForeignCode)) {
+				var _c = Col;
+				Col = new ColumnHandler{Code = _c.Native.ForeignCode};
+				if(0!=_c.Native.Year||0!=_c.Native.Period) {
+					Time = new TimeHandler {Year = _c.Native.Year, Period = _c.Native.Period};
+				}
+				Col.Normalize(session ??Session);
+			}
+			Row.Normalize(session ?? Session, Col.Native); //тут формулы парсим простые как рефы			
+			objt.Wait();
 			InvalidateCacheKey();
 		}
 

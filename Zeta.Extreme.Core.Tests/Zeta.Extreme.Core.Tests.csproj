@@ -23,6 +23,7 @@
     <Compile Include="CoreTests\ZatrSimpleTest.cs" />
     <Compile Include="CoreTests\ZetaMinimalMode.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\BothColumnAndRowFormula.cs" />
+    <Compile Include="DatabaseIgnorancePureZeta\CustomCodeSupport.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\DoExRefBaseTest.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\PrimaryEchoTest.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\PureZetaTestFixtureBase.cs" />

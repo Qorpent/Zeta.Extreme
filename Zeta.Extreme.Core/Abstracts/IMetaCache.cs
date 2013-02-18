@@ -30,5 +30,10 @@ namespace Zeta.Extreme {
 		/// <param name="item"> </param>
 		/// <returns> </returns>
 		IMetaCache Set<T>(T item) where T : class, IEntityDataPattern;
+
+		/// <summary>
+		/// Родительский кэш
+		/// </summary>
+		IMetaCache Parent { get; set; }
 	}
 }

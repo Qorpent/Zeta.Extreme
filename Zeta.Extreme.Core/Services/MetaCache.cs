@@ -26,6 +26,11 @@ namespace Zeta.Extreme {
 		public static readonly IMetaCache Default = new MetaCache();
 
 		/// <summary>
+		/// Родительский кэш
+		/// </summary>
+		public IMetaCache Parent { get; set; }
+
+		/// <summary>
 		/// 	Получить объект из хранилища
 		/// </summary>
 		/// <typeparam name="T"> </typeparam>
@@ -42,6 +47,9 @@ namespace Zeta.Extreme {
 				}
 				if (null == result) {
 					result = GetNative<T>(id);
+				}
+				if(null==result && null!=Parent) {
+					return Parent.Get<T>(id);
 				}
 				return result;
 			}
