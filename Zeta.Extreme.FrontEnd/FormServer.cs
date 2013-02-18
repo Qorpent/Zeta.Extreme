@@ -156,7 +156,10 @@ namespace Zeta.Extreme.FrontEnd {
 					FormulaStorage.Default.AutoBatchCompile = false;
 					FormulaStorage.Default.Clear();
 					var _sumh = new StrongSumProvider();
-					var formulas = RowCache.byid.Values.Where(_ => _.IsFormula && !_sumh.IsSum(_)).ToArray();
+					var formulas = RowCache.byid.Values.Where(
+						_ => _.IsFormula && !_sumh.IsSum(_) 
+						&& _.ResolveTag("extreme")=="1"
+						).ToArray();
 
 					foreach (var f in formulas) {
 						var req = new FormulaRequest {Key = "row:" + f.Code, Formula = f.Formula, Language = f.FormulaEvaluator};
@@ -165,7 +168,8 @@ namespace Zeta.Extreme.FrontEnd {
 
 					var colformulas = (
 						                  from c in myapp.storage.AsQueryable<col>()
-						                  where c.IsFormula && c.FormulaEvaluator == "boo" && null != c.Formula && "" != c.Formula
+						                  where c.IsFormula 
+										  && c.FormulaEvaluator == "boo" && null != c.Formula && "" != c.Formula
 						                  select new {c = c.Code, f = c.Formula, tag = c.Tag}
 					                  ).ToArray();
 
@@ -192,9 +196,9 @@ namespace Zeta.Extreme.FrontEnd {
 		private Task GetMetaCacheLoadTask() {
 			return new Task(() =>
 				{
-					var codes =
-						myapp.storage.AsQueryable<row>().Where(_ => _.Tag.Contains("/extreme:1/")).Select(_ => _.Code).ToArray();
-					RowCache.start(codes);
+					//var codes =
+						//myapp.storage.AsQueryable<row>().Where(_ => _.Tag.Contains("/extreme:1/")).Select(_ => _.Code).ToArray();
+					RowCache.start();
 					ColumnCache.start();
 				});
 		}

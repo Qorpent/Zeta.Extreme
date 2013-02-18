@@ -250,7 +250,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 						 idx = ri.i,
 						 iscaption = r.IsMarkSeted("0CAPTION"),
 						 isprimary = !r.IsFormula && !r.IsMarkSeted("0SA") && 0 == r.Children.Count,
-						 level = r.Level,
+						 level = ri.l,
 						 number = r.OuterCode,
 						 measure = NeedMeasure ? r.ResolveMeasure() : "",
 					 })
@@ -385,19 +385,21 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		}
 
 		private void PrepareMetaSets() {
-			rootrow = MetaCache.Default.Get<IZetaRow>(Template.Form.Code);
-			rows = new[]{new IdxRow{i=-1,_=rootrow}, }.Union( rootrow.AllChildren
-				.Where(_ => !_.IsObsolete(Year))
-				.Where(_ => null == _.Object || _.Object.Id == Object.Id)
-				.OrderBy(_ => _.Path)
-				.Select((_, i) => new IdxRow {i = i, _ = _})).ToArray();
+			PrepareRows();
+			InitializeColset();
+			primarycols = cols.Where(_ => _._.Editable && !_._.IsFormula).ToArray();
+			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
+			primaryrows = rows.Where(_ => !_._.IsFormula && 0 == _._.Children.Count && !_._.IsMarkSeted("0ISCAPTION")).ToArray();
+		}
+
+		private void InitializeColset() {
 			cols = Template.GetAllColumns().Where(_ => _.GetIsVisible(Object)).Select((_, i) => new IdxCol {i = i, _ = _});
 			this.Colset = cols.Select(_ => _._).ToArray();
 			foreach (var columnDesc in cols) {
 				if (null == columnDesc._.Target) {
 					columnDesc._.Target = MetaCache.Default.Get<IZetaColumn>(columnDesc._.Code);
 				}
-				if(!string.IsNullOrWhiteSpace(columnDesc._.CustomCode)) {
+				if (!string.IsNullOrWhiteSpace(columnDesc._.CustomCode)) {
 					var src = columnDesc._;
 					DataSession.MetaCache.Set(
 						new col
@@ -413,10 +415,42 @@ namespace Zeta.Extreme.FrontEnd.Session {
 						);
 				}
 			}
-			//cols = cols.Where(_ => _._.Target != null).ToArray(); //пока только хранимые колонки поддерживаем
-			primarycols = cols.Where(_ => _._.Editable && !_._.IsFormula).ToArray();
-			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
-			primaryrows = rows.Where(_ => !_._.IsFormula && 0 == _._.Children.Count && !_._.IsMarkSeted("0ISCAPTION")).ToArray();
+		}
+
+		private int _ridx = 0;
+		private void PrepareRows() {
+			_ridx = 0;
+			IList<IdxRow> result =new List<IdxRow>();
+			foreach (var r in Template.Rows) {
+				if(null==r.Target) {
+					r.Target = DataSession.MetaCache.Get<IZetaRow>(r.Code);
+				}
+			}
+			foreach (var row in Template.Rows.Select(_=>_.Target)) {
+				if(IsRowMatch(row)) {
+					AddRow(result, row,0);
+				}
+			}
+			rows = result.ToArray();
+		}
+
+		private void AddRow(IList<IdxRow> result, IZetaRow row,int level) {
+			_ridx++;
+			result.Add(new IdxRow{i=_ridx,l=level,_=row});
+			var children = row.Children.OrderBy(_ => _.GetSortKey()).ToArray();
+			foreach (var c in children) {
+				if(IsRowMatch(c)) {
+					AddRow(result,c,level+1);
+				}
+			}
+		}
+
+		private bool IsRowMatch(IZetaRow row) {
+			if(null==row) return false;
+			if(row.IsObsolete(Year)) return false;
+			if(null!=row.Object && row.Object.Id!=Object.Id) return false;
+			if(row.IsMarkSeted("0NOINPUT")) return false;
+			return true;
 		}
 
 		/// <summary>
@@ -438,6 +472,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		private class IdxRow {
 			public IZetaRow _;
 			public int i;
+			public int l;
 		}
 
 		#endregion
@@ -449,7 +484,6 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		private IdxCol[] neditprimarycols;
 		private IdxCol[] primarycols;
 		private IdxRow[] primaryrows;
-		private IZetaRow rootrow;
 		private IdxRow[] rows;
 	}
 }
