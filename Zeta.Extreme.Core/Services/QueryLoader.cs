@@ -42,12 +42,12 @@ namespace Zeta.Extreme {
 			if (internalquery.Row.Native != null && internalquery.Row.Native.IsMarkSeted("0CAPTION")) {
 				return null; //it's not processable query
 			}
-			var obsolete = TagHelper.Value(internalquery.Row.Tag, "obsolete").toInt();
-			if (obsolete != 0) {
-				if (obsolete <= internalquery.Time.Year) {
-					return null;
-				}
-			}
+			//var obsolete = TagHelper.Value(internalquery.Row.Tag, "obsolete").toInt();
+			//if (obsolete != 0) {
+			//	if (obsolete <= internalquery.Time.Year) {
+			//		return null;
+			//	}
+			//}
 
 			if (internalquery.Row.IsFormula && !_sumh.IsSum(query.Row)) {
 				FormulaStorage.Default.Register(new FormulaRequest

@@ -184,13 +184,13 @@ namespace Zeta.Extreme {
 			if (null != _periods && 0 != _periods.Length) {
 				Periods = _periods.Distinct().OrderBy(_ => _).ToArray();
 				var intstr = string.Join("", Periods);
-				if(intstr.Length<=9) {
+				if(intstr.Length<=8) {
 					Period = Convert.ToInt32(intstr);
 				}else {
-					int val = 1;
-					for (var i=0;i<intstr.Length;i+=9) {
-						var chunk = intstr.Substring(i, intstr.Length - i);
-						val = val*Convert.ToInt32(chunk);
+					int val = 0;
+					for (var i=0;i<intstr.Length;i+=8) {
+						var chunk = intstr.Substring(i, Math.Min(8, intstr.Length - i));
+						val+=Convert.ToInt32(chunk);
 					}
 					Period = val;
 				}

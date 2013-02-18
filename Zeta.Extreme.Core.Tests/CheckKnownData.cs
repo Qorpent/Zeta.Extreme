@@ -71,6 +71,22 @@ namespace Zeta.Extreme.Core.Tests {
 		}
 
 		[Test]
+		public void ZC_199_Not_Count_m260722() {
+			var query = new Query
+			{
+				Obj = { Id = 352 },
+				Row = { Code = "m260722" },
+				Col = { Code = "Б1" },
+				Time = { Year = 2012, Period = 3 },
+				Session = session,
+
+			};
+			query = session.Register(query);
+			var res = _serial.Eval(query);
+			Assert.AreEqual(-89485m,res.NumericResult);
+		}
+
+		[Test]
 		public void ZC_236_Invalid_m501_Period_Normalization()
 		{
 			var query = new Query
