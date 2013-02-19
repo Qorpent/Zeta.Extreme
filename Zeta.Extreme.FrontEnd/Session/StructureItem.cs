@@ -70,5 +70,10 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// 	Год для колонок
 		/// </summary>
 		[SerializeNotNullOnly] public int year;
+		/// <summary>
+		/// Признак контрольной точки
+		/// </summary>
+		[SerializeNotNullOnly]
+		public bool controlpoint;
 	}
 }

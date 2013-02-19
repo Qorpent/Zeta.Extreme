@@ -23,14 +23,14 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		protected override object MainProcess() {
 			var isopen = _session.Template.IsOpen;
 			var state = _session.Template.GetState(_session.Object, null);
-			var editable = isopen && state == "0ISOPEN";
+			var cansave = isopen && state == "0ISOPEN";
 			var message = _session.Template.CanSetState(_session.Object, null, "0ISBLOCK");
 			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message);
 			return new
 				{
 					isopen,
 					state,
-					editable,
+					cansave,
 					canblock,
 					message
 				};

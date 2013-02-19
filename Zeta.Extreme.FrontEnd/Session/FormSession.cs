@@ -289,6 +289,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 						 level = ri.l,
 						 number = r.OuterCode,
 						 measure = NeedMeasure ? r.ResolveMeasure() : "",
+						 controlpoint = r.IsMarkSeted("CONTROLPOINT"),
 					 })
 					.Union(
 						(from ci in cols
@@ -302,6 +303,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 								 isprimary = c.Editable && !c.IsFormula,
 								 year = c.Year,
 								 period = c.Period,
+								 controlpoint =c.ControlPoint,
 							 })
 					).ToArray();
 			sw.Stop();
