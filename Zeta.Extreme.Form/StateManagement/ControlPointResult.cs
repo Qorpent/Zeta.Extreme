@@ -37,5 +37,9 @@ namespace Zeta.Extreme.Form.StateManagement {
 		public bool IsValid {
 			get { return Value == 0; }
 		}
+		/// <summary>
+		/// Ссылка на исходный запрос, позволяет отсрочить получение значения
+		/// </summary>
+		public Query Query { get; set; }
 	}
 }

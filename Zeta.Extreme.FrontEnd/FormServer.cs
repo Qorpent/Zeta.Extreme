@@ -15,10 +15,12 @@ using Comdiv.Application;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
+using Qorpent;
 using Qorpent.Applications;
 using Qorpent.Events;
 using Qorpent.IO;
 using Qorpent.IoC;
+using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.Themas;
 using Zeta.Extreme.FrontEnd.Session;
 
@@ -27,7 +29,8 @@ namespace Zeta.Extreme.FrontEnd {
 	/// 	Выполняет стартовую настройку сервера форм
 	/// </summary>
 	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IApplicationStartup), Name = "extreme.form.start")]
-	public class FormServer : IApplicationStartup {
+	public class FormServer : ServiceBase,IApplicationStartup
+	{
 		/// <summary>
 		/// 	Конструктор по умолчанию
 		/// </summary>
@@ -58,6 +61,51 @@ namespace Zeta.Extreme.FrontEnd {
 			get {
 				return HibernateLoad.IsCompleted && MetaCacheLoad.IsCompleted && CompileFormulas.IsCompleted &&
 				       LoadThemas.IsCompleted;
+			}
+		}
+
+
+		/// <summary>
+		/// Инициирует новую или возвращает имеющуюся сессию
+		/// </summary>
+		/// <param name="template"></param>
+		/// <param name="obj"></param>
+		/// <param name="year"></param>
+		/// <param name="period"></param>
+		/// <returns></returns>
+		public FormSession Start (IInputTemplate template, IZetaMainObject obj,  int year, int period) {
+			lock(this) {
+				var usr = Application.Principal.CurrentUser.Identity.Name;
+				var existed =
+					Sessions.FirstOrDefault(
+						_ =>
+						_.Usr == usr && _.Year == year && _.Period == period && _.Template.Code == template.Code && _.Object.Id == obj.Id);
+				if(null==existed) {
+					var session = new FormSession(template, year, period, obj);
+				
+					Sessions.Add(session);
+					session.Start();
+					return session;
+				}else {
+					
+
+					existed.Activations++;
+					
+					if (!existed.IsStarted)
+					{
+						existed.Start();
+					}
+					else
+					{
+						if (existed.IsFinished)
+						{
+							existed.Error = null;
+							existed.StartCollectData();
+						}
+					}
+					return existed;
+				}
+
 			}
 		}
 
@@ -135,7 +183,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Перезагрузка системы
 		/// </summary>
 		public void Reload() {
-			((IResetable)((FileService) Application.Current.Files).GetResolver()).Reset(null);
+			((IResetable)((FileService) Application.Files).GetResolver()).Reset(null);
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask(), HibernateLoad);
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
@@ -190,6 +238,13 @@ namespace Zeta.Extreme.FrontEnd {
 					//Debugger.Break();
 					FormProvider = new ExtremeFormProvider(ThemaRootDirectory);
 					var _f = ((ExtremeFormProvider) FormProvider).Factory; //force reload
+					Application.Container.Register(new BasicComponentDefinition
+						{
+							Implementation = _f,
+							ServiceType = typeof(IThemaFactory),
+							Lifestyle = Lifestyle.Singleton,
+							Name = "form.server.themas",
+						});
 				});
 		}
 
@@ -206,7 +261,7 @@ namespace Zeta.Extreme.FrontEnd {
 		private Task GetHibernateTask() {
 			return new Task(() =>
 				{
-					var connectionString = Application.Current.DatabaseConnections.GetConnectionString(ConnectionName);
+					var connectionString = Application.DatabaseConnections.GetConnectionString(ConnectionName);
 					myapp.ioc.setupHibernate(new NamedConnection(ConnectionName, connectionString), new ZetaClassicModel());
 				});
 		}

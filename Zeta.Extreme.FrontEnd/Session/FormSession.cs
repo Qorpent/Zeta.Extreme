@@ -15,16 +15,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
+using Qorpent;
 using Qorpent.Applications;
 using Qorpent.Serialization;
+using Zeta.Extreme.Form;
 using Zeta.Extreme.Form.InputTemplates;
+using Zeta.Extreme.Form.StateManagement;
 
 namespace Zeta.Extreme.FrontEnd.Session {
 	/// <summary>
 	/// 	Сессия работы с формой
 	/// </summary>
 	[Serialize]
-	public class FormSession {
+	public class FormSession : 
+			IFormDataSynchronize,
+			IFormSessionControlPointSource, IFormSession {
 		/// <summary>
 		/// 	Создает сессию формы
 		/// </summary>
@@ -34,10 +39,11 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// <param name="obj"> </param>
 		public FormSession(IInputTemplate form, int year, int period, IZetaMainObject obj) {
 			Uid = Guid.NewGuid().ToString();
-			DataSession = new Extreme.Session(true);
-			Serial = DataSession.AsSerial();
+			
+			
 			Created = DateTime.Now;
 			Template = form.PrepareForPeriod(year, period, new DateTime(1900, 1, 1), Object);
+			Template.AttachedSession = this;
 			Year = Template.Year;
 			Period = Template.Period;
 			Object = obj;
@@ -47,14 +53,18 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			ObjInfo = new {Object.Id, Object.Code, Object.Name};
 			FormInfo = new {Template.Code, Template.Name};
 			NeedMeasure = Template.ShowMeasureColumn;
+			Activations = 1;
 		}
+
+		/// <summary>
+		/// Количество активаций (повторного использования сессий)
+		/// </summary>
+		public int Activations { get; set; }
 
 		/// <summary>
 		/// 	Признак требования показывать колонку с единицей измерения
 		/// </summary>
 		public bool NeedMeasure { get; set; }
-
-		private ISerialSession Serial { get; set; }
 
 		/// <summary>
 		/// 	Признак, что сессия стартовала
@@ -71,7 +81,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// <summary>
 		/// 	Ошибка сессии
 		/// </summary>
-		protected Exception Error { get; set; }
+		public Exception Error { get; set; }
 
 		/// <summary>
 		/// 	Сообщение об ошибке для сериализации
@@ -83,6 +93,23 @@ namespace Zeta.Extreme.FrontEnd.Session {
 				}
 				return null;
 			}
+		}
+		
+		/// <summary>
+		/// Коллекция контрольных точек
+		/// </summary>
+		[IgnoreSerialize]
+		public ControlPointResult[] ControlPoints { get {
+			WaitData();
+			return _controlpoints.ToArray();
+		}}
+
+
+		/// <summary>
+		/// Метод для ожидания окончания данных
+		/// </summary>
+		public void WaitData() {
+			PrepareDataTask.Wait();
 		}
 
 		/// <summary>
@@ -180,7 +207,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// <summary>
 		/// 	Время генерации первичных ячеек
 		/// </summary>
-		[Serialize] public TimeSpan TimeToGetData { get; set; }
+		[Serialize] public TimeSpan LastDataTime { get; set; }
 
 		/// <summary>
 		/// Статистика сессии данных
@@ -203,39 +230,48 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		public int PrimaryCount { get; set; }
 
 		/// <summary>
-		/// 	Запускает режим ленивой сессии (без данных)
-		/// </summary>
-		public bool IsLazy { get; set; }
-
-		/// <summary>
 		/// 	Стартует сессию
 		/// </summary>
 		public void Start() {
-			var sw = Stopwatch.StartNew();
-			PrepareMetaSets();
-			sw.Stop();
-			TimeToPrepare = sw.Elapsed;
-			PrepareStructureTask = new TaskWrapper(
-				Task.Run(() => { RetrieveStructura(); })
-				);
-			if (IsLazy) {
-				PrepareDataTask = new TaskWrapper(Task.FromResult(true));
+			lock (this) {
+				if(IsStarted)return;
+
+				var sw = Stopwatch.StartNew();
+				PrepareMetaSets();
+				sw.Stop();
+				TimeToPrepare = sw.Elapsed;
+				PrepareStructureTask = new TaskWrapper(
+					Task.Run(() => { RetrieveStructura(); })
+					);
+
+				StartCollectData();
+
+				IsStarted = true;
 			}
-			else {
-				PrepareDataTask = new TaskWrapper(
-					Task.Run(() =>
-						{
-							try {
-								RetrieveData();
-							}
-							catch (Exception ex) {
-								Error = ex;
-							}
-						})
-					) {SelfWait = 30000};
-			}
-			IsStarted = true;
 		}
+		/// <summary>
+		/// Метод прямого вызова повторного сбора данных
+		/// </summary>
+		protected internal void StartCollectData() {
+			_processed.Clear();
+			DataCollectionRequests++;
+			DataSession = new Extreme.Session(true);
+			PrepareDataTask = new TaskWrapper(
+				Task.Run(() =>
+					{
+						try {
+							RetrieveData();
+						}
+						catch (Exception ex) {
+							Error = ex;
+						}
+					})
+				) {SelfWait = 30000};
+		}
+		/// <summary>
+		/// Количество перезапрошенных сессий
+		/// </summary>
+		public int DataCollectionRequests { get; set; }
 
 		private void RetrieveStructura() {
 			var sw = Stopwatch.StartNew();
@@ -274,6 +310,8 @@ namespace Zeta.Extreme.FrontEnd.Session {
 
 
 		private void RetrieveData() {
+			_controlpoints.Clear();
+			Data.Clear();
 			var sw = Stopwatch.StartNew();
 			IDictionary<string, Query> queries = new Dictionary<string, Query>();
 			LoadEditablePrimaryData(queries);
@@ -302,7 +340,12 @@ namespace Zeta.Extreme.FrontEnd.Session {
 							Time = {Year = c._.Year, Period = c._.Period}
 						};
 					q = DataSession.Register(q, key);
+					
 					if (null != q) {
+						if (c._.ControlPoint && r._.IsMarkSeted("CONTROLPOINT"))
+						{
+							_controlpoints.Add( new ControlPointResult{Col=c._,Row = r._,Query= q});
+						}
 						queries[key] = q;
 					}
 				}
@@ -315,9 +358,21 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			SqlLog = ((DefaultPrimarySource) ((Extreme.Session) DataSession).PrimarySource).QueryLog.ToArray();
 			DataSession = null;
 			DataCount = Data.Count;
-			TimeToGetData = sw.Elapsed;
+			LastDataTime = sw.Elapsed;
+			OverallDataTime = OverallDataTime + sw.Elapsed;
+			foreach (var controlPointResult in _controlpoints) {
+				controlPointResult.Value = controlPointResult.Query.Result.NumericResult;
+				controlPointResult.Query = null;
+			}
+			//ControlPoints = _controlpoints.ToArray();
 		}
 
+		/// <summary>
+		/// Общеее время получения данных
+		/// </summary>
+		public TimeSpan OverallDataTime { get; set; }
+
+		IList<ControlPointResult> _controlpoints = new List<ControlPointResult>(); 
 		private void LoadEditablePrimaryData(IDictionary<string, Query> queries) {
 			BuildEditablePrimarySet(queries);
 			DataSession.Execute(500);
@@ -468,7 +523,8 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		#endregion
 
 		#region Nested type: IdxRow
-
+		
+		
 		private class IdxRow {
 			public IZetaRow _;
 			public int i;

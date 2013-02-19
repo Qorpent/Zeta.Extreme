@@ -88,7 +88,10 @@ namespace Zeta.Extreme.Form.StateManagement {
 					new Dictionary<string, object> {{"@date", record.DeadLine}}
 					));
 		}
-
+		private static IDbConnection GetConnection(string system) {
+			system = string.IsNullOrWhiteSpace(system) ? "Default" : system;
+			return Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection(system) ?? myapp.ioc.getConnection(system);
+		}
 		/// <summary>
 		/// 	Обновить дедлайн по подписанию
 		/// </summary>
@@ -103,7 +106,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		}
 
 		private void indatabase(Action<IDbConnection> action) {
-			using (var c = myapp.ioc.getConnection(System)) {
+			using (var c = GetConnection(System)) {
 				c.WellOpen();
 				if (Database.hasContent()) {
 					c.ChangeDatabase(Database);

@@ -65,6 +65,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstracts\IFormDataSynchronize.cs" />
+    <Compile Include="Abstracts\IFormSession.cs" />
+    <Compile Include="Abstracts\IFormSessionControlPointSource.cs" />
     <Compile Include="FixHelper.cs" />
     <Compile Include="InputTemplates\AttachedFileType.cs">
       <SubType>Code</SubType>

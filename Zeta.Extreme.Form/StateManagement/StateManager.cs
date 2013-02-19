@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -28,6 +29,13 @@ namespace Zeta.Extreme.Form.StateManagement {
 	/// 	Стандартный менеджер статусов
 	/// </summary>
 	public class StateManager : IStateManager {
+		private static StateManager _default;
+		/// <summary>
+		/// Инстанция по умолчанию
+		/// </summary>
+		public static IStateManager Default {
+			get { return _default ?? (_default = new StateManager()); }
+		}
 		/// <summary>
 		/// </summary>
 		public StateManager() : this(true) {}
@@ -78,7 +86,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		public int DoSet(int objid, int year, int period, string template, string templatecode, string usr, string state,
 		                 string comment,
 		                 int parent) {
-			using (var c = myapp.ioc.getConnection()) {
+			using (var c = GetConnection()) {
 				c.WellOpen();
 				var result = c.ExecuteScalar<int>(
 					@"exec usm.set_state 
@@ -107,6 +115,10 @@ namespace Zeta.Extreme.Form.StateManagement {
 			}
 		}
 
+		private static IDbConnection GetConnection() {
+			return Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection("Default") ?? myapp.ioc.getConnection();
+		}
+
 		/// <summary>
 		/// 	Выполнить установку статуса
 		/// </summary>
@@ -116,7 +128,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <param name="template"> </param>
 		/// <returns> </returns>
 		public string DoGet(int objid, int year, int period, string template) {
-			using (var c = myapp.ioc.getConnection()) {
+			using (var c = GetConnection()) {
 				c.WellOpen();
 				var result = c.ExecuteScalar<string>(
 					@"exec usm.get_state 
@@ -507,7 +519,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 			if (null == obj) {
 				return new Dictionary<string, object>();
 			}
-			using (var c = myapp.ioc.getConnection()) {
+			using (var c = GetConnection()) {
 				c.WellOpen();
 				if (null == c) {
 					throw new Exception("connection is null");
@@ -671,10 +683,10 @@ namespace Zeta.Extreme.Form.StateManagement {
 		private void checkinit() {
 			lock (this) {
 				if (!initialized) {
-					if (null == FactoryProvider) {
-						FactoryProvider = myapp.ioc.get<IThemaFactoryProvider>();
-					}
-					var factory = FactoryProvider.Get();
+					//if (null == FactoryProvider) {
+					//	FactoryProvider = Qorpent.Applications.Application.Current.Container.Get<IThemaFactoryProvider>(); // myapp.ioc.get<IThemaFactoryProvider>();
+					//}
+					var factory = Qorpent.Applications.Application.Current.Container.Get<IThemaFactory>("form.server.themas");
 					var x = XElement.Parse(factory.SrcXml);
 					safers = x.XPathSelectElements("//processes/safer").ToList();
 					dependences = x.XPathSelectElements("//processes/dependency").ToList();
@@ -709,23 +721,35 @@ namespace Zeta.Extreme.Form.StateManagement {
 			}
 			var result = true;
 			cp = "";
-			if ((root.Code != "STUB") && root.Target != null) {
-				foreach (var check in RowCache.GetControlPoints(root.Target)) {
-					if (!result) {
-						break;
-					}
-					foreach (var col in template.GetAllColumns()) {
-						if (col.GetIsVisible(obj) && col.ControlPoint) {
-							cp = string.Format("({0},{1},{2},{3},{4}", check.Code, col.Code, obj.Id, col.Year,
-							                   col.Period);
-							var zone = new Zone(obj);
-							var rd = new RowDescriptor(check);
 
-							var val =
-								new Comdiv.Zeta.Data.Minimal.Query(zone, rd, col, template.Thema).eval().toDecimal();
-							if (val != 0) {
-								result = false;
-								break;
+			var _controlpoint_session = template.AttachedSession as IFormSessionControlPointSource;
+			if(null!=_controlpoint_session) {
+				var controlpoints = _controlpoint_session.ControlPoints;
+				if(0!=controlpoints.Length) {
+					foreach (var bp in controlpoints.Where(_=>_.Value!=0)) {
+						cp += "Контрольная точка: " + bp.Row.Name + ", " + bp.Col.Title+"; ";
+						result = false;
+					}
+				}
+			}else {
+				if ((root.Code != "STUB") && root.Target != null) {
+					foreach (var check in RowCache.GetControlPoints(root.Target)) {
+						if (!result) {
+							break;
+						}
+						foreach (var col in template.GetAllColumns()) {
+							if (col.GetIsVisible(obj) && col.ControlPoint) {
+								cp = string.Format("({0},{1},{2},{3},{4}", check.Code, col.Code, obj.Id, col.Year,
+								                   col.Period);
+								var zone = new Zone(obj);
+								var rd = new RowDescriptor(check);
+
+								var val =
+									new Comdiv.Zeta.Data.Minimal.Query(zone, rd, col, template.Thema).eval().toDecimal();
+								if (val != 0) {
+									result = false;
+									break;
+								}
 							}
 						}
 					}

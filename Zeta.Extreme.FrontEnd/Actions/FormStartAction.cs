@@ -47,16 +47,13 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			var session = new FormSession(_realform, year, period, _realobj) {IsLazy = lazy};
-			FormServer.Default.Sessions.Add(session);
-			session.Start();
-			return session;
+
+			return FormServer.Default.Start(_realform, _realobj, year, period);
 		}
 
 		private IInputTemplate _realform;
 		private IZetaMainObject _realobj;
 		[Bind(Required = true)] private string form = "";
-		[Bind] private bool lazy = false;
 		[Bind(Required = true)] private int obj = 0;
 		[Bind(Required = true)] private int period = 0;
 		[Bind(Required = true)] private int year = 0;

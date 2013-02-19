@@ -59,6 +59,13 @@ namespace Zeta.Extreme {
 			if (query.Obj.IsFormula || (query.Obj.IsForObj && _sumh.IsSum(query.Obj))) {
 				return (query.Obj.ObjRef) ?? (IZetaQueryDimension) query.Obj;
 			}
+			if(query.Row.IsFormula || _sumh.IsSum(query.Row.Native)) {
+				if(query.Col.IsFormula && query.Col.Native!=null) {
+					if(query.Col.Native.IsMarkSeted("DOSUM")) {
+						return query.Row.Native ??(IZetaQueryDimension) query.Row;
+					}
+				}
+			}
 			if (query.Col.IsFormula || _sumh.IsSum(query.Col.Native)) {
 				return query.Col.Native ?? (IZetaQueryDimension) query.Col;
 			}

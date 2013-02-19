@@ -60,9 +60,13 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			set { _container = value; }
 		}
 
+		/// <summary>
+		/// Сессия обслуживания формы
+		/// </summary>
+		public IFormSession AttachedSession { get; set; }
 
 		private IStateManager StateManager {
-			get { return _stateManager ?? (_stateManager = Container.get<IStateManager>()); }
+			get { return _stateManager ?? (_stateManager = Container.get<IStateManager>() ?? StateManagement.StateManager.Default); }
 			set { _stateManager = value; }
 		}
 

@@ -19,19 +19,8 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	/// 	Инициирует сессию
 	/// </summary>
 	[Action("zefs.data")]
-	public class GetDataAction : ActionBase {
-		/// <summary>
-		/// 	Second phase - validate INPUT/REQUEST parameters here - it called before PREPARE so do not try validate
-		/// 	second-level internal state and authorization - only INPUT PARAMETERS must be validated
-		/// </summary>
-		protected override void Validate() {
-			FormServer.Default.ReadyToServeForms.Wait();
-			if (!FormServer.Default.IsOk) {
-				throw new Exception("Application not loaded properly!");
-			}
-			base.Validate();
-			_session = FormServer.Default.Sessions.First(_ => _.Uid == session);
-		}
+	public class GetDataAction : SessionAttachedActionBase {
+		
 
 
 		/// <summary>
@@ -62,9 +51,6 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 						};
 			}
 		}
-
-		private FormSession _session;
-		[Bind(Required = true)] private string session = "";
 		[Bind(Required = false)] private int startidx = 0;
 	}
 }

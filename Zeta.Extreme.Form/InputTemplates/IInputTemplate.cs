@@ -298,6 +298,11 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		string Biztran { get; set; }
 
 		/// <summary>
+		/// Сессия обслуживания формы
+		/// </summary>
+		IFormSession AttachedSession { get; set; }
+
+		/// <summary>
 		/// 	Используется автозаполнение
 		/// </summary>
 		/// <returns> </returns>

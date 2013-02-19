@@ -45,6 +45,31 @@ namespace Zeta.Extreme.Core.Tests {
 			Assert.AreEqual(2012,query.FormulaDependency[0].Time.Year);
 		}
 
+
+		[Test]
+		public void ZC_252_BUG_NO_SUPPORT_DOSUM()
+		{
+			/*
+			 * 
+			 * например, для строки m220912 предприятия 1067 период 251 год 2013 для колонки Ok стоит 0, а должно 249 516
+			 */
+			var query = new Query
+			{
+				Obj = {Id = 1067},
+				Row = { Code = "m220912" },
+				Col = { Code = "Ok" },
+				Time = { Year = 2013, Period = 251 }
+			};
+
+
+
+			query = session.Register(query);
+			query.WaitPrepare();
+
+			_serial.Eval(query);
+			Assert.AreEqual(249516m, query.Result.NumericResult);
+		}
+
 		[Test]
 		public void ZC_233_Bug_PLANSNG1_InvalidData()
 		{
