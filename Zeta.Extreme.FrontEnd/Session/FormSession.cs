@@ -478,7 +478,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			IList<IdxRow> result =new List<IdxRow>();
 			foreach (var r in Template.Rows) {
 				if(null==r.Target) {
-					r.Target = DataSession.MetaCache.Get<IZetaRow>(r.Code);
+					r.Target = MetaCache.Default.Get<IZetaRow>(r.Code);
 				}
 			}
 			foreach (var row in Template.Rows.Select(_=>_.Target)) {

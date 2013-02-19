@@ -1,3 +1,13 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : SessionAttachedActionBase.cs
+// Project: Zeta.Extreme.FrontEnd
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System;
 using System.Linq;
 using Qorpent.Mvc;
@@ -6,18 +16,9 @@ using Zeta.Extreme.FrontEnd.Session;
 
 namespace Zeta.Extreme.FrontEnd.Actions {
 	/// <summary>
-	/// Базовое действие, работающее с сессией
+	/// 	Базовое действие, работающее с сессией
 	/// </summary>
 	public abstract class SessionAttachedActionBase : ActionBase {
-		/// <summary>
-		/// Ссылка на текущую сессию
-		/// </summary>
-		protected FormSession _session;
-		/// <summary>
-		/// Параметр кода сессии
-		/// </summary>
-		[Bind(Required = true)] public string Session = "";
-
 		/// <summary>
 		/// 	Second phase - validate INPUT/REQUEST parameters here - it called before PREPARE so do not try validate
 		/// 	second-level internal state and authorization - only INPUT PARAMETERS must be validated
@@ -30,5 +31,15 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 			base.Validate();
 			_session = FormServer.Default.Sessions.First(_ => _.Uid == Session);
 		}
+
+		/// <summary>
+		/// 	Параметр кода сессии
+		/// </summary>
+		[Bind(Required = true)] public string Session = "";
+
+		/// <summary>
+		/// 	Ссылка на текущую сессию
+		/// </summary>
+		protected FormSession _session;
 	}
 }

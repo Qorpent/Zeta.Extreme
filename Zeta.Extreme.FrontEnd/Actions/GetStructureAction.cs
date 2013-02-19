@@ -8,11 +8,7 @@
 
 #endregion
 
-using System;
-using System.Linq;
 using Qorpent.Mvc;
-using Qorpent.Mvc.Binding;
-using Zeta.Extreme.FrontEnd.Session;
 
 namespace Zeta.Extreme.FrontEnd.Actions {
 	/// <summary>
@@ -20,7 +16,6 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	/// </summary>
 	[Action("zefs.struct")]
 	public class GetStructureAction : SessionAttachedActionBase {
-
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>

@@ -1,17 +1,23 @@
-using System;
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : DebugInfoAction.cs
+// Project: Zeta.Extreme.FrontEnd
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System.Linq;
 using Qorpent.Mvc;
-using Qorpent.Mvc.Binding;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.FrontEnd.Session;
 
 namespace Zeta.Extreme.FrontEnd.Actions {
 	/// <summary>
 	/// 	Возвращает информацию о сессии
 	/// </summary>
 	[Action("zefs.debuginfo")]
-	public class DebugInfoAction : SessionAttachedActionBase
-	{
+	public class DebugInfoAction : SessionAttachedActionBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>

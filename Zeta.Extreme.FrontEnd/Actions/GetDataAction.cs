@@ -8,11 +8,9 @@
 
 #endregion
 
-using System;
 using System.Linq;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
-using Zeta.Extreme.FrontEnd.Session;
 
 namespace Zeta.Extreme.FrontEnd.Actions {
 	/// <summary>
@@ -20,9 +18,6 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	/// </summary>
 	[Action("zefs.data")]
 	public class GetDataAction : SessionAttachedActionBase {
-		
-
-
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
@@ -51,6 +46,7 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 						};
 			}
 		}
+
 		[Bind(Required = false)] private int startidx = 0;
 	}
 }

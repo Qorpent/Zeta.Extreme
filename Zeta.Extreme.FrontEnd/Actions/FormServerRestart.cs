@@ -21,7 +21,6 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			
 			FormServer.Default.Reload();
 			return true;
 		}
