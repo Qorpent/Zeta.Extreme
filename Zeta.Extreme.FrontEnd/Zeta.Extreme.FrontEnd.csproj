@@ -16,10 +16,11 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\CanLockStateAction.cs" />
     <Compile Include="Actions\FormListAction.cs" />
     <Compile Include="Actions\FormServerRestart.cs" />
     <Compile Include="Actions\DebugInfoAction.cs" />
-    <Compile Include="Actions\FormStateAction.cs" />
+    <Compile Include="Actions\CurrentLockStateAction.cs" />
     <Compile Include="Actions\SessionAttachedActionBase.cs" />
     <Compile Include="FormServer.cs" />
     <Compile Include="Session\FormSession.cs" />

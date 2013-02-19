@@ -23,12 +23,12 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		protected override object MainProcess() {
 			var isopen = _session.Template.IsOpen;
 			var state = _session.Template.GetState(_session.Object, null);
-			var editable = isopen && state == "0ISOPEN";
+			var cansave = isopen && state == "0ISOPEN";
 			return new
 				{
 					isopen,
 					state,
-					editable,
+					cansave,
 				};
 		}
 	}

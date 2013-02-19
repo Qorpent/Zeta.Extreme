@@ -14,8 +14,10 @@ root.init = root.init ||
             dataType: 'json'
         }).success($.proxy(function(d) {
             //дожидаемся готовности сервера
-            ////////////////////////////////////////////////
+            // serverstatus - это виджет на панели, отвечающий за отображения статуса сервера
+            var serverstatus = $('div.zefsstatus>span.label').first();
             if (!d) {
+                $(serverstatus).addClass("label-important").text("Сервер не доступен");
                 options.timeout -= options.readydelay;
                 if(options.timeout<=0){
                     FailStartServer();
@@ -23,8 +25,8 @@ root.init = root.init ||
                 window.setTimeout(StartForm, options.readydelay);
                 return;
             }
+            $(serverstatus).addClass("label-important").text("Сервер не доступен");
             options.timeout = options.default_timeout;
-            ///////////////////////////////////////////////
             ExecuteSession();
         }));
     }
@@ -130,12 +132,10 @@ root.init = root.init ||
 	var GetSessionParams = options.getSessionParameters; //перенес в спецификацию
 	
 	var FinishForm = function(session,batch){}; //какого хрена только тут таблица оживала - НАПОМНЮ "таблица должна быть доступной для правки сразу как пошли первые значения"
-    
-
 
     if (params != null){
         StartForm();
     }
-})(jQuery);
+});
 
 })()

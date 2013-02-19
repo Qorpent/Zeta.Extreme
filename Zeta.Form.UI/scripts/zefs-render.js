@@ -4,7 +4,13 @@ $.extend(root,{
 	getRender : function(){
 		return {
 		renderStructure : function(session) {
-			var table = $('<table class="data"/>');
+			var table = $('table.data');
+            if (table.length != 0) {
+                table = $($('table.data').first());
+            } else {
+                table = $('<table class="data"/>');
+                $('body').append(table);
+            }
 			session.table = table;
 			var colgroup = $('<colgroup/>').append(
 				$("<col/>").addClass("number"),
@@ -52,7 +58,6 @@ $.extend(root,{
 				body.append(tr);
 			});
 			table.append(body);
-			$("body").append(table);
 			session.wasRendered = true;
 			return session;
 		},

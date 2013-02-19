@@ -103,22 +103,13 @@ $.extend(options,(function(){
 				rows : [],
 				cols : [],
 				prepare : function(){
-                    var minlevel = 100;
-                    for (var si in this){
-                        var item=this[si];
-                        if(item.type=="r"){
-                            if(Number(item.level)<minlevel){
-                                minlevel = Number(item.level);
-                            }
-                        }
-                    }
 					for ( var si in this ) {
 						var item = this[si];
 						if (item.type=="c") {
 							this.cols.push(options.asColumn(item));
 						}
 						if (item.type=="r") {
-							this.rows.push(options.asRow(item,minlevel));
+							this.rows.push(options.asRow(item));
 						}
 					}
 				}
@@ -127,14 +118,14 @@ $.extend(options,(function(){
 			return obj;
 		},
 		
-		asRow : function(obj,minlevel){
+		asRow : function(obj){
 			$.extend(obj,{
 				getCode : function(){return this.code;},
 				getIdx : function(){return this.idx;},
 				getIsPrimary : function(){return !!this.isprimary;},
 				getName: function(){return this.name;},
 				getIsTitle : function(){return !!this.iscaption;},
-				getLevel : function(){return (this.level- minlevel) || 0 ;}   ,
+				getLevel : function(){return (this.level) || 0 ;}   ,
                 getNumber : function(){return this.number || "" ;},  
                 getMeasure : function(){return this.measure || options.default_measure;}
 			});
