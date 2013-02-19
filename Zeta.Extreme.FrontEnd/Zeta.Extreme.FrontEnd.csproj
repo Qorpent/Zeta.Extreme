@@ -30,6 +30,7 @@
     <Compile Include="Actions\FormServerStateAction.cs" />
     <Compile Include="Actions\GetDataAction.cs" />
     <Compile Include="Actions\GetStructureAction.cs" />
+    <Compile Include="Session\LockStateInfo.cs" />
     <Compile Include="Session\OutCell.cs" />
     <Compile Include="Actions\ReadyToServeAction.cs" />
     <Compile Include="Actions\FormSessionStatusAction.cs" />

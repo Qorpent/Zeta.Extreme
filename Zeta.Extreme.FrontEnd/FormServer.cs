@@ -8,6 +8,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -87,6 +88,16 @@ namespace Zeta.Extreme.FrontEnd {
 							status =Default.LoadThemas.Status,
 							error = Default.LoadThemas.Error.ToStr(),
 						},
+					sessions = new
+						{
+							count = Sessions.Count,
+							users = Sessions.Select(_=>_.Usr).Distinct().Count(),
+							activations = Sessions.Select(_=>_.Activations).Sum(),
+							uniqueforms = Sessions.Select(_=>new{y=_.Year,p=_.Period,o=_.Object.Id,f=_.Template.Code}).Distinct().Count(),
+							totaldatatime = Sessions.Select(_=>_.OverallDataTime).Aggregate((a,x)=>a+x),
+							avgdatatime = TimeSpan.FromMilliseconds( Sessions.Select(_ => _.OverallDataTime).Aggregate((a, x) => a + x).TotalMilliseconds /Sessions.Select(_=>_.DataCollectionRequests).Sum()),
+						
+						}
 				};
 		}
 		
