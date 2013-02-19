@@ -20,6 +20,7 @@ using Qorpent.Applications;
 using Qorpent.Events;
 using Qorpent.IO;
 using Qorpent.IoC;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.Themas;
 using Zeta.Extreme.FrontEnd.Session;
@@ -43,6 +44,52 @@ namespace Zeta.Extreme.FrontEnd {
 				_doNotRun = true;
 			}
 		}
+		/// <summary>
+		/// Возвращает список форм
+		/// </summary>
+		/// <returns></returns>
+		public  object GetFormList()
+		{
+			LoadThemas.Wait();
+			return ((ExtremeFormProvider)FormProvider).Factory
+				.GetAll().Where(_ => !_.Code.Contains("lib")).SelectMany(_ => _.GetAllForms())
+				.Select(_ => new { code = _.Code, name = _.Name }).ToArray();
+		}
+		/// <summary>
+		/// 	processing of execution - main method of action
+		/// </summary>
+		/// <returns> </returns>
+		public object GetServerStateInfo() {
+			
+			return new
+				{
+					hibernate = new
+						{
+							status = HibernateLoad.Status,
+							error = HibernateLoad.Error.ToStr()
+						},
+					meta = new
+						{
+							status =MetaCacheLoad.Status,
+							error = MetaCacheLoad.Error.ToStr(),
+							rows = RowCache.byid.Count,
+						},
+					formulas = new
+						{
+							status = CompileFormulas.Status,
+							taskerror =CompileFormulas.Error.ToStr(),
+							compileerror =
+								FormulaStorage.Default.LastCompileError == null ? "" : FormulaStorage.Default.LastCompileError.ToString(),
+							formulacount = FormulaStorage.Default.Count,
+						},
+					themas = new
+						{
+							status =Default.LoadThemas.Status,
+							error = Default.LoadThemas.Error.ToStr(),
+						},
+				};
+		}
+		
 
 		/// <summary>
 		/// 	Инстанция по умолчанию

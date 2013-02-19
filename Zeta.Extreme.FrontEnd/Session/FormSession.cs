@@ -18,6 +18,7 @@ using Comdiv.Zeta.Model;
 using Qorpent;
 using Qorpent.Applications;
 using Qorpent.Serialization;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Form;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.StateManagement;
@@ -54,6 +55,40 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			FormInfo = new {Template.Code, Template.Name};
 			NeedMeasure = Template.ShowMeasureColumn;
 			Activations = 1;
+		}
+
+
+		/// <summary>
+		/// Возвращает следующий пакет данных
+		/// </summary>
+		/// <param name="startidx"></param>
+		/// <returns></returns>
+		public DataChunk GetNextChunk(int startidx) {
+			lock (Data)
+			{
+				var state = IsFinished ? "f" : "w";
+				if (!string.IsNullOrWhiteSpace(ErrorMessage))
+				{
+					state = "e";
+				}
+				var max = Data.Count - 1;
+				if (Data.Count <= startidx)
+				{
+					return new DataChunk { state = state, ei = max };
+				}
+
+				var cnt = max - startidx + 1;
+
+				return
+					new DataChunk
+					{
+						si = startidx,
+						ei = max,
+						state=state,
+						e = ErrorMessage,
+						data = Data.Skip(startidx).Take(cnt).ToArray()
+					};
+			}
 		}
 
 		/// <summary>
@@ -175,6 +210,24 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		[IgnoreSerialize] public StructureItem[] Structure { get; private set; }
 
 		/// <summary>
+		/// Синхронизированный метод доступа к структуре
+		/// </summary>
+		/// <returns></returns>
+		public StructureItem[] GetStructure() {
+			if(null!=Structure && !StructureInProcess) {
+				return Structure;
+			}
+			if(null!=PrepareStructureTask) {
+				PrepareStructureTask.Wait();
+			}
+			return Structure;
+		}
+		/// <summary>
+		/// Признак процесса формирования структуры
+		/// </summary>
+		protected bool StructureInProcess { get; set; }
+
+		/// <summary>
 		/// 	Информация об объекте
 		/// </summary>
 		[Serialize] public object ObjInfo { get; private set; }
@@ -241,7 +294,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 				sw.Stop();
 				TimeToPrepare = sw.Elapsed;
 				PrepareStructureTask = new TaskWrapper(
-					Task.Run(() => { RetrieveStructura(); })
+					Task.Run(() => { RetrieveStructure(); })
 					);
 
 				StartCollectData();
@@ -273,7 +326,8 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// </summary>
 		public int DataCollectionRequests { get; set; }
 
-		private void RetrieveStructura() {
+		private void RetrieveStructure() {
+			StructureInProcess = true;
 			var sw = Stopwatch.StartNew();
 			Structure =
 				(from ri in rows
@@ -308,6 +362,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 					).ToArray();
 			sw.Stop();
 			TimeToStructure = sw.Elapsed;
+			StructureInProcess = false;
 		}
 
 
@@ -441,6 +496,18 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			}
 		}
 
+		/// <summary>
+		/// 	processing of execution - main method of action
+		/// </summary>
+		/// <returns> </returns>
+		public object CollectDebugInfo()
+		{
+			var stats = string.IsNullOrWhiteSpace(DataStatistics)
+							? null
+							: DataStatistics.SmartSplit(false, true, '\r', '\n').ToArray();
+			return new {  stats, sql = SqlLog ,colset = Colset};
+		}
+
 		private void PrepareMetaSets() {
 			PrepareRows();
 			InitializeColset();
@@ -543,5 +610,42 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		private IdxCol[] primarycols;
 		private IdxRow[] primaryrows;
 		private IdxRow[] rows;
+
+		/// <summary>
+		/// Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
+		/// </summary>
+		/// <returns></returns>
+		public LockStateInfo GetCanBlockInfo() {
+			var isopen = Template.IsOpen;
+			var state = Template.GetState(Object, null);
+			var cansave = isopen && state == "0ISOPEN";
+			var message = Template.CanSetState(Object, null, "0ISBLOCK");
+			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message);
+			return new LockStateInfo
+			{
+				isopen = isopen,
+				state = state,
+				cansave = cansave,
+				canblock = canblock,
+				message= message
+			};
+		}
+
+		/// <summary>
+		/// Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
+		/// </summary>
+		/// <returns></returns>
+		public LockStateInfo GetCurrentLockInfo()
+		{
+			var isopen = Template.IsOpen;
+			var state = Template.GetState(Object, null);
+			var cansave = isopen && state == "0ISOPEN";
+			return new LockStateInfo
+			{
+				isopen = isopen,
+				state = state,
+				cansave = cansave,
+			};
+		}
 	}
 }

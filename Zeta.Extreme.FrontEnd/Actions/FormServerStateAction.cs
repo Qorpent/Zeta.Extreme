@@ -17,39 +17,13 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	/// 	Действие, возвращающее статус загрузки приложения
 	/// </summary>
 	[Action("zefs.server")]
-	public class FormServerStateAction : ActionBase {
+	public class FormServerStateAction : FormServerActionBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			return new
-				{
-					hibernate = new
-						{
-							status = FormServer.Default.HibernateLoad.Status,
-							error = FormServer.Default.HibernateLoad.Error.ToStr()
-						},
-					meta = new
-						{
-							status = FormServer.Default.MetaCacheLoad.Status,
-							error = FormServer.Default.MetaCacheLoad.Error.ToStr(),
-							rows = RowCache.byid.Count,
-						},
-					formulas = new
-						{
-							status = FormServer.Default.CompileFormulas.Status,
-							taskerror = FormServer.Default.CompileFormulas.Error.ToStr(),
-							compileerror =
-								FormulaStorage.Default.LastCompileError == null ? "" : FormulaStorage.Default.LastCompileError.ToString(),
-							formulacount = FormulaStorage.Default.Count,
-						},
-					themas = new
-						{
-							status = FormServer.Default.LoadThemas.Status,
-							error = FormServer.Default.LoadThemas.Error.ToStr(),
-						},
-				};
+			return MyFormServer.GetServerStateInfo();
 		}
 	}
 }

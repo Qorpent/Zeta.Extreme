@@ -15,21 +15,13 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	/// 	Возвращает статус формы
 	/// </summary>
 	[Action("zefs.currentlockstate")]
-	public class CurrentLockStateAction : SessionAttachedActionBase {
+	public class CurrentLockStateAction : FormSessionActionBase {
 		/// <summary>
 		/// 	Возвращает статус формы по блокировке
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			var isopen = _session.Template.IsOpen;
-			var state = _session.Template.GetState(_session.Object, null);
-			var cansave = isopen && state == "0ISOPEN";
-			return new
-				{
-					isopen,
-					state,
-					cansave,
-				};
+			return MySession.GetCurrentLockInfo();
 		}
 	}
 }

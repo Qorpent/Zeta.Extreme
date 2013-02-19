@@ -15,13 +15,13 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	/// 	Действие, возвращающее статус загрузки приложения
 	/// </summary>
 	[Action("zefs.restart")]
-	public class FormServerRestart : ActionBase {
+	public class FormServerRestart : FormServerActionBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			FormServer.Default.Reload();
+			MyFormServer.Reload();
 			return true;
 		}
 	}

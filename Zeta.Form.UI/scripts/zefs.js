@@ -17,15 +17,16 @@ root.init = root.init ||
             // serverstatus - это виджет на панели, отвечающий за отображения статуса сервера
             var serverstatus = $('div.zefsstatus>span.label').first();
             if (!d) {
-                $(serverstatus).addClass("label-important").text("Сервер не доступен");
+                $(serverstatus).attr("class","label label-warning").text("Полчение статуса сервера");
                 options.timeout -= options.readydelay;
                 if(options.timeout<=0){
+                    $(serverstatus).attr("class","label label-important").text("Сервер не доступен");
                     FailStartServer();
                 }
                 window.setTimeout(StartForm, options.readydelay);
                 return;
             }
-            $(serverstatus).addClass("label-important").text("Сервер не доступен");
+            $(serverstatus).attr("class","label label-success").text("Сервер доступен");
             options.timeout = options.default_timeout;
             ExecuteSession();
         }));
@@ -47,7 +48,7 @@ root.init = root.init ||
                 window.open(options.debug_command + "?session=" + d.getUid(), '_blank');
             });
             $('#restartInfo').click(function(e) {
-                window.open(options.debug_restart, '_blank');
+                window.open(options.restart_command, '_blank');
             });
             Structure(session);
             window.setTimeout(function(){Data(session,0)},options.datadelay);    //первый запрос на данные

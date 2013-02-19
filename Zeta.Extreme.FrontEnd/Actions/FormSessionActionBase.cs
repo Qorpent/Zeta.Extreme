@@ -18,7 +18,7 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	/// <summary>
 	/// 	Ѕазовое действие, работающее с сессией
 	/// </summary>
-	public abstract class SessionAttachedActionBase : ActionBase {
+	public abstract class FormSessionActionBase : FormServerActionBase {
 		/// <summary>
 		/// 	Second phase - validate INPUT/REQUEST parameters here - it called before PREPARE so do not try validate
 		/// 	second-level internal state and authorization - only INPUT PARAMETERS must be validated
@@ -29,7 +29,7 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 				throw new Exception("Application not loaded properly!");
 			}
 			base.Validate();
-			_session = FormServer.Default.Sessions.First(_ => _.Uid == Session);
+			MySession = FormServer.Default.Sessions.First(_ => _.Uid == Session);
 		}
 
 		/// <summary>
@@ -40,6 +40,6 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		/// <summary>
 		/// 	—сылка на текущую сессию
 		/// </summary>
-		protected FormSession _session;
+		protected FormSession MySession;
 	}
 }

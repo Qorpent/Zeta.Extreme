@@ -15,13 +15,13 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	/// 	Возвращает информацию о сессии
 	/// </summary>
 	[Action("zefs.session")]
-	public class SessionStatusAction : SessionAttachedActionBase {
+	public class FormSessionStatusAction : FormSessionActionBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			return _session;
+			return MySession;
 		}
 	}
 }

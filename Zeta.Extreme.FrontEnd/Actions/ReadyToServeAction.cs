@@ -11,13 +11,13 @@
 using Qorpent.Mvc;
 
 namespace Zeta.Extreme.FrontEnd.Actions {
-	/// <summary>
-	/// 	Выдает список загруженных форм
-	/// </summary>
+	///<summary>
+	///Определяет доступность сервера форм
+	///</summary>
 	[Action("zefs.ready")]
 	public class ReadyToServeAction : ActionBase {
 		/// <summary>
-		/// 	processing of execution - main method of action
+		/// Возвращает статус готовности сервера форм к обработке запросов
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {

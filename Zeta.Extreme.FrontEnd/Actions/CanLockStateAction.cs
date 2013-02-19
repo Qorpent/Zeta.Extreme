@@ -15,25 +15,13 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	/// 	Возвращает статус формы
 	/// </summary>
 	[Action("zefs.canlockstate")]
-	public class CanLockStateAction : SessionAttachedActionBase {
+	public class CanLockStateAction : FormSessionActionBase {
 		/// <summary>
 		/// 	Возвращает статус формы по блокировке
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			var isopen = _session.Template.IsOpen;
-			var state = _session.Template.GetState(_session.Object, null);
-			var cansave = isopen && state == "0ISOPEN";
-			var message = _session.Template.CanSetState(_session.Object, null, "0ISBLOCK");
-			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message);
-			return new
-				{
-					isopen,
-					state,
-					cansave,
-					canblock,
-					message
-				};
+			return MySession.GetCanBlockInfo();
 		}
 	}
 }

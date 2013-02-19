@@ -19,13 +19,13 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	/// 	Инициирует сессию
 	/// </summary>
 	[Action("zefs.start")]
-	public class FormStartAction : ActionBase {
+	public class FormStartAction : FormServerActionBase {
 		/// <summary>
 		/// 	Second phase - validate INPUT/REQUEST parameters here - it called before PREPARE so do not try validate
 		/// 	second-level internal state and authorization - only INPUT PARAMETERS must be validated
 		/// </summary>
 		protected override void Validate() {
-			FormServer.Default.ReadyToServeForms.Wait();
+			MyFormServer.ReadyToServeForms.Wait();
 			if (!FormServer.Default.IsOk) {
 				throw new Exception("Application not loaded properly!");
 			}
@@ -46,7 +46,7 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			return FormServer.Default.Start(_realform, _realobj, year, period);
+			return MyFormServer.Start(_realform, _realobj, year, period);
 		}
 
 		private IInputTemplate _realform;

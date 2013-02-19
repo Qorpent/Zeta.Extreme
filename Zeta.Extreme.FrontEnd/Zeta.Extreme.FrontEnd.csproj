@@ -18,11 +18,13 @@
   <ItemGroup>
     <Compile Include="Actions\CanLockStateAction.cs" />
     <Compile Include="Actions\FormListAction.cs" />
+    <Compile Include="Actions\FormServerActionBase.cs" />
     <Compile Include="Actions\FormServerRestart.cs" />
     <Compile Include="Actions\DebugInfoAction.cs" />
     <Compile Include="Actions\CurrentLockStateAction.cs" />
-    <Compile Include="Actions\SessionAttachedActionBase.cs" />
+    <Compile Include="Actions\FormSessionActionBase.cs" />
     <Compile Include="FormServer.cs" />
+    <Compile Include="Session\DataChunk.cs" />
     <Compile Include="Session\FormSession.cs" />
     <Compile Include="Actions\FormStartAction.cs" />
     <Compile Include="Actions\FormServerStateAction.cs" />
@@ -30,7 +32,7 @@
     <Compile Include="Actions\GetStructureAction.cs" />
     <Compile Include="Session\OutCell.cs" />
     <Compile Include="Actions\ReadyToServeAction.cs" />
-    <Compile Include="Actions\SessionStatusAction.cs" />
+    <Compile Include="Actions\FormSessionStatusAction.cs" />
     <Compile Include="Session\StructureItem.cs" />
   </ItemGroup>
   <ItemGroup>
