@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using Qorpent;
@@ -29,8 +30,9 @@ namespace Zeta.Extreme.FrontEnd.Session {
 	/// </summary>
 	[Serialize]
 	public class FormSession : 
+			IFormSession,
 			IFormDataSynchronize,
-			IFormSessionControlPointSource, IFormSession {
+			IFormSessionControlPointSource {
 		/// <summary>
 		/// 	Создает сессию формы
 		/// </summary>
@@ -407,7 +409,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 					}
 				}
 				DataSession.Execute(500);
-				ProcessValues(queries);
+				ProcessValues(queries, false);
 			}
 
 			QueriesCount = queries.Count;
@@ -433,13 +435,13 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		private void LoadEditablePrimaryData(IDictionary<string, Query> queries) {
 			BuildEditablePrimarySet(queries);
 			DataSession.Execute(500);
-			ProcessValues(queries);
+			ProcessValues(queries,true);
 		}
 
 		private void LoadNonEditablePrimaryData(IDictionary<string, Query> queries) {
 			BuildNonEditablePrimarySet(queries);
 			DataSession.Execute(500);
-			ProcessValues(queries);
+			ProcessValues(queries, false);
 		}
 
 		private void BuildEditablePrimarySet(IDictionary<string, Query> queries) {
@@ -474,7 +476,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 			}
 		}
 
-		private void ProcessValues(IDictionary<string, Query> queries) {
+		private void ProcessValues(IDictionary<string, Query> queries, bool canbefilled) {
 			foreach (var q_ in queries.Where(_ => null != _.Value)) {
 				if (_processed.ContainsKey(q_.Key)) {
 					continue;
@@ -491,7 +493,7 @@ namespace Zeta.Extreme.FrontEnd.Session {
 				}
 
 				lock (Data) {
-					Data.Add(new OutCell {i = q_.Key, c = cellid, v = val});
+					Data.Add(new OutCell {i = q_.Key, c = cellid, v = val,canbefilled = canbefilled, query=q_.Value});
 				}
 			}
 		}
@@ -582,6 +584,11 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// </summary>
 		[IgnoreSerialize]public ColumnDesc[] Colset { get; set; }
 
+		/// <summary>
+		/// Обратная ссылка на сервер форм
+		/// </summary>
+		public FormServer FormServer { get; set; }
+
 		#region Nested type: IdxCol
 
 		private class IdxCol {
@@ -646,6 +653,37 @@ namespace Zeta.Extreme.FrontEnd.Session {
 				state = state,
 				cansave = cansave,
 			};
+		}
+
+		private IFormSessionDataSaver CurrentSaver;
+		private Task<SaveResult> _currentSaveTask;
+		/// <summary>
+		/// Метод вызова начала сохранения данных
+		/// </summary>
+		/// <param name="xmldata"></param>
+		/// <returns></returns>
+		public bool BeginSaveData(XElement xmldata) {
+			lock(this) {
+				if (null != _currentSaveTask) {
+					_currentSaveTask.Wait();
+				}
+				CurrentSaver = CurrentSaver ?? (null == FormServer ? null : FormServer.GetSaver()) ?? new DefaultSessionDataSaver();
+				_currentSaveTask = CurrentSaver.BeginSave(this, xmldata);
+				return true;
+			}
+		}
+		/// <summary>
+		/// Возвращает текущий объект сохранения
+		/// </summary>
+		/// <returns></returns>
+		public object GetSaveState() {
+			lock(this) {
+				if (null == CurrentSaver) return new {stage = SaveStage.None, error = null as Exception, result = null as SaveResult};
+				if (_currentSaveTask != null && _currentSaveTask.IsCompleted) {
+					return new {stage = CurrentSaver.Stage, error = CurrentSaver.Error, result = _currentSaveTask.Result};
+				}
+				return new { stage = CurrentSaver.Stage, error = CurrentSaver.Error };
+			}
 		}
 	}
 }

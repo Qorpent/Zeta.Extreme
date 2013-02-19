@@ -45,6 +45,15 @@ namespace Zeta.Extreme.FrontEnd {
 				_doNotRun = true;
 			}
 		}
+
+		/// <summary>
+		/// Возвращает инстанцию класса для сохранения данных
+		/// </summary>
+		/// <returns></returns>
+		public IFormSessionDataSaver GetSaver() {
+			return ResolveService<IFormSessionDataSaver>() ?? new DefaultSessionDataSaver();
+		}
+
 		/// <summary>
 		/// Возвращает список форм
 		/// </summary>
@@ -140,7 +149,7 @@ namespace Zeta.Extreme.FrontEnd {
 						_.Usr == usr && _.Year == year && _.Period == period && _.Template.Code == template.Code && _.Object.Id == obj.Id);
 				if(null==existed) {
 					var session = new FormSession(template, year, period, obj);
-				
+					session.FormServer = this;
 					Sessions.Add(session);
 					session.Start();
 					return session;

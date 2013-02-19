@@ -23,13 +23,16 @@
     <Compile Include="Actions\DebugInfoAction.cs" />
     <Compile Include="Actions\CurrentLockStateAction.cs" />
     <Compile Include="Actions\FormSessionActionBase.cs" />
+    <Compile Include="DefaultDataSaver.cs" />
     <Compile Include="FormServer.cs" />
+    <Compile Include="IFormDataSaver.cs" />
     <Compile Include="Session\DataChunk.cs" />
     <Compile Include="Session\FormSession.cs" />
     <Compile Include="Actions\FormStartAction.cs" />
     <Compile Include="Actions\FormServerStateAction.cs" />
     <Compile Include="Actions\GetDataAction.cs" />
     <Compile Include="Actions\GetStructureAction.cs" />
+    <Compile Include="Session\IFormSession.cs" />
     <Compile Include="Session\LockStateInfo.cs" />
     <Compile Include="Session\OutCell.cs" />
     <Compile Include="Actions\ReadyToServeAction.cs" />

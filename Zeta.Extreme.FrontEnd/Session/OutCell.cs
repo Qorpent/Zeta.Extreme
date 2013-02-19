@@ -30,5 +30,15 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// 	Значение ячейки
 		/// </summary>
 		[SerializeNotNullOnly] public string v;
+
+		/// <summary>
+		/// Признак значения, которое может быть целью сохранения
+		/// </summary>
+		[IgnoreSerialize]public bool canbefilled ;
+
+		/// <summary>
+		/// Ссылка на запрос для заполняемых значений
+		/// </summary>
+		[IgnoreSerialize]public Query query;
 	}
 }
