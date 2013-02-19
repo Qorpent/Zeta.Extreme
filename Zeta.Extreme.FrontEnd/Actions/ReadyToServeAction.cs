@@ -12,12 +12,12 @@ using Qorpent.Mvc;
 
 namespace Zeta.Extreme.FrontEnd.Actions {
 	///<summary>
-	///Определяет доступность сервера форм
+	///	Определяет доступность сервера форм
 	///</summary>
 	[Action("zefs.ready")]
 	public class ReadyToServeAction : ActionBase {
 		/// <summary>
-		/// Возвращает статус готовности сервера форм к обработке запросов
+		/// 	Возвращает статус готовности сервера форм к обработке запросов
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {

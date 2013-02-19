@@ -14,6 +14,7 @@ using System.Data;
 using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Persistence;
+using Qorpent.Applications;
 
 namespace Zeta.Extreme.Form.StateManagement {
 	/// <summary>
@@ -88,10 +89,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 					new Dictionary<string, object> {{"@date", record.DeadLine}}
 					));
 		}
-		private static IDbConnection GetConnection(string system) {
-			system = string.IsNullOrWhiteSpace(system) ? "Default" : system;
-			return Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection(system) ?? myapp.ioc.getConnection(system);
-		}
+
 		/// <summary>
 		/// 	Обновить дедлайн по подписанию
 		/// </summary>
@@ -103,6 +101,11 @@ namespace Zeta.Extreme.Form.StateManagement {
 					@"exec usm.set_period_udeadline @year=" + record.Year + ",@period=" + record.Period + ",@deadline=@date",
 					new Dictionary<string, object> {{"@date", record.UDeadLine}}
 					));
+		}
+
+		private static IDbConnection GetConnection(string system) {
+			system = string.IsNullOrWhiteSpace(system) ? "Default" : system;
+			return Application.Current.DatabaseConnections.GetConnection(system) ?? myapp.ioc.getConnection(system);
 		}
 
 		private void indatabase(Action<IDbConnection> action) {

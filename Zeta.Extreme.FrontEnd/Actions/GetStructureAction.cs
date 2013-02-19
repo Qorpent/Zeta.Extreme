@@ -12,12 +12,12 @@ using Qorpent.Mvc;
 
 namespace Zeta.Extreme.FrontEnd.Actions {
 	/// <summary>
-	/// Инициирует сессию
+	/// 	Инициирует сессию
 	/// </summary>
 	[Action("zefs.struct")]
 	public class GetStructureAction : FormSessionActionBase {
 		/// <summary>
-		/// processing of execution - main method of action
+		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {

@@ -1,7 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : SessionAttachedActionBase.cs
+// Original file : FormSessionActionBase.cs
 // Project: Zeta.Extreme.FrontEnd
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -10,7 +10,6 @@
 
 using System;
 using System.Linq;
-using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 using Zeta.Extreme.FrontEnd.Session;
 
@@ -33,13 +32,13 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		}
 
 		/// <summary>
-		/// 	ѕараметр кода сессии
-		/// </summary>
-		[Bind(Required = true)] public string Session = "";
-
-		/// <summary>
 		/// 	—сылка на текущую сессию
 		/// </summary>
 		protected FormSession MySession;
+
+		/// <summary>
+		/// 	ѕараметр кода сессии
+		/// </summary>
+		[Bind(Required = true)] public string Session = "";
 	}
 }

@@ -23,6 +23,7 @@ using Qorpent.IO;
 using Qorpent.IoC;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Form.InputTemplates;
+using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.Themas;
 using Zeta.Extreme.FrontEnd.Session;
 
@@ -31,8 +32,7 @@ namespace Zeta.Extreme.FrontEnd {
 	/// 	Выполняет стартовую настройку сервера форм
 	/// </summary>
 	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IApplicationStartup), Name = "extreme.form.start")]
-	public class FormServer : ServiceBase,IApplicationStartup
-	{
+	public class FormServer : ServiceBase, IApplicationStartup {
 		/// <summary>
 		/// 	Конструктор по умолчанию
 		/// </summary>
@@ -46,70 +46,6 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 		}
 
-		/// <summary>
-		/// Возвращает инстанцию класса для сохранения данных
-		/// </summary>
-		/// <returns></returns>
-		public IFormSessionDataSaver GetSaver() {
-			return ResolveService<IFormSessionDataSaver>() ?? new DefaultSessionDataSaver();
-		}
-
-		/// <summary>
-		/// Возвращает список форм
-		/// </summary>
-		/// <returns></returns>
-		public  object GetFormList()
-		{
-			LoadThemas.Wait();
-			return ((ExtremeFormProvider)FormProvider).Factory
-				.GetAll().Where(_ => !_.Code.Contains("lib")).SelectMany(_ => _.GetAllForms())
-				.Select(_ => new { code = _.Code, name = _.Name }).ToArray();
-		}
-		/// <summary>
-		/// 	processing of execution - main method of action
-		/// </summary>
-		/// <returns> </returns>
-		public object GetServerStateInfo() {
-			
-			return new
-				{
-					hibernate = new
-						{
-							status = HibernateLoad.Status,
-							error = HibernateLoad.Error.ToStr()
-						},
-					meta = new
-						{
-							status =MetaCacheLoad.Status,
-							error = MetaCacheLoad.Error.ToStr(),
-							rows = RowCache.byid.Count,
-						},
-					formulas = new
-						{
-							status = CompileFormulas.Status,
-							taskerror =CompileFormulas.Error.ToStr(),
-							compileerror =
-								FormulaStorage.Default.LastCompileError == null ? "" : FormulaStorage.Default.LastCompileError.ToString(),
-							formulacount = FormulaStorage.Default.Count,
-						},
-					themas = new
-						{
-							status =Default.LoadThemas.Status,
-							error = Default.LoadThemas.Error.ToStr(),
-						},
-					sessions = new
-						{
-							count = Sessions.Count,
-							users = Sessions.Select(_=>_.Usr).Distinct().Count(),
-							activations = Sessions.Select(_=>_.Activations).Sum(),
-							uniqueforms = Sessions.Select(_=>new{y=_.Year,p=_.Period,o=_.Object.Id,f=_.Template.Code}).Distinct().Count(),
-							totaldatatime = Sessions.Select(_=>_.OverallDataTime).Aggregate((a,x)=>a+x),
-							avgdatatime = TimeSpan.FromMilliseconds( Sessions.Select(_ => _.OverallDataTime).Aggregate((a, x) => a + x).TotalMilliseconds /Sessions.Select(_=>_.DataCollectionRequests).Sum()),
-						
-						}
-				};
-		}
-		
 
 		/// <summary>
 		/// 	Инстанция по умолчанию
@@ -131,50 +67,6 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 		}
 
-
-		/// <summary>
-		/// Инициирует новую или возвращает имеющуюся сессию
-		/// </summary>
-		/// <param name="template"></param>
-		/// <param name="obj"></param>
-		/// <param name="year"></param>
-		/// <param name="period"></param>
-		/// <returns></returns>
-		public FormSession Start (IInputTemplate template, IZetaMainObject obj,  int year, int period) {
-			lock(this) {
-				var usr = Application.Principal.CurrentUser.Identity.Name;
-				var existed =
-					Sessions.FirstOrDefault(
-						_ =>
-						_.Usr == usr && _.Year == year && _.Period == period && _.Template.Code == template.Code && _.Object.Id == obj.Id);
-				if(null==existed) {
-					var session = new FormSession(template, year, period, obj);
-					session.FormServer = this;
-					Sessions.Add(session);
-					session.Start();
-					return session;
-				}else {
-					
-
-					existed.Activations++;
-					
-					if (!existed.IsStarted)
-					{
-						existed.Start();
-					}
-					else
-					{
-						if (existed.IsFinished)
-						{
-							existed.Error = null;
-							existed.StartCollectData();
-						}
-					}
-					return existed;
-				}
-
-			}
-		}
 
 		/// <summary>
 		/// 	Корневая папка тем
@@ -247,10 +139,114 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		/// <summary>
+		/// 	Возвращает инстанцию класса для сохранения данных
+		/// </summary>
+		/// <returns> </returns>
+		public IFormSessionDataSaver GetSaver() {
+			return ResolveService<IFormSessionDataSaver>() ?? new DefaultSessionDataSaver();
+		}
+
+		/// <summary>
+		/// 	Возвращает список форм
+		/// </summary>
+		/// <returns> </returns>
+		public object GetFormList() {
+			LoadThemas.Wait();
+			return ((ExtremeFormProvider) FormProvider).Factory
+				.GetAll().Where(_ => !_.Code.Contains("lib")).SelectMany(_ => _.GetAllForms())
+				.Select(_ => new {code = _.Code, name = _.Name}).ToArray();
+		}
+
+		/// <summary>
+		/// 	processing of execution - main method of action
+		/// </summary>
+		/// <returns> </returns>
+		public object GetServerStateInfo() {
+			return new
+				{
+					hibernate = new
+						{
+							status = HibernateLoad.Status,
+							error = HibernateLoad.Error.ToStr()
+						},
+					meta = new
+						{
+							status = MetaCacheLoad.Status,
+							error = MetaCacheLoad.Error.ToStr(),
+							rows = RowCache.byid.Count,
+						},
+					formulas = new
+						{
+							status = CompileFormulas.Status,
+							taskerror = CompileFormulas.Error.ToStr(),
+							compileerror =
+								FormulaStorage.Default.LastCompileError == null ? "" : FormulaStorage.Default.LastCompileError.ToString(),
+							formulacount = FormulaStorage.Default.Count,
+						},
+					themas = new
+						{
+							status = Default.LoadThemas.Status,
+							error = Default.LoadThemas.Error.ToStr(),
+						},
+					sessions = new
+						{
+							count = Sessions.Count,
+							users = Sessions.Select(_ => _.Usr).Distinct().Count(),
+							activations = Sessions.Select(_ => _.Activations).Sum(),
+							uniqueforms =
+								Sessions.Select(_ => new {y = _.Year, p = _.Period, o = _.Object.Id, f = _.Template.Code}).Distinct().Count(),
+							totaldatatime = Sessions.Select(_ => _.OverallDataTime).Aggregate((a, x) => a + x),
+							avgdatatime =
+								TimeSpan.FromMilliseconds(Sessions.Select(_ => _.OverallDataTime).Aggregate((a, x) => a + x).TotalMilliseconds/
+								                          Sessions.Select(_ => _.DataCollectionRequests).Sum()),
+						}
+				};
+		}
+
+		/// <summary>
+		/// 	Инициирует новую или возвращает имеющуюся сессию
+		/// </summary>
+		/// <param name="template"> </param>
+		/// <param name="obj"> </param>
+		/// <param name="year"> </param>
+		/// <param name="period"> </param>
+		/// <returns> </returns>
+		public FormSession Start(IInputTemplate template, IZetaMainObject obj, int year, int period) {
+			lock (this) {
+				var usr = Application.Principal.CurrentUser.Identity.Name;
+				var existed =
+					Sessions.FirstOrDefault(
+						_ =>
+						_.Usr == usr && _.Year == year && _.Period == period && _.Template.Code == template.Code && _.Object.Id == obj.Id);
+				if (null == existed) {
+					var session = new FormSession(template, year, period, obj);
+					session.FormServer = this;
+					Sessions.Add(session);
+					session.Start();
+					return session;
+				}
+				else {
+					existed.Activations++;
+
+					if (!existed.IsStarted) {
+						existed.Start();
+					}
+					else {
+						if (existed.IsFinished) {
+							existed.Error = null;
+							existed.StartCollectData();
+						}
+					}
+					return existed;
+				}
+			}
+		}
+
+		/// <summary>
 		/// 	Перезагрузка системы
 		/// </summary>
 		public void Reload() {
-			((IResetable)((FileService) Application.Files).GetResolver()).Reset(null);
+			((IResetable) ((FileService) Application.Files).GetResolver()).Reset(null);
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask(), HibernateLoad);
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
@@ -272,8 +268,8 @@ namespace Zeta.Extreme.FrontEnd {
 					FormulaStorage.Default.Clear();
 					var _sumh = new StrongSumProvider();
 					var formulas = RowCache.byid.Values.Where(
-						_ => _.IsFormula && !_sumh.IsSum(_) 
-						&& _.ResolveTag("extreme")=="1"
+						_ => _.IsFormula && !_sumh.IsSum(_)
+						     && _.ResolveTag("extreme") == "1"
 						).ToArray();
 
 					foreach (var f in formulas) {
@@ -283,8 +279,8 @@ namespace Zeta.Extreme.FrontEnd {
 
 					var colformulas = (
 						                  from c in myapp.storage.AsQueryable<col>()
-						                  where c.IsFormula 
-										  && c.FormulaEvaluator == "boo" && null != c.Formula && "" != c.Formula
+						                  where c.IsFormula
+						                        && c.FormulaEvaluator == "boo" && null != c.Formula && "" != c.Formula
 						                  select new {c = c.Code, f = c.Formula, tag = c.Tag}
 					                  ).ToArray();
 
@@ -308,7 +304,7 @@ namespace Zeta.Extreme.FrontEnd {
 					Application.Container.Register(new BasicComponentDefinition
 						{
 							Implementation = _f,
-							ServiceType = typeof(IThemaFactory),
+							ServiceType = typeof (IThemaFactory),
 							Lifestyle = Lifestyle.Singleton,
 							Name = "form.server.themas",
 						});
@@ -319,7 +315,7 @@ namespace Zeta.Extreme.FrontEnd {
 			return new Task(() =>
 				{
 					//var codes =
-						//myapp.storage.AsQueryable<row>().Where(_ => _.Tag.Contains("/extreme:1/")).Select(_ => _.Code).ToArray();
+					//myapp.storage.AsQueryable<row>().Where(_ => _.Tag.Contains("/extreme:1/")).Select(_ => _.Code).ToArray();
 					RowCache.start();
 					ColumnCache.start();
 				});

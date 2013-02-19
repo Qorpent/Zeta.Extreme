@@ -1,33 +1,27 @@
-using System.Xml.Linq;
-using Qorpent.Dsl;
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : SaveStateAction.cs
+// Project: Zeta.Extreme.FrontEnd
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using Qorpent.Mvc;
-using Qorpent.Mvc.Binding;
 
 namespace Zeta.Extreme.FrontEnd.Actions {
 	/// <summary>
-	/// ¬озвращает текущий статус сохранени€
+	/// 	¬озвращает текущий статус сохранени€
 	/// </summary>
 	[Action("zefs.savestate")]
-	public class SaveStateAction : FormSessionActionBase
-	{
-		protected override void Prepare()
-		{
-			_xmldata = new JsonToXmlParser().Parse(_jsonSaveData);
-		}
+	public class SaveStateAction : FormSessionActionBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			
 			return MySession.GetSaveState();
 		}
-		/// <summary>
-		/// ѕараметр дл€ данных дл€ сохранени€
-		/// </summary>
-		[Bind(Name = "data", Required = true)]
-		private string _jsonSaveData = "";
-
-		private XElement _xmldata;
 	}
 }

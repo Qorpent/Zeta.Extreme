@@ -23,18 +23,17 @@
     <Compile Include="Actions\DebugInfoAction.cs" />
     <Compile Include="Actions\CurrentLockStateAction.cs" />
     <Compile Include="Actions\FormSessionActionBase.cs" />
-    <Compile Include="DefaultDataSaver.cs" />
+    <Compile Include="Actions\SaveDataAction.cs" />
+    <Compile Include="Actions\SaveStateAction.cs" />
+    <Compile Include="DataSaverBase.cs" />
+    <Compile Include="DefaultSessionDataSaver.cs" />
     <Compile Include="FormServer.cs" />
-    <Compile Include="IFormDataSaver.cs" />
     <Compile Include="Session\DataChunk.cs" />
     <Compile Include="Session\FormSession.cs" />
     <Compile Include="Actions\FormStartAction.cs" />
     <Compile Include="Actions\FormServerStateAction.cs" />
     <Compile Include="Actions\GetDataAction.cs" />
     <Compile Include="Actions\GetStructureAction.cs" />
-    <Compile Include="Session\IFormSession.cs" />
-    <Compile Include="Session\LockStateInfo.cs" />
-    <Compile Include="Session\OutCell.cs" />
     <Compile Include="Actions\ReadyToServeAction.cs" />
     <Compile Include="Actions\FormSessionStatusAction.cs" />
     <Compile Include="Session\StructureItem.cs" />
@@ -58,9 +57,17 @@
       <Project>{880F65EA-1A22-4672-A137-FFC91290A209}</Project>
       <Name>Qorpent.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Dsl\Qorpent.Dsl.csproj">
+      <Project>{B758E220-22F5-47DF-A73B-BC9B1A3DBDC3}</Project>
+      <Name>Qorpent.Dsl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.IO\Qorpent.IO.csproj">
       <Project>{426C92DF-3C40-426C-B0BE-40A1DF9044C2}</Project>
       <Name>Qorpent.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Serialization\Qorpent.Serialization.csproj">
+      <Project>{21971F28-8ED8-4F50-B623-E9DB2658AF54}</Project>
+      <Name>Qorpent.Serialization</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
       <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>

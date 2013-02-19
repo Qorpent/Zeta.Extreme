@@ -8,9 +8,11 @@
 
 #endregion
 
+using System.Collections.Generic;
 using Comdiv.Zeta.Model;
 using Qorpent.Serialization;
 using Zeta.Extreme.Form.InputTemplates;
+using Zeta.Extreme.Form.StateManagement;
 
 namespace Zeta.Extreme.Form {
 	/// <summary>
@@ -46,5 +48,16 @@ namespace Zeta.Extreme.Form {
 		/// 	Пользователь
 		/// </summary>
 		string Usr { get; }
+
+		/// <summary>
+		/// 	Хранит уже подготовленные данные
+		/// </summary>
+		[IgnoreSerialize] List<OutCell> Data { get; }
+
+		/// <summary>
+		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
+		/// </summary>
+		/// <returns> </returns>
+		LockStateInfo GetCurrentLockInfo();
 	}
 }

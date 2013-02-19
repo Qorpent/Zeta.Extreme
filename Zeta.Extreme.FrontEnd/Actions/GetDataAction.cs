@@ -18,7 +18,7 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	[Action("zefs.data")]
 	public class GetDataAction : FormSessionActionBase {
 		/// <summary>
-		/// processing of execution - main method of action
+		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {

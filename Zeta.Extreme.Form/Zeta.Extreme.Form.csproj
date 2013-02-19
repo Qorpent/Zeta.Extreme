@@ -72,6 +72,7 @@
     <Compile Include="InputTemplates\AttachedFileType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="OutCell.cs" />
     <Compile Include="SaveSupport\AutoFill.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -79,6 +80,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SaveSupport\ICustomFormSaver.cs" />
+    <Compile Include="SaveSupport\IFormSessionDataSaver.cs" />
+    <Compile Include="SaveSupport\SaveResult.cs" />
+    <Compile Include="SaveSupport\SaveStage.cs" />
+    <Compile Include="StateManagement\LockStateInfo.cs" />
     <Compile Include="StateManagement\StateRule.cs" />
     <Compile Include="SaveSupport\CellFixingValidator.cs" />
     <Compile Include="SaveSupport\CellsAreOfTargetOrg.cs" />

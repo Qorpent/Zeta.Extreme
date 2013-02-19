@@ -298,7 +298,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		string Biztran { get; set; }
 
 		/// <summary>
-		/// Сессия обслуживания формы
+		/// 	Сессия обслуживания формы
 		/// </summary>
 		IFormSession AttachedSession { get; set; }
 

@@ -21,6 +21,7 @@ using Comdiv.Inversion;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
+using Qorpent.Applications;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.Themas;
 
@@ -30,12 +31,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 	/// </summary>
 	public class StateManager : IStateManager {
 		private static StateManager _default;
-		/// <summary>
-		/// Инстанция по умолчанию
-		/// </summary>
-		public static IStateManager Default {
-			get { return _default ?? (_default = new StateManager()); }
-		}
+
 		/// <summary>
 		/// </summary>
 		public StateManager() : this(true) {}
@@ -45,6 +41,13 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <param name="withreload"> </param>
 		public StateManager(bool withreload) {
 			myapp.OnReload += Reload;
+		}
+
+		/// <summary>
+		/// 	Инстанция по умолчанию
+		/// </summary>
+		public static IStateManager Default {
+			get { return _default ?? (_default = new StateManager()); }
 		}
 
 		/// <summary>
@@ -113,10 +116,6 @@ namespace Zeta.Extreme.Form.StateManagement {
 						});
 				return result;
 			}
-		}
-
-		private static IDbConnection GetConnection() {
-			return Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection("Default") ?? myapp.ioc.getConnection();
 		}
 
 		/// <summary>
@@ -507,6 +506,10 @@ namespace Zeta.Extreme.Form.StateManagement {
 			}
 		}
 
+		private static IDbConnection GetConnection() {
+			return Application.Current.DatabaseConnections.GetConnection("Default") ?? myapp.ioc.getConnection();
+		}
+
 		/// <summary>
 		/// 	Получает кэш статусов
 		/// </summary>
@@ -686,7 +689,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 					//if (null == FactoryProvider) {
 					//	FactoryProvider = Qorpent.Applications.Application.Current.Container.Get<IThemaFactoryProvider>(); // myapp.ioc.get<IThemaFactoryProvider>();
 					//}
-					var factory = Qorpent.Applications.Application.Current.Container.Get<IThemaFactory>("form.server.themas");
+					var factory = Application.Current.Container.Get<IThemaFactory>("form.server.themas");
 					var x = XElement.Parse(factory.SrcXml);
 					safers = x.XPathSelectElements("//processes/safer").ToList();
 					dependences = x.XPathSelectElements("//processes/dependency").ToList();
@@ -723,15 +726,16 @@ namespace Zeta.Extreme.Form.StateManagement {
 			cp = "";
 
 			var _controlpoint_session = template.AttachedSession as IFormSessionControlPointSource;
-			if(null!=_controlpoint_session) {
+			if (null != _controlpoint_session) {
 				var controlpoints = _controlpoint_session.ControlPoints;
-				if(0!=controlpoints.Length) {
-					foreach (var bp in controlpoints.Where(_=>_.Value!=0)) {
-						cp += "Контрольная точка: " + bp.Row.Name + ", " + bp.Col.Title+"; ";
+				if (0 != controlpoints.Length) {
+					foreach (var bp in controlpoints.Where(_ => _.Value != 0)) {
+						cp += "Контрольная точка: " + bp.Row.Name + ", " + bp.Col.Title + "; ";
 						result = false;
 					}
 				}
-			}else {
+			}
+			else {
 				if ((root.Code != "STUB") && root.Target != null) {
 					foreach (var check in RowCache.GetControlPoints(root.Target)) {
 						if (!result) {

@@ -2,7 +2,7 @@
 
 // Copyright 2012-2013 Media Technology LTD 
 // Original file : OutCell.cs
-// Project: Zeta.Extreme.FrontEnd
+// Project: Zeta.Extreme.Form
 // This code cannot be used without agreement from 
 // Media Technology LTD 
 
@@ -10,7 +10,7 @@
 
 using Qorpent.Serialization;
 
-namespace Zeta.Extreme.FrontEnd.Session {
+namespace Zeta.Extreme.Form {
 	/// <summary>
 	/// 	Описывает ячейку данных
 	/// </summary>
@@ -22,23 +22,28 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		[SerializeNotNullOnly] public int c;
 
 		/// <summary>
+		/// 	Признак значения, которое может быть целью сохранения
+		/// </summary>
+		[IgnoreSerialize] public bool canbefilled;
+
+		/// <summary>
 		/// 	Уникальный ИД ячейки
 		/// </summary>
 		public string i;
 
 		/// <summary>
+		/// 	Позволяет связать две ячейки в разных наборах
+		/// </summary>
+		[IgnoreSerialize] public OutCell linkedcell;
+
+		/// <summary>
+		/// 	Ссылка на запрос для заполняемых значений
+		/// </summary>
+		[IgnoreSerialize] public Query query;
+
+		/// <summary>
 		/// 	Значение ячейки
 		/// </summary>
 		[SerializeNotNullOnly] public string v;
-
-		/// <summary>
-		/// Признак значения, которое может быть целью сохранения
-		/// </summary>
-		[IgnoreSerialize]public bool canbefilled ;
-
-		/// <summary>
-		/// Ссылка на запрос для заполняемых значений
-		/// </summary>
-		[IgnoreSerialize]public Query query;
 	}
 }
