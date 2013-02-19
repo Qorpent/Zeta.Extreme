@@ -939,10 +939,12 @@
     , hideModal: function () {
         var that = this
         this.$element.hide()
-        this.backdrop(function () {
-          that.removeBackdrop()
-          that.$element.trigger('hidden')
-        })
+        if (this.options.backdrop) {
+            this.backdrop(function () {
+                that.removeBackdrop()
+            })
+        }
+        that.$element.trigger('hidden')
       }
 
     , removeBackdrop: function () {

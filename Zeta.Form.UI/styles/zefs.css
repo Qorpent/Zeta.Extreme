@@ -2,6 +2,24 @@
     margin-right: 2px;
 }
 
+.modal iframe {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.zefsformheader {
+    margin-left: 20px;
+}
+
+.zefsdebug {
+    margin: 4px;
+}
+
 .zefsstatus {
     margin-top: 6px;
+    margin-left: 3px;
+}
+
+.objselector {
+    margin-top: 4px;
 }

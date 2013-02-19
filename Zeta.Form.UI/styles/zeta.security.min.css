@@ -37,6 +37,11 @@ li a {
     cursor: pointer;
 }
 
+.authorizer input,
+.authorizer button {
+    margin-right: 3px;
+}
+
 .authorizer .preloader {
     width: 22px;
     height: 22px;
@@ -69,8 +74,4 @@ li a {
     color: green;
     padding-left: 3px;
     font-weight: bolder;
-}
-
-.sessioninfo {
-    margin: 4px;
 }

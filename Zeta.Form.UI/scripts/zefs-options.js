@@ -58,7 +58,7 @@ $.extend(options,(function(){
 					
 					// команда получения данных о сессии [от SESSIONID] (как asSession() )
 					session_command : "zefs/session.json.qweb",
-					
+
 					// команда получения отладочной таблицы [от SESSIONID] (прямой JSON)
 					debug_command : "zefs/debuginfo.json.qweb",
 					
@@ -105,7 +105,7 @@ $.extend(options,(function(){
 					canlock_command : "zefs/canlockstate.json.qweb",
 		
 		
-		// КОНВЕРТИРУЕТ ХЭШ ПАРАМЕТРЫ В ПАРАМЕТРЫ ВЫЗОВА ФОРМЫ ДЛЯ КОМАНДЫ START 
+		// КОНВЕРТИРУЕТ ХЭШ ПАРАМЕТРЫ В ПАРАМЕТРЫ ВЫЗОВА ФОРМЫ ДЛЯ КОМАНДЫ START
 		getParameters : function(){
 			// Парсим параметры из хэша
 			var p = {};

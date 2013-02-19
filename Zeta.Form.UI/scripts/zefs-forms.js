@@ -243,18 +243,22 @@
                     (k > 218 && k < 223);   // [\]' (in order)
             switch (k) {
                 case 37 :
+                    if ($(this.getActiveCell()).hasClass('editing')) return;
                     e.preventDefault();
                     this.leftCell();
                     break;
                 case 38 :
+                    if ($(this.getActiveCell()).hasClass('editing')) return;
                     e.preventDefault();
                     this.upCell();
                     break;
                 case 39 :
+                    if ($(this.getActiveCell()).hasClass('editing')) return;
                     e.preventDefault();
                     this.rightCell();
                     break;
                 case 40 :
+                    if ($(this.getActiveCell()).hasClass('editing')) return;
                     e.preventDefault();
                     this.downCell();
                     break;

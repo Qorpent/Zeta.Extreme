@@ -41,15 +41,12 @@ root.init = root.init ||
         }).success($.proxy(function(d) {
             var session = options.asSession(d);
             document.title = session.getFormInfo().getName();
-            $('#sessionInfo').click(function(e) {
-                window.open(options.session_command + "?session=" + d.getUid(), '_blank');
-            });
-            $('#debugInfo').click(function(e) {
-                window.open(options.debug_command + "?session=" + d.getUid(), '_blank');
-            });
-            $('#restartInfo').click(function(e) {
-                window.open(options.restart_command, '_blank');
-            });
+            $('#sessionInfo').attr("uid", d.getUid());
+            $('#debugInfo').attr("uid", d.getUid());
+
+            $('#currentlockInfo').attr("uid", d.getUid());
+
+            $('#canlockInfo').attr("uid", d.getUid());
             Structure(session);
             window.setTimeout(function(){Data(session,0)},options.datadelay);    //первый запрос на данные
         }));
@@ -66,6 +63,9 @@ root.init = root.init ||
             session.structure = options.asStruct(d);
             Render(session);
             Fill(session);
+            $('#zefsFormHeader').text(session.getFormInfo().getName()
+                + " " + session.getFormInfo().getName() + " за "
+                + session.getPeriod() + ", " + session.getYear() + " год");
 			$('table.data').zefs(); //нам сразу нужна живость!!!
         }));
     }, this);
