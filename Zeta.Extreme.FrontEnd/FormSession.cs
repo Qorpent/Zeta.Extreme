@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Comdiv.Zeta.Data.Minimal;
@@ -359,6 +360,9 @@ namespace Zeta.Extreme.FrontEnd {
 						}
 					})
 				) {SelfWait = 30000};
+			while(PrepareDataTask.Status == TaskStatus.Created) {
+				Thread.Sleep(10);
+			}
 		}
 
 		private void RetrieveStructure() {
@@ -620,7 +624,7 @@ namespace Zeta.Extreme.FrontEnd {
 		public LockStateInfo GetCanBlockInfo() {
 			var isopen = Template.IsOpen;
 			var state = Template.GetState(Object, null);
-			var cansave = isopen && state == "0ISOPEN";
+			var cansave = state == "0ISOPEN";
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
 			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message);
 			return new LockStateInfo
@@ -703,5 +707,14 @@ namespace Zeta.Extreme.FrontEnd {
 		private IdxCol[] primarycols;
 		private IdxRow[] primaryrows;
 		private IdxRow[] rows;
+		/// <summary>
+		/// Рестартует сбор данных
+		/// </summary>
+		/// <returns></returns>
+		public bool RestartData() {
+			WaitData();
+			StartCollectData();
+			return true;
 		}
+	}
 }

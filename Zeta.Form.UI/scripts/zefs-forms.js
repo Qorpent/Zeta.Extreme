@@ -14,11 +14,12 @@
             var cell = this.getActiveCell();
             return cell.parent();
         };
-
         $.extend(window.zefs.myform, {
-            collectChanges: this.getChanges
+            getChanges: this.getChanges
         });
-
+        $(window.zefs).on("savestage_finished", function() {
+            this.applyChanges();
+        });
         this.nextCell();
     };
 
@@ -280,7 +281,6 @@
                     break;
                 // UP button
                 case 38 :
-                    if ($(this.getActiveCell()).hasClass('editing')) return;
                     if (e.ctrlKey) {
                         $(window).scrollTop(0);
                         this.upFirstCell();
@@ -295,7 +295,6 @@
                     this.rightCell();
                     break;
                 case 40 :
-                    if ($(this.getActiveCell()).hasClass('editing')) return;
                     if (e.ctrlKey) {
                         $(window).scrollTop(this.table.offset().top + this.table.height());
                         this.downLastCell();
@@ -330,6 +329,12 @@
                     e.preventDefault();
                     this.uninputCell("esc");
                     break;
+                // S button
+                case 83 :
+                    e.preventDefault();
+                    if (e.ctrlKey && window.zefs.myform != null) {
+                        window.zefs.myform.save(this.getChanges());
+                    }
                 default :
                     if (!printable) return;
                     if (!$(this.getActiveCell()).hasClass('editing')) {
@@ -348,6 +353,17 @@
             obj[i] = {id:e.attr("id"), value:div.text()};
         });
         return obj;
+    };
+
+    Zefs.prototype.applyChanges = function() {
+        var div = $('<div/>');
+        $.each($('table.data td.changed'), function(i,td) {
+            td = $(td);
+            div.number(td.text(), 0, '', '');
+            td.data("history", div.text());
+            td.data("previous", div.text());
+            td.removeClass("changed");
+        });
     };
 
     $.fn.zefs = function (options) {

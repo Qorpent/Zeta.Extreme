@@ -48,13 +48,6 @@ root.init = root.init ||
             var session = options.asSession(d);
             root.myform.sessionId = session.getUid();
             document.title = session.getFormInfo().getName();
-
-            // Так то не очень это тут делать
-            $('#sessionInfo').attr("uid", d.getUid());
-            $('#debugInfo').attr("uid", d.getUid());
-            $('#currentlockInfo').attr("uid", d.getUid());
-            $('#canlockInfo').attr("uid", d.getUid());
-
             Structure(session);
             $(root).trigger("session_load");
             window.setTimeout(function(){Data(session,0)},options.datadelay); //первый запрос на данные
@@ -102,8 +95,6 @@ root.init = root.init ||
         }));
     }, this);
 
-
-
     var Fill = function(session) {
         if(!session.wasRendered) { //вот тут чо за хрень была? он в итоге дважды рендировал
             return;
@@ -137,6 +128,7 @@ root.init = root.init ||
     };
 
     var Save = function(obj) {
+        if (!!obj || obj == null) return;
         $.ajax({
             url: siteroot+options.save_command,
             type: "POST",
@@ -146,8 +138,35 @@ root.init = root.init ||
                 session: root.myform.sessionId,
                 data: JSON.stringify(obj)
             }
+        }).success(function(d) {
+                $(root).trigger("savestage_finished");
+                SaveState();
+            });
+    };
+
+    var SaveState = function() {
+        $.ajax({
+            url: siteroot+options.savestate_command,
+            type: "POST",
+            context: this,
+            dataType: "json",
+            data: {session: root.myform.sessionId}
+        }).success(function(d) {
+            var state = options.asSaveState(d);
+            if(!state.getIsFinished()) {
+                window.setTimeout(SaveState, 1000);
+                return;
+            }
+            if (state.getIsError()) {
+                // вывести сообщение об ошибке
+            }
+            $(root).trigger("savestage_finished");
         });
-    }
+    };
+
+    var GetPeriods = function() {
+
+    };
 
     $.extend(root.myform, {
         lock : GetCurrentLock,

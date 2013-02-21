@@ -56,6 +56,10 @@ $.extend(options,(function(){
 				periodtype_inyear:"InYear",
 				// Дополнительные периоды
 				periodtype_ext:"Ext",
+				
+			//команда, возвращающая список доступных предприятий ( применить asObjectList())
+			getobject_command : "zefs/getobjects.json.qweb",
+				
 			
 		
 		/* РАБОТА С СЕССИЯМИ */
@@ -166,7 +170,6 @@ $.extend(options,(function(){
 			result[this.obj_hash_param] = p[this.obj_hash_param];
 			result[this.period_hash_param] = p[this.period_hash_param];
 			result[this.year_hash_param] = p[this.year_hash_param];
-			
 			return result;
 		},
 		
@@ -268,8 +271,11 @@ $.extend(options,(function(){
 				// текст ошибки
 				getError :  function(){return this.error;},
 				// признак наличия ошибки
-				getIsError : function(){return !!this.getError();}
-				
+				getIsError : function(){return !!this.getError();},
+                // признак завершения комманды сохранения
+                getIsFinished : function() { return ((this.getStage() == options.savestage_finished) || this.getIsError() ); },
+                // признак завершения сохранения ячеек
+                getCellsSaved : function() { return this.getStage() == options.savestage_finished || this.getStage()==options.savestage_aftersave; }
 			});
 			return obj;
 		},
@@ -421,7 +427,60 @@ $.extend(options,(function(){
 			// индекс колонки
 			obj.col = rc[1];
 			return obj;
-		}
+		},
+		//возвращает нормализованный список дивизионов и объектов, вызывая на них соответственно asDiv, asObject
+		asObjectList : function (obj ){
+			// в ходе выполнения формирует двустороннюю
+			// связь между дивизионом и объектами
+			// то есть можно делать так asObjectList(obj).getDivs().each(function(d){ d.getObjects().each(...) }
+			// равно можно от объекта получить дивизион asObject(obj).getDiv();
+			// при этом оба списка можно смотреть и просто как массивы
+			$.each(obj.divs, function(k,v){			
+				this.asDiv(v);
+				obj.divs[v.getCode()] = v;
+				v.objects =[];
+			});
+			$.each(obj.objs, function(k,v){
+				this.asObject(v);				
+				v.resolveddiv = obj.divs[v.div];
+				v.resolveddiv.objects.push(v);
+			});
+			$.extend(obj,{
+				getDivs : function(){return this.divs;},
+				getObjects : function(){return this.objs;},
+			});
+			return obj;
+		},
+		// обертка для записи о дивизионе
+		asDiv : function(obj){
+			$.extend(obj,{
+				// уникальный код дивизиона
+				getCode : function(){return this.code;},
+				// имя дивизиона
+				getName : function(){return this.name;},
+				// индекс порядка дивизиона
+				getIdx : function(){return this.idx;},
+				// возвращает массив объектов дивизиона
+				getObjects : function(){return this.objects;}
+			});
+			return obj;
+		},
+		// обертка для объекта 
+		asObject : function(obj){
+			$.extend(obj,{
+				// идентификатор объекта
+				getId : function(){return this.id;},
+				// имя объекта
+				getName : function(){return this.name;},
+				// индекс объекта
+				getIdx : function(){return this.idx;},
+				// ссылка на дивизион
+				getDiv : function(){return this.resolveddiv;},
+				// исходный код дивизиона
+				getDivCode : function(){return this.div;}
+			});
+			return obj;
+		},
 	}
 	
 })())

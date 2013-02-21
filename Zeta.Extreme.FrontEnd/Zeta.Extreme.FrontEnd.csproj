@@ -25,6 +25,7 @@
     <Compile Include="Actions\FormSessionActionBase.cs" />
     <Compile Include="Actions\GetOjectsAction.cs" />
     <Compile Include="Actions\GetPeriodsAction.cs" />
+    <Compile Include="Actions\ResetDataAction.cs" />
     <Compile Include="Actions\SaveDataAction.cs" />
     <Compile Include="Actions\SaveStateAction.cs" />
     <Compile Include="DataStructures\AccessibleObjects.cs" />
