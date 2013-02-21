@@ -10,7 +10,7 @@
 
 using Qorpent.Mvc;
 
-namespace Zeta.Extreme.FrontEnd.Actions {
+namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
 	/// 	Возвращает статус формы
 	/// </summary>

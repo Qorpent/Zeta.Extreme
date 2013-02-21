@@ -11,9 +11,8 @@
 using System;
 using System.Linq;
 using Qorpent.Mvc.Binding;
-using Zeta.Extreme.FrontEnd.Session;
 
-namespace Zeta.Extreme.FrontEnd.Actions {
+namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
 	/// 	Базовое действие, работающее с сессией
 	/// </summary>

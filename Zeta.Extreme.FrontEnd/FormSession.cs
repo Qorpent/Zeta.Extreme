@@ -24,7 +24,7 @@ using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
 
-namespace Zeta.Extreme.FrontEnd.Session {
+namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
 	/// 	Сессия работы с формой
 	/// </summary>
@@ -544,7 +544,9 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		}
 
 		private void InitializeColset() {
-			cols = Template.GetAllColumns().Where(_ => _.GetIsVisible(Object)).Select((_, i) => new IdxCol {i = i, _ = _});
+			cols = Template.GetAllColumns().Where(
+				_ => _.GetIsVisible(Object)).Select((_, i) => new IdxCol {i = i, _ = _}
+				);
 			Colset = cols.Select(_ => _._).ToArray();
 			foreach (var columnDesc in cols) {
 				if (null == columnDesc._.Target) {

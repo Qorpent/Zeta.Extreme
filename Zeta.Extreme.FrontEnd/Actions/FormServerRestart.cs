@@ -10,7 +10,7 @@
 
 using Qorpent.Mvc;
 
-namespace Zeta.Extreme.FrontEnd.Actions {
+namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
 	/// 	Действие, возвращающее статус загрузки приложения
 	/// </summary>

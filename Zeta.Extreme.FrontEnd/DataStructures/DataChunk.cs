@@ -11,7 +11,7 @@
 using Qorpent.Serialization;
 using Zeta.Extreme.Form;
 
-namespace Zeta.Extreme.FrontEnd.Session {
+namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
 	/// 	Описывает возвращаемый набор данных из сессии
 	/// 	оптимизирован по трафику и для сериализации в JSON

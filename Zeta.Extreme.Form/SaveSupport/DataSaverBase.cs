@@ -14,10 +14,8 @@ using System.Security;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Qorpent;
-using Zeta.Extreme.Form;
-using Zeta.Extreme.Form.SaveSupport;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.Form.SaveSupport {
 	/// <summary>
 	/// 	Базовый абстрактный класс для сохранения данных, паттерн - шаблонный метод
 	/// </summary>

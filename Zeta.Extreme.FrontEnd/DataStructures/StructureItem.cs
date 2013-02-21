@@ -10,7 +10,7 @@
 
 using Qorpent.Serialization;
 
-namespace Zeta.Extreme.FrontEnd.Session {
+namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
 	/// 	Описывает элемент структуры
 	/// </summary>

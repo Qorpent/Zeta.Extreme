@@ -14,7 +14,7 @@ using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 using Zeta.Extreme.Form.InputTemplates;
 
-namespace Zeta.Extreme.FrontEnd.Actions {
+namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
 	/// 	Инициирует сессию
 	/// </summary>

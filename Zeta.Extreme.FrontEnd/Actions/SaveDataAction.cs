@@ -13,7 +13,7 @@ using Qorpent.Dsl;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 
-namespace Zeta.Extreme.FrontEnd.Actions {
+namespace Zeta.Extreme.FrontEnd {
 	///<summary>
 	///	Вызывает сохранение данных
 	///</summary>
