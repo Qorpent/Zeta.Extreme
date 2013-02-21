@@ -8,7 +8,8 @@
 
 #endregion
 
-using System;
+using System.Linq;
+using Comdiv.Application;
 using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme.FrontEnd.Helpers {
@@ -16,6 +17,22 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 	/// 	Вспомогательный класс для работы с периодами
 	/// </summary>
 	public class PeriodCatalogHelper {
+
+		/// <summary>
+		/// Возвращает каталог периодов
+		/// </summary>
+		/// <returns></returns>
+		public PeriodRecord[] GetAllPeriods() {
+			return
+				(myapp.storage.AsQueryable<period>().Where(_ => _.ClassicId > 0).ToArray())
+					.Select(_ => new PeriodRecord { id = _.ClassicId, name = _.Name, type = GetPeriodType(_), idx = GetIdx(_) })
+					.Where(_ => PeriodType.None != _.type)
+					.OrderBy(_ => _.type)
+					.ThenBy(_ => _.idx)
+					.ToArray();
+
+		}
+
 		/// <summary>
 		/// 	Возвращает тип периода по записи о нем
 		/// </summary>

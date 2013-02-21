@@ -17,14 +17,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		protected override object MainProcess() {
 			MyFormServer.HibernateLoad.Wait();
-			var helper = new PeriodCatalogHelper();
-			return
-				(myapp.storage.AsQueryable<period>().Where(_ => _.ClassicId > 0).ToArray())
-					.Select(_ => new {id = _.ClassicId, name = _.Name, type = helper.GetPeriodType(_), idx = helper.GetIdx(_)})
-					.Where(_ => PeriodType.None != _.type)
-					.OrderBy(_=>_.type)
-					.ThenBy(_=>_.idx)
-					.ToArray();
+			return new PeriodCatalogHelper().GetAllPeriods();
 		}
 	}
 }

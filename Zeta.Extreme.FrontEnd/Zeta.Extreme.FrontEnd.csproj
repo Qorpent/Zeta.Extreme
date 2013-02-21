@@ -23,9 +23,13 @@
     <Compile Include="Actions\DebugInfoAction.cs" />
     <Compile Include="Actions\CurrentLockStateAction.cs" />
     <Compile Include="Actions\FormSessionActionBase.cs" />
+    <Compile Include="Actions\GetOjectsAction.cs" />
     <Compile Include="Actions\GetPeriodsAction.cs" />
     <Compile Include="Actions\SaveDataAction.cs" />
     <Compile Include="Actions\SaveStateAction.cs" />
+    <Compile Include="DataStructures\AccessibleObjects.cs" />
+    <Compile Include="DataStructures\DivisionRecord.cs" />
+    <Compile Include="DataStructures\ObjectRecord.cs" />
     <Compile Include="DataStructures\PeriodRecord.cs" />
     <Compile Include="DataStructures\PeriodType.cs" />
     <Compile Include="FormServer.cs" />
@@ -38,6 +42,7 @@
     <Compile Include="Actions\ReadyToServeAction.cs" />
     <Compile Include="Actions\FormSessionStatusAction.cs" />
     <Compile Include="DataStructures\StructureItem.cs" />
+    <Compile Include="Helpers\AccessibleObjectsHelper.cs" />
     <Compile Include="Helpers\PeriodCatalogHelper.cs" />
   </ItemGroup>
   <ItemGroup>
