@@ -33,6 +33,29 @@ $.extend(options,(function(){
 				// период опроса ожидания
 				readydelay : 1000,
 				
+		/* КОМАНДЫ ЗАГРУЗКИ ДОПОЛНИТЕЛЬНЫХ МЕТАДАННЫХ */
+			//команда, возвращающая каталог периодов [] ( []->each ( asPeriod() ) ) упорядоченный по типам и индексам
+			getperiods_command : "zefs/getperiods.json.qweb" ,
+				//типы периодов
+				periodtype_none="None",
+				// Месяц
+				periodtype_month="Month",
+				// Основные периоды с начала года
+				periodtype_ysmain="FromYearStartMain",
+				// Дополнительные периоды с начала года
+				periodtype_ysext="FromYearStartExt",
+				// Плановые периоды
+				periodtype_plan="Plan",
+				// Плановые периоды (месячные)
+				periodtype_mplan="MonthPlan",
+				// Коррективы
+				periodtype_corr="Corrective",
+				// Ожидаемые периоды
+				periodtype_wait="Awaited",
+				// Период в середине года
+				periodtype_inyear="InYear",
+				// Дополнительные периоды
+				periodtype_ext="Ext",
 			
 		
 		/* РАБОТА С СЕССИЯМИ */
@@ -93,23 +116,23 @@ $.extend(options,(function(){
 					// команда проверки состояния сохранения [от SESSIONID ] (как asSaveState() ) должна быть еще и в DEBUG-меню
 					savestate_command : "zefs/savestate.json.qweb",
 						// 	Изначальное состояние
-						savestage_none= "None",
+						savestage_none : "None",
 						// 	Загрузка задачи сохранения
-						savestage_load= "Load",
+						savestage_load : "Load",
 						// 	Проверка возможности сохранения по аспектам безопасности
-						savestage_auth= "Authorize",
+						savestage_auth : "Authorize",
 						// 	Подготовка входных данных - переработка справочников
-						savestage_prepare= "Prepare",
+						savestage_prepare : "Prepare",
 						// 	Проверка целостности запрошенного сохранения
-						savestage_validate= "Validate",
+						savestage_validate : "Validate",
 						// 	Проверка доступности соединений, хранимых процедур и проч
-						savestage_test= "Test",
+						savestage_test : "Test",
 						// 	Собственно сохранение ячеек
-						savestage_save= "Save",
+						savestage_save : "Save",
 						// 	Выполнение специальных процедур после выполнения сохранения, бизнес-тригеры
-						savestage_aftersave= "AfterSave",
+						savestage_aftersave : "AfterSave",
 						// 	Успешное завершение
-						savestage_finished= "Finished",
+						savestage_finished : "Finished",
 					
 							
 						
@@ -250,7 +273,20 @@ $.extend(options,(function(){
 			});
 			return obj;
 		},
-		
+		// КОНВЕРТИРУЕТ РЕЗУЛЬТАТ КОМАНДЫ getperiods_command В СТАНДАРТНЫЙ ОБЪЕКТ ПЕРИОДА
+		asPeriod : function(obj){
+			$.extend(obj, {
+				//идентификатор периода в формах
+				getId : function(){return this.id;},
+				// название периода
+				getName : function(){return this.name;},
+				// тип периода, один из periodtype_*
+				getType : function(){return this.type;},
+				// порядок периода (в рамках типа)
+				getIdx : function(){return this.idx;}
+			});		
+			return obj;
+		},
 		
 		
 		// КОНВЕРТИРУЕТ РЕЗУЛЬТАТ КОМАНДЫ struct_command в унифицированную структуру строк и колонок

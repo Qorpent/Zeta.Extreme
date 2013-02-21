@@ -79,6 +79,8 @@
     <Compile Include="SaveSupport\AutoFillType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SaveSupport\DataSaverBase.cs" />
+    <Compile Include="SaveSupport\DefaultSessionDataSaver.cs" />
     <Compile Include="SaveSupport\ICustomFormSaver.cs" />
     <Compile Include="SaveSupport\IFormSessionDataSaver.cs" />
     <Compile Include="SaveSupport\SaveResult.cs" />

@@ -16,7 +16,7 @@ root.init = root.init ||
             // serverstatus - это виджет на панели, отвечающий за отображения статуса сервера
             var serverstatus = $('div.zefsstatus>span.label').first();
             if (!d) {
-                $(serverstatus).attr("class","label label-warning").text("Полчение статуса сервера");
+                $(serverstatus).attr("class","label label-warning").text("Получение статуса сервера");
                 options.timeout -= options.readydelay;
                 if(options.timeout<=0){
                     $(serverstatus).attr("class","label label-important").text("Сервер не доступен");
@@ -36,6 +36,7 @@ root.init = root.init ||
         $.ajax({
             url: siteroot+options.start_command,
             context: this,
+            type: "POST",
             dataType: "json",
             data: params
         }).success($.proxy(function(d) {
@@ -59,6 +60,7 @@ root.init = root.init ||
         $.ajax({
             url: siteroot+options.struct_command,
             context: this,
+            type: "POST",
             dataType: "json",
             data: params
         }).success($.proxy(function(d) {
@@ -77,6 +79,7 @@ root.init = root.init ||
         $.ajax({
             url: siteroot+options.data_command,
             context: this,
+            type: "POST",
             dataType: "json",
             data: params
         }).success($.proxy(function(d) {
@@ -132,6 +135,7 @@ root.init = root.init ||
         var params = GetSessionParams(session);
         $.ajax({
             url: siteroot+options.currentlock_command,
+            type: "POST",
             context: this,
             dataType: "json",
             data: params
@@ -154,5 +158,4 @@ root.init = root.init ||
         StartForm();
     }
 });
-
 })()

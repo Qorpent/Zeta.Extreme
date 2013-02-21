@@ -23,20 +23,22 @@
     <Compile Include="Actions\DebugInfoAction.cs" />
     <Compile Include="Actions\CurrentLockStateAction.cs" />
     <Compile Include="Actions\FormSessionActionBase.cs" />
+    <Compile Include="Actions\GetPeriodsAction.cs" />
     <Compile Include="Actions\SaveDataAction.cs" />
     <Compile Include="Actions\SaveStateAction.cs" />
-    <Compile Include="DataSaverBase.cs" />
-    <Compile Include="DefaultSessionDataSaver.cs" />
+    <Compile Include="DataStructures\PeriodRecord.cs" />
+    <Compile Include="DataStructures\PeriodType.cs" />
     <Compile Include="FormServer.cs" />
-    <Compile Include="Session\DataChunk.cs" />
-    <Compile Include="Session\FormSession.cs" />
+    <Compile Include="DataStructures\DataChunk.cs" />
+    <Compile Include="FormSession.cs" />
     <Compile Include="Actions\FormStartAction.cs" />
     <Compile Include="Actions\FormServerStateAction.cs" />
     <Compile Include="Actions\GetDataAction.cs" />
     <Compile Include="Actions\GetStructureAction.cs" />
     <Compile Include="Actions\ReadyToServeAction.cs" />
     <Compile Include="Actions\FormSessionStatusAction.cs" />
-    <Compile Include="Session\StructureItem.cs" />
+    <Compile Include="DataStructures\StructureItem.cs" />
+    <Compile Include="Helpers\PeriodCatalogHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FluentNHibernate, Version=1.3.0.0, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL" />

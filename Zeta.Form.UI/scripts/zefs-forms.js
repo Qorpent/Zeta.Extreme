@@ -19,9 +19,11 @@
     };
 
     Zefs.prototype.init = function () {
-        /*$(document).on('click', $.proxy(function(e) {
-            this.deactivateCell(null);
-        }, this));*/
+        $(document).on('click', $.proxy(function(e) {
+            if (this.getActiveCell().hasClass('editing')) {
+                this.uninputCell();
+            }
+        }, this));
         this.table.delegate('td.editable','click', $.proxy(function(e) {
             e.stopPropagation();
             this.activateCell(e.target);
@@ -133,9 +135,6 @@
             $cell.css("min-width", "");
             $cell.css("height", "");
             $cell.parent().css("height", "");
-            this.clearNumberFormat($cell);
-            if ($cell.text() != $cell.data("history")) $cell.addClass("changed");
-            else $cell.removeClass("changed");
             this.applyNumberFormat($cell);
         }, this));
     };
@@ -169,6 +168,9 @@
             $cell.data("previous", $cell.text());
         }
         $cell.removeClass("editing");
+        this.clearNumberFormat($cell);
+        if ($cell.text() != $cell.data("history")) $cell.addClass("changed");
+        else $cell.removeClass("changed");
         return $cell;
     };
 
