@@ -63,7 +63,7 @@ $.extend(options,(function(){
 					debug_command : "zefs/debuginfo.json.qweb",
 					
 					
-			/* ОТРИСОВКА  ТАБЛИЦЫ ДАННЫХ */
+			/* РАБОТА С ДАННЫМИ */
 					// команда получения структуры таблицы [от SESSIONID] (как asStruct() )
 					struct_command : "zefs/struct.json.qweb",
 						// единица измерения по умолчанию
@@ -86,6 +86,31 @@ $.extend(options,(function(){
 							inprocess_state : "w",
 							//ошибка
 							error_state : "e",
+					// команда инициализации сохранения [от SESSIONID ] (true|false )
+					save_command : "zefs/save.json.qweb", 
+						savedata_param : "data",
+					
+					// команда проверки состояния сохранения [от SESSIONID ] (как asSaveState() ) должна быть еще и в DEBUG-меню
+					savestate_command : "zefs/savestate.json.qweb",
+						// 	Изначальное состояние
+						savestage_none= "None",
+						// 	Загрузка задачи сохранения
+						savestage_load= "Load",
+						// 	Проверка возможности сохранения по аспектам безопасности
+						savestage_auth= "Authorize",
+						// 	Подготовка входных данных - переработка справочников
+						savestage_prepare= "Prepare",
+						// 	Проверка целостности запрошенного сохранения
+						savestage_validate= "Validate",
+						// 	Проверка доступности соединений, хранимых процедур и проч
+						savestage_test= "Test",
+						// 	Собственно сохранение ячеек
+						savestage_save= "Save",
+						// 	Выполнение специальных процедур после выполнения сохранения, бизнес-тригеры
+						savestage_aftersave= "AfterSave",
+						// 	Успешное завершение
+						savestage_finished= "Finished",
+					
 							
 						
 			/* УПРАВЛЕНИЕ БЛОКИРОВКАМИ И СТАТУСОМ ПО СОХРАНЕНИЮ*/
@@ -211,6 +236,19 @@ $.extend(options,(function(){
 				getIsOpen : function(){return !!this.isopen || false;}
 			});
             return obj;
+		},
+		// КОНВЕРТИРУЕТ РЕЗУЛЬТАТ КОМАНДЫ savestate_command В СТАНДАРТНЫЙ ОБЪЕКТ СТАТУСА СОХРАНЕНИЯ
+		asSaveState : function(obj){
+			$.extend(obj,{
+				// возвращает один из статусов стадии сохранения savestage_*
+				getStage :  function(){return this.stage;},
+				// текст ошибки
+				getError :  function(){return this.error;},
+				// признак наличия ошибки
+				getIsError : function(){return !!this.getError();}
+				
+			});
+			return obj;
 		},
 		
 		
