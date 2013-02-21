@@ -209,8 +209,8 @@ $.extend(options,(function(){
 				getErrorMessage : function(){return this.message||"";},
 				// резервный признак открытости формы (в терминах открытости периода и неустарелости формы), пока резерв
 				getIsOpen : function(){return !!this.isopen || false;}
-				
 			});
+            return obj;
 		},
 		
 		

@@ -40,6 +40,11 @@ table.data td.editable {
     background-color: #e6ffe1 !important;
 }
 
+table.data.isblocked td.editable {
+    background: none;
+    background-color: #fafad2 !important;
+}
+
 table.data td.editable.changed {
     background: none;
     background-color: #ffd8d5 !important;
@@ -58,7 +63,7 @@ table.data th {
 
 table.data thead.fixed {
     position: fixed;
-    top: 0;
+    top:0;
     z-index: 1000;
 }
 

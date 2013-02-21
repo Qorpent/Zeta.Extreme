@@ -3,7 +3,6 @@ var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 var root = window.zefs = window.zefs || {};
 root.init = root.init ||
 (function ($) {
-    var params = {};
     var options = window.zefs.options;
 	var params = options.getParameters();
     var render = root.getRender();
@@ -30,7 +29,8 @@ root.init = root.init ||
             options.timeout = options.default_timeout;
             ExecuteSession();
         }));
-    }
+    };
+
     var FailStartServer = function(){};
     var ExecuteSession = $.proxy(function() {
         $.ajax({
@@ -41,14 +41,16 @@ root.init = root.init ||
         }).success($.proxy(function(d) {
             var session = options.asSession(d);
             document.title = session.getFormInfo().getName();
+
+            // Так то не очень это тут делать
             $('#sessionInfo').attr("uid", d.getUid());
             $('#debugInfo').attr("uid", d.getUid());
-
             $('#currentlockInfo').attr("uid", d.getUid());
-
             $('#canlockInfo').attr("uid", d.getUid());
+
             Structure(session);
-            window.setTimeout(function(){Data(session,0)},options.datadelay);    //первый запрос на данные
+            GetCurrentLock(session);
+            window.setTimeout(function(){Data(session,0)},options.datadelay); //первый запрос на данные
         }));
     }, this);
 
@@ -64,7 +66,7 @@ root.init = root.init ||
             Render(session);
             Fill(session);
             $('#zefsFormHeader').text(session.getFormInfo().getName()
-                + " " + session.getFormInfo().getName() + " за "
+                + " " + session.getObjInfo().getName() + " за "
                 + session.getPeriod() + ", " + session.getYear() + " год");
 			$('table.data').zefs(); //нам сразу нужна живость!!!
         }));
@@ -104,9 +106,9 @@ root.init = root.init ||
             }
         }
         return session;
-    }
-	
-	 
+    };
+
+
 	var RenderSession = function(session) {
         var html = $('<p/>');
         $.each(session, function(k,v) {
@@ -124,14 +126,28 @@ root.init = root.init ||
                 .html("Закрыть")
         );
         modal.append(modalheader, modalbody, modalfooter);
-    }
-	
-	
+    };
+
+    var GetCurrentLock = function(session){
+        var params = GetSessionParams(session);
+        $.ajax({
+            url: siteroot+options.currentlock_command,
+            context: this,
+            dataType: "json",
+            data: params
+        }).success(function(d) {
+            var lockinfo = options.asLockState(d);
+            session.currentlock = lockinfo.getCanSave();
+        });
+        return session;
+    };
+
+
 	var Render = render.renderStructure; //вынес в рендер - отдельный скрипт
 	var FillBatch = render.updateCells; //вынес в рендер - zefs-render.js
-	
+
 	var GetSessionParams = options.getSessionParameters; //перенес в спецификацию
-	
+
 	var FinishForm = function(session,batch){}; //какого хрена только тут таблица оживала - НАПОМНЮ "таблица должна быть доступной для правки сразу как пошли первые значения"
 
     if (params != null){

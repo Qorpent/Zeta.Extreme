@@ -112,16 +112,15 @@ $(function () {
     ]
     $.each(companies, function(i, c) {
         var tbody = $("table.data>tbody");
-        var tenth =
         tbody.append($('<tr/>').append(
-            $('<td/>').text(100 + i),
-            $('<td/>').text(c),
-            $('<td/>').text('тыс.руб'),
-            $('<td class="editable number"/>').text((Math.floor(Math.random() * 5000) + 1000) + ",00"),
-            $('<td class="editable number"/>').text((Math.floor(Math.random() * 5000) + 1000) + ",00"),
-            $('<td class="editable number"/>').text((Math.floor(Math.random() * 5000) + 1000) + ",00"),
-            $('<td class="editable number"/>').text((Math.floor(Math.random() * 5000) + 1000) + ",00"),
-            $('<td class="number"/>').text((Math.floor(Math.random() * 5000) + 1000) + ",00")
+            $('<td class="number"/>').text(100 + i),
+            $('<td class="name"/>').text(c),
+            $('<td class="measure"/>').text('тыс.руб'),
+            $('<td class="data editable number"/>').text((Math.floor(Math.random() * 5000) + 1000) + ",00"),
+            $('<td class="data editable number"/>').text((Math.floor(Math.random() * 5000) + 1000) + ",00"),
+            $('<td class="data editable number"/>').text((Math.floor(Math.random() * 5000) + 1000) + ",00"),
+            $('<td class="data editable number"/>').text((Math.floor(Math.random() * 5000) + 1000) + ",00"),
+            $('<td class="data number"/>').text((Math.floor(Math.random() * 5000) + 1000) + ",00")
         ));
     });
 });

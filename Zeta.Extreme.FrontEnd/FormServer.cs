@@ -21,6 +21,7 @@ using Qorpent.Applications;
 using Qorpent.Events;
 using Qorpent.IO;
 using Qorpent.IoC;
+using Qorpent.Security;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.SaveSupport;
@@ -131,6 +132,7 @@ namespace Zeta.Extreme.FrontEnd {
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
 			ReadyToServeForms = new TaskWrapper(Task.FromResult(true), HibernateLoad, LoadThemas, MetaCacheLoad,
 			                                    CompileFormulas);
+
 			HibernateLoad.Run();
 			MetaCacheLoad.Run();
 			CompileFormulas.Run();
@@ -162,6 +164,21 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns> </returns>
 		public object GetServerStateInfo() {
+			object sessions = null;
+			if(0!=Sessions.Count) {
+				sessions = new
+					{
+						count = Sessions.Count,
+						users = Sessions.Select(_ => _.Usr).Distinct().Count(),
+						activations = Sessions.Select(_ => _.Activations).Sum(),
+						uniqueforms =
+							Sessions.Select(_ => new {y = _.Year, p = _.Period, o = _.Object.Id, f = _.Template.Code}).Distinct().Count(),
+						totaldatatime = Sessions.Select(_ => _.OverallDataTime).Aggregate((a, x) => a + x),
+						avgdatatime =
+							TimeSpan.FromMilliseconds(Sessions.Select(_ => _.OverallDataTime).Aggregate((a, x) => a + x).TotalMilliseconds/
+							                          Sessions.Select(_ => _.DataCollectionRequests).Sum()),
+					};
+			}
 			return new
 				{
 					hibernate = new
@@ -188,18 +205,7 @@ namespace Zeta.Extreme.FrontEnd {
 							status = Default.LoadThemas.Status,
 							error = Default.LoadThemas.Error.ToStr(),
 						},
-					sessions = new
-						{
-							count = Sessions.Count,
-							users = Sessions.Select(_ => _.Usr).Distinct().Count(),
-							activations = Sessions.Select(_ => _.Activations).Sum(),
-							uniqueforms =
-								Sessions.Select(_ => new {y = _.Year, p = _.Period, o = _.Object.Id, f = _.Template.Code}).Distinct().Count(),
-							totaldatatime = Sessions.Select(_ => _.OverallDataTime).Aggregate((a, x) => a + x),
-							avgdatatime =
-								TimeSpan.FromMilliseconds(Sessions.Select(_ => _.OverallDataTime).Aggregate((a, x) => a + x).TotalMilliseconds/
-								                          Sessions.Select(_ => _.DataCollectionRequests).Sum()),
-						}
+					sessions
 				};
 		}
 
@@ -246,7 +252,10 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Перезагрузка системы
 		/// </summary>
 		public void Reload() {
-			((IResetable) ((FileService) Application.Files).GetResolver()).Reset(null);
+			((IResetable) ( Application.Files).GetResolver()).Reset(null);
+			((IResetable)Application.Roles).Reset(null);
+			myapp.files.Reload();
+
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask(), HibernateLoad);
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
@@ -326,6 +335,10 @@ namespace Zeta.Extreme.FrontEnd {
 				{
 					var connectionString = Application.DatabaseConnections.GetConnectionString(ConnectionName);
 					myapp.ioc.setupHibernate(new NamedConnection(ConnectionName, connectionString), new ZetaClassicModel());
+					//еще мы должны дозагрузить расширение ролей PersistentStorage для совместимости, тут мы вынуждены так делать не совсем логично
+					Application.Container.Register(new BasicComponentDefinition{Lifestyle = Lifestyle.Extension,ImplementationType = typeof(Comdiv.Security.PersistentRoleProvider),ServiceType = typeof(IRoleResolverExtension)});
+					((DefaultRoleResolver) Application.Roles).Extensions =
+						Application.Container.All<IRoleResolverExtension>().ToArray();
 				});
 		}
 

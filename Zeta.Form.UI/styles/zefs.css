@@ -11,15 +11,9 @@
     margin-left: 20px;
 }
 
-.zefsdebug {
-    margin: 4px;
-}
-
-.zefsstatus {
-    margin-top: 6px;
+.zefsdebug, .zefsstatus, .zefsformsave, .feedback, .objselector,
+.information {
+    margin-top: 4px;
     margin-left: 3px;
 }
 
-.objselector {
-    margin-top: 4px;
-}

@@ -12,6 +12,7 @@ $.extend(root,{
                 $('body').append(table);
             }
 			session.table = table;
+            if (!session.currentlock) session.table.addClass("isblocked");
 			var colgroup = $('<colgroup/>').append(
 				$("<col/>").addClass("number"),
 				$("<col/>").addClass("name")
@@ -64,20 +65,20 @@ $.extend(root,{
 
 		updateCells : function(session,batch){
 			var tbody = $(session.table).find("tbody").first();
-				$.each(batch.getData(), function(i,b) {
-                    var $cell = $("td[id='" + b.i +  "']")
-                    var val = b.getValue() | "";
-                    if (val == 0) {
-                        if (b.getCellId() == 0 || !$cell.hasClass("editable")) val = "";
-                    }
-                    if (val != "") $cell.number(val,0,'.',' ');
-                    $cell.removeClass("notloaded");
-                    $cell.data("history", val);
-                    $cell.data("previous", val);
-				});
-				batch.wasFilled = true;
-				return session;
-			}
+			$.each(batch.getData(), function(i,b) {
+                var $cell = $("td[id='" + b.i +  "']")
+                var val = b.getValue() | "";
+                if (val == 0) {
+                    if (b.getCellId() == 0 || !$cell.hasClass("editable")) val = "";
+                }
+                if (val != "") $cell.number(val,0,'.',' ');
+                $cell.removeClass("notloaded");
+                $cell.data("history", val);
+                $cell.data("previous", val);
+			});
+			batch.wasFilled = true;
+			return session;
+		}
 		}
 	}
 	});

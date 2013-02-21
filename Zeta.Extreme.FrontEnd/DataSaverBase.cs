@@ -152,7 +152,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="result"> </param>
 		protected virtual void Prepare(IFormSession session, XElement savedata, SaveResult result) {
 			result.SaveCells =
-				savedata.Elements("c").Select(_ => new OutCell {v = _.Value, i = _.Attribute("id").Value}).ToArray();
+				savedata.Elements().Select(_ => new OutCell {v = _.Attribute("value").Value, i = _.Attribute("id").Value}).ToArray();
 			foreach (var  sc in result.SaveCells) {
 				sc.linkedcell = session.Data.FirstOrDefault(_ => _.i == sc.i);
 			}
