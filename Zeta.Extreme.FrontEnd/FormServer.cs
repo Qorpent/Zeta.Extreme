@@ -275,29 +275,66 @@ namespace Zeta.Extreme.FrontEnd {
 					FormulaStorage.Default.AutoBatchCompile = false;
 					FormulaStorage.Default.Clear();
 					var _sumh = new StrongSumProvider();
-					var formulas = RowCache.byid.Values.Where(
+					var oldrowformulas = RowCache.byid.Values.Where(
 						_ => _.IsFormula && !_sumh.IsSum(_)
 						     && _.ResolveTag("extreme") == "1"
+							 && _.Version < DateTime.Today
 						).ToArray();
 
-					foreach (var f in formulas) {
-						var req = new FormulaRequest {Key = "row:" + f.Code, Formula = f.Formula, Language = f.FormulaEvaluator};
-						FormulaStorage.Default.Register(req);
-					}
+					var newrowformulas = RowCache.byid.Values.Where(
+						_ => _.IsFormula && !_sumh.IsSum(_)
+							 && _.ResolveTag("extreme") == "1"
+							 && _.Version >= DateTime.Today
+						).ToArray();
 
-					var colformulas = (
+					
+
+					var oldcolformulas = (
 						                  from c in myapp.storage.AsQueryable<col>()
 						                  where c.IsFormula
 						                        && c.FormulaEvaluator == "boo" && null != c.Formula && "" != c.Formula
+												&& c.Version < DateTime.Today
 						                  select new {c = c.Code, f = c.Formula, tag = c.Tag}
 					                  ).ToArray();
 
+					var newcolformulas = (
+										  from c in myapp.storage.AsQueryable<col>()
+										  where c.IsFormula
+												&& c.FormulaEvaluator == "boo" && null != c.Formula && "" != c.Formula
+												&& c.Version >= DateTime.Today
+										  select new { c = c.Code, f = c.Formula, tag = c.Tag }
+									  ).ToArray();
 
-					foreach (var c in colformulas) {
+					foreach (var f in oldrowformulas)
+					{
+						var req = new FormulaRequest { Key = "row:" + f.Code, Formula = f.Formula, Language = f.FormulaEvaluator };
+						FormulaStorage.Default.Register(req);
+					}
+					
+					foreach (var c in oldcolformulas)
+					{
 						var req = new FormulaRequest {Key = "col:" + c.c, Formula = c.f, Language = "boo", Tags = c.tag};
 						FormulaStorage.Default.Register(req);
 					}
 					FormulaStorage.Default.CompileAll();
+
+
+					foreach (var f in newrowformulas)
+					{
+						var req = new FormulaRequest { Key = "row:" + f.Code, Formula = f.Formula, Language = f.FormulaEvaluator };
+						FormulaStorage.Default.Register(req);
+					}
+
+					foreach (var c in newcolformulas)
+					{
+						var req = new FormulaRequest { Key = "col:" + c.c, Formula = c.f, Language = "boo", Tags = c.tag };
+						FormulaStorage.Default.Register(req);
+					}
+					FormulaStorage.Default.CompileAll();
+
+					
+
+					
 					FormulaStorage.Default.AutoBatchCompile = true;
 				});
 		}
