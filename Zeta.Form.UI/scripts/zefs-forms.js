@@ -15,6 +15,10 @@
             return cell.parent();
         };
 
+        $.extend(window.zefs.myform, {
+            collectChanges: this.getChanges
+        });
+
         this.nextCell();
     };
 
@@ -333,6 +337,17 @@
                     }
             }
         },this));
+    };
+
+    Zefs.prototype.getChanges = function() {
+        var obj = {};
+        var div = $('<div/>');
+        $.each($('table.data td.changed'), function(i,e) {
+            e = $(e);
+            div.number(e.text(), 0, '', '');
+            obj[i] = {id:e.attr("id"), value:div.text()};
+        });
+        return obj;
     };
 
     $.fn.zefs = function (options) {

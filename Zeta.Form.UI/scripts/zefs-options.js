@@ -37,25 +37,25 @@ $.extend(options,(function(){
 			//команда, возвращающая каталог периодов [] ( []->each ( asPeriod() ) ) упорядоченный по типам и индексам
 			getperiods_command : "zefs/getperiods.json.qweb" ,
 				//типы периодов
-				periodtype_none="None",
+				periodtype_none:"None",
 				// Месяц
-				periodtype_month="Month",
+				periodtype_month:"Month",
 				// Основные периоды с начала года
-				periodtype_ysmain="FromYearStartMain",
+				periodtype_ysmain:"FromYearStartMain",
 				// Дополнительные периоды с начала года
-				periodtype_ysext="FromYearStartExt",
+				periodtype_ysext:"FromYearStartExt",
 				// Плановые периоды
-				periodtype_plan="Plan",
+				periodtype_plan:"Plan",
 				// Плановые периоды (месячные)
-				periodtype_mplan="MonthPlan",
+				periodtype_mplan:"MonthPlan",
 				// Коррективы
-				periodtype_corr="Corrective",
+				periodtype_corr:"Corrective",
 				// Ожидаемые периоды
-				periodtype_wait="Awaited",
+				periodtype_wait:"Awaited",
 				// Период в середине года
-				periodtype_inyear="InYear",
+				periodtype_inyear:"InYear",
 				// Дополнительные периоды
-				periodtype_ext="Ext",
+				periodtype_ext:"Ext",
 			
 		
 		/* РАБОТА С СЕССИЯМИ */

@@ -3,6 +3,11 @@ var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 var root = window.zefs = window.zefs || {};
 root.init = root.init ||
 (function ($) {
+    if (root.myform) return root.myform;
+    root.myform = root.myform ||  {
+        sessionId : null
+    };
+
     var options = window.zefs.options;
 	var params = options.getParameters();
     var render = root.getRender();
@@ -41,6 +46,7 @@ root.init = root.init ||
             data: params
         }).success($.proxy(function(d) {
             var session = options.asSession(d);
+            root.myform.sessionId = session.getUid();
             document.title = session.getFormInfo().getName();
 
             // Так то не очень это тут делать
@@ -50,7 +56,7 @@ root.init = root.init ||
             $('#canlockInfo').attr("uid", d.getUid());
 
             Structure(session);
-            GetCurrentLock(session);
+            $(root).trigger("session_load");
             window.setTimeout(function(){Data(session,0)},options.datadelay); //первый запрос на данные
         }));
     }, this);
@@ -111,42 +117,6 @@ root.init = root.init ||
         return session;
     };
 
-
-	var RenderSession = function(session) {
-        var html = $('<p/>');
-        $.each(session, function(k,v) {
-            html.append($('<span/>').html('<strong>' + k + ':</strong>' + v), $('<br/>'));
-        });
-        var modal = $('<div class="modal fade" role="dialog" />');
-        var modalheader = $("<div/>", {"class":"modal-header"}).append(
-            $('<button type="button" class="close" data-dismiss="modal" aria-hidden="true" />')
-                .html("&times;"),
-            $('<h3/>').text("Текущее состояние сессии")
-        );
-        var modalbody = $('<div class="modal-body" />').html("<strong>UID:</strong>" + d.getUid());
-        var modalfooter = $('<div class="modal-footer"/>').append(
-            $('<a href="#" class="btn btn-primary" data-dismiss="modal" />')
-                .html("Закрыть")
-        );
-        modal.append(modalheader, modalbody, modalfooter);
-    };
-
-    var GetCurrentLock = function(session){
-        var params = GetSessionParams(session);
-        $.ajax({
-            url: siteroot+options.currentlock_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: params
-        }).success(function(d) {
-            var lockinfo = options.asLockState(d);
-            session.currentlock = lockinfo.getCanSave();
-        });
-        return session;
-    };
-
-
 	var Render = render.renderStructure; //вынес в рендер - отдельный скрипт
 	var FillBatch = render.updateCells; //вынес в рендер - zefs-render.js
 
@@ -154,8 +124,37 @@ root.init = root.init ||
 
 	var FinishForm = function(session,batch){}; //какого хрена только тут таблица оживала - НАПОМНЮ "таблица должна быть доступной для правки сразу как пошли первые значения"
 
-    if (params != null){
-        StartForm();
+    var GetCurrentLock = function(){
+        $.ajax({
+            url: siteroot+options.currentlock_command,
+            type: "POST",
+            context: this,
+            dataType: "json",
+            data: {session: root.myform.sessionId}
+        }).success(function(d) {
+            return options.asLockState(d).getCanSave();
+        });
+    };
+
+    var Save = function(obj) {
+        $.ajax({
+            url: siteroot+options.save_command,
+            type: "POST",
+            context: this,
+            dataType: "json",
+            data: {
+                session: root.myform.sessionId,
+                data: JSON.stringify(obj)
+            }
+        });
     }
+
+    $.extend(root.myform, {
+        lock : GetCurrentLock,
+        run : StartForm,
+        save : Save
+    });
+
+    return root.myform;
 });
 })()

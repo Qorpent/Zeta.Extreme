@@ -641,10 +641,12 @@ namespace Zeta.Extreme.FrontEnd {
 		public bool BeginSaveData(XElement xmldata) {
 			lock (this) {
 				if (null != _currentSaveTask) {
-					_currentSaveTask.Wait();
+					if(!_currentSaveTask.IsFaulted) {
+						_currentSaveTask.Wait();
+					}
 				}
 				CurrentSaver = CurrentSaver ?? (null == FormServer ? null : FormServer.GetSaver()) ?? new DefaultSessionDataSaver();
-				_currentSaveTask = CurrentSaver.BeginSave(this, xmldata);
+				_currentSaveTask = CurrentSaver.BeginSave(this, xmldata, Application.Current.Principal.CurrentUser);
 				return true;
 			}
 		}
@@ -657,6 +659,10 @@ namespace Zeta.Extreme.FrontEnd {
 			lock (this) {
 				if (null == CurrentSaver) {
 					return new {stage = SaveStage.None, error = null as Exception, result = null as SaveResult};
+				}
+				if (_currentSaveTask != null && _currentSaveTask.IsFaulted)
+				{
+					return new { stage = CurrentSaver.Stage, error = CurrentSaver.Error, result = null as SaveResult };
 				}
 				if (_currentSaveTask != null && _currentSaveTask.IsCompleted) {
 					return new {stage = CurrentSaver.Stage, error = CurrentSaver.Error, result = _currentSaveTask.Result};

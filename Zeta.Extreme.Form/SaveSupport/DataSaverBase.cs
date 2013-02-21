@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using System.Security;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Qorpent;
@@ -35,16 +36,18 @@ namespace Zeta.Extreme.Form.SaveSupport {
 		/// </summary>
 		/// <param name="session"> </param>
 		/// <param name="savedata"> </param>
+		/// <param name="currentUser"> </param>
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
-		public Task<SaveResult> BeginSave(IFormSession session, XElement savedata) {
+		public Task<SaveResult> BeginSave(IFormSession session, XElement savedata, IPrincipal currentUser) {
 			if (null != Current && !Current.IsCompleted) {
 				Current.Wait();
 			}
 			Current = null;
 			Stage = SaveStage.Load;
 			Error = null;
-			return (Current = Task.Run(() => InternalSave(session, savedata)));
+			var user = currentUser;
+			return (Current = Task.Run(() => InternalSave(session, savedata,user)));
 		}
 
 		/// <summary>
@@ -62,12 +65,14 @@ namespace Zeta.Extreme.Form.SaveSupport {
 		/// </summary>
 		/// <param name="session"> </param>
 		/// <param name="savedata"> </param>
+		/// <param name="user"> </param>
 		/// <returns> </returns>
-		protected SaveResult InternalSave(IFormSession session, XElement savedata) {
+		protected SaveResult InternalSave(IFormSession session, XElement savedata, IPrincipal user) {
+			Application = Application ?? Qorpent.Applications.Application.Current;
 			var result = new SaveResult();
 			try {
 				Stage = SaveStage.Authorize;
-				Authorize(session, savedata, result);
+				Authorize(session, savedata, result,user);
 				Stage = SaveStage.Prepare;
 				Prepare(session, savedata, result);
 				Stage = SaveStage.Validate;
@@ -172,17 +177,18 @@ namespace Zeta.Extreme.Form.SaveSupport {
 		/// <param name="session"> </param>
 		/// <param name="savedata"> </param>
 		/// <param name="result"> </param>
-		protected virtual void Authorize(IFormSession session, XElement savedata, SaveResult result) {
+		/// <param name="user"> </param>
+		protected virtual void Authorize(IFormSession session, XElement savedata, SaveResult result, IPrincipal user) {
 			var cansave = session.GetCurrentLockInfo().cansave;
 			if (!cansave) {
 				throw new SecurityException("try to save into closed form");
 			}
-			if (!Application.Roles.IsInRole(Application.Principal.CurrentUser, "OPERATOR")) {
+			if (!Application.Roles.IsInRole(user, "OPERATOR")) {
 				throw new SecurityException("try to save without OPERATOR role");
 			}
 			var templaterole = session.Template.Role;
 			if (!string.IsNullOrWhiteSpace(templaterole)) {
-				if (!Application.Roles.IsInRole(Application.Principal.CurrentUser, session.Template.Role)) {
+				if (!Application.Roles.IsInRole(user, session.Template.Role)) {
 					throw new SecurityException("try to save without " + session.Template.Role + " role");
 				}
 			}

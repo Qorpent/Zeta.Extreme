@@ -12,7 +12,6 @@ $.extend(root,{
                 $('body').append(table);
             }
 			session.table = table;
-            if (!session.currentlock) session.table.addClass("isblocked");
 			var colgroup = $('<colgroup/>').append(
 				$("<col/>").addClass("number"),
 				$("<col/>").addClass("name")

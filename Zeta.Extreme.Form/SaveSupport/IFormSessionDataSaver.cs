@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -32,8 +33,9 @@ namespace Zeta.Extreme.Form.SaveSupport {
 		/// </summary>
 		/// <param name="session"> </param>
 		/// <param name="savedata"> </param>
+		/// <param name="currentUser"> </param>
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
-		Task<SaveResult> BeginSave(IFormSession session, XElement savedata);
+		Task<SaveResult> BeginSave(IFormSession session, XElement savedata, IPrincipal currentUser);
 	}
 }
