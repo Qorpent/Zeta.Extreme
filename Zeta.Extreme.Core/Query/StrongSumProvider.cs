@@ -187,7 +187,7 @@ namespace Zeta.Extreme {
 				if (c.IsMarkSeted("0NOSUM")) {
 					continue;
 				}
-				if (!IsSum(c) && 0 != c.Children.Count) {
+				if (!IsSum(c) && !c.IsFormula && 0 != c.Children.Count) {
 					continue;
 				}
 				yield return new QueryDelta {Row = c};

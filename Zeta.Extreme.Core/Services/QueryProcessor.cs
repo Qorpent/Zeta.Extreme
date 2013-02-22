@@ -10,7 +10,9 @@
 
 using System;
 using System.Threading;
+using Comdiv.Extensions;
 using Comdiv.Zeta.Model;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -38,8 +40,9 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		public void Prepare(Query query) {
+			if(query.PrepareState==PrepareState.InPrepare|| query.PrepareState==PrepareState.Prepared)return;
 			query.PrepareState = PrepareState.InPrepare;
-
+			
 			if (query.IsPrimary) {
 				RegisterPrimaryRequest(query);
 			}

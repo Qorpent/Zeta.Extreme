@@ -214,6 +214,7 @@ namespace Zeta.Extreme {
 		/// <exception cref="Exception"></exception>
 		public QueryResult GetResult(int timeout = -1) {
 			lock (this) {
+				WaitPrepare();
 				if (null != Result) {
 					return Result;
 				}

@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -188,6 +189,15 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// Проверяет наличие формулы в хранилище
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
+		public bool Exists(string key) {
+			return _registry.ContainsKey(key);
+		}
+
+		/// <summary>
 		/// 	Количество формул
 		/// </summary>
 		public int Count {
@@ -243,7 +253,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	коллекция запросов
 		/// </summary>
-		private readonly IDictionary<string, FormulaRequest> _registry = new Dictionary<string, FormulaRequest>();
+		private readonly IDictionary<string, FormulaRequest> _registry = new ConcurrentDictionary<string, FormulaRequest>();
 
 		/// <summary>
 		/// 	Размер батча для асинхронной компиляции

@@ -239,7 +239,7 @@ namespace Zeta.Extreme.FrontEnd {
 					else {
 						if (existed.IsFinished) {
 							existed.Error = null;
-							existed.StartCollectData();
+							existed.RestartData();
 						}
 					}
 					return existed;

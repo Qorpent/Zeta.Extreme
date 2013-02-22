@@ -17,9 +17,9 @@
         $.extend(window.zefs.myform, {
             getChanges: this.getChanges
         });
-        $(window.zefs).on("savestage_finished", function() {
+        $(window.zefs).on("savestage_finished", $.proxy(function() {
             this.applyChanges();
-        });
+        },this));
         this.nextCell();
     };
 
@@ -265,6 +265,7 @@
 
     Zefs.prototype.hotkeysConfigure = function () {
         $(document).on('keydown', $.proxy(function(e) {
+            var $cell = $(this.getActiveCell());
             var k = e.keyCode;
             var printable =
                 (k > 47 && k < 58)   || // number keys
@@ -275,7 +276,7 @@
                     (k > 218 && k < 223);   // [\]' (in order)
             switch (k) {
                 case 37 :
-                    if ($(this.getActiveCell()).hasClass('editing')) return;
+                    if ($cell.hasClass('editing')) return;
                     e.preventDefault();
                     this.leftCell();
                     break;
@@ -290,7 +291,7 @@
                     this.upCell();
                     break;
                 case 39 :
-                    if ($(this.getActiveCell()).hasClass('editing')) return;
+                    if ($cell.hasClass('editing')) return;
                     e.preventDefault();
                     this.rightCell();
                     break;
@@ -310,7 +311,7 @@
                     break;
                 // Backspace button
                 case 8 :
-                    if (e.ctrlKey && !$(this.getActiveCell()).hasClass('editing')) {
+                    if (e.ctrlKey && !$cell.hasClass('editing')) {
                         this.rollbackValue();
                     }
                     break;
@@ -329,15 +330,23 @@
                     e.preventDefault();
                     this.uninputCell("esc");
                     break;
+                // Del button
+                case 46 :
+                    e.preventDefault();
+                    $cell.text("");
+                    $cell.data("previous", "");
+                    if ($cell.text() != $cell.data("history")) $cell.addClass("changed");
                 // S button
                 case 83 :
                     e.preventDefault();
                     if (e.ctrlKey && window.zefs.myform != null) {
+                        this.uninputCell();
                         window.zefs.myform.save(this.getChanges());
                     }
+                    break;
                 default :
                     if (!printable) return;
-                    if (!$(this.getActiveCell()).hasClass('editing')) {
+                    if (!$cell.hasClass('editing')) {
                         this.inputCell("replace");
                     }
             }

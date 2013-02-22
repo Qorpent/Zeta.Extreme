@@ -10,6 +10,7 @@
 
 using System;
 using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -35,58 +36,83 @@ namespace Zeta.Extreme {
 			var internalquery = query.Copy(true);
 			// внутри сессии работаем только с копиями
 			// ибо иначе отконтроллировать изменения препроцессора по сути невозможно
-
 			//сначала вызываем стандартную процедуру нормализации запроса
-
 			internalquery.Normalize(_session);
-			if (internalquery.Row.Native != null && internalquery.Row.Native.IsMarkSeted("0CAPTION")) {
-				return null; //it's not processable query
-			}
-			//var obsolete = TagHelper.Value(internalquery.Row.Tag, "obsolete").toInt();
-			//if (obsolete != 0) {
-			//	if (obsolete <= internalquery.Time.Year) {
-			//		return null;
-			//	}
-			//}
+			if (ChekoutCaption(internalquery)) return null;
+			if (CheckoutObsolete(internalquery)) return null;
+			PrepareFormulas(internalquery);
+			return internalquery;
+		}
 
-			if (internalquery.Row.IsFormula && !_sumh.IsSum(query.Row)) {
-				FormulaStorage.Default.Register(new FormulaRequest
-					{
-						Key = "row:" + internalquery.Row.Code,
-						Formula = internalquery.Row.Formula,
-						Language = internalquery.Row.FormulaType,
-						Tags = internalquery.Row.Tag,
-						Marks = internalquery.Row.Native == null ? "" : internalquery.Row.Native.MarkCache
-					});
+		private void PrepareFormulas(Query internalquery) {
+			if (internalquery.Row.IsFormula && !_sumh.IsSum(internalquery.Row)) {
+				var key = "row:" + internalquery.Row.Code;
+				if (null == internalquery.Row.Native) {
+					key = "dynrow:" + internalquery.Row.Formula;
+				}
+				if (!FormulaStorage.Default.Exists(key)) {
+					FormulaStorage.Default.Register(new FormulaRequest
+						{
+							Key = key,
+							Formula = internalquery.Row.Formula,
+							Language = internalquery.Row.FormulaType,
+							Tags = internalquery.Row.Tag,
+							Marks = internalquery.Row.Native == null ? "" : internalquery.Row.Native.MarkCache
+						});
+				}
 			}
 
-			if (internalquery.Col.IsFormula && !_sumh.IsSum(query.Col)) {
+			if (internalquery.Col.IsFormula && !_sumh.IsSum(internalquery.Col))
+			{
 				var key = "col:" + internalquery.Col.Code;
 				if (null == internalquery.Col.Native) {
 					key = "dyncol:" + internalquery.Col.Formula;
 				}
-				FormulaStorage.Default.Register(new FormulaRequest
-					{
-						Key = key,
-						Formula = internalquery.Col.Formula,
-						Language = internalquery.Col.FormulaType,
-						Tags = internalquery.Col.Tag,
-						Marks = internalquery.Col.Native == null ? "" : internalquery.Col.Native.MarkCache
-					});
+				if (!FormulaStorage.Default.Exists(key)) {
+					FormulaStorage.Default.Register(new FormulaRequest
+						{
+							Key = key,
+							Formula = internalquery.Col.Formula,
+							Language = internalquery.Col.FormulaType,
+							Tags = internalquery.Col.Tag,
+							Marks = internalquery.Col.Native == null ? "" : internalquery.Col.Native.MarkCache
+						});
+				}
 			}
 
-			if (internalquery.Obj.IsFormula && !_sumh.IsSum(query.Obj)) {
-				FormulaStorage.Default.Register(new FormulaRequest
-					{
-						Key = "obj:" + internalquery.Obj.Code,
-						Formula = internalquery.Obj.Formula,
-						Language = internalquery.Obj.FormulaType,
-						Tags = internalquery.Obj.Tag
-					});
+			if (internalquery.Obj.IsFormula && !_sumh.IsSum(internalquery.Obj))
+			{
+				var key = "obj:" + internalquery.Row.Code;
+				if (null == internalquery.Obj.Native) {
+					key = "dynobj:" + internalquery.Obj.Formula;
+				}
+				if (!FormulaStorage.Default.Exists(key)) {
+					FormulaStorage.Default.Register(new FormulaRequest
+						{
+							Key = key,
+							Formula = internalquery.Obj.Formula,
+							Language = internalquery.Obj.FormulaType,
+							Tags = internalquery.Obj.Tag
+						});
+				}
 			}
+		}
 
+		private static bool CheckoutObsolete(Query internalquery) {
+			var obsolete = TagHelper.Value(internalquery.Row.Tag, "obsolete").ToInt();
+			if (obsolete != 0) {
+				if (obsolete <= internalquery.Time.Year) {
+					return true;
+				}
+			} // устаревшие строки не могут быть целью
+			return false;
+		}
 
-			return internalquery;
+		private static bool ChekoutCaption(Query internalquery) {
+			if (internalquery.Row.Native != null && internalquery.Row.Native.IsMarkSeted("0CAPTION")) {
+				return true;
+			}
+			return false;
 		}
 
 

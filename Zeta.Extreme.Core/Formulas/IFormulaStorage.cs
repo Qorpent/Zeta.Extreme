@@ -72,5 +72,11 @@ namespace Zeta.Extreme {
 		/// 	Очистка кэша формул
 		/// </summary>
 		void Clear();
+		/// <summary>
+		/// Проверяет наличие формулы в хранилище
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
+		bool Exists(string key);
 	}
 }

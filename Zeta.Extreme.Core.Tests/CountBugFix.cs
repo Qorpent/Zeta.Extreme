@@ -41,6 +41,7 @@ namespace Zeta.Extreme.Core.Tests {
 
 
 		[Test]
+		[Ignore("data changed")]
 		public void ZC_252_BUG_NO_SUPPORT_DOSUM()
 		{
 			/*
@@ -63,6 +64,33 @@ namespace Zeta.Extreme.Core.Tests {
 			_serial.Eval(query);
 			Assert.AreEqual(249516m, query.Result.NumericResult);
 		}
+
+		[Test]
+		[Ignore("data changed")]
+		public void BUG_KRU_INVALID_VALUE()
+		{
+			/*
+			 * 
+			 * например, для строки m220912 предприятия 1067 период 251 год 2013 для колонки Ok стоит 0, а должно 249 516
+			 */
+			var query = new Query
+			{
+				Obj = { Id = 1067 },
+				Row = { Code = "m2301000" },
+				Col = { Code = "DZk" },
+				Time = { Year = 2013, Period = 251 }
+			};
+
+
+
+			query = session.Register(query);
+			query.WaitPrepare();
+
+			_serial.Eval(query);
+			Assert.AreEqual(-416253m, query.Result.NumericResult);
+		}
+
+		
 
 		[Test]
 		public void ZC_233_Bug_PLANSNG1_InvalidData()

@@ -43,8 +43,6 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="obj"> </param>
 		public FormSession(IInputTemplate form, int year, int period, IZetaMainObject obj) {
 			Uid = Guid.NewGuid().ToString();
-
-
 			Created = DateTime.Now;
 			Template = form.PrepareForPeriod(year, period, new DateTime(1900, 1, 1), Object);
 			Template.AttachedSession = this;
@@ -346,22 +344,26 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Метод прямого вызова повторного сбора данных
 		/// </summary>
 		protected internal void StartCollectData() {
-			_processed.Clear();
-			DataCollectionRequests++;
-			DataSession = new Extreme.Session(true);
-			PrepareDataTask = new TaskWrapper(
-				Task.Run(() =>
-					{
-						try {
-							RetrieveData();
-						}
-						catch (Exception ex) {
-							Error = ex;
-						}
-					})
-				) {SelfWait = 30000};
-			while(PrepareDataTask.Status == TaskStatus.Created) {
-				Thread.Sleep(10);
+			lock(this) {
+				if(null!=PrepareDataTask) return;
+				_processed.Clear();
+				Data.Clear();
+				DataCollectionRequests++;
+				DataSession = new Session(true);
+				PrepareDataTask = new TaskWrapper(
+					Task.Run(() =>
+						{
+							try {
+								RetrieveData();
+							}
+							catch (Exception ex) {
+								Error = ex;
+							}
+						})
+					) {SelfWait = 30000};
+				while (PrepareDataTask.Status == TaskStatus.Created) {
+					Thread.Sleep(10);
+				}
 			}
 		}
 
@@ -393,7 +395,7 @@ namespace Zeta.Extreme.FrontEnd {
 								 code = c.Code,
 								 name = c.Title,
 								 idx = ci.i,
-								 isprimary = c.Editable && !c.IsFormula,
+								 isprimary = c.Editable && !c.IsFormula && !c.IsAuto,
 								 year = c.Year,
 								 period = c.Period,
 								 controlpoint = c.ControlPoint,
@@ -712,9 +714,12 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns></returns>
 		public bool RestartData() {
-			WaitData();
-			StartCollectData();
-			return true;
+			lock(this) {
+				WaitData();
+				PrepareDataTask = null;
+				StartCollectData();
+				return true;
+			}
 		}
 	}
 }

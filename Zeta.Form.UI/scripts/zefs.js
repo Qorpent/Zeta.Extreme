@@ -5,9 +5,10 @@ root.init = root.init ||
 (function ($) {
     if (root.myform) return root.myform;
     root.myform = root.myform ||  {
-        sessionId : null
+        sessionId : null,
+        currentSession : null,
+        lock : true
     };
-
     var options = window.zefs.options;
 	var params = options.getParameters();
     var render = root.getRender();
@@ -46,9 +47,11 @@ root.init = root.init ||
             data: params
         }).success($.proxy(function(d) {
             var session = options.asSession(d);
+            root.myform.currentSession = session;
             root.myform.sessionId = session.getUid();
             document.title = session.getFormInfo().getName();
             Structure(session);
+            GetCurrentLock();
             $(root).trigger("session_load");
             window.setTimeout(function(){Data(session,0)},options.datadelay); //первый запрос на данные
         }));
@@ -123,12 +126,16 @@ root.init = root.init ||
             dataType: "json",
             data: {session: root.myform.sessionId}
         }).success(function(d) {
-            return options.asLockState(d).getCanSave();
+                root.myform.lock = options.asLockState(d).getCanSave();
+                $(root).trigger("formstatus_load");
         });
     };
 
     var Save = function(obj) {
-        if (!!obj || obj == null) return;
+        if ($.isEmptyObject(obj) || !root.myform.lock) return;
+        $.each($('td.recalced'), function(i,e) {
+            $(e).removeClass("recalced");
+        });
         $.ajax({
             url: siteroot+options.save_command,
             type: "POST",
@@ -139,9 +146,9 @@ root.init = root.init ||
                 data: JSON.stringify(obj)
             }
         }).success(function(d) {
-                $(root).trigger("savestage_finished");
-                SaveState();
-            });
+            $(root).trigger("savestage_started");
+            SaveState();
+        });
     };
 
     var SaveState = function() {
@@ -160,16 +167,24 @@ root.init = root.init ||
             if (state.getIsError()) {
                 // вывести сообщение об ошибке
             }
+            ResetData();
             $(root).trigger("savestage_finished");
         });
     };
 
-    var GetPeriods = function() {
-
+    var ResetData = function() {
+        $.ajax({
+            url: siteroot+"zefs/resetdata.json.qweb",
+            type: "POST",
+            context: this,
+            dataType: "json",
+            data: {session: root.myform.sessionId}
+        }).success(function(d) {
+             Data(root.myform.currentSession,0);
+        });
     };
 
     $.extend(root.myform, {
-        lock : GetCurrentLock,
         run : StartForm,
         save : Save
     });
