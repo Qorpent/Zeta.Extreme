@@ -66,7 +66,6 @@ namespace Zeta.Extreme.Core.Tests {
 		}
 
 		[Test]
-		[Ignore("data changed")]
 		public void BUG_KRU_INVALID_VALUE()
 		{
 			/*
