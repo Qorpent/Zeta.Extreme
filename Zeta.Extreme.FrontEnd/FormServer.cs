@@ -127,7 +127,7 @@ namespace Zeta.Extreme.FrontEnd {
 
 			HibernateLoad = new TaskWrapper(GetHibernateTask());
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
-			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask(), HibernateLoad);
+			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
 			ReadyToServeForms = new TaskWrapper(Task.FromResult(true), HibernateLoad, LoadThemas, MetaCacheLoad,
 			                                    CompileFormulas);
@@ -359,10 +359,11 @@ namespace Zeta.Extreme.FrontEnd {
 		private Task GetMetaCacheLoadTask() {
 			return new Task(() =>
 				{
-					//var codes =
-					//myapp.storage.AsQueryable<row>().Where(_ => _.Tag.Contains("/extreme:1/")).Select(_ => _.Code).ToArray();
+					Periods.Get(12);
 					RowCache.start();
 					ColumnCache.start();
+					ObjCache.Start();
+					
 				});
 		}
 

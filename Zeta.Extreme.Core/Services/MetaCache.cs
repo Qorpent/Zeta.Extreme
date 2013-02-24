@@ -106,6 +106,12 @@ namespace Zeta.Extreme {
 				if (typeof (IZetaColumn).IsAssignableFrom(typeof (T))) {
 					return (T) ColumnCache.get(id);
 				}
+				if(typeof(IZetaMainObject).IsAssignableFrom(typeof(T))) {
+					return (T)ObjCache.Get(id);
+				}
+				if(typeof(IMainObjectGroup).IsAssignableFrom(typeof(T))) {
+					return (T) ObjCache.GetDiv(id);
+				}
 				return myapp.storage.Get<T>().Load(id);
 			}
 			catch {
