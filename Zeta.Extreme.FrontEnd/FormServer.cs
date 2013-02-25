@@ -62,8 +62,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public bool IsOk {
 			get {
-				return HibernateLoad.IsCompleted && MetaCacheLoad.IsCompleted && CompileFormulas.IsCompleted &&
-				       LoadThemas.IsCompleted;
+				return MetaCacheLoad.IsCompleted && CompileFormulas.IsCompleted && LoadThemas.IsCompleted;
 			}
 		}
 
@@ -103,10 +102,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public TaskWrapper MetaCacheLoad { get; private set; }
 
-		/// <summary>
-		/// 	Процесс загрузки гиберейта
-		/// </summary>
-		public TaskWrapper HibernateLoad { get; private set; }
+
 
 		/// <summary>
 		/// 	An index of object
@@ -125,14 +121,12 @@ namespace Zeta.Extreme.FrontEnd {
 				return; //singleton imitation
 			}
 
-			HibernateLoad = new TaskWrapper(GetHibernateTask());
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
-			ReadyToServeForms = new TaskWrapper(Task.FromResult(true), HibernateLoad, LoadThemas, MetaCacheLoad,
+			ReadyToServeForms = new TaskWrapper(Task.FromResult(true),  LoadThemas, MetaCacheLoad,
 			                                    CompileFormulas);
 
-			HibernateLoad.Run();
 			MetaCacheLoad.Run();
 			CompileFormulas.Run();
 			LoadThemas.Run();
@@ -180,27 +174,26 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 			return new
 				{
-					hibernate = new
-						{
-							status = HibernateLoad.Status,
-							error = HibernateLoad.Error.ToStr()
-						},
+					time = ReadyToServeForms.ExecuteTime,
 					meta = new
 						{
 							status = MetaCacheLoad.Status,
 							error = MetaCacheLoad.Error.ToStr(),
 							rows = RowCache.Byid.Count,
+							time = MetaCacheLoad.ExecuteTime,
 						},
 					formulas = new
 						{
 							status = CompileFormulas.Status,
 							taskerror = CompileFormulas.Error.ToStr(),
+							time = CompileFormulas.ExecuteTime,
 							compileerror =
 								FormulaStorage.Default.LastCompileError == null ? "" : FormulaStorage.Default.LastCompileError.ToString(),
 							formulacount = FormulaStorage.Default.Count,
 						},
 					themas = new
 						{
+							time = CompileFormulas.ExecuteTime,
 							status = Default.LoadThemas.Status,
 							error = Default.LoadThemas.Error.ToStr(),
 						},
@@ -256,10 +249,9 @@ namespace Zeta.Extreme.FrontEnd {
 			myapp.files.Reload();
 
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
-			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask(), HibernateLoad);
+			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
 			ReadyToServeForms = new TaskWrapper(Task.FromResult(true),
-			                                    HibernateLoad,
 			                                    LoadThemas,
 			                                    MetaCacheLoad,
 			                                    CompileFormulas);
@@ -367,18 +359,7 @@ namespace Zeta.Extreme.FrontEnd {
 				});
 		}
 
-		private Task GetHibernateTask() {
-			return new Task(() =>
-				{
-					//var connectionString = Application.DatabaseConnections.GetConnectionString(ConnectionName);
-					//myapp.ioc.setupHibernate(new NamedConnection(ConnectionName, connectionString), new ZetaClassicModel());
-					////еще мы должны дозагрузить расширение ролей PersistentStorage для совместимости, тут мы вынуждены так делать не совсем логично
-					//Application.Container.Register(new BasicComponentDefinition{Lifestyle = Lifestyle.Extension,ImplementationType = typeof(Comdiv.Security.PersistentRoleProvider),ServiceType = typeof(IRoleResolverExtension)});
-					//((DefaultRoleResolver) Application.Roles).Extensions =
-					//	Application.Container.All<IRoleResolverExtension>().ToArray();
-				});
-		}
-
+		
 		private readonly bool _doNotRun;
 		private int _idx = -100;
 	}

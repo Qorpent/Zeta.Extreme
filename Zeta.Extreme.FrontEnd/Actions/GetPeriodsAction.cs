@@ -16,7 +16,8 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			MyFormServer.HibernateLoad.Wait();
+			MyFormServer.MetaCacheLoad.Wait();
+			
 			return new PeriodCatalogHelper().GetAllPeriods();
 		}
 	}

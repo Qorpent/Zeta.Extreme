@@ -518,7 +518,7 @@ namespace Zeta.Extreme.FrontEnd {
 				var val = "";
 				var cellid = 0;
 				if (null != q_.Value && null != q_.Value.Result) {
-					val = q_.Value.Result.NumericResult.ToString("#.#,##");
+					val = q_.Value.Result.NumericResult.ToString("#.0,#####");
 					if (q_.Value.Result.Error != null) {
 						val = q_.Value.Result.Error.Message;
 					}
