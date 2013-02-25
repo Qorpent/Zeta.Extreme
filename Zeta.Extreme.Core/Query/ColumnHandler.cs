@@ -9,8 +9,8 @@
 #endregion
 
 using System.Text.RegularExpressions;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
+using ColumnCache = Zeta.Extreme.Meta.ColumnCache;
 
 namespace Zeta.Extreme {
 	/// <summary>

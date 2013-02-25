@@ -14,7 +14,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Comdiv.Application;
 using Comdiv.Persistence;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using Qorpent;
 using Qorpent.Applications;
@@ -26,6 +25,7 @@ using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.Themas;
+using Zeta.Extreme.Meta;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
@@ -189,7 +189,7 @@ namespace Zeta.Extreme.FrontEnd {
 						{
 							status = MetaCacheLoad.Status,
 							error = MetaCacheLoad.Error.ToStr(),
-							rows = RowCache.byid.Count,
+							rows = RowCache.Byid.Count,
 						},
 					formulas = new
 						{
@@ -275,13 +275,13 @@ namespace Zeta.Extreme.FrontEnd {
 					FormulaStorage.Default.AutoBatchCompile = false;
 					FormulaStorage.Default.Clear();
 					var _sumh = new StrongSumProvider();
-					var oldrowformulas = RowCache.byid.Values.Where(
+					var oldrowformulas = RowCache.Byid.Values.Where(
 						_ => _.IsFormula && !_sumh.IsSum(_)
 						     && _.ResolveTag("extreme") == "1"
 							 && _.Version < DateTime.Today
 						).ToArray();
 
-					var newrowformulas = RowCache.byid.Values.Where(
+					var newrowformulas = RowCache.Byid.Values.Where(
 						_ => _.IsFormula && !_sumh.IsSum(_)
 							 && _.ResolveTag("extreme") == "1"
 							 && _.Version >= DateTime.Today
@@ -290,17 +290,17 @@ namespace Zeta.Extreme.FrontEnd {
 					
 
 					var oldcolformulas = (
-						                  from c in myapp.storage.AsQueryable<col>()
+						                  from c in ColumnCache.Byid.Values//myapp.storage.AsQueryable<col>()
 						                  where c.IsFormula
-						                        && c.FormulaEvaluator == "boo" && null != c.Formula && "" != c.Formula
+						                        && c.FormulaEvaluator == "boo" && !string.IsNullOrEmpty(c.Formula)
 												&& c.Version < DateTime.Today
 						                  select new {c = c.Code, f = c.Formula, tag = c.Tag}
 					                  ).ToArray();
 
 					var newcolformulas = (
-										  from c in myapp.storage.AsQueryable<col>()
+						                     from c in ColumnCache.Byid.Values //myapp.storage.AsQueryable<col>()
 										  where c.IsFormula
-												&& c.FormulaEvaluator == "boo" && null != c.Formula && "" != c.Formula
+												&& c.FormulaEvaluator == "boo" && !string.IsNullOrEmpty(c.Formula)
 												&& c.Version >= DateTime.Today
 										  select new { c = c.Code, f = c.Formula, tag = c.Tag }
 									  ).ToArray();
@@ -370,12 +370,12 @@ namespace Zeta.Extreme.FrontEnd {
 		private Task GetHibernateTask() {
 			return new Task(() =>
 				{
-					var connectionString = Application.DatabaseConnections.GetConnectionString(ConnectionName);
-					myapp.ioc.setupHibernate(new NamedConnection(ConnectionName, connectionString), new ZetaClassicModel());
-					//еще мы должны дозагрузить расширение ролей PersistentStorage для совместимости, тут мы вынуждены так делать не совсем логично
-					Application.Container.Register(new BasicComponentDefinition{Lifestyle = Lifestyle.Extension,ImplementationType = typeof(Comdiv.Security.PersistentRoleProvider),ServiceType = typeof(IRoleResolverExtension)});
-					((DefaultRoleResolver) Application.Roles).Extensions =
-						Application.Container.All<IRoleResolverExtension>().ToArray();
+					//var connectionString = Application.DatabaseConnections.GetConnectionString(ConnectionName);
+					//myapp.ioc.setupHibernate(new NamedConnection(ConnectionName, connectionString), new ZetaClassicModel());
+					////еще мы должны дозагрузить расширение ролей PersistentStorage для совместимости, тут мы вынуждены так делать не совсем логично
+					//Application.Container.Register(new BasicComponentDefinition{Lifestyle = Lifestyle.Extension,ImplementationType = typeof(Comdiv.Security.PersistentRoleProvider),ServiceType = typeof(IRoleResolverExtension)});
+					//((DefaultRoleResolver) Application.Roles).Extensions =
+					//	Application.Container.All<IRoleResolverExtension>().ToArray();
 				});
 		}
 

@@ -13,10 +13,9 @@ using System;
 using System.Linq;
 using Comdiv.Application;
 using Comdiv.Persistence;
-using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
 using NUnit.Framework;
-using Zeta.Extreme.Core.Tests.CoreTests;
+using Zeta.Extreme.Meta;
+using Zeta.Extreme.Poco;
 
 namespace Zeta.Extreme.Core.Tests.SubQuery {
 	[TestFixture]
@@ -192,17 +191,17 @@ f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) 
 		[Test]
 		[Explicit]
 		public void AllIsCompilable() {
-			myapp.ioc.Clear();
-			myapp.ioc.setupHibernate(
-				new NamedConnection("Default",
-									"Data Source=assoibdx;Initial Catalog=eco;Persist Security Info=True;User ID=sfo_home;Password=rhfcysq$0;Application Name=zeta3"),
-				//"Data Source=(local);Initial Catalog=eco;Integrated Security=True;Min Pool Size=5;Application Name=zeta3"),
-				new ZetaMinimalMode());
+			//myapp.ioc.Clear();
+			//myapp.ioc.setupHibernate(
+			//	new NamedConnection("Default",
+			//						"Data Source=assoibdx;Initial Catalog=eco;Persist Security Info=True;User ID=sfo_home;Password=rhfcysq$0;Application Name=zeta3"),
+			//	//"Data Source=(local);Initial Catalog=eco;Integrated Security=True;Min Pool Size=5;Application Name=zeta3"),
+			//	new ZetaMinimalMode());
 			Periods.Get(12);
 			RowCache.start("m111", "m112", "m260", "m250", "m218", "r590", "m220");
 			var storage = new FormulaStorage {AutoBatchCompile = false};
 			var _sumh = new StrongSumProvider();
-			var formulas = RowCache.byid.Values.Where(_ => _.IsFormula && !_sumh.IsSum(_)).ToArray();
+			var formulas = RowCache.Byid.Values.Where(_ => _.IsFormula && !_sumh.IsSum(_)).ToArray();
 			bool fail = false;
 			foreach (var f in formulas)
 			{

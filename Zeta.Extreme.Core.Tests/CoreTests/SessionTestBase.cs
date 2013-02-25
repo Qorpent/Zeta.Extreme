@@ -12,11 +12,11 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Comdiv.Zeta.Data.Minimal;
 using NUnit.Framework;
 using Qorpent.Data;
 using Qorpent.Data.Connections;
 using Qorpent.IoC;
+using Zeta.Extreme.Meta;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
 	public class SessionTestBase {
@@ -47,7 +47,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				ObjCache.Start();
 				FormulaStorage.Default.AutoBatchCompile = false;
 				var _sumh = new StrongSumProvider();
-				var formulas = RowCache.byid.Values.Where(_ => _.IsFormula && !_sumh.IsSum(_) && _.ResolveTag("extreme")=="1").ToArray();
+				var formulas = RowCache. Byid.Values.Where(_ => _.IsFormula && !_sumh.IsSum(_) && _.ResolveTag("extreme")=="1").ToArray();
 
 				foreach (var f in formulas) {
 					var req = new FormulaRequest {Key ="row:"+ f.Code, Formula = f.Formula, Language = f.FormulaEvaluator};
@@ -56,7 +56,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				}
 
 				var colformulas = (
-					                  from c in ColumnCache.byid.Values//myapp.storage.AsQueryable<col>()
+					                  from c in ColumnCache.Byid.Values//myapp.storage.AsQueryable<col>()
 					                  where c.IsFormula && c.FormulaEvaluator == "boo" && !string.IsNullOrEmpty(c.Formula)
 					                  select new {c = c.Code, f = c.Formula}
 				                  ).ToArray();

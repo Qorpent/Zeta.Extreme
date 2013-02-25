@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Comdiv.Extensibility;
 using Comdiv.Extensions;
-using Comdiv.Zeta.Data.Minimal;
+using Zeta.Extreme.Meta;
+
 
 namespace Zeta.Extreme.Form.InputTemplates {
 	/// <summary>

@@ -15,8 +15,8 @@ using System.Security.Principal;
 using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Inversion;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
+using Zeta.Extreme.Meta;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -177,12 +177,12 @@ namespace Zeta.Extreme.Form.Themas {
 					result.Responsibility = myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility(Code, "Default", obj);
 					result.Responsibility2 = myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility2(Code, "Default", obj);
 				}
-				var h = "0CH".asObject();
+				var h = MetaCache.Default.Get<IZetaMainObject>("0CH");
 				if (null != h) {
 					result.HoldResponsibility =
 						myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility(Code, "Default", h);
 				}
-				if (obj.Id() == h.Id()) {
+				if (obj.Id == h.Id) {
 					result.Responsibility = result.HoldResponsibility;
 					result.Responsibility2 = result.HoldResponsibility;
 				}

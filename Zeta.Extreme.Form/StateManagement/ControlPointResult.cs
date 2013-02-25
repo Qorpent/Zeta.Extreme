@@ -8,8 +8,8 @@
 
 #endregion
 
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
+using Zeta.Extreme.Meta;
 
 namespace Zeta.Extreme.Form.StateManagement {
 	/// <summary>

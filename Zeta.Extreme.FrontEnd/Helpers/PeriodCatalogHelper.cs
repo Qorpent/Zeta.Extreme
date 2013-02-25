@@ -11,6 +11,7 @@
 using System.Linq;
 using Comdiv.Application;
 using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco;
 
 namespace Zeta.Extreme.FrontEnd.Helpers {
 	/// <summary>

@@ -15,7 +15,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using Qorpent.Applications;
 using Qorpent.Serialization;
@@ -24,6 +23,8 @@ using Zeta.Extreme.Form;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
+using Zeta.Extreme.Meta;
+using Zeta.Extreme.Poco;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>

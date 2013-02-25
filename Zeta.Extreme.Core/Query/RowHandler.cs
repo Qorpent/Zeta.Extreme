@@ -10,8 +10,9 @@
 
 using System.Text.RegularExpressions;
 using System.Threading;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
+using Zeta.Extreme.Meta;
+using RowCache = Zeta.Extreme.Meta.RowCache;
 
 namespace Zeta.Extreme {
 	/// <summary>

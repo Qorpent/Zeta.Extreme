@@ -14,8 +14,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Comdiv.Extensions;
 using Comdiv.Olap.Model;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
+using RowCache = Zeta.Extreme.Meta.RowCache;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -154,8 +154,8 @@ namespace Zeta.Extreme {
 			var pluses = groups.Where(_ => !_.StartsWith("-")).ToArray();
 			var minuses = groups.Where(_ => _.StartsWith("-")).Select(_ => _.Substring(1)).ToArray();
 			foreach (var p in pluses) {
-				if (RowCache.bygroup.ContainsKey(p)) {
-					foreach (var r in RowCache.bygroup[p]) {
+				if (RowCache.Bygroup.ContainsKey(p)) {
+					foreach (var r in RowCache.Bygroup[p]) {
 						if (r.IsMarkSeted("0MINUS")) {
 							yield return new QueryDelta {Row = r, Multiplicator = -1};
 						}
@@ -166,8 +166,8 @@ namespace Zeta.Extreme {
 				}
 			}
 			foreach (var m in minuses) {
-				if (RowCache.bygroup.ContainsKey(m)) {
-					foreach (var r in RowCache.bygroup[m]) {
+				if (RowCache.Bygroup.ContainsKey(m)) {
+					foreach (var r in RowCache.Bygroup[m]) {
 						if (r.IsMarkSeted("0MINUS")) {
 							yield return new QueryDelta {Row = r};
 						}

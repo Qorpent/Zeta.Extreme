@@ -14,11 +14,11 @@ using System.Threading.Tasks;
 using System.Xml.XPath;
 using Comdiv.Model.Interfaces;
 using Comdiv.Security;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
 using Zeta.Extreme.Form.Themas;
+using Zeta.Extreme.Meta;
 
 namespace Zeta.Extreme.Form.InputTemplates {
 	/// <summary>
@@ -151,27 +151,27 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// 	Разбивать по деталям
 		/// </summary>
 		bool DetailSplit { get; set; }
-
+		/*
 		/// <summary>
 		/// 	Признак формы для деталей
 		/// </summary>
 		bool IsForDetail { get; }
-
+		
 		/// <summary>
 		/// 	Признак формы для одной детали
 		/// </summary>
 		bool IsForSingleDetail { get; }
-
+		*/
 		/// <summary>
 		/// 	Фиксированный список строк
 		/// </summary>
 		IList<string> FixedRowCodes { get; set; }
-
+		/*
 		/// <summary>
 		/// 	Признак ввода для деталей
 		/// </summary>
 		bool IsInputForDetail { get; }
-
+		*/
 		/// <summary>
 		/// 	Признак открытости формы
 		/// </summary>
@@ -302,11 +302,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		IFormSession AttachedSession { get; set; }
 
-		/// <summary>
-		/// 	Используется автозаполнение
-		/// </summary>
-		/// <returns> </returns>
-		bool IsAutoFill();
+	
 
 		/// <summary>
 		/// 	Подготовить к периоду
@@ -355,18 +351,9 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		void RefreshState();
 
-		/// <summary>
-		/// 	Получить объект автозаполнения
-		/// </summary>
-		/// <returns> </returns>
-		AutoFill GetAutoFill();
+		
 
-		/// <summary>
-		/// 	Проверка на автозаполняемость
-		/// </summary>
-		/// <param name="obj"> </param>
-		/// <returns> </returns>
-		bool IsAutoFill(IZetaMainObject obj);
+		
 
 		/// <summary>
 		/// 	ПОлучить полную видимость
@@ -443,7 +430,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <param name="parent"> </param>
 		/// <returns> </returns>
 		int SetState(IZetaMainObject obj, IZetaDetailObject detail, string state, bool skipcheck = false, int parent = 0);
-
+		/*
 		/// <summary>
 		/// 	Получить проверки строк
 		/// </summary>
@@ -494,7 +481,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <param name="col"> </param>
 		/// <returns> </returns>
 		string GetCheckedCellStyle(IZetaRow row, IZetaMainObject obj, ColumnDesc col);
-
+		*/
 		//IList<IFile> GetAttachedFiles(int objid, AttachedFileType filestype, int year = 0, int period = 0);
 		// Будет переписано
 		/// <summary>
@@ -508,26 +495,19 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <param name="row"> </param>
 		/// <returns> </returns>
 		bool IsValidRow(IZetaRow row);
-
+		/*
 		/// <summary>
 		/// 	Получить контрольные строки
 		/// </summary>
 		/// <param name="obj"> </param>
 		/// <returns> </returns>
 		ControlPointResult[] GetControlPoints(IZetaMainObject obj);
-
+		*/
 		/// <summary>
 		/// 	Получить группу колонок
 		/// </summary>
 		/// <returns> </returns>
 		string GetColGroup();
-
-		/// <summary>
-		/// 	Получить рабочий колсет
-		/// </summary>
-		/// <param name="obj"> </param>
-		/// <returns> </returns>
-		IList<ColumnDesc> GetWorkingColset(IZetaMainObject obj);
 
 		/// <summary>
 		/// 	Получить рабочие объекты

@@ -16,10 +16,10 @@ using Comdiv.Inversion;
 using Comdiv.Model;
 using Comdiv.Reporting;
 using Comdiv.Security;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.StateManagement;
+using Zeta.Extreme.Meta;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -945,7 +945,7 @@ namespace Zeta.Extreme.Form.Themas {
 			if (0 == period) {
 				return "";
 			}
-			return Periods.GetName(period) + ":";
+			return Periods.Get(period).Name + ":";
 		}
 
 		private bool getreportstate(IReportDefinition report, string statetocheck = "0ISOPEN") {

@@ -63,6 +63,7 @@
 		-->
 		
 			<Library Include="Zeta.Extreme.Core" />
+			<Library Include="Zeta.Extreme.Poco" />
 			<Library Include="Zeta.Extreme.Form" />
 			<Library Include="Zeta.Extreme.FrontEnd" />
 			<Config Include="*.base.ioc-manifest.bxl"/>
@@ -77,16 +78,20 @@
 			<Library Include="Comdiv.Zeta.Data.Minimal" />
 			<Library Include="Comdiv.Zeta.Model.Implementation" />
 			<Library Include="Comdiv.Core" />
-			<Library Include="Comdiv.Dependency" />
+
+
+<!-- HAVE TO KILL ALL OF IT !!! -->
+		<!--	<Library Include="Comdiv.Dependency" />
 			<Library Include="Nhibernate" />
 			<Library Include="FluentNHibernate" />
 			<Library Include="Iesi.Collections" />
 			<Library Include="log4net" />
-			<Library Include="Comdiv.Reporting" />
+			
 			<Library Include="Castle.Windsor" />
-			<Library Include="Castle.Core" />
+			<Library Include="Castle.Core" />  -->
+<Library Include="Comdiv.Reporting" />
 			<Library Include="Comdiv.Extensibility" />
-			<Library Include="Microsoft.Scripting" />
+			<Library Include="Microsoft.Scripting" /> 
 			
 			
 	</ItemGroup>

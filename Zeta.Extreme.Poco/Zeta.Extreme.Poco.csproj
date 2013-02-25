@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Zeta.Extreme.Poco</RootNamespace>
+    <AssemblyName>Zeta.Extreme.Poco</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <CodePage>1251</CodePage>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\build</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ADAPTMODEL LIB2</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'IAS|AnyCPU' ">
+    <OutputPath>bin\IAS\</OutputPath>
+    <DebugType>none</DebugType>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MONO|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ADAPTMODEL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MIGRATION|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\build\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ADAPTMODEL LIB2</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>comdiv.core.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="corePoco\biztran.cs" />
+    <Compile Include="corePoco\Biztranfilter.cs" />
+    <Compile Include="corePoco\CellHistory.cs" />
+    <Compile Include="corePoco\ColumnMark.cs" />
+    <Compile Include="corePoco\CommonLog.cs" />
+    <Compile Include="corePoco\Contragent.cs" />
+    <Compile Include="corePoco\form.cs" />
+    <Compile Include="corePoco\IBizTran.cs" />
+    <Compile Include="corePoco\IBizTranFilter.cs" />
+    <Compile Include="corePoco\UsrRow.cs" />
+    <Compile Include="corePoco\UsrThemaMap.cs" />
+    <Compile Include="corePoco\zone.cs" />
+    <Compile Include="corePoco\detailgrp.cs" />
+    <Compile Include="corePoco\detailgrplink.cs" />
+    <Compile Include="corePoco\DetailRow.cs" />
+    <Compile Include="corePoco\FixRule.cs" />
+    <Compile Include="corePoco\GraphRelation.cs" />
+    <Compile Include="corePoco\objdiv.cs" />
+    <Compile Include="corePoco\cell.cs" />
+    <Compile Include="corePoco\row.cs" />
+    <Compile Include="corePoco\MainObjectMark.cs" />
+    <Compile Include="corePoco\Mark.cs" />
+    <Compile Include="corePoco\point.cs" />
+    <Compile Include="corePoco\ObjectGroup.cs" />
+    <Compile Include="corePoco\obj.cs" />
+    <Compile Include="corePoco\objrole.cs" />
+    <Compile Include="corePoco\Period.cs" />
+    <Compile Include="corePoco\Pkg.cs" />
+    <Compile Include="corePoco\PkgType.cs" />
+    <Compile Include="corePoco\Region.cs" />
+    <Compile Include="corePoco\detail.cs" />
+    <Compile Include="corePoco\SubpartMark.cs" />
+    <Compile Include="corePoco\TreeMark.cs" />
+    <Compile Include="corePoco\usr.cs" />
+    <Compile Include="corePoco\usrobjmap.cs" />
+    <Compile Include="corePoco\col.cs" />
+    <Compile Include="corePoco\objcls.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="corePoco\objtype.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="extPoco\ColumnMark.cs" />
+    <Compile Include="extPoco\zone.cs" />
+    <Compile Include="extPoco\DayCourse.cs" />
+    <Compile Include="extPoco\detailgrp.cs" />
+    <Compile Include="extPoco\detailgrplink.cs" />
+    <Compile Include="extPoco\FixRule.cs" />
+    <Compile Include="extPoco\objdiv.cs" />
+    <Compile Include="extPoco\cell.cs" />
+    <Compile Include="extPoco\row.cs" />
+    <Compile Include="extPoco\MainObjectMark.cs" />
+    <Compile Include="extPoco\Mark.cs" />
+    <Compile Include="extPoco\point.cs" />
+    <Compile Include="extPoco\ObjectGroup.cs" />
+    <Compile Include="extPoco\obj.cs" />
+    <Compile Include="extPoco\objrole.cs" />
+    <Compile Include="extPoco\PeriodCourse.cs" />
+    <Compile Include="extPoco\Region.cs" />
+    <Compile Include="extPoco\detail.cs" />
+    <Compile Include="extPoco\SubpartMark.cs" />
+    <Compile Include="extPoco\TreeMark.cs" />
+    <Compile Include="extPoco\usr.cs" />
+    <Compile Include="extPoco\usrobjmap.cs" />
+    <Compile Include="extPoco\col.cs" />
+    <Compile Include="extPoco\objcls.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="extPoco\objtype.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">
+      <Project>{C51304FD-0406-48E0-833E-EEDC67425BC8}</Project>
+      <Name>Comdiv.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
+      <Project>{880F65EA-1A22-4672-A137-FFC91290A209}</Project>
+      <Name>Qorpent.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Comdiv.Zeta.Model\Comdiv.Zeta.Model.csproj">
+      <Project>{F939564A-D5A9-4BEE-B8F2-47C384358AFC}</Project>
+      <Name>Comdiv.Zeta.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="comdiv.core.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

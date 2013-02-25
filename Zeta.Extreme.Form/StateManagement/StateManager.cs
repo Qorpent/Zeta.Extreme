@@ -19,11 +19,11 @@ using Comdiv.Common;
 using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.Persistence;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using Qorpent.Applications;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.Themas;
+using Zeta.Extreme.Meta;
 
 namespace Zeta.Extreme.Form.StateManagement {
 	/// <summary>
@@ -307,7 +307,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 				if (!template.IgnorePeriodState) {
 					var periodstate = GetPeriodState(template.Year, template.Period);
 					if (periodstate == 0 && state == "0ISOPEN") {
-						cause = "Период " + Periods.GetName(template.Period) + " " + template.Year + "г. закрыт для правки";
+						cause = "Период " + Periods.Get(template.Period).Name + " " + template.Year + "г. закрыт для правки";
 						return false;
 					}
 				}
@@ -346,16 +346,18 @@ namespace Zeta.Extreme.Form.StateManagement {
 						}
 					}
 					if (validperiod) {
-						var req = new InputTemplateRequest();
-						req.Template = template;
-						req.TemplateCode = template.Code;
-						req.Year = template.Year;
-						req.Period = template.Period;
-						req.Object = obj;
-						req.ObjectId = obj.Id;
-						req.Detail = detail;
-						req.DetailId = detail.Id();
-						req.Date = DateExtensions.Begin;
+						new InputTemplateRequest
+							{
+								Template = template,
+								TemplateCode = template.Code,
+								Year = template.Year,
+								Period = template.Period,
+								Object = obj,
+								ObjectId = obj.Id,
+							/*	Detail = detail,
+								DetailId = detail.Id,*/
+								Date = DateExtensions.Begin
+							};
 
 						/*
 						 * var pkg = req.GetDefaultPkg();
@@ -507,7 +509,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		}
 
 		private static IDbConnection GetConnection() {
-			return Application.Current.DatabaseConnections.GetConnection("Default") ?? myapp.ioc.getConnection();
+			return Application.Current.DatabaseConnections.GetConnection("Default") ;
 		}
 
 		/// <summary>
@@ -735,6 +737,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 					}
 				}
 			}
+			/*
 			else {
 				if ((root.Code != "STUB") && root.Target != null) {
 					foreach (var check in RowCache.GetControlPoints(root.Target)) {
@@ -758,7 +761,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 						}
 					}
 				}
-			}
+			}*/
 			if (myapp.roles.IsInRole(myapp.usr, "SYS_NOCONTROLPOINTS", false)) {
 				if (!result) {
 					cp = "cpavoid";

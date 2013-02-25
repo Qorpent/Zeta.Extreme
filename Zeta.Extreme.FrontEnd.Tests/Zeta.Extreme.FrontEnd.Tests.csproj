@@ -18,9 +18,17 @@
     <Compile Include="JsonSaveParseTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">
+      <Project>{C51304FD-0406-48E0-833E-EEDC67425BC8}</Project>
+      <Name>Comdiv.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Dsl\Qorpent.Dsl.csproj">
       <Project>{B758E220-22F5-47DF-A73B-BC9B1A3DBDC3}</Project>
       <Name>Qorpent.Dsl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Comdiv.Zeta.Model\Comdiv.Zeta.Model.csproj">
+      <Project>{F939564A-D5A9-4BEE-B8F2-47C384358AFC}</Project>
+      <Name>Comdiv.Zeta.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -14,7 +14,6 @@ using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.Persistence;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme.Form {
@@ -87,7 +86,7 @@ namespace Zeta.Extreme.Form {
 				if (cell.Finished) {
 					return FixRuleResult.Fixed;
 				}
-				if (cell.Row.IsSumAggregation()) {
+				if (cell.Row.IsMarkSeted("0SA")) {
 					return FixRuleResult.Fixed;
 				}
 				if (cell.Row.IsFormula || cell.Column.IsFormula) {
@@ -100,7 +99,7 @@ namespace Zeta.Extreme.Form {
 				if (cell.Row.ExRefTo != null && cell.Column.IsMarkSeted("DOEXREF")) {
 					return FixRuleResult.Fixed;
 				}
-				if (cell.Row.HasChildren()) {
+				if (cell.Row.NativeChildren!=null && 0!=cell.Row.NativeChildren.Count) {
 					return FixRuleResult.Fixed;
 				}
 				return FixRuleResult.Open;

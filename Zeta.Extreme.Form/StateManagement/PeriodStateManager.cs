@@ -105,7 +105,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 
 		private static IDbConnection GetConnection(string system) {
 			system = string.IsNullOrWhiteSpace(system) ? "Default" : system;
-			return Application.Current.DatabaseConnections.GetConnection(system) ?? myapp.ioc.getConnection(system);
+			return Application.Current.DatabaseConnections.GetConnection(system);
 		}
 
 		private void indatabase(Action<IDbConnection> action) {

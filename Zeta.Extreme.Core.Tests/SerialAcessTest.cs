@@ -13,11 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using Comdiv.Application;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
+using Zeta.Extreme.Meta;
 
 namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]

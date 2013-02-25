@@ -8,7 +8,6 @@
 
 #endregion
 
-using Comdiv.Zeta.Data.Minimal;
 using Qorpent.Mvc;
 
 namespace Zeta.Extreme.FrontEnd {

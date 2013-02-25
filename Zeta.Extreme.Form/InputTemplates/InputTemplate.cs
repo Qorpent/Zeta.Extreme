@@ -19,11 +19,14 @@ using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.Logging;
 using Comdiv.Persistence;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
 using Zeta.Extreme.Form.Themas;
+using Zeta.Extreme.Meta;
+using ColumnDesc = Zeta.Extreme.Meta.ColumnDesc;
+using IConditionMatcher = Zeta.Extreme.Meta.IConditionMatcher;
+
 
 namespace Zeta.Extreme.Form.InputTemplates {
 	/// <summary>
@@ -286,53 +289,6 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			return objects;
 		}
 
-		/// <summary>
-		/// 	Получить рабочий колсет
-		/// </summary>
-		/// <param name="obj"> </param>
-		/// <returns> </returns>
-		public IList<ColumnDesc> GetWorkingColset(IZetaMainObject obj) {
-			var values = GetAllColumns().Where(
-				v =>
-				v.Visible &&
-				v.GetIsVisible(obj) &&
-				((GetColGroup().noContent() && v.Group.noContent()) ||
-				 v.Group == GetColGroup()
-				)
-				).ToList();
-			var th = Thema as EcoThema;
-			if (null != th) {
-				var rc = th.GetParameter("redirectcolset", "");
-				if (rc.hasContent()) {
-					values = ColumnDesc.RedirectColset(rc, values);
-				}
-			}
-			return values;
-		}
-
-		/// <summary>
-		/// 	Получить контрольные точки
-		/// </summary>
-		/// <param name="obj"> </param>
-		/// <returns> </returns>
-		public ControlPointResult[] GetControlPoints(IZetaMainObject obj) {
-			var result = new List<ControlPointResult>();
-			if ((Rows[0].Code != "STUB") && Rows[0].Target != null) {
-				foreach (var check in RowCache.GetControlPoints(Rows[0].Target)) {
-					foreach (var col in GetAllColumns()) {
-						if (col.GetIsVisible(obj) && col.ControlPoint) {
-							var zone = new Zone(obj);
-							var rd = new RowDescriptor(check);
-
-							var val =
-								new Comdiv.Zeta.Data.Minimal.Query(zone, rd, col, Thema).eval().toDecimal();
-							result.Add(new ControlPointResult {Row = check, Col = col, Value = val});
-						}
-					}
-				}
-			}
-			return result.ToArray();
-		}
 
 		/// <summary>
 		/// 	Получить группу колонок
@@ -537,7 +493,8 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		}
 
 		*/
-
+		//TODO: надо это на клиента вытаскивать
+		/*
 		/// <summary>
 		/// 	Получить проверки строк
 		/// </summary>
@@ -547,7 +504,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public ColumnRowCheckCondition[] GetRowChecks(IZetaRow row, IZetaMainObject obj) {
 			return GetRowChecks(row, obj, null);
 		}
-
+		
 		///<summary>
 		///	Получить проверки строк
 		///</summary>
@@ -586,6 +543,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			}
 			return result.ToArray();
 		}
+		
 
 		/// <summary>
 		/// 	Получить класс проверки строк
@@ -606,6 +564,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public string GetCheckedRowStyle(IZetaRow row, IZetaMainObject obj) {
 			return GetRowChecks(row, obj).Select(x => x.RowStyle).Where(x => x.hasContent()).concat(" ");
 		}
+	
 
 		/// <summary>
 		/// 	Получить класс проверенной ячейки
@@ -629,7 +588,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public string GetCheckedCellStyle(IZetaRow row, IZetaMainObject obj, ColumnDesc col) {
 			return GetRowChecks(row, obj, col).Select(x => x.CellStyle).Where(x => x.hasContent()).concat(" ");
 		}
-
+			 *  */
 
 		/// <summary>
 		/// 	Код фиксированного объекта
@@ -784,14 +743,14 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			}
 			return ForPeriods.Contains(Period);
 		}
-
+		/*
 		/// <summary>
 		/// 	Признак формы для одной детали
 		/// </summary>
 		public bool IsForSingleDetail {
 			get { return IsForDetail && !DetailSplit; }
 		}
-
+		*/
 		/// <summary>
 		/// 	Имя фильтра по деталям (класс)
 		/// </summary>
@@ -880,7 +839,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			}
 			return cachedState;
 		}
-
+		/*
 		/// <summary>
 		/// 	Признак формы для деталей
 		/// </summary>
@@ -906,7 +865,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				}
 				return InputForDetail;
 			}
-		}
+		}*/
 
 		/// <summary>
 		/// 	Полный метод проверки видимости
@@ -966,7 +925,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public IDictionary<string, object> ReloadSqlCache(IZetaMainObject obj, int year, int period) {
 			SqlCache = new Dictionary<string, decimal>();
 			var result =
-				myapp.ioc.getConnection().ExecuteDictionaryReader(
+				Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection("Default").ExecuteDictionaryReader(
 					"exec " + SqlOptimization + " @obj = @obj, @year = @year, @period = @period",
 					new Dictionary<string, object>
 						{
@@ -1112,6 +1071,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			StateManager.Process(this, obj, detail, state, master);
 
 			myapp.getProfile().Set("refresh", "True");
+			/*
 			//в ситуации проверки часто срабатывают триггеры обновления данных
 			if (state == "0ISCHECKED") {
 				var objid = obj == null ? detail.Object.Id : obj.Id();
@@ -1122,7 +1082,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				}
 				Evaluator.InvokeChanged();
 			}
-
+			*/
 			cachedState = state;
 			return master;
 		}
@@ -1373,34 +1333,6 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		 */
 
 		/// <summary>
-		/// 	Получить объект автозаполнения
-		/// </summary>
-		/// <returns> </returns>
-		public AutoFill GetAutoFill() {
-			return new AutoFill(this);
-		}
-
-		/// <summary>
-		/// 	Проверятет выполнимость автозаполнения
-		/// </summary>
-		/// <returns> </returns>
-		public bool IsAutoFill() {
-			var af = GetAutoFill();
-			return af.IsExecutable;
-		}
-
-		/// <summary>
-		/// 	Проверятет выполнимость автозаполнения
-		/// </summary>
-		/// <returns> </returns>
-		public bool IsAutoFill(IZetaMainObject obj) {
-			if (!IsAutoFill()) {
-				return false;
-			}
-			return GetState(obj, null) == "0ISOPEN" || myapp.roles.IsInRole(myapp.usr, "NOBLOCK", false);
-		}
-
-		/// <summary>
 		/// 	Нестандартная команда сохранения
 		/// </summary>
 		public string CustomSave { get; set; }
@@ -1500,34 +1432,6 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			}
 		}
 
-		/// <summary>
-		/// 	Получает DRS зароса статуса - явный устар!!
-		/// </summary>
-		/// <param name="obj"> </param>
-		/// <param name="detail"> </param>
-		/// <returns> </returns>
-		public DataRowSet GetStateDrs(IZetaMainObject obj, IZetaDetailObject detail) {
-			var drs = new DataRowSet()
-				.Row
-				.SetCode(UnderwriteCode)
-				.Column
-				.SetCode("0CONSTSTR")
-				.Periods
-				.Set(PeriodDefinition.Choose(Year, Period, DirectDate));
-
-			if (null == detail) {
-				drs.Object.SetId(obj.Id);
-			}
-			else {
-				if (IsForDetail && !DetailSplit) {
-					drs.DetailObject.SetId(detail.Id);
-				}
-				else {
-					drs.Object.SetId((detail).Object.Id);
-				}
-			}
-			return drs;
-		}
 
 		private int processStateRow(IZetaDetailObject detail, IZetaMainObject obj, int period, string state,
 		                            string comment, int parent) {
@@ -1558,11 +1462,11 @@ namespace Zeta.Extreme.Form.InputTemplates {
                 c.Usr = myapp.usrName;
                 myapp.storage.Get<IZetaCell>().Save(c);
 #endif
-			var conn = myapp.ioc.getSession().Connection;
+			var conn = Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection("Default"); //myapp.ioc.getSession().Connection;
 			var parameters = new Dictionary<string, object>();
 
 			parameters["row"] = UnderwriteCode;
-			parameters["obj"] = obj.Id();
+			parameters["obj"] = obj.Id;
 			parameters["year"] = Year;
 			parameters["period"] = period;
 			parameters["newstate"] = state;
@@ -1577,11 +1481,11 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				conn.CreateCommand(
 					"exec usm.state_after_change @row=@row,@obj=@obj,@year=@year,@period=@period, @newstate=@newstate,@trow=@trow, @template = @template",
 					parameters);
-			myapp.ioc.getSession().Transaction.Enlist(command);
+			//myapp.ioc.getSession().Transaction.Enlist(command);
 			command.ExecuteNonQuery();
-			if (state == "0ISCHECKED") {
-				Evaluator.DefaultCache.Clear();
-			}
+			//if (state == "0ISCHECKED") {
+			//	Evaluator.DefaultCache.Clear();
+			//}
 
 
 #if OLDSTATES
@@ -1637,23 +1541,6 @@ namespace Zeta.Extreme.Form.InputTemplates {
 
 			newp = RedirectPeriodMap.get(period + "_" + objperiodtype, () => newp, false, newp);
 			return newp;
-		}
-
-		/// <summary>
-		/// 	Получить дату последней установки статуса - ЯВНЫЙ ДИКИЙ УСТАР!!!
-		/// </summary>
-		/// <param name="obj"> </param>
-		/// <param name="detail"> </param>
-		/// <returns> </returns>
-		public DateTime GetLastStateUpdateTime(IZetaMainObject obj, IZetaDetailObject detail) {
-			var drs = new DataRowSet()
-				.Row
-				.SetCode(UnderwriteCode)
-				.Column
-				.SetCode("0CONSTSTR")
-				.Periods
-				.Set(PeriodDefinition.Choose(Year, Period, DirectDate));
-			return drs.GetVersion();
 		}
 
 		private readonly IDictionary<string, string> _cansetstateCache = new Dictionary<string, string>();

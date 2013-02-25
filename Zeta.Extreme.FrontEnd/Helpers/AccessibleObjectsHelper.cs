@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Comdiv.Zeta.Data.Minimal;
+using Zeta.Extreme.Meta;
 
 namespace Zeta.Extreme.FrontEnd.Helpers
 {

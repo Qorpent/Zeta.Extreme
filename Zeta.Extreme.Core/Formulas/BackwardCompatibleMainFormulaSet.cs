@@ -11,7 +11,7 @@
 using System;
 using System.Linq;
 using Comdiv.Extensions;
-using Comdiv.Zeta.Data.Minimal;
+using Periods = Zeta.Extreme.Meta.Periods;
 
 namespace Zeta.Extreme {
 	/// <summary>

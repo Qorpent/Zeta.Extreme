@@ -15,7 +15,6 @@ using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.MVC;
 using Comdiv.Model.Interfaces;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using Zeta.Extreme.Form.InputTemplates;
 

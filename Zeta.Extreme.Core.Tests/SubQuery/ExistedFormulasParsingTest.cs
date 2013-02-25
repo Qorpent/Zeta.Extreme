@@ -12,10 +12,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
+using Zeta.Extreme.Meta;
 
 namespace Zeta.Extreme.Core.Tests.SubQuery {
 	[TestFixture]
@@ -30,7 +30,7 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 		public void CheckAllFormulas() {
 			IDictionary<string, string> Errors = new Dictionary<string, string>();
 			var sumh = new StrongSumProvider();
-			var formulas = RowCache.byid.Values.Where(
+			var formulas = RowCache.Byid.Values.Where(
 				_ => _.IsFormula && _.FormulaEvaluator == "boo" && !sumh.IsSum(_)
 				);
 			foreach (var f in formulas.ToArray()) {

@@ -11,10 +11,10 @@
 
 using System;
 using System.Linq;
-using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
 using NUnit.Framework;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Meta;
+using Zeta.Extreme.Poco;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
 	[TestFixture(Description = "Проверка корректности и уникальности кэш строк")]

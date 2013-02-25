@@ -12,8 +12,10 @@ using System;
 using System.Collections.Generic;
 using Comdiv.Application;
 using Comdiv.Model.Interfaces;
-using Comdiv.Zeta.Data.Minimal;
 using Comdiv.Zeta.Model;
+using ColumnCache = Zeta.Extreme.Meta.ColumnCache;
+using ObjCache = Zeta.Extreme.Meta.ObjCache;
+using RowCache = Zeta.Extreme.Meta.RowCache;
 
 namespace Zeta.Extreme {
 	/// <summary>
