@@ -43,7 +43,10 @@ namespace Zeta.Extreme.Meta{
 			return Get(formulaperiod).Evaluate(sourceyear,DateExtensions.Begin,sourceperiod);
 		}
 
-        private static IEnumerable<IPeriod> cached{
+	    /// <summary>
+	    /// Загруженные периоды
+	    /// </summary>
+	    public static IEnumerable<IPeriod> All{
             get { return _cached ?? (_cached = new NativeZetaReader().ReadPeriods().OfType<IPeriod>().ToList()); }
         }
 	/// <summary>
@@ -59,7 +62,7 @@ namespace Zeta.Extreme.Meta{
 		/// <param name="classicId"></param>
 		/// <returns></returns>
 	    public static IPeriod Get(int classicId){
-            var result = cached.FirstOrDefault(x => x.ClassicId == classicId);
+            var result = All.FirstOrDefault(x => x.ClassicId == classicId);
             if (null == result){
                 result = new period();
                 result.ClassicId = classicId;

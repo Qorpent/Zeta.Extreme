@@ -19,13 +19,20 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// </summary>
 		/// <param name="key"> </param>
-		public FormulaAttribute(string key) {
+		/// <param name="version"> </param>
+		public FormulaAttribute(string key, string version) {
 			Key = key;
+			Version = version;
 		}
 
 		/// <summary>
 		/// 	Ключ формулы для обратного соотнесения с запросами
 		/// </summary>
 		public string Key { get; private set; }
+
+		/// <summary>
+		/// Строка с версией формулы
+		/// </summary>
+		public string Version { get; set; }
 	}
 }

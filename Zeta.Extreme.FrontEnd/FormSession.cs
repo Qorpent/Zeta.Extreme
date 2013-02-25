@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -518,7 +519,7 @@ namespace Zeta.Extreme.FrontEnd {
 				var val = "";
 				var cellid = 0;
 				if (null != q_.Value && null != q_.Value.Result) {
-					val = q_.Value.Result.NumericResult.ToString("#.0,#####");
+					val = q_.Value.Result.NumericResult.ToString("0.#####",CultureInfo.InvariantCulture);
 					if (q_.Value.Result.Error != null) {
 						val = q_.Value.Result.Error.Message;
 					}

@@ -71,5 +71,10 @@ namespace Zeta.Extreme {
 		/// 	Теги
 		/// </summary>
 		public string Tags;
+
+		/// <summary>
+		/// Версия
+		/// </summary>
+		public string Version { get; set; }
 	}
 }

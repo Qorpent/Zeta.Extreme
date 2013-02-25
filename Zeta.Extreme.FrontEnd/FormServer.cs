@@ -10,7 +10,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Comdiv.Application;
 using Comdiv.Persistence;
@@ -247,6 +250,7 @@ namespace Zeta.Extreme.FrontEnd {
 			((IResetable) ( Application.Files).GetResolver()).Reset(null);
 			((IResetable)Application.Roles).Reset(null);
 			myapp.files.Reload();
+			Sessions.Clear();
 
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
@@ -266,6 +270,11 @@ namespace Zeta.Extreme.FrontEnd {
 				{
 					FormulaStorage.Default.AutoBatchCompile = false;
 					FormulaStorage.Default.Clear();
+					var tmp = Application.Files.Resolve("~/.tmp/formula_dll", false);
+					FormulaStorage.Default.BuildCache(tmp);
+				
+
+
 					var _sumh = new StrongSumProvider();
 					var oldrowformulas = RowCache.Byid.Values.Where(
 						_ => _.IsFormula && !_sumh.IsSum(_)
@@ -286,7 +295,7 @@ namespace Zeta.Extreme.FrontEnd {
 						                  where c.IsFormula
 						                        && c.FormulaEvaluator == "boo" && !string.IsNullOrEmpty(c.Formula)
 												&& c.Version < DateTime.Today
-						                  select new {c = c.Code, f = c.Formula, tag = c.Tag}
+						                  select new {c = c.Code, f = c.Formula, tag = c.Tag, version=c.Version}
 					                  ).ToArray();
 
 					var newcolformulas = (
@@ -294,35 +303,35 @@ namespace Zeta.Extreme.FrontEnd {
 										  where c.IsFormula
 												&& c.FormulaEvaluator == "boo" && !string.IsNullOrEmpty(c.Formula)
 												&& c.Version >= DateTime.Today
-										  select new { c = c.Code, f = c.Formula, tag = c.Tag }
+										  select new { c = c.Code, f = c.Formula, tag = c.Tag, version=c.Version }
 									  ).ToArray();
 
 					foreach (var f in oldrowformulas)
 					{
-						var req = new FormulaRequest { Key = "row:" + f.Code, Formula = f.Formula, Language = f.FormulaEvaluator };
+						var req = new FormulaRequest { Key = "row:" + f.Code, Formula = f.Formula, Language = f.FormulaEvaluator,Version = f.Version.ToString(CultureInfo.InvariantCulture)};
 						FormulaStorage.Default.Register(req);
 					}
 					
 					foreach (var c in oldcolformulas)
 					{
-						var req = new FormulaRequest {Key = "col:" + c.c, Formula = c.f, Language = "boo", Tags = c.tag};
+						var req = new FormulaRequest { Key = "col:" + c.c, Formula = c.f, Language = "boo", Tags = c.tag, Version = c.version.ToString(CultureInfo.InvariantCulture) };
 						FormulaStorage.Default.Register(req);
 					}
-					FormulaStorage.Default.CompileAll();
+					FormulaStorage.Default.CompileAll(tmp);
 
 
 					foreach (var f in newrowformulas)
 					{
-						var req = new FormulaRequest { Key = "row:" + f.Code, Formula = f.Formula, Language = f.FormulaEvaluator };
+						var req = new FormulaRequest { Key = "row:" + f.Code, Formula = f.Formula, Language = f.FormulaEvaluator ,Version = f.Version.ToString(CultureInfo.InvariantCulture) };
 						FormulaStorage.Default.Register(req);
 					}
 
 					foreach (var c in newcolformulas)
 					{
-						var req = new FormulaRequest { Key = "col:" + c.c, Formula = c.f, Language = "boo", Tags = c.tag };
+						var req = new FormulaRequest { Key = "col:" + c.c, Formula = c.f, Language = "boo", Tags = c.tag, Version = c.version.ToString(CultureInfo.InvariantCulture) };
 						FormulaStorage.Default.Register(req);
 					}
-					FormulaStorage.Default.CompileAll();
+					FormulaStorage.Default.CompileAll(tmp);
 
 					
 

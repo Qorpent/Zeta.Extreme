@@ -11,7 +11,9 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Comdiv.Extensions;
 using Qorpent.Utils.Extensions;
@@ -28,6 +30,9 @@ namespace Zeta.Extreme {
 	public class FormulaStorage : IFormulaStorage {
 		private static IFormulaStorage _default;
 
+
+		
+
 		/// <summary>
 		/// 	Конструктор по умолчанию, также формирует простой препроцессор
 		/// </summary>
@@ -35,6 +40,37 @@ namespace Zeta.Extreme {
 			AddPreprocessor(new DefaultDeltaPreprocessor());
 			AddPreprocessor(new BooConverter());
 			AutoBatchCompile = true;
+		}
+
+		/// <summary>
+		/// Кэш бибилиотек для автоматической привязки формул
+		/// </summary>
+		public IList<Assembly> FormulaAssemblyCache {
+			get { return _formulaAssemblyCache ??(_formulaAssemblyCache = new List<Assembly>()); }
+
+		}
+		class CachedFormula {
+		/// <summary>
+		/// 
+		/// </summary>
+			public string Version;
+			/// <summary>
+			/// 
+			/// </summary>
+			public Type Formula;
+		}
+		IDictionary<string, CachedFormula> _cachedTypes = new Dictionary<string, CachedFormula>();
+
+		/// <summary>
+		/// Строит индекс по кэшированным типам
+		/// </summary>
+		public void BuildCacheIndex() {
+			_cachedTypes.Clear();
+			foreach (var formula in GetCachedFormulas()) {
+				var attr = ((FormulaAttribute)formula.GetCustomAttribute(typeof(FormulaAttribute), true));
+				if (null == attr) continue;
+				_cachedTypes[attr.Key] = new CachedFormula {Version = attr.Version, Formula = formula};
+			}
 		}
 
 		/// <summary>
@@ -84,13 +120,58 @@ namespace Zeta.Extreme {
 						}
 					}
 
+					TryResolveFromCache(request);
+					if(null==request.PreparedType) {
 
-					var waitbatchsize = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).Count();
-					if (AutoBatchCompile && BatchSize <= waitbatchsize) {
-						StartAsyncCompilation();
+						var waitbatchsize =
+							_registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).Count();
+						if (AutoBatchCompile && BatchSize <= waitbatchsize) {
+							StartAsyncCompilation();
+						}
 					}
 					return request.Key;
 				}
+		}
+
+		/// <summary>
+		/// Возвращает список типов
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<Type> GetCachedFormulas() {
+			return FormulaAssemblyCache.SelectMany(_ => _.GetTypes());
+		}
+
+		private void TryResolveFromCache(FormulaRequest request) {
+			if(!_cachedTypes.ContainsKey(request.Key)) return;
+			var _cached = _cachedTypes[request.Key];
+			if(_cached.Version==request.Version) {
+				request.PreparedType = _cached.Formula;
+			}
+		}
+
+		/// <summary>
+		/// Строит кэш из указанной директории
+		/// </summary>
+		/// <param name="root"></param>
+		public void BuildCache(string root) {
+			FormulaAssemblyCache.Clear();
+			
+			Directory.CreateDirectory(root);
+			var paths = Directory.GetFiles(root, "*.dll").OrderBy(File.GetLastWriteTime).ToArray();
+			foreach (var path in paths)
+			{
+				try
+				{
+					var bin = File.ReadAllBytes(path);
+					FormulaAssemblyCache.Add(Assembly.Load(bin));
+				}
+				catch
+				{
+
+				}
+			}
+			BuildCacheIndex();
+
 		}
 
 		/// <summary>
@@ -154,7 +235,7 @@ namespace Zeta.Extreme {
 		public void StartAsyncCompilation() {
 			lock (_compile_lock) {
 				var batch = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).ToArray();
-				var t = Task.Run(() => DoCompile(batch));
+				var t = Task.Run(() => DoCompile(batch, null));
 				foreach (var f in batch) {
 					f.FormulaCompilationTask = t;
 				}
@@ -174,10 +255,10 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Компилирует все формы в стеке
 		/// </summary>
-		public void CompileAll() {
+		public void CompileAll(string savepath) {
 			lock (_compile_lock) {
 				var batch = _registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).ToArray();
-				DoCompile(batch);
+				DoCompile(batch, savepath);
 			}
 		}
 
@@ -208,9 +289,10 @@ namespace Zeta.Extreme {
 		/// 	Обертка над вызовом компилятора с корректной обработкой ошибок компиляции
 		/// </summary>
 		/// <param name="batch"> </param>
-		protected internal void DoCompile(FormulaRequest[] batch) {
+		/// <param name="savepath"> </param>
+		protected internal void DoCompile(FormulaRequest[] batch, string savepath) {
 			try {
-				new FormulaCompiler().Compile(batch);
+				new FormulaCompiler().Compile(batch,savepath);
 			}
 			catch (Exception e) {
 				LastCompileError = e;
@@ -241,7 +323,7 @@ namespace Zeta.Extreme {
 					return;
 				}
 				// все, значит мы синхронно должны закомпилить это дело
-				DoCompile(new[] {request});
+				DoCompile(new[] {request}, null);
 			}
 		}
 
@@ -259,5 +341,7 @@ namespace Zeta.Extreme {
 		/// 	Размер батча для асинхронной компиляции
 		/// </summary>
 		public int BatchSize = 5;
+
+		private IList<Assembly> _formulaAssemblyCache;
 	}
 }

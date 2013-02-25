@@ -9,6 +9,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -29,6 +31,7 @@ namespace Zeta.Extreme {
 		/// 	Количество формул
 		/// </summary>
 		int Count { get; }
+
 
 		///<summary>
 		///</summary>
@@ -66,7 +69,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Компилирует все формы в стеке
 		/// </summary>
-		void CompileAll();
+		void CompileAll(string savepath=null);
 
 		/// <summary>
 		/// 	Очистка кэша формул
@@ -78,5 +81,12 @@ namespace Zeta.Extreme {
 		/// <param name="key"></param>
 		/// <returns></returns>
 		bool Exists(string key);
+
+
+		/// <summary>
+		/// Строит кэш из указанной директории
+		/// </summary>
+		/// <param name="root"></param>
+		void BuildCache(string root);
 	}
 }

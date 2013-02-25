@@ -24,7 +24,7 @@ namespace Zeta.Extreme.FrontEnd.Helpers
 				objects.Select(
 					_ =>
 					new ObjectRecord
-						{id = _.Id, name = string.IsNullOrWhiteSpace(_.ShortName) ? _.Name : _.ShortName, div = _.Group.Code, idx = _.Idx})
+						{id = _.Id, name = _.Name,  shortname= _.ShortName, div = _.Group.Code, idx = _.Idx})
 					.ToArray();
 			return new AccessibleObjects {divs = divs, objs = objs};
 		}

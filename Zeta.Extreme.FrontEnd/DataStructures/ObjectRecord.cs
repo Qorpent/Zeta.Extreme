@@ -23,5 +23,9 @@ namespace Zeta.Extreme.FrontEnd {
 		/// Индекс периода в рамках типа
 		/// </summary>
 		public int idx;
+		/// <summary>
+		/// Короткое имя
+		/// </summary>
+		public string shortname;
 	}
 }

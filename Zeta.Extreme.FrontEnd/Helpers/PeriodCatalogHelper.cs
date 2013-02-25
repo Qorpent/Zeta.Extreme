@@ -11,6 +11,7 @@
 using System.Linq;
 using Comdiv.Application;
 using Comdiv.Zeta.Model;
+using Zeta.Extreme.Meta;
 using Zeta.Extreme.Poco;
 
 namespace Zeta.Extreme.FrontEnd.Helpers {
@@ -25,7 +26,7 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 		/// <returns></returns>
 		public PeriodRecord[] GetAllPeriods() {
 			return
-				(myapp.storage.AsQueryable<period>().Where(_ => _.ClassicId > 0).ToArray())
+				(Periods.All.OfType<period>().Where(_ => _.ClassicId > 0).ToArray())
 					.Select(_ => new PeriodRecord { id = _.ClassicId, name = _.Name, type = GetPeriodType(_), idx = GetIdx(_) })
 					.Where(_ => PeriodType.None != _.type)
 					.OrderBy(_ => _.type)
