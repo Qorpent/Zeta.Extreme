@@ -371,6 +371,7 @@
             e = $(e);
             div.number(e.text(), 0, '', '');
             obj[i] = {id:e.attr("id"), value:div.text()};
+//            obj[i] = {id:e.attr("realid"), value:div.text()};
         });
         return obj;
     };

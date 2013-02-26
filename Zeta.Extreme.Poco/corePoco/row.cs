@@ -72,6 +72,11 @@ using Comdiv.Zeta.Model;namespace Zeta.Extreme.Poco{
         [Ref(ClassName = typeof (obj))]
         public virtual IZetaMainObject Org { get; set; }
 
+		/// <summary>
+		/// Режим использования формулы с Extreme
+		/// </summary>
+		public virtual int ExtremeFormulaMode { get; set; }
+
         [Map]
         public virtual Guid Uid { get; set; }
 

@@ -47,7 +47,8 @@ namespace Zeta.Extreme.Meta {
 					Grp = r.GetString(15),
 					MarkCache = r.GetString(16),
 					Valuta = r.GetString(17),
-					Tag = r.GetString(18)
+					Tag = r.GetString(18),
+					ExtremeFormulaMode = r.GetInt32(21)
 				};
 
 			// no x USR = 19

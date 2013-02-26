@@ -209,7 +209,7 @@ f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) 
 				storage.Register(req);
 				try
 				{
-					storage.CompileAll();
+					storage.CompileAll(null);
 				}
 				catch (Exception e) {
 					fail = true;
@@ -232,7 +232,7 @@ f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) 
 				storage.Register(req);
 				try
 				{
-					storage.CompileAll();
+					storage.CompileAll(null);
 				}
 				catch (Exception e) {
 					fail = true;

@@ -7,6 +7,11 @@
     box-sizing: border-box;
 }
 
+/*Это чтобы тултипы не перекрывали открытые dropdown-menu*/
+div.open>.tooltip {
+    display: none !important;
+}
+
 .zefsformheader {
     position: fixed;
     top: 37px;
@@ -26,10 +31,20 @@
     margin-right: 3px;
 }
 
-.zefsstatus, .zefsformsave, .feedback, .objselector,
+.zefsstatus, .zefsformsave, .feedback, .objselector, .zefscolmanager,
 .information {
     margin-top: 4px;
     margin-left: 3px;
+}
+
+.zefscolmanager label {
+    margin: 0;
+}
+
+.zefscolmanager label>input {
+    margin-bottom: 3px !important;
+    margin-right: 3px;
+    cursor: pointer;
 }
 
 .zefsalerter {

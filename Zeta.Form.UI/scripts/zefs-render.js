@@ -27,8 +27,8 @@ $.extend(root,{
 				$(thead.find("tr").first()).append($('<th class="measure"/>').text("Ед. изм."));
 			}
 			$.each(session.structure.cols, function(i,col) {
-				colgroup.append($('<col class="data"/>'));
-				var th = $('<th class="data"/>').text(col.getName());
+				colgroup.append($('<col class="data"/>').attr("idx",col.getIdx()));
+				var th = $('<th class="data"/>').attr("idx",col.getIdx()).text(col.getName());
 				thead.find("tr").append(th);
 			});
 			table.append(colgroup);
@@ -50,7 +50,12 @@ $.extend(root,{
 						tr.append($('<td class="measure"/>').text(row.getMeasure()));
 					}
                     $.each(session.structure.cols, function(i,col) {
-                        var td = $('<td class="data notloaded"/>').attr("id", row.getIdx() + ":" + col.getIdx());
+                        var td = $('<td class="data notloaded"/>').attr({
+                            "id": row.getIdx() + ":" + col.getIdx(),
+//                          "realid" : row.getRealId(),
+                            "idx": col.getIdx(),
+                            "visible": "visible"
+                        });
                         if (col.getIsPrimary() && row.getIsPrimary()) td.addClass("editable");
                         if (col.getIsControlPoint() && row.getIsControlPoint()) td.addClass("control");
                         tr.append(td);
@@ -68,12 +73,10 @@ $.extend(root,{
             var div = $('<div/>'); // Это контейнер для форматирования чисел :)
 			$.each(batch.getData(), function(i,b) {
                 var $cell = $("td[id='" + b.i +  "']");
-                $cell.removeAttr("title");
-                var val = b.getValue() | "";
+                var val = b.getValue() || "";
                 $cell.number($cell.text(),0,'','');
                 if ($cell.text() != val && !$.isEmptyObject($cell.data())) {
                     $cell.addClass("recalced");
-                    if ($cell.text() != "") $cell.attr("title", $cell.text());
                 }
                 if (val == "0") {
                     if (b.getCellId() == 0 || !$cell.hasClass("editable")) val = "";
@@ -84,7 +87,8 @@ $.extend(root,{
                 $cell.removeClass("notloaded");
                 $cell.data("history", val);
                 $cell.data("previous", val);
-                $cell.tooltip({title: val, placement: 'top'});
+                if (val.search(/\./) != -1 && val.search("error") == -1) $cell.addClass("rounded");
+                $cell.tooltip({title: val, placement: 'top', container: $('body')});
 			});
 			batch.wasFilled = true;
 			return session;

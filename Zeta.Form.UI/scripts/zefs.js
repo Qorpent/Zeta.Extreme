@@ -8,7 +8,9 @@ root.handlers = $.extend(root.handlers, {
     on_zefsfailed : "zefsfailed",
     // Session handlers:
     on_sessionload : "sessionload",
+    on_structureload : "structureload",
     // Form handlers:
+    on_formready : "forrmready",
     on_statusload : "statusload",
     on_statusfailed : "statusfaild",
     on_savestart : "savestart",
@@ -97,6 +99,7 @@ root.init = root.init ||
             session.structure = options.asStruct(d);
             Render(session);
             Fill(session);
+            $(root).trigger(root.handlers.on_structureload);
 			$('table.data').zefs(); //нам сразу нужна живость!!!
         }));
     }, this);
@@ -175,6 +178,20 @@ root.init = root.init ||
         }).success(function(d) {
             $(root).trigger(root.handlers.on_savefinished);
             SaveState();
+        });
+    };
+
+    var ReadySave = function() {
+        $.ajax({
+            url: siteroot+options.save_command,
+            type: "POST",
+            context: this,
+            dataType: "json",
+            data: {
+                session: root.myform.sessionId
+            }
+        }).success(function(d) {
+            // Вот тут, как я понял, начинается Save
         });
     };
 

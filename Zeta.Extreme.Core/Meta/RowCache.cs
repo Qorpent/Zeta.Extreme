@@ -186,13 +186,13 @@ namespace Zeta.Extreme.Meta{
                 {
                     processRefs(row);
                 }
-				var _sumh = new StrongSumProvider();
+			//	var _sumh = new StrongSumProvider();
 				foreach (var row in roots)
 				{
-					if (row.IsFormula && row.FormulaEvaluator == "boo" && !string.IsNullOrWhiteSpace(row.Formula))
+					if (row.IsFormula && row.FormulaEvaluator == "boo" && ((Poco.row)row).ExtremeFormulaMode==1)
 					{
-						if (row.ResolveTag("extreme") != "1") continue;
-						if (_sumh.IsSum(row)) continue;
+						//if (row.ResolveTag("extreme") != "1") continue;
+						//if (_sumh.IsSum(row)) continue;
 						formulas.Add(row);
 					}
 				}

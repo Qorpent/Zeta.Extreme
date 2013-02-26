@@ -39,7 +39,7 @@ namespace Zeta.Extreme.Meta {
 					Name,		Code,		Comment,	RefId,		ParentId,		-- 5 - 9
 					ObjectId,	OuterCode,	Idx,		Measure,	Path,			-- 10 - 14
 					Grp,		MarkCache,	Valuta,		Tag,		Usr,			-- 15 - 19
-					ExRefId															-- 20
+					ExRefId,	ExtremeFormulaMode									-- 20
 				from zeta.normalrow";
 
 		/// <summary>
