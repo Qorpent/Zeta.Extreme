@@ -320,6 +320,10 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		/// <summary>
+		/// Режим подготовки к сохранению
+		/// </summary>
+		public bool InitSaveMode { get; set; }
+		/// <summary>
 		/// 	Стартует сессию
 		/// </summary>
 		public void Start() {
@@ -415,10 +419,31 @@ namespace Zeta.Extreme.FrontEnd {
 			var sw = Stopwatch.StartNew();
 			IDictionary<string, Query> queries = new Dictionary<string, Query>();
 			LoadEditablePrimaryData(queries);
-			LoadNonEditablePrimaryData(queries);
+			if(!InitSaveMode) {
+				LoadNonEditablePrimaryData(queries);
+			}
 			TimeToPrimary = sw.Elapsed;
 			PrimaryCount = Data.Count;
 
+			if(!InitSaveMode) {
+				LoadNoPrimary(queries);
+
+				QueriesCount = queries.Count;
+				DataStatistics = ((Extreme.Session) DataSession).GetStatisticString();
+				SqlLog = ((DefaultPrimarySource) ((Extreme.Session) DataSession).PrimarySource).QueryLog.ToArray();
+				DataSession = null;
+				DataCount = Data.Count;
+				LastDataTime = sw.Elapsed;
+				OverallDataTime = OverallDataTime + sw.Elapsed;
+				foreach (var controlPointResult in _controlpoints) {
+					controlPointResult.Value = controlPointResult.Query.Result.NumericResult;
+					controlPointResult.Query = null;
+				}
+			}
+			InitSaveMode = false;
+		}
+
+		private void LoadNoPrimary(IDictionary<string, Query> queries) {
 			foreach (var c in cols) {
 				foreach (var r in rows) {
 					var key = r.i + ":" + c.i;
@@ -451,19 +476,6 @@ namespace Zeta.Extreme.FrontEnd {
 				DataSession.Execute(500);
 				ProcessValues(queries, false);
 			}
-
-			QueriesCount = queries.Count;
-			DataStatistics = ((Extreme.Session) DataSession).GetStatisticString();
-			SqlLog = ((DefaultPrimarySource) ((Extreme.Session) DataSession).PrimarySource).QueryLog.ToArray();
-			DataSession = null;
-			DataCount = Data.Count;
-			LastDataTime = sw.Elapsed;
-			OverallDataTime = OverallDataTime + sw.Elapsed;
-			foreach (var controlPointResult in _controlpoints) {
-				controlPointResult.Value = controlPointResult.Query.Result.NumericResult;
-				controlPointResult.Query = null;
-			}
-			//ControlPoints = _controlpoints.ToArray();
 		}
 
 		private void LoadEditablePrimaryData(IDictionary<string, Query> queries) {
@@ -525,9 +537,13 @@ namespace Zeta.Extreme.FrontEnd {
 					}
 					cellid = q_.Value.Result.CellId;
 				}
+				var realkey = "";
+				if(canbefilled) {
+					realkey = q_.Value.Row.Code + "_" + q_.Value.Col.Code + "_" + q_.Value.Time.Year + "_" + q_.Value.Time.Period;
+				}
 
 				lock (Data) {
-					Data.Add(new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value});
+					Data.Add(new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, realkey = realkey});
 				}
 			}
 		}
@@ -722,6 +738,18 @@ namespace Zeta.Extreme.FrontEnd {
 				StartCollectData();
 				return true;
 			}
+		}
+		/// <summary>
+		/// Подчистка после загрузки данных
+		/// </summary>
+		/// <returns></returns>
+		public object CleanupAfterDataLoaded() {
+			Structure = null;
+			var npcells = Data.Where(_ => !_.canbefilled).ToArray();
+			foreach (var outCell in npcells) {
+				Data.Remove(outCell);
+			}
+			return true;
 		}
 	}
 }

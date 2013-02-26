@@ -215,8 +215,9 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="obj"> </param>
 		/// <param name="year"> </param>
 		/// <param name="period"> </param>
+		/// <param name="initsavemode">пред-открытие для сохранения </param>
 		/// <returns> </returns>
-		public FormSession Start(IInputTemplate template, IZetaMainObject obj, int year, int period) {
+		public FormSession Start(IInputTemplate template, IZetaMainObject obj, int year, int period, bool initsavemode=false) {
 			lock (this) {
 				var usr = Application.Principal.CurrentUser.Identity.Name;
 				var existed =
@@ -226,20 +227,23 @@ namespace Zeta.Extreme.FrontEnd {
 				if (null == existed) {
 					var session = new FormSession(template, year, period, obj);
 					session.FormServer = this;
+					session.InitSaveMode = initsavemode;
 					Sessions.Add(session);
 					session.Start();
 					return session;
 				}
 				else {
 					existed.Activations++;
+					if(!initsavemode) {
+						if (!existed.IsStarted) {
+							existed.Start();
+						}
+						else {
 
-					if (!existed.IsStarted) {
-						existed.Start();
-					}
-					else {
-						if (existed.IsFinished) {
-							existed.Error = null;
-							existed.RestartData();
+							if (existed.IsFinished) {
+								existed.Error = null;
+								existed.RestartData();
+							}
 						}
 					}
 					return existed;

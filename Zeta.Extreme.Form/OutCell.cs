@@ -45,5 +45,9 @@ namespace Zeta.Extreme.Form {
 		/// 	«начение €чейки
 		/// </summary>
 		[SerializeNotNullOnly] public string v;
+		/// <summary>
+		/// –еальный ключ €чейки
+		/// </summary>
+		[SerializeNotNullOnly]public string realkey;
 	}
 }

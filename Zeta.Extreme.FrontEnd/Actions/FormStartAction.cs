@@ -19,28 +19,7 @@ namespace Zeta.Extreme.FrontEnd {
 	/// 	Инициирует сессию
 	/// </summary>
 	[Action("zefs.start")]
-	public class FormStartAction : FormServerActionBase {
-		/// <summary>
-		/// 	Second phase - validate INPUT/REQUEST parameters here - it called before PREPARE so do not try validate
-		/// 	second-level internal state and authorization - only INPUT PARAMETERS must be validated
-		/// </summary>
-		protected override void Validate() {
-			MyFormServer.ReadyToServeForms.Wait();
-			if (!FormServer.Default.IsOk) {
-				throw new Exception("Application not loaded properly!");
-			}
-			base.Validate();
-			_realform = FormServer.Default.FormProvider.Get(form);
-			if (null == _realform) {
-				throw new Exception("form not found");
-			}
-			_realobj = MetaCache.Default.Get<IZetaMainObject>(obj);
-			if (null == _realobj) {
-				throw new Exception("obj not found");
-			}
-		}
-
-
+	public class FormStartAction : SessionStartBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
@@ -48,12 +27,5 @@ namespace Zeta.Extreme.FrontEnd {
 		protected override object MainProcess() {
 			return MyFormServer.Start(_realform, _realobj, year, period);
 		}
-
-		private IInputTemplate _realform;
-		private IZetaMainObject _realobj;
-		[Bind(Required = true)] private string form = "";
-		[Bind(Required = true)] private int obj = 0;
-		[Bind(Required = true)] private int period = 0;
-		[Bind(Required = true)] private int year = 0;
 	}
 }
