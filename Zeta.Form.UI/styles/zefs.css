@@ -8,7 +8,17 @@
 }
 
 .zefsformheader {
-    margin: 0 20px;
+    position: fixed;
+    top: 37px;
+    z-index: 998;
+    background-color: white;
+    width: 100%;
+}
+
+.zefsformheader h3 {
+    font-size: 11pt;
+    padding-left: 20px;
+    margin: 0;
 }
 
 .zefsdebug {
@@ -20,6 +30,13 @@
 .information {
     margin-top: 4px;
     margin-left: 3px;
+}
+
+.zefsalerter {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    display: none;
 }
 
 .zefsformheader {

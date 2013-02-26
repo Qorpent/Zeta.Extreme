@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -193,10 +194,13 @@ namespace Zeta.Extreme.FrontEnd {
 							compileerror =
 								FormulaStorage.Default.LastCompileError == null ? "" : FormulaStorage.Default.LastCompileError.ToString(),
 							formulacount = FormulaStorage.Default.Count,
+							cachetime = _formulaCacheTime,
+							findtime = _formulaFindTime,
+							compiletime = _formulaRegisterTime
 						},
 					themas = new
 						{
-							time = CompileFormulas.ExecuteTime,
+							time = LoadThemas.ExecuteTime,
 							status = Default.LoadThemas.Status,
 							error = Default.LoadThemas.Error.ToStr(),
 						},
@@ -268,24 +272,22 @@ namespace Zeta.Extreme.FrontEnd {
 		private Task GetCompileFormulasTask() {
 			return new Task(() =>
 				{
+					var _sw = Stopwatch.StartNew();
 					FormulaStorage.Default.AutoBatchCompile = false;
 					FormulaStorage.Default.Clear();
 					var tmp = Application.Files.Resolve("~/.tmp/formula_dll", false);
 					FormulaStorage.Default.BuildCache(tmp);
-				
+					_sw.Stop();
+					_formulaCacheTime = _sw.Elapsed;
+					_sw = Stopwatch.StartNew();
 
 
-					var _sumh = new StrongSumProvider();
-					var oldrowformulas = RowCache.Byid.Values.Where(
-						_ => _.IsFormula && !_sumh.IsSum(_)
-						     && _.ResolveTag("extreme") == "1"
-							 && _.Version < DateTime.Today
+					var oldrowformulas = RowCache.Formulas.Where(
+						_ =>  _.Version < DateTime.Today
 						).ToArray();
 
-					var newrowformulas = RowCache.Byid.Values.Where(
-						_ => _.IsFormula && !_sumh.IsSum(_)
-							 && _.ResolveTag("extreme") == "1"
-							 && _.Version >= DateTime.Today
+					var newrowformulas = RowCache.Formulas.Where(
+						_ => _.Version >= DateTime.Today
 						).ToArray();
 
 					
@@ -306,6 +308,9 @@ namespace Zeta.Extreme.FrontEnd {
 										  select new { c = c.Code, f = c.Formula, tag = c.Tag, version=c.Version }
 									  ).ToArray();
 
+					_sw.Stop();
+					_formulaFindTime = _sw.Elapsed;
+					_sw = Stopwatch.StartNew();
 					foreach (var f in oldrowformulas)
 					{
 						var req = new FormulaRequest { Key = "row:" + f.Code, Formula = f.Formula, Language = f.FormulaEvaluator,Version = f.Version.ToString(CultureInfo.InvariantCulture)};
@@ -337,6 +342,8 @@ namespace Zeta.Extreme.FrontEnd {
 
 					
 					FormulaStorage.Default.AutoBatchCompile = true;
+					_sw.Stop();
+					_formulaRegisterTime = _sw.Elapsed;
 				});
 		}
 
@@ -371,5 +378,8 @@ namespace Zeta.Extreme.FrontEnd {
 		
 		private readonly bool _doNotRun;
 		private int _idx = -100;
+		private TimeSpan _formulaCacheTime;
+		private TimeSpan _formulaFindTime;
+		private TimeSpan _formulaRegisterTime;
 	}
 }

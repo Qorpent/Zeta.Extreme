@@ -75,8 +75,8 @@
 		-->
 			<!--dependency -->
 			<Library Include="Comdiv.Zeta.Model" />
-			<Library Include="Comdiv.Zeta.Data.Minimal" />
-			<Library Include="Comdiv.Zeta.Model.Implementation" />
+		<!--	<Library Include="Comdiv.Zeta.Data.Minimal" />
+			<Library Include="Comdiv.Zeta.Model.Implementation" />-->
 			<Library Include="Comdiv.Core" />
 
 
@@ -89,7 +89,7 @@
 			
 			<Library Include="Castle.Windsor" />
 			<Library Include="Castle.Core" />  -->
-<Library Include="Comdiv.Reporting" />
+			<Library Include="Comdiv.Reporting" />
 			<Library Include="Comdiv.Extensibility" />
 			<Library Include="Microsoft.Scripting" /> 
 			

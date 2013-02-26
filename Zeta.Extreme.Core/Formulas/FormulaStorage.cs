@@ -90,6 +90,10 @@ namespace Zeta.Extreme {
 			lock (_register_lock)
 				lock (_compile_lock) //нельзя во время регистрации еще и компилировать
 				{
+					
+					if(null!=request.PreparedType) {
+						return request.Key;
+					}
 					if (string.IsNullOrWhiteSpace(request.Key)) {
 						request.Key = request.Formula.Trim();
 					}
@@ -114,13 +118,14 @@ namespace Zeta.Extreme {
 							request.PreparedType = typeof (NoExtremeFormulaStub);
 						}
 						else {
+							TryResolveFromCache(request);
 							if (null == request.PreparedType && string.IsNullOrWhiteSpace(request.PreprocessedFormula)) {
 								Preprocess(request);
 							}
 						}
 					}
 
-					TryResolveFromCache(request);
+					
 					if(null==request.PreparedType) {
 
 						var waitbatchsize =

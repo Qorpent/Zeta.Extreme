@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Comdiv.Application;
 using Comdiv.Common;
 using Comdiv.Extensions;
@@ -151,9 +152,13 @@ namespace Zeta.Extreme.Meta{
             #endif
         }
 
+		private static IList<IZetaRow> formulas = new List<IZetaRow>();
+
+		static readonly IList<Task> _formularegistrators = new List<Task>();	
         private static void reloadCache(){
             lock (locker) {
-				
+				_formularegistrators.Clear();
+				formulas.Clear();
                 bycode.Clear();
                 byid.Clear();
 				bygroup.Clear();
@@ -173,6 +178,7 @@ namespace Zeta.Extreme.Meta{
 		            }
 		            roots = _r;
 	            }
+	            
 	            foreach (var row in roots) {
                     processIds(row);
                 }
@@ -180,7 +186,17 @@ namespace Zeta.Extreme.Meta{
                 {
                     processRefs(row);
                 }
-			
+				var _sumh = new StrongSumProvider();
+				foreach (var row in roots)
+				{
+					if (row.IsFormula && row.FormulaEvaluator == "boo" && !string.IsNullOrWhiteSpace(row.Formula))
+					{
+						if (row.ResolveTag("extreme") != "1") continue;
+						if (_sumh.IsSum(row)) continue;
+						formulas.Add(row);
+					}
+				}
+	      //      Task.WaitAll(_formularegistrators.ToArray());
             }
         }
 
@@ -206,6 +222,14 @@ namespace Zeta.Extreme.Meta{
 		
 		public static IDictionary<string, List<IZetaRow>> Bygroup {
 			get { return bygroup; }
+		}
+
+		/// <summary>
+		/// Реестр "честных" формул
+		/// </summary>
+		public static IList<IZetaRow> Formulas {
+			get { return formulas; }
+			set { formulas = value; }
 		}
 
 

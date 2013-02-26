@@ -19,6 +19,18 @@ a.btn {
     padding: 0;
 }
 
+#consoleHeader {
+    height: 37px;
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    top: 0;
+}
+
+#consoleBody {
+    margin-top: 37px;
+}
+
 input, button {
     margin-top: 0;
     margin-bottom: 0 !important;

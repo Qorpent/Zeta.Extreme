@@ -1,6 +1,30 @@
 (function(){
 var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 var root = window.zefs = window.zefs || {};
+root.handlers = $.extend(root.handlers, {
+    // Zefs handlers:
+    on_zefsready : "zefsready",
+    on_zefsstarting : "zefsstarting",
+    on_zefsfailed : "zefsfailed",
+    // Session handlers:
+    on_sessionload : "sessionload",
+    // Form handlers:
+    on_statusload : "statusload",
+    on_statusfailed : "statusfaild",
+    on_savestart : "savestart",
+    on_savefailed : "savefaild",
+    on_savefinished : "savefinished",
+    on_getlockfailed : "getlockfinished",
+    on_getlockload : "getlockload",
+    // Other handlers:
+    on_periodsload : "periodsload",
+    on_periodsfaild : "periodsfailed",
+    on_objectsload : "objectsload",
+    on_objectsfaild : "objectsfailed"
+});
+root.periods =  root.periods || {};
+root.divs =  root.divs || [];
+root.objects =  root.objects || [];
 root.init = root.init ||
 (function ($) {
     if (root.myform) return root.myform;
@@ -27,13 +51,17 @@ root.init = root.init ||
                 if(options.timeout<=0){
                     $(serverstatus).attr("class","label label-important").text("Сервер не доступен");
                     FailStartServer();
+                    return;
                 }
                 window.setTimeout(StartForm, options.readydelay);
                 return;
             }
             $(serverstatus).attr("class","label label-success").text("Сервер доступен");
             options.timeout = options.default_timeout;
+            $(root).trigger(root.handlers.on_zefsready);
             ExecuteSession();
+            GetPeriods();
+            GetObjects();
         }));
     };
 
@@ -52,7 +80,7 @@ root.init = root.init ||
             document.title = session.getFormInfo().getName();
             Structure(session);
             GetCurrentLock();
-            $(root).trigger("session_load");
+            $(root).trigger(root.handlers.on_sessionload);
             window.setTimeout(function(){Data(session,0)},options.datadelay); //первый запрос на данные
         }));
     }, this);
@@ -69,9 +97,6 @@ root.init = root.init ||
             session.structure = options.asStruct(d);
             Render(session);
             Fill(session);
-            $('#zefsFormHeader').text(session.getFormInfo().getName()
-                + " " + session.getObjInfo().getName() + " за "
-                + session.getPeriod() + ", " + session.getYear() + " год");
 			$('table.data').zefs(); //нам сразу нужна живость!!!
         }));
     }, this);
@@ -125,9 +150,11 @@ root.init = root.init ||
             context: this,
             dataType: "json",
             data: {session: root.myform.sessionId}
+        }).error(function(d) {
+                $(root).trigger(root.handlers.on_getlockfailed);
         }).success(function(d) {
-                root.myform.lock = options.asLockState(d).getCanSave();
-                $(root).trigger("formstatus_load");
+            root.myform.lock = options.asLockState(d).getCanSave();
+            $(root).trigger(root.handlers.on_getlockload);
         });
     };
 
@@ -146,7 +173,7 @@ root.init = root.init ||
                 data: JSON.stringify(obj)
             }
         }).success(function(d) {
-            $(root).trigger("savestage_started");
+            $(root).trigger(root.handlers.on_savefinished);
             SaveState();
         });
     };
@@ -167,8 +194,8 @@ root.init = root.init ||
             if (state.getIsError()) {
                 // вывести сообщение об ошибке
             }
+            $(root).trigger(root.handlers.on_savefinished);
             ResetData();
-            $(root).trigger("savestage_finished");
         });
     };
 
@@ -180,9 +207,66 @@ root.init = root.init ||
             dataType: "json",
             data: {session: root.myform.sessionId}
         }).success(function(d) {
+             root.myform.currentSession.data = [];
              Data(root.myform.currentSession,0);
         });
     };
+
+    var SortObjectsByIdx = function(a, b) {
+        return ((a.idx < b.idx) ? -1 : ((a.idx > b.idx) ? 1 : 0));
+    }
+
+    var GetObjects = function() {
+        $.ajax({
+            url: siteroot+options.getobject_command,
+            context: this,
+            dataType: "json"
+        }).success(function(d) {
+            $.each(d.divs, function(i,div) {
+                root.divs.push(options.asDiv(div));
+            });
+            root.divs.sort(SortObjectsByIdx);
+            $.each(d.objs, function(i,obj) {
+                root.objects.push(options.asObject(obj));
+            });
+            $(root).trigger(root.handlers.on_objectsload);
+        });
+    };
+
+    var GetPeriods = function() {
+        $.ajax({
+            url: siteroot+options.getperiods_command,
+            context: this,
+            dataType: "json"
+        }).success(function(d) {
+            $.each(d, function(i,p) {
+                var period = options.asPeriod(p);
+                if (!root.periods.hasOwnProperty(period.getType())) {
+                    root.periods[period.getType()] = [];
+                }
+                root.periods[period.getType()].push(period);
+            });
+            $(root).trigger(root.handlers.on_periodsload);
+        });
+    };
+
+    var GetPeriodName = function(id) {
+        var name = "";
+        $.each(root.periods, function(periodname, periodtype) {
+            $.each(periodtype, function(i,p) {
+                if (p.getId() == id) {
+                    name = p.getName();
+                    return false;
+                }
+            });
+            if (name != "") return false;
+        });
+        return name;
+    };
+
+    $.extend(root, {
+        getperiodbyid : GetPeriodName
+    });
 
     $.extend(root.myform, {
         run : StartForm,

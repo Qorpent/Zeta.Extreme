@@ -447,7 +447,7 @@ $.extend(options,(function(){
 			});
 			$.extend(obj,{
 				getDivs : function(){return this.divs;},
-				getObjects : function(){return this.objs;},
+				getObjects : function(){return this.objs;}
 			});
 			return obj;
 		},
@@ -480,7 +480,7 @@ $.extend(options,(function(){
 				getDivCode : function(){return this.div;}
 			});
 			return obj;
-		},
+		}
 	}
 	
 })())

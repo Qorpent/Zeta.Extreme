@@ -186,7 +186,7 @@ namespace Zeta.Extreme.Meta{
 	            using (var c = getConnection()) {
 		            c.Open();
 		            var cmd = c.CreateCommand();
-		            cmd.CommandText = "select top 1 allobj from * from zeta.usrobjmap where '" + name +
+		            cmd.CommandText = "select top 1 allobj from zeta.usrobjmap where '" + name +
 		                              "' like usrname or domain = '" + domain + "' and allobj = 1";
 		            var exists = cmd.ExecuteScalar();
 					if(null!=exists && !(exists is DBNull)) {

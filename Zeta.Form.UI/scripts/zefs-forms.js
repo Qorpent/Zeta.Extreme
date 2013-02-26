@@ -14,10 +14,10 @@
             var cell = this.getActiveCell();
             return cell.parent();
         };
-        $.extend(window.zefs.myform, {
+        $.extend(zefs.myform, {
             getChanges: this.getChanges
         });
-        $(window.zefs).on("savestage_finished", $.proxy(function() {
+        $(zefs).on("savestage_finished", $.proxy(function() {
             this.applyChanges();
         },this));
         this.nextCell();
@@ -33,45 +33,56 @@
             e.stopPropagation();
             this.activateCell(e.target);
         }, this));
-        $(window).scroll($.proxy(function(e) {
-            var theadScreenOut = this.isOutScreen(this.table);
+
+        // Фиксируем шапку сразу
+        this.fixHeader();
+
+        /*$(window).scroll($.proxy(function(e) {
+            var theadScreenOut = this.isHeadOutScreen(this.table);
             if (theadScreenOut == "top") {
-                if (!$(this.table.find("thead")).hasClass("fixed")) this.fixHeader();
+                if (!this.header.hasClass("fixed")) this.fixHeader();
             }
             else this.unfixHeader();
-        },this));
+        },this));*/
         $(window).resize($.proxy(function() {
-            if ($(this.table.find("thead")).hasClass("fixed")) {
+            if (this.header.hasClass("fixed")) {
                 this.unfixHeader();
                 this.fixHeader();
             }
         },this));
     };
 
-    Zefs.prototype.isOutScreen = function($e) {
-        if ($e.offset().top - window.pageYOffset - this.header.height() < 0) return "top";
+    // Эта функция пока не нужна, так как шапка сейчас фиксируется по-умолчанию
+    Zefs.prototype.isHeadOutScreen = function($e) {
+        if ($e.offset().top - window.pageYOffset - this.options.fixHeaderX < 0) return "top";
         else if (window.innerHeight + window.pageYOffset - $e.offset().top - $e.outerHeight() < 0) return "bottom"
         return "none";
-        /*return (cell.offset().top >= window.pageYOffset &&
-         cell.offset().left >= window.pageXOffset &&
-         cell.offset().top + cell.height() <= window.innerHeight + window.pageYOffset &&
-         cell.offset().left + cell.width() <= window.innerWidth + window.pageXOffset);*/
+    };
+
+    // Пока эти две функции отличаются только тем, что учитывают высоту хидера
+    Zefs.prototype.isCellOutScreen = function($e) {
+        if ($e.offset().top - window.pageYOffset - this.options.fixHeaderX - this.header.height() < 0) return "top";
+        else if (window.innerHeight + window.pageYOffset - $e.offset().top - $e.outerHeight() < 0) return "bottom"
+        return "none";
     };
 
     Zefs.prototype.fixHeader = function() {
         $.each(this.table.find('th'), $.proxy(function(i,th) {
             $(th).css("width", $(th).width());
-//            $(this.table.find("col")[i]).css("width", $(th).outerWidth());
+//          $(this.table.find("col")[i]).css("width", $(th).outerWidth());
         },this));
-        $(this.table.find("thead")).addClass("fixed");
-
+        this.header.addClass("fixed");
+        this.header.css("top", this.options.fixHeaderX);
+        this.table.css("margin-top", this.options.fixHeaderX + this.header.height());
     };
 
     Zefs.prototype.unfixHeader = function() {
         $.each(this.table.find('th'), $.proxy(function(i,th) {
             $(th).css("width", "");
         },this));
-        $(this.table.find("thead")).removeClass("fixed");
+        this.header.removeClass("fixed");
+        this.header.css("top", "");
+        this.table.css("margin-top", this.options.fixHeaderX);
     };
 
     Zefs.prototype.clearNumberFormat = function($cell) {
@@ -110,9 +121,9 @@
         var $cell = $($cell);
         if (!$cell.hasClass("editable")) return $cell;
         if ($cell.hasClass("active")) return $cell;
-        var isoutofview = this.isOutScreen($cell);
+        var isoutofview = this.isCellOutScreen($cell);
         if (isoutofview == "top") {
-            $(window).scrollTop($cell.offset().top - this.header.height());
+            $(window).scrollTop($cell.offset().top - this.options.fixHeaderX - this.header.height());
         }
         else if (isoutofview == "bottom") {
             $(window).scrollTop($cell.offset().top + $cell.outerHeight() - window.innerHeight);
@@ -339,9 +350,9 @@
                 // S button
                 case 83 :
                     e.preventDefault();
-                    if (e.ctrlKey && window.zefs.myform != null) {
+                    if (e.ctrlKey && zefs.myform != null) {
                         this.uninputCell();
-                        window.zefs.myform.save(this.getChanges());
+                        zefs.myform.save(this.getChanges());
                     }
                     break;
                 default :
@@ -385,7 +396,7 @@
 
     $.fn.zefs.defaults = {
         jumpNoneditable : true, // Перепрыгивать через нередактируемые ячейки по нажатию на UP, DOWN, LEFT, RIGHT
-        fixHeaderX : 50 // Позиция по Х на которой фиксируется шапка
+        fixHeaderX : 77 // Позиция по Х на которой фиксируется шапка
     };
 })(jQuery);
 

@@ -52,6 +52,7 @@ $.extend(root,{
                     $.each(session.structure.cols, function(i,col) {
                         var td = $('<td class="data notloaded"/>').attr("id", row.getIdx() + ":" + col.getIdx());
                         if (col.getIsPrimary() && row.getIsPrimary()) td.addClass("editable");
+                        if (col.getIsControlPoint() && row.getIsControlPoint()) td.addClass("control");
                         tr.append(td);
                     });
                 }
@@ -67,10 +68,12 @@ $.extend(root,{
             var div = $('<div/>'); // Это контейнер для форматирования чисел :)
 			$.each(batch.getData(), function(i,b) {
                 var $cell = $("td[id='" + b.i +  "']");
+                $cell.removeAttr("title");
                 var val = b.getValue() | "";
                 $cell.number($cell.text(),0,'','');
                 if ($cell.text() != val && !$.isEmptyObject($cell.data())) {
                     $cell.addClass("recalced");
+                    if ($cell.text() != "") $cell.attr("title", $cell.text());
                 }
                 if (val == "0") {
                     if (b.getCellId() == 0 || !$cell.hasClass("editable")) val = "";
@@ -81,6 +84,7 @@ $.extend(root,{
                 $cell.removeClass("notloaded");
                 $cell.data("history", val);
                 $cell.data("previous", val);
+                $cell.tooltip({title: val, placement: 'top'});
 			});
 			batch.wasFilled = true;
 			return session;
