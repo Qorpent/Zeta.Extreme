@@ -543,7 +543,7 @@ namespace Zeta.Extreme.FrontEnd {
 				}
 
 				lock (Data) {
-					Data.Add(new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, realkey = realkey});
+					Data.Add(new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, ri = realkey});
 				}
 			}
 		}

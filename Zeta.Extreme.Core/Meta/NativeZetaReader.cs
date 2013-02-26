@@ -11,7 +11,7 @@ namespace Zeta.Extreme.Meta {
 		";
 		private const string Peiodquerybase = @"
 				select 
-					Id,Name,Idx,MonthCount,IsFormula,Formula,Tag 
+					Id,Name,Idx,MonthCount,IsFormula,Formula,Tag, Start,Finish 
 				from zeta.normalperiod
 		";
 

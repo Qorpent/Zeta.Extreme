@@ -184,7 +184,9 @@ namespace Zeta.Extreme.Meta {
 				MonthCount = r.GetInt32(3),
 				IsFormula = r.GetBoolean(4),
 				Formula = r.GetString(5),
-				Tag =  r.GetString(6)
+				Tag =  r.GetString(6),
+				StartDate =  r.GetDateTime(7),
+				EndDate = r.GetDateTime(8),
 			};
 		return x;
 	}

@@ -156,9 +156,9 @@ namespace Zeta.Extreme.Form.SaveSupport {
 		/// <param name="result"> </param>
 		protected virtual void Prepare(IFormSession session, XElement savedata, SaveResult result) {
 			result.SaveCells =
-				savedata.Elements().Select(_ => new OutCell { v = _.Attribute("value").Value, i = _.Attribute("id").Value, realkey =_.Attr("ri")}).ToArray();
+				savedata.Elements().Select(_ => new OutCell { v = _.Attribute("value").Value, i = _.Attribute("id").Value, ri =_.Attr("ri")}).ToArray();
 			foreach (var  sc in result.SaveCells) {
-				sc.linkedcell = session.Data.FirstOrDefault(_ => (string.IsNullOrWhiteSpace(sc.realkey) &&_.i == sc.i) || (sc.realkey==_.realkey));
+				sc.linkedcell = session.Data.FirstOrDefault(_ => (string.IsNullOrWhiteSpace(sc.ri) &&_.i == sc.i) || (sc.ri==_.ri));
 			}
 		}
 

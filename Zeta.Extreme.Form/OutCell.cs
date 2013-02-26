@@ -48,6 +48,6 @@ namespace Zeta.Extreme.Form {
 		/// <summary>
 		/// –еальный ключ €чейки
 		/// </summary>
-		[SerializeNotNullOnly]public string realkey;
+		[SerializeNotNullOnly]public string ri;
 	}
 }

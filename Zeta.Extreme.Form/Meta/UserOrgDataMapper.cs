@@ -189,7 +189,7 @@ namespace Zeta.Extreme.Meta{
 		            cmd.CommandText = "select top 1 allobj from zeta.usrobjmap where '" + name +
 		                              "' like usrname or domain = '" + domain + "' and allobj = 1";
 		            var exists = cmd.ExecuteScalar();
-					if(null!=exists && !(exists is DBNull)) {
+					if(null!=exists && !(exists is DBNull) && (int)exists!=0) {
 						return true;
 					}
 	            }
@@ -270,7 +270,7 @@ namespace Zeta.Extreme.Meta{
 			            while (r.Read()) {
 				            var id = r.GetInt32(0);
 							if(0!=id) {
-								objects.Add(myapp.storage.Get<IZetaMainObject>().Load(id));
+								objects.Add(MetaCache.Default.Get<IZetaMainObject>(id));
 							}
 			            }
 		            }

@@ -17,6 +17,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\CanLockStateAction.cs" />
+    <Compile Include="Actions\DataLoadedAction.cs" />
     <Compile Include="Actions\FormListAction.cs" />
     <Compile Include="Actions\FormServerActionBase.cs" />
     <Compile Include="Actions\FormServerRestart.cs" />
@@ -27,7 +28,9 @@
     <Compile Include="Actions\GetPeriodsAction.cs" />
     <Compile Include="Actions\ResetDataAction.cs" />
     <Compile Include="Actions\SaveDataAction.cs" />
+    <Compile Include="Actions\SaveReadyAction.cs" />
     <Compile Include="Actions\SaveStateAction.cs" />
+    <Compile Include="Actions\SessionStartBase.cs" />
     <Compile Include="DataStructures\AccessibleObjects.cs" />
     <Compile Include="DataStructures\DivisionRecord.cs" />
     <Compile Include="DataStructures\ObjectRecord.cs" />

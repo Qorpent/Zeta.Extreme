@@ -8,11 +8,29 @@ namespace Zeta.Extreme.FrontEnd {
 	/// Базовое действие для стартующих сессию
 	/// </summary>
 	public class SessionStartBase : FormServerActionBase {
+		/// <summary>
+		/// Исходный шаблон
+		/// </summary>
 		protected IInputTemplate _realform;
+		/// <summary>
+		/// Целевой объект
+		/// </summary>
 		protected IZetaMainObject _realobj;
-		[Bind(Required = true)] private string form = "";
-		[Bind(Required = true)] private int obj = 0;
+		/// <summary>
+		/// Код формы
+		/// </summary>
+		[Bind(Required = true)] protected string form = "";
+		/// <summary>
+		/// Код объекта
+		/// </summary>
+		[Bind(Required = true)] protected int obj = 0;
+		/// <summary>
+		/// Период
+		/// </summary>
 		[Bind(Required = true)] protected int period = 0;
+		/// <summary>
+		/// Год
+		/// </summary>
 		[Bind(Required = true)] protected int year = 0;
 
 		/// <summary>
