@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -323,6 +324,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// Режим подготовки к сохранению
 		/// </summary>
 		public bool InitSaveMode { get; set; }
+
 		/// <summary>
 		/// 	Стартует сессию
 		/// </summary>
@@ -350,8 +352,8 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Метод прямого вызова повторного сбора данных
 		/// </summary>
 		protected internal void StartCollectData() {
-			lock(this) {
-				if(null!=PrepareDataTask) return;
+			lock (this) {
+				if (null != PrepareDataTask) return;
 				_processed.Clear();
 				Data.Clear();
 				DataCollectionRequests++;
@@ -419,13 +421,13 @@ namespace Zeta.Extreme.FrontEnd {
 			var sw = Stopwatch.StartNew();
 			IDictionary<string, Query> queries = new Dictionary<string, Query>();
 			LoadEditablePrimaryData(queries);
-			if(!InitSaveMode) {
+			if (!InitSaveMode) {
 				LoadNonEditablePrimaryData(queries);
 			}
 			TimeToPrimary = sw.Elapsed;
 			PrimaryCount = Data.Count;
 
-			if(!InitSaveMode) {
+			if (!InitSaveMode) {
 				LoadNoPrimary(queries);
 
 				QueriesCount = queries.Count;
@@ -531,14 +533,14 @@ namespace Zeta.Extreme.FrontEnd {
 				var val = "";
 				var cellid = 0;
 				if (null != q_.Value && null != q_.Value.Result) {
-					val = q_.Value.Result.NumericResult.ToString("0.#####",CultureInfo.InvariantCulture);
+					val = q_.Value.Result.NumericResult.ToString("0.#####", CultureInfo.InvariantCulture);
 					if (q_.Value.Result.Error != null) {
 						val = q_.Value.Result.Error.Message;
 					}
 					cellid = q_.Value.Result.CellId;
 				}
 				var realkey = "";
-				if(canbefilled) {
+				if (canbefilled) {
 					realkey = q_.Value.Row.Code + "_" + q_.Value.Col.Code + "_" + q_.Value.Time.Year + "_" + q_.Value.Time.Period;
 				}
 
@@ -646,7 +648,8 @@ namespace Zeta.Extreme.FrontEnd {
 			var state = Template.GetState(Object, null);
 			var cansave = state == "0ISOPEN";
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
-			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message);
+			var isinrole = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, Template.UnderwriteRole);
+			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message) && isinrole;
 			return new LockStateInfo
 				{
 					isopen = isopen,
@@ -665,7 +668,7 @@ namespace Zeta.Extreme.FrontEnd {
 		public bool BeginSaveData(XElement xmldata) {
 			lock (this) {
 				if (null != _currentSaveTask) {
-					if(!_currentSaveTask.IsFaulted) {
+					if (!_currentSaveTask.IsFaulted) {
 						_currentSaveTask.Wait();
 					}
 				}
@@ -684,9 +687,8 @@ namespace Zeta.Extreme.FrontEnd {
 				if (null == CurrentSaver) {
 					return new {stage = SaveStage.None, error = null as Exception, result = null as SaveResult};
 				}
-				if (_currentSaveTask != null && _currentSaveTask.IsFaulted)
-				{
-					return new { stage = CurrentSaver.Stage, error = CurrentSaver.Error, result = null as SaveResult };
+				if (_currentSaveTask != null && _currentSaveTask.IsFaulted) {
+					return new {stage = CurrentSaver.Stage, error = CurrentSaver.Error, result = null as SaveResult};
 				}
 				if (_currentSaveTask != null && _currentSaveTask.IsCompleted) {
 					return new {stage = CurrentSaver.Stage, error = CurrentSaver.Error, result = _currentSaveTask.Result};
@@ -727,18 +729,20 @@ namespace Zeta.Extreme.FrontEnd {
 		private IdxCol[] primarycols;
 		private IdxRow[] primaryrows;
 		private IdxRow[] rows;
+
 		/// <summary>
 		/// Рестартует сбор данных
 		/// </summary>
 		/// <returns></returns>
 		public bool RestartData() {
-			lock(this) {
+			lock (this) {
 				WaitData();
 				PrepareDataTask = null;
 				StartCollectData();
 				return true;
 			}
 		}
+
 		/// <summary>
 		/// Подчистка после загрузки данных
 		/// </summary>
@@ -750,6 +754,32 @@ namespace Zeta.Extreme.FrontEnd {
 				Data.Remove(outCell);
 			}
 			return true;
+		}
+
+		/// <summary>
+		/// Вызов блокировки формы
+		/// </summary>
+		/// <returns></returns>
+		public bool DoLockForm() {
+			var currentstate = GetCanBlockInfo();
+			if (currentstate.canblock) {
+				Template.SetState(Object, null, "0ISBLOCK");
+				return true;
+			}
+			throw new SecurityException("try lock form without valid state or permission");
+		}
+
+		/// <summary>
+		/// Возвращает историю блокировок
+		/// </summary>
+		/// <returns></returns>
+		public object GetLockHistory() {
+			/*
+			 * myapp.storage.Get<IForm>().First(
+					"from ENTITY x where x.Template = ? and x.Object.Id=? and x.Year =? and x.Period = ?",
+					form.UnderwriteCode, obj.Id, form.Year, form.Period
+					);*/
+			return	tem
 		}
 	}
 }

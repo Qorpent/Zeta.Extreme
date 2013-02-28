@@ -47,10 +47,16 @@ using Comdiv.Zeta.Model;namespace Zeta.Extreme.Poco{
         public virtual DateTime Version { get; set; }
 
         public virtual string Comment { get; set; }
+		/// <summary>
+		/// Идентификатор формы
+		/// </summary>
+	    public int FormId { get; set; }
+		/// <summary>
+		/// Идентификатор родительского статуса
+		/// </summary>
+	    public int ParentId { get; set; }
 
-        
-
-        #endregion
+	    #endregion
     }
 
     public class Pkg : IPkg{

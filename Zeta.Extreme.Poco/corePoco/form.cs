@@ -51,8 +51,12 @@ using Comdiv.Zeta.Model;namespace Zeta.Extreme.Poco {
                 return FormStates.None;
             }
         }
+		/// <summary>
+		/// Идентификатор объекта
+		/// </summary>
+	    public virtual int ObjectId { get; set; }
 
-        public virtual IFormState GetLastState() {
+	    public virtual IFormState GetLastState() {
             var result = this.States!=null? this.States.OrderBy(x => x.Version).LastOrDefault() :null;
             if(null==result) {
                 result = new formstate();

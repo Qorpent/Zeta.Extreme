@@ -190,5 +190,55 @@ namespace Zeta.Extreme.Meta {
 			};
 		return x;
 	}
+
+	/// <summary>
+	/// Сериализует строку из БД в объект строки
+	/// </summary>
+	/// <param name="r"></param>
+	/// <returns></returns>
+	public static formstate ReaderToFormstate(IDataRecord r)
+	{
+		var x = new formstate
+			{
+				Id = r.GetInt32(0),
+				Version = r.GetDateTime(1),
+				Comment = r.GetString(2),
+				State = r.GetString(3),
+				Usr = r.GetString(4),
+				
+			};
+		if (!r.IsDBNull(5))
+		{
+			x.FormId = r.GetInt32(5);
+		}
+		if (!r.IsDBNull(6))
+		{
+			x.ParentId = r.GetInt32(6);
+		}
+		return x;
+	}
+
+	/// <summary>
+	/// Сериализует строку из БД в объект строки
+	/// </summary>
+	/// <param name="r"></param>
+	/// <returns></returns>
+	public static form ReaderToForm(IDataRecord r)
+	{
+		var x = new form
+			{
+				Id = r.GetInt32(0),
+				Version = r.GetDateTime(1),
+				Code = r.GetString(2),
+				Year = r.GetInt32(3),
+				Period = r.GetInt32(4),
+				Template = r.GetString(5),
+				
+			};
+		if(!r.IsDBNull(6)) {
+			x.ObjectId = r.GetInt32(6);
+		}
+		return x;
+	}
 	}
 }

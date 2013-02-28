@@ -81,9 +81,9 @@ namespace Zeta.Extreme.Form.SaveSupport {
 				Stage = SaveStage.Test;
 				Test(session, savedata, result);
 				Stage = SaveStage.Save;
-				Save(session, savedata, result);
+				Save(session, savedata, result,user);
 				Stage = SaveStage.AfterSave;
-				AfterSave(session, savedata, result);
+				AfterSave(session, savedata, result,user);
 				Stage = SaveStage.Finished;
 				return result;
 			}
@@ -103,7 +103,8 @@ namespace Zeta.Extreme.Form.SaveSupport {
 		/// <param name="session"> </param>
 		/// <param name="savedata"> </param>
 		/// <param name="result"> </param>
-		protected abstract void AfterSave(IFormSession session, XElement savedata, SaveResult result);
+		/// <param name="user"> </param>
+		protected abstract void AfterSave(IFormSession session, XElement savedata, SaveResult result, IPrincipal user);
 
 		/// <summary>
 		/// 	Выполняет основное сохранение в хранилище
@@ -111,7 +112,8 @@ namespace Zeta.Extreme.Form.SaveSupport {
 		/// <param name="session"> </param>
 		/// <param name="savedata"> </param>
 		/// <param name="result"> </param>
-		protected abstract void Save(IFormSession session, XElement savedata, SaveResult result);
+		/// <param name="user"> </param>
+		protected abstract void Save(IFormSession session, XElement savedata, SaveResult result, IPrincipal user);
 
 		/// <summary>
 		/// 	Выполняет проверку верности вызова

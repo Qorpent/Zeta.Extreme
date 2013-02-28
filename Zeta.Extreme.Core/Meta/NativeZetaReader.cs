@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Data;
+using Comdiv.Zeta.Model;
 using Zeta.Extreme.Poco;
 
 namespace Zeta.Extreme.Meta {
@@ -42,15 +44,37 @@ namespace Zeta.Extreme.Meta {
 					ExRefId,	ExtremeFormulaMode									-- 20
 				from zeta.normalrow";
 
+		private const string Formquerybase = @"
+				select 
+					Id, Version, Code, Year, Period, LockCode, Object from 
+				zeta.normalform
+		";
+		private const string Formstatequerybase = @"
+				select 
+					Id, Version, Comment, State, Usr, Form, Parent --, Idx, Tag 
+				from zeta.normalformstate
+		";
+
 		/// <summary>
 		/// Сериализует периоды
 		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
 		/// </summary>
 		/// <param name="condition"></param>
 		/// <returns></returns>
-		public IEnumerable<period> ReadPeriods(string condition = "")
+		public IEnumerable<form> ReadForms(string condition = "")
 		{
-			return Read(condition, Peiodquerybase, ReaderToPeriod);
+			return Read(condition, Formquerybase, ReaderToForm);
+		}
+
+		/// <summary>
+		/// Сериализует периоды
+		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+		/// </summary>
+		/// <param name="condition"></param>
+		/// <returns></returns>
+		public IEnumerable<formstate> ReadFormStates(string condition = "")
+		{
+			return Read(condition, Formstatequerybase, ReaderToFormstate);
 		}
 
 

@@ -1,7 +1,10 @@
 using System;
+using System.Linq;
+using System.Security;
 using Comdiv.Zeta.Model;
 using Qorpent.Mvc.Binding;
 using Zeta.Extreme.Form.InputTemplates;
+using Zeta.Extreme.FrontEnd.Helpers;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
@@ -50,6 +53,21 @@ namespace Zeta.Extreme.FrontEnd {
 			_realobj = MetaCache.Default.Get<IZetaMainObject>(obj);
 			if (null == _realobj) {
 				throw new Exception("obj not found");
+			}
+		}
+		/// <summary>
+		/// Авторизует предприятие и форму
+		/// </summary>
+		protected override void Authorize()
+		{
+			base.Authorize();
+			var acessobject = new AccessibleObjectsHelper().GetAccessibleObjects();
+			if (!acessobject.objs.Any(_ => _.id == _realobj.Id))
+			{
+				throw new SecurityException("try access not allowed object");
+			}
+			if(!Application.Roles.IsInRole(Application.Principal.CurrentUser, _realform.Role)) {
+				throw new SecurityException("try access not allowed form");
 			}
 		}
 	}
