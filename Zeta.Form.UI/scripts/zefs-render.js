@@ -29,6 +29,9 @@ $.extend(root,{
 			$.each(session.structure.cols, function(i,col) {
 				colgroup.append($('<col class="data"/>').attr("idx",col.getIdx()));
 				var th = $('<th class="data"/>').attr("idx",col.getIdx()).text(col.getName());
+                if (col.getIsPrimary()) {
+                    th.addClass("primary");
+                }
 				thead.find("tr").append(th);
 			});
 			table.append(colgroup);
@@ -52,7 +55,6 @@ $.extend(root,{
                     $.each(session.structure.cols, function(i,col) {
                         var td = $('<td class="data notloaded"/>').attr({
                             "id": row.getIdx() + ":" + col.getIdx(),
-//                          "realid" : row.getRealId(),
                             "idx": col.getIdx(),
                             "visible": "visible"
                         });
@@ -87,6 +89,7 @@ $.extend(root,{
                 $cell.removeClass("notloaded");
                 $cell.data("history", val);
                 $cell.data("previous", val);
+                $cell.attr("ri", b.getRealId());
                 if (val.search(/\./) != -1 && val.search("error") == -1) $cell.addClass("rounded");
                 $cell.tooltip({title: val, placement: 'top', container: $('body')});
 			});

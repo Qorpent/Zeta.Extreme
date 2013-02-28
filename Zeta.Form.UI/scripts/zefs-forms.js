@@ -17,7 +17,7 @@
         $.extend(zefs.myform, {
             getChanges: this.getChanges
         });
-        $(zefs).on("savestage_finished", $.proxy(function() {
+        $(zefs).on(zefs.handlers.on_savefinished, $.proxy(function() {
             this.applyChanges();
         },this));
         this.nextCell();
@@ -370,8 +370,7 @@
         $.each($('table.data td.changed'), function(i,e) {
             e = $(e);
             div.number(e.text(), 0, '', '');
-            obj[i] = {id:e.attr("id"), value:div.text()};
-//            obj[i] = {id:e.attr("realid"), value:div.text()};
+            obj[i] = {id:e.attr("id"), value:div.text(), ri:e.attr("ri")};
         });
         return obj;
     };

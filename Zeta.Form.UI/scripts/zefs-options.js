@@ -113,10 +113,14 @@ $.extend(options,(function(){
 							inprocess_state : "w",
 							//ошибка
 							error_state : "e",
+
+                    // команда инициализации сессии сохранения [от SESSIONID ] (true|false )
+                    saveready_command : "zefs/saveready.json.qweb",
 					// команда инициализации сохранения [от SESSIONID ] (true|false )
-					save_command : "zefs/save.json.qweb", 
+					save_command : "zefs/save.json.qweb",
 						savedata_param : "data",
-					
+
+
 					// команда проверки состояния сохранения [от SESSIONID ] (как asSaveState() ) должна быть еще и в DEBUG-меню
 					savestate_command : "zefs/savestate.json.qweb",
 						// 	Изначальное состояние
@@ -415,6 +419,8 @@ $.extend(options,(function(){
 				getCellId :  function(){return this.c || 0;},
 				// идентификатор ячейки в таблице В ВИДЕ "ROWIDX:COLIDX"
 				getId : function() {return this.i;},
+                // RealID строки для ключа ячейки
+                getRealId : function(){return this.ri || "";},
 				// признак наличия данных
 				hasValue : function(){return null!=this.v;},
 				// собственно значение

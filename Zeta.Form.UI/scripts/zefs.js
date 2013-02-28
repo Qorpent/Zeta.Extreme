@@ -22,7 +22,9 @@ root.handlers = $.extend(root.handlers, {
     on_periodsload : "periodsload",
     on_periodsfaild : "periodsfailed",
     on_objectsload : "objectsload",
-    on_objectsfaild : "objectsfailed"
+    on_objectsfaild : "objectsfailed",
+    // Message handlers:
+    on_message : "message"
 });
 root.periods =  root.periods || {};
 root.divs =  root.divs || [];
@@ -162,7 +164,6 @@ root.init = root.init ||
     };
 
     var Save = function(obj) {
-        if ($.isEmptyObject(obj) || !root.myform.lock) return;
         $.each($('td.recalced'), function(i,e) {
             $(e).removeClass("recalced");
         });
@@ -181,17 +182,22 @@ root.init = root.init ||
         });
     };
 
-    var ReadySave = function() {
+    var ReadySave = function(obj) {
+        if ($.isEmptyObject(obj) || !root.myform.lock) return;
+        $(root).trigger(root.handlers.on_savestart);
         $.ajax({
-            url: siteroot+options.save_command,
+            url: siteroot+options.saveready_command,
             type: "POST",
             context: this,
             dataType: "json",
-            data: {
-                session: root.myform.sessionId
-            }
+            data: params
         }).success(function(d) {
-            // Вот тут, как я понял, начинается Save
+            d = options.asSession(d);
+            if(d.getUid() != root.myform.sessionId) {
+                root.myform.sessionId = d.getUid();
+                root.myform.currentSession = d;
+            }
+            Save(obj);
         });
     };
 
@@ -209,8 +215,9 @@ root.init = root.init ||
                 return;
             }
             if (state.getIsError()) {
-                // вывести сообщение об ошибке
+                $(root).trigger(root.handlers.on_message, { text: state.getError(), autohide: 5000, type: "alert-error" });
             }
+            $(root).trigger(root.handlers.on_message, { text: "Сохранение успешно завершено", autohide: 5000, type: "alert-success" });
             $(root).trigger(root.handlers.on_savefinished);
             ResetData();
         });
@@ -267,6 +274,10 @@ root.init = root.init ||
         });
     };
 
+    var Message = function(obj) {
+        $(root).trigger(root.handlers.on_message, obj);
+    }
+
     var GetPeriodName = function(id) {
         var name = "";
         $.each(root.periods, function(periodname, periodtype) {
@@ -287,7 +298,8 @@ root.init = root.init ||
 
     $.extend(root.myform, {
         run : StartForm,
-        save : Save
+        save : ReadySave,
+        message: Message
     });
 
     return root.myform;

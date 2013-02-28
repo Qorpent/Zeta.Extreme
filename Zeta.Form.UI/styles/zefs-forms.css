@@ -9,6 +9,7 @@ i {
 
 .tooltip {
     position: absolute;
+    z-index: 997;
 }
 
 table.data {
@@ -82,14 +83,14 @@ table.data th {
 
 table.data thead.fixed {
     position: fixed;
-    z-index: 997;
+    z-index: 996;
 }
 
 @-moz-document url-prefix() {
      table.data thead.fixed {
         position: fixed;
-        z-index: 997;
-        box-shadow: -1px 0 0 #333, 3px 0 0 #333;
+        z-index: 996;
+        margin-left: -1px;
     }
 }
 
@@ -199,7 +200,8 @@ table.data tr[level="0"] td.name {
 }
 
 table.data tr[level="0"] td {
-    background: -webkit-linear-gradient(top, #ffffff 0%,rgb(226, 226, 226) 100%);
+    background-color: #e9e9e9;
+    /*background: -webkit-linear-gradient(top, #ffffff 0%,rgb(226, 226, 226) 100%);*/
     font-weight: bold;
 }
 
