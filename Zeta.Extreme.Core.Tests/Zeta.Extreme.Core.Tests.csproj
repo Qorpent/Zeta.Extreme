@@ -31,6 +31,7 @@
     <Compile Include="DatabaseIgnorancePureZeta\SimpleFormula.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\SimpleHardLink.cs" />
     <Compile Include="MockFormulaTest.cs" />
+    <Compile Include="NativeMaping\CanReadFormState.cs" />
     <Compile Include="SerialAcessTest.cs" />
     <Compile Include="SubQuery\ExistedFormulasParsingTest.cs" />
     <Compile Include="SubQuery\FormulaCompilerTest.cs" />

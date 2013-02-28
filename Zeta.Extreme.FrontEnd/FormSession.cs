@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -773,13 +774,12 @@ namespace Zeta.Extreme.FrontEnd {
 		/// Возвращает историю блокировок
 		/// </summary>
 		/// <returns></returns>
-		public object GetLockHistory() {
-			/*
-			 * myapp.storage.Get<IForm>().First(
-					"from ENTITY x where x.Template = ? and x.Object.Id=? and x.Year =? and x.Period = ?",
-					form.UnderwriteCode, obj.Id, form.Year, form.Period
-					);*/
-			return	tem
+		public formstate[] GetLockHistory() {
+			 var states =
+				new NativeZetaReader().ReadFormStates(
+					string.Format("Year = {0} and Period = {1} and LockCode='{2}' and Object = {3} order by Version"
+					,Year,Period,Template.UnderwriteCode,Object.Id)).ToArray();
+			return states;
 		}
 	}
 }

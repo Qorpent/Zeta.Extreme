@@ -19,47 +19,10 @@ using System.Collections.Generic;
 using Comdiv.Application;
 using Comdiv.Model;
 
-using Comdiv.Zeta.Model;namespace Zeta.Extreme.Poco{
-    public class formstate : IFormState{
-        #region IFormState Members
+using Comdiv.Zeta.Model;
 
-        public virtual IForm Form { get; set; }
-
-        public virtual string State { get; set; }
-
-        public virtual string Usr { get; set; }
-
-        public virtual IFormState Parent { get; set; }
-        public virtual string GetReadableState() {
-            switch (State) {
-                case "0ISOPEN":
-                    return "Открыта";
-                case "0ISBLOCK":
-                    return "Закрыта";
-                case "0ISCHECKED":
-                    return "Проверена";
-            }
-            return State;
-        }
-
-        public virtual int Id { get; set; }
-
-        public virtual DateTime Version { get; set; }
-
-        public virtual string Comment { get; set; }
-		/// <summary>
-		/// Идентификатор формы
-		/// </summary>
-	    public int FormId { get; set; }
-		/// <summary>
-		/// Идентификатор родительского статуса
-		/// </summary>
-	    public int ParentId { get; set; }
-
-	    #endregion
-    }
-
-    public class Pkg : IPkg{
+namespace Zeta.Extreme.Poco{
+	public class Pkg : IPkg{
         public virtual Guid Uid { get; set; }
 
         #region IPkg Members

@@ -103,6 +103,7 @@
     <Compile Include="corePoco\CommonLog.cs" />
     <Compile Include="corePoco\Contragent.cs" />
     <Compile Include="corePoco\form.cs" />
+    <Compile Include="corePoco\formstate.cs" />
     <Compile Include="corePoco\IBizTran.cs" />
     <Compile Include="corePoco\IBizTranFilter.cs" />
     <Compile Include="corePoco\UsrRow.cs" />

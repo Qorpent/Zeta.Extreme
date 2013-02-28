@@ -51,12 +51,23 @@ namespace Zeta.Extreme.Meta {
 		";
 		private const string Formstatequerybase = @"
 				select 
-					Id, Version, Comment, State, Usr, Form, Parent --, Idx, Tag 
+					Id, Version, Comment, State, Usr, Form, Parent , Year,Period,LockCode,Object --, Idx, Tag 
 				from zeta.normalformstate
 		";
 
 		/// <summary>
 		/// Сериализует периоды
+		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+		/// </summary>
+		/// <param name="condition"></param>
+		/// <returns></returns>
+		public IEnumerable<period> ReadPeriods(string condition = "")
+		{
+			return Read(condition, Peiodquerybase, ReaderToPeriod);
+		}
+
+		/// <summary>
+		/// Сериализует формы
 		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
 		/// </summary>
 		/// <param name="condition"></param>
@@ -67,7 +78,7 @@ namespace Zeta.Extreme.Meta {
 		}
 
 		/// <summary>
-		/// Сериализует периоды
+		/// Сериализует статусы форм
 		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
 		/// </summary>
 		/// <param name="condition"></param>
