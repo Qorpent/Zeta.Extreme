@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Text.RegularExpressions;
 using Comdiv.Olap.Model;
 using Comdiv.Zeta.Model;
 
@@ -39,6 +38,11 @@ namespace Zeta.Extreme {
 				InvalidateCacheKey();
 			}
 		}
+
+		/// <summary>
+		/// –ежим работы с детал€ми на уровне первичных запросов, по умолчанию NONE - выбор остаетс€ за системой
+		/// </summary>
+		public DetailMode DetailMode { get; set; }
 
 		/// <summary>
 		/// 	Ўоткат дл€ быстрой проверки что речь идет о предпри€тии
@@ -91,6 +95,9 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		protected override string EvalCacheKey() {
 			var prefix = Type.ToString() + "::";
+			if(Type!=ObjType.Detail && DetailMode!=DetailMode.None) {
+				prefix += "d:" + DetailMode.ToString() + "/";
+			}
 			return prefix + base.EvalCacheKey();
 		}
 
