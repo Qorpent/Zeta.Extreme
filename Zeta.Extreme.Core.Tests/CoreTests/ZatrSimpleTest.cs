@@ -64,8 +64,8 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				};
 			col = ColumnCache.get("Á1");
 			periods = new[] {11, 12, 13, 1, 401, 403};
-			obj = myapp.storage.AsQueryable<IZetaMainObject>().First(x => x.Id == 352);
-			objs = myapp.storage.AsQueryable<IZetaMainObject>().Where(x => x.ShowOnStartPage).ToArray();
+			obj = MetaCache.Default.Get<IZetaMainObject>(352);
+			objs = ObjCache.ObjById.Values.Where(_ => _.ShowOnStartPage).ToArray();
 		}
 
 		private void ExecuteFormBatch(int timespan, int rsn, int batchsize, int count, int qsize) {

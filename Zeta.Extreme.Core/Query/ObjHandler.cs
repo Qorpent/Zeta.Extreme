@@ -94,9 +94,9 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <returns> </returns>
 		protected override string EvalCacheKey() {
-			var prefix = Type.ToString() + "::";
+			var prefix = (int)Type + "::";
 			if(Type!=ObjType.Detail && DetailMode!=DetailMode.None) {
-				prefix += "d:" + DetailMode.ToString() + "/";
+				prefix += "d:" + (int)DetailMode + "/";
 			}
 			return prefix + base.EvalCacheKey();
 		}

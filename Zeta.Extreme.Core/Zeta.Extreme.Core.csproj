@@ -73,6 +73,9 @@
     <Compile Include="Meta\RowCache.cs" />
     <Compile Include="Meta\RowExtensions.cs" />
     <Compile Include="Primary\IScriptGenerator.cs" />
+    <Compile Include="Primary\ObjColQueryGeneratorStruct.cs" />
+    <Compile Include="Primary\SimpleObjectDataScriptGenerator.cs" />
+    <Compile Include="Primary\TimeQueryGeneratorStruct.cs" />
     <Compile Include="Query\DetailMode.cs" />
     <Compile Include="Query\PrepareState.cs" />
     <Compile Include="Query\QueryEvaluationType.cs" />

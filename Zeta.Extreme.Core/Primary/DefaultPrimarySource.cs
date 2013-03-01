@@ -173,6 +173,7 @@ namespace Zeta.Extreme.Primary {
 		}
 
 		private void ExecuteQuery(string script, Dictionary<long, Query> myrequests) {
+			var _grouped = myrequests.Values.GroupBy(_ => _.Row.Id, _ => _).ToDictionary(_ => _.Key, _=>_);
 			using (var c = GetConnection()) {
 				c.Open();
 				var cmd = c.CreateCommand();
@@ -195,9 +196,7 @@ namespace Zeta.Extreme.Primary {
 						var year = r.GetInt32(4);
 						var period = r.GetInt32(5);
 						var value = r.GetDecimal(6);
-						var target =
-							myrequests.Values.FirstOrDefault(
-								_ => _.Row.Id == row && _.Col.Id == col && _.Obj.Id == obj && _.Time.Year == year && _.Time.Period == period);
+						var target =_grouped[row].FirstOrDefault(_ => _.Col.Id == col && _.Obj.Id == obj && _.Time.Year == year && _.Time.Period == period);
 						if (null != target) {
 							if (CollectStatistics) {
 								Interlocked.Increment(ref _session.Stat_Primary_Affected);

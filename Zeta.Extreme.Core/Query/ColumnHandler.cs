@@ -8,6 +8,7 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Comdiv.Zeta.Model;
 using ColumnCache = Zeta.Extreme.Meta.ColumnCache;
@@ -40,12 +41,29 @@ namespace Zeta.Extreme {
 
 		private void ResolveSingleColFormula() {
 			if (IsFormula && (FormulaType == "boo" || FormulaType == "cs")) {
-				var match = Regex.Match(Formula.Trim(), @"^@([\w\d]+)\?$", RegexOptions.Compiled);
-				if (match.Success) {
-					var reference = ColumnCache.get(match.Groups[1].Value);
+				string code = null;
+				var formula = Formula;
+				code = GetCodeFormFormula(formula);
+				if(null!=code) {
+					var reference = ColumnCache.get(code);
 					Native = reference;
 				}
 			}
 		}
+
+		private static string GetCodeFormFormula(string formula) {
+			if(!_resolvedColFormulaCache.ContainsKey(formula)) {
+				string code = null;
+				var match = Regex.Match(formula, @"^@([\w\d]+)\?$", RegexOptions.Compiled);
+				if (match.Success) {
+					code = match.Groups[1].Value;
+				}
+				_resolvedColFormulaCache[formula]= code;
+				return code;
+			}
+			return _resolvedColFormulaCache[formula];
+		}
+
+		static IDictionary<string,string> _resolvedColFormulaCache = new Dictionary<string, string>();
 	}
 }

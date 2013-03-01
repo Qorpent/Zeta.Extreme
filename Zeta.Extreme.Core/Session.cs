@@ -373,7 +373,7 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
 		protected internal IPreloadProcessor GetPreloadProcessor() {
-			lock (thissync) {
+		//	lock (thissync) {
 				IPreloadProcessor result;
 				if (_preloadprocesspool.TryPop(out result)) {
 					return result;
@@ -382,7 +382,7 @@ namespace Zeta.Extreme {
 					return Activator.CreateInstance(CustomRegistryHelperClass, this) as IPreloadProcessor;
 				}
 				return new QueryLoader(this);
-			}
+		//	}
 		}
 
 		/// <summary>
