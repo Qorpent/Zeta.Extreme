@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Comdiv.Model.Interfaces;
 using NUnit.Framework;
+using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 {

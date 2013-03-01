@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 using Comdiv.Application;
 using Qorpent.Applications;
 
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Primary {
 	/// <summary>
 	/// 	—борщик первичных данных
 	/// </summary>
@@ -138,83 +138,98 @@ namespace Zeta.Extreme {
 		private Task<QueryResult> CreateNewSqlBatchTask() {
 			return new Task<QueryResult>(() =>
 				{
-					Dictionary<long, Query> _myrequests;
-					lock (_syncsqlawait) {
-						if (_sqlDataAwaiters.IsEmpty) {
-							return null;
-						}
-						_myrequests = _sqlDataAwaiters.ToArray().Distinct().ToDictionary(_ => _.UID, _ => _);
-						_sqlDataAwaiters = new ConcurrentBag<Query>();
-					}
-					if (TraceQuery) {
-						foreach (var q in _myrequests.Values) {
-							q.TraceList.Add("Session " + _session.Id + " added to primreq ");
-						}
-					}
-					Stopwatch sw = null;
-					if (CollectStatistics) {
-						sw = Stopwatch.StartNew();
-						Interlocked.Increment(ref _session.Stat_Batch_Count);
-					}
-					var script = GenerateScript(_myrequests.Values.ToArray());
+					Stopwatch sw = Stopwatch.StartNew();
+					var myrequests = CollectRequests();
 
-					using (var c = GetConnection()) {
-						c.Open();
-						var cmd = c.CreateCommand();
-						cmd.CommandText = script;
-						using (var r = cmd.ExecuteReader()) {
-							bool _nr = false;
-							while (r.Read()||(_nr =r.NextResult())) {
-								if(_nr) {
-									_nr = false;
-									continue;
-								}
-								var id = r.GetInt32(0);
-								
-								if (CollectStatistics) {
-									Interlocked.Increment(ref _session.Stat_Primary_Catched);
-								}
-								var col = r.GetInt32(1);
-								var row = r.GetInt32(2);
-								var obj = r.GetInt32(3);
-								var year = r.GetInt32(4);
-								var period = r.GetInt32(5);
-								var value = r.GetDecimal(6);
-								var target =
-									_myrequests.Values.FirstOrDefault(
-										_ => _.Row.Id == row && _.Col.Id == col && _.Obj.Id == obj && _.Time.Year == year && _.Time.Period == period);
-								if (null != target) {
-									if (CollectStatistics) {
-										Interlocked.Increment(ref _session.Stat_Primary_Affected);
-									}
-									if (TraceQuery) {
-										target.TraceList.Add("primary found " + value);
-									}
-									target.HavePrimary = true;
-									target.Result = new QueryResult {IsComplete = true, NumericResult = value, CellId = id};
-								}
-							}
-						}
-					}
+					if (myrequests == null) return null;
+					var script = GenerateScript(myrequests.Values.ToArray());
+
+					ExecuteQuery(script, myrequests);
 
 
-					if (CollectStatistics) {
-						sw.Stop();
-						
-						lock (_syncsqlawait) {
-							QueryLog.Add("/* EXECUTE TIME " + sw.Elapsed + " */" + script);
-							_session.Stat_Batch_Time += sw.Elapsed;
-						}
-					}
-					foreach (var myrequest in _myrequests.Values.Where(_ => !_.HavePrimary)) {
-						if (TraceQuery) {
-							myrequest.TraceList.Add("primary not found ");
-						}
-						myrequest.Result = new QueryResult {IsComplete = true, IsNull = true};
-					}
+					PostProcessQuery(sw, script, myrequests);
 
 					return null;
 				});
+		}
+
+		private void PostProcessQuery(Stopwatch sw, string script, Dictionary<long, Query> myrequests) {
+			if (CollectStatistics) {
+				sw.Stop();
+
+				lock (_syncsqlawait) {
+					QueryLog.Add("/* EXECUTE TIME " + sw.Elapsed + " */" + script);
+					_session.Stat_Batch_Time += sw.Elapsed;
+				}
+			}
+			foreach (var myrequest in myrequests.Values.Where(_ => !_.HavePrimary)) {
+				if (TraceQuery) {
+					myrequest.TraceList.Add("primary not found ");
+				}
+				myrequest.Result = new QueryResult {IsComplete = true, IsNull = true};
+			}
+		}
+
+		private void ExecuteQuery(string script, Dictionary<long, Query> myrequests) {
+			using (var c = GetConnection()) {
+				c.Open();
+				var cmd = c.CreateCommand();
+				cmd.CommandText = script;
+				using (var r = cmd.ExecuteReader()) {
+					bool _nr = false;
+					while (r.Read() || (_nr = r.NextResult())) {
+						if (_nr) {
+							_nr = false;
+							continue;
+						}
+						var id = r.GetInt32(0);
+
+						if (CollectStatistics) {
+							Interlocked.Increment(ref _session.Stat_Primary_Catched);
+						}
+						var col = r.GetInt32(1);
+						var row = r.GetInt32(2);
+						var obj = r.GetInt32(3);
+						var year = r.GetInt32(4);
+						var period = r.GetInt32(5);
+						var value = r.GetDecimal(6);
+						var target =
+							myrequests.Values.FirstOrDefault(
+								_ => _.Row.Id == row && _.Col.Id == col && _.Obj.Id == obj && _.Time.Year == year && _.Time.Period == period);
+						if (null != target) {
+							if (CollectStatistics) {
+								Interlocked.Increment(ref _session.Stat_Primary_Affected);
+							}
+							if (TraceQuery) {
+								target.TraceList.Add("primary found " + value);
+							}
+							target.HavePrimary = true;
+							target.Result = new QueryResult {IsComplete = true, NumericResult = value, CellId = id};
+						}
+					}
+				}
+			}
+		}
+
+		private Dictionary<long, Query> CollectRequests() {
+			Dictionary<long, Query> _myrequests;
+			lock (_syncsqlawait) {
+				if (_sqlDataAwaiters.IsEmpty) {
+					return null;
+				}
+				_myrequests = _sqlDataAwaiters.ToArray().Distinct().ToDictionary(_ => _.UID, _ => _);
+				_sqlDataAwaiters = new ConcurrentBag<Query>();
+			}
+			if (TraceQuery) {
+				foreach (var q in _myrequests.Values) {
+					q.TraceList.Add("Session " + _session.Id + " added to primreq ");
+				}
+			}
+
+			if (CollectStatistics) {
+				Interlocked.Increment(ref _session.Stat_Batch_Count);
+			}
+			return _myrequests;
 		}
 
 		/// <summary>

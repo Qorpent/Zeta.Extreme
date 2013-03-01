@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
+using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]
