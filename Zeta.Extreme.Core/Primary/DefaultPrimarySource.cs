@@ -29,11 +29,6 @@ namespace Zeta.Extreme.Primary {
 		public DefaultPrimarySource() {}
 
 		/// <summary>
-		/// Журнал выполненных SQL
-		/// </summary>
-		public IList<string> QueryLog { get; private set; }
-
-		/// <summary>
 		/// 	Конструктор с учетом сессии
 		/// </summary>
 		/// <param name="session"> </param>
@@ -42,6 +37,11 @@ namespace Zeta.Extreme.Primary {
 			TraceQuery = session.TraceQuery;
 			QueryLog = new List<string>();
 		}
+
+		/// <summary>
+		/// 	Журнал выполненных SQL
+		/// </summary>
+		public IList<string> QueryLog { get; private set; }
 
 		/// <summary>
 		/// 	Признак трассировки сессии
@@ -138,10 +138,12 @@ namespace Zeta.Extreme.Primary {
 		private Task<QueryResult> CreateNewSqlBatchTask() {
 			return new Task<QueryResult>(() =>
 				{
-					Stopwatch sw = Stopwatch.StartNew();
+					var sw = Stopwatch.StartNew();
 					var myrequests = CollectRequests();
 
-					if (myrequests == null) return null;
+					if (myrequests == null) {
+						return null;
+					}
 					var script = GenerateScript(myrequests.Values.ToArray());
 
 					ExecuteQuery(script, myrequests);
@@ -176,7 +178,7 @@ namespace Zeta.Extreme.Primary {
 				var cmd = c.CreateCommand();
 				cmd.CommandText = script;
 				using (var r = cmd.ExecuteReader()) {
-					bool _nr = false;
+					var _nr = false;
 					while (r.Read() || (_nr = r.NextResult())) {
 						if (_nr) {
 							_nr = false;
@@ -233,19 +235,19 @@ namespace Zeta.Extreme.Primary {
 		}
 
 		/// <summary>
-		/// Генератор скриптов из  переданной коллекции запросов
+		/// 	Генератор скриптов из  переданной коллекции запросов
 		/// </summary>
-		/// <param name="_myrequests"></param>
-		/// <returns></returns>
+		/// <param name="_myrequests"> </param>
+		/// <returns> </returns>
 		public string GenerateScript(Query[] _myrequests) {
 			var usualperiods = _myrequests.Where(_ => _.Time.Periods == null).ToArray();
 			var sumperiods = _myrequests.Where(_ => _.Time.Periods != null).ToArray();
-			var script ="";
-			if(0!=usualperiods.Length) {
+			var script = "";
+			if (0 != usualperiods.Length) {
 				var times = usualperiods.Select(_ => new {y = _.Time.Year, p = _.Time.Period}).Distinct();
 				var colobj = usualperiods.Select(_ => new {o = _.Obj.Id, c = _.Col.Id}).Distinct();
 				var rowids = string.Join(",", usualperiods.Select(_ => _.Row.Id).Distinct());
-				
+
 				foreach (var time in times) {
 					foreach (var cobj in colobj) {
 						script +=
@@ -258,19 +260,17 @@ namespace Zeta.Extreme.Primary {
 					}
 				}
 			}
-			if(0!=sumperiods.Length) {
+			if (0 != sumperiods.Length) {
 				var sptimes =
 					sumperiods.Select(_ => new {y = _.Time.Year, p = _.Time.Period, ps = string.Join(",", _.Time.Periods)}).Distinct();
 				var spcolobj = sumperiods.Select(_ => new {o = _.Obj.Id, c = _.Col.Id}).Distinct();
 				var sprowids = string.Join(",", sumperiods.Select(_ => _.Row.Id).Distinct());
-				foreach (var time in sptimes)
-				{
-					foreach (var cobj in spcolobj)
-					{
+				foreach (var time in sptimes) {
+					foreach (var cobj in spcolobj) {
 						script +=
 							string.Format(
 								"\r\nselect 0,col,row,obj,year,{5},sum(decimalvalue) from cell where period in ({0}) and year={1} and col={2} and obj={3} and row in ({4}) group by col,row,obj,year ",
-								time.ps, time.y, cobj.c, cobj.o, sprowids,time.p);
+								time.ps, time.y, cobj.c, cobj.o, sprowids, time.p);
 					}
 				}
 			}
