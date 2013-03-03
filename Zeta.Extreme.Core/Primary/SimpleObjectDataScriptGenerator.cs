@@ -41,16 +41,20 @@ namespace Zeta.Extreme.Primary {
 					detcond = " and detail is null ";
 				}
 			}
+			var valuesel = "decimalvalue";
+			if(prototype.RequreZetaEval) {
+				valuesel = "[zeta].[eval](id, decimalvalue, valuta, '" + prototype.Valuta + "', year, period, row, col, 0,0)";
+			}
 			if (string.IsNullOrWhiteSpace(time.ps)) {
 				return string.Format(
 					@"
-select id,col,row,{5},year,period,decimalvalue 
+select id,col,row,{5},year,period,{7} , {8}
 from cell where period={0} and year={1} and col={2} and {5}={3} and row in ({4}) {6}",
-					time.p, time.y, cobj.c, cobj.o, rowids, objfld,detcond);
+					time.p, time.y, cobj.c, cobj.o, rowids, objfld,detcond,valuesel,(int)cobj.t);
 			}
 			return string.Format(
-				"\r\nselect 0,col,row,{6},year,{5},sum(decimalvalue) from cell where period in ({0}) and year={1} and col={2} and {6}={3} and row in ({4}) {7} group by col,row,{6},year ",
-				time.ps, time.y, cobj.c, cobj.o, rowids, time.p, objfld,detcond);
+				"\r\nselect 0,col,row,{6},year,{5},sum({8}), {9} from cell where period in ({0}) and year={1} and col={2} and {6}={3} and row in ({4}) {7} group by col,row,{6},year ",
+				time.ps, time.y, cobj.c, cobj.o, rowids, time.p, objfld,detcond,valuesel,(int)cobj.t);
 		}
 	}
 }

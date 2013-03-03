@@ -196,7 +196,8 @@ namespace Zeta.Extreme.Primary {
 						var year = r.GetInt32(4);
 						var period = r.GetInt32(5);
 						var value = r.GetDecimal(6);
-						var target =_grouped[row].FirstOrDefault(_ => _.Col.Id == col && _.Obj.Id == obj && _.Time.Year == year && _.Time.Period == period);
+						var otype = r.GetInt32(7);
+						var target =_grouped[row].FirstOrDefault(_ => _.Col.Id == col && _.Obj.Id == obj && (int)_.Obj.Type==otype && _.Time.Year == year && _.Time.Period == period);
 						if (null != target) {
 							if (CollectStatistics) {
 								Interlocked.Increment(ref _session.Stat_Primary_Affected);
