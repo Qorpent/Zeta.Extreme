@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CanCalculateDetails.cs" />
+    <Compile Include="CanCalculateValuta.cs" />
     <Compile Include="CheckKnownData.cs" />
     <Compile Include="CoreTests\DefaultRegistryHelperTestBase.cs" />
     <Compile Include="CoreTests\DefaultRegistryHelperTestBaseBenchmark.cs" />
