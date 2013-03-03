@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace Zeta.Extreme.Primary {
@@ -26,18 +27,30 @@ namespace Zeta.Extreme.Primary {
 		}
 
 		private string GenerateQuery(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj, string rowids, PrimaryQueryPrototype prototype) {
-			if(string.IsNullOrWhiteSpace(time.ps)) {
+			if(!prototype.UseSum && (cobj.t==ObjType.Obj || cobj.t==ObjType.Detail || cobj.t==ObjType.None /* obj by default */)) {
+				return ConvertToSimpleQueryOfObject(time, cobj, rowids,prototype);
+			}
+			throw new NotSupportedException(prototype.ToString());
+		}
+
+		private static string ConvertToSimpleQueryOfObject(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj, string rowids, PrimaryQueryPrototype prototype) {
+			var objfld = cobj.t == ObjType.Detail ? "detail" : "obj";
+			var detcond = "";
+			if(cobj.t==ObjType.Obj) {
+				if(prototype.PreserveDetails) {
+					detcond = " and detail is null ";
+				}
+			}
+			if (string.IsNullOrWhiteSpace(time.ps)) {
 				return string.Format(
 					@"
-							--	if exists(select top 1 id from cell where period={0} and year={1} and col={2} and obj={3} and row in ({4}))
-									select id,col,row,obj,year,period,decimalvalue 
-									from cell where period={0} and year={1} and col={2} and obj={3} and row in ({4})",
-					time.p, time.y, cobj.c, cobj.o, rowids);
-			}else {
-				return string.Format(
-								"\r\nselect 0,col,row,obj,year,{5},sum(decimalvalue) from cell where period in ({0}) and year={1} and col={2} and obj={3} and row in ({4}) group by col,row,obj,year ",
-								time.ps, time.y, cobj.c, cobj.o, rowids, time.p);
+select id,col,row,{5},year,period,decimalvalue 
+from cell where period={0} and year={1} and col={2} and {5}={3} and row in ({4}) {6}",
+					time.p, time.y, cobj.c, cobj.o, rowids, objfld,detcond);
 			}
+			return string.Format(
+				"\r\nselect 0,col,row,{6},year,{5},sum(decimalvalue) from cell where period in ({0}) and year={1} and col={2} and {6}={3} and row in ({4}) {7} group by col,row,{6},year ",
+				time.ps, time.y, cobj.c, cobj.o, rowids, time.p, objfld,detcond);
 		}
 	}
 }

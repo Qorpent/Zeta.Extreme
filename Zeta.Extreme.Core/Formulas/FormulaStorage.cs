@@ -92,6 +92,7 @@ namespace Zeta.Extreme {
 				{
 					
 					if(null!=request.PreparedType) {
+						_registry[request.Key] = request;
 						return request.Key;
 					}
 					if (string.IsNullOrWhiteSpace(request.Key)) {

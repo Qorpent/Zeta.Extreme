@@ -37,5 +37,8 @@ namespace Zeta.Extreme.Primary {
 		/// Целевая валюта
 		/// </summary>
 		public string Valuta { get; set; }
+		
+
+		
 	}
 }

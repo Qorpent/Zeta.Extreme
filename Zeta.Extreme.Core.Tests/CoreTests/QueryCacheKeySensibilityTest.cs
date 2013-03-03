@@ -68,9 +68,9 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		public void HardLinkAndSingleRowTest() {
 			var target = RowCache.get("m260113");
 			var r = new row {Code = "x1", RefTo = target};
-			RowCache.RegisterCustom(r);
+			RowCache.Bycode["X1"]=r;
 			var r2 = new row {Code = "x2", Formula = " $x1? ", IsFormula = true, FormulaEvaluator = "boo"};
-			RowCache.RegisterCustom(r2);
+			RowCache.Bycode["X2"] =r2;
 
 			var q1 = new Query {Row = {Code = "x1"}};
 			var q2 = new Query {Row = {Code = "m260113"}};

@@ -27,6 +27,7 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 		}
 
 		[Test]
+		[Explicit]
 		public void CheckAllFormulas() {
 			IDictionary<string, string> Errors = new Dictionary<string, string>();
 			var sumh = new StrongSumProvider();
