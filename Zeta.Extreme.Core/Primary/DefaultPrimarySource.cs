@@ -244,8 +244,28 @@ namespace Zeta.Extreme.Primary {
 		}
 
 		private IEnumerable<PrimaryQueryGroup> ExplodeToGroups(Query[] myrequests) {
-			yield return new PrimaryQueryGroup {Queries = myrequests, ScriptGenerator = new SimpleObjectDataScriptGenerator()};
+			var valutagroups = myrequests.GroupBy(_ => _.Valuta, _ => _);
+			foreach (var valutagroup in valutagroups) {
+				var detailgroup = valutagroup.GroupBy(_ => _.Obj.DetailMode, _ => _);
+				foreach (var dgroup in detailgroup) {
+					var prot = new PrimaryQueryPrototype();
+					if(valutagroup.Key!="NONE") {
+						prot.RequreZetaEval = true;
+						prot.Valuta = valutagroup.Key;
+					}
+					if(dgroup.Key==DetailMode.SafeObject) {
+						prot.PreserveDetails = true;
+					}else if(dgroup.Key==DetailMode.SafeSumObject) {
+						prot.RequireDetails = true;
+					}
+					yield return
+						new PrimaryQueryGroup
+							{Queries = dgroup.ToArray(), ScriptGenerator = new SimpleObjectDataScriptGenerator(), Prototype = prot};
+				}
+			}
 		}
+
+
 
 
 		private IDbConnection GetConnection() {
