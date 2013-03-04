@@ -45,13 +45,12 @@ li a {
 }
 
 .label, .badge {
-    margin-right: 3px;
     cursor: pointer;
 }
 
 .authorizer input,
 .authorizer button {
-    margin-right: 3px;
+
 }
 
 .authorizer .preloader {
@@ -71,8 +70,6 @@ li a {
 }
 
 .login-user {
-    margin-top: 6px;
-    margin-right: 6px;
     cursor: pointer;
 }
 

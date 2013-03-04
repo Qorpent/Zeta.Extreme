@@ -146,7 +146,9 @@ root.init = root.init ||
 
 	var GetSessionParams = options.getSessionParameters; //перенес в спецификацию
 
-	var FinishForm = function(session,batch){}; //какого хрена только тут таблица оживала - НАПОМНЮ "таблица должна быть доступной для правки сразу как пошли первые значения"
+	var FinishForm = function(session,batch){
+        $(window).trigger("resize");
+    };
 
     var GetCurrentLock = function(){
         $.ajax({

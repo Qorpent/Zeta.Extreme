@@ -1,24 +1,33 @@
 var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
-var root = window.qorpent = window.qorpent || {};
-//root = root.zeta = root.zeta || {};
-root = root.security = root.security || {};
+var root = window.zeta = window.zeta || {};
+root.handlers = $.extend(root.handlers, {
+    // Zeta handlers:
+    on_zetaready : "zetaready",
+    on_zetafailed : "zetafailed",
+    // Login handlers:
+    on_loginsuccess : "loginsuccess",
+    on_loginfaild : "loginfaild",
+    on_logout : "logount",
+    on_impersonate : "impersonate",
+    on_deimpersonate : "deimpersonate",
+    on_getuserinfo : "getuserinfo"
+});
+
+root.security = root.security || $.extend(root.security, {
+    user : null,
+    auth : null
+});
 
 !function($) {
-    var Console = function() {
-        this.auth = {
-            admin : false,
-            developer : false,
-            datamaster : false,
-            authorized : false,
-            logonname : ""
-        }
+    var options = window.zeta.options;
 
-        this.roles = []
-    }
+    var Console = function() {
+
+    };
 
     Console.prototype = {
         widgets : [],
-        registerWidget : function(e) {
+        RegisterWidget : function(e) {
             this.widgets.push(e);
         },
         // Setup layout
@@ -48,20 +57,31 @@ root = root.security = root.security || {};
             }
         },
 
-        setup : function() {
-            $('body').append(this.layout.header,this.layout.body,this.layout.footer);
-            $.each(this.widgets, $.proxy(function(i, e) {
-                if (this.auth.authorized || !e.options.authonly) {
-                    if (!this.widgets[i].installed) {
-                        this.layout.add(e);
-                        if (e.options.ready != null) e.options.ready();
-                        this.widgets[i].installed = true;
-                    }
-                }
+        Setup : function() {
+            $.ajax({
+                url: siteroot+root.options.whoami_command,
+                context: this,
+                dataType: 'json'
+            }).success($.proxy(function(d) {
+                root.security.user = root.options.asUserInfo(d);
+                $('body').append(this.layout.header,this.layout.body,this.layout.footer);
+                $.each(this.widgets.sort(function(a,b) { return b.options.priority - a.options.priority }),
+                    $.proxy(function(i, e) {
+                        if ((root.security.user != null && root.security.user.getLogonName() != "" ) || !e.options.authonly) {
+                            if (e.options.adminonly && root.security.user != null) {
+                                if (!root.security.user.getIsAdmin()) return;
+                            }
+                            if (!this.widgets[i].installed) {
+                                this.layout.add(e);
+                                if (e.options.ready != null) e.options.ready();
+                                this.widgets[i].installed = true;
+                            }
+                        }
+                    }, this));
             }, this));
         },
 
-        uninstallwidgets: function() {
+        Uninstallwidgets: function() {
             $.each(this.widgets, function() {
                 if (this.installed && this.options.authonly) {
                     this.body.remove();
@@ -71,12 +91,64 @@ root = root.security = root.security || {};
         }
     }
 
-    root.Widget = function(n, p, f, o) {
+    Console.prototype.whoami = function() {
+        $.ajax({
+            url: siteroot+root.options.whoami_command,
+            context: this,
+            dataType: 'json'
+        }).success($.proxy(function(d) {
+            root.security.user = root.options.asUserInfo(d);
+            $(root).trigger(root.handlers.on_getuserinfo);
+        }, this));
+    };
+
+    Console.prototype.authorize = function(l,p) {
+        $.ajax({
+            url: siteroot+root.options.login_command,
+            type: "POST",
+            context: this,
+            data: {
+                _l_o_g_i_n_: l,
+                _p_a_s_s_: p
+            },
+            dataType: 'json'
+        }).success($.proxy(function(d) {
+            var auth = root.options.asAuth(d);
+            root.security.auth = root.options.asAuth(d);
+            $(root).trigger(auth.getIsLogin() ? root.handlers.on_loginsuccess : root.handlers.on_loginfaild);
+        }, this));
+    };
+
+    Console.prototype.unauthorize = function() {
+        $.ajax({
+            url: siteroot+root.options.logout_command,
+            context: this,
+            dataType: 'json'
+        }).complete($.proxy(function(d) {
+            $(root).trigger(root.handlers.on_logout);
+        }, this));
+    };
+
+    Console.prototype.impersonate = function(l) {
+        $.ajax({
+            url: siteroot+root.options.impersonate_command,
+            type: "POST",
+            context: this,
+            data: { Target : l},
+            dataType: 'json'
+        }).success($.proxy(function(d) {
+            $(root).trigger(l != null ? root.handlers.on_impersonate : root.handlers.on_deimpersonate);
+        }, this));
+    };
+
+    root.security.Widget = function(n, p, f, o) {
         this.name = n != null ? n : "widget";
         this.pos = p != null ? p : "none";
         this.float = f != null ? f : "none";
         this.options = $.extend({
+            priority: 0,
             authonly: true,
+            adminonly: false,
             // Функция которая вызывается после того как виджет добавлен
             ready: null
         }, o);
@@ -84,15 +156,14 @@ root = root.security = root.security || {};
         this.installed = false;
     }
 
-    root.Console = new Console();
+    root.console = new Console();
 }(window.jQuery);
-
 
 /**
  * Виджет инструментов для отладки
  */
 !function($) {
-    var zefsdebug = new root.Widget("zefsdebug", root.Console.layout.position.layoutHeader, "right", { authonly: true });
+    var zefsdebug = new root.security.Widget("zefsdebug", root.console.layout.position.layoutHeader, "right", { authonly: true, priority: 90, adminonly: true });
     var session = $('<a id="sessionInfo"/>')
         .click(function(e) { debug("zefs/session.json.qweb?session=" + $(this).attr("uid"), "Данные о сессии") })
         .html('<i class="icon-globe"></i> Информация о сессии');
@@ -144,104 +215,113 @@ root = root.security = root.security || {};
         canlock.attr("uid",zefs.myform.sessionId);
     });
     zefsdebug.body = $('<div/>').append(btngroup);
-    root.Console.registerWidget(zefsdebug);
+    root.console.RegisterWidget(zefsdebug);
 }(window.jQuery);
 
+/**
+ * Виджет формы авторизации пользователя
+ */
 !function($) {
-    var auth = root.Console.auth;
-    var authorizer = new root.Widget("authorizer", root.Console.layout.position.layoutHeader, "right", { authonly: false });
-    var getauth = function () {
-        $.ajax({
-            url: siteroot+"_sys/whoami.json.qweb",
-            context: this,
-            dataType: 'json'
-        }).success($.proxy(function(d) {
-            loginpreloader.hide();
-            auth.logonname = d.logonname;
-            auth.admin = d.logonadmin;
-            auth.datamaster = d.logondatamaster;
-            auth.developer = d.logondeveloper;
-            if (d.logonname != "") {
-                auth.authorized = true;
-                loginform.hide();
-                logininfo.show();
-            } else {
-                auth.authorized = false;
-                loginform.show();
-                logininfo.hide();
-            }
-            logininfolabel.html(d.logonname);
-            roletooltipconfigure();
-            window.qorpent.security.Console.setup();
-        }, this));
-    };
-    getauth();
-    var authorize = function() {
-        loginform.hide();
-        loginpreloader.show();
-        $.ajax({
-            url: siteroot+"_sys/login.json.qweb",
-            type: "POST",
-            context: this,
-            data: {
-                _l_o_g_i_n_: loginfield.val(),
-                _p_a_s_s_: passfield.val()
-            },
-            dataType: 'json'
-        }).success(function(d) {
-                getauth();
-            });
-    }
-    var unauthorize = function() {
-        logininfo.hide();
-        loginpreloader.show();
-        $.ajax({
-            url: siteroot+"_sys/logout.json.qweb",
-            context: this
-        }).success(function(d) {
-                getauth();
-                window.qorpent.security.Console.uninstallwidgets();
-            });
-    }
-    var loginfield = $('<input class="input-small" type="text" placeholder="Логин" autocomplete/>');
-    var passfield = $('<input class="input-small" type="password" placeholder="Пароль"/>');
-    var loginform = $('<form/>', { "class": "navbar-form login-form"})
+    var l = $('<input class="input-small" type="text" placeholder="Логин" autocomplete/>');
+    var p = $('<input class="input-small" type="password" placeholder="Пароль"/>');
+    var f = $('<form/>', { "class": "navbar-form login-form"})
         .submit(function(e) {
             e.preventDefault();
             authorize();
         })
-        .append( loginfield, passfield,
+        .append(l, p,
         $("<button/>", {
             "class" : "btn btn-small",
             "type" : "submit",
             "text" : "Войти"
         })
     ).hide();
-    var logininfolabel = $('<span class="login-user label label-inverse" />');
-    var loginpreloader = $('<img/>', { "class": "preloader", "src": siteroot + "/img/300.gif" });
-    var logininfo = $('<div class="login-info"/>').append(
-        logininfolabel,
-        $('<button/>', {
-            "class" : "btn btn-small",
-            "type" : "button",
-            "text" : "Выйти",
-            "click": function() {unauthorize()}
-        })
-    ).hide();
-    var roletooltipconfigure = function() {
-        var roleinfo = $('<div/>').append($('<ul class="login-permissions"/>').css({
-            "list-style-type" : "none",
-            "margin": "0",
-            "text-align": "left"
-        }).append(
-            $("<li/>").html(auth.admin == true ? 'Administrator<span>YES</span>' : 'Administrator NO'),
-            $("<li/>").html(auth.developer == true ? 'Developer<span>YES</span>' : 'Developer NO'),
-            $("<li/>").html(auth.datamaster == true ? 'Datamaster<span>YES</span>' : 'Datamaster NO')
-        ));
-        $(logininfolabel).tooltip({title: roleinfo.html(), placement: 'bottom', html: true});
+    var authbtn = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Вход от имени"/>')
+        .html('<i class="icon-user"></i><span class="caret"></span>');
+    var implogin = $('<input class="input-small" type="text"/>');
+    var deimp = $('<li/>').append($('<button class="btn"/>').click(function() { root.console.impersonate() }).text("Вернуться в свой логин"));
+    var imp = $('<li/>').append(implogin, $('<button class="btn"/>').click(function() { root.console.impersonate(implogin.val()) }).text("Войти от..."));
+    var menu = $('<ul class="dropdown-menu"/>').append(
+        deimp.hide(), imp,
+        $('<li/>').append($('<button class="btn "/>').click(function() { root.console.unauthorize() }).text("Выход из системы"))
+    );
+    var m = $('<div class="btn-group pull-right"/>').append(
+        authbtn, menu).hide();
+
+    var authorize = function() {
+        root.console.authorize(l.val(), p.val());
     }
-    authorizer.body = $('<div/>').append(loginform, loginpreloader, logininfo);
-    root.Console.registerWidget(authorizer);
+
+    $(window.zeta).on(window.zeta.handlers.on_loginsuccess, function(e) {
+        window.zeta.console.Setup();
+        f.hide();
+        m.show();
+    });
+
+    $(window.zeta).on(window.zeta.handlers.on_deimpersonate, function(e) {
+        deimp.hide();
+        imp.show();
+    });
+
+    $(window.zeta).on(window.zeta.handlers.on_impersonate, function(e) {
+        imp.hide();
+        deimp.show();
+    });
+
+    $(window.zeta).on(window.zeta.handlers.on_logout, function(e) {
+        location.reload();
+    });
+
+    $(document).on('click.dropdown.data-api', '.authorizer li', function (e) {
+        e.stopPropagation();
+    });
+
+    var authorizer = new root.security.Widget("authorizer", root.console.layout.position.layoutHeader, "right", { authonly: false, priority: 100, ready: function() {
+        if (window.zeta.security.user.getLogonName() != "") {
+            m.show();
+            if (window.zeta.security.user.getImpersonation() != "") {
+                deimp.show();
+                imp.hide();
+            }
+        } else {
+            f.show();
+        }
+    }});
+    authorizer.body = $('<div/>').append(f,m);
+    root.console.RegisterWidget(authorizer);
+}(window.jQuery);
+
+/**
+ * Виджет информации о текущем польвателе
+ */
+!function($) {
+    var l = $('<span class="login-user label label-inverse" />');
+    var ConfigurePermissions = function() {
+        if (window.zeta.security.user != null) {
+            if (window.zeta.security.user.getLogonName() != "") {
+                l.text(window.zeta.security.user.getLogonName());
+                var a = window.zeta.security.user;
+                var t = $('<div/>').append($('<ul class="login-permissions"/>').css({
+                    "list-style-type" : "none",
+                    "margin": "0",
+                    "text-align": "left"
+                }).append(
+                    $("<li/>").html(a.getIsAdmin() ? 'Administrator<span>YES</span>' : 'Administrator NO'),
+                    $("<li/>").html(a.getIsDeveloper() ? 'Developer<span>YES</span>' : 'Developer NO'),
+                    $("<li/>").html(a.getIsDataMaster() ? 'Datamaster<span>YES</span>' : 'Datamaster NO')
+                ));
+            }
+        }
+        l.tooltip({title:t.html(), placement: 'bottom', html: true});
+    }
+    $(window.zeta).on(window.zeta.handlers.on_getuserinfo, function() {
+        ConfigurePermissions();
+    });
+    var logininfo = new root.security.Widget("logininfo", root.console.layout.position.layoutHeader, "right", { authonly: false, adminonly: true, ready: function() {
+        ConfigurePermissions();
+    }});
+    logininfo.body = $('<div/>').append(l);
+    root.console.RegisterWidget(logininfo);
 }(window.jQuery);
 
 /**
@@ -249,17 +329,17 @@ root = root.security = root.security || {};
  * Временно отключен, так как планируется передалать на Алерты, выпадающие сверху таблицы
  */
 !function($) {
-    var zefsstatus = new root.Widget("zefsstatus", root.Console.layout.position.layoutHeader, "left", { authonly: true });
+    var zefsstatus = new root.security.Widget("zefsstatus", root.console.layout.position.layoutHeader, "left", { authonly: true });
     var status = $('<span class="label"/>').text("Статус сервера");
     zefsstatus.body = $('<div/>').append(status);
-    //root.Console.registerWidget(zefsstatus);
+    //root.console.registerWidget(zefsstatus);
 }(window.jQuery);
 
 /**
  * Виджет инструмента для сохранения формы
  */
 !function($) {
-    var zefsformsave = new root.Widget("zefsformsave", root.Console.layout.position.layoutHeader, "left", { authonly: true });
+    var zefsformsave = new root.security.Widget("zefsformsave", root.console.layout.position.layoutHeader, "left", { authonly: true });
     var b = $('<button class="btn btn-small btn-primary" title="Сохранить форму" />').html('<i class="icon-ok icon-white"/>');
     b.click(function(e) {
        zefs.myform.save(window.zefs.myform.getChanges());
@@ -277,25 +357,25 @@ root = root.security = root.security || {};
     });
     zefsformsave.body = $('<div/>').append(b);
     b.tooltip({placement: 'bottom'});
-    root.Console.registerWidget(zefsformsave);
+    root.console.RegisterWidget(zefsformsave);
 }(window.jQuery);
 
 /**
  * Виджет обратной связи
  */
 !function($) {
-    var feedback = new root.Widget("feedback", root.Console.layout.position.layoutHeader, "left", { authonly: true });
+    var feedback = new root.security.Widget("feedback", root.console.layout.position.layoutHeader, "left", { authonly: true });
     var b = $('<button class="btn btn-small btn-warning" data-original-title="Обратная связь" />').html('<i class="icon-envelope icon-white"></i>');
     b.tooltip({placement: 'bottom'});
     feedback.body = $('<div/>').append(b);
-    root.Console.registerWidget(feedback);
+    root.console.RegisterWidget(feedback);
 }(window.jQuery);
 
 /**
  * Виджет информационного меню
  */
 !function($) {
-    var information = new root.Widget("information", root.Console.layout.position.layoutHeader, "left", { authonly: true });
+    var information = new root.security.Widget("information", root.console.layout.position.layoutHeader, "left", { authonly: true });
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Информация"/>').html('<i class="icon-book"></i><span class="caret"></span>');
     var m = $('<div class="btn-group"/>').append(
         b, $('<ul class="dropdown-menu"/>').append(
@@ -306,14 +386,14 @@ root = root.security = root.security || {};
         ));
     b.tooltip({placement: 'bottom'});
     information.body = $('<div/>').append(m);
-    root.Console.registerWidget(information);
+    root.console.RegisterWidget(information);
 }(window.jQuery);
 
 /**
  * Виджет заголовка таблицы
  */
 !function($) {
-    var zefsformheader = new root.Widget("zefsformheader", root.Console.layout.position.layoutBodyMain, null, { authonly: true });
+    var zefsformheader = new root.security.Widget("zefsformheader", root.console.layout.position.layoutBodyMain, null, { authonly: true });
     var h = $('<h3/>');
     zefsformheader.body = $('<div/>').append(h);
     var InsertPeriod = function() {
@@ -334,14 +414,14 @@ root = root.security = root.security || {};
         window.zefs._periods_loaded = true;
         InsertPeriod();
     });
-    root.Console.registerWidget(zefsformheader);
+    root.console.RegisterWidget(zefsformheader);
 }(window.jQuery);
 
 /**
  * Виджет Zefs-формы
  */
 !function($) {
-    var zefsform = new root.Widget("zefsform", root.Console.layout.position.layoutBodyMain, null, { authonly: true, ready: function() {
+    var zefsform = new root.security.Widget("zefsform", root.console.layout.position.layoutBodyMain, null, { authonly: true, ready: function() {
        zefs.init(jQuery);
        zefs.myform.run();
     } });
@@ -351,14 +431,14 @@ root = root.security = root.security || {};
             zefsform.body.addClass("isblocked");
         }
     });
-    root.Console.registerWidget(zefsform);
+    root.console.RegisterWidget(zefsform);
 }(window.jQuery);
 
 /**
  * Виджет списка периодов
  */
 !function($) {
-    var zefsperiodselector = new root.Widget("objselector", root.Console.layout.position.layoutHeader, "left", { authonly: true });
+    var zefsperiodselector = new root.security.Widget("objselector", root.console.layout.position.layoutHeader, "left", { authonly: true });
     var list = $('<div class="btn-group"/>');
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Период"/>').html('<i class="icon-calendar"></i><span class="caret"/>');
     var menu = $('<ul class="dropdown-menu"/>');
@@ -507,14 +587,14 @@ root = root.security = root.security || {};
             )
         )*/
     zefsperiodselector.body = $('<div/>').append(list);
-    root.Console.registerWidget(zefsperiodselector);
+    root.console.RegisterWidget(zefsperiodselector);
 }(window.jQuery);
 
 /**
  * Виджет списка предприятий
  */
 !function($) {
-   var zefsobjselector = new root.Widget("objselector", root.Console.layout.position.layoutHeader, "left", { authonly: true });
+   var zefsobjselector = new root.security.Widget("objselector", root.console.layout.position.layoutHeader, "left", { authonly: true });
    var list = $('<div class="btn-group"/>');
    var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Предприятие"/>').html('<i class="icon-map-marker"></i><span class="caret"/>');
    var menu = $('<ul class="dropdown-menu"/>');
@@ -542,14 +622,14 @@ root = root.security = root.security || {};
        });
    });
    zefsobjselector.body = $('<div/>').append(list);
-   root.Console.registerWidget(zefsobjselector);
+   root.console.RegisterWidget(zefsobjselector);
 }(window.jQuery);
 
 /**
  * Виджет менеджера колонок
  */
 !function($) {
-    var zefscolmanager = new root.Widget("zefscolmanager", root.Console.layout.position.layoutHeader, "left", { authonly: true });
+    var zefscolmanager = new root.security.Widget("zefscolmanager", root.console.layout.position.layoutHeader, "left", { authonly: true });
     var list = $('<div class="btn-group"/>');
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление колонками"/>')
         .html('<i class="icon-list"></i><span class="caret"/>');
@@ -595,14 +675,14 @@ root = root.security = root.security || {};
     });
     b.tooltip({placement: 'bottom'});
     zefscolmanager.body = $('<div/>').append(list);
-    root.Console.registerWidget(zefscolmanager);
+    root.console.RegisterWidget(zefscolmanager);
 }(window.jQuery);
 
 /**
  * Виджет менеджера блокировок
  */
 !function($) {
-    var zefsblockmanager = new root.Widget("zefsblockmanager", root.Console.layout.position.layoutHeader, "left", { authonly: true });
+    var zefsblockmanager = new root.security.Widget("zefsblockmanager", root.console.layout.position.layoutHeader, "left", { authonly: true });
     var list = $('<div class="btn-group"/>');
     var b1 = $('<button class="btn btn-success"/>').text("Утв.");
     var b2 = $('<button class="btn btn-warning"/>').text("Заблок.");
@@ -626,14 +706,14 @@ root = root.security = root.security || {};
     });
     b.tooltip({placement: 'bottom'});
     zefsblockmanager.body = $('<div/>').append(list);
-    root.Console.registerWidget(zefsblockmanager);
+    root.console.RegisterWidget(zefsblockmanager);
 }(window.jQuery);
 
 /**
  * Виджет окна с сообщениями
  */
 !function($) {
-    var zefsalerter = new root.Widget("zefsalerter", root.Console.layout.position.layoutBodyMain, null, { authonly: true });
+    var zefsalerter = new root.security.Widget("zefsalerter", root.console.layout.position.layoutBodyMain, null, { authonly: true });
     var container = $('<div/>');
     var ShowMessage = function(p) {
         p = $.extend({
@@ -641,23 +721,30 @@ root = root.security = root.security || {};
             content: null,
             type: "",
             autohide: 0,
-            fade: false
+            fade: false,
+            width: 0
         },p);
         var message = $('<div class="alert"/>');
         if (p.type != "") message.addClass(p.type);
         if (p.fade) message.addClass("fade in");
+        message.append($('<a class="close" data-dismiss="alert"/>').html('&times;'));
         message.append(p.content || p.text);
         if (p.autohide != 0) {
             window.setTimeout(function() {
                 message.remove();
             }, p.autohide);
         }
-        message.append($('<a class="close" data-dismiss="alert"/>').html('&times;'));
+        if (p.width != 0) message.css("width", p.width);
         container.append(message);
     };
     $(window.zefs).on(window.zefs.handlers.on_message, function(e,params) {
         ShowMessage(params);
     });
     zefsalerter.body = $(container).append();
-    root.Console.registerWidget(zefsalerter);
+    root.console.RegisterWidget(zefsalerter);
+}(window.jQuery);
+
+
+!function($) {
+    window.zeta.console.Setup();
 }(window.jQuery);

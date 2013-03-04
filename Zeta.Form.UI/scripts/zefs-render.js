@@ -44,7 +44,12 @@ $.extend(root,{
 			$.each(session.structure.rows, function(rowidx,row) {
 				var tr = $("<tr/>").attr("level",row.getLevel());
 				tr.append($('<td class="number"/>').attr("title", row.code).text(row.getNumber()));
-				var td = $('<td class="name"/>').text(row.getName());
+				if (session.structure.rows.length > rowidx + 1) {
+                    if (row.getLevel() < session.structure.rows[rowidx + 1].getLevel()) {
+                        tr.addClass("haschild");
+                    }
+                }
+                var td = $('<td class="name"/>').text(row.getName());
 				if (row.getIsTitle()) {
 					tr.append(td.attr("colspan", "100"));
 				} else {
@@ -90,8 +95,10 @@ $.extend(root,{
                 $cell.data("history", val);
                 $cell.data("previous", val);
                 $cell.attr("ri", b.getRealId());
-                if (val.search(/\./) != -1 && val.search("error") == -1) $cell.addClass("rounded");
-                $cell.tooltip({title: val, placement: 'top', container: $('body')});
+                if (val.search(/\./) != -1 && val.search("error") == -1) {
+                    $cell.addClass("rounded");
+                    $cell.tooltip({title: val, placement: 'top', container: $('body')});
+                }
 			});
 			batch.wasFilled = true;
 			return session;

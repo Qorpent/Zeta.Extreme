@@ -15,11 +15,15 @@
             return cell.parent();
         };
         $.extend(zefs.myform, {
-            getChanges: this.getChanges
+            getChanges: this.getChanges,
+            hidechildrows: this.toggleChildRows
         });
         $(zefs).on(zefs.handlers.on_savefinished, $.proxy(function() {
             this.applyChanges();
         },this));
+        this.table.delegate('td.name', "click", $.proxy(function(e) {
+            this.toggleChildRows($(e.target).parent());
+        }, this));
         this.nextCell();
     };
 
@@ -159,11 +163,12 @@
         var $cell = this.getActiveCell();
         this.clearNumberFormat($cell);
         var $val = "";
+        var $old = $cell.text();
         if ($mode == "edit") {
-            $val = $cell.text();
+            $val = $old;
         }
         $cell.text("");
-        var $input = $('<input/>').css("width", $cell.width()).val($val);
+        var $input = $('<input class="dataedit"/>').attr("placeholder", $old).css("width", $cell.width()).val($val);
         $cell.append($input);
         $input.focus();
         $cell.addClass("editing");
@@ -276,6 +281,9 @@
 
     Zefs.prototype.hotkeysConfigure = function () {
         $(document).on('keydown', $.proxy(function(e) {
+            if ($(':focus').length != 0) {
+                if (!$(':focus').hasClass("dataedit")) return;
+            }
             var $cell = $(this.getActiveCell());
             var k = e.keyCode;
             var printable =
@@ -373,6 +381,32 @@
             obj[i] = {id:e.attr("id"), value:div.text(), ri:e.attr("ri")};
         });
         return obj;
+    };
+
+    Zefs.prototype.getChildRows = function(e) {
+        var $e = $(e);
+        var $next = $(e).nextAll('tr').filter(function(){ return  $(this).attr("level") <= $e.attr("level") }).first();
+        if ($next.length == 0) return $(e).nextAll('tr');
+        var $result = $e.nextAll('tr:lt(' + ($next.index() - $e.index() - 1) + ')');
+        if ($result.length == 0) {
+            if ($next.attr("level") >= $e.attr("level")) return null;
+            else return $e.nextAll('tr');
+        }
+        return $result;
+    };
+
+    Zefs.prototype.toggleChildRows = function(e) {
+        var $childs = this.getChildRows($(e));
+        if (null == $childs) return;
+        var $collapsed = $childs.filter(function() { return $(this).hasClass("collapsed") });
+        if ($collapsed.length != 0) {
+            for (var i in $collapsed.toArray()) {
+                $childs.splice($childs.index($collapsed[i]) + 1, this.getChildRows($collapsed[i]).length);
+            }
+        }
+        $childs.toggle();
+        $(e).toggleClass("collapsed");
+        $(window).trigger("resize");
     };
 
     Zefs.prototype.applyChanges = function() {

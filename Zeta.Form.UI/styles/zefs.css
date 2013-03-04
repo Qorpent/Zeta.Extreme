@@ -25,13 +25,38 @@ div.open>.tooltip {
     padding-left: 20px;
     margin: 0;
 }
+.impersonator,
 
 .zefsdebug {
     margin-top: 4px;
     margin-right: 3px;
 }
 
-.zefsstatus, .zefsformsave, .feedback, .objselector, .zefscolmanager, .zefsblockmanager,
+.authorizer {
+    margin-right: 3px;
+}
+
+.authorizer .btn-group {
+    margin-top: 4px;
+    margin-right: 2px;
+}
+
+.authorizer .login-form input,
+.authorizer .login-form button {
+    margin-right: 2px;
+}
+
+.authorizer li {
+    margin: 1px 3px;
+}
+
+.logininfo {
+    margin-top: 6px;
+    margin-right: 3px;
+}
+
+.zefsstatus, .zefsformsave, .feedback,
+.objselector, .zefscolmanager, .zefsblockmanager,
 .information {
     margin-top: 4px;
     margin-left: 3px;
@@ -61,9 +86,13 @@ div.open>.tooltip {
 
 .zefsalerter {
     position: absolute;
-    top: 38px;
+    top: 41px;
     right: 20px;
     z-index: 1000;
+}
+
+.zefsalerter .alert {
+    padding: 5px 35px 5px 14px;
 }
 
 .zefsformheader {
