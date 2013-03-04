@@ -13,6 +13,14 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\AttachedFileType.cs" />
+    <Compile Include="Forms\Attachment.cs" />
+    <Compile Include="Forms\BufferedAttachmentStorageBase.cs" />
+    <Compile Include="Forms\DataCollectionStream.cs" />
+    <Compile Include="Forms\FormAttachment.cs" />
+    <Compile Include="Forms\FormAttachmentSource.cs" />
+    <Compile Include="Forms\IAttachmentStorage.cs" />
+    <Compile Include="Forms\IFormAttachmentStorage.cs" />
     <Compile Include="Forms\OutCell.cs" />
     <Compile Include="StateManagement\ILockPeriodMapper.cs" />
     <Compile Include="StateManagement\IPeriodStateManager.cs" />

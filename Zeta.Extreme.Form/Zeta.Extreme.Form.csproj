@@ -66,9 +66,7 @@
   <ItemGroup>
     <Compile Include="Abstracts\IFormDataSynchronize.cs" />
     <Compile Include="Abstracts\IFormSessionControlPointSource.cs" />
-    <Compile Include="InputTemplates\AttachedFileType.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="DbfsAttachmentSource\DbfsAttachmentStorage.cs" />
     <Compile Include="InputTemplates\InputTemplateRequest.cs">
       <SubType>Code</SubType>
     </Compile>

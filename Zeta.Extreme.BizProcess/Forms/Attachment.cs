@@ -50,12 +50,12 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <summary>
 		/// Хэш файла
 		/// </summary>
-		public string Md5 { get; set; }
+		public string Hash { get; set; }
 
 		/// <summary>
 		/// Размер файла
 		/// </summary>
-		public int Size { get; set; }
+		public long Size { get; set; }
 
 		/// <summary>
 		/// Ревизия

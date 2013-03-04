@@ -24,6 +24,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// </summary>
 		/// <exception cref="T:System.IO.IOException">Ошибка ввода-вывода.</exception><filterpriority>2</filterpriority>
 		public override void Flush() {
+			_flushed = true;
 			_internalstream.Flush();
 		}
 
@@ -122,13 +123,15 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		}
 
 		private bool _closewascalled = false;
+		private bool _flushed;
+
+		/// <summary>
+		/// Закрывает текущий поток и отключает все ресурсы (например, сокеты и файловые дескрипторы), связанные с текущим потоком. Вместо вызова данного метода, убедитесь в том, что поток надлежащим образом ликвидирован.
+		/// </summary>
+		/// <filterpriority>1</filterpriority>
 		public override void Close() {
 			base.Close();
-			if(_closewascalled) {
-				_closewascalled = true;
-				byte[] data = CollectData();
-				ProcessData(data);
-			}
+			FinishStream();
 		}
 		/// <summary>
 		/// Основной метод для реализации в дочерних классах - применение собрыннх данных к цели
@@ -141,6 +144,24 @@ namespace Zeta.Extreme.BizProcess.Forms {
 			var buffer = new byte[_internalstream.Length];
 			_internalstream.Read(buffer, 0, buffer.Length);
 			return buffer;
+		}
+
+		/// <summary>
+		/// Освобождает неуправляемые ресурсы, используемые объектом <see cref="T:System.IO.Stream"/>, а при необходимости освобождает также управляемые ресурсы.
+		/// </summary>
+		/// <param name="disposing">Значение true позволяет освободить управляемые и неуправляемые ресурсы; значение false позволяет освободить только неуправляемые ресурсы.</param>
+		protected override void Dispose(bool disposing) {
+			//	Close();
+			FinishStream();
+			base.Dispose(disposing);
+		}
+
+		private void FinishStream() {
+			if (!_closewascalled && _flushed) {
+				_closewascalled = true;
+				byte[] data = CollectData();
+				ProcessData(data);
+			}
 		}
 	}
 }

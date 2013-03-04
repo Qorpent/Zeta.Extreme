@@ -62,7 +62,10 @@ namespace Zeta.Extreme.BizProcess.Forms
 		/// Создает пустой объект присоединенного контента
 		/// </summary>
 		public FormAttachment() {
-			
+			Year = 0;
+			Period = 0;
+			ObjId = 0;
+			TemplateCode = "";
 		}
 
 		/// <summary>
@@ -76,7 +79,7 @@ namespace Zeta.Extreme.BizProcess.Forms
 			AttachType = attachType;
 			if(null!=source) {
 				Uid = source.Uid;
-				Md5 = source.Md5;
+				Hash = source.Hash;
 				Type = source.Type;
 				MimeType = source.MimeType;
 				Name = source.Name;
