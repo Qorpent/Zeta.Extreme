@@ -186,9 +186,9 @@ namespace Zeta.Extreme.Form.SaveSupport {
 			if (!cansave) {
 				throw new SecurityException("try to save into closed form");
 			}
-			if (!Application.Roles.IsInRole(user, "OPERATOR")) {
-				throw new SecurityException("try to save without OPERATOR role");
-			}
+			//if (!Application.Roles.IsInRole(user,session.Template.Role)) {
+			//	throw new SecurityException("try to save without OPERATOR role");
+			//}
 			var templaterole = session.Template.Role;
 			if (!string.IsNullOrWhiteSpace(templaterole)) {
 				if (!Application.Roles.IsInRole(user, session.Template.Role)) {
