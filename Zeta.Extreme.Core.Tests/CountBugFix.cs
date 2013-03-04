@@ -35,7 +35,7 @@ namespace Zeta.Extreme.Core.Tests {
 		[Test]
 		public void ZC_233_Bug_PLANSNG1_Cause_0_Year_InPrimary_Test_One_Normalization()
 		{
-			var query = new Query
+			Query query = new Query
 				{
 					Row = { Code = "m2601311" },
 					Col = { Code = "PLANSNG1" },
@@ -44,7 +44,7 @@ namespace Zeta.Extreme.Core.Tests {
 
 
 
-			query = session.Register(query);
+			query = (Query)session.Register(query);
 			query.WaitPrepare();
 			Assert.AreEqual(1, query.FormulaDependency.Count);
 			Assert.AreEqual("m2601311", query.FormulaDependency[0].Row.Code);
@@ -72,7 +72,7 @@ namespace Zeta.Extreme.Core.Tests {
 
 
 
-			query = session.Register(query);
+			query = (Query)session.Register(query);
 			query.WaitPrepare();
 
 			_serial.Eval(query);
@@ -96,7 +96,7 @@ namespace Zeta.Extreme.Core.Tests {
 
 
 
-			query = session.Register(query);
+			query = (Query)session.Register(query);
 			query.WaitPrepare();
 
 			_serial.Eval(query);
@@ -118,7 +118,7 @@ namespace Zeta.Extreme.Core.Tests {
 
 
 
-			query = session.Register(query);
+			query = (Query)session.Register(query);
 			query.WaitPrepare();
 			Assert.AreEqual(1, query.FormulaDependency.Count);
 			Assert.AreEqual("m2601311", query.FormulaDependency[0].Row.Code);
@@ -133,7 +133,7 @@ namespace Zeta.Extreme.Core.Tests {
 		[Test]
 		public void ZC_199_Not_Count_m260722()
 		{
-			var query = new Query
+			IQuery query = new Query
 				{
 					Obj = { Id = 352 },
 					Row = { Code = "m260722" },

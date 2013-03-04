@@ -22,14 +22,14 @@ namespace Zeta.Extreme {
 		/// <param name="query"> </param>
 		/// <param name="timeout"> </param>
 		/// <returns> </returns>
-		QueryResult Eval(Query query, int timeout = -1);
+		QueryResult Eval(IQuery query, int timeout = -1);
 
 		/// <summary>
 		/// 	Гарантирует синхронный, последовательный доступ к сессии, вычисляет значение
 		/// </summary>
 		/// <param name="query"> </param>
 		/// <returns> </returns>
-		Task<QueryResult> EvalAsync(Query query);
+		Task<QueryResult> EvalAsync(IQuery query);
 
 		/// <summary>
 		/// 	Возвращает ссылку на реальную сессию

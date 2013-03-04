@@ -73,7 +73,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Meta\UserOrgDataMapper.cs" />
-    <Compile Include="OutCell.cs" />
     <Compile Include="SaveSupport\DataSaverBase.cs" />
     <Compile Include="SaveSupport\DefaultSessionDataSaver.cs" />
     <Compile Include="SaveSupport\IFormSessionDataSaver.cs" />

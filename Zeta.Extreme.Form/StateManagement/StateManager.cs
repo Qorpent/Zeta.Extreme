@@ -713,7 +713,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 			}
 		}
 
-		private static bool checkByControlPoints(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail,
+		private static bool checkByControlPoints(IInputTemplate template, IZetaMainObject obj, IZetaDetailObject detail,
 		                                         RowDescriptor root, out string cp) {
 			cp = "";
 			var th = template.Thema as EcoThema;

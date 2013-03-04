@@ -468,7 +468,7 @@ namespace Zeta.Extreme.FrontEnd {
 							Obj = {Native = Object},
 							Time = {Year = c._.Year, Period = c._.Period}
 						};
-					q = DataSession.Register(q, key);
+					q = (Query)DataSession.Register(q, key);
 
 					if (null != q) {
 						if (c._.ControlPoint && r._.IsMarkSeted("CONTROLPOINT")) {
@@ -505,7 +505,7 @@ namespace Zeta.Extreme.FrontEnd {
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
 						};
 					var key = primaryrow.i + ":" + primarycol.i;
-					queries[key] = DataSession.Register(q, key);
+					queries[key] = (Query)DataSession.Register(q, key);
 				}
 			}
 		}
@@ -521,7 +521,7 @@ namespace Zeta.Extreme.FrontEnd {
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
 						};
 					var key = primaryrow.i + ":" + primarycol.i;
-					queries[key] = DataSession.Register(q, key);
+					queries[key] = (Query)DataSession.Register(q, key);
 				}
 			}
 		}
@@ -547,7 +547,7 @@ namespace Zeta.Extreme.FrontEnd {
 				}
 
 				lock (Data) {
-					Data.Add(new OutCell__ {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, ri = realkey});
+					Data.Add(new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, ri = realkey});
 				}
 			}
 		}

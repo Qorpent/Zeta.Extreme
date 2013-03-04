@@ -61,6 +61,10 @@
       <Project>{f939564a-d5a9-4bee-b8f2-47c384358afc}</Project>
       <Name>Comdiv.Zeta.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
+      <Project>{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}</Project>
+      <Name>Zeta.Extreme.BizProcess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.Form\Zeta.Extreme.Form.csproj">
       <Project>{FBD09F91-B185-4207-B05D-6051505CA868}</Project>
       <Name>Zeta.Extreme.Form</Name>

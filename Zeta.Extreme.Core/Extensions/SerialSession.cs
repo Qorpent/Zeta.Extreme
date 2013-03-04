@@ -34,7 +34,7 @@ namespace Zeta.Extreme {
 		/// <param name="query"> </param>
 		/// <param name="timeout"> </param>
 		/// <returns> </returns>
-		public QueryResult Eval(Query query, int timeout = -1) {
+		public QueryResult Eval(IQuery query, int timeout = -1) {
 			lock (_session.SerialSync) {
 				if (null != _session.SerialTask) {
 					_session.SerialTask.Wait();
@@ -59,7 +59,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		/// <returns> </returns>
-		public Task<QueryResult> EvalAsync(Query query) {
+		public Task<QueryResult> EvalAsync(IQuery query) {
 			lock (_session.SerialSync) {
 				if (null != _session.SerialTask) {
 					_session.SerialTask.Wait();

@@ -19,6 +19,10 @@
       <Project>{C51304FD-0406-48E0-833E-EEDC67425BC8}</Project>
       <Name>Comdiv.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
+      <Project>{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}</Project>
+      <Name>Zeta.Extreme.BizProcess</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtremeFormProviderTests.cs" />

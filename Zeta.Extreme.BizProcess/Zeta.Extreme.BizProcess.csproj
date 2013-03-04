@@ -13,7 +13,7 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\OutCellBase.cs" />
+    <Compile Include="Forms\OutCell.cs" />
     <Compile Include="StateManagement\ILockPeriodMapper.cs" />
     <Compile Include="StateManagement\IPeriodStateManager.cs" />
     <Compile Include="StateManagement\IScheduleChecker.cs" />

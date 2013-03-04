@@ -175,7 +175,7 @@ namespace Zeta.Extreme.Core.Tests {
 			var t = session.RegisterAsync(q);
 			session.Execute();
 			if (null != t.Result) {
-				var result = t.Result.GetResult().NumericResult;
+				var result = ((Query)t.Result).GetResult().NumericResult;
 				Console.WriteLine(result);
 				if (checkvalue != result) {
 					foreach (var query in session.Registry) {

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Comdiv.Extensions;
+using Zeta.Extreme.Form.InputTemplates;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -79,7 +80,7 @@ namespace Zeta.Extreme.Form.Themas {
                 }
 				*/
 				foreach (var r in thema.GetAllForms()) {
-					var c = r.Configuration;
+					var c = ((InputTemplate)r).Configuration;
 					if (c.Sources.Length != 0) {
 						foreach (var sourcecode in c.Sources) {
 							var lib = result.GetForm(sourcecode);
@@ -98,7 +99,7 @@ namespace Zeta.Extreme.Form.Themas {
                 }
 				 */
 				foreach (var it in thema.Forms.Values) {
-					it.Configuration = null;
+					((InputTemplate)it).Configuration = null;
 				}
 				foreach (var document in thema.Forms.Values) {
 					document.SourceXmlConfiguration = null;
