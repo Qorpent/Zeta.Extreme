@@ -8,6 +8,19 @@ namespace Zeta.Extreme.Core.Tests {
 	public class CountBugFix :SessionTestBase{
 
 		[Test]
+		public void Check_Nested_EXREF()
+		{
+			var result = _serial.Eval(new Query
+			{
+				Row = { Code = "m224652" },
+				Col = { Code = "NOB18" },
+				Time = { Year =2013, Period = 251 },
+				Obj = { Id = 449 },
+			});
+			Assert.AreEqual(905130m, result.NumericResult);
+		}
+
+		[Test]
 		public void ZC_273_NO_INSUMMA_DOUBLING() {
 			var result = _serial.Eval(new Query
 				{
