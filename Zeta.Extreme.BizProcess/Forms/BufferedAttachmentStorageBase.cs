@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
-using Zeta.Extreme.BizProcess.Forms;
 
-namespace Zeta.Extreme.Form.DbfsAttachmentSource {
+namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>
 	/// Базовое хранилище для буферного доступа к контенту
 	/// </summary>
