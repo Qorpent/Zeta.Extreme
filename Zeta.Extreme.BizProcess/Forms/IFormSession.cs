@@ -52,7 +52,7 @@ namespace Zeta.Extreme.Form {
 		/// <summary>
 		/// 	Хранит уже подготовленные данные
 		/// </summary>
-		[IgnoreSerialize] List<OutCellBase> Data { get; }
+		[IgnoreSerialize] List<OutCell> Data { get; }
 
 		/// <summary>
 		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки

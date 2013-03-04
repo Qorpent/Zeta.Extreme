@@ -4,7 +4,7 @@ namespace Zeta.Extreme.Form {
 	/// <summary>
 	/// —труктура, дл€ представлени€ €чейки в форме ввода
 	/// </summary>
-	public class OutCellBase {
+	public class OutCell {
 		/// <summary>
 		/// 	—сылка на Id €чейки в Ѕƒ
 		/// </summary>
@@ -23,7 +23,7 @@ namespace Zeta.Extreme.Form {
 		/// <summary>
 		/// 	ѕозвол€ет св€зать две €чейки в разных наборах
 		/// </summary>
-		[IgnoreSerialize] public OutCellBase linkedcell;
+		[IgnoreSerialize] public OutCell linkedcell;
 
 		/// <summary>
 		/// 	«начение €чейки
@@ -34,5 +34,10 @@ namespace Zeta.Extreme.Form {
 		/// –еальный ключ €чейки
 		/// </summary>
 		[SerializeNotNullOnly]public string ri;
+
+		/// <summary>
+		/// 	—сылка на запрос дл€ заполн€емых значений
+		/// </summary>
+		[IgnoreSerialize] public IQuery query;
 	}
 }
