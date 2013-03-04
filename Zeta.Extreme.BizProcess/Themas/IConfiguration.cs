@@ -10,7 +10,7 @@
 
 using Comdiv.Model.Interfaces;
 
-namespace Zeta.Extreme.Form.Themas {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Интерфейс конфигурации типизированной темы (конкретного типа)
 	/// </summary>

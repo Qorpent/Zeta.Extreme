@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Zeta.Extreme.Form.StateManagement {
+namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	/// 	Интерфейс менеджера статуса периодов
 	/// </summary>

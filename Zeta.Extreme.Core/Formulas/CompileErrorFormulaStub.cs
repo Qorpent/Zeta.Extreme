@@ -8,6 +8,8 @@
 
 #endregion
 
+using Comdiv.Zeta.Model.ExtremeSupport;
+
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Специальная заглушка для возврата псевдозначения

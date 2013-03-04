@@ -15,11 +15,10 @@ using System.Xml.XPath;
 using Comdiv.Model.Interfaces;
 using Comdiv.Security;
 using Comdiv.Zeta.Model;
-using Zeta.Extreme.Form.StateManagement;
-using Zeta.Extreme.Form.Themas;
-using Zeta.Extreme.Meta;
+using Zeta.Extreme.BizProcess.Forms;
+using Zeta.Extreme.BizProcess.StateManagement;
 
-namespace Zeta.Extreme.Form.InputTemplates {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Èםענופויס פמנלû גגמהא
 	/// </summary>

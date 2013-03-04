@@ -11,6 +11,7 @@
 
 using System;
 using System.Diagnostics;
+using Comdiv.Zeta.Model.ExtremeSupport;
 using NUnit.Framework;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {

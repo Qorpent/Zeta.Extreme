@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Form.InputTemplates {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Устарелая часть интерфейса для форм, ориентирующаяся на серверную обработку и MVC
 	/// </summary>

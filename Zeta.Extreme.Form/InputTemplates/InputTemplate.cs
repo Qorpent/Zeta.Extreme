@@ -20,19 +20,22 @@ using Comdiv.Inversion;
 using Comdiv.Logging;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Model;
+using Zeta.Extreme.BizProcess.Forms;
+using Zeta.Extreme.BizProcess.StateManagement;
+using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
 using Zeta.Extreme.Form.Themas;
 using Zeta.Extreme.Meta;
-using ColumnDesc = Zeta.Extreme.Meta.ColumnDesc;
-using IConditionMatcher = Zeta.Extreme.Meta.IConditionMatcher;
+using ColumnDesc = Zeta.Extreme.BizProcess.Themas.ColumnDesc;
+using IConditionMatcher = Zeta.Extreme.BizProcess.Themas.IConditionMatcher;
 
 
 namespace Zeta.Extreme.Form.InputTemplates {
 	/// <summary>
 	/// 	Шаблон формы
 	/// </summary>
-	public class InputTemplate : IInputTemplate, ICloneable, IConditionMatcher {
+	public class InputTemplate : IInputTemplate, ICloneable, BizProcess.Themas.IConditionMatcher {
 		/// <summary>
 		/// 	Конструктор по умолчанию
 		/// </summary>

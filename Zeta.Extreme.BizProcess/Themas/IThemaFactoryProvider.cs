@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Zeta.Extreme.Form.Themas {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Простой интерфейс поставщика фабрики тем
 	/// </summary>

@@ -15,6 +15,7 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessiblleObjectsTest.cs" />
     <Compile Include="JsonSaveParseTest.cs" />
   </ItemGroup>
   <ItemGroup>

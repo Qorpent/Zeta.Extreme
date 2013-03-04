@@ -21,14 +21,14 @@ using Comdiv.Extensions;
 using Comdiv.Model;
 using Comdiv.Model.Interfaces;
 using Comdiv.Olap.Model;
-using Qorpent.Applications;
 using Qorpent.Serialization;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 #if NEWMODEL
 
 #endif
 
-namespace Zeta.Extreme.Meta{
+namespace Zeta.Extreme.BizProcess.Themas{
 	/// <summary>
 	/// Интерфейс измерения расчетной системы
 	/// </summary>

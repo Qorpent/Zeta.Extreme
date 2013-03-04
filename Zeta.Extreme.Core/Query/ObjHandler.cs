@@ -11,6 +11,7 @@
 using System;
 using Comdiv.Olap.Model;
 using Comdiv.Zeta.Model;
+using Comdiv.Zeta.Model.ExtremeSupport;
 
 namespace Zeta.Extreme {
 	/// <summary>

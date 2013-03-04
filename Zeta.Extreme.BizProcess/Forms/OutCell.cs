@@ -1,6 +1,7 @@
+using Comdiv.Zeta.Model.ExtremeSupport;
 using Qorpent.Serialization;
 
-namespace Zeta.Extreme.Form {
+namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>
 	/// Структура, для представления ячейки в форме ввода
 	/// </summary>

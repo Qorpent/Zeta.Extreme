@@ -13,9 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Comdiv.Extensions;
 using Comdiv.Zeta.Model;
-using Zeta.Extreme.Poco;
 
-namespace Zeta.Extreme.Meta {
+namespace Zeta.Extreme.Poco.NativeSqlBind {
 	/// <summary>
 	/// 	Обслуживание логики периодов
 	/// </summary>

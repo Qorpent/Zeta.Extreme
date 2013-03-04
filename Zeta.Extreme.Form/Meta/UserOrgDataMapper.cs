@@ -24,11 +24,11 @@ using System.Security.Principal;
 using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Inversion;
-using Comdiv.Persistence;
 using Comdiv.Security;
 using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
-namespace Zeta.Extreme.Meta{
+namespace Zeta.Extreme.Form.Meta{
     /// <summary>
     /// 
     /// </summary>

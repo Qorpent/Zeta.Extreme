@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using Comdiv.Application;
 using Comdiv.Olap.Model;
-using Zeta.Extreme.Poco;
 
-namespace Zeta.Extreme.Meta {
+namespace Zeta.Extreme.Poco.NativeSqlBind {
 /// <summary>
 /// Замена ORM для загрузки метаданных из БД напрямую
 /// </summary>

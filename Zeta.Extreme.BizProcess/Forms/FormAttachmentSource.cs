@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Zeta.Extreme.Form;
-using Zeta.Extreme.Form.InputTemplates;
 
 namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>

@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using Comdiv.Zeta.Model;
 
-namespace Zeta.Extreme.Form.InputTemplates {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Интерфейс фильтров деталей
 	/// </summary>

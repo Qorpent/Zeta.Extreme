@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Form.InputTemplates {
+namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>
 	/// 	Тип присоединенного файла
 	/// </summary>

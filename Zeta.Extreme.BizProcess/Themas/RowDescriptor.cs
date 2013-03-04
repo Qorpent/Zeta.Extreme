@@ -18,7 +18,7 @@
 using Comdiv.Extensions;
 using Comdiv.Zeta.Model;
 
-namespace Zeta.Extreme.Meta{
+namespace Zeta.Extreme.BizProcess.Themas{
     /// <summary>
     /// Описатель строки
     /// </summary>

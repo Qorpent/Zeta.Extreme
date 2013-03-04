@@ -11,7 +11,7 @@
 using System;
 using System.Linq;
 using Comdiv.Extensions;
-using Periods = Zeta.Extreme.Meta.Periods;
+using Periods = Zeta.Extreme.Poco.NativeSqlBind.Periods;
 
 namespace Zeta.Extreme {
 	/// <summary>

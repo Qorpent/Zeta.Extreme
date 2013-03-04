@@ -8,6 +8,8 @@
 
 #endregion
 
+using Comdiv.Zeta.Model.ExtremeSupport;
+
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Базовый класс для запросов и условий, отвечает за целостность кэш-строки

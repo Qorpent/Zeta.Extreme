@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using Comdiv.Zeta.Model.ExtremeSupport;
 
 namespace Zeta.Extreme {
 	/// <summary>

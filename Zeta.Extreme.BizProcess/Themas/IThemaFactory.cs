@@ -12,9 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using Comdiv.Reporting;
-using Zeta.Extreme.Form.InputTemplates;
 
-namespace Zeta.Extreme.Form.Themas {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Фабрика тем
 	/// </summary>

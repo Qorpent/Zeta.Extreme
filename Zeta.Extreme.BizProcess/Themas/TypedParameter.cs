@@ -12,7 +12,7 @@ using System;
 using System.Reflection;
 using Comdiv.Extensions;
 
-namespace Zeta.Extreme.Form.Themas {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Типизированный параметр темы
 	/// </summary>

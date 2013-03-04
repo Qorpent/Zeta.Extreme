@@ -14,8 +14,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Comdiv.Zeta.Model;
 using Qorpent.Utils.Extensions;
-using ColumnCache = Zeta.Extreme.Meta.ColumnCache;
-using RowCache = Zeta.Extreme.Meta.RowCache;
+using Zeta.Extreme.Poco.NativeSqlBind;
+using ColumnCache = Zeta.Extreme.Poco.NativeSqlBind.ColumnCache;
+using RowCache = Zeta.Extreme.Poco.NativeSqlBind.RowCache;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -156,7 +157,7 @@ namespace Zeta.Extreme {
 						result.Time.Period = Period;
 					}
 					else {
-						var eval = Meta.Periods.Eval(result.Time.Year, result.Time.Period, Period);
+						var eval = Periods.Eval(result.Time.Year, result.Time.Period, Period);
 						
 						result.Time.Year = eval.Year;
 						if(eval.Periods.Length==1) {

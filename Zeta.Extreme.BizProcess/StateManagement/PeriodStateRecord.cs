@@ -11,7 +11,7 @@
 using System;
 using Comdiv.Extensions;
 
-namespace Zeta.Extreme.Form.StateManagement {
+namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	/// 	Запись статуса периода
 	/// </summary>

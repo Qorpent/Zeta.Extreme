@@ -15,6 +15,7 @@ using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Persistence;
 using Qorpent.Applications;
+using Zeta.Extreme.BizProcess.StateManagement;
 
 namespace Zeta.Extreme.Form.StateManagement {
 	/// <summary>

@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Form.Themas {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Тип элемента темы
 	/// </summary>

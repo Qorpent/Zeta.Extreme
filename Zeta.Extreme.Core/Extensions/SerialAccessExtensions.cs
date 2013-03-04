@@ -8,6 +8,8 @@
 
 #endregion
 
+using Comdiv.Zeta.Model.ExtremeSupport;
+
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Расширения для последовательного API сессии

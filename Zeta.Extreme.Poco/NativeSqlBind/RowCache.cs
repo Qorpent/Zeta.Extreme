@@ -26,9 +26,8 @@ using Comdiv.Common;
 using Comdiv.Extensions;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Model;
-using Zeta.Extreme.Poco;
 
-namespace Zeta.Extreme.Meta{
+namespace Zeta.Extreme.Poco.NativeSqlBind{
 	/// <summary>
 	/// Метаданные строк для Zeta
 	/// </summary>

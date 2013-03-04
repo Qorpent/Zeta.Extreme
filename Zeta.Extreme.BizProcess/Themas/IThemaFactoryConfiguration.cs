@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace Zeta.Extreme.Form.Themas {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Интерфейс конфигуратора фабрики тем
 	/// </summary>

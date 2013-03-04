@@ -9,9 +9,9 @@
 #endregion
 
 using Comdiv.Zeta.Model;
-using Zeta.Extreme.Form.InputTemplates;
+using Zeta.Extreme.BizProcess.Themas;
 
-namespace Zeta.Extreme.Form.StateManagement {
+namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	/// 	Интерфейс класса управления статусами
 	/// </summary>

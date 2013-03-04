@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using System.Data;
-using Comdiv.Zeta.Model;
-using Zeta.Extreme.Poco;
 
-namespace Zeta.Extreme.Meta {
+namespace Zeta.Extreme.Poco.NativeSqlBind {
 	public partial class NativeZetaReader {
 
 		private const string Divquerybase = @"

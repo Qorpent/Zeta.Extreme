@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Comdiv.Zeta.Model.ExtremeSupport;
 
 namespace Zeta.Extreme {
 	/// <summary>

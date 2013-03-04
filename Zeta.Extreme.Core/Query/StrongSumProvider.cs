@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 using Comdiv.Extensions;
 using Comdiv.Olap.Model;
 using Comdiv.Zeta.Model;
-using RowCache = Zeta.Extreme.Meta.RowCache;
+using RowCache = Zeta.Extreme.Poco.NativeSqlBind.RowCache;
 
 namespace Zeta.Extreme {
 	/// <summary>

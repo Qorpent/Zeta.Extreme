@@ -1,3 +1,5 @@
+using Zeta.Extreme.BizProcess.Themas;
+
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
 	/// Формирует стандартные конфигурации загрузчика тем

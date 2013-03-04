@@ -8,9 +8,7 @@
 
 #endregion
 
-using Zeta.Extreme.Form.InputTemplates;
-
-namespace Zeta.Extreme.Form.Themas {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Интерфейс загрузчика форм для Extreme
 	/// </summary>

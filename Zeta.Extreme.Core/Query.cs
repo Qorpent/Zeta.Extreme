@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Comdiv.Zeta.Model;
+using Comdiv.Zeta.Model.ExtremeSupport;
 
 namespace Zeta.Extreme {
 	/// <summary>

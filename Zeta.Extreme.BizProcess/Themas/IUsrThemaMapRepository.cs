@@ -10,7 +10,7 @@
 
 using Comdiv.Zeta.Model;
 
-namespace Zeta.Extreme.Form.Themas {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Интерфейс получения ответственных
 	/// </summary>

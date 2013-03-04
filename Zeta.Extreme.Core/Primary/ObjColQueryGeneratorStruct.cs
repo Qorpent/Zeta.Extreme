@@ -1,3 +1,5 @@
+using Comdiv.Zeta.Model.ExtremeSupport;
+
 namespace Zeta.Extreme.Primary {
 	/// <summary>
 	/// Внутренняя конструкция для описания участка скрипта в терминах сочетания объкта-колонки

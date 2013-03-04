@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using Comdiv.Zeta.Model.ExtremeSupport;
 
 namespace Zeta.Extreme {
 	/// <summary>

@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Zeta.Extreme.Form.StateManagement {
+namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	/// 	Информация о статусе закрытия формы
 	/// </summary>

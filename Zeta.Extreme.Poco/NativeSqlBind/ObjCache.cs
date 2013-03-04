@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Comdiv.Zeta.Model;
 
-namespace Zeta.Extreme.Meta {
+namespace Zeta.Extreme.Poco.NativeSqlBind {
 	/// <summary>
 	/// 	Кэш данных по старшим объектам
 	/// </summary>

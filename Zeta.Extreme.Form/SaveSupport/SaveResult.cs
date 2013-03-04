@@ -8,6 +8,8 @@
 
 #endregion
 
+using Zeta.Extreme.BizProcess.Forms;
+
 namespace Zeta.Extreme.Form.SaveSupport {
 	/// <summary>
 	/// 	Общий результат запроса на сохранения

@@ -3,7 +3,7 @@ using Comdiv.Application;
 using Comdiv.Common;
 using Comdiv.Zeta.Model;
 
-namespace Zeta.Extreme.Meta {
+namespace Zeta.Extreme.Poco.NativeSqlBind {
 	/// <summary>
 	/// Кэш загруженных колонок
 	/// </summary>

@@ -9,9 +9,8 @@
 #endregion
 
 using Comdiv.Reporting;
-using Zeta.Extreme.Form.InputTemplates;
 
-namespace Zeta.Extreme.Form.Themas {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Стандартный хелпер для тем (для веба)
 	/// </summary>

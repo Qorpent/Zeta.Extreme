@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace Zeta.Extreme.Form.Themas {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Описывает опции загрузки тем
 	/// </summary>

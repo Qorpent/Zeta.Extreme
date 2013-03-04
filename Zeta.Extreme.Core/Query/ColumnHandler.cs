@@ -11,7 +11,8 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Comdiv.Zeta.Model;
-using ColumnCache = Zeta.Extreme.Meta.ColumnCache;
+using Comdiv.Zeta.Model.ExtremeSupport;
+using ColumnCache = Zeta.Extreme.Poco.NativeSqlBind.ColumnCache;
 
 namespace Zeta.Extreme {
 	/// <summary>

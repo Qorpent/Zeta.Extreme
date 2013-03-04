@@ -8,9 +8,9 @@
 
 #endregion
 
-using Zeta.Extreme.Form.InputTemplates;
+using Zeta.Extreme.BizProcess.Themas;
 
-namespace Zeta.Extreme.Form.StateManagement {
+namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	/// 	Интерфейс контроля расписаний
 	/// </summary>

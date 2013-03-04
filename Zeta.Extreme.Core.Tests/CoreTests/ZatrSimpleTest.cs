@@ -18,8 +18,10 @@ using System.Threading.Tasks;
 using Comdiv.Application;
 using Comdiv.Zeta.Model;
 using NUnit.Framework;
+using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Meta;
 using Zeta.Extreme.Poco;
+using Zeta.Extreme.Poco.NativeSqlBind;
 using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {

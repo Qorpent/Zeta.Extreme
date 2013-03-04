@@ -23,7 +23,7 @@ using Comdiv.Extensions;
 
 #endregion
 
-namespace Zeta.Extreme.Meta{
+namespace Zeta.Extreme.Poco.NativeSqlBind{
 	
 
 	/// <summary>
@@ -136,7 +136,7 @@ namespace Zeta.Extreme.Meta{
 		/// <filterpriority>2</filterpriority>
 		public override string ToString(){
    
-            return string.Format("{0} {1} {2}-{3}", Meta.Periods.Get(Periods[0]).Name, Year,
+            return string.Format("{0} {1} {2}-{3}", NativeSqlBind.Periods.Get(Periods[0]).Name, Year,
                                  StartDate.ToString("dd.MM.yyyy"), EndDate.ToString("dd.MM.yyyy"));
    
         }

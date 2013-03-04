@@ -8,6 +8,8 @@
 
 #endregion
 
+using Zeta.Extreme.Poco.NativeSqlBind;
+
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Базовый определитель
@@ -21,7 +23,7 @@ namespace Zeta.Extreme {
 		/// <param name="year"> </param>
 		/// <returns> </returns>
 		public TimeHandler Evaluate(int basePeriod, int period, int year) {
-			var subresult = Meta.Periods.Eval(year, basePeriod, period);
+			var subresult = Periods.Eval(year, basePeriod, period);
 			return new TimeHandler
 				{
 					Year = subresult.Year,

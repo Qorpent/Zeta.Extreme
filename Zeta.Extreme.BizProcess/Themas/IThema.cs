@@ -14,9 +14,8 @@ using System.Security.Principal;
 using Comdiv.Model.Interfaces;
 using Comdiv.Reporting;
 using Comdiv.Zeta.Model;
-using Zeta.Extreme.Form.InputTemplates;
 
-namespace Zeta.Extreme.Form.Themas {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Базовый интерфейс темы
 	/// </summary>

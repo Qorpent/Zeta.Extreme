@@ -24,7 +24,7 @@ using Comdiv.Olap.Model;
 
 #endif
 
-namespace Zeta.Extreme.Meta{
+namespace Zeta.Extreme.Poco.NativeSqlBind{
     /// <summary>
     /// ¬спомогательный класс дл€ работы с формулами
     /// </summary>

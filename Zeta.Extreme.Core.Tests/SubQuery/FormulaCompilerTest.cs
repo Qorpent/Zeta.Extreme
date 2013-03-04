@@ -16,6 +16,7 @@ using Comdiv.Persistence;
 using NUnit.Framework;
 using Zeta.Extreme.Meta;
 using Zeta.Extreme.Poco;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Core.Tests.SubQuery {
 	[TestFixture]

@@ -38,6 +38,7 @@
     <Compile Include="DataStructures\ObjectRecord.cs" />
     <Compile Include="DataStructures\PeriodRecord.cs" />
     <Compile Include="DataStructures\PeriodType.cs" />
+    <Compile Include="FormAttachmentStorageExtensions.cs" />
     <Compile Include="FormServer.cs" />
     <Compile Include="DataStructures\DataChunk.cs" />
     <Compile Include="FormSession.cs" />
@@ -53,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>

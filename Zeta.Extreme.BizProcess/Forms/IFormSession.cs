@@ -11,10 +11,10 @@
 using System.Collections.Generic;
 using Comdiv.Zeta.Model;
 using Qorpent.Serialization;
-using Zeta.Extreme.Form.InputTemplates;
-using Zeta.Extreme.Form.StateManagement;
+using Zeta.Extreme.BizProcess.StateManagement;
+using Zeta.Extreme.BizProcess.Themas;
 
-namespace Zeta.Extreme.Form {
+namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>
 	/// 	Базовый интерфейс сессии
 	/// </summary>

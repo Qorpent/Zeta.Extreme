@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Form.StateManagement {
+namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	/// 	Статус относительно расписания формы
 	/// </summary>

@@ -29,12 +29,12 @@ using Comdiv.Logging;
 using Comdiv.Olap.Model;
 using Comdiv.Security;
 using Comdiv.Zeta.Model;
-using Qorpent.Applications;
 using Qorpent.Serialization;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 #endregion
 
-namespace Zeta.Extreme.Meta{
+namespace Zeta.Extreme.BizProcess.Themas{
 
     #region
 
@@ -639,7 +639,7 @@ namespace Zeta.Extreme.Meta{
                         Period = getPrevPeriod(mainp, deltp);
                     }
                     else{
-                        var dp = Meta.Periods.Get(deltp);
+                        var dp = Poco.NativeSqlBind.Periods.Get(deltp);
                         
                         if (dp.IsFormula){
                             var x = dp.Evaluate(Year, DirectDate, mainp);
@@ -757,7 +757,7 @@ namespace Zeta.Extreme.Meta{
 					Title = String.Format(srctitle, "", "", "", DirectDate);
 				}
 				else {
-					var p = Meta.Periods.Get(Period);
+					var p = Poco.NativeSqlBind.Periods.Get(Period);
 					DateTime st = DateExtensions.Begin;
 					DateTime et = DateExtensions.End;
 					if (p != null) {
@@ -769,7 +769,7 @@ namespace Zeta.Extreme.Meta{
 					Title = String.Format(srctitle,
 					                      Year,
 					                      Period,
-					                      ResolvedPeriodName.hasContent() ? ResolvedPeriodName: Meta.Periods.Get(Period).Name,
+					                      ResolvedPeriodName.hasContent() ? ResolvedPeriodName: Poco.NativeSqlBind.Periods.Get(Period).Name,
 					                      Year - 1,
 					                      st.ToString("dd.MM.yyyy"),
 					                      st.AddDays(-1).ToString("dd.MM.yyyy"),

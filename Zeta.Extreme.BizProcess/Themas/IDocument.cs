@@ -11,7 +11,7 @@
 using Comdiv.Model.Interfaces;
 using Comdiv.Security;
 
-namespace Zeta.Extreme.Form.Themas {
+namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Описатель документа темы
 	/// </summary>

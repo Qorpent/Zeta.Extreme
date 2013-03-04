@@ -1,4 +1,4 @@
-﻿namespace Zeta.Extreme.Meta {
+﻿namespace Zeta.Extreme.BizProcess.Themas {
     /// <summary>
     /// Правило сопоставления колонок
     /// </summary>

@@ -14,9 +14,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using Comdiv.Zeta.Model;
+using Comdiv.Zeta.Model.ExtremeSupport;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 using Zeta.Extreme.Meta;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]
