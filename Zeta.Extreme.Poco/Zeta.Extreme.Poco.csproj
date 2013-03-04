@@ -168,6 +168,14 @@
     <Compile Include="extPoco\objtype.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NativeSqlBind\ColumnCache.cs" />
+    <Compile Include="NativeSqlBind\IWithFormulaExtensions.cs" />
+    <Compile Include="NativeSqlBind\NativeZetaReader.cs" />
+    <Compile Include="NativeSqlBind\NativeZetaReader_Internals.cs" />
+    <Compile Include="NativeSqlBind\ObjCache.cs" />
+    <Compile Include="NativeSqlBind\PeriodDefinition.cs" />
+    <Compile Include="NativeSqlBind\Periods.cs" />
+    <Compile Include="NativeSqlBind\RowCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">

@@ -12,7 +12,7 @@ namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Базовый класс для запросов и условий, отвечает за целостность кэш-строки
 	/// </summary>
-	public abstract class CacheKeyGeneratorBase {
+	public abstract class CacheKeyGeneratorBase : IWithCacheKey {
 		/// <summary>
 		/// 	Возвращает кэш-строку запроса
 		/// </summary>

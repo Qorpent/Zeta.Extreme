@@ -216,7 +216,7 @@ namespace Zeta.Extreme {
 		/// 	возвращается именно итоговый запрос
 		/// </remarks>
 		/// <exception cref="NotImplementedException"></exception>
-		public Query Register(Query query, string uid = null) {
+		public IQuery Register(IQuery query, string uid = null) {
 			//lock (thissync) {
 				var helper = GetRegistryHelper();
 				var result = helper.Register(query, uid);
@@ -235,10 +235,10 @@ namespace Zeta.Extreme {
 		/// 	При регистрации запроса, он проходит дополнительную оптимизацию и проверку на дубляж,
 		/// 	возвращается именно итоговый запрос
 		/// </remarks>
-		public Task<Query> RegisterAsync(Query query, string uid = null) {
+		public Task<IQuery> RegisterAsync(IQuery query, string uid = null) {
 			lock (thissync) {
 				var id = _preEvalTaskCounter++;
-				var task = new Task<Query>(() =>
+				var task = new Task<IQuery>(() =>
 					{
 						try {
 							var helper = GetRegistryHelper();

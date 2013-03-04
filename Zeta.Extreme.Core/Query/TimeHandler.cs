@@ -16,7 +16,7 @@ namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Описание условия на время
 	/// </summary>
-	public sealed class TimeHandler : CacheKeyGeneratorBase {
+	public sealed class TimeHandler : CacheKeyGeneratorBase, ITimeHandler {
 		/// <summary>
 		/// 	Год
 		/// </summary>
@@ -166,7 +166,7 @@ namespace Zeta.Extreme {
 		/// 	Простая копия условия на время
 		/// </summary>
 		/// <returns> </returns>
-		public TimeHandler Copy() {
+		public ITimeHandler Copy() {
 			return MemberwiseClone() as TimeHandler;
 		}
 
@@ -174,7 +174,7 @@ namespace Zeta.Extreme {
 		/// 	Нормализует формульные года и периоды
 		/// </summary>
 		/// <param name="session"> </param>
-		public void Normalize(Session session = null) {
+		public void Normalize(ISession session = null) {
 			if (!IsYearDefinied()) {
 				ResolveYear();
 			}
@@ -201,7 +201,7 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		private void ResolvePeriod(Session session) {
+		private void ResolvePeriod(ISession session) {
 			//TODO: fix to real logic, должен вызывать функцию
 			if (0 == Period) {
 				Period = BasePeriod;
@@ -211,7 +211,7 @@ namespace Zeta.Extreme {
 				periodEvaluator = new DefaultPeriodEvaluator();
 			}
 			else {
-				periodEvaluator = session.GetPeriodEvaluator();
+				periodEvaluator = ((Session)session).GetPeriodEvaluator();
 			}
 			var result = periodEvaluator.Evaluate(BasePeriod, Period, Year);
 			if (0 != result.Year && (null == _years || 0 == _years.Length)) {
@@ -225,7 +225,7 @@ namespace Zeta.Extreme {
 			}
 
 			if (null != session) {
-				session.Return(periodEvaluator);
+				((Session)session).Return(periodEvaluator);
 			}
 		}
 

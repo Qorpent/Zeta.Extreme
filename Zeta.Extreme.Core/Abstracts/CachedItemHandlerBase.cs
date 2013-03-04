@@ -21,8 +21,7 @@ namespace Zeta.Extreme {
 	/// 	Базовый класс обертки измерения
 	/// </summary>
 	/// <typeparam name="TItem"> </typeparam>
-	public class CachedItemHandlerBase<TItem> : CacheKeyGeneratorBase, IZetaQueryDimension
-		where TItem : class, IWithCode, IWithId, IWithNewTags {
+	public abstract class CachedItemHandlerBase<TItem> : CacheKeyGeneratorBase, IQueryDimension<TItem> where TItem : class, IWithCode, IWithId, IWithNewTags {
 		/// <summary>
 		/// 	Набор кодов элемента
 		/// </summary>
@@ -356,6 +355,7 @@ namespace Zeta.Extreme {
 			return null;
 		}
 
+
 		private readonly DateTime _version = new DateTime();
 
 		private string _code;
@@ -368,5 +368,12 @@ namespace Zeta.Extreme {
 		private IDictionary<string, object> _localProperties;
 		private TItem _native;
 		private string _tag;
-		}
+
+		/// <summary>
+		/// 	Нормализует объект зоны
+		/// </summary>
+		/// <param name="session"> </param>
+		/// <exception cref="NotImplementedException"></exception>
+		public abstract void Normalize(ISession session);
+	}
 }

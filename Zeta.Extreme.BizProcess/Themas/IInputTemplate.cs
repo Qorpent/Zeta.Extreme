@@ -15,7 +15,6 @@ using System.Xml.XPath;
 using Comdiv.Model.Interfaces;
 using Comdiv.Security;
 using Comdiv.Zeta.Model;
-using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
 using Zeta.Extreme.Form.Themas;
 using Zeta.Extreme.Meta;
@@ -237,10 +236,10 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		string SqlOptimization { get; set; }
 
-		/// <summary>
-		/// 	Ссылка на конфигурацию
-		/// </summary>
-		InputConfiguration Configuration { get; set; }
+		///// <summary>
+		///// 	Ссылка на конфигурацию
+		///// </summary>
+		//InputConfiguration Configuration { get; set; }
 
 		///<summary>
 		///	Корень документа

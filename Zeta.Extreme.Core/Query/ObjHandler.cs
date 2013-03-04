@@ -16,7 +16,7 @@ namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Описание условия на объект
 	/// </summary>
-	public sealed class ObjHandler : CachedItemHandlerBase<IZoneElement> {
+	public sealed class ObjHandler : CachedItemHandlerBase<IZoneElement>, IObjHandler {
 		/// <summary>
 		/// 	Тип зоны
 		/// </summary>
@@ -105,7 +105,7 @@ namespace Zeta.Extreme {
 		/// 	Простая копия зоны
 		/// </summary>
 		/// <returns> </returns>
-		public ObjHandler Copy() {
+		public IObjHandler Copy() {
 			return MemberwiseClone() as ObjHandler;
 		}
 
@@ -132,7 +132,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="session"> </param>
 		/// <exception cref="NotImplementedException"></exception>
-		public void Normalize(Session session) {
+		public override void Normalize(ISession session) {
 			if (IsStandaloneSingletonDefinition()) {
 				var cache = session == null ? MetaCache.Default : session.MetaCache;
 				switch (Type) {

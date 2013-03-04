@@ -8,6 +8,7 @@
 
 #endregion
 
+using System;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Comdiv.Zeta.Model;
@@ -18,7 +19,7 @@ namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Описание условия на строку
 	/// </summary>
-	public sealed class RowHandler : CachedItemHandlerBase<IZetaRow> {
+	public sealed class RowHandler : CachedItemHandlerBase<IZetaRow>, IRowHandler {
 		/// <summary>
 		/// 	Условие на объединение по дереву (динамический суммовой набор) - для оптимизированных сумм
 		/// </summary>
@@ -58,6 +59,15 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	Нормализует объект зоны
+		/// </summary>
+		/// <param name="session"> </param>
+		/// <exception cref="NotImplementedException"></exception>
+		public override void Normalize(ISession session) {
+			throw new System.NotImplementedException();
+		}
+
+		/// <summary>
 		/// 	Функция непосредственного вычисления кэшевой строки
 		/// </summary>
 		/// <returns> </returns>
@@ -72,7 +82,7 @@ namespace Zeta.Extreme {
 		/// 	Простая копия условия на строку
 		/// </summary>
 		/// <returns> </returns>
-		public RowHandler Copy() {
+		public IRowHandler Copy() {
 			return MemberwiseClone() as RowHandler;
 		}
 
@@ -81,7 +91,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="session"> </param>
 		/// <param name="column"> </param>
-		public void Normalize(Session session, IZetaColumn column) {
+		public void Normalize(ISession session, IZetaColumn column) {
 			var cache = session == null ? MetaCache.Default : session.MetaCache;
 			if (IsStandaloneSingletonDefinition()) {
 				//try load native
@@ -91,7 +101,7 @@ namespace Zeta.Extreme {
 		}
 
 
-		private void NormalizeReferencedRows(Session session, IZetaColumn column) {
+		private void NormalizeReferencedRows(ISession session, IZetaColumn column) {
 			var initialcode = Code;
 			var proceed = true;
 			while (proceed) {
@@ -100,8 +110,8 @@ namespace Zeta.Extreme {
 				proceed = ResolveSingleRowFormula();
 			}
 			if (initialcode != Code) {
-				if (session != null && session.CollectStatistics) {
-					Interlocked.Increment(ref session.Stat_Row_Redirections);
+				if (session != null && ((Session)session).CollectStatistics) {
+					Interlocked.Increment(ref ((Session)session).Stat_Row_Redirections);
 				}
 			}
 		}

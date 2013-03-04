@@ -41,7 +41,7 @@ namespace Zeta.Extreme {
 				}
 				Query realquery = null;
 
-				realquery = _session.Register(query);
+				realquery = (Query)_session.Register(query);
 
 				if (null == realquery) {
 					return new QueryResult();
@@ -68,7 +68,7 @@ namespace Zeta.Extreme {
 				var task = Task.Run(() =>
 					{
 						realquery_.Wait();
-						var realquery = realquery_.Result;
+						var realquery = (Query)realquery_.Result;
 						if (null == realquery) {
 							return null;
 						}

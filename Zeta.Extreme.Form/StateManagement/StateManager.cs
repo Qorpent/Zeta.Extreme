@@ -259,7 +259,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <param name="detail"> </param>
 		/// <param name="state"> </param>
 		/// <returns> </returns>
-		public bool CanSet(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state) {
+		public bool CanSet(IInputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state) {
 			string cause;
 			return CanSet(template, obj, detail, state, out cause);
 		}
@@ -273,7 +273,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <param name="state"> </param>
 		/// <param name="cause"> </param>
 		/// <returns> </returns>
-		public bool CanSet(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state,
+		public bool CanSet(IInputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state,
 		                   out string cause) {
 			return CanSet(template, obj, detail, state, out cause, 0);
 		}
@@ -288,7 +288,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <param name="cause"> </param>
 		/// <param name="parent"> </param>
 		/// <returns> </returns>
-		public bool CanSet(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state,
+		public bool CanSet(IInputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state,
 		                   out string cause, int parent) {
 			lock (this) {
 				checkinit();
@@ -475,7 +475,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <param name="detail"> </param>
 		/// <param name="state"> </param>
 		/// <param name="parent"> </param>
-		public void Process(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state, int parent) {
+		public void Process(IInputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state, int parent) {
 			/* на выполнение процесса у нас одно единственное правило - "если открывать, то с зависимыми*/
 			lock (this) {
 				checkinit();

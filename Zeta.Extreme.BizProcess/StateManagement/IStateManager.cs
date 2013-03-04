@@ -24,7 +24,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <param name="detail"> </param>
 		/// <param name="state"> </param>
 		/// <returns> </returns>
-		bool CanSet(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state);
+		bool CanSet(IInputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state);
 
 		/// <summary>
 		/// 	ВЫполнить установку статуса
@@ -34,7 +34,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <param name="detail"> </param>
 		/// <param name="state"> </param>
 		/// <param name="parent"> </param>
-		void Process(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state, int parent);
+		void Process(IInputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state, int parent);
 
 		/// <summary>
 		/// 	Найти зависимые формы
@@ -74,7 +74,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <param name="state"> </param>
 		/// <param name="cause"> </param>
 		/// <returns> </returns>
-		bool CanSet(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state,
+		bool CanSet(IInputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state,
 		            out string cause);
 
 		/// <summary>
@@ -129,7 +129,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <param name="cause"> </param>
 		/// <param name="parent"> </param>
 		/// <returns> </returns>
-		bool CanSet(InputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state,
+		bool CanSet(IInputTemplate template, IZetaMainObject obj, IZetaDetailObject detail, string state,
 		            out string cause, int parent);
 	}
 }

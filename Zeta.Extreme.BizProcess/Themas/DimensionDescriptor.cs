@@ -21,6 +21,7 @@ using Comdiv.Extensions;
 using Comdiv.Model;
 using Comdiv.Model.Interfaces;
 using Comdiv.Olap.Model;
+using Qorpent.Applications;
 using Qorpent.Serialization;
 
 #if NEWMODEL
@@ -52,7 +53,8 @@ namespace Zeta.Extreme.Meta{
 		/// </summary>
 		[SerializeNotNullOnly]
         public string Codes { get; set; }
-        
+		
+
 		/// <summary>
 		/// Признак определенности цели
 		/// </summary>

@@ -17,12 +17,12 @@ namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Описание условия на колонку
 	/// </summary>
-	public sealed class ColumnHandler : CachedItemHandlerBase<IZetaColumn> {
+	public sealed class ColumnHandler : CachedItemHandlerBase<IZetaColumn>, IColumnHandler {
 		/// <summary>
 		/// 	Простая копия условия на время
 		/// </summary>
 		/// <returns> </returns>
-		public ColumnHandler Copy() {
+		public IColumnHandler Copy() {
 			return MemberwiseClone() as ColumnHandler;
 		}
 
@@ -30,7 +30,7 @@ namespace Zeta.Extreme {
 		/// 	Нормализует колонку до нормали
 		/// </summary>
 		/// <param name="session"> </param>
-		public void Normalize(Session session) {
+		public override void Normalize(ISession session) {
 			var cache = session == null ? MetaCache.Default : session.MetaCache;
 			if (IsStandaloneSingletonDefinition()) {
 				//try load native

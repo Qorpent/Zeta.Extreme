@@ -21,6 +21,6 @@ namespace Zeta.Extreme {
 		/// <param name="query"> исзодный запрос </param>
 		/// <param name="uid"> </param>
 		/// <returns> итоговый запрос после регистрации </returns>
-		Query Register(Query query, string uid);
+		IQuery Register(IQuery query, string uid);
 	}
 }

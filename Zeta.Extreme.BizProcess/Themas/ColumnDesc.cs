@@ -29,6 +29,7 @@ using Comdiv.Logging;
 using Comdiv.Olap.Model;
 using Comdiv.Security;
 using Comdiv.Zeta.Model;
+using Qorpent.Applications;
 using Qorpent.Serialization;
 
 #endregion
@@ -43,6 +44,8 @@ namespace Zeta.Extreme.Meta{
 	/// </summary>
 	[Serialize]
     public class ColumnDesc : DimensionDescriptor<IZetaColumn, ColumnDesc> {
+
+		
         private readonly ILog log = logger.get("zinput");
         private readonly IDictionary<int, int> periodMap = new Dictionary<int, int>();
         /// <summary>
@@ -303,7 +306,7 @@ namespace Zeta.Extreme.Meta{
             NeedPeriodPreparation = true;
             ApplyPeriod(year, period, DateExtensions.Begin);
             NeedPeriodPreparation = false;
-            Target = ColumnCache.get(code);
+            Target =  ColumnCache.get(code);
         }
 		/// <summary>
 		/// 
@@ -369,7 +372,7 @@ namespace Zeta.Extreme.Meta{
                 }
 
                 else{
-                    Target = ColumnCache.get(value);
+					Target = ColumnCache.get(value);
                 }
             }
         }
@@ -513,7 +516,7 @@ namespace Zeta.Extreme.Meta{
                                           if (newcode.noContent()){
                                               return row;
                                           }
-                                          return RowCache.get(newcode);
+										  return RowCache.get(newcode);
                                       });
         }
 

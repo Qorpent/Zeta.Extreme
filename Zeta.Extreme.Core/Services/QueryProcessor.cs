@@ -125,11 +125,11 @@ namespace Zeta.Extreme {
 
 			foreach (var r in _sumh.GetSumDelta(mostpriority)) {
 				var sq = r.Apply(query);
-				sq = _session.Register(sq);
+				sq = (Query)_session.Register(sq);
 				if (null == sq) {
 					continue;
 				}
-				query.SummaDependency.Add(new Tuple<decimal, Query>(r.Multiplicator, sq));
+				query.SummaDependency.Add(new Tuple<decimal, IQueryWithProcessing>(r.Multiplicator, sq));
 			}
 
 			if (query.SummaDependency.Count == 0) {

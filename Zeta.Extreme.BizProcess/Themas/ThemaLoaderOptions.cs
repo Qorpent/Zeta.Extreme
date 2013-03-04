@@ -27,23 +27,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		public IDictionary<string, string> ClassRedirectMap { get; private set; }
 
-		/// <summary>
-		/// 	Формирует стандартные опции загрузки тем для Zeta.Extreme форм
-		/// </summary>
-		/// <param name="rootdirectory"> </param>
-		/// <returns> </returns>
-		public static ThemaLoaderOptions GetExtremeFormOptions(string rootdirectory = null) {
-			var result = new ThemaLoaderOptions();
-			if (!string.IsNullOrWhiteSpace(rootdirectory)) {
-				result.RootDirectory = rootdirectory;
-			}
-			result.LoadLibraries = false; //библиотеки тоже надо помечать на совместимость
-			result.ElementTypes = ElementType.Form;
-			result.LoadIerarchy = false;
-			result.FilterParameters = "extreme";
-			result.ClassRedirectMap["Comdiv.Zeta.Web.Themas.EcoThema, Comdiv.Zeta.Web"] = typeof (EcoThema).AssemblyQualifiedName;
-			return result;
-		}
+		
 
 		/// <summary>
 		/// 	Флаги элементов, которые загружаются в процессе обработки

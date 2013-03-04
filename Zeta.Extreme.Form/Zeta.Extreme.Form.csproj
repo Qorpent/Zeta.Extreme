@@ -42,6 +42,14 @@
       <Project>{f939564a-d5a9-4bee-b8f2-47c384358afc}</Project>
       <Name>Comdiv.Zeta.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
+      <Project>{44653de7-dee5-4960-a906-e0d6b1f83fcc}</Project>
+      <Name>Zeta.Extreme.BizProcess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.Poco\Zeta.Extreme.Poco.csproj">
+      <Project>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</Project>
+      <Name>Zeta.Extreme.Poco</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Boo.Lang.Compiler, Version=2.0.9.4, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
@@ -57,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstracts\IFormDataSynchronize.cs" />
-    <Compile Include="Abstracts\IFormSession.cs" />
     <Compile Include="Abstracts\IFormSessionControlPointSource.cs" />
     <Compile Include="InputTemplates\AttachedFileType.cs">
       <SubType>Code</SubType>
@@ -65,12 +72,6 @@
     <Compile Include="InputTemplates\InputTemplateRequest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Meta\ColumnDesc.cs" />
-    <Compile Include="Meta\ColumnRowCheckCondition.cs" />
-    <Compile Include="Meta\DimensionDescriptor.cs" />
-    <Compile Include="Meta\GroupFilterHelper.cs" />
-    <Compile Include="Meta\IConditionMatcher.cs" />
-    <Compile Include="Meta\RowDescriptor.cs" />
     <Compile Include="Meta\UserOrgDataMapper.cs" />
     <Compile Include="OutCell.cs" />
     <Compile Include="SaveSupport\DataSaverBase.cs" />
@@ -79,50 +80,19 @@
     <Compile Include="SaveSupport\SaveResult.cs" />
     <Compile Include="SaveSupport\SaveStage.cs" />
     <Compile Include="SimpleZetaRoleResolver.cs" />
-    <Compile Include="StateManagement\LockStateInfo.cs" />
     <Compile Include="StateManagement\StateRule.cs" />
     <Compile Include="StateManagement\ControlPointResult.cs" />
-    <Compile Include="InputTemplates\IDetailFilter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="SaveSupport\IFormDataValidator.cs" />
-    <Compile Include="InputTemplates\IInputTemplate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StateManagement\ILockPeriodMapper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="InputTemplates\IMvcBasedInputTemplate.cs" />
     <Compile Include="InputTemplates\InputTemplate.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="InputTemplates\InputTemplateXmlSerializer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="StateManagement\IPeriodStateManager.cs" />
-    <Compile Include="StateManagement\IScheduleChecker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StateManagement\IStateCheckInterceptor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StateManagement\IStateManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StateManagement\LockOperation.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="StateManagement\LockPeriodMapper.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="StateManagement\PeriodStateManager.cs" />
-    <Compile Include="StateManagement\PeriodStateRecord.cs" />
-    <Compile Include="StateManagement\ScheduleOvertime.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StateManagement\ScheduleState.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="StateManagement\StateManager.cs" />
     <Compile Include="Themas\Command.cs">
       <SubType>Code</SubType>
@@ -142,51 +112,12 @@
     <Compile Include="Themas\EcoThemaHelper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Themas\ElementType.cs" />
     <Compile Include="Themas\ExtremeFormProvider.cs" />
     <Compile Include="Themas\HtmlListDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Themas\ICommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IDocument.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IExtremeFormProvider.cs" />
-    <Compile Include="Themas\InputConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\ItemConfigurationBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThema.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThemaConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThemaConfigurationProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThemaFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThemaFactoryConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThemaFactoryProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThemaHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IUsrThemaMapRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Themas\InputConfiguration.cs" />
+    <Compile Include="Themas\ItemConfigurationBase.cs" />
     <Compile Include="Themas\OutputConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -209,10 +140,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Themas\ThemaFactoryProvider.cs" />
-    <Compile Include="Themas\ThemaLoaderOptions.cs" />
-    <Compile Include="Themas\TypedParameter.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Themas\ThemaLoaderOptionsHelper.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />

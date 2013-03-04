@@ -25,7 +25,7 @@ namespace Zeta.Extreme {
 	/// 	интерфейсов IQuery, IQueryBuilder, наоборот ZexQuery
 	/// 	создан с учетом оптимизации и минимальной мутации
 	/// </remarks>
-	public sealed class Query : CacheKeyGeneratorBase {
+	public sealed class Query : CacheKeyGeneratorBase, IQueryWithProcessing {
 		/// <summary>
 		/// 	Конструктор запроса по умолчанию
 		/// </summary>
@@ -40,22 +40,22 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Условие на время
 		/// </summary>
-		public TimeHandler Time { get; set; }
+		public ITimeHandler Time { get; set; }
 
 		/// <summary>
 		/// 	Условие на строку
 		/// </summary>
-		public RowHandler Row { get; set; }
+		public IRowHandler Row { get; set; }
 
 		/// <summary>
 		/// 	Условие на колонку
 		/// </summary>
-		public ColumnHandler Col { get; set; }
+		public IColumnHandler Col { get; set; }
 
 		/// <summary>
 		/// 	Условие на объект
 		/// </summary>
-		public ObjHandler Obj { get; set; }
+		public IObjHandler Obj { get; set; }
 
 		/// <summary>
 		/// 	Выходная валюта
@@ -65,8 +65,8 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Дочерние запросы
 		/// </summary>
-		public IList<Query> FormulaDependency {
-			get { return _formulaDependency ?? (_formulaDependency = new List<Query>()); }
+		public IList<IQueryWithProcessing> FormulaDependency {
+			get { return _formulaDependency ?? (_formulaDependency = new List<IQueryWithProcessing>()); }
 		}
 
 		/// <summary>
@@ -97,8 +97,8 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Зависимости для суммовых запросов
 		/// </summary>
-		public IList<Tuple<decimal, Query>> SummaDependency {
-			get { return _summaDependency ?? (_summaDependency = new List<Tuple<decimal, Query>>()); }
+		public IList<Tuple<decimal, IQueryWithProcessing>> SummaDependency {
+			get { return _summaDependency ?? (_summaDependency = new List<Tuple<decimal, IQueryWithProcessing>>()); }
 		}
 
 
@@ -178,7 +178,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Стандартная процедура нормализации
 		/// </summary>
-		public void Normalize(Session session = null) {
+		public void Normalize(ISession session = null) {
 			var objt = Task.Run(() => Obj.Normalize(session ?? Session)); //объекты зачастую из БД догружаются
 			Time.Normalize(session ?? Session);
 			Col.Normalize(session ?? Session);
@@ -321,8 +321,8 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public long UID;
 
-		private IList<Query> _formulaDependency;
+		private List<IQueryWithProcessing> _formulaDependency;
 
-		private IList<Tuple<decimal, Query>> _summaDependency;
+		private List<Tuple<decimal, IQueryWithProcessing>> _summaDependency;
 	}
 }
