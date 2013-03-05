@@ -8,7 +8,7 @@ namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
 	/// ¬озвращает реестр используемых периодов
 	/// </summary>
-	[Action("zefs.getperiods")]
+	[Action("zeta.getperiods")]
 	public class GetPeriodsAction : FormServerActionBase
 	{
 		/// <summary>

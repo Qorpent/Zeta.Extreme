@@ -27,6 +27,7 @@
     <Compile Include="Actions\FormSessionActionBase.cs" />
     <Compile Include="Actions\GetOjectsAction.cs" />
     <Compile Include="Actions\GetPeriodsAction.cs" />
+    <Compile Include="Actions\GetUserInfoAction.cs" />
     <Compile Include="Actions\LockFormAction.cs" />
     <Compile Include="Actions\LockListAction.cs" />
     <Compile Include="Actions\ResetDataAction.cs" />
@@ -52,6 +53,8 @@
     <Compile Include="DataStructures\StructureItem.cs" />
     <Compile Include="Helpers\AccessibleObjectsHelper.cs" />
     <Compile Include="Helpers\PeriodCatalogHelper.cs" />
+    <Compile Include="Helpers\SimpleUserInfo.cs" />
+    <Compile Include="Helpers\UserInfoHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data" />

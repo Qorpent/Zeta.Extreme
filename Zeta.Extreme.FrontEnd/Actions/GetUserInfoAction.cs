@@ -6,7 +6,7 @@ namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
 	/// 	Возвращает реестр доступных объектов
 	/// </summary>
-	[Action("zefs.getuserinfo")]
+	[Action("zeta.getuserinfo")]
 	public class GetUserInfoAction : FormServerActionBase
 	{
 		/// <summary>
