@@ -37,10 +37,10 @@ $.extend(options,(function(){
 				// признак того, что пользователь является администратором данных
 				getIsDataMaster : function(){return this.logondatamaster},
                 // возвращает логин пользователя за которого был осуществлен вход (если был)
-                getImpersonation : function() {return this.impersonation || ""},
-                getIsImpAdmin : function(){return this.impadmin || ""},
-                getIsImpDeveloper : function(){return this.impdeveloper || ""},
-                getIsImpDataMaster : function(){return this.impdatamaster || ""},
+                getImpersonation : function() {return this.impersonation || null},
+                getIsImpAdmin : function(){return this.impadmin || null},
+                getIsImpDeveloper : function(){return this.impdeveloper || null},
+                getIsImpDataMaster : function(){return this.impdatamaster || null},
                 data : {},
                 prepare : function() {
                     this.data.Connection = this["header:Connection"];

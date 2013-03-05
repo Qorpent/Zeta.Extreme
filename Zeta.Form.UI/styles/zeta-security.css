@@ -9,10 +9,6 @@ a.btn {
     cursor: pointer !important;
 }
 
-.btn.btn-mini {
-    text-transform: uppercase;
-}
-
 .navbar-inner {
     min-height: 35px;
     border-radius: 0;
@@ -66,10 +62,10 @@ li a {
 
 .login-info {
     margin-top: 2px;
-    margin-right: 2px;
 }
 
 .login-user {
+    margin-right: 2px;
     cursor: pointer;
 }
 
@@ -77,6 +73,12 @@ li a {
     width: 25px;
     height: 25px;
     margin: 3px;
+}
+
+.login-permissions {
+    list-style-type : none;
+    margin: 0;
+    text-align: left;
 }
 
 .login-permissions > li > span {

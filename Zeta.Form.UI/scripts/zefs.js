@@ -18,11 +18,14 @@ root.handlers = $.extend(root.handlers, {
     on_savefinished : "savefinished",
     on_getlockfailed : "getlockfinished",
     on_getlockload : "getlockload",
+    on_getlockhistoryload : "getlockhistory",
+    on_lockform : "lockform",
     // Other handlers:
     on_periodsload : "periodsload",
     on_periodsfaild : "periodsfailed",
     on_objectsload : "objectsload",
     on_objectsfaild : "objectsfailed",
+    on_filelistload : "filelistload",
     // Message handlers:
     on_message : "message"
 });
@@ -35,7 +38,8 @@ root.init = root.init ||
     root.myform = root.myform ||  {
         sessionId : null,
         currentSession : null,
-        lock : true
+        lock : null,
+        lockhistory : null
     };
     var options = window.zefs.options;
 	var params = options.getParameters();
@@ -83,7 +87,8 @@ root.init = root.init ||
             root.myform.sessionId = session.getUid();
             document.title = session.getFormInfo().getName();
             Structure(session);
-            GetCurrentLock();
+            GetLock();
+            GetLockHistory();
             $(root).trigger(root.handlers.on_sessionload);
             window.setTimeout(function(){Data(session,0)},options.datadelay); //первый запрос на данные
         }));
@@ -120,6 +125,7 @@ root.init = root.init ||
             Fill(session);
             if(batch.getIsLast()){
                 FinishForm(session,batch);
+//                DataLoaded();
             } else {
                 var s = session;
                 var idx = batch.getNextIdx();
@@ -150,7 +156,30 @@ root.init = root.init ||
         $(window).trigger("resize");
     };
 
-    var GetCurrentLock = function(){
+    var DataLoaded = function() {
+        $.ajax({
+            url: siteroot+options.dataloaded_command,
+            type: "POST",
+            context: this,
+            dataType: "json",
+            data: {session: root.myform.sessionId}
+        })
+    }
+
+    var GetAttachList = function() {
+        $.ajax({
+            url: siteroot+options.attachlist_command,
+            type: "POST",
+            context: this,
+            dataType: "json",
+            data: {session: root.myform.sessionId}
+        }).success(function(d) {
+            root.myform.lock = options.asAttachment(d);
+            $(root).trigger(root.handlers.on_filelistload);
+        });
+    };
+
+    var GetLock = function(){
         $.ajax({
             url: siteroot+options.currentlock_command,
             type: "POST",
@@ -160,9 +189,39 @@ root.init = root.init ||
         }).error(function(d) {
                 $(root).trigger(root.handlers.on_getlockfailed);
         }).success(function(d) {
-            root.myform.lock = options.asLockState(d).getCanSave();
+            root.myform.lock = options.asLockState(d);
             $(root).trigger(root.handlers.on_getlockload);
         });
+    };
+
+    var GetLockHistory = function() {
+        $.ajax({
+            url: siteroot+options.locklist_command,
+            type: "POST",
+            context: this,
+            dataType: "json",
+            data: {session: root.myform.sessionId}
+        }).success(function(d) {
+            root.myform.lockhistory = options.asLockHistory(d);
+            $(root).trigger(root.handlers.on_getlockhistoryload);
+        })
+    };
+
+    var Lock = function() {
+        if (root.myform.sessionId != null && root.myform.lock != null) {
+            if (root.myform.lock.getCanLock()) {
+                $.ajax({
+                    url: siteroot+options.lockform_command,
+                    type: "POST",
+                    context: this,
+                    dataType: "json",
+                    data: { session: root.myform.sessionId }
+                }).success(function(d) {
+                    $(root).trigger(root.handlers.on_lockform);
+                    GetLock();
+                });
+            }
+        }
     };
 
     var Save = function(obj) {
@@ -301,7 +360,8 @@ root.init = root.init ||
     $.extend(root.myform, {
         run : StartForm,
         save : ReadySave,
-        message: Message
+        message: Message,
+        lockform: Lock
     });
 
     return root.myform;

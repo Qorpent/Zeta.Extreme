@@ -113,6 +113,8 @@ $.extend(options,(function(){
 							inprocess_state : "w",
 							//ошибка
 							error_state : "e",
+                    // команда уведомления сервера о завершении загрузки данных [от SESSIONID ]
+                    dataloaded_command : "zefs/dataloaded.json.qweb",
 
                     // команда инициализации сессии сохранения [от SESSIONID ] (true|false )
                     saveready_command : "zefs/saveready.json.qweb",
@@ -159,8 +161,17 @@ $.extend(options,(function(){
 					
 					// команда получения статуса возможности блокировки [от SESSIONID] (как asLockState() )
 					canlock_command : "zefs/canlockstate.json.qweb",
-		
-		
+					// команда получения истории блокировок [от SESSIONID]
+					locklist_command : "zefs/locklist.json.qweb",
+					// команда блокировки формы [от SESSIONID]
+					lockform_command : "zefs/lockform.json.qweb",
+
+
+		    /* РАБОТА С ПРИСОЕДИНЕННЫМИ ФАЙЛАМИ */
+					// команда получения списка прикрепленных к форме файлов [от SESSIONID]
+					attachlist_command : "zefs/attachlist.json.qweb",
+
+
 		// КОНВЕРТИРУЕТ ХЭШ ПАРАМЕТРЫ В ПАРАМЕТРЫ ВЫЗОВА ФОРМЫ ДЛЯ КОМАНДЫ START
 		getParameters : function(){
 			// Парсим параметры из хэша
@@ -267,6 +278,32 @@ $.extend(options,(function(){
 			});
             return obj;
 		},
+
+		// КОНВЕРТИРУЕТ РЕЗУЛЬТАТЫ КОМАНД locklist_command В МАССИВ ИСТОРИИ БЛОКИРОВОК
+		asLockHistory : function( obj ) {
+			var hist = [];
+            var asHist = function(o) {
+                $.extend(o, {
+                    // возвращает идентификатор операции
+                    getId: function() {return this.Id},
+                    // возвращает код состояния блокировки
+                    getStateCode : function() {return this.State},
+                    // возвращает имя пользователя, совершившего операцию
+                    getUser : function() {return this.Usr},
+                    // возвращает состояние блокировки в удобвном, читаемом виде
+                    getState : function() {return this.ReadableState },
+                    // возвращает дату совершения операции
+                    getDate : function() {return eval(this.Version.substring(2))}
+                });
+                return o;
+            };
+
+            for(var h in obj) {
+                hist.push(asHist(obj[h]));
+            }
+            return hist;
+		},
+
 		// КОНВЕРТИРУЕТ РЕЗУЛЬТАТ КОМАНДЫ savestate_command В СТАНДАРТНЫЙ ОБЪЕКТ СТАТУСА СОХРАНЕНИЯ
 		asSaveState : function(obj){
 			$.extend(obj,{
@@ -486,7 +523,30 @@ $.extend(options,(function(){
 				getDivCode : function(){return this.div;}
 			});
 			return obj;
-		}
+        },
+
+        // обертка для списка приложений к форме
+        asAttachment : function(obj){
+            $.extend(obj,{
+                // год прикрепленного файла
+                getId : function(){return this.Year;},
+                // период
+                getPeriod : function(){return this.Period;},
+                // объект
+                getObj : function(){return this.ObjId;},
+                // шаблон
+                getTemplate : function(){return this.TemplateCode;},
+                // тип прикрепленного фала
+                getFileType : function(){return this.AttachType;},
+                // уникальный код файла
+                getUid : function(){return this.Uid;},
+                // имя файла
+                getName : function(){return this.Name;},
+                // имя файла
+                getType : function(){return this.Type;}
+            });
+            return obj;
+        }
 	}
 	
 })())

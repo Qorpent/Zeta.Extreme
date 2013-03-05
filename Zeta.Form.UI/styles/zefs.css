@@ -27,7 +27,7 @@ div.open>.tooltip {
 }
 .impersonator,
 
-.zefsdebug {
+.zefsdebug, .feedback {
     margin-top: 4px;
     margin-right: 3px;
 }
@@ -55,7 +55,7 @@ div.open>.tooltip {
     margin-right: 3px;
 }
 
-.zefsstatus, .zefsformsave, .feedback,
+.zefsstatus, .zefsformsave, .attacher,
 .objselector, .zefscolmanager, .zefsblockmanager,
 .information {
     margin-top: 4px;
@@ -72,6 +72,40 @@ div.open>.tooltip {
 
 .zefsblockmanager table {
     cursor: default;
+    font-size: 90%;
+}
+
+.zefsblockmanager td {
+    padding: 2px;
+}
+
+.zefsblockmanager button {
+    margin-left: 2px;
+}
+
+.zefsblockmanager li button:first-child {
+    margin-left: 5px;
+}
+
+.zefsblockmanager span {
+    font-size: 80%;
+    font-weight: bold;
+}
+
+.zefsblockmanager span[class="0ISCHECKED"] {
+    color: #006400;
+}
+
+.zefsblockmanager span[class="0ISOPEN"] {
+    color: #af0000;
+}
+
+.zefsblockmanager span[class="0ISBLOCK"] {
+    color: #FF6600;
+}
+
+.zefsblockmanager th {
+    padding: 4px 2px;
 }
 
 .zefsblockmanager li>.btn-group {
