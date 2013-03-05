@@ -1,4 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using Comdiv.Olap.Model;
 
 namespace Zeta.Extreme.Poco.NativeSqlBind {
 	public partial class NativeZetaReader {
@@ -51,6 +55,23 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 					Id, Version, Comment, State, Usr, Form, Parent , Year,Period,LockCode,Object --, Idx, Tag 
 				from zeta.normalformstate
 		";
+
+		private const string Usrquerybase = @"
+			select 
+				Id, Version, ObjAdmin, Dolzh, Contact, Name, Email,  ObjId, ObjName, Login, Active, Roles, SlotList 
+			from [zeta].[normalusr]
+		";
+
+		/// <summary>
+		/// Сериализует учетные записи пользователей
+		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+		/// </summary>
+		/// <param name="condition"></param>
+		/// <returns></returns>
+		public IEnumerable<usr> ReadUsers(string condition = "")
+		{
+			return Read(condition, Usrquerybase, ReaderToUsr);
+		}
 
 		/// <summary>
 		/// Сериализует периоды

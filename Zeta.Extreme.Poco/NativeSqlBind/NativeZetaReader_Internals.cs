@@ -239,5 +239,34 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		}
 		return x;
 	}
+
+	/// <summary>
+	/// Сериализует строку из БД в объект строки
+	/// </summary>
+	/// <param name="r"></param>
+	/// <returns></returns>
+	public static usr ReaderToUsr(IDataRecord r)
+	{
+		var x = new usr
+			{
+				Id = r.GetInt32(0),
+				Version = r.GetDateTime(1),
+				Boss =  r.GetBoolean(2),
+				Dolzh =  r.GetString(3),
+				Contact =  r.GetString(4),
+				Name =r.GetString(5),
+				Comment = r.GetString(6),
+				Login = r.GetString(8),
+				Active = r.GetBoolean(9),
+				Roles =  r.GetString(10),
+				SlotList = r.GetString(11),
+			};
+
+		if(!r.IsDBNull(7)) {
+			x.Object = ObjCache.Get(r.GetInt32(7));
+		}
+
+		return x;
+	}
 	}
 }

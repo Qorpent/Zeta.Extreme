@@ -10,6 +10,9 @@ using Zeta.Extreme.Meta;
 
 namespace Zeta.Extreme.FrontEnd.Helpers
 {
+
+	
+
 	/// <summary>
 	/// Хелпер для получения доступных предприятий
 	/// </summary>
