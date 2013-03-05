@@ -85,6 +85,7 @@ namespace Zeta.Extreme.BizProcess.Forms
 				Size = source.Size;
 				Comment = source.Comment;
 				User = source.User;
+				Extension = source.Extension;
 				foreach (var metadata in source.Metadata) {
 					Metadata[metadata.Key] = metadata.Value;
 				}
