@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using Qorpent.Serialization;
 
 namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>
 	/// Базовый, универсальный атачмент
 	/// </summary>
+	[Serialize]
 	public class Attachment {
 		/// <summary>
 		/// 
@@ -25,11 +27,13 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <summary>
 		/// Комментарии
 		/// </summary>
+		[SerializeNotNullOnly]
 		public string Comment { get; set; }
 
 		/// <summary>
 		/// Тип
 		/// </summary>
+		[SerializeNotNullOnly]
 		public string Type { get; set; }
 
 		/// <summary>
@@ -50,6 +54,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <summary>
 		/// Хэш файла
 		/// </summary>
+		[SerializeNotNullOnly]
 		public string Hash { get; set; }
 
 		/// <summary>
@@ -65,6 +70,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <summary>
 		/// Дополнительные параметры
 		/// </summary>
+		[SerializeNotNullOnly]
 		public IDictionary<string, object> Metadata { get; private set; }
 		/// <summary>
 		/// Расширение файла

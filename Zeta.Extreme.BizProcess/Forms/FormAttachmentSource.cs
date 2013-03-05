@@ -31,7 +31,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <param name="session">целевая сессия </param>
 		/// <param name="attachment">присоединенный контент</param>
 		public FormAttachment SaveAttachment(IFormSession session, Attachment attachment) {
-			var realattach = new FormAttachment(session, attachment, AttachedFileType.Default, false);
+			var realattach = new FormAttachment(session, attachment, AttachedFileType.Default, false) {User = session.Usr};
 			_storage.Save(realattach);
 			return realattach;
 		}
