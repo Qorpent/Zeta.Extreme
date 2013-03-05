@@ -28,6 +28,7 @@ using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.BizProcess.StateManagement;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form;
+using Zeta.Extreme.Form.DbfsAttachmentSource;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
@@ -804,7 +805,12 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private static IFormAttachmentStorage GetFormAttachStorage() {
-			return Application.Current.Container.Get<IFormAttachmentStorage>();
+			var result = Application.Current.Container.Get<IFormAttachmentStorage>();
+			if(null==result) {
+				result = new FormAttachmentSource();
+				((FormAttachmentSource)result).SetStorage(new DbfsAttachmentStorage());
+			}
+			return result;
 		}
 
 		/// <summary>

@@ -57,7 +57,7 @@ namespace Zeta.Extreme.Form.Tests
 					new FormAttachment { TemplateCode = "balansA.in", Year = 2010, Period = 16, ObjId = 538 })
 					.First();
 			var ms = new MemoryStream();
-			using (var s = _dbfs.OpenRead(attachment)) {
+			using (var s = _dbfs.Open(attachment,FileAccess.Read)) {
 				s.CopyTo(ms);
 			}
 			Assert.AreEqual(ms.Length,attachment.Size);
@@ -79,14 +79,14 @@ namespace Zeta.Extreme.Form.Tests
 			var attachment = new FormAttachment { Uid = Guid.NewGuid().ToString(), Type = "dbfs-test" };
 			_dbfs.Save(attachment);
 			var data = new byte[] {1, 2, 3, 4, 5};
-			using (var s = _dbfs.OpenWrite(attachment)) {
+			using (var s = _dbfs.Open(attachment,FileAccess.Write)) {
 				s.Write(data,0,5);
 				s.Flush();
 			}
 			var testattachment = _dbfs.Find(new Attachment { Uid = attachment.Uid }).First();
 			Assert.AreEqual(5,testattachment.Size);
 			var ms = new MemoryStream();
-			using (var s = _dbfs.OpenRead(attachment))
+			using (var s = _dbfs.Open(attachment,FileAccess.Read))
 			{
 				s.CopyTo(ms);
 			}
