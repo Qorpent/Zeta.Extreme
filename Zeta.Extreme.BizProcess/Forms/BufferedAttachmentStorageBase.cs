@@ -50,6 +50,12 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		public abstract void Save(Attachment attachment);
 
 		/// <summary>
+		/// Удаляет атачмент
+		/// </summary>
+		/// <param name="attachment"></param>
+		public abstract void Delete(Attachment attachment);
+
+		/// <summary>
 		/// Открывает поток на запись контента
 		/// </summary>
 		/// <param name="attachment"></param>

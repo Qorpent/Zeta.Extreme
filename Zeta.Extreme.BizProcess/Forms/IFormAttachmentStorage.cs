@@ -19,6 +19,11 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <param name="session">целевая сессия </param>
 		/// <param name="attachment">присоединенный контент</param>
 		FormAttachment SaveAttachment(IFormSession session, Attachment attachment);
+		/// <summary>
+		/// Удаляет присоединенный элемент
+		/// </summary>
+		/// <param name="attachment"></param>
+		void Delete(FormAttachment attachment);
 
 		/// <summary>
 		/// Открывает поток на запись контента

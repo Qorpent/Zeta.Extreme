@@ -821,5 +821,13 @@ namespace Zeta.Extreme.FrontEnd {
 			var storage = GetFormAttachStorage();
 			return storage.GetAttachments(this).ToArray();
 		}
+		/// <summary>
+		/// Удалить прикрепленный файл
+		/// </summary>
+		/// <param name="uid"></param>
+		public void DeleteAttach(string uid) {
+			var attach = GetAttachedFiles().FirstOrDefault(_ => _.Uid == uid);
+			GetFormAttachStorage().Delete(attach);
+		}
 	}
 }

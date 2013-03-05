@@ -36,6 +36,10 @@ namespace Zeta.Extreme.BizProcess.Forms {
 			return realattach;
 		}
 
+		public void Delete(FormAttachment attachment) {
+			_storage.Delete(attachment);
+		}
+
 		/// <summary>
 		/// Открывает поток на запись контента
 		/// </summary>

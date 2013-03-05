@@ -157,6 +157,22 @@ namespace Zeta.Extreme.Form.DbfsAttachmentSource
 		}
 
 		/// <summary>
+		/// Удаляет атачмент
+		/// </summary>
+		/// <param name="attachment"></param>
+		public override void Delete(Attachment attachment)
+		{
+			var script = "insert [comdiv_dbfs].[fileoperatonview] (code,deleted) values (@code, 1)";
+			using (var c = OpenConnection())
+			{
+				var cmd = c.CreateCommand();
+				cmd.CommandText = script;
+				cmd.Parameters.Add(new SqlParameter { DbType = DbType.String, ParameterName = "@code", Value = attachment.Uid });
+				cmd.ExecuteNonQuery();
+			}
+		}
+
+		/// <summary>
 		/// Выполняет реальное сохранение потока данных в БД
 		/// </summary>
 		/// <param name="uid"></param>

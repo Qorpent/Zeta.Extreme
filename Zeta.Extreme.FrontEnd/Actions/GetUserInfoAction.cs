@@ -22,6 +22,6 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// Логин, по которому запрашиваются данные пользователя
 		/// </summary>
-		[Bind(Required = true, ValidatePattern = @"^[\w\d]+\\[\w\d]+$")] protected string login;
+		[Bind(Required = true, ValidatePattern = @"^[\w\d_\.]+\\[\w\d_\.]+$")] protected string login;
 	}
 }

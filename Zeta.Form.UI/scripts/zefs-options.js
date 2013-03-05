@@ -35,7 +35,7 @@ $.extend(options,(function(){
 				
 		/* КОМАНДЫ ЗАГРУЗКИ ДОПОЛНИТЕЛЬНЫХ МЕТАДАННЫХ */
 			//команда, возвращающая каталог периодов [] ( []->each ( asPeriod() ) ) упорядоченный по типам и индексам
-			getperiods_command : "zefs/getperiods.json.qweb" ,
+			getperiods_command : "zeta/getperiods.json.qweb" ,
 				//типы периодов
 				periodtype_none:"None",
 				// Месяц
@@ -58,7 +58,10 @@ $.extend(options,(function(){
 				periodtype_ext:"Ext",
 				
 			//команда, возвращающая список доступных предприятий ( применить asObjectList())
-			getobject_command : "zefs/getobjects.json.qweb",
+			getobject_command : "zeta/getobjects.json.qweb",
+
+			//команда, возвращающая информацию о пользователе (Login - логин пользователя)
+			getuserinfo_command : "zeta/getuserinfo.json.qweb",
 				
 			
 		
@@ -542,7 +545,7 @@ $.extend(options,(function(){
                 getUid : function(){return this.Uid;},
                 // имя файла
                 getName : function(){return this.Name;},
-                // имя файла
+                // тип файла (например balans)
                 getType : function(){return this.Type;}
             });
             return obj;

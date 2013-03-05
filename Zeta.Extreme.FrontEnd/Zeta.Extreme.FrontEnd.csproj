@@ -25,6 +25,7 @@
     <Compile Include="Actions\DebugInfoAction.cs" />
     <Compile Include="Actions\CurrentLockStateAction.cs" />
     <Compile Include="Actions\FormSessionActionBase.cs" />
+    <Compile Include="Actions\GetAttachFileListAction.cs" />
     <Compile Include="Actions\GetOjectsAction.cs" />
     <Compile Include="Actions\GetPeriodsAction.cs" />
     <Compile Include="Actions\GetUserInfoAction.cs" />
