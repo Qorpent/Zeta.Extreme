@@ -256,10 +256,10 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 				Contact =  r.GetString(4),
 				Name =r.GetString(5),
 				Comment = r.GetString(6),
-				Login = r.GetString(8),
-				Active = r.GetBoolean(9),
-				Roles =  r.GetString(10),
-				SlotList = r.GetString(11),
+				Login = r.GetString(9),
+				Active = r.GetBoolean(10),
+				Roles =  r.GetString(11),
+				SlotList = r.GetString(12),
 			};
 
 		if(!r.IsDBNull(7)) {
