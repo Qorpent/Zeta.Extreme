@@ -16,6 +16,7 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\AttachFileAction.cs" />
     <Compile Include="Actions\CanLockStateAction.cs" />
     <Compile Include="Actions\DataLoadedAction.cs" />
     <Compile Include="Actions\FormListAction.cs" />

@@ -17,6 +17,7 @@ using System.Linq;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using System.Xml.Linq;
 using Comdiv.Zeta.Model;
 using Comdiv.Zeta.Model.ExtremeSupport;
@@ -786,6 +787,33 @@ namespace Zeta.Extreme.FrontEnd {
 					string.Format("Year = {0} and Period = {1} and LockCode='{2}' and Object = {3} order by Version"
 					,Year,Period,Template.UnderwriteCode,Object.Id)).ToArray();
 			return states;
+		}
+
+		/// <summary>
+		/// Присоединяет файл к сессии и возвращает итог сохранения
+		/// </summary>
+		/// <param name="datafile"></param>
+		/// <param name="filename"></param>
+		/// <param name="type"></param>
+		/// <param name="uid"></param>
+		/// <returns></returns>
+		public FormAttachment AttachFile(HttpPostedFile datafile, string filename, string type,string uid) {
+			var storage = GetFormAttachStorage();
+			var result = storage.AttachHttpFile(this, datafile, filename, type, uid);
+			return result;
+		}
+
+		private static IFormAttachmentStorage GetFormAttachStorage() {
+			return Application.Current.Container.Get<IFormAttachmentStorage>();
+		}
+
+		/// <summary>
+		/// Получает список связанных с сессией файлов
+		/// </summary>
+		/// <returns></returns>
+		public FormAttachment[] GetAttachedFiles() {
+			var storage = GetFormAttachStorage();
+			return storage.GetAttachments(this).ToArray();
 		}
 	}
 }

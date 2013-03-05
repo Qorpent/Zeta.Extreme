@@ -24,13 +24,8 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// Открывает поток на запись контента
 		/// </summary>
 		/// <param name="attachment"></param>
+		/// <param name="mode">режим открытия файла </param>
 		/// <returns></returns>
-		Stream OpenWrite(FormAttachment attachment);
-		/// <summary>
-		/// Открывает поток на чтение контента
-		/// </summary>
-		/// <param name="attachment"></param>
-		/// <returns></returns>
-		Stream OpenRead(FormAttachment attachment);
+		Stream Open(FormAttachment attachment, FileAccess mode);
 	}
 }

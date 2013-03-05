@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -52,8 +53,20 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// Открывает поток на запись контента
 		/// </summary>
 		/// <param name="attachment"></param>
+		/// <param name="mode">режим доступа к файлу </param>
 		/// <returns></returns>
-		public Stream OpenWrite(Attachment attachment) {
+		public Stream Open(Attachment attachment, FileAccess mode) {
+			if(mode==FileAccess.Read) return OpenRead(attachment);
+			if(mode==FileAccess.Write) return OpenWrite(attachment);
+			throw new Exception("not supported accesss mode "+mode);
+		}
+
+		/// <summary>
+		/// Открывает поток на запись контента
+		/// </summary>
+		/// <param name="attachment"></param>
+		/// <returns></returns>
+		protected Stream OpenWrite(Attachment attachment) {
 			return new BufferedAttachmentStorageStream(attachment.Uid, null, this);
 		}
 
@@ -62,7 +75,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// </summary>
 		/// <param name="attachment"></param>
 		/// <returns></returns>
-		public Stream OpenRead(Attachment attachment) {
+		protected Stream OpenRead(Attachment attachment) {
 			byte[] data = DoRealLoadData(attachment);
 			return new BufferedAttachmentStorageStream(attachment.Uid,data,this);
 		}

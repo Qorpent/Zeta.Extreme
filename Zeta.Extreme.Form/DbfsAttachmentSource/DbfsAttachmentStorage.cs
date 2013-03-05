@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
-using System.Globalization;
 using System.Linq;
 using Comdiv.Extensions;
 using Qorpent.Applications;
 using Zeta.Extreme.BizProcess.Forms;
-using Zeta.Extreme.Form.InputTemplates;
 
 namespace Zeta.Extreme.Form.DbfsAttachmentSource
 {
@@ -37,7 +34,9 @@ namespace Zeta.Extreme.Form.DbfsAttachmentSource
 			if(string.IsNullOrWhiteSpace(DatabaseName) && "Default"==GetConnectionName()) {
 				return "dbfs";
 			}
+			
 			return DatabaseName ?? "dbfs";
+
 		}
 
 		IDbConnection OpenConnection() {
@@ -58,7 +57,7 @@ namespace Zeta.Extreme.Form.DbfsAttachmentSource
 
 			var script = @"select 
 			code, name, comment,version, usr, revision, mime, hash, size,
-			 _form as templatecode, _year as year, _period as period, _obj as objid, _doctype as type
+			 _form as templatecode, _year as year, _period as period, _obj as objid, _doctype as type,extension
 			 from [comdiv_dbfs].[usr_view] where 
 				(('{4}'='' and _form='{0}' and _year={1} and _period={2} and _obj={3}) or ('{4}'!='' and code='{4}')) and deleted!=1";
 			// данный дефолтный поисковик ищет только ПО МЕТАДАННЫМ И ТОЛЬКО ПО ФОРМАМ!!!
@@ -82,7 +81,7 @@ namespace Zeta.Extreme.Form.DbfsAttachmentSource
 		private Attachment ConvertReaderToAttachment(IDataReader r) {
 			/*
 		 * code, name, comment,version, usr, revision, mime, hash, size,
-			 _form as templatecode, _year as year, _period as period, _obj as objid, _doctype as type
+			 _form as templatecode, _year as year, _period as period, _obj as objid, _doctype as type,extension
 		 * 
 		 */
 			// это общее меню полей
@@ -101,7 +100,8 @@ namespace Zeta.Extreme.Form.DbfsAttachmentSource
 					Year =Convert.ToInt32(r.GetString(10)),
 					Period = Convert.ToInt32(r.GetString(11)),
 					ObjId = Convert.ToInt32(r.GetString(12)),
-					Type = r.GetString(13)
+					Type = r.GetString(13),
+					Extension = r.GetString(14)
 				};
 			return result;
 		}
@@ -111,8 +111,8 @@ namespace Zeta.Extreme.Form.DbfsAttachmentSource
 		/// </summary>
 		/// <param name="attachment"></param>
 		public override void Save(Attachment attachment) {
-			var script = @"insert [comdiv_dbfs].[fileoperatonview] (code,name,comment,usr,mime,tag)
-			values ('{0}','{1}','{2}','{3}','{4}','{5}')";
+			var script = @"insert [comdiv_dbfs].[fileoperatonview] (code,name,comment,usr,mime,tag,extension)
+			values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
 			var code = attachment.Uid;
 			if(string.IsNullOrWhiteSpace(code)) {
 				code = Guid.NewGuid().ToString();
@@ -127,7 +127,8 @@ namespace Zeta.Extreme.Form.DbfsAttachmentSource
 			var mime = attachment.MimeType ?? "unknown/bin";
 			var tag = TagHelper.ToString(attachment.Metadata.ToDictionary(_ => _.Key, _ => _.Value.ToString()));
 			tag = TagHelper.Merge(tag, "/doctype:" + attachment.Type + "/");
-			script = string.Format(script, code, name, comment, usr, mime, tag);
+			var extension = attachment.Extension;
+			script = string.Format(script, code, name, comment, usr, mime, tag,extension);
 			using (var c = OpenConnection()) {
 				var cmd = c.CreateCommand();
 				cmd.CommandText = script;

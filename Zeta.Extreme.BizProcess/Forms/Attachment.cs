@@ -66,5 +66,9 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// Дополнительные параметры
 		/// </summary>
 		public IDictionary<string, object> Metadata { get; private set; }
+		/// <summary>
+		/// Расширение файла
+		/// </summary>
+		public string Extension { get; set; }
 	}
 }
