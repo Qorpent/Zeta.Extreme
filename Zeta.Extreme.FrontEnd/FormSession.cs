@@ -798,7 +798,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="type"></param>
 		/// <param name="uid"></param>
 		/// <returns></returns>
-		public FormAttachment AttachFile(HttpPostedFile datafile, string filename, string type,string uid) {
+		public FormAttachment AttachFile(HttpPostedFileBase datafile, string filename, string type,string uid) {
 			var storage = GetFormAttachStorage();
 			var result = storage.AttachHttpFile(this, datafile, filename, type, uid);
 			return result;
@@ -822,11 +822,11 @@ namespace Zeta.Extreme.FrontEnd {
 			return storage.GetAttachments(this).ToArray();
 		}
 		/// <summary>
-		/// Удалить прикрепленный файл
+		/// Удалить присоединенный файл
 		/// </summary>
-		/// <param name="uid"></param>
+		/// <param name="uid">уникальный код аттача</param>
 		public void DeleteAttach(string uid) {
-			var attach = GetAttachedFiles().FirstOrDefault(_ => _.Uid == uid);
+			var attach = GetAttachedFiles().FirstOrDefault(_ => _.Uid == uid); 
 			GetFormAttachStorage().Delete(attach);
 		}
 	}

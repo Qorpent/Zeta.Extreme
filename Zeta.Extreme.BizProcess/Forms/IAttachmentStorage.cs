@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -30,4 +31,6 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <returns></returns>
 		Stream Open(Attachment attachment,FileAccess mode);
 	}
+
+
 }
