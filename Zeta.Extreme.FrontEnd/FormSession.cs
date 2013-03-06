@@ -822,11 +822,11 @@ namespace Zeta.Extreme.FrontEnd {
 			return storage.GetAttachments(this).ToArray();
 		}
 		/// <summary>
-		/// Удалить прикрепленный файл
+		/// Удалить присоединенный файл
 		/// </summary>
-		/// <param name="uid"></param>
+		/// <param name="uid">уникальный код аттача</param>
 		public void DeleteAttach(string uid) {
-			var attach = GetAttachedFiles().FirstOrDefault(_ => _.Uid == uid);
+			var attach = GetAttachedFiles().FirstOrDefault(_ => _.Uid == uid); 
 			GetFormAttachStorage().Delete(attach);
 		}
 	}
