@@ -15,7 +15,7 @@ namespace Zeta.Extreme.FrontEnd {
 		protected override void Initialize()
 		{
 			base.Initialize();
-			_datafile =(HttpPostedFile) Context.GetFile("datafile");
+			_datafile =(HttpPostedFileBase) Context.GetFile("datafile");
 		}
 
 		/// <summary>
@@ -51,6 +51,6 @@ namespace Zeta.Extreme.FrontEnd {
 		[Bind]
 		protected string uid;
 
-		private HttpPostedFile _datafile;
+		private HttpPostedFileBase _datafile;
 	}
 }

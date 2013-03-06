@@ -11,6 +11,9 @@ namespace Zeta.Extreme.FrontEnd {
 	[Action("zefs.deleteattach",Role = "ADMIN")]
 	public class DeleteAttachAction : FormSessionActionBase
 	{
+		/// <summary>
+		/// 	First phase of execution - override if need special input parameter's processing
+		/// </summary>
 		protected override void Initialize()
 		{
 			base.Initialize();
@@ -35,6 +38,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		protected override object MainProcess() {
 			MySession.DeleteAttach(uid);
+			return true;
 		}
 		
 

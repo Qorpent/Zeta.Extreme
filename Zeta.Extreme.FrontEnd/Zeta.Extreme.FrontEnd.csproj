@@ -19,6 +19,7 @@
     <Compile Include="Actions\AttachFileAction.cs" />
     <Compile Include="Actions\CanLockStateAction.cs" />
     <Compile Include="Actions\DataLoadedAction.cs" />
+    <Compile Include="Actions\DeleteAttachAction.cs" />
     <Compile Include="Actions\FormListAction.cs" />
     <Compile Include="Actions\FormServerActionBase.cs" />
     <Compile Include="Actions\FormServerRestart.cs" />
