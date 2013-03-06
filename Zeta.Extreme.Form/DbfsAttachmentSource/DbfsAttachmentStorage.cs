@@ -125,7 +125,8 @@ namespace Zeta.Extreme.Form.DbfsAttachmentSource
 			var comment = attachment.Comment ?? "";
 			var usr = attachment.User ?? Application.Current.Principal.CurrentUser.Identity.Name;
 			var mime = attachment.MimeType ?? "unknown/bin";
-			var tag = TagHelper.ToString(attachment.Metadata.ToDictionary(_ => _.Key, _ => _.Value.ToString()));
+			// производим при создании метаданных замену ключа "template" на принятый в Dbfs "form"
+			var tag = TagHelper.ToString(attachment.Metadata.ToDictionary(_ => _.Key =="template"?"form":_.Key, _ => _.Value.ToString()));
 			tag = TagHelper.Merge(tag, "/doctype:" + attachment.Type + "/");
 			var extension = attachment.Extension;
 			script = string.Format(script, code, name, comment, usr, mime, tag,extension);
