@@ -20,7 +20,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="doctype">тип аттача (параметр)</param>
 		/// <param name="existeduid">переписвание существующего файла</param>
 		/// <returns></returns>
-		public static FormAttachment AttachHttpFile(this IFormAttachmentStorage storage, IFormSession session, HttpPostedFile file, string filename="", string doctype="" ,string existeduid="") {
+		public static FormAttachment AttachHttpFile(this IFormAttachmentStorage storage, IFormSession session, HttpPostedFileBase file, string filename="", string doctype="" ,string existeduid="") {
 			//подготавливаем атач к сохранению
 			var attachment = SetupAttachment(session, file, filename, doctype, existeduid);
 			//сохран€ем заголовок атача
@@ -34,7 +34,7 @@ namespace Zeta.Extreme.FrontEnd {
 			return attachment;
 		}
 
-		private static FormAttachment SetupAttachment(IFormSession session, HttpPostedFile file, string filename, string doctype,
+		private static FormAttachment SetupAttachment(IFormSession session, HttpPostedFileBase file, string filename, string doctype,
 		                                              string existeduid) {
 //‘ормируем атач, использу€ стандартные данные формы
 			var attachment = new FormAttachment(session, null, AttachedFileType.Default, false);
@@ -51,7 +51,7 @@ namespace Zeta.Extreme.FrontEnd {
 			return attachment;
 		}
 
-		private static FormAttachment SetupFileInfo(FormAttachment attachment, HttpPostedFile file, string filename) {
+		private static FormAttachment SetupFileInfo(FormAttachment attachment, HttpPostedFileBase file, string filename) {
 			var srcname = file.FileName;
 			var ext = Path.GetExtension(srcname);
 			var mime = MimeHelper.GetMimeByExtension(ext);

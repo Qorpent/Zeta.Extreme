@@ -798,7 +798,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="type"></param>
 		/// <param name="uid"></param>
 		/// <returns></returns>
-		public FormAttachment AttachFile(HttpPostedFile datafile, string filename, string type,string uid) {
+		public FormAttachment AttachFile(HttpPostedFileBase datafile, string filename, string type,string uid) {
 			var storage = GetFormAttachStorage();
 			var result = storage.AttachHttpFile(this, datafile, filename, type, uid);
 			return result;
