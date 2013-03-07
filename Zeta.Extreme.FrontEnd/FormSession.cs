@@ -804,7 +804,7 @@ namespace Zeta.Extreme.FrontEnd {
 			var storage = GetFormAttachStorage();
 			var realfilename = filename;
 			if(string.IsNullOrWhiteSpace(realfilename)) {
-				realfilename = string.Format("{0}_{1}_{2}_{3}", type, Object.Name.Replace("\"", "_"), Year, Period);
+				realfilename = string.Format("{0}_{1}_{2}_{3}", type, Object.Name.Replace("\"", "_"), Year, Periods.Get (Period).Name.Replace(".",""));
 			}
 			var result = storage.AttachHttpFile(this, datafile, realfilename, type, uid);
 			return result;
