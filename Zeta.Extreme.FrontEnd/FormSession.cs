@@ -19,6 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
+using Comdiv.Extensions;
 using Comdiv.Zeta.Model;
 using Comdiv.Zeta.Model.ExtremeSupport;
 using Qorpent.Applications;
@@ -367,7 +368,7 @@ namespace Zeta.Extreme.FrontEnd {
 				_processed.Clear();
 				Data.Clear();
 				DataCollectionRequests++;
-				DataSession = new Session(true);
+				EnsureDataSession();
 				PrepareDataTask = new TaskWrapper(
 					Task.Run(() =>
 						{
@@ -580,30 +581,56 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void InitializeColset() {
+			EnsureDataSession();
+			PrepareVisibleColumns();
+			SetupNativeColumns();
+		}
+
+		private void SetupNativeColumns() {
+			foreach (var columnDesc in cols) {
+				PrepareNativeColumnFromUsualCode(columnDesc);
+				CheckCustomCodedColumn(columnDesc);
+			}
+		}
+
+		private static void PrepareNativeColumnFromUsualCode(IdxCol columnDesc) {
+			if (null == columnDesc._.Target) {
+				columnDesc._.Target = MetaCache.Default.Get<IZetaColumn>(columnDesc._.Code);
+			}
+		}
+
+		private void CheckCustomCodedColumn(IdxCol columnDesc) {
+			if (string.IsNullOrWhiteSpace(columnDesc._.CustomCode)) {
+				return;
+			}
+			var src = columnDesc._;
+			DataSession.MetaCache.Set(
+				new col
+					{
+						Code = src.CustomCode,
+						ForeignCode = src.InitialCode,
+						Year = src.Year,
+						Period = src.Period,
+						Formula = src.Formula,
+						FormulaEvaluator = src.FormulaEvaluator,
+						IsFormula = src.IsFormula
+					}
+				);
+		}
+
+		private void PrepareVisibleColumns() {
 			cols = Template.GetAllColumns().Where(
 				_ => _.GetIsVisible(Object)).Select((_, i) => new IdxCol {i = i, _ = _}
 				);
+			cols = (
+				       from col in cols
+				       let firstyear = TagHelper.Value(col._.Tag, "firstyear").ToInt()
+				       let ishistory = col._.Group == "HISTORY"
+				       let include = (firstyear <= Year && !ishistory) || (firstyear > Year && ishistory)
+				       where include
+				       select col
+			       ).ToArray();
 			Colset = cols.Select(_ => _._).ToArray();
-			foreach (var columnDesc in cols) {
-				if (null == columnDesc._.Target) {
-					columnDesc._.Target = MetaCache.Default.Get<IZetaColumn>(columnDesc._.Code);
-				}
-				if (!string.IsNullOrWhiteSpace(columnDesc._.CustomCode)) {
-					var src = columnDesc._;
-					DataSession.MetaCache.Set(
-						new col
-							{
-								Code = src.CustomCode,
-								ForeignCode = src.InitialCode,
-								Year = src.Year,
-								Period = src.Period,
-								Formula = src.Formula,
-								FormulaEvaluator = src.FormulaEvaluator,
-								IsFormula = src.IsFormula
-							}
-						);
-				}
-			}
 		}
 
 		private void PrepareRows() {
@@ -801,7 +828,11 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns></returns>
 		public FormAttachment AttachFile(HttpPostedFileBase datafile, string filename, string type,string uid) {
 			var storage = GetFormAttachStorage();
-			var result = storage.AttachHttpFile(this, datafile, filename, type, uid);
+			var realfilename = filename;
+			if(string.IsNullOrWhiteSpace(realfilename)) {
+				realfilename = string.Format("{0}_{1}_{2}_{3}", type, Object.Name.Replace("\"", "_"), Year, Periods.Get (Period).Name.Replace(".",""));
+			}
+			var result = storage.AttachHttpFile(this, datafile, realfilename, type, uid);
 			return result;
 		}
 
@@ -840,6 +871,26 @@ namespace Zeta.Extreme.FrontEnd {
 			var filedesc = new FormAttachmentFileDescriptor(attach, GetFormAttachStorage());
 			return filedesc;
 
+		}
+		/// <summary>
+		/// Возвращает допустимые типы файлов для сессии
+		/// </summary>
+		/// <returns></returns>
+		public FileTypeRecord[] GetAllowedFileTypes() {
+			EnsureDataSession();
+			var filetypes = DataSession.MetaCache.Get<IZetaRow>("DIR_FILE_TYPES").Children.ToArray();
+			return (
+				       from filetypedesc in filetypes
+				       from formcode in TagHelper.Value(filetypedesc.Tag, "form").Split(',') 
+				       where "any"==formcode||Template.Thema.Code==formcode
+				       orderby filetypedesc.Idx
+				       select new FileTypeRecord {code = filetypedesc.OuterCode, name = filetypedesc.Name}
+			       ).ToArray();
+
+		}
+
+		private void EnsureDataSession() {
+			DataSession = DataSession ?? new Session(true);
 		}
 	}
 }

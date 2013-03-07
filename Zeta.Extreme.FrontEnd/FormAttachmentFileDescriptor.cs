@@ -34,10 +34,12 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public string Name {
 			get {
-				if (string.IsNullOrWhiteSpace(Path.GetExtension(_attach.Name))) {
-					return _attach.Name + "." + _attach.Extension;
+				var srcname = _attach.Name.Replace("\"","_");
+				var ext = Path.GetExtension(srcname);
+				if (ext.Length<=1 || ext.Length>4) {
+					return (srcname+ "." + _attach.Extension).Replace("..",".");
 				}
-				return _attach.Name;
+				return srcname;
 			}
 			set { throw new NotImplementedException(); }
 		}
