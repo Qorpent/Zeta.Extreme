@@ -3,7 +3,7 @@ using System.Web;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.Attachments {
 	///<summary>
 	///	Вызывает сохранение данных
 	///</summary>

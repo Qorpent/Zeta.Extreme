@@ -1,10 +1,7 @@
-using System.Linq;
-using Comdiv.Application;
-using Comdiv.Zeta.Model;
 using Qorpent.Mvc;
 using Zeta.Extreme.FrontEnd.Helpers;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.Info {
 	/// <summary>
 	/// ¬озвращает реестр используемых периодов
 	/// </summary>

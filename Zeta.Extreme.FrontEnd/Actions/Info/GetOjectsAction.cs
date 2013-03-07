@@ -1,7 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : FormListAction.cs
+// Original file : GetOjectsAction.cs
 // Project: Zeta.Extreme.FrontEnd
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -9,19 +9,21 @@
 #endregion
 
 using Qorpent.Mvc;
+using Zeta.Extreme.FrontEnd.Helpers;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.Info {
 	/// <summary>
-	/// 	Выдает список загруженных форм
+	/// 	Возвращает реестр доступных объектов
 	/// </summary>
-	[Action("zefs.formlist")]
-	public class FormListAction : FormServerActionBase {
+	[Action("zeta.getobjects")]
+	public class GetOjectsAction : FormServerActionBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			return MyFormServer.GetFormList();
+			MyFormServer.MetaCacheLoad.Wait();
+			return new AccessibleObjectsHelper().GetAccessibleObjects();
 		}
 	}
 }
