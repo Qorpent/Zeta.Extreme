@@ -582,30 +582,55 @@ namespace Zeta.Extreme.FrontEnd {
 
 		private void InitializeColset() {
 			EnsureDataSession();
+			PrepareVisibleColumns();
+			SetupNativeColumns();
+		}
+
+		private void SetupNativeColumns() {
+			foreach (var columnDesc in cols) {
+				PrepareNativeColumn(columnDesc);
+				CheckCustomCodedColumn(columnDesc);
+			}
+		}
+
+		private static void PrepareNativeColumn(IdxCol columnDesc) {
+			if (null == columnDesc._.Target) {
+				columnDesc._.Target = MetaCache.Default.Get<IZetaColumn>(columnDesc._.Code);
+			}
+		}
+
+		private void CheckCustomCodedColumn(IdxCol columnDesc) {
+			if (string.IsNullOrWhiteSpace(columnDesc._.CustomCode)) {
+				return;
+			}
+			var src = columnDesc._;
+			DataSession.MetaCache.Set(
+				new col
+					{
+						Code = src.CustomCode,
+						ForeignCode = src.InitialCode,
+						Year = src.Year,
+						Period = src.Period,
+						Formula = src.Formula,
+						FormulaEvaluator = src.FormulaEvaluator,
+						IsFormula = src.IsFormula
+					}
+				);
+		}
+
+		private void PrepareVisibleColumns() {
 			cols = Template.GetAllColumns().Where(
 				_ => _.GetIsVisible(Object)).Select((_, i) => new IdxCol {i = i, _ = _}
 				);
+			cols = (
+				       from col in cols
+				       let firstyear = TagHelper.Value(col._.Tag, "firstyear").ToInt()
+				       let ishistory = col._.Group == "HISTORY"
+				       let include = (firstyear <= Year && !ishistory) || (firstyear > Year && ishistory)
+				       where include
+				       select col
+			       ).ToArray();
 			Colset = cols.Select(_ => _._).ToArray();
-			foreach (var columnDesc in cols) {
-				if (null == columnDesc._.Target) {
-					columnDesc._.Target = MetaCache.Default.Get<IZetaColumn>(columnDesc._.Code);
-				}
-				if (!string.IsNullOrWhiteSpace(columnDesc._.CustomCode)) {
-					var src = columnDesc._;
-					DataSession.MetaCache.Set(
-						new col
-							{
-								Code = src.CustomCode,
-								ForeignCode = src.InitialCode,
-								Year = src.Year,
-								Period = src.Period,
-								Formula = src.Formula,
-								FormulaEvaluator = src.FormulaEvaluator,
-								IsFormula = src.IsFormula
-							}
-						);
-				}
-			}
 		}
 
 		private void PrepareRows() {
