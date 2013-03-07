@@ -178,15 +178,15 @@
     <Compile Include="NativeSqlBind\RowCache.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">
+    <ProjectReference Include="..\..\comdiv.oldcore\Comdiv.Core\Comdiv.Core.csproj">
       <Project>{C51304FD-0406-48E0-833E-EEDC67425BC8}</Project>
       <Name>Comdiv.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
       <Project>{880F65EA-1A22-4672-A137-FFC91290A209}</Project>
       <Name>Qorpent.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Comdiv.Zeta.Model\Comdiv.Zeta.Model.csproj">
+    <ProjectReference Include="..\..\zeta.old\Comdiv.Zeta.Model\Comdiv.Zeta.Model.csproj">
       <Project>{F939564A-D5A9-4BEE-B8F2-47C384358AFC}</Project>
       <Name>Comdiv.Zeta.Model</Name>
     </ProjectReference>
