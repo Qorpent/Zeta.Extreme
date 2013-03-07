@@ -22,6 +22,7 @@ using System.Xml.Linq;
 using Comdiv.Zeta.Model;
 using Comdiv.Zeta.Model.ExtremeSupport;
 using Qorpent.Applications;
+using Qorpent.Mvc;
 using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Forms;
@@ -828,6 +829,17 @@ namespace Zeta.Extreme.FrontEnd {
 		public void DeleteAttach(string uid) {
 			var attach = GetAttachedFiles().FirstOrDefault(_ => _.Uid == uid); 
 			GetFormAttachStorage().Delete(attach);
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="uid"></param>
+		/// <returns></returns>
+		public IFileDescriptor GetDownloadAbleFileDescriptor(string uid) {
+			var attach = GetAttachedFiles().FirstOrDefault(_ => _.Uid == uid);
+			var filedesc = new FormAttachmentFileDescriptor(attach, GetFormAttachStorage());
+			return filedesc;
+
 		}
 	}
 }

@@ -17,6 +17,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\Attachments\AttachFileAction.cs" />
+    <Compile Include="Actions\Abstracts\SingleAttachmentActionBase.cs" />
+    <Compile Include="Actions\Attachments\DownloadFileAction.cs" />
     <Compile Include="Actions\States\CanLockStateAction.cs" />
     <Compile Include="Actions\SessionProcessing\DataLoadedAction.cs" />
     <Compile Include="Actions\Attachments\DeleteAttachAction.cs" />
@@ -42,6 +44,7 @@
     <Compile Include="DataStructures\ObjectRecord.cs" />
     <Compile Include="DataStructures\PeriodRecord.cs" />
     <Compile Include="DataStructures\PeriodType.cs" />
+    <Compile Include="FormAttachmentFileDescriptor.cs" />
     <Compile Include="FormAttachmentStorageExtensions.cs" />
     <Compile Include="FormServer.cs" />
     <Compile Include="DataStructures\DataChunk.cs" />
