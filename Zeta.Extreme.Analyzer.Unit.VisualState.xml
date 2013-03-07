@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
+  <TopNode>[0-1000]\\192.168.26.133\rep\Zeta.Extreme\Zeta.Extreme.Analyzer.Unit.nunit</TopNode>
+  <SelectedNode>[0-1000]\\192.168.26.133\rep\Zeta.Extreme\Zeta.Extreme.Analyzer.Unit.nunit</SelectedNode>
+  <ExcludeCategories>false</ExcludeCategories>
+  <Nodes>
+    <Node UniqueName="[0-1000]\\192.168.26.133\rep\Zeta.Extreme\Zeta.Extreme.Analyzer.Unit.nunit" Expanded="true" />
+    <Node UniqueName="[0-1003]\\192.168.26.133\rep\.build\bin\tests\Zeta.Extreme.Analyzer.Tests.dll" Expanded="true" />
+    <Node UniqueName="[0-1004]Zeta" Expanded="true" />
+    <Node UniqueName="[0-1005]Zeta.Extreme" Expanded="true" />
+    <Node UniqueName="[0-1006]Zeta.Extreme.Analyzer" Expanded="true" />
+    <Node UniqueName="[0-1007]Zeta.Extreme.Analyzer.Tests" Expanded="true" />
+    <Node UniqueName="[0-1001]Zeta.Extreme.Analyzer.Tests.FormulaTests" Expanded="true" />
+  </Nodes>
+</VisualState>
