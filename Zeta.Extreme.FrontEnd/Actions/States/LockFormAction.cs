@@ -1,6 +1,6 @@
 using Qorpent.Mvc;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.States {
 	/// <summary>
 	/// 	¬озвращает текущий статус сохранени€
 	/// </summary>

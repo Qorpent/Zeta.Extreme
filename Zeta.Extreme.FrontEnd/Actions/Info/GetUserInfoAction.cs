@@ -2,7 +2,7 @@ using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 using Zeta.Extreme.FrontEnd.Helpers;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.Info {
 	/// <summary>
 	/// 	Возвращает реестр доступных объектов
 	/// </summary>

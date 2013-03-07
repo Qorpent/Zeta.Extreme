@@ -1,7 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : FormSessionStatusAction.cs
+// Original file : FormServerRestart.cs
 // Project: Zeta.Extreme.FrontEnd
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -10,18 +10,19 @@
 
 using Qorpent.Mvc;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.ZefsServer {
 	/// <summary>
-	/// 	Возвращает информацию о сессии
+	/// 	Действие, возвращающее статус загрузки приложения
 	/// </summary>
-	[Action("zefs.session")]
-	public class FormSessionStatusAction : FormSessionActionBase {
+	[Action("zefs.restart")]
+	public class FormServerRestart : FormServerActionBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			return MySession;
+			MyFormServer.Reload();
+			return true;
 		}
 	}
 }

@@ -1,7 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : FormListAction.cs
+// Original file : FormSessionStatusAction.cs
 // Project: Zeta.Extreme.FrontEnd
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -10,18 +10,18 @@
 
 using Qorpent.Mvc;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.Info {
 	/// <summary>
-	/// 	Выдает список загруженных форм
+	/// 	Возвращает информацию о сессии
 	/// </summary>
-	[Action("zefs.formlist")]
-	public class FormListAction : FormServerActionBase {
+	[Action("zefs.session")]
+	public class FormSessionStatusAction : FormSessionActionBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			return MyFormServer.GetFormList();
+			return MySession;
 		}
 	}
 }

@@ -8,21 +8,14 @@
 
 #endregion
 
-using System;
-using System.Linq;
-using System.Security;
-using Comdiv.Zeta.Model;
 using Qorpent.Mvc;
-using Qorpent.Mvc.Binding;
-using Zeta.Extreme.Form.InputTemplates;
-using Zeta.Extreme.FrontEnd.Helpers;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.SessionProcessing {
 	/// <summary>
 	/// 	Инициирует сессию
 	/// </summary>
 	[Action("zefs.start")]
-	public class FormStartAction : SessionStartBase {
+	public class StartAction : SessionStartBase {
 		
 		/// <summary>
 		/// 	processing of execution - main method of action

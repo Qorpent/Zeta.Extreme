@@ -1,7 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : DebugInfoAction.cs
+// Original file : FormServerStateAction.cs
 // Project: Zeta.Extreme.FrontEnd
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -10,18 +10,18 @@
 
 using Qorpent.Mvc;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.ZefsServer {
 	/// <summary>
-	/// 	Возвращает информацию о сессии
+	/// 	Действие, возвращающее статус загрузки приложения
 	/// </summary>
-	[Action("zefs.debuginfo")]
-	public class DebugInfoAction : FormSessionActionBase {
+	[Action("zefs.server")]
+	public class FormServerStateAction : FormServerActionBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			return MySession.CollectDebugInfo();
+			return MyFormServer.GetServerStateInfo();
 		}
 	}
 }

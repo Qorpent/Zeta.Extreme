@@ -4,10 +4,9 @@ using System.Security;
 using Comdiv.Zeta.Model;
 using Qorpent.Mvc.Binding;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.FrontEnd.Helpers;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions {
 	/// <summary>
 	/// Базовое действие для стартующих сессию
 	/// </summary>
