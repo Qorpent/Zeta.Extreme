@@ -7,7 +7,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Attachments {
 	///<summary>
 	///	Вызывает сохранение данных
 	///</summary>
-	[Action("zefs.deletefile")]
+	[Action("zefs.attachfile")]
 	public class AttachFileAction : FormSessionActionBase {
 		/// <summary>
 		/// 	First phase of execution - override if need special input parameter's processing

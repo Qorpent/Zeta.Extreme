@@ -21,7 +21,7 @@
     <Compile Include="Actions\Attachments\DownloadFileAction.cs" />
     <Compile Include="Actions\States\CanLockStateAction.cs" />
     <Compile Include="Actions\SessionProcessing\DataLoadedAction.cs" />
-    <Compile Include="Actions\Attachments\DeleteAttachAction.cs" />
+    <Compile Include="Actions\Attachments\DeleteFileAction.cs" />
     <Compile Include="Actions\Info\GetFormListAction.cs" />
     <Compile Include="Actions\Abstracts\FormServerActionBase.cs" />
     <Compile Include="Actions\ZefsServer\FormServerRestart.cs" />
