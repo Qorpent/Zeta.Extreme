@@ -367,7 +367,7 @@ namespace Zeta.Extreme.FrontEnd {
 				_processed.Clear();
 				Data.Clear();
 				DataCollectionRequests++;
-				DataSession = new Session(true);
+				DataSession = DataSession ?? new Session(true);
 				PrepareDataTask = new TaskWrapper(
 					Task.Run(() =>
 						{
@@ -580,6 +580,7 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void InitializeColset() {
+			DataSession = DataSession ?? new Session(true);
 			cols = Template.GetAllColumns().Where(
 				_ => _.GetIsVisible(Object)).Select((_, i) => new IdxCol {i = i, _ = _}
 				);

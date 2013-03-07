@@ -18,16 +18,28 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	/// </summary>
 	public abstract class FormSessionActionBase : FormServerActionBase {
 		/// <summary>
+		/// 	First phase of execution - override if need special input parameter's processing
+		/// </summary>
+		protected override void Initialize()
+		{
+			FormServer.Default.ReadyToServeForms.Wait();
+			if (!FormServer.Default.IsOk)
+			{
+				throw new Exception("Application not loaded properly!");
+			}
+			MySession = FormServer.Default.Sessions.First(_ => _.Uid == Session);
+		}
+		/// <summary>
 		/// 	Second phase - validate INPUT/REQUEST parameters here - it called before PREPARE so do not try validate
 		/// 	second-level internal state and authorization - only INPUT PARAMETERS must be validated
 		/// </summary>
 		protected override void Validate() {
-			FormServer.Default.ReadyToServeForms.Wait();
-			if (!FormServer.Default.IsOk) {
-				throw new Exception("Application not loaded properly!");
-			}
+			
 			base.Validate();
-			MySession = FormServer.Default.Sessions.First(_ => _.Uid == Session);
+			if(null==MySession) {
+				throw new Exception("отсутствует целевая сессия");
+			}
+		
 		}
 
 		/// <summary>

@@ -4,7 +4,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Attachments {
 	///<summary>
 	///	Вызывает сохранение данных
 	///</summary>
-	[Action("zefs.downloadfile", Role = "ADMIN")]
+	[Action("zefs.downloadfile")]
 	public class DownloadFileAction : SingleAttachmentActionBase
 	{
 		/// <summary>
@@ -13,8 +13,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Attachments {
 		/// <returns> </returns>
 		protected override object MainProcess()
 		{
-			MySession.GetDownloadAbleFileDescriptor(uid);
-			return true;
+			return MySession.GetDownloadAbleFileDescriptor(uid);
 		}
 	}
 }

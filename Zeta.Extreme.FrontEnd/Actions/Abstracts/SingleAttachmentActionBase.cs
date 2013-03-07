@@ -11,7 +11,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Attachments {
 		/// <summary>
 		/// Идентификатор существующего файла
 		/// </summary>
-		[Bind(Required = true,ValidatePattern = @"^[\d\w\-\_]+$")]protected string uid;
+		[Bind(Required = true,ValidatePattern = @"^[\d\w\-_]+$")]protected string uid;
 
 		private FormAttachment _myattach;
 
