@@ -1,0 +1,7 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Debug" />
+  <Config name="Debug" binpathtype="Auto">
+    <assembly path="..\.build\bin\Zeta.Extreme.Analyzer.Tests.Debug\Zeta.Extreme.Analyzer.Tests.dll" />
+  </Config>
+  <Config name="Release" binpathtype="Auto" />
+</NUnitProject>
