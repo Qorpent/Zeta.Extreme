@@ -19,6 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
+using Comdiv.Extensions;
 using Comdiv.Zeta.Model;
 using Comdiv.Zeta.Model.ExtremeSupport;
 using Qorpent.Applications;
@@ -367,7 +368,7 @@ namespace Zeta.Extreme.FrontEnd {
 				_processed.Clear();
 				Data.Clear();
 				DataCollectionRequests++;
-				DataSession = DataSession ?? new Session(true);
+				EnsureDataSession();
 				PrepareDataTask = new TaskWrapper(
 					Task.Run(() =>
 						{
@@ -580,7 +581,7 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void InitializeColset() {
-			DataSession = DataSession ?? new Session(true);
+			EnsureDataSession();
 			cols = Template.GetAllColumns().Where(
 				_ => _.GetIsVisible(Object)).Select((_, i) => new IdxCol {i = i, _ = _}
 				);
@@ -845,6 +846,26 @@ namespace Zeta.Extreme.FrontEnd {
 			var filedesc = new FormAttachmentFileDescriptor(attach, GetFormAttachStorage());
 			return filedesc;
 
+		}
+		/// <summary>
+		/// Возвращает допустимые типы файлов для сессии
+		/// </summary>
+		/// <returns></returns>
+		public FileTypeRecord[] GetAllowedFileTypes() {
+			EnsureDataSession();
+			var filetypes = DataSession.MetaCache.Get<IZetaRow>("DIR_FILE_TYPES").Children.ToArray();
+			return (
+				       from filetypedesc in filetypes
+				       from formcode in TagHelper.Value(filetypedesc.Tag, "form").Split(',') 
+				       where "any"==formcode||Template.Thema.Code==formcode
+				       orderby filetypedesc.Idx
+				       select new FileTypeRecord {code = filetypedesc.OuterCode, name = filetypedesc.Name}
+			       ).ToArray();
+
+		}
+
+		private void EnsureDataSession() {
+			DataSession = DataSession ?? new Session(true);
 		}
 	}
 }
