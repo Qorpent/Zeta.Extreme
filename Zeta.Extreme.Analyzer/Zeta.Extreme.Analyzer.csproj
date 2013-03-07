@@ -2,16 +2,15 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration>Debug</Configuration>
-    <ProjectGuid>B9084F7B-B34D-40DB-8C55-E6B086DE732D</ProjectGuid>
+    <ProjectGuid>{573BBC49-8999-45C0-8FC3-4FE4EE7B7D82}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Zeta.Extreme.Analyzer</RootNamespace>
     <AssemblyName>Zeta.Extreme.Analyzer</AssemblyName>
   </PropertyGroup>
-   <ItemGroup>
-	<None Include="*.import" />
-	<None Include="*.export" />
-	<EmbeddedResource Include=".\**\*.*resource"/>
- </ItemGroup>
+  <ItemGroup>
+    <None Include="*.import" />
+    <None Include="*.export" />
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
-
 </Project>
