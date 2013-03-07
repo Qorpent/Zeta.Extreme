@@ -757,7 +757,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns></returns>
 		public object CleanupAfterDataLoaded() {
-			Structure = null;
+			//Structure = null;
 			var npcells = Data.Where(_ => !_.canbefilled).ToArray();
 			foreach (var outCell in npcells) {
 				Data.Remove(outCell);
