@@ -35,7 +35,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 	/// <summary>
 	/// 	Шаблон формы
 	/// </summary>
-	public class InputTemplate : IInputTemplate, ICloneable, BizProcess.Themas.IConditionMatcher {
+	public class InputTemplate : IInputTemplate, ICloneable, IConditionMatcher {
 		/// <summary>
 		/// 	Конструктор по умолчанию
 		/// </summary>
@@ -148,31 +148,22 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <returns> </returns>
 		/// <exception cref="Exception"></exception>
 		public bool IsConditionMatch(string condition) {
-			if (condition.noContent()) {
-				return true;
+			if (IsEmptyCondition(condition)) return true;
+			if (IsNotConditionCheckActivated()) return true;
+			var conds = GetConditionList();
+			if (conds == null) return false;
+			if (IsConditionListLike(condition)) {
+				return EvaluateByListLikeCondition(condition, conds);
 			}
-			if (!Parameters.get("activecondition", () => false)) {
-				return true;
-			}
-			var conds_ = Parameters.get("conditions", "");
-			if (conds_.noContent()) {
-				return false;
-			}
-			var conds = conds_.split();
-			if (condition.Contains(",") || condition.Contains("|")) {
-				var condsets = condition.split(false, true, '|');
-				foreach (var condset in condsets) {
-					var match = conds.containsAll(condset.split().ToArray());
-					if (match) {
-						return true;
-					}
-				}
-				return false;
-			}
+			return EvaluateByPython(condition, conds);
+		}
+
+		private static bool EvaluateByPython(string condition, IEnumerable<string> conds) {
+			bool result;
 			var e = PythonPool.Get();
 			var cond = condition;
 			try {
-				cond = condition.replace(@"[\w\d_]+", m =>
+				cond = cond.replace(@"[\w\d_]+", m =>
 					{
 						if (m.Value.isIn("or", "and", "not")) {
 							return m.Value;
@@ -183,7 +174,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 						}
 						return " False ";
 					}).Trim();
-				var result = e.Execute<bool>(cond);
+				result = e.Execute<bool>(cond);
 				return result;
 			}
 			catch (Exception) {
@@ -192,6 +183,44 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			finally {
 				PythonPool.Release(e);
 			}
+		}
+
+		private static bool EvaluateByListLikeCondition(string condition, IEnumerable<string> conds) {
+			var condsets = condition.split(false, true, '|');
+			foreach (var condset in condsets) {
+				var match = conds.containsAll(condset.split().ToArray());
+				if (match) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		private static bool IsConditionListLike(string condition) {
+			return condition.Contains(",") || condition.Contains("|");
+		}
+
+		private IEnumerable<string> GetConditionList() {
+			var conds_ = Parameters.get("conditions", "");
+			if (conds_.noContent()) {
+				return null;
+			}
+			var conds = conds_.split();
+			return conds;
+		}
+
+		private static bool IsEmptyCondition(string condition) {
+			if (condition.noContent()) {
+				return true;
+			}
+			return false;
+		}
+
+		private bool IsNotConditionCheckActivated() {
+			if (!Parameters.get("activecondition").toBool()) {
+				return true;
+			}
+			return false;
 		}
 
 		/// <summary>
