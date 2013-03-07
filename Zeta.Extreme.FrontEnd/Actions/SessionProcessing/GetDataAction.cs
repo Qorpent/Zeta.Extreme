@@ -1,35 +1,30 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : FormStartAction.cs
+// Original file : GetDataAction.cs
 // Project: Zeta.Extreme.FrontEnd
 // This code cannot be used without agreement from 
 // Media Technology LTD 
 
 #endregion
 
-using System;
-using System.Linq;
-using System.Security;
-using Comdiv.Zeta.Model;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
-using Zeta.Extreme.Form.InputTemplates;
-using Zeta.Extreme.FrontEnd.Helpers;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.SessionProcessing {
 	/// <summary>
 	/// 	Инициирует сессию
 	/// </summary>
-	[Action("zefs.start")]
-	public class FormStartAction : SessionStartBase {
-		
+	[Action("zefs.data")]
+	public class GetDataAction : FormSessionActionBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			return MyFormServer.Start(_realform, _realobj, year, period);
+			return MySession.GetNextChunk(startidx);
 		}
+
+		[Bind(Required = false)] private int startidx = 0;
 	}
 }

@@ -12,7 +12,7 @@ using System;
 using System.Linq;
 using Qorpent.Mvc.Binding;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions {
 	/// <summary>
 	/// 	Базовое действие, работающее с сессией
 	/// </summary>

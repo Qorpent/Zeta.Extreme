@@ -1,16 +1,20 @@
 using System;
 using System.Linq;
-using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 using Zeta.Extreme.BizProcess.Forms;
 
-namespace Zeta.Extreme.FrontEnd {
-	///<summary>
-	///	Вызывает сохранение данных
-	///</summary>
-	[Action("zefs.deleteattach",Role = "ADMIN")]
-	public class DeleteAttachAction : FormSessionActionBase
-	{
+namespace Zeta.Extreme.FrontEnd.Actions.Attachments {
+	/// <summary>
+	/// Базовый класс действий, ориентированных на работу с конкретным присоединенным файлом
+	/// </summary>
+	public class SingleAttachmentActionBase : FormSessionActionBase {
+		/// <summary>
+		/// Идентификатор существующего файла
+		/// </summary>
+		[Bind(Required = true,ValidatePattern = @"^[\d\w\-\_]+$")]protected string uid;
+
+		private FormAttachment _myattach;
+
 		/// <summary>
 		/// 	First phase of execution - override if need special input parameter's processing
 		/// </summary>
@@ -32,21 +36,5 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 			
 		}
-		/// <summary>
-		/// 	processing of execution - main method of action
-		/// </summary>
-		/// <returns> </returns>
-		protected override object MainProcess() {
-			MySession.DeleteAttach(uid);
-			return true;
-		}
-		
-
-		/// <summary>
-		/// Идентификатор существующего файла
-		/// </summary>
-		[Bind(Required = true,ValidatePattern = @"^[\d\w\-\_]+$")]protected string uid;
-
-		private FormAttachment _myattach;
 	}
 }

@@ -10,7 +10,7 @@
 
 using Qorpent.Mvc;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.ZefsServer {
 	///<summary>
 	///	Определяет доступность сервера форм
 	///</summary>

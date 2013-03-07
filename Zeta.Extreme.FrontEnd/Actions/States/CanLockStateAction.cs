@@ -1,7 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : SaveStateAction.cs
+// Original file : CanLockStateAction.cs
 // Project: Zeta.Extreme.FrontEnd
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -10,18 +10,18 @@
 
 using Qorpent.Mvc;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.States {
 	/// <summary>
-	/// 	Возвращает текущий статус сохранения
+	/// 	Возвращает статус формы
 	/// </summary>
-	[Action("zefs.savestate")]
-	public class SaveStateAction : FormSessionActionBase {
+	[Action("zefs.canlockstate")]
+	public class CanLockStateAction : FormSessionActionBase {
 		/// <summary>
-		/// 	processing of execution - main method of action
+		/// 	Возвращает статус формы по блокировке
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			return MySession.GetSaveState();
+			return MySession.GetCanBlockInfo();
 		}
 	}
 }

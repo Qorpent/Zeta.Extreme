@@ -1,7 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : GetOjectsAction.cs
+// Original file : FormSessionStatusAction.cs
 // Project: Zeta.Extreme.FrontEnd
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -9,21 +9,19 @@
 #endregion
 
 using Qorpent.Mvc;
-using Zeta.Extreme.FrontEnd.Helpers;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.Info {
 	/// <summary>
-	/// 	Возвращает реестр доступных объектов
+	/// 	Возвращает информацию о сессии
 	/// </summary>
-	[Action("zeta.getobjects")]
-	public class GetOjectsAction : FormServerActionBase {
+	[Action("zefs.session")]
+	public class FormSessionStatusAction : FormSessionActionBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			MyFormServer.MetaCacheLoad.Wait();
-			return new AccessibleObjectsHelper().GetAccessibleObjects();
+			return MySession;
 		}
 	}
 }

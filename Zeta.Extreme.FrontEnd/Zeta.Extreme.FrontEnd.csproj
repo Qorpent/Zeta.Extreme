@@ -16,42 +16,45 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\AttachFileAction.cs" />
-    <Compile Include="Actions\CanLockStateAction.cs" />
-    <Compile Include="Actions\DataLoadedAction.cs" />
-    <Compile Include="Actions\DeleteAttachAction.cs" />
-    <Compile Include="Actions\FormListAction.cs" />
-    <Compile Include="Actions\FormServerActionBase.cs" />
-    <Compile Include="Actions\FormServerRestart.cs" />
-    <Compile Include="Actions\DebugInfoAction.cs" />
-    <Compile Include="Actions\CurrentLockStateAction.cs" />
-    <Compile Include="Actions\FormSessionActionBase.cs" />
-    <Compile Include="Actions\GetAttachFileListAction.cs" />
-    <Compile Include="Actions\GetOjectsAction.cs" />
-    <Compile Include="Actions\GetPeriodsAction.cs" />
-    <Compile Include="Actions\GetUserInfoAction.cs" />
-    <Compile Include="Actions\LockFormAction.cs" />
-    <Compile Include="Actions\LockListAction.cs" />
-    <Compile Include="Actions\ResetDataAction.cs" />
-    <Compile Include="Actions\SaveDataAction.cs" />
-    <Compile Include="Actions\SaveReadyAction.cs" />
-    <Compile Include="Actions\SaveStateAction.cs" />
-    <Compile Include="Actions\SessionStartBase.cs" />
+    <Compile Include="Actions\Attachments\AttachFileAction.cs" />
+    <Compile Include="Actions\Abstracts\SingleAttachmentActionBase.cs" />
+    <Compile Include="Actions\Attachments\DownloadFileAction.cs" />
+    <Compile Include="Actions\States\CanLockStateAction.cs" />
+    <Compile Include="Actions\SessionProcessing\DataLoadedAction.cs" />
+    <Compile Include="Actions\Attachments\DeleteAttachAction.cs" />
+    <Compile Include="Actions\Info\GetFormListAction.cs" />
+    <Compile Include="Actions\Abstracts\FormServerActionBase.cs" />
+    <Compile Include="Actions\ZefsServer\FormServerRestart.cs" />
+    <Compile Include="Actions\Info\GetSessionDebugInfoAction.cs" />
+    <Compile Include="Actions\States\CurrentLockStateAction.cs" />
+    <Compile Include="Actions\Abstracts\FormSessionActionBase.cs" />
+    <Compile Include="Actions\Attachments\GetAttachmentListAction.cs" />
+    <Compile Include="Actions\Info\GetOjectsAction.cs" />
+    <Compile Include="Actions\Info\GetPeriodsAction.cs" />
+    <Compile Include="Actions\Info\GetUserInfoAction.cs" />
+    <Compile Include="Actions\States\LockFormAction.cs" />
+    <Compile Include="Actions\States\LockListAction.cs" />
+    <Compile Include="Actions\SessionProcessing\ResetDataAction.cs" />
+    <Compile Include="Actions\SessionProcessing\SaveDataAction.cs" />
+    <Compile Include="Actions\SessionProcessing\SaveReadyAction.cs" />
+    <Compile Include="Actions\SessionProcessing\SaveStateAction.cs" />
+    <Compile Include="Actions\Abstracts\SessionStartBase.cs" />
     <Compile Include="DataStructures\AccessibleObjects.cs" />
     <Compile Include="DataStructures\DivisionRecord.cs" />
     <Compile Include="DataStructures\ObjectRecord.cs" />
     <Compile Include="DataStructures\PeriodRecord.cs" />
     <Compile Include="DataStructures\PeriodType.cs" />
+    <Compile Include="FormAttachmentFileDescriptor.cs" />
     <Compile Include="FormAttachmentStorageExtensions.cs" />
     <Compile Include="FormServer.cs" />
     <Compile Include="DataStructures\DataChunk.cs" />
     <Compile Include="FormSession.cs" />
-    <Compile Include="Actions\FormStartAction.cs" />
-    <Compile Include="Actions\FormServerStateAction.cs" />
-    <Compile Include="Actions\GetDataAction.cs" />
-    <Compile Include="Actions\GetStructureAction.cs" />
-    <Compile Include="Actions\ReadyToServeAction.cs" />
-    <Compile Include="Actions\FormSessionStatusAction.cs" />
+    <Compile Include="Actions\SessionProcessing\StartAction.cs" />
+    <Compile Include="Actions\ZefsServer\FormServerStateAction.cs" />
+    <Compile Include="Actions\SessionProcessing\GetDataAction.cs" />
+    <Compile Include="Actions\SessionProcessing\GetStructureAction.cs" />
+    <Compile Include="Actions\ZefsServer\ReadyToServeAction.cs" />
+    <Compile Include="Actions\Info\GetSessionInfoAction.cs" />
     <Compile Include="DataStructures\StructureItem.cs" />
     <Compile Include="Helpers\AccessibleObjectsHelper.cs" />
     <Compile Include="Helpers\PeriodCatalogHelper.cs" />
@@ -102,5 +105,6 @@
       <Name>Zeta.Extreme.Poco</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

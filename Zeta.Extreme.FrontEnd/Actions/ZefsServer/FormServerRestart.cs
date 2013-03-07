@@ -1,7 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : CurrentLockStateAction.cs
+// Original file : FormServerRestart.cs
 // Project: Zeta.Extreme.FrontEnd
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -10,18 +10,19 @@
 
 using Qorpent.Mvc;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.FrontEnd.Actions.ZefsServer {
 	/// <summary>
-	/// 	¬озвращает статус формы
+	/// 	ƒействие, возвращающее статус загрузки приложени€
 	/// </summary>
-	[Action("zefs.currentlockstate")]
-	public class CurrentLockStateAction : FormSessionActionBase {
+	[Action("zefs.restart")]
+	public class FormServerRestart : FormServerActionBase {
 		/// <summary>
-		/// 	¬озвращает статус формы по блокировке
+		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			return MySession.GetCurrentLockInfo();
+			MyFormServer.Reload();
+			return true;
 		}
 	}
 }
