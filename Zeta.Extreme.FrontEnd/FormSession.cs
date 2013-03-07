@@ -588,12 +588,12 @@ namespace Zeta.Extreme.FrontEnd {
 
 		private void SetupNativeColumns() {
 			foreach (var columnDesc in cols) {
-				PrepareNativeColumn(columnDesc);
+				PrepareNativeColumnFromUsualCode(columnDesc);
 				CheckCustomCodedColumn(columnDesc);
 			}
 		}
 
-		private static void PrepareNativeColumn(IdxCol columnDesc) {
+		private static void PrepareNativeColumnFromUsualCode(IdxCol columnDesc) {
 			if (null == columnDesc._.Target) {
 				columnDesc._.Target = MetaCache.Default.Get<IZetaColumn>(columnDesc._.Code);
 			}
