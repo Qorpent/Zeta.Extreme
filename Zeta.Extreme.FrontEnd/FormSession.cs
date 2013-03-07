@@ -802,7 +802,11 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns></returns>
 		public FormAttachment AttachFile(HttpPostedFileBase datafile, string filename, string type,string uid) {
 			var storage = GetFormAttachStorage();
-			var result = storage.AttachHttpFile(this, datafile, filename, type, uid);
+			var realfilename = filename;
+			if(string.IsNullOrWhiteSpace(realfilename)) {
+				realfilename = string.Format("{0}_{1}_{2}_{3}", type, Object.Name.Replace("\"", "_"), Year, Period);
+			}
+			var result = storage.AttachHttpFile(this, datafile, realfilename, type, uid);
 			return result;
 		}
 

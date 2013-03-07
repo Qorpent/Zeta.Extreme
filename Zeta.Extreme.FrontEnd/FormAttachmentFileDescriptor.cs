@@ -34,9 +34,9 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public string Name {
 			get {
-				var srcname = _attach.Name.Replace("\"","'");
+				var srcname = _attach.Name.Replace("\"","_");
 				if (string.IsNullOrWhiteSpace(Path.GetExtension(srcname))) {
-					return srcname+ "." + _attach.Extension;
+					return (srcname+ "." + _attach.Extension).Replace("..",".");
 				}
 				return srcname;
 			}
