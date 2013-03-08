@@ -15,26 +15,32 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">
-      <Project>{C51304FD-0406-48E0-833E-EEDC67425BC8}</Project>
-      <Name>Comdiv.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
-      <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
-      <Name>Qorpent.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Data\Qorpent.Data.csproj">
-      <Project>{E762ABB0-9982-444C-A2B5-23B5866954F3}</Project>
-      <Name>Qorpent.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
-      <Project>{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}</Project>
-      <Name>Zeta.Extreme.BizProcess</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="DbfsStorageTest.cs" />
     <Compile Include="ExtremeFormProviderTests.cs" />
+    <Compile Include="MongoDBAttachmentSource\CanOpenStream.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Comdiv.Core">
+      <HintPath>..\..\build\Comdiv.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Qorpent.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\build\Qorpent.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Qorpent.Data">
+      <HintPath>..\..\.build\bin\Qorpent.Data.Debug\Qorpent.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.BizProcess">
+      <HintPath>..\..\.build\bin\Zeta.Extreme.BizProcess.Debug\Zeta.Extreme.BizProcess.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Core.Debug\Zeta.Extreme.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.Form, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.Form.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>
