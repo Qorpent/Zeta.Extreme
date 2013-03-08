@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 
@@ -1051,6 +1053,49 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench {
 				Assert.AreEqual(oldresult,newresult,string.Join(",",conditions));
 			}
 		}
+
+		[Test]
+		[Explicit]
+		public void ZC374_PerformanceTest() {
+			const int MINIMAL_GAIN_PERCENT = 20;
+			const int ITERATION_COUNT = 10;
+			var cases =
+				GetType().GetMethod("OldAndNewBehaviorEqualityTest").GetCustomAttributes(typeof (TestCaseAttribute), true).OfType
+					<TestCaseAttribute>().ToArray();
+			Console.WriteLine("run old...");
+			var oldtime = RunPerformTest(cases,false,ITERATION_COUNT);
+			Console.WriteLine("run new...");
+			var newtime = RunPerformTest(cases, true,ITERATION_COUNT);
+			var percent = 100- (newtime.TotalMilliseconds/oldtime.TotalMilliseconds*100);
+			Console.WriteLine("result:");
+			Console.WriteLine("gain %: "+percent);
+			Assert.GreaterOrEqual(percent,MINIMAL_GAIN_PERCENT);
+		}
+
+		private static TimeSpan RunPerformTest(TestCaseAttribute[] cases, bool usenew,int iterations) {
+			ConditionMatcherBase matchmethod = usenew
+				                                   ?(ConditionMatcherBase) new NewConditionMatcherImplementation()
+				                                   : new OldConditionMatcherImplementation();
+			var sw = Stopwatch.StartNew();
+			for(var i=0;i<iterations;i++) {
+				Console.Write(".");
+				foreach (var testCaseAttribute in cases) {
+					var formula = testCaseAttribute.Arguments[0] as string;
+					var termlist = testCaseAttribute.Arguments[1] as string;
+					var terms = termlist.Split(',');
+					var termsetgenerator = new ConditionSetGenerator(terms);
+					foreach (var termset in termsetgenerator.GenerateConditionSets().ToArray()) {
+						matchmethod.Match(formula, termset);
+					}
+				}
+			}
+			Console.WriteLine();
+			sw.Stop();
+			var timeSpan = sw.Elapsed;
+			Console.WriteLine("time: " + timeSpan);
+			return timeSpan;
+		}
+
 		[Test]
 		public void ZC373_InvalidFormulaParsing_1_Not_Support_BraceThenOperator() {
 			var terms = new[] {"ONLYONEPERIOD", "Помесяцам", "yc1"};
@@ -1064,7 +1109,7 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench {
 		{
 			var terms = new[] { "ONLYONEPERIOD", "Помесяцам", "yc1" };
 			var newmatcher = new NewConditionMatcherImplementation();
-			var newresult = newmatcher.Match("(not ONLYONEPERIOD) and  Помесяцам and yc1", terms);
+			var newresult = newmatcher.Match("not ONLYONEPERIOD and  Помесяцам and yc1", terms);
 			Assert.False(newresult);
 			Assert.Pass("no exception was thrown");
 		}
