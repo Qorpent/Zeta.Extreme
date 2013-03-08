@@ -51,6 +51,7 @@
     <Compile Include="ZC371TestBench\ConditionMatcherBase.cs" />
     <Compile Include="ZC371TestBench\ConditionSetGenerator.cs" />
     <Compile Include="ZC371TestBench\InternalZC371Tests.cs" />
+    <Compile Include="ZC371TestBench\NewConditionMatcherImplementation.cs" />
     <Compile Include="ZC371TestBench\OldConditionMatcherImplementation.cs" />
     <Compile Include="ZC371TestBench\Zc371TestBench.cs" />
   </ItemGroup>

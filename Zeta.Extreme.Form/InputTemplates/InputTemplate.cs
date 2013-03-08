@@ -14,21 +14,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.XPath;
 using Comdiv.Application;
-using Comdiv.Extensibility;
 using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.Logging;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Model;
+using Qorpent.Dsl.LogicalExpressions;
 using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.BizProcess.StateManagement;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
 using Zeta.Extreme.Form.Themas;
-using Zeta.Extreme.Meta;
 using ColumnDesc = Zeta.Extreme.BizProcess.Themas.ColumnDesc;
 using IConditionMatcher = Zeta.Extreme.BizProcess.Themas.IConditionMatcher;
+using Qorpent.Utils.Extensions;
 
 
 namespace Zeta.Extreme.Form.InputTemplates {
@@ -155,45 +154,22 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			if (IsConditionListLike(condition)) {
 				return EvaluateByListLikeCondition(condition, conds);
 			}
-			return EvaluateByPython(condition, conds);
+			return EvaluateByScript(condition, conds);
 		}
+		readonly LogicalExpressionEvaluator _evaluator = new LogicalExpressionEvaluator();
+		private  bool EvaluateByScript(string condition, IEnumerable<string> conds) {
+			var normalizedCondition = (" " + condition + " ").Replace("(", " ( ").Replace(")", " ) ")
+				//fix not processable formulas
+				.Replace(" and ", " & ").Replace(" or ", " | ").Replace(" not ", " ! ");
+			//fix operators
 
-		private static bool EvaluateByPython(string condition, IEnumerable<string> conds) {
-			bool result;
-			var e = PythonPool.Get();
-			var cond = condition;
-			try {
-				cond = cond.replace(@"[\w\d_]+", m =>
-					{
-						if (m.Value.isIn("or", "and", "not")) {
-							return m.Value;
-						}
-						var c = m.Value;
-						if (conds.Contains(c)) {
-							return " True ";
-						}
-						return " False ";
-					}).Trim();
-				result = e.Execute<bool>(cond);
-				return result;
-			}
-			catch (Exception) {
-				throw new Exception("Ошибка в " + cond);
-			}
-			finally {
-				PythonPool.Release(e);
-			}
+			var soruce = LogicTermSource.Create(conds);
+			return _evaluator.Eval(normalizedCondition, soruce);
 		}
 
 		private static bool EvaluateByListLikeCondition(string condition, IEnumerable<string> conds) {
-			var condsets = condition.split(false, true, '|');
-			foreach (var condset in condsets) {
-				var match = conds.containsAll(condset.split().ToArray());
-				if (match) {
-					return true;
-				}
-			}
-			return false;
+			var condsets = condition.SmartSplit(false, true, '|');
+			return condsets.Select(condset => conds.containsAll(condset.SmartSplit().ToArray())).Any(match => match);
 		}
 
 		private static bool IsConditionListLike(string condition) {

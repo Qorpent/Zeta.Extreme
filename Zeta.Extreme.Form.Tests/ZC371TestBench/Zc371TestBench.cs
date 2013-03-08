@@ -1072,6 +1072,8 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench {
 			Assert.GreaterOrEqual(percent,MINIMAL_GAIN_PERCENT);
 		}
 
+		
+
 		private static TimeSpan RunPerformTest(TestCaseAttribute[] cases, bool usenew,int iterations) {
 			ConditionMatcherBase matchmethod = usenew
 				                                   ?(ConditionMatcherBase) new NewConditionMatcherImplementation()

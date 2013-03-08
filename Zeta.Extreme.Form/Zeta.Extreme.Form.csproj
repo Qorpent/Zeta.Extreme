@@ -18,10 +18,6 @@
       <Project>{c51304fd-0406-48e0-833e-eedc67425bc8}</Project>
       <Name>Comdiv.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\core\Comdiv.Extensibility\Comdiv.Extensibility.csproj">
-      <Project>{C1944938-B798-478A-BA1C-FDA8BA152FF3}</Project>
-      <Name>Comdiv.Extensibility</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\core\Comdiv.Reporting\Comdiv.Reporting.csproj">
       <Project>{053ae040-0545-4ed0-927a-69b3423ba66d}</Project>
       <Name>Comdiv.Reporting</Name>
@@ -33,6 +29,10 @@
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
       <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
       <Name>Qorpent.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Dsl\Qorpent.Dsl.csproj">
+      <Project>{B758E220-22F5-47DF-A73B-BC9B1A3DBDC3}</Project>
+      <Name>Qorpent.Dsl</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
       <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
