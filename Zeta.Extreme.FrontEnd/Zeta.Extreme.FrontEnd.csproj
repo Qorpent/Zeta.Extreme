@@ -82,14 +82,6 @@
       <Project>{B758E220-22F5-47DF-A73B-BC9B1A3DBDC3}</Project>
       <Name>Qorpent.Dsl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.IO\Qorpent.IO.csproj">
-      <Project>{426C92DF-3C40-426C-B0BE-40A1DF9044C2}</Project>
-      <Name>Qorpent.IO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Serialization\Qorpent.Serialization.csproj">
-      <Project>{21971F28-8ED8-4F50-B623-E9DB2658AF54}</Project>
-      <Name>Qorpent.Serialization</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
       <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
       <Name>Qorpent.Utils</Name>
