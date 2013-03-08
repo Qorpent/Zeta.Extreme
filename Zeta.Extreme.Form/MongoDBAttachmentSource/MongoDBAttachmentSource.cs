@@ -2,7 +2,7 @@
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.Form.MongoDBAttachmentSource {
-    class MongoDBAttachmentSource {
+    class MongoDBAttachmentSource : IAttachmentStorage {
 
     }
 }
