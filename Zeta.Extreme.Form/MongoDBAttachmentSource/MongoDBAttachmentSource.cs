@@ -26,7 +26,8 @@ namespace Zeta.Extreme.Form.MongoDBAttachmentSource {
         /// <param name="mode"></param>
         /// <returns></returns>
         public Stream Open(Attachment attachment, FileAccess mode) {
-            MongoClient client = new MongoClient();
+            //MongoClient client = new MongoClient();
+            Console.Write("{0}, {1}", attachment.Uid, attachment.Comment);
             return null;
         }
 
