@@ -17,7 +17,9 @@
   <ItemGroup>
     <Compile Include="DbfsStorageTest.cs" />
     <Compile Include="ExtremeFormProviderTests.cs" />
-    <Compile Include="MongoDBAttachmentSource\CanOpenStream.cs" />
+    <Compile Include="MongoDBAttachmentSource\CanDeleteAttachment.cs" />
+    <Compile Include="MongoDBAttachmentSource\CanFindAttachment.cs" />
+    <Compile Include="MongoDBAttachmentSource\CanSaveAttachment.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Comdiv.Core">

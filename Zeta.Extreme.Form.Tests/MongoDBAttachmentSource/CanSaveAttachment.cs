@@ -8,10 +8,10 @@ using Zeta.Extreme.Form.MongoDBAttachmentSource;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.Form.Tests.MongoDBAttachmentSource {
-    public class CanOpenStream {
+    public class CanSaveAttachment {
 
-        public string CanOpen() {
-            MongoDBAttachment mdba = new MongoDBAttachment();
+        public string SaveAttachment() {
+            MongoDBAttachmentStorage mdba = new MongoDBAttachmentStorage();
             Attachment ex_att = new Attachment();
             
             ex_att.Uid = "Some_UID";
@@ -23,7 +23,7 @@ namespace Zeta.Extreme.Form.Tests.MongoDBAttachmentSource {
             ex_att.MimeType = "addsd";
             ex_att.Extension = "some";
              
-            mdba.Save(ex_att);
+            mdba.AttachmentSave(ex_att, "C:/TestMongo.dat");
             return "Going Ok.";
         }
 
