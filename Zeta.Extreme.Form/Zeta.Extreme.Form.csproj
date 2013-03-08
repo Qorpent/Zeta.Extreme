@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Abstracts\IFormDataSynchronize.cs" />
     <Compile Include="Abstracts\IFormSessionControlPointSource.cs" />
+    <Compile Include="MongoDBAttachmentSource1\MongoDBAttachmentSource.cs" />
     <Compile Include="DbfsAttachmentSource\DbfsAttachmentStorage.cs" />
     <Compile Include="InputTemplates\InputTemplateRequest.cs">
       <SubType>Code</SubType>
