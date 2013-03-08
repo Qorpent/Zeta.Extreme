@@ -59,30 +59,28 @@
     <Compile Include="Themas\TypedParameter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">
-      <Project>{C51304FD-0406-48E0-833E-EEDC67425BC8}</Project>
-      <Name>Comdiv.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\core\Comdiv.Reporting\Comdiv.Reporting.csproj">
-      <Project>{053ae040-0545-4ed0-927a-69b3423ba66d}</Project>
-      <Name>Comdiv.Reporting</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
-      <Project>{880F65EA-1A22-4672-A137-FFC91290A209}</Project>
-      <Name>Qorpent.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Comdiv.Zeta.Model\Comdiv.Zeta.Model.csproj">
-      <Project>{f939564a-d5a9-4bee-b8f2-47c384358afc}</Project>
-      <Name>Comdiv.Zeta.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Zeta.Extreme.Poco\Zeta.Extreme.Poco.csproj">
-      <Project>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</Project>
-      <Name>Zeta.Extreme.Poco</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <Reference Include="Comdiv.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0b8490b4895b2b91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\build\Comdiv.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Comdiv.Reporting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0b8490b4895b2b91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\build\Comdiv.Reporting.dll</HintPath>
+    </Reference>
+    <Reference Include="Comdiv.Zeta.Model, Version=0.0.0.0, Culture=neutral, PublicKeyToken=0b8490b4895b2b91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\build\Comdiv.Zeta.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="Qorpent.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\build\Qorpent.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Zeta.Extreme.Poco, Version=0.0.0.0, Culture=neutral, PublicKeyToken=0b8490b4895b2b91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Core.Debug\Zeta.Extreme.Poco.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />
