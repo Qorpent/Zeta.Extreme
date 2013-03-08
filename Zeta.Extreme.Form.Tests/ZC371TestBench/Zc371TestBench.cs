@@ -1052,8 +1052,17 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench {
 			}
 		}
 		[Test]
-		public void ZC373_Bug_Not_Support_Cyrilics_In_Expressions() {
+		public void ZC373_InvalidFormulaParsing_1_Not_Support_BraceThenOperator() {
 			var terms = new[] {"ONLYONEPERIOD", "Помесяцам", "yc1"};
+			var newmatcher = new NewConditionMatcherImplementation();
+			var newresult = newmatcher.Match("(not ONLYONEPERIOD) and  Помесяцам and yc1", terms);
+			Assert.False(newresult);
+			Assert.Pass("no exception was thrown");
+		}
+		[Test]
+		public void ZC373_InvalidFormulaParsing_2_Not_Support_StartThenOperator()
+		{
+			var terms = new[] { "ONLYONEPERIOD", "Помесяцам", "yc1" };
 			var newmatcher = new NewConditionMatcherImplementation();
 			var newresult = newmatcher.Match("(not ONLYONEPERIOD) and  Помесяцам and yc1", terms);
 			Assert.False(newresult);
