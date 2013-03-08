@@ -19,6 +19,10 @@
       <Project>{C51304FD-0406-48E0-833E-EEDC67425BC8}</Project>
       <Name>Comdiv.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\core\Comdiv.Extensibility\Comdiv.Extensibility.csproj">
+      <Project>{C1944938-B798-478A-BA1C-FDA8BA152FF3}</Project>
+      <Name>Comdiv.Extensibility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
       <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
       <Name>Qorpent.Core</Name>
@@ -26,6 +30,10 @@
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Data\Qorpent.Data.csproj">
       <Project>{E762ABB0-9982-444C-A2B5-23B5866954F3}</Project>
       <Name>Qorpent.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
+      <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
+      <Name>Qorpent.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
       <Project>{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}</Project>
@@ -35,6 +43,15 @@
   <ItemGroup>
     <Compile Include="DbfsStorageTest.cs" />
     <Compile Include="ExtremeFormProviderTests.cs" />
+    <Compile Include="ZC371TestBench\ConditionMatcherBase.cs" />
+    <Compile Include="ZC371TestBench\ConditionSetGenerator.cs" />
+    <Compile Include="ZC371TestBench\InternalZC371Tests.cs" />
+    <Compile Include="ZC371TestBench\OldConditionMatcherImplementation.cs" />
+    <Compile Include="ZC371TestBench\Zc371TestBench.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

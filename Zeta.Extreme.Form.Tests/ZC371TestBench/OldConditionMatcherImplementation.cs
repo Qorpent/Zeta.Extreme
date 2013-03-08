@@ -3,9 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using Comdiv.Extensibility;
 using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Form.Tests.ZC371TestBench
 {
+
+	public class NewConditionMatcherImplementation : ConditionMatcherBase {
+		protected override bool EvaluateByScript(string condition, IEnumerable<string> conds) {
+			throw new NotImplementedException();
+		}
+
+		protected override bool EvaluateByListLikeCondition(string condition, IEnumerable<string> conds) {
+			var condsets = condition.SmartSplit(false, true, '|');
+			return condsets.Select(condset => conds.containsAll(condset.split().ToArray())).Any(match => match);
+		}
+
+		protected override bool IsConditionListLike(string condition) {
+			return condition.Contains(",") || condition.Contains("|");
+		}
+	}
 	/// <summary>
 	/// Класс, полностью воспроизводящий старый алгоритм расчета условий, чтобы сверять исходный алгоритм
 	/// </summary>
@@ -46,15 +62,7 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench
 		protected override bool EvaluateByListLikeCondition(string condition, IEnumerable<string> conds)
 		{
 			var condsets = condition.split(false, true, '|');
-			foreach (var condset in condsets)
-			{
-				var match = conds.containsAll(condset.split().ToArray());
-				if (match)
-				{
-					return true;
-				}
-			}
-			return false;
+			return condsets.Select(condset => conds.containsAll(condset.split().ToArray())).Any(match => match);
 		}
 
 		protected override bool IsConditionListLike(string condition)
