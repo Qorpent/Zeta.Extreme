@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.Form.Tests", "Zeta.Extreme.Form.Tests.csproj", "{CC468E11-E17D-4363-967A-51F59190D146}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		SQL2008|Any CPU = SQL2008|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC468E11-E17D-4363-967A-51F59190D146}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC468E11-E17D-4363-967A-51F59190D146}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC468E11-E17D-4363-967A-51F59190D146}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC468E11-E17D-4363-967A-51F59190D146}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC468E11-E17D-4363-967A-51F59190D146}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{CC468E11-E17D-4363-967A-51F59190D146}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -30,7 +30,8 @@
     <Reference Include="Qorpent.Data">
       <HintPath>..\..\.build\bin\Qorpent.Data.Debug\Qorpent.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Zeta.Extreme.BizProcess">
+    <Reference Include="Zeta.Extreme.BizProcess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\.build\bin\Zeta.Extreme.BizProcess.Debug\Zeta.Extreme.BizProcess.dll</HintPath>
     </Reference>
     <Reference Include="Zeta.Extreme.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
