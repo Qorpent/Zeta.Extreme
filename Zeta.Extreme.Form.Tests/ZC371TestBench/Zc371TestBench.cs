@@ -1051,5 +1051,13 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench {
 				Assert.AreEqual(oldresult,newresult,string.Join(",",conditions));
 			}
 		}
+		[Test]
+		public void ZC373_Bug_Not_Support_Cyrilics_In_Expressions() {
+			var terms = new[] {"ONLYONEPERIOD", "Помесяцам", "yc1"};
+			var newmatcher = new NewConditionMatcherImplementation();
+			var newresult = newmatcher.Match("(not ONLYONEPERIOD) and  Помесяцам and yc1", terms);
+			Assert.False(newresult);
+			Assert.Pass("no exception was thrown");
+		}
 	}
 }
