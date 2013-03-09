@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>

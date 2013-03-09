@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -35,11 +36,11 @@ namespace Zeta.Extreme {
 		/// <param name="srcquery"> исзодный запрос </param>
 		/// <param name="uid"> </param>
 		/// <returns> итоговый запрос после регистрации </returns>
-		public virtual Query Register(Query srcquery, string uid) {
+		public virtual IQuery Register(IQuery srcquery, string uid) {
 			//lock(ZexSession._register_lock) {
 			WriteInitialStatistics(uid);
 
-			var query = srcquery;
+			var query = (Query) srcquery;
 			Query result;
 			var preloadkey = srcquery.GetCacheKey();
 
@@ -90,13 +91,12 @@ namespace Zeta.Extreme {
 			_session.Registry[uid] = result;
 			_session.KeyMap[preloadkey] = uid;
 
-			
 
-				if (null == result.PrepareTask && PrepareState.Prepared != result.PrepareState) {
-					result.PrepareState = PrepareState.TaskStarted;
-					result.PrepareTask = _session.PrepareAsync(result);
-				}
-			
+			if (null == result.PrepareTask && PrepareState.Prepared != result.PrepareState) {
+				result.PrepareState = PrepareState.TaskStarted;
+				result.PrepareTask = _session.PrepareAsync(result);
+			}
+
 			//if (result.Session != _session) result.WaitPrepare();
 			return result;
 			//	}

@@ -1,42 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Qorpent.Serialization;
+﻿#region LICENSE
 
-namespace Zeta.Extreme.FrontEnd.Session
-{
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : DataChunk.cs
+// Project: Zeta.Extreme.FrontEnd
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
+using Qorpent.Serialization;
+using Zeta.Extreme.Form;
+
+namespace Zeta.Extreme.FrontEnd.Session {
 	/// <summary>
-	/// Описывает возвращаемый набор данных из сессии
-	/// оптимизирован по трафику и для сериализации в JSON
+	/// 	Описывает возвращаемый набор данных из сессии
+	/// 	оптимизирован по трафику и для сериализации в JSON
 	/// </summary>
 	[Serialize]
 	public class DataChunk {
 		/// <summary>
-		/// Первый индекс
+		/// 	Собственно возвращаемые данные
 		/// </summary>
-		[SerializeNotNullOnly]
-		public int si;
+		[SerializeNotNullOnly] public OutCell[] data;
+
 		/// <summary>
-		/// Последний переданный индекс
+		/// 	Сообщение об ошибке
 		/// </summary>
-		[SerializeNotNullOnly]
-		public int ei;
+		[SerializeNotNullOnly] public string e;
+
 		/// <summary>
-		///Статус передачи (e,w,f) 
+		/// 	Последний переданный индекс
 		/// </summary>
-		[Serialize]
-		public string state;
+		[SerializeNotNullOnly] public int ei;
+
 		/// <summary>
-		/// Сообщение об ошибке
+		/// 	Первый индекс
 		/// </summary>
-		[SerializeNotNullOnly]
-		public string e;
-		/// <summary>
-		/// Собственно возвращаемые данные
-		/// </summary>
-		[SerializeNotNullOnly]
-		public OutCell[] data;
+		[SerializeNotNullOnly] public int si;
+
+		///<summary>
+		///	Статус передачи (e,w,f)
+		///</summary>
+		[Serialize] public string state;
 	}
 }

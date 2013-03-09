@@ -10,16 +10,13 @@
 
 using System;
 using System.Linq;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Inversion;
-using Comdiv.Model;
-using Comdiv.Reporting;
-using Comdiv.Security;
-using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
-using Zeta.Extreme.Form.InputTemplates;
-using Zeta.Extreme.Form.StateManagement;
+using Qorpent.Applications;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.BizProcess.Reports;
+using Zeta.Extreme.BizProcess.StateManagement;
+using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -32,7 +29,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="thema"> </param>
 		public EcoThemaHelper(IThema thema) {
 			this.thema = thema;
-			statemanager = ioc.get<IStateManager>();
+			statemanager = Application.Current.Container.Get<IStateManager>();
 			main = GetMainForm();
 			plan = thema.GetForm(thema.Code + "-plan") ?? thema.GetForm("B");
 			planc = thema.GetForm(thema.Code + "-plan-c") ?? thema.GetForm("C");
@@ -43,7 +40,7 @@ namespace Zeta.Extreme.Form.Themas {
 			_creport = thema.GetReport(thema.Code + "-plan-c") ?? thema.GetReport("Ca");
 			_cpreport = thema.GetReport(thema.Code + "-plan-c-p") ?? thema.GetReport("Cb");
 			_help = thema.GetDocument(thema.Code);
-			_invtarget = thema.Parameters.get("invalidtargetobject", false);
+			_invtarget = thema.Parameters.SafeGet("invalidtargetobject").ToBool();
 		}
 
 		/// <summary>
@@ -76,70 +73,16 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Признак того, что тема для деталей
 		/// </summary>
 		public bool isdetail {
-			get { return thema.Parameters.get("isdetail", false); }
+			get { return thema.Parameters.SafeGet("isdetail", false); }
 		}
 
 		/// <summary>
 		/// 	Класс деталей
 		/// </summary>
 		public string DetailClasses {
-			get { return thema.Parameters.get("detailclasses", ""); }
+			get { return thema.Parameters.SafeGet("detailclasses", ""); }
 		}
 
-		/// <summary>
-		/// 	Возврашает элемент со списком деталей
-		/// </summary>
-		public HtmlListDefinition listdefinition {
-			get {
-				if (!isdetail) {
-					return null;
-				}
-				return myapp.ioc.get<IThemaFactoryProvider>().Get().Cache.get(thema.Code + "_listdefinition_" + Object.Code,
-				                                                              () =>
-					                                                              {
-						                                                              var result = new HtmlListDefinition
-							                                                              {Id = thema.Code + "_detail"};
-						                                                              var classes = DetailClasses.hasContent()
-							                                                                            ? DetailClasses.split().Select(
-								                                                                            x =>
-								                                                                            myapp.storage.Get
-									                                                                            <IDetailObjectClass>().
-									                                                                            Load(x))
-								                                                                              .Where(x => x != null).ToArray()
-							                                                                            : myapp.storage.Get
-								                                                                              <IDetailObjectClass>().All().
-								                                                                              ToArray();
-						                                                              foreach (var cls  in classes) {
-							                                                              var details =
-								                                                              myapp.storage.Get<IZetaDetailObject>().Query(
-									                                                              "Type.Class = ? and Org = ?", cls, Object).
-									                                                              ToArray();
-
-							                                                              if (details.Length != 0) {
-								                                                              //var _cls = result.Add(cls.Code, cls.Name);
-
-								                                                              foreach (var type in cls.Types) {
-									                                                              var typedetails =
-										                                                              details.Where(
-											                                                              x => ModelExtensions.Code(x.Type) == type.Code)
-											                                                              .
-											                                                              ToArray();
-									                                                              if (typedetails.Length > 0) {
-										                                                              var _type = result.Add(type.Code,
-										                                                                                     type.Name);
-
-										                                                              foreach (var detail in typedetails) {
-											                                                              _type.Add(detail.Id.ToString(), detail.Name);
-										                                                              }
-									                                                              }
-								                                                              }
-							                                                              }
-						                                                              }
-
-						                                                              return result;
-					                                                              });
-			}
-		}
 
 		/// <summary>
 		/// 	Призанк использования плановой формы
@@ -166,70 +109,70 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Признак видимости главной формы
 		/// </summary>
 		public bool mainformvisible {
-			get { return thema.Parameters.get("f_visibleA", true); }
+			get { return thema.Parameters.SafeGet("f_visibleA", true); }
 		}
 
 		/// <summary>
 		/// 	Признак видимости блокиратора плановой формы
 		/// </summary>
 		public bool planlockvisible {
-			get { return thema.Parameters.get("fl_visibleB", true); }
+			get { return thema.Parameters.SafeGet("fl_visibleB", true); }
 		}
 
 		/// <summary>
 		/// 	Признак видимости сводного планового отчета
 		/// </summary>
 		public bool plansvodvisible {
-			get { return thema.Parameters.get("ra_visibleB", true); }
+			get { return thema.Parameters.SafeGet("ra_visibleB", true); }
 		}
 
 		/// <summary>
 		/// 	Признак видимости блокиратора коррективов
 		/// </summary>
 		public bool planclockvisible {
-			get { return thema.Parameters.get("fl_visibleC", true); }
+			get { return thema.Parameters.SafeGet("fl_visibleC", true); }
 		}
 
 		/// <summary>
 		/// 	Признак видимости сводного коррективного отчета
 		/// </summary>
 		public bool plancsvodvisible {
-			get { return thema.Parameters.get("ra_visibleC", true); }
+			get { return thema.Parameters.SafeGet("ra_visibleC", true); }
 		}
 
 		/// <summary>
 		/// 	Признак видимости главного сводного отчета
 		/// </summary>
 		public bool mainsvodvisible {
-			get { return thema.Parameters.get("ra_visibleA", true); }
+			get { return thema.Parameters.SafeGet("ra_visibleA", true); }
 		}
 
 		/// <summary>
 		/// 	Признак видимости плановой формы
 		/// </summary>
 		public bool planformvisible {
-			get { return thema.Parameters.get("f_visibleB", true); }
+			get { return thema.Parameters.SafeGet("f_visibleB", true); }
 		}
 
 		/// <summary>
 		/// 	Признак видимости коррективной формы
 		/// </summary>
 		public bool plancformvisible {
-			get { return thema.Parameters.get("f_visibleC", true); }
+			get { return thema.Parameters.SafeGet("f_visibleC", true); }
 		}
 
 		/// <summary>
 		/// 	Признак видимости главного отчета предприятия
 		/// </summary>
 		public bool mainreportvisible {
-			get { return thema.Parameters.get("rb_visibleA", true); }
+			get { return thema.Parameters.SafeGet("rb_visibleA", true); }
 		}
 
 		/// <summary>
 		/// 	Признак видимости планового отчета предприятия
 		/// </summary>
 		public bool planreportvisible {
-			get { return thema.Parameters.get("rb_visibleB", true); }
+			get { return thema.Parameters.SafeGet("rb_visibleB", true); }
 		}
 
 
@@ -237,14 +180,14 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Признак видимости коррективного отчета предприятия
 		/// </summary>
 		public bool plancreportvisible {
-			get { return thema.Parameters.get("rb_visibleC", true); }
+			get { return thema.Parameters.SafeGet("rb_visibleC", true); }
 		}
 
 		/// <summary>
 		/// 	Признак видимости блокиратора главной формы
 		/// </summary>
 		public bool mainlockvisible {
-			get { return thema.Parameters.get("fl_visibleA", true); }
+			get { return thema.Parameters.SafeGet("fl_visibleA", true); }
 		}
 
 		/// <summary>
@@ -377,7 +320,8 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		public bool isvisible {
 			get {
-				if (myapp.roles.IsAdmin()) {
+				if (Application.Current.Roles.IsAdmin())
+				{
 					return true;
 				}
 				if (invalidtarget) {
@@ -802,16 +746,16 @@ namespace Zeta.Extreme.Form.Themas {
 				if (!UseMainForm()) {
 					return false;
 				}
-				if (main.UnderwriteCode.noContent()) {
+				if (main.UnderwriteCode.IsEmpty()) {
 					return false;
 				}
-				if (main.UnderwriteRole.noContent()) {
-					return myapp.roles.IsAdmin();
+				if (main.UnderwriteRole.IsEmpty()) {
+					return Application.Current.Roles.IsAdmin();
 				}
 
 				if (ismainopen) {
 					var state = main.GetScheduleState();
-					if (!state.Date.isNull()) {
+					if (!state.Date.IsDateNull()) {
 						var from = new DateTime(state.Date.Year, state.Date.Month, 1);
 						if (DateTime.Today < (from.AddDays(-10))) {
 							return false;
@@ -858,11 +802,11 @@ namespace Zeta.Extreme.Form.Themas {
 				if (!useplanform) {
 					return false;
 				}
-				if (plan.UnderwriteCode.noContent()) {
+				if (plan.UnderwriteCode.IsEmpty()) {
 					return false;
 				}
-				if (plan.UnderwriteRole.noContent()) {
-					return myapp.roles.IsAdmin();
+				if (plan.UnderwriteRole.IsEmpty()) {
+					return Application.Current.Roles.IsAdmin();
 				}
 
 
@@ -889,11 +833,11 @@ namespace Zeta.Extreme.Form.Themas {
 				if (!useplancform) {
 					return false;
 				}
-				if (planc.UnderwriteCode.noContent()) {
+				if (planc.UnderwriteCode.IsEmpty()) {
 					return false;
 				}
-				if (planc.UnderwriteRole.noContent()) {
-					return myapp.roles.IsAdmin();
+				if (planc.UnderwriteRole.IsEmpty()) {
+					return Application.Current.Roles.IsAdmin();
 				}
 
 
@@ -945,7 +889,7 @@ namespace Zeta.Extreme.Form.Themas {
 			if (0 == period) {
 				return "";
 			}
-			return Periods.GetName(period) + ":";
+			return Periods.Get(period).Name + ":";
 		}
 
 		private bool getreportstate(IReportDefinition report, string statetocheck = "0ISOPEN") {
@@ -1011,7 +955,7 @@ namespace Zeta.Extreme.Form.Themas {
 					string.Format(
 						"if (confirm('Данное действие также откроет:\" {2} \", вы уверены?'))Zeta.form.lock('{0}',false,'{1}');",
 						target.Code
-						, target.Period, deps.Select(x => x.Name.Replace("'", "\\'")).concat(", "));
+						, target.Period, deps.Select(x => x.Name.Replace("'", "\\'")).ConcatString(", "));
 			}
 			//}
 			//else{
@@ -1021,20 +965,23 @@ namespace Zeta.Extreme.Form.Themas {
 		}
 
 		private bool getUnderwriteByRoles(IInputTemplate form) {
-			if (myapp.roles.IsAdmin()) {
+			if (Application.Current.Roles.IsAdmin()) {
 				return true;
 			}
-			if (myapp.roles.IsInRole("HOLDUNDERWRITER")) {
+			if (Application.Current.Roles.IsInRole("HOLDUNDERWRITER"))
+			{
 				return true;
 			}
-			if (!myapp.roles.IsInRole(form.UnderwriteRole)) {
+			if (!Application.Current.Roles.IsInRole(form.UnderwriteRole))
+			{
 				return false;
 			}
 			var s = form.GetState(Object, null);
 			if (s == "0ISOPEN") {
 				return true;
 			}
-			if (s == "0ISBLOCK" && myapp.roles.IsInRole("DIVUNDERWRITER")) {
+			if (s == "0ISBLOCK" && Application.Current.Roles.IsInRole("DIVUNDERWRITER"))
+			{
 				return true;
 			}
 			return false;

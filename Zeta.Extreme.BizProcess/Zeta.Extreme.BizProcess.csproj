@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration>Debug</Configuration>
+    <ProjectGuid>{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Zeta.Extreme.BizProcess</RootNamespace>
+    <AssemblyName>Zeta.Extreme.BizProcess</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="*.import" />
+    <None Include="*.export" />
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Forms\AttachedFileType.cs" />
+    <Compile Include="Forms\Attachment.cs" />
+    <Compile Include="Forms\BufferedAttachmentStorageBase.cs" />
+    <Compile Include="Forms\DataCollectionStream.cs" />
+    <Compile Include="Forms\FormAttachment.cs" />
+    <Compile Include="Forms\FormAttachmentSource.cs" />
+    <Compile Include="Forms\IAttachmentStorage.cs" />
+    <Compile Include="Forms\IFormAttachmentStorage.cs" />
+    <Compile Include="Forms\OutCell.cs" />
+    <Compile Include="Reports\IParameterConfigurator.cs" />
+    <Compile Include="Reports\IReportDefinition.cs" />
+    <Compile Include="Reports\ISavedReport.cs" />
+    <Compile Include="Reports\ISavedReportParameter.cs" />
+    <Compile Include="Reports\Parameter.cs" />
+    <Compile Include="Reports\ParametersCollection.cs" />
+    <Compile Include="StateManagement\ILockPeriodMapper.cs" />
+    <Compile Include="StateManagement\IPeriodStateManager.cs" />
+    <Compile Include="StateManagement\IScheduleChecker.cs" />
+    <Compile Include="StateManagement\IStateCheckInterceptor.cs" />
+    <Compile Include="StateManagement\IStateManager.cs" />
+    <Compile Include="StateManagement\LockOperation.cs" />
+    <Compile Include="StateManagement\LockStateInfo.cs" />
+    <Compile Include="StateManagement\PeriodStateRecord.cs" />
+    <Compile Include="StateManagement\ScheduleOvertime.cs" />
+    <Compile Include="StateManagement\ScheduleState.cs" />
+    <Compile Include="Themas\ColumnDesc.cs" />
+    <Compile Include="Themas\ColumnRowCheckCondition.cs" />
+    <Compile Include="Themas\DimensionDescriptor.cs" />
+    <Compile Include="Themas\ElementType.cs" />
+    <Compile Include="Themas\GroupFilterHelper.cs" />
+    <Compile Include="Themas\ICommand.cs" />
+    <Compile Include="Themas\IConditionMatcher.cs" />
+    <Compile Include="Themas\IConfiguration.cs" />
+    <Compile Include="Themas\IDetailFilter.cs" />
+    <Compile Include="Themas\IDocument.cs" />
+    <Compile Include="Themas\IExtremeFormProvider.cs" />
+    <Compile Include="Forms\IFormSession.cs" />
+    <Compile Include="Themas\IInputTemplate.cs" />
+    <Compile Include="Themas\IMvcBasedInputTemplate.cs" />
+    <Compile Include="Themas\IThema.cs" />
+    <Compile Include="Themas\IThemaConfiguration.cs" />
+    <Compile Include="Themas\IThemaConfigurationProvider.cs" />
+    <Compile Include="Themas\IThemaFactory.cs" />
+    <Compile Include="Themas\IThemaFactoryConfiguration.cs" />
+    <Compile Include="Themas\IThemaFactoryProvider.cs" />
+    <Compile Include="Themas\IThemaHelper.cs" />
+    <Compile Include="Themas\IUsrThemaMapRepository.cs" />
+    <Compile Include="Themas\RowDescriptor.cs" />
+    <Compile Include="Themas\ThemaLoaderOptions.cs" />
+    <Compile Include="Themas\TypedParameter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
+      <Project>{880F65EA-1A22-4672-A137-FFC91290A209}</Project>
+      <Name>Qorpent.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
+      <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
+      <Name>Qorpent.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.Poco\Zeta.Extreme.Poco.csproj">
+      <Project>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</Project>
+      <Name>Zeta.Extreme.Poco</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="..\..\qorpent.kernel\build.targets" />
+</Project>

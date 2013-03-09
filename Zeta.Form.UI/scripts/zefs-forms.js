@@ -1,86 +1,111 @@
 (function ($) {
     var Zefs = function(element, options) {
         this.table = $(element);
+        this.header = $(this.table.find('thead'));
         this.inputs = this.table.find("td.editable");
         this.options = options;
         this.init();
         this.hotkeysConfigure();
-        this.getColIndex = function(cell) {
-            var cell = $(cell);
-            return cell.parent().children().index(cell);
-        }
+        this.getColIndex = function($cell) {
+            $cell = $($cell);
+            return $cell.parent().children().index($cell);
+        };
         this.getActiveRow = function() {
             var cell = this.getActiveCell();
             return cell.parent();
-        }
-        this.isOutScreen = function(cell) {
-            if (cell.offset().top - window.pageYOffset < 0) return "top";
-            else if (window.innerHeight + window.pageYOffset - cell.offset().top - cell.outerHeight() < 0) return "bottom"
-            return "none";
-/*
-            return (cell.offset().top >= window.pageYOffset &&
-                cell.offset().left >= window.pageXOffset &&
-                cell.offset().top + cell.height() <= window.innerHeight + window.pageYOffset &&
-                cell.offset().left + cell.width() <= window.innerWidth + window.pageXOffset);
-*/
-        }
-    }
+        };
+        $.extend(zefs.myform, {
+            getChanges: this.getChanges,
+            hidechildrows: this.toggleChildRows
+        });
+        $(zefs).on(zefs.handlers.on_savefinished, $.proxy(function() {
+            this.applyChanges();
+        },this));
+        this.table.delegate('td.name', "click", $.proxy(function(e) {
+            this.toggleChildRows($(e.target).parent());
+        }, this));
+        this.nextCell();
+    };
 
     Zefs.prototype.init = function () {
         $(document).on('click', $.proxy(function(e) {
-            this.deactivateCell();
+            if (this.getActiveCell().hasClass('editing')) {
+                this.uninputCell();
+            }
         }, this));
         this.table.delegate('td.editable','click', $.proxy(function(e) {
             e.stopPropagation();
             this.activateCell(e.target);
         }, this));
-        $(window).scroll($.proxy(function(e) {
-            var theadScreenOut = this.isOutScreen(this.table);
+
+        // Фиксируем шапку сразу
+        this.fixHeader();
+
+        /*$(window).scroll($.proxy(function(e) {
+            var theadScreenOut = this.isHeadOutScreen(this.table);
             if (theadScreenOut == "top") {
-                if (!$(this.table.find("thead")).hasClass("fixed")) this.fixHeader();
+                if (!this.header.hasClass("fixed")) this.fixHeader();
             }
             else this.unfixHeader();
-        },this));
-        $(window).resize($.proxy(function(e) {
-            if ($(this.table.find("thead")).hasClass("fixed")) {
+        },this));*/
+        $(window).resize($.proxy(function() {
+            if (this.header.hasClass("fixed")) {
                 this.unfixHeader();
                 this.fixHeader();
             }
         },this));
     };
 
+    // Эта функция пока не нужна, так как шапка сейчас фиксируется по-умолчанию
+    Zefs.prototype.isHeadOutScreen = function($e) {
+        if ($e.offset().top - window.pageYOffset - this.options.fixHeaderX < 0) return "top";
+        else if (window.innerHeight + window.pageYOffset - $e.offset().top - $e.outerHeight() < 0) return "bottom"
+        return "none";
+    };
+
+    // Пока эти две функции отличаются только тем, что учитывают высоту хидера
+    Zefs.prototype.isCellOutScreen = function($e) {
+        if ($e.offset().top - window.pageYOffset - this.options.fixHeaderX - this.header.height() < 0) return "top";
+        else if (window.innerHeight + window.pageYOffset - $e.offset().top - $e.outerHeight() < 0) return "bottom"
+        return "none";
+    };
+
     Zefs.prototype.fixHeader = function() {
         $.each(this.table.find('th'), $.proxy(function(i,th) {
             $(th).css("width", $(th).width());
-//            $(this.table.find("col")[i]).css("width", $(th).outerWidth());
+//          $(this.table.find("col")[i]).css("width", $(th).outerWidth());
         },this));
-        $(this.table.find("thead")).addClass("fixed");
-    }
+        this.header.addClass("fixed");
+        this.header.css("top", this.options.fixHeaderX);
+        this.table.css("margin-top", this.options.fixHeaderX + this.header.height());
+    };
 
     Zefs.prototype.unfixHeader = function() {
         $.each(this.table.find('th'), $.proxy(function(i,th) {
             $(th).css("width", "");
         },this));
-        $(this.table.find("thead")).removeClass("fixed");
-    }
+        this.header.removeClass("fixed");
+        this.header.css("top", "");
+        this.table.css("margin-top", this.options.fixHeaderX);
+    };
 
     Zefs.prototype.clearNumberFormat = function($cell) {
         $cell = $($cell);
         if ($cell.text() != "") {
             $cell.number($cell.text(), 0, '', '');
         }
-    }
+    };
 
     /**
      * Применяет к ячейке специальный чистоловой формат вида 1 000.00
      * @param $cell
      */
-    Zefs.prototype.applyNumberFormat = function($cell) {
+    Zefs.prototype.applyNumberFormat = function ($cell) {
         $cell = $($cell);
         if ($cell.text() != "") {
             $cell.number($cell.text(), 0, '.', ' ');
         }
-    }
+    };
 
     Zefs.prototype.rollbackValue = function() {
         var $cell = this.getActiveCell();
@@ -94,21 +119,22 @@
         }
         $cell.removeClass("changed");
         return $cell;
-    }
+    };
 
     Zefs.prototype.activateCell = function($cell) {
         var $cell = $($cell);
         if (!$cell.hasClass("editable")) return $cell;
         if ($cell.hasClass("active")) return $cell;
-        if (this.isOutScreen($cell) == "top") {
-            $(window).scrollTop($cell.offset().top);
+        var isoutofview = this.isCellOutScreen($cell);
+        if (isoutofview == "top") {
+            $(window).scrollTop($cell.offset().top - this.options.fixHeaderX - this.header.height());
         }
-        if (this.isOutScreen($cell) == "bottom") {
+        else if (isoutofview == "bottom") {
             $(window).scrollTop($cell.offset().top + $cell.outerHeight() - window.innerHeight);
         }
         var $colindex = this.getColIndex($cell);
         var $col = $(this.table.find("col")[$colindex]);
-        this.deactivateCell();
+        this.deactivateCell(null);
         $cell.parent().css("height", $cell.height());
 //      $col.css("width", $(this.table.find("th")[$colindex]).outerWidth());
         $cell.css("min-width", $cell.width());
@@ -116,7 +142,7 @@
         $cell.addClass("active");
         this.clearNumberFormat($cell);
         return $cell;
-    }
+    };
 
     Zefs.prototype.deactivateCell = function(e) {
         $.each(this.getActiveCell(), $.proxy(function(i,td) {
@@ -129,27 +155,25 @@
             $cell.css("min-width", "");
             $cell.css("height", "");
             $cell.parent().css("height", "");
-            this.clearNumberFormat($cell);
-            if ($cell.text() != $cell.data("history")) $cell.addClass("changed");
-            else $cell.removeClass("changed");
             this.applyNumberFormat($cell);
         }, this));
-    }
+    };
 
     Zefs.prototype.inputCell = function($mode) {
         var $cell = this.getActiveCell();
         this.clearNumberFormat($cell);
         var $val = "";
+        var $old = $cell.text();
         if ($mode == "edit") {
-            $val = $cell.text();
+            $val = $old;
         }
         $cell.text("");
-        var $input = $('<input/>').css("width", $cell.width()).val($val);
+        var $input = $('<input class="dataedit"/>').attr("placeholder", $old).css("width", $cell.width()).val($val);
         $cell.append($input);
         $input.focus();
         $cell.addClass("editing");
         return $cell;
-    }
+    };
 
     Zefs.prototype.uninputCell = function(e) {
         var $cell = this.getActiveCell();
@@ -165,8 +189,11 @@
             $cell.data("previous", $cell.text());
         }
         $cell.removeClass("editing");
+        this.clearNumberFormat($cell);
+        if ($cell.text() != $cell.data("history")) $cell.addClass("changed");
+        else $cell.removeClass("changed");
         return $cell;
-    }
+    };
 
     Zefs.prototype.getActiveCell = function() {
         return $(this.table.find("td.active"));
@@ -182,13 +209,13 @@
             }
         }
         this.activateCell(this.inputs[($index + 1 == this.inputs.length) ? 0 : $index + 1]);
-    }
+    };
 
     Zefs.prototype.prevCell = function() {
         var $cell = this.getActiveCell();
         var $index = $cell != null ? this.inputs.index($cell) : 1;
         this.activateCell(this.inputs[($index - 1 < 0) ? this.inputs.length - 1 : $index - 1]);
-    }
+    };
 
     Zefs.prototype.rightCell = function() {
         var $cell = this.getActiveCell();
@@ -197,7 +224,7 @@
         else {
             if ($filter != '') this.nextCell();
         }
-    }
+    };
 
     Zefs.prototype.leftCell = function() {
         var $cell = this.getActiveCell();
@@ -206,7 +233,7 @@
         else {
             if ($filter != '') this.prevCell();
         }
-    }
+    };
 
     Zefs.prototype.downCell = function() {
         var $cell = this.getActiveCell();
@@ -217,7 +244,7 @@
             else return;
         }
         this.activateCell($next.children()[$colindex]);
-    }
+    };
 
     Zefs.prototype.upCell = function() {
         var $cell = this.getActiveCell();
@@ -228,12 +255,37 @@
             else return;
         }
         this.activateCell($prev.children()[$colindex]);
-    }
+    };
+
+    Zefs.prototype.upFirstCell = function() {
+        var $cell = this.getActiveCell();
+        var $colindex = this.getColIndex($cell);
+        var $current = this.table.find("tbody>tr").first();
+        while (!$($current.children()[$colindex]).hasClass("editable")) {
+            if ($current.next().length != 0) $current = $current.next();
+            else return;
+        }
+        this.activateCell($current.children()[$colindex]);
+    };
+
+    Zefs.prototype.downLastCell = function() {
+        var $cell = this.getActiveCell();
+        var $colindex = this.getColIndex($cell);
+        var $current = this.table.find("tbody>tr").last();
+        while (!$($current.children()[$colindex]).hasClass("editable")) {
+            if ($current.prev().length != 0) $current = $current.prev();
+            else return;
+        }
+        this.activateCell($current.children()[$colindex]);
+    };
 
     Zefs.prototype.hotkeysConfigure = function () {
         $(document).on('keydown', $.proxy(function(e) {
+            if ($(':focus').length != 0) {
+                if (!$(':focus').hasClass("dataedit")) return;
+            }
+            var $cell = $(this.getActiveCell());
             var k = e.keyCode;
-            var ctrl = e.ctrlKey;
             var printable =
                 (k > 47 && k < 58)   || // number keys
                     k == 32 || //k == 13   ||  spacebar & return key(s) (if you want to allow carriage returns)
@@ -243,22 +295,31 @@
                     (k > 218 && k < 223);   // [\]' (in order)
             switch (k) {
                 case 37 :
-                    if ($(this.getActiveCell()).hasClass('editing')) return;
+                    if ($cell.hasClass('editing')) return;
                     e.preventDefault();
                     this.leftCell();
                     break;
+                // UP button
                 case 38 :
-                    if ($(this.getActiveCell()).hasClass('editing')) return;
+                    if (e.ctrlKey) {
+                        $(window).scrollTop(0);
+                        this.upFirstCell();
+                        return;
+                    }
                     e.preventDefault();
                     this.upCell();
                     break;
                 case 39 :
-                    if ($(this.getActiveCell()).hasClass('editing')) return;
+                    if ($cell.hasClass('editing')) return;
                     e.preventDefault();
                     this.rightCell();
                     break;
                 case 40 :
-                    if ($(this.getActiveCell()).hasClass('editing')) return;
+                    if (e.ctrlKey) {
+                        $(window).scrollTop(this.table.offset().top + this.table.height());
+                        this.downLastCell();
+                        return;
+                    }
                     e.preventDefault();
                     this.downCell();
                     break;
@@ -269,7 +330,7 @@
                     break;
                 // Backspace button
                 case 8 :
-                    if (e.ctrlKey && !$(this.getActiveCell()).hasClass('editing')) {
+                    if (e.ctrlKey && !$cell.hasClass('editing')) {
                         this.rollbackValue();
                     }
                     break;
@@ -288,13 +349,75 @@
                     e.preventDefault();
                     this.uninputCell("esc");
                     break;
+                // Del button
+                case 46 :
+                    e.preventDefault();
+                    $cell.text("");
+                    $cell.data("previous", "");
+                    if ($cell.text() != $cell.data("history")) $cell.addClass("changed");
+                // S button
+                case 83 :
+                    e.preventDefault();
+                    if (e.ctrlKey && zefs.myform != null) {
+                        this.uninputCell();
+                        zefs.myform.save(this.getChanges());
+                    }
+                    break;
                 default :
                     if (!printable) return;
-                    if (!$(this.getActiveCell()).hasClass('editing')) {
+                    if (!$cell.hasClass('editing')) {
                         this.inputCell("replace");
                     }
             }
         },this));
+    };
+
+    Zefs.prototype.getChanges = function() {
+        var obj = {};
+        var div = $('<div/>');
+        $.each($('table.data td.changed'), function(i,e) {
+            e = $(e);
+            div.number(e.text(), 0, '', '');
+            obj[i] = {id:e.attr("id"), value:div.text(), ri:e.attr("ri")};
+        });
+        return obj;
+    };
+
+    Zefs.prototype.getChildRows = function(e) {
+        var $e = $(e);
+        var $next = $(e).nextAll('tr').filter(function(){ return  $(this).attr("level") <= $e.attr("level") }).first();
+        if ($next.length == 0) return $(e).nextAll('tr');
+        var $result = $e.nextAll('tr:lt(' + ($next.index() - $e.index() - 1) + ')');
+        if ($result.length == 0) {
+            if ($next.attr("level") >= $e.attr("level")) return null;
+            else return $e.nextAll('tr');
+        }
+        return $result;
+    };
+
+    Zefs.prototype.toggleChildRows = function(e) {
+        var $childs = this.getChildRows($(e));
+        if (null == $childs) return;
+        var $collapsed = $childs.filter(function() { return $(this).hasClass("collapsed") });
+        if ($collapsed.length != 0) {
+            for (var i in $collapsed.toArray()) {
+                $childs.splice($childs.index($collapsed[i]) + 1, this.getChildRows($collapsed[i]).length);
+            }
+        }
+        $childs.toggle();
+        $(e).toggleClass("collapsed");
+        $(window).trigger("resize");
+    };
+
+    Zefs.prototype.applyChanges = function() {
+        var div = $('<div/>');
+        $.each($('table.data td.changed'), function(i,td) {
+            td = $(td);
+            div.number(td.text(), 0, '', '');
+            td.data("history", div.text());
+            td.data("previous", div.text());
+            td.removeClass("changed");
+        });
     };
 
     $.fn.zefs = function (options) {
@@ -303,15 +426,18 @@
                 $.data(this, "zefs", new Zefs(this, $.extend({}, $.fn.zefs.defaults,options)));
             }
         });
-    }
+    };
 
     $.fn.zefs.defaults = {
-        jumpNoneditable : true // Перепрыгивать через нередактируемые ячейки по нажатию на UP, DOWN, LEFT, RIGHT
+        jumpNoneditable : true, // Перепрыгивать через нередактируемые ячейки по нажатию на UP, DOWN, LEFT, RIGHT
+        fixHeaderX : 77 // Позиция по Х на которой фиксируется шапка
     };
 })(jQuery);
 
+/*
 $(function () {
     $.each($("table"), function(i, table) {
         $(table).zefs();
     });
 });
+*/

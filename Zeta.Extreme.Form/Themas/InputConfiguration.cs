@@ -11,8 +11,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Comdiv.Extensions;
-using Comdiv.Zeta.Data.Minimal;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.InputTemplates;
 
 namespace Zeta.Extreme.Form.Themas {
@@ -194,7 +194,7 @@ namespace Zeta.Extreme.Form.Themas {
 			template.SqlOptimization = SqlOptimization;
 			template.PeriodRedirect = PeriodRedirect;
 			template.Name = Name;
-			template.ForPeriods = ForPeriods.split().Select(x => x.toInt()).ToArray();
+			template.ForPeriods = ForPeriods.SmartSplit().Select(x => x.ToInt()).ToArray();
 			template.AutoFillDescription = AutoFill;
 			template.UnderwriteRole = UnderwriteRole;
 			template.ScheduleDelta = ScheduleDelta;
@@ -212,8 +212,8 @@ namespace Zeta.Extreme.Form.Themas {
 			template.NeedFilesPeriods = NeedFilesPeriods;
 			template.UseQuickUpdate = UseQuickUpdate;
 			template.AdvDocs = AdvDocs;
-			if (FixRows.hasContent()) {
-				foreach (var s in FixRows.split()) {
+			if (FixRows.IsNotEmpty()) {
+				foreach (var s in FixRows.SmartSplit()) {
 					template.FixedRowCodes.Add(s);
 				}
 			}
@@ -223,24 +223,24 @@ namespace Zeta.Extreme.Form.Themas {
 
 			template.Configuration = this;
 
-			if (ColumnDefinitions.yes()) {
+			if (ColumnDefinitions.ToBool()) {
 				var serializer = new InputTemplateXmlSerializer();
 				serializer.BindColumns(template, ColumnDefinitions);
 			}
 
 
-			if (RowDefinitions.yes()) {
+			if (RowDefinitions.ToBool()) {
 				var serializer = new InputTemplateXmlSerializer();
 				serializer.BindRows(template, RowDefinitions);
 			}
 
 			if (template.Form == null) {
 				var rowcodeparam = RootCode;
-				if (rowcodeparam.noContent()) {
+				if (rowcodeparam.IsEmpty()) {
 					rowcodeparam = Thema.ResolveParameter("rootrow").GetValue() as string;
 				}
 
-				if (rowcodeparam.hasContent()) {
+				if (rowcodeparam.IsNotEmpty()) {
 					template.Form = new RowDescriptor {Code = rowcodeparam};
 				}
 			}

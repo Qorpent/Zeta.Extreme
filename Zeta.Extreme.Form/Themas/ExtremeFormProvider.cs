@@ -12,6 +12,7 @@ using System;
 using System.Threading.Tasks;
 using Qorpent;
 using Qorpent.IoC;
+using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.InputTemplates;
 
 namespace Zeta.Extreme.Form.Themas {
@@ -90,7 +91,7 @@ namespace Zeta.Extreme.Form.Themas {
 
 		private void DoLoad() {
 			lock (_loadsync) {
-				var options = ThemaLoaderOptions.GetExtremeFormOptions(_rootdir);
+				var options = ThemaLoaderOptionsHelper.GetExtremeFormOptions(_rootdir);
 				var configurator = new ThemaConfigurationProvider(options);
 				var themaFactoryProvider = new ThemaFactoryProvider {ConfigurationProvider = configurator};
 				_factory = themaFactoryProvider.Get();

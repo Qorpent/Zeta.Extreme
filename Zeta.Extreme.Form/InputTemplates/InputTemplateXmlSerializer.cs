@@ -12,9 +12,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Comdiv.Extensibility;
-using Comdiv.Extensions;
-using Comdiv.Zeta.Data.Minimal;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Poco.NativeSqlBind;
+
 
 namespace Zeta.Extreme.Form.InputTemplates {
 	/// <summary>
@@ -38,34 +39,34 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				var result = new InputTemplate();
 				result.DetailSplit = false;
 				result.SourceXmlConfiguration = xpath.CreateNavigator();
-				result.Code = i.attr("id");
-				result.Name = i.attr("name");
-				result.ForGroup = i.getText("forGroup");
-				result.AutoFillDescription = i.getText("autoFill");
-				result.Help = i.getText("help");
-				result.Area = i.attr("area", "default");
-				result.DetailFilterName = i.attr("detailFilter", "");
-				result.Controller = i.attr("controller", "default");
-				result.CustomView = i.attr("customView");
-				result.CustomSave = i.attr("customSave");
-				result.ShowMeasureColumn = i.attr("showmeasurecolumn", false);
-				result.CustomControllerType = i.attr("customController");
-				result.SaveMethod = i.attr("saveMethod", "save");
-				result.DetailFavorite = i.attr("detailfavorite", false);
-				result.SqlOptimization = i.attr("sqloptimization", "");
-				result.BindedReport = i.attr("bindedReport", "");
-				result.ForPeriods = i.attr("forPeriods", "").split().Select(s => s.toInt()).ToArray();
-				result.UnderwriteCode = i.attr("underwriteCode");
-				result.Script = i.getText("script");
-				result.InputForDetail = i.attr("detail", "False").toBool();
-				result.TableView = i.attr("tableView", "");
-				result.PeriodRedirect = i.attr("periodredirect", "");
-				result.ApplyValueCourse = i.attr("applyvaluecourse", true);
-				result.NeedFilesPeriods = i.attr("needfilesperiods", "");
-				result.NeedFiles = i.attr("needfiles", "");
-				result.DocumentRoot = i.attr("docroot", "");
-				if (result.DocumentRoot.noContent()) {
-					result.DocumentRoot = i.Elements("docroot").LastOrDefault().attr("code", "");
+				result.Code = i.Attr("id");
+				result.Name = i.Attr("name");
+				result.ForGroup = i.GetTextElement("forGroup");
+				result.AutoFillDescription = i.GetTextElement("autoFill");
+				result.Help = i.GetTextElement("help");
+				result.Area = i.Attr("area", "default");
+				result.DetailFilterName = i.Attr("detailFilter", "");
+				result.Controller = i.Attr("controller", "default");
+				result.CustomView = i.Attr("customView");
+				result.CustomSave = i.Attr("customSave");
+				result.ShowMeasureColumn = i.Attr("showmeasurecolumn").ToBool();
+				result.CustomControllerType = i.Attr("customController");
+				result.SaveMethod = i.Attr("saveMethod", "save");
+				result.DetailFavorite = i.Attr("detailfavorite").ToBool();
+				result.SqlOptimization = i.Attr("sqloptimization", "");
+				result.BindedReport = i.Attr("bindedReport", "");
+				result.ForPeriods = i.Attr("forPeriods", "").SmartSplit().Select(s => s.ToInt()).ToArray();
+				result.UnderwriteCode = i.Attr("underwriteCode");
+				result.Script = i.GetTextElement("script");
+				result.InputForDetail = i.Attr("detail", "False").ToBool();
+				result.TableView = i.Attr("tableView", "");
+				result.PeriodRedirect = i.Attr("periodredirect", "");
+				result.ApplyValueCourse = i.Attr("applyvaluecourse").IsEmpty() || i.Attr("applyvaluecourse").ToBool();
+				result.NeedFilesPeriods = i.Attr("needfilesperiods", "");
+				result.NeedFiles = i.Attr("needfiles", "");
+				result.DocumentRoot = i.Attr("docroot", "");
+				if (result.DocumentRoot.IsEmpty()) {
+					result.DocumentRoot = i.Elements("docroot").LastOrDefault().Attr("code", "");
 				}
 
 				//var fields = i.read<InputField>("./field");
@@ -75,17 +76,17 @@ namespace Zeta.Extreme.Form.InputTemplates {
 
 				//var queries = i.XPathSelectElements("./query");
 				//foreach (var q in queries){
-				//	var id = q.attr("id");
+				//	var id = q.Attr("id");
 				//	var query = new InputQuery();
-				//	query.Hql = q.attr("hql");
-				//	query.View = q.attr("view");
-				//	query.ViewParams = q.attr("viewParams");
+				//	query.Hql = q.Attr("hql");
+				//	query.View = q.Attr("view");
+				//	query.ViewParams = q.Attr("viewParams");
 				//	result.Queries[id] = query;
 				//}
 
 				var root = i.XPathSelectElement("./root");
 				if (null != root) {
-					result.Form = new RowDescriptor {Code = root.attr("code")};
+					result.Form = new RowDescriptor {Code = root.Attr("code")};
 				}
 
 				var rows = i.XPathSelectElements("./row");
@@ -93,17 +94,17 @@ namespace Zeta.Extreme.Form.InputTemplates {
 
 				var fixedRows = i.XPathSelectElements("./fixrow");
 				foreach (var x in fixedRows) {
-					result.FixedRowCodes.Add(x.attr("code"));
+					result.FixedRowCodes.Add(x.Attr("code"));
 				}
 
 				var docs = i.XPathSelectElements("./doc");
 				foreach (var x in docs) {
-					result.Documents[x.attr("code")] = x.attr("name");
+					result.Documents[x.Attr("code")] = x.Attr("name");
 				}
 
 
 				//альтернативный вариант привязки кодов исключения
-				var fixrowlist = i.attr("fixrows", "").split();
+				var fixrowlist = i.Attr("fixrows", "").SmartSplit();
 				foreach (var row in fixrowlist) {
 					result.FixedRowCodes.Add(row);
 				}
@@ -111,7 +112,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 
 				var parameters = i.XPathSelectElements("./param");
 				foreach (var x in parameters) {
-					result.Parameters[x.attr("name")] = x.attr("value");
+					result.Parameters[x.Attr("name")] = x.Attr("value");
 				}
 
 				var cols = i.XPathSelectElements("./col");
@@ -128,15 +129,15 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <param name="rows"> </param>
 		public void BindRows(IInputTemplate result, IEnumerable<XElement> rows) {
 			foreach (var row in rows) {
-				var code = row.attr("code");
-				if (code.hasContent()) {
+				var code = row.Attr("code");
+				if (code.IsNotEmpty()) {
 					var rd = new RowDescriptor(code);
-					rd.Name = row.attr("name", rd.Name);
-					if (rd.Formula.noContent()) {
-						rd.Formula = row.attr("formula", rd.Formula);
-						if (rd.Formula.hasContent()) {
+					rd.Name = row.Attr("name", rd.Name);
+					if (rd.Formula.IsEmpty()) {
+						rd.Formula = row.Attr("formula", rd.Formula);
+						if (rd.Formula.IsNotEmpty()) {
 							rd.IsFormula = true;
-							rd.FormulaEvaluator = row.attr("formulatype", "boo");
+							rd.FormulaEvaluator = row.Attr("formulatype", "boo");
 						}
 					}
 					result.Rows.Add(rd);
@@ -169,10 +170,10 @@ namespace Zeta.Extreme.Form.InputTemplates {
 								col.Title = v;
 								break;
 							case "year":
-								col.Year = v.toInt();
+								col.Year = v.ToInt();
 								break;
 							case "period":
-								col.Period = v.toInt();
+								col.Period = v.ToInt();
 								break;
 							case "_file":
 								col.File = v;
@@ -190,7 +191,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 								col.LockPeriod = true;
 								break;
 							case "autocalc":
-								col.AutoCalc = v.toBool();
+								col.AutoCalc = v.ToBool();
 								break;
 							case "fixed":
 								col.Editable = false;
@@ -205,7 +206,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 								col.Group = v;
 								break;
 							case "visible":
-								col.Visible = v.toBool();
+								col.Visible = v.ToBool();
 								break;
 							case "cssclass":
 								goto case "css-class";
@@ -230,7 +231,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 								col.WAvg = v;
 								break;
 							case "useobj":
-								col.UseObj = v.toBool();
+								col.UseObj = v.ToBool();
 								break;
 							case "matrixforrows":
 								col.MatrixForRows = v;
@@ -269,13 +270,13 @@ namespace Zeta.Extreme.Form.InputTemplates {
 								col.MatrixTotalFormula = v;
 								break;
 							case "usethema":
-								col.UseThema = v.toBool();
+								col.UseThema = v.ToBool();
 								break;
 							case "valuetocssclass":
-								col.ValueToCssClass = v.toBool();
+								col.ValueToCssClass = v.ToBool();
 								break;
 							case "controlpoint":
-								col.ControlPoint = v.toBool();
+								col.ControlPoint = v.ToBool();
 								break;
 							case "evaluator":
 								goto case "formulatype";
@@ -283,7 +284,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 								col.FormulaEvaluator = v;
 								break;
 							case "calcidx":
-								col.CalcIdx = v.toInt();
+								col.CalcIdx = v.ToInt();
 								break;
 							case "matrixformulatype":
 								col.MatrixFormulaType = v;
@@ -295,7 +296,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 								}
 								break;
 							case "forperiods":
-								col.ForPeriods = v.split().Select(s => s.toInt()).ToArray();
+								col.ForPeriods = v.SmartSplit().Select(s => s.ToInt()).ToArray();
 								break;
 							case "customCode":
 								col.CustomCode = v;
@@ -316,7 +317,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 					}
 
 					col.ConditionMatcher = (IConditionMatcher) result;
-					col.RowCheckConditions = x.Elements("checkrule").serialize<ColumnRowCheckCondition>().ToArray();
+					col.RowCheckConditions = x.Elements("checkrule").Select(_=>_.Deserialize<ColumnRowCheckCondition>()).ToArray();
 
 
 					//if (null != storage){

@@ -27,8 +27,11 @@ $.extend(root,{
 				$(thead.find("tr").first()).append($('<th class="measure"/>').text("Ед. изм."));
 			}
 			$.each(session.structure.cols, function(i,col) {
-				colgroup.append($('<col class="data"/>'));
-				var th = $('<th class="data"/>').text(col.getName());
+				colgroup.append($('<col class="data"/>').attr("idx",col.getIdx()));
+				var th = $('<th class="data"/>').attr("idx",col.getIdx()).text(col.getName());
+                if (col.getIsPrimary()) {
+                    th.addClass("primary");
+                }
 				thead.find("tr").append(th);
 			});
 			table.append(colgroup);
@@ -41,7 +44,12 @@ $.extend(root,{
 			$.each(session.structure.rows, function(rowidx,row) {
 				var tr = $("<tr/>").attr("level",row.getLevel());
 				tr.append($('<td class="number"/>').attr("title", row.code).text(row.getNumber()));
-				var td = $('<td class="name"/>').text(row.getName());
+				if (session.structure.rows.length > rowidx + 1) {
+                    if (row.getLevel() < session.structure.rows[rowidx + 1].getLevel()) {
+                        tr.addClass("haschild");
+                    }
+                }
+                var td = $('<td class="name"/>').text(row.getName());
 				if (row.getIsTitle()) {
 					tr.append(td.attr("colspan", "100"));
 				} else {
@@ -50,8 +58,13 @@ $.extend(root,{
 						tr.append($('<td class="measure"/>').text(row.getMeasure()));
 					}
                     $.each(session.structure.cols, function(i,col) {
-                        var td = $('<td class="data notloaded"/>').attr("id", row.getIdx() + ":" + col.getIdx());
+                        var td = $('<td class="data notloaded"/>').attr({
+                            "id": row.getIdx() + ":" + col.getIdx(),
+                            "idx": col.getIdx(),
+                            "visible": "visible"
+                        });
                         if (col.getIsPrimary() && row.getIsPrimary()) td.addClass("editable");
+                        if (col.getIsControlPoint() && row.getIsControlPoint()) td.addClass("control");
                         tr.append(td);
                     });
                 }
@@ -64,20 +77,32 @@ $.extend(root,{
 
 		updateCells : function(session,batch){
 			var tbody = $(session.table).find("tbody").first();
-				$.each(batch.getData(), function(i,b) {
-                    var $cell = $("td[id='" + b.i +  "']")
-                    var val = b.getValue() | "";
-                    if (val == 0) {
-                        if (b.getCellId() == 0 || !$cell.hasClass("editable")) val = "";
-                    }
-                    if (val != "") $cell.number(val,0,'.',' ');
-                    $cell.removeClass("notloaded");
-                    $cell.data("history", val);
-                    $cell.data("previous", val);
-				});
-				batch.wasFilled = true;
-				return session;
-			}
+            var div = $('<div/>'); // Это контейнер для форматирования чисел :)
+			$.each(batch.getData(), function(i,b) {
+                var $cell = $("td[id='" + b.i +  "']");
+                var val = b.getValue() || "";
+                $cell.number($cell.text(),0,'','');
+                if ($cell.text() != val && !$.isEmptyObject($cell.data())) {
+                    $cell.addClass("recalced");
+                }
+                if (val == "0") {
+                    if (b.getCellId() == 0 || !$cell.hasClass("editable")) val = "";
+                    $cell.text(val);
+                } else {
+                    $cell.number(val,0,'.',' ');
+                }
+                $cell.removeClass("notloaded");
+                $cell.data("history", val);
+                $cell.data("previous", val);
+                $cell.attr("ri", b.getRealId());
+                if (val.search(/\./) != -1 && val.search("error") == -1) {
+                    $cell.addClass("rounded");
+                    $cell.tooltip({title: val, placement: 'top', container: $('body')});
+                }
+			});
+			batch.wasFilled = true;
+			return session;
+		}
 		}
 	}
 	});

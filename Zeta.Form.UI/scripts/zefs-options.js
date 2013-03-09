@@ -33,6 +33,36 @@ $.extend(options,(function(){
 				// период опроса ожидания
 				readydelay : 1000,
 				
+		/* КОМАНДЫ ЗАГРУЗКИ ДОПОЛНИТЕЛЬНЫХ МЕТАДАННЫХ */
+			//команда, возвращающая каталог периодов [] ( []->each ( asPeriod() ) ) упорядоченный по типам и индексам
+			getperiods_command : "zeta/getperiods.json.qweb",
+				//типы периодов
+				periodtype_none:"None",
+				// Месяц
+				periodtype_month:"Month",
+				// Основные периоды с начала года
+				periodtype_ysmain:"FromYearStartMain",
+				// Дополнительные периоды с начала года
+				periodtype_ysext:"FromYearStartExt",
+				// Плановые периоды
+				periodtype_plan:"Plan",
+				// Плановые периоды (месячные)
+				periodtype_mplan:"MonthPlan",
+				// Коррективы
+				periodtype_corr:"Corrective",
+				// Ожидаемые периоды
+				periodtype_wait:"Awaited",
+				// Период в середине года
+				periodtype_inyear:"InYear",
+				// Дополнительные периоды
+				periodtype_ext:"Ext",
+				
+			//команда, возвращающая список доступных предприятий ( применить asObjectList())
+			getobject_command : "zeta/getobjects.json.qweb",
+
+			//команда, возвращающая информацию о пользователе (Login - логин пользователя)
+			getuserinfo_command : "zeta/getuserinfo.json.qweb",
+				
 			
 		
 		/* РАБОТА С СЕССИЯМИ */
@@ -63,7 +93,7 @@ $.extend(options,(function(){
 					debug_command : "zefs/debuginfo.json.qweb",
 					
 					
-			/* ОТРИСОВКА  ТАБЛИЦЫ ДАННЫХ */
+			/* РАБОТА С ДАННЫМИ */
 					// команда получения структуры таблицы [от SESSIONID] (как asStruct() )
 					struct_command : "zefs/struct.json.qweb",
 						// единица измерения по умолчанию
@@ -86,6 +116,37 @@ $.extend(options,(function(){
 							inprocess_state : "w",
 							//ошибка
 							error_state : "e",
+                    // команда уведомления сервера о завершении загрузки данных [от SESSIONID ]
+                    dataloaded_command : "zefs/dataloaded.json.qweb",
+
+                    // команда инициализации сессии сохранения [от SESSIONID ] (true|false )
+                    saveready_command : "zefs/saveready.json.qweb",
+					// команда инициализации сохранения [от SESSIONID ] (true|false )
+					save_command : "zefs/save.json.qweb",
+						savedata_param : "data",
+
+
+					// команда проверки состояния сохранения [от SESSIONID ] (как asSaveState() ) должна быть еще и в DEBUG-меню
+					savestate_command : "zefs/savestate.json.qweb",
+						// 	Изначальное состояние
+						savestage_none : "None",
+						// 	Загрузка задачи сохранения
+						savestage_load : "Load",
+						// 	Проверка возможности сохранения по аспектам безопасности
+						savestage_auth : "Authorize",
+						// 	Подготовка входных данных - переработка справочников
+						savestage_prepare : "Prepare",
+						// 	Проверка целостности запрошенного сохранения
+						savestage_validate : "Validate",
+						// 	Проверка доступности соединений, хранимых процедур и проч
+						savestage_test : "Test",
+						// 	Собственно сохранение ячеек
+						savestage_save : "Save",
+						// 	Выполнение специальных процедур после выполнения сохранения, бизнес-тригеры
+						savestage_aftersave : "AfterSave",
+						// 	Успешное завершение
+						savestage_finished : "Finished",
+					
 							
 						
 			/* УПРАВЛЕНИЕ БЛОКИРОВКАМИ И СТАТУСОМ ПО СОХРАНЕНИЮ*/
@@ -103,8 +164,25 @@ $.extend(options,(function(){
 					
 					// команда получения статуса возможности блокировки [от SESSIONID] (как asLockState() )
 					canlock_command : "zefs/canlockstate.json.qweb",
-		
-		
+					// команда получения истории блокировок [от SESSIONID]
+					locklist_command : "zefs/locklist.json.qweb",
+					// команда блокировки формы [от SESSIONID]
+					lockform_command : "zefs/lockform.json.qweb",
+
+
+		    /* РАБОТА С ПРИСОЕДИНЕННЫМИ ФАЙЛАМИ */
+					// команда получения списка прикрепленных к форме файлов [от SESSIONID]
+					attachlist_command : "zefs/attachlist.json.qweb",
+					// команда прекрепления или обновления файла к форме
+					attachfile_command : "zefs/attachfile.json.qweb",
+					// команда скрытия/удаления файла [от SESSIONID и UID]
+                    deletefile_command : "zefs/deletefile.json.qweb",
+					// команда загрузки файла [от SESSIONID и UID]
+					downloadfile_command : "zefs/downloadfile.filedesc.qweb",
+					// команда получения возможных типов файлов [от SESSIONID]
+					getfiletypes_command : "zefs/getfiletypes.json.qweb",
+
+
 		// КОНВЕРТИРУЕТ ХЭШ ПАРАМЕТРЫ В ПАРАМЕТРЫ ВЫЗОВА ФОРМЫ ДЛЯ КОМАНДЫ START
 		getParameters : function(){
 			// Парсим параметры из хэша
@@ -118,7 +196,6 @@ $.extend(options,(function(){
 			result[this.obj_hash_param] = p[this.obj_hash_param];
 			result[this.period_hash_param] = p[this.period_hash_param];
 			result[this.year_hash_param] = p[this.year_hash_param];
-			
 			return result;
 		},
 		
@@ -203,16 +280,83 @@ $.extend(options,(function(){
 				getCanSave : function() {return !!this.cansave || false;},
 				// текущий статус формы, один из *_lock_state
 				getState : function() {return this.state || options.undef_lock_state;},
+                // признак того, что форма заблокирована
+                getIsBlock: function() {return (this.state == options.block_lock_state)},
+                // признак того, что форма открыта
+                getIsOpen: function() {return (this.state == options.open_lock_state)},
+                // признак того, что форма проверена
+                getIsChecked: function() {return (this.state == options.check_lock_state)},
 				// признак возможности заблокировать форму (видимость и/или доступность кнопки "блокировать")
 				getCanLock : function(){return !!this.canblock || false;},
 				// сообщение ошибки при невозможности блокировки
-				getErrorMessage : function(){return this.message||"";},
+				getErrorMessage : function(){return this.message||"";}
 				// резервный признак открытости формы (в терминах открытости периода и неустарелости формы), пока резерв
-				getIsOpen : function(){return !!this.isopen || false;}
-				
+				//getIsOpen : function(){return !!this.isopen || false;}
 			});
+            return obj;
 		},
-		
+
+		// КОНВЕРТИРУЕТ РЕЗУЛЬТАТЫ КОМАНД locklist_command В МАССИВ ИСТОРИИ БЛОКИРОВОК
+		asLockHistory : function( obj ) {
+			var hist = [];
+            var asHist = function(o) {
+                $.extend(o, {
+                    // возвращает идентификатор операции
+                    getId: function() {return this.Id},
+                    // возвращает код состояния блокировки
+                    getStateCode : function() {return this.State},
+                    // признак того, что форма заблокирована
+                    getIsBlock: function() {return (this.State == options.block_lock_state)},
+                    // признак того, что форма открыта
+                    getIsOpen: function() {return (this.State == options.open_lock_state)},
+                    // признак того, что форма проверена
+                    getIsChecked: function() {return (this.State == options.check_lock_state)},
+                    // возвращает имя пользователя, совершившего операцию
+                    getUser : function() {return this.Usr},
+                    // возвращает состояние блокировки в удобвном, читаемом виде
+                    getState : function() {return this.ReadableState },
+                    // возвращает дату совершения операции
+                    getDate : function() {return eval(this.Version.substring(2))}
+                });
+                return o;
+            };
+
+            for(var h in obj) {
+                hist.push(asHist(obj[h]));
+            }
+            return hist;
+		},
+
+		// КОНВЕРТИРУЕТ РЕЗУЛЬТАТ КОМАНДЫ savestate_command В СТАНДАРТНЫЙ ОБЪЕКТ СТАТУСА СОХРАНЕНИЯ
+		asSaveState : function(obj){
+			$.extend(obj,{
+				// возвращает один из статусов стадии сохранения savestage_*
+				getStage :  function(){return this.stage;},
+				// текст ошибки
+				getError :  function(){return this.error;},
+				// признак наличия ошибки
+				getIsError : function(){return !!this.getError();},
+                // признак завершения комманды сохранения
+                getIsFinished : function() { return ((this.getStage() == options.savestage_finished) || this.getIsError() ); },
+                // признак завершения сохранения ячеек
+                getCellsSaved : function() { return this.getStage() == options.savestage_finished || this.getStage()==options.savestage_aftersave; }
+			});
+			return obj;
+		},
+		// КОНВЕРТИРУЕТ РЕЗУЛЬТАТ КОМАНДЫ getperiods_command В СТАНДАРТНЫЙ ОБЪЕКТ ПЕРИОДА
+		asPeriod : function(obj){
+			$.extend(obj, {
+				//идентификатор периода в формах
+				getId : function(){return this.id;},
+				// название периода
+				getName : function(){return this.name;},
+				// тип периода, один из periodtype_*
+				getType : function(){return this.type;},
+				// порядок периода (в рамках типа)
+				getIdx : function(){return this.idx;}
+			});		
+			return obj;
+		},
 		
 		
 		// КОНВЕРТИРУЕТ РЕЗУЛЬТАТ КОМАНДЫ struct_command в унифицированную структуру строк и колонок
@@ -335,6 +479,8 @@ $.extend(options,(function(){
 				getCellId :  function(){return this.c || 0;},
 				// идентификатор ячейки в таблице В ВИДЕ "ROWIDX:COLIDX"
 				getId : function() {return this.i;},
+                // RealID строки для ключа ячейки
+                getRealId : function(){return this.ri || "";},
 				// признак наличия данных
 				hasValue : function(){return null!=this.v;},
 				// собственно значение
@@ -347,7 +493,104 @@ $.extend(options,(function(){
 			// индекс колонки
 			obj.col = rc[1];
 			return obj;
-		}
+		},
+		//возвращает нормализованный список дивизионов и объектов, вызывая на них соответственно asDiv, asObject
+		asObjectList : function (obj ){
+			// в ходе выполнения формирует двустороннюю
+			// связь между дивизионом и объектами
+			// то есть можно делать так asObjectList(obj).getDivs().each(function(d){ d.getObjects().each(...) }
+			// равно можно от объекта получить дивизион asObject(obj).getDiv();
+			// при этом оба списка можно смотреть и просто как массивы
+			$.each(obj.divs, function(k,v){			
+				this.asDiv(v);
+				obj.divs[v.getCode()] = v;
+				v.objects =[];
+			});
+			$.each(obj.objs, function(k,v){
+				this.asObject(v);				
+				v.resolveddiv = obj.divs[v.div];
+				v.resolveddiv.objects.push(v);
+			});
+			$.extend(obj,{
+				getDivs : function(){return this.divs;},
+				getObjects : function(){return this.objs;}
+			});
+			return obj;
+		},
+		// обертка для записи о дивизионе
+		asDiv : function(obj){
+			$.extend(obj,{
+				// уникальный код дивизиона
+				getCode : function(){return this.code;},
+				// имя дивизиона
+				getName : function(){return this.name;},
+				// индекс порядка дивизиона
+				getIdx : function(){return this.idx;},
+				// возвращает массив объектов дивизиона
+				getObjects : function(){return this.objects;}
+			});
+			return obj;
+		},
+		// обертка для объекта 
+		asObject : function(obj){
+			$.extend(obj,{
+				// идентификатор объекта
+				getId : function(){return this.id;},
+				// имя объекта
+				getName : function(){return this.name;},
+				// индекс объекта
+				getIdx : function(){return this.idx;},
+				// ссылка на дивизион
+				getDiv : function(){return this.resolveddiv;},
+				// исходный код дивизиона
+				getDivCode : function(){return this.div;}
+			});
+			return obj;
+        },
+
+        // обертка для списка приложений к форме
+        asAttachment : function(obj){
+            var attachlist = [];
+            var prepare = function() {
+                $.each(obj, function(k,v) {
+                    $.extend(v,{
+                        // год прикрепленного файла
+                        getId : function(){return this.Year;},
+                        // период
+                        getPeriod : function(){return this.Period;},
+                        // объект
+                        getObj : function(){return this.ObjId;},
+                        // шаблон
+                        getTemplate : function(){return this.TemplateCode;},
+                        // тип прикрепленного фала
+                        getFileType : function(){return this.AttachType;},
+                        // уникальный код файла
+                        getUid : function(){return this.Uid;},
+                        // имя файла
+                        getName : function(){return this.Name;},
+                        // тип файла (например balans)
+                        getType : function(){return this.Type;},
+                        // пользователь, прикрепивший файл
+                        getUser : function(){return this.User;},
+                        // дата прикрепления файла
+                        getDate : function(){return eval(this.Version.substring(2));},
+                        // MimeType
+                        getMimeType : function(){return this.MimeType;},
+                        // Hash
+                        getHash : function(){return this.Hash;},
+                        // размер файла
+                        getSize : function(){return this.Size;},
+                        // версия файла
+                        getRevision : function(){return this.Revision;},
+                        // расширение файла
+                        getExtension : function(){return this.Extension;}
+                    });
+                    attachlist.push(v);
+                });
+            };
+            prepare();
+            return attachlist;
+        }
 	}
 	
 })())

@@ -9,10 +9,12 @@
 
 #endregion
 
-using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
+using Zeta.Extreme.Meta;
+using Zeta.Extreme.Poco;
+using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]
@@ -23,8 +25,8 @@ namespace Zeta.Extreme.Core.Tests {
 			FormulaStorage.Default.Register(new FormulaRequest {Key = "row:r1", PreparedType = typeof (MockFormula)});
 			FormulaStorage.Default.Register(new FormulaRequest {Key = "row:r2", PreparedType = typeof (MockSubsessionFormula)});
 			//need uppercase code for RowCache propose
-			RowCache.bycode["R1"] = new row {Id = -123, Code = "r1", IsFormula = true, Formula = "f1", FormulaEvaluator = "mock"};
-			RowCache.bycode["R2"] = new row {Id = -124, Code = "r2", IsFormula = true, Formula = "f2", FormulaEvaluator = "mock"};
+			RowCache.Bycode["R1"] = new row {Id = -123, Code = "r1", IsFormula = true, Formula = "f1", FormulaEvaluator = "mock"};
+			RowCache.Bycode["R2"] = new row {Id = -124, Code = "r2", IsFormula = true, Formula = "f2", FormulaEvaluator = "mock"};
 			_mquery = new Query {Row = {Code = "r1"}};
 			_mquery_ss = new Query
 				{Row = {Code = "r2"}, Col = {Code = "PLAN"}, Obj = {Id = 352}, Time = {Year = 2012, Period = 301}};

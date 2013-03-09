@@ -1,9 +1,24 @@
-﻿using Zeta.Extreme.FrontEnd
-using Qorpent.Applications
+﻿
 ref Qorpent.Core
 ref Zeta.Extreme.Frontend
+ref Zeta.Extreme.Form
+ref Comdiv.Core
+
+using Zeta.Extreme.FrontEnd
+using  Zeta.Extreme.Form
+using Qorpent.Applications
+using Comdiv.Security
+using Qorpent.Security 
 
 mvc Zeta.Extreme.FrontEnd
 transient "form.server" FormServer : IApplicationStartup
 	ThemaRootDirectory = "~/themas"
 	ConnectionName = eco
+
+transient "securitymap.roles.extension"  BxlXmlRoleProvider : IRoleResolverExtension
+	Idx = 10
+
+transient "zetaroles.roles.extension" SimpleZetaRoleResolver : IRoleResolverExtension
+
+#transient "persisitent.roles.extension"  PersistentRoleProvider : IRoleResolverExtension -- Так как зависит от гибернейта, выставлять будем в коде
+#	Idx = 20

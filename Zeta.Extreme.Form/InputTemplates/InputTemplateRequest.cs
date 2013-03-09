@@ -10,15 +10,10 @@
 
 using System;
 using System.Collections.Generic;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Inversion;
-using Comdiv.Persistence;
-using Comdiv.Security;
-using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
-using NHibernate;
-using Zeta.Extreme.Form.SaveSupport;
+using Qorpent.Applications;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Form.InputTemplates {
 	/// <summary>
@@ -28,7 +23,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <summary>
 		/// </summary>
 		public InputTemplateRequest() {
-			storage = myapp.storage.Get<IZetaCell>();
+			//storage = myapp.storage.Get<IZetaCell>();
 		}
 
 		/// <summary>
@@ -36,10 +31,10 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		public bool IsReadOnly {
 			get {
-				if (myapp.roles.IsInRole("NOBLOCK", false)) {
+				if (Application.Current.Roles.IsInRole("NOBLOCK", false)) {
 					return false;
 				}
-				return Template.GetState(Object, Detail) != "0ISOPEN" || !Template.IsPeriodOpen();
+				return Template.GetState(Object, null) != "0ISOPEN" || !Template.IsPeriodOpen();
 			}
 		}
 
@@ -55,7 +50,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				}
 			}
 		}
-
+/*
 		/// <summary>
 		/// 	ID детали
 		/// </summary>
@@ -68,7 +63,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				}
 			}
 		}
-
+*/
 		/// <summary>
 		/// 	ID объекта
 		/// </summary>
@@ -96,7 +91,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// 	Прямая дата
 		/// </summary>
 		public DateTime Date { get; set; }
-
+		/*
 		/// <summary>
 		/// 	Деталь
 		/// </summary>
@@ -109,6 +104,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			}
 			set { detail = value; }
 		}
+		 * */
 
 		/// <summary>
 		/// 	Объект
@@ -116,7 +112,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public IZetaMainObject Object {
 			get {
 				if (null == @object && null != ObjectId) {
-					@object = Template.FixedObject ?? storage.Load<IZetaMainObject>(ObjectId);
+					@object = Template.FixedObject ?? MetaCache.Default.Get<IZetaMainObject>(ObjectId); //storage.Load<IZetaMainObject>(ObjectId);
 					@objectId = @object.Id;
 				}
 				return @object;
@@ -129,7 +125,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		public IInputTemplate Template {
 			get {
-				if (null == template && TemplateCode.hasContent()) {
+				if (null == template && TemplateCode.IsNotEmpty()) {
 					ReloadTemplate();
 				}
 				return template;
@@ -144,22 +140,6 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			get { return parameters; }
 		}
 
-		/// <summary>
-		/// 	Связанная длительная задача
-		/// </summary>
-		public LongTask Task { get; set; }
-
-		/// <summary>
-		/// 	Проверка активности формы
-		/// </summary>
-		/// <param name="full"> </param>
-		/// <exception cref="Exception"></exception>
-		public void CheckFormLive(bool full = false) {
-			if (Task.HaveToTerminate || (full && (null != Task.Context && !Task.Context.Response.IsClientConnected))) {
-				Task.Terminate();
-				throw new Exception("Выполнение формы было отменено (noerrc)");
-			}
-		}
 
 		/// <summary>
 		/// 	Создает копию
@@ -167,51 +147,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <returns> </returns>
 		public InputTemplateRequest Copy() {
 			var result = (InputTemplateRequest) MemberwiseClone();
-			result.cachedPkg = null;
 			return result;
-		}
-
-		/// <summary>
-		/// 	Готовит пакет по умолчанию
-		/// </summary>
-		/// <returns> </returns>
-		public IPkg GetDefaultPkg() {
-			if (null == cachedPkg) {
-				using (var s = new TemporaryTransactionSession()) {
-					var type = storage.Load<IPkgType>("DEFAULTFORMPKG");
-					if (null == type) {
-						type = storage.New<IPkgType>();
-						type.Code = "DEFAULTFORMPKG";
-						type.Name = "Пакет для заполняемой формы в целом (вне сеанса)";
-						storage.Save(type);
-						s.CanBeCommited = true;
-					}
-					var code = ToString().toSystemName().Replace("_", "");
-					var result = storage.Load<IPkg>(code);
-					if (null == result) {
-						result = storage.New<IPkg>();
-						result.Code = code;
-						result.Name = "Пакет формы по умолчанию для " + this;
-						result.Usr = myapp.usrName;
-						result.Type = type;
-						result.CreateTime = DateTime.Now;
-						result.State = PkgState.None;
-						result.Date = DateTime.Now;
-						if (Period != 0) {
-							result.Date = Periods.Get(Period).EndDate.accomodateToYear(Year);
-						}
-						if (Date.Year > 1901) {
-							result.Date = Date;
-						}
-						result.Object = Object;
-						result.DetailObject = Detail;
-						storage.Save(result);
-						s.CanBeCommited = true;
-					}
-					cachedPkg = result;
-				}
-			}
-			return cachedPkg;
 		}
 
 		/// <summary>
@@ -220,64 +156,8 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <returns> Строка, представляющая текущий объект. </returns>
 		/// <filterpriority>2</filterpriority>
 		public override string ToString() {
-			return string.Format("FORM REQUEST T:{0},O:{1},D:{2}, Y:{3},P:{4},D:{5}", TemplateCode, ObjectId, DetailId,
+			return string.Format("FORM REQUEST T:{0},O:{1},D:{2}, Y:{3},P:{4},D:{5}", TemplateCode, ObjectId, 0,
 			                     Year, Period, Date.ToString("ddMMyyyyHHmmss"));
-		}
-
-		/// <summary>
-		/// 	Производит сохранение данных
-		/// </summary>
-		/// <param name="xml"> </param>
-		/// <exception cref="Exception"></exception>
-		public void Save(string xml) {
-			ReloadTemplate();
-			Task.PhaseFinished("prepare template");
-			if (IsReadOnly) {
-				if (!Template.IsPeriodOpen()) {
-					throw new Exception("Период был заблокирован, ввод новых данных невозможен");
-				}
-				throw new Exception("Шаблон был заблокирован, ввод новых данных невозможен");
-			}
-
-			var reader = new CellSerializer();
-			var saver = new CellSaver {TemplateRequest = this};
-			if (Template.CustomSave.hasContent()) {
-				var formsaver = myapp.ioc.get(Template.CustomSave) as ICustomFormSaver;
-				formsaver.Save(this, xml);
-			}
-			else {
-				using (DataSaveLock.Get()) {
-					using (var handler = new TemporaryTransactionSession()) {
-						handler.Session.FlushMode = FlushMode.Commit;
-
-						var cells = reader.ReadXml(xml);
-						Task.PhaseFinished("cells readed");
-						saver.Save(cells);
-						Task.PhaseFinished("save executed");
-						handler.Commit();
-					}
-					Task.PhaseFinished("transaction commited");
-				}
-
-				using (var c = myapp.ioc.getConnection()) {
-					c.ExecuteNonQuery(
-						@"exec usm.after_save_trigger 
-                            @form=@form,
-                            @obj=@obj,
-                            @year=@year,
-                            @period=@period,
-                            @usr=@usr",
-						new Dictionary<string, object>
-							{
-								{"@form", TemplateCode},
-								{"@obj", ObjectId},
-								{"@year", Year},
-								{"@period", Period},
-								{"@usr", myapp.usrName.ToLower()}
-							}, 900);
-				}
-				Task.PhaseFinished("after save trigger called");
-			}
 		}
 
 		/// <summary>
@@ -338,10 +218,11 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		}
 
 		private readonly IDictionary<string, string> parameters = new Dictionary<string, string>();
-		private readonly StorageWrapper<IZetaCell> storage;
-		private IPkg cachedPkg;
+		//private readonly StorageWrapper<IZetaCell> storage;
+		/*
 		private IZetaDetailObject detail;
 		private object detailId;
+		 */
 		private IZetaMainObject @object;
 		private object objectId;
 		private IInputTemplate template;

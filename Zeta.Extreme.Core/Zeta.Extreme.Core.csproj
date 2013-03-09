@@ -14,14 +14,6 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">
-      <Project>{C51304FD-0406-48E0-833E-EEDC67425BC8}</Project>
-      <Name>Comdiv.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\core\Comdiv.Dependency\Comdiv.Dependency.csproj">
-      <Project>{6E58C87C-2522-4AA5-9211-6109305B2D7B}</Project>
-      <Name>Comdiv.Dependency</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
       <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
       <Name>Qorpent.Core</Name>
@@ -30,17 +22,9 @@
       <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
       <Name>Qorpent.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Comdiv.Zeta.Data.Minimal\Comdiv.Zeta.Data.Minimal.csproj">
-      <Project>{D964FB40-AA23-4EC6-AEF0-F418303FF5DE}</Project>
-      <Name>Comdiv.Zeta.Data.Minimal</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Comdiv.Zeta.Model.Implementation\Comdiv.Zeta.Model.Implementation.csproj">
-      <Project>{fbe507cb-2311-4972-9d3d-8f2625274445}</Project>
-      <Name>Comdiv.Zeta.Model.Implementation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Comdiv.Zeta.Model\Comdiv.Zeta.Model.csproj">
-      <Project>{f939564a-d5a9-4bee-b8f2-47c384358afc}</Project>
-      <Name>Comdiv.Zeta.Model</Name>
+    <ProjectReference Include="..\Zeta.Extreme.Poco\Zeta.Extreme.Poco.csproj">
+      <Project>{a4442a74-4590-4ba3-b44c-56c98ce4a088}</Project>
+      <Name>Zeta.Extreme.Poco</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -69,23 +53,25 @@
     <Compile Include="Formulas\FormulaParserConstants.cs" />
     <Compile Include="Formulas\IllegalSyntaxFormulaStub.cs" />
     <Compile Include="Formulas\NoExtremeFormulaStub.cs" />
-    <Compile Include="Abstracts\ISession.cs" />
     <Compile Include="Abstracts\ISerializableSession.cs" />
+    <Compile Include="Meta\RowExtensions.cs" />
+    <Compile Include="Primary\IScriptGenerator.cs" />
+    <Compile Include="Primary\ObjColQueryGeneratorStruct.cs" />
+    <Compile Include="Primary\SimpleObjectDataScriptGenerator.cs" />
+    <Compile Include="Primary\TimeQueryGeneratorStruct.cs" />
     <Compile Include="Query\PrepareState.cs" />
     <Compile Include="Query\QueryEvaluationType.cs" />
-    <Compile Include="Services\DefaultPrimarySource.cs" />
+    <Compile Include="Primary\DefaultPrimarySource.cs" />
     <Compile Include="Abstracts\IPrimarySource.cs" />
-    <Compile Include="Services\MetaCache.cs" />
-    <Compile Include="Abstracts\IMetaCache.cs" />
     <Compile Include="Query\StrongSumProvider.cs" />
     <Compile Include="Query\QueryDelta.cs" />
+    <Compile Include="Primary\PrimaryQueryGroup.cs" />
+    <Compile Include="Primary\PrimaryQueryPrototype.cs" />
     <Compile Include="Services\QueryProcessor.cs" />
-    <Compile Include="QueryResult.cs" />
     <Compile Include="Query\ColumnHandler.cs" />
     <Compile Include="Query\DefaultPeriodEvaluator.cs" />
     <Compile Include="Query\IPeriodEvaluator.cs" />
     <Compile Include="Query\RowTreeUsage.cs" />
-    <Compile Include="Query\ObjType.cs" />
     <Compile Include="Services\QueryLoader.cs" />
     <Compile Include="Services\QuerySessionRegistrator.cs" />
     <Compile Include="Abstracts\IPreloadProcessor.cs" />
