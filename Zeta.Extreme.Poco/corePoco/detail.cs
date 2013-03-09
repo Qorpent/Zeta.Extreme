@@ -10,11 +10,10 @@
 
 using System;
 using System.Collections.Generic;
-using Comdiv.Model;
-using Comdiv.Persistence;
 using Qorpent;
 using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
@@ -27,26 +26,27 @@ namespace Zeta.Extreme.Poco {
 			Date2 = QorpentConst.Date.Begin;
 		}
 
-		[Deprecated.Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
+		[Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
 
-		[Deprecated.Ref(ClassName = typeof (obj))] public virtual IZetaMainObject AltParent { get; set; }
-		[Deprecated.Map] [IgnoreSerialize] public virtual Guid Uid { get; set; }
-		[Deprecated.Map(ReadOnly = true)] public virtual string Path { get; set; }
-		[Deprecated.Map] public virtual string Valuta { get; set; }
+		[Ref(ClassName = typeof (obj))] public virtual IZetaMainObject AltParent { get; set; }
+		[Map] [IgnoreSerialize] public virtual Guid Uid { get; set; }
+		[Many(ClassName = typeof (SubpartMark))] public virtual IList<IZetaDetailObjectMark> MarkLinks { get; set; }
+		[Map(ReadOnly = true)] public virtual string Path { get; set; }
+		[Map] public virtual string Valuta { get; set; }
 
-		[Deprecated.Map] public virtual DateTime Start { get; set; }
+		[Map] public virtual DateTime Start { get; set; }
 
-		[Deprecated.Map] public virtual DateTime Finish { get; set; }
+		[Map] public virtual DateTime Finish { get; set; }
 
-		[Deprecated.Map] public virtual decimal Number1 { get; set; }
-		[Deprecated.Map] public virtual decimal Number2 { get; set; }
+		[Map] public virtual decimal Number1 { get; set; }
+		[Map] public virtual decimal Number2 { get; set; }
 
 
-		[Deprecated.Map] public virtual DateTime Date1 { get; set; }
+		[Map] public virtual DateTime Date1 { get; set; }
 
-		[Deprecated.Map] public virtual DateTime Date2 { get; set; }
+		[Map] public virtual DateTime Date2 { get; set; }
 
-		[Deprecated.Map] public virtual string Tag { get; set; }
+		[Map] public virtual string Tag { get; set; }
 		public virtual int Idx { get; set; }
 
 		[Serialize] public virtual IZetaMainObject Object {
@@ -54,20 +54,18 @@ namespace Zeta.Extreme.Poco {
 			set { Org = value; }
 		}
 
-		[Deprecated.Map] public virtual string OuterCode { get; set; }
+		[Map] public virtual string OuterCode { get; set; }
 
-		[Deprecated.Map] public virtual int Id { get; set; }
+		[Map] public virtual int Id { get; set; }
 
-		[Deprecated.Map] public virtual string Name { get; set; }
+		[Map] public virtual string Name { get; set; }
 
-		[Deprecated.Map] public virtual string Code { get; set; }
+		[Map] public virtual string Code { get; set; }
 
-		[Deprecated.Map] public virtual string Comment { get; set; }
+		[Map] public virtual string Comment { get; set; }
 
-		[Deprecated.Map] public virtual DateTime Version { get; set; }
+		[Map] public virtual DateTime Version { get; set; }
 
-		
-		[Deprecated.Many(ClassName = typeof (SubpartMark))] public virtual IList<IZetaDetailObjectMark> MarkLinks { get; set; }
 
 		[Serialize] public virtual IDetailObjectType Type { get; set; }
 
@@ -76,17 +74,17 @@ namespace Zeta.Extreme.Poco {
 			set { AltParent = value; }
 		}
 
-		[Deprecated.Many(ClassName = typeof (cell))] public virtual IList<IZetaCell> Cells { get; set; }
+		[Many(ClassName = typeof (cell))] public virtual IList<IZetaCell> Cells { get; set; }
 
 
-		[Deprecated.Map] public virtual int IntOwn { get; set; }
+		[Map] public virtual int IntOwn { get; set; }
 
 		public virtual SubpartRelation Own {
 			get { return (SubpartRelation) IntOwn; }
 			set { IntOwn = (int) value; }
 		}
 
-		[Deprecated.Many(ClassName = typeof (fixrule))] public virtual IList<IFixRule> FixRules { get; set; }
+		[Many(ClassName = typeof (fixrule))] public virtual IList<IFixRule> FixRules { get; set; }
 
 		public virtual DateRange Range { get; set; }
 

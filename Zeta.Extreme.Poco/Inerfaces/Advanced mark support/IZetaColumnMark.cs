@@ -8,12 +8,11 @@
 
 #endregion
 
-using Comdiv.Model;
 using Qorpent.Model;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IZetaColumnMark :
-		IWithId,IWithVersion,
+		IWithId, IWithVersion,
 		IMarkLink<IZetaColumn> //,
 		//IWithOlapColumn<IZetaColumn>
 	{}

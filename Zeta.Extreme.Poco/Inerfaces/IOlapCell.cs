@@ -8,7 +8,6 @@
 
 #endregion
 
-using Comdiv.Model;
 using Qorpent.Model;
 
 namespace Zeta.Extreme.Poco.Inerfaces {

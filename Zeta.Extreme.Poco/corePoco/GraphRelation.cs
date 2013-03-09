@@ -9,7 +9,7 @@
 #endregion
 
 using System;
-using Comdiv.Model;
+using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
@@ -19,19 +19,19 @@ namespace Zeta.Extreme.Poco {
 			set { Type = (GraphRelationType) Enum.Parse(typeof (GraphRelationType), value, true); }
 		}
 
-		public virtual int Id { get; set; }
 		public virtual Guid Uid { get; set; }
+		public virtual int Id { get; set; }
 		public virtual DateTime Version { get; set; }
 		public virtual string Code { get; set; }
 
-		[Deprecated.Ref(Alias = "Org", Title = "Корень", Nullable = true, IsAutoComplete = true, AutoCompleteType = "org")] public virtual IZetaMainObject Root { get; set; }
+		[Ref(Alias = "Org", Title = "Корень", Nullable = true, IsAutoComplete = true, AutoCompleteType = "org")] public virtual IZetaMainObject Root { get; set; }
 
-		[Deprecated.Ref(Alias = "Org", Title = "Цель", Nullable = true, IsAutoComplete = true, AutoCompleteType = "org")] public virtual
+		[Ref(Alias = "Org", Title = "Цель", Nullable = true, IsAutoComplete = true, AutoCompleteType = "org")] public virtual
 			IZetaMainObject Target { get; set; }
 
 
 		public virtual GraphRelationType Type { get; set; }
 
-		[Deprecated.Map] public virtual string TypeDetail { get; set; }
+		[Map] public virtual string TypeDetail { get; set; }
 	}
 }

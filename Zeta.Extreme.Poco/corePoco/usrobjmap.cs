@@ -9,32 +9,32 @@
 #endregion
 
 using System;
-using Comdiv.Model;
+using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class usrobjmap : IUserObjectMap {
-		[Deprecated.Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
+		[Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
 
-		[Deprecated.Map] public virtual Guid Uid { get; set; }
+		[Map] public virtual Guid Uid { get; set; }
 
-		[Deprecated.Map] public virtual string Tag { get; set; }
+		[Map] public virtual string Tag { get; set; }
 
-		[Deprecated.Map] public virtual int Id { get; set; }
+		[Map] public virtual int Id { get; set; }
 
-		[Deprecated.Map] public virtual string Name { get; set; }
+		[Map] public virtual string Name { get; set; }
 
-		[Deprecated.Map] public virtual string Code { get; set; }
+		[Map] public virtual string Code { get; set; }
 
-		[Deprecated.Map] public virtual string Comment { get; set; }
-
-
-		[Deprecated.Map] public virtual string Domain { get; set; }
-
-		[Deprecated.Map] public virtual string Role { get; set; }
+		[Map] public virtual string Comment { get; set; }
 
 
-		[Deprecated.Map] public virtual DateTime Version { get; set; }
+		[Map] public virtual string Domain { get; set; }
+
+		[Map] public virtual string Role { get; set; }
+
+
+		[Map] public virtual DateTime Version { get; set; }
 
 
 		public virtual IZetaMainObject Object {
@@ -42,7 +42,7 @@ namespace Zeta.Extreme.Poco {
 			set { Org = value; }
 		}
 
-		[Deprecated.Map] public virtual bool AllOrgs { get; set; }
+		[Map] public virtual bool AllOrgs { get; set; }
 
 		/// <summary>
 		/// 	An index of object

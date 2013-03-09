@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using Comdiv.Application;
 using Qorpent.Applications;
 using Zeta.Extreme.Poco.Inerfaces;
 
@@ -78,11 +77,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		}
 
 		private IDbConnection getConnection() {
-			if (null == Application.Current.DatabaseConnections) {
-				return myapp.getConnection("Default");
-			}
-			return Application.Current.DatabaseConnections.GetConnection("Default") ??
-			       myapp.getConnection("Default");
+			return Application.Current.DatabaseConnections.GetConnection("Default");
 		}
 
 		/// <summary>

@@ -8,19 +8,15 @@
 
 #endregion
 
-using Comdiv.Model;
-
 namespace Zeta.Extreme.Poco.Inerfaces {
 	public static class WithMarksExtension {
 		public static bool UseMarkCaching = true;
 
-		public static bool IsMarkSeted(this IWithMarkCache obj, string code)
-		{
-				if (obj.MarkCache == null) {
-					return false;
-				}
-				return obj.MarkCache.Contains("/" + code + "/");
-			
+		public static bool IsMarkSeted(this IWithMarkCache obj, string code) {
+			if (obj.MarkCache == null) {
+				return false;
+			}
+			return obj.MarkCache.Contains("/" + code + "/");
 		}
 	}
 }

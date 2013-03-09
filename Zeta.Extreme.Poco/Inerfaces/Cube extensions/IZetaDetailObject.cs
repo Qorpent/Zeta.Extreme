@@ -9,11 +9,10 @@
 #endregion
 
 using System;
-using Comdiv.Model;
-using Comdiv.Persistence;
+using Zeta.Extreme.Poco.Deprecated;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
-	[global::Zeta.Extreme.Poco.Deprecated.ForSearch("Младший объект, подразделение, связь")]
+	[ForSearch("Младший объект, подразделение, связь")]
 	public interface IZetaDetailObject :
 		IZetaObject,
 		IZoneElement,
@@ -32,18 +31,18 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		bool InverseControl { get; set; }
 		string Valuta { get; set; }
 
-		[global::Zeta.Extreme.Poco.Deprecated.Map] decimal Number1 { get; set; }
+		[Map] decimal Number1 { get; set; }
 
-		[global::Zeta.Extreme.Poco.Deprecated.Map] decimal Number2 { get; set; }
+		[Map] decimal Number2 { get; set; }
 
-		[global::Zeta.Extreme.Poco.Deprecated.Map] DateTime Start { get; set; }
+		[Map] DateTime Start { get; set; }
 
-		[global::Zeta.Extreme.Poco.Deprecated.Map] DateTime Finish { get; set; }
+		[Map] DateTime Finish { get; set; }
 
-		[global::Zeta.Extreme.Poco.Deprecated.Map(ReadOnly = true)] string Path { get; set; }
+		[Map(ReadOnly = true)] string Path { get; set; }
 
-		[global::Zeta.Extreme.Poco.Deprecated.Map] DateTime Date1 { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] DateTime Date2 { get; set; }
+		[Map] DateTime Date1 { get; set; }
+		[Map] DateTime Date2 { get; set; }
 
 		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
 		}

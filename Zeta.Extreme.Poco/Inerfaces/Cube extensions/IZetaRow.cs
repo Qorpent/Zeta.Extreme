@@ -10,10 +10,10 @@
 
 using System;
 using System.Collections.Generic;
-using Comdiv.Persistence;
+using Zeta.Extreme.Poco.Deprecated;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
-	[global::Zeta.Extreme.Poco.Deprecated.ForSearch("Строка, признак")]
+	[ForSearch("Строка, признак")]
 	public interface IZetaRow :
 		IOlapForm<IZetaRow>,
 		IZetaQueryDimension,
@@ -23,13 +23,13 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
 		IWithMainObject<IZetaMainObject> {
 		IDictionary<string, object> LocalProperties { get; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string ObjectGroups { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string FormElementType { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string Validator { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string ColumnSubstitution { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string FullName { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string Role { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string Valuta { get; set; }
+		[Map] string ObjectGroups { get; set; }
+		[Map] string FormElementType { get; set; }
+		[Map] string Validator { get; set; }
+		[Map] string ColumnSubstitution { get; set; }
+		[Map] string FullName { get; set; }
+		[Map] string Role { get; set; }
+		[Map] string Valuta { get; set; }
 		int? ParentId { get; set; }
 		int? RefId { get; set; }
 		int? ObjectId { get; set; }
@@ -38,10 +38,10 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		string FullRole { get; }
 		int Level { get; }
 
-		[global::Zeta.Extreme.Poco.Deprecated.Ref(ClassName = typeof (IZetaRow))] IZetaRow ExRefTo { get; set; }
+		[Ref(ClassName = typeof (IZetaRow))] IZetaRow ExRefTo { get; set; }
 
 		int? ExRefToId { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] bool Active { get; set; }
+		[Map] bool Active { get; set; }
 		IZetaRow TemporalParent { get; set; }
 		string ResolveColumnCode(string incode);
 		IZetaRow Copy(bool withchildren);

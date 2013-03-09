@@ -11,8 +11,7 @@
 using Qorpent.Model;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
-	public interface IGraphRelation : IWithId,  IWithVersion,IWithCode
-	{
+	public interface IGraphRelation : IWithId, IWithVersion, IWithCode {
 		IZetaMainObject Root { get; set; }
 		IZetaMainObject Target { get; set; }
 		GraphRelationType Type { get; set; }

@@ -12,27 +12,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Comdiv.Application;
-using Comdiv.MVC;
-using Comdiv.Model;
-using Comdiv.Persistence;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class row : IZetaRow {
-		[Deprecated.Map] public virtual string Grp { get; set; }
+		[Map] public virtual string Grp { get; set; }
 
-		[Deprecated.Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
+		[Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
 
 		/// <summary>
 		/// 	Режим использования формулы с Extreme
 		/// </summary>
 		public virtual int ExtremeFormulaMode { get; set; }
 
-		[Deprecated.Map] public virtual Guid Uid { get; set; }
+		[Map] public virtual Guid Uid { get; set; }
+		[Many(ClassName = typeof (TreeMark))] public virtual IList<IZetaRowMark> MarkLinks { get; set; }
 
-		[Deprecated.Map] public virtual bool Active { get; set; }
+		[Map] public virtual bool Active { get; set; }
 
 		public virtual int? ParentId { get; set; }
 		public virtual int? RefId { get; set; }
@@ -68,9 +66,9 @@ namespace Zeta.Extreme.Poco {
 			}
 		}
 
-		[Deprecated.Map(NoLazy = true)] public virtual string Tag { get; set; }
+		[Map(NoLazy = true)] public virtual string Tag { get; set; }
 
-		[Deprecated.Map] public virtual string Lookup { get; set; }
+		[Map] public virtual string Lookup { get; set; }
 
 		public virtual IZetaRow TemporalParent { get; set; }
 
@@ -87,41 +85,41 @@ namespace Zeta.Extreme.Poco {
 			}
 		}
 
-		[Deprecated.Map] public virtual string Valuta { get; set; }
+		[Map] public virtual string Valuta { get; set; }
 
-		[Deprecated.Map("IsDinamycLookUp")] public virtual bool IsDynamicLookup { get; set; }
+		[Map("IsDinamycLookUp")] public virtual bool IsDynamicLookup { get; set; }
 
-		[Deprecated.Map] public virtual int Id { get; set; }
+		[Map] public virtual int Id { get; set; }
 
-		[Deprecated.Map] public virtual string Name { get; set; }
+		[Map] public virtual string Name { get; set; }
 
-		[Deprecated.Map] public virtual string Code { get; set; }
+		[Map] public virtual string Code { get; set; }
 
-		[Deprecated.Map] public virtual string Comment { get; set; }
+		[Map] public virtual string Comment { get; set; }
 
-		[Deprecated.Map] public virtual DateTime Version { get; set; }
+		[Map] public virtual DateTime Version { get; set; }
 
-		[Deprecated.Map] public virtual bool IsFormula { get; set; }
+		[Map] public virtual bool IsFormula { get; set; }
 
-		[Deprecated.Map] public virtual string Formula { get; set; }
+		[Map] public virtual string Formula { get; set; }
 
-		[Deprecated.Map] public virtual string ParsedFormula { get; set; }
+		[Map] public virtual string ParsedFormula { get; set; }
 
-		[Deprecated.Map] public virtual string FormulaEvaluator { get; set; }
+		[Map] public virtual string FormulaEvaluator { get; set; }
 
-		[Deprecated.Map] public virtual string Measure { get; set; }
+		[Map] public virtual string Measure { get; set; }
 
-		[Deprecated.Map] public virtual bool IsDynamicMeasure { get; set; }
+		[Map] public virtual bool IsDynamicMeasure { get; set; }
 
 
-		[Deprecated.Ref(ClassName = typeof (IZetaRow))] public virtual IZetaRow Parent { get; set; }
+		[Ref(ClassName = typeof (IZetaRow))] public virtual IZetaRow Parent { get; set; }
 
 
 		public virtual IList<IZetaRow> NativeChildren {
 			get { return _children; }
 		}
 
-		[Deprecated.Many(ClassName = typeof (IZetaRow))] public virtual IList<IZetaRow> Children {
+		[Many(ClassName = typeof (IZetaRow))] public virtual IList<IZetaRow> Children {
 			get { return _children; }
 			set { _children = value; }
 		}
@@ -138,47 +136,45 @@ namespace Zeta.Extreme.Poco {
 			return mes;
 		}
 
-		[Deprecated.Map] public virtual string Path { get; set; }
+		[Map] public virtual string Path { get; set; }
 
-		[Deprecated.Ref(ClassName = typeof (IZetaRow))] public virtual IZetaRow RefTo { get; set; }
+		[Ref(ClassName = typeof (IZetaRow))] public virtual IZetaRow RefTo { get; set; }
 
 
 		public virtual int? ExRefToId { get; set; }
 
-		[Deprecated.Ref(ClassName = typeof (IZetaRow))] public virtual IZetaRow ExRefTo { get; set; }
+		[Ref(ClassName = typeof (IZetaRow))] public virtual IZetaRow ExRefTo { get; set; }
 
-		[Deprecated.Map] public virtual int Idx { get; set; }
+		[Map] public virtual int Idx { get; set; }
 
-		[Deprecated.Map] public virtual string OuterCode { get; set; }
+		[Map] public virtual string OuterCode { get; set; }
 
 		public virtual string Group {
 			get { return Grp; }
 			set { Grp = value; }
 		}
 
-		[Deprecated.Many(ClassName = typeof (fixrule))] public virtual IList<IFixRule> FixRules { get; set; }
+		[Many(ClassName = typeof (fixrule))] public virtual IList<IFixRule> FixRules { get; set; }
 
-		[Deprecated.Many(ClassName = typeof (TreeMark))] public virtual IList<IZetaRowMark> MarkLinks { get; set; }
-
-		[Deprecated.Many(ClassName = typeof (cell))] public virtual IList<IZetaCell> Cells { get; set; }
+		[Many(ClassName = typeof (cell))] public virtual IList<IZetaCell> Cells { get; set; }
 
 		public virtual IZetaMainObject Object {
 			get { return Org; }
 			set { Org = value; }
 		}
 
-		[Deprecated.Map] public virtual string MarkCache { get; set; }
+		[Map] public virtual string MarkCache { get; set; }
 
 		public virtual IDictionary<string, object> LocalProperties {
 			get { return localProperties ?? (localProperties = new Dictionary<string, object>()); }
 			set { localProperties = value; }
 		}
 
-		[Deprecated.Map] public virtual string ObjectGroups { get; set; }
-		[Deprecated.Map] public virtual string FormElementType { get; set; }
-		[Deprecated.Map] public virtual string Validator { get; set; }
+		[Map] public virtual string ObjectGroups { get; set; }
+		[Map] public virtual string FormElementType { get; set; }
+		[Map] public virtual string Validator { get; set; }
 
-		[Deprecated.Map] public virtual string ColumnSubstitution { get; set; }
+		[Map] public virtual string ColumnSubstitution { get; set; }
 
 		public virtual string ResolveColumnCode(string incode) {
 			prepareColumnMap();
@@ -283,8 +279,8 @@ namespace Zeta.Extreme.Poco {
 			}
 		}
 
-		[Deprecated.Map] public virtual string FullName { get; set; }
-		[Deprecated.Map] public virtual string Role { get; set; }
+		[Map] public virtual string FullName { get; set; }
+		[Map] public virtual string Role { get; set; }
 
 		public virtual MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null,
 		                                         string system = "Default") {

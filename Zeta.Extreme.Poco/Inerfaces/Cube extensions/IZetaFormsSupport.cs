@@ -8,7 +8,7 @@
 
 #endregion
 
-using IWithIdx = Qorpent.Model.IWithIdx;
+using Qorpent.Model;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IZetaFormsSupport :

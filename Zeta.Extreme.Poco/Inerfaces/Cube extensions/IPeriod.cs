@@ -12,7 +12,7 @@ using System;
 using Qorpent.Model;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
-	public interface IPeriod : IEntity,  Qorpent.Model.IWithFormula {
+	public interface IPeriod : IEntity, Qorpent.Model.IWithFormula {
 		int ClassicId { get; set; }
 		string Category { get; set; }
 		string ShortName { get; set; }

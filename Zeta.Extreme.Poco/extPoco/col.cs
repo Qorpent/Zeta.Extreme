@@ -14,17 +14,6 @@ using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class col {
-		public virtual void RemoveMark(IMark mark) {
-			var todel = MarkLinks.FirstOrDefault(i => i.Mark.Id == mark.Id);
-			if (null != todel) {
-				MarkLinks.Remove(todel);
-			}
-		}
-
-		public virtual bool IsMarkSeted(string code) {
-			return WithMarksExtension.IsMarkSeted(this, code);
-		}
-
 		public virtual string GetStaticMeasure(string format) {
 			if (IsDynamicMeasure) {
 				return "";
@@ -49,6 +38,17 @@ namespace Zeta.Extreme.Poco {
 				return source.Measure;
 			}
 			return GetStaticMeasure(format);
+		}
+
+		public virtual void RemoveMark(IMark mark) {
+			var todel = MarkLinks.FirstOrDefault(i => i.Mark.Id == mark.Id);
+			if (null != todel) {
+				MarkLinks.Remove(todel);
+			}
+		}
+
+		public virtual bool IsMarkSeted(string code) {
+			return WithMarksExtension.IsMarkSeted(this, code);
 		}
 	}
 }

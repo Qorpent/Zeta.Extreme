@@ -11,7 +11,7 @@
 using Qorpent.Model;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
-	public interface IUsrRow : IWithId,IWithName, IWithCode {
+	public interface IUsrRow : IWithId, IWithName, IWithCode {
 		bool Active { get; set; }
 		IZetaUnderwriter Usr { get; set; }
 		IZetaRow Row { get; set; }

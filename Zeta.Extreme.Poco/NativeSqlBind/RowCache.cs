@@ -31,8 +31,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Comdiv.Application;
-using Comdiv.Persistence;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Poco.Inerfaces;
 
@@ -47,8 +45,6 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		private static readonly IDictionary<int, IZetaRow> byid = new Dictionary<int, IZetaRow>();
 
 		private static readonly IDictionary<string, List<IZetaRow>> bygroup = new Dictionary<string, List<IZetaRow>>();
-
-		private static StorageWrapper<IZetaRow> storage;
 
 
 		/// <summary>
@@ -113,7 +109,9 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 			//lock (locker)
 			{
 				IZetaRow zetaRow;
-				if (TryReturnByIntId(key, out zetaRow)) return zetaRow;
+				if (TryReturnByIntId(key, out zetaRow)) {
+					return zetaRow;
+				}
 				var sk = ((string) key).ToUpper();
 				if (bycode.ContainsKey(sk)) {
 					var result = bycode[sk];
@@ -147,8 +145,8 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 							return true;
 						}
 					}
-						zetaRow = result;
-						return true;
+					zetaRow = result;
+					return true;
 				}
 			}
 			return false;

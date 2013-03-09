@@ -8,12 +8,14 @@
 
 #endregion
 
+using Zeta.Extreme.Poco.Deprecated;
+
 namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithFormula {
-		[global::Zeta.Extreme.Poco.Deprecated.Map] bool IsFormula { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string Formula { get; set; }
+		[Map] bool IsFormula { get; set; }
+		[Map] string Formula { get; set; }
 
 		string ParsedFormula { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string FormulaEvaluator { get; set; }
+		[Map] string FormulaEvaluator { get; set; }
 	}
 }

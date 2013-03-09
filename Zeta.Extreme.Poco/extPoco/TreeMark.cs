@@ -8,7 +8,6 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 using IEntityDataPattern = Qorpent.Model.IEntity;
 

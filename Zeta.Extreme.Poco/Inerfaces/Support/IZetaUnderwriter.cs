@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using Qorpent.Model;
+using Zeta.Extreme.Poco.Deprecated;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IZetaUnderwriter :
@@ -24,7 +25,7 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		/// <summary>
 		/// 	Free list of documents,where basis for security provided
 		/// </summary>
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string Documents { get; set; }
+		[Map] string Documents { get; set; }
 
 		bool IsFor(string slot);
 		}

@@ -9,11 +9,12 @@
 #endregion
 
 using Qorpent.Model;
+using Zeta.Extreme.Poco.Deprecated;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IMarkLinkBase {
-		[global::Zeta.Extreme.Poco.Deprecated.NoMap] IEntity MarkLinkTarget { get; set; }
+		[NoMap] IEntity MarkLinkTarget { get; set; }
 
-		[global::Zeta.Extreme.Poco.Deprecated.NoMap] IMark MarkLinkMark { get; set; }
+		[NoMap] IMark MarkLinkMark { get; set; }
 	}
 }

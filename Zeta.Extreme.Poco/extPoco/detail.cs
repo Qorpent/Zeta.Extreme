@@ -9,7 +9,7 @@
 #endregion
 
 using System.Linq;
-using Comdiv.Model;
+using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
@@ -34,7 +34,7 @@ namespace Zeta.Extreme.Poco {
 			get { return (AltObject == null ? Comment : AltObject.Comment) ?? ""; }
 		}
 
-		[Deprecated.Map] public virtual bool InverseControl { get; set; }
+		[Map] public virtual bool InverseControl { get; set; }
 
 		public virtual string FullName { get; set; }
 

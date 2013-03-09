@@ -11,5 +11,5 @@
 using Qorpent.Model;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
-	public interface IZoneElement : IWithId, IWithCode, IWithName, Qorpent.Model.IWithTag {}
+	public interface IZoneElement : IWithId, IWithCode, IWithName, IWithTag {}
 }

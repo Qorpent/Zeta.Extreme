@@ -10,12 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using Comdiv.Model;
-using Comdiv.Persistence;
 using Qorpent.Model;
+using Zeta.Extreme.Poco.Deprecated;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
-	[global::Zeta.Extreme.Poco.Deprecated.ForSearch("Старший объект (предприятие)")]
+	[ForSearch("Старший объект (предприятие)")]
 	public interface IZetaMainObject :
 		IZetaObject,
 		IZetaQueryDimension,
@@ -28,22 +27,22 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		IWithFixRules,
 		IWithAlternateDetailObjects,
 		IWithProperties {
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string GroupCache { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string FullName { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string Formula { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string ShortName { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] DateTime Start { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] DateTime Finish { get; set; }
-		[global::Zeta.Extreme.Poco.Deprecated.Map] string Valuta { get; set; }
+		[Map] string GroupCache { get; set; }
+		[Map] string FullName { get; set; }
+		[Map] string Formula { get; set; }
+		[Map] string ShortName { get; set; }
+		[Map] DateTime Start { get; set; }
+		[Map] DateTime Finish { get; set; }
+		[Map] string Valuta { get; set; }
 
-		[global::Zeta.Extreme.Poco.Deprecated.Map] bool ShowOnStartPage { get; set; }
+		[Map] bool ShowOnStartPage { get; set; }
 
 		IList<IZetaMainObject> Children { get; set; }
 		IZetaMainObject Parent { get; set; }
 		IDetailObjectType ObjType { get; set; }
 		IList<IUsrThemaMap> UsrThemaMaps { get; set; }
 
-		[global::Zeta.Extreme.Poco.Deprecated.Map(ReadOnly = true)] string Path { get; set; }
+		[Map(ReadOnly = true)] string Path { get; set; }
 
 		int Level { get; }
 		int? DivId { get; set; }

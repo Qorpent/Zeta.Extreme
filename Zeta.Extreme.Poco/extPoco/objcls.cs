@@ -8,8 +8,6 @@
 
 #endregion
 
-using Zeta.Extreme.Poco.Inerfaces;
-
 namespace Zeta.Extreme.Poco {
 	public partial class objcls {}
 }

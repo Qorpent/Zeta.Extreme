@@ -8,11 +8,11 @@
 
 #endregion
 
-using Comdiv.Model;
 using Qorpent.Model;
+using Zeta.Extreme.Poco.Deprecated;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
-	[global::Zeta.Extreme.Poco.Deprecated.Classic("SubpartMark")]
+	[Classic("SubpartMark")]
 	public interface IZetaDetailObjectMark :
 		IWithId, IWithVersion,
 		IMarkLink<IZetaDetailObject> //,

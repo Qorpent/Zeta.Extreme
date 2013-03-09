@@ -9,19 +9,18 @@
 #endregion
 
 using System;
-using Comdiv.Model;
+using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class ColumnMark : IZetaColumnMark {
-		[Deprecated.Map] public virtual int Id { get; set; }
+		[Map] public virtual Guid Uid { get; set; }
+		[Map] public virtual int Id { get; set; }
 
-		[Deprecated.Map] public virtual Guid Uid { get; set; }
+		[Map] public virtual DateTime Version { get; set; }
 
-		[Deprecated.Map] public virtual DateTime Version { get; set; }
+		[Ref(ClassName = typeof (col))] public virtual IZetaColumn Target { get; set; }
 
-		[Deprecated.Ref(ClassName = typeof (col))] public virtual IZetaColumn Target { get; set; }
-
-		[Deprecated.Ref(ClassName = typeof (Mark))] public virtual IMark Mark { get; set; }
+		[Ref(ClassName = typeof (Mark))] public virtual IMark Mark { get; set; }
 	}
 }

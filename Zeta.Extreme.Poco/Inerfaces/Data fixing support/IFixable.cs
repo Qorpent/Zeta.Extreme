@@ -8,12 +8,14 @@
 
 #endregion
 
+using Zeta.Extreme.Poco.Deprecated;
+
 namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IFixable {
 		bool Finished { get; set; }
 
-		[global::Zeta.Extreme.Poco.Deprecated.NoMap] FixRuleResult Fixed { get; set; }
+		[NoMap] FixRuleResult Fixed { get; set; }
 
-		[global::Zeta.Extreme.Poco.Deprecated.NoMap] int FixRuleId { get; set; }
+		[NoMap] int FixRuleId { get; set; }
 	}
 }

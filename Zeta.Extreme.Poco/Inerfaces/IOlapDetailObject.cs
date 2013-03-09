@@ -8,8 +8,6 @@
 
 #endregion
 
-using Comdiv.Model;
-
 namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IOlapDetailObject<M, D> :
 		IDimension, IWithRange,

@@ -9,13 +9,13 @@
 #endregion
 
 using System.Collections.Generic;
+using Zeta.Extreme.Poco.Deprecated;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
-	[Deprecated.Classic("ValueType")]
-	[Deprecated.ForSearch("Колонка, показатель")]
+	[Classic("ValueType")]
+	[ForSearch("Колонка, показатель")]
 	public interface IZetaColumn :
 		IOlapColumn,
-
 		IZetaQueryDimension,
 		IWithMarkCache,
 		IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
@@ -36,7 +36,7 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		/// <summary>
 		/// 	Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
-		[global::Zeta.Extreme.Poco.Deprecated.NoMap] string ForeignCode { get; set; }
+		[NoMap] string ForeignCode { get; set; }
 
 		string GetStaticMeasure(string format);
 		string GetDynamicMeasure(IZetaRow source, string format);

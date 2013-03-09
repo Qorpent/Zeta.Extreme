@@ -8,7 +8,6 @@
 
 #endregion
 
-using Comdiv.Model;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
@@ -36,7 +35,7 @@ namespace Zeta.Extreme.Poco {
 
 		public override string ToString() {
 			return string.Format("cell:{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}",
-			                     Row.Code, Column.Code, Object.Code, null==DetailObject?"":DetailObject.Code, Year, Period,
+			                     Row.Code, Column.Code, Object.Code, null == DetailObject ? "" : DetailObject.Code, Year, Period,
 			                     DirectDate.ToString("yyyy-MM-dd"), Value
 				);
 		}

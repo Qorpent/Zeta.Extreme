@@ -8,8 +8,8 @@
 
 #endregion
 
-using Zeta.Extreme.Poco.Deprecated;
 using Qorpent.Model;
+using Zeta.Extreme.Poco.Deprecated;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
 	[ForSearch("Регион")]
