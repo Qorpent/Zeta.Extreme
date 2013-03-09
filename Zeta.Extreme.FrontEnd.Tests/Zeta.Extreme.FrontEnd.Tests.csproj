@@ -27,10 +27,6 @@
       <Project>{B758E220-22F5-47DF-A73B-BC9B1A3DBDC3}</Project>
       <Name>Qorpent.Dsl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Comdiv.Zeta.Model\Comdiv.Zeta.Model.csproj">
-      <Project>{F939564A-D5A9-4BEE-B8F2-47C384358AFC}</Project>
-      <Name>Comdiv.Zeta.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.Core.Tests\Zeta.Extreme.Core.Tests.csproj">
       <Project>{736C7DE4-EB8F-4CC0-9372-07B55D1E1797}</Project>
       <Name>Zeta.Extreme.Core.Tests</Name>

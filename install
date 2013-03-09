@@ -76,7 +76,7 @@
 		-->
 			<!--dependency -->
 			<!-- HAVE TO KILL ALL OF IT !!! -->
-			<Library Include="Comdiv.Zeta.Model" />
+		<!--	<Library Include="Comdiv.Zeta.Model" /> -->
 			<Library Include="Comdiv.Core" />			
 			<Library Include="Comdiv.Reporting" />
 			<Library Include="Comdiv.Extensibility" />
