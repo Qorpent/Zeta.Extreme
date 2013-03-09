@@ -13,13 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.XPath;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Inversion;
-using Comdiv.Logging;
-using Comdiv.Persistence;
 using Qorpent.Applications;
 using Qorpent.Dsl.LogicalExpressions;
+using Qorpent.IoC;
 using Qorpent.Log;
 using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.BizProcess.StateManagement;
@@ -53,22 +49,13 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <summary>
 		/// 	Ссылка на контейнер инверсии
 		/// </summary>
-		public IInversionContainer Container {
-			get {
-				if (_container.invalid()) {
-					lock (this) {
-						if (_container.invalid()) {
-							Container = myapp.ioc;
-						}
-					}
-				}
-				return _container;
-			}
+		public IContainer Container {
+			get { return _container ?? (_container = Application.Current.Container); }
 			set { _container = value; }
 		}
 
 		private IStateManager StateManager {
-			get { return _stateManager ?? (_stateManager = Container.get<IStateManager>() ?? StateManagement.StateManager.Default); }
+			get { return _stateManager ?? (_stateManager = Container.Get<IStateManager>() ?? StateManagement.StateManager.Default); }
 			set { _stateManager = value; }
 		}
 
@@ -87,12 +74,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		public IScheduleChecker ScheduleChecker {
 			get {
-				if (_scheduleChecker == null) {
-					if (ScheduleClass.IsNotEmpty()) {
-						_scheduleChecker = InversionExtensions.typenameOrIoc<IScheduleChecker>(ScheduleClass);
-					}
-				}
-				return _scheduleChecker;
+				return _scheduleChecker ?? (_scheduleChecker = Container.Get<IScheduleChecker>(ScheduleClass));
 			}
 		}
 
@@ -134,7 +116,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// 	Список перехватчиков проверки статусов
 		/// </summary>
 		public IList<IStateCheckInterceptor> StateInterceptors {
-			get { return _stateInterceptors ?? (_stateInterceptors = Container.all<IStateCheckInterceptor>().ToList()); }
+			get { return _stateInterceptors ?? (_stateInterceptors = Container.All<IStateCheckInterceptor>().ToList()); }
 			set { _stateInterceptors = value; }
 		}
 
@@ -391,7 +373,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 
 			if (AttachedFileType.Default == filestype) {
 
-				return myapp.ioc.get<IDbfsRepository>().SearchBySpecialProc("usm.get_form_attachments",
+				return Application.Current.Container.Get<IDbfsRepository>().SearchBySpecialProc("usm.get_form_attachments",
 				                                                            new Dictionary<string, object>
 				                                                            	{
 				                                                            		{"form", this.Code},
@@ -610,7 +592,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		public bool IgnorePeriodState {
 			get {
-				if (myapp.roles.IsInRole(myapp.usr, "IGNOREPERIODSTATE", false)) {
+				if (Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, "IGNOREPERIODSTATE", false)) {
 					return true;
 				}
 				if (null != Thema) {
@@ -628,20 +610,6 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// 	Проверка зависимости объекта
 		/// </summary>
 		public bool IsObjectDependent { get; set; }
-
-		/// <summary>
-		/// 	Получить форму (регистрацию)
-		/// </summary>
-		/// <param name="obj"> </param>
-		/// <returns> </returns>
-		public IForm GetForm(IZetaMainObject obj) {
-			var theform =
-				myapp.storage.Get<IForm>().First(
-					"from ENTITY x where x.Template = ? and x.Object.Id=? and x.Year =? and x.Period = ?",
-					UnderwriteCode ?? Code, obj.Id, Year, Period
-					);
-			return theform;
-		}
 
 		/// <summary>
 		/// 	Формы - источники - библиотеки
@@ -772,7 +740,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public IDetailFilter DetailFilter {
 			get {
 				if (null == detailFilter && DetailFilterName.IsNotEmpty()) {
-					detailFilter = DetailFilterName.get<IDetailFilter>();
+					detailFilter = Container.Get<IDetailFilter>(DetailFilterName);
 					detailFilter.Configure(this);
 				}
 				return detailFilter;
@@ -849,33 +817,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			}
 			return cachedState;
 		}
-		/*
-		/// <summary>
-		/// 	Признак формы для деталей
-		/// </summary>
-		public bool IsForDetail {
-			get {
-				if (null == Form) {
-					return false;
-				}
-				if (null == Form.Target) {
-					Form.Target = RowCache.SafeGet(Form.Code);
-				}
-				return Form.Target.isDetailForm();
-			}
-		}
-
-		/// <summary>
-		/// 	Признак ввода для деталей
-		/// </summary>
-		public bool IsInputForDetail {
-			get {
-				if (IsForDetail) {
-					return true;
-				}
-				return InputForDetail;
-			}
-		}*/
+		
 
 		/// <summary>
 		/// 	Полный метод проверки видимости
@@ -935,7 +877,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public IDictionary<string, object> ReloadSqlCache(IZetaMainObject obj, int year, int period) {
 			SqlCache = new Dictionary<string, decimal>();
 			var result =
-				Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection("Default").ExecuteDictionaryReader(
+				Application.Current.DatabaseConnections.GetConnection("Default").ExecuteDictionaryReader(
 					"exec " + SqlOptimization + " @obj = @obj, @year = @year, @period = @period",
 					new Dictionary<string, object>
 						{
@@ -1045,7 +987,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			//state_ = state;
 
 
-			var periodmapper = Container.get<ILockPeriodMapper>();
+			var periodmapper = Container.Get<ILockPeriodMapper>();
 			var toperiods = new int[] {};
 			if (null != periodmapper) {
 				var op = LockOperation.None;
@@ -1080,19 +1022,6 @@ namespace Zeta.Extreme.Form.InputTemplates {
 
 			StateManager.Process(this, obj, detail, state, master);
 
-			myapp.getProfile().Set("refresh", "True");
-			/*
-			//в ситуации проверки часто срабатывают триггеры обновления данных
-			if (state == "0ISCHECKED") {
-				var objid = obj == null ? detail.Object.Id : obj.Id();
-				var detailid = detail == null ? 0 : detail.Id;
-				Evaluator.DefaultCache.Clear(@"(?i)org\(" + objid + @"\)");
-				if (detailid != 0) {
-					Evaluator.DefaultCache.Clear(@"(?i)subpart\(" + detailid + @"\)");
-				}
-				Evaluator.InvokeChanged();
-			}
-			*/
 			cachedState = state;
 			return master;
 		}
@@ -1353,7 +1282,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public IZetaMainObject FixedObject {
 			get {
 				if (_fixedobj == null && FixedObjectCode.IsNotEmpty()) {
-					_fixedobj = myapp.storage.Get<IZetaMainObject>().Load(FixedObjectCode);
+					_fixedobj = MetaCache.Default.Get<IZetaMainObject>(FixedObjectCode);
 				}
 				return _fixedobj;
 			}
@@ -1445,7 +1374,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 
 		private int processStateRow(IZetaDetailObject detail, IZetaMainObject obj, int period, string state,
 		                            string comment, int parent) {
-			var result = StateManager.DoSet(obj.Id, Year, period, UnderwriteCode, Code, myapp.usrName, state, comment, parent);
+			var result = StateManager.DoSet(obj.Id, Year, period, UnderwriteCode, Code, Application.Current.Principal.CurrentUser.Identity.Name, state, comment, parent);
 #if OLDSTATES
             using (var s = new TemporaryTransactionSession())
             {
@@ -1469,10 +1398,10 @@ namespace Zeta.Extreme.Form.InputTemplates {
                                                                         });
 
                 c.RowData.StringValue = state;
-                c.Usr = myapp.usrName;
+                c.Usr = Application.Current.Principal.CurrentUserName;
                 myapp.storage.Get<IZetaCell>().Save(c);
 #endif
-			var conn = Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection("Default"); //myapp.ioc.getSession().Connection;
+			var conn = Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection("Default"); //Application.Current.Container.GetSession().Connection;
 			var parameters = new Dictionary<string, object>();
 
 			parameters["row"] = UnderwriteCode;
@@ -1491,7 +1420,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				conn.CreateCommand(
 					"exec usm.state_after_change @row=@row,@obj=@obj,@year=@year,@period=@period, @newstate=@newstate,@trow=@trow, @template = @template",
 					parameters);
-			//myapp.ioc.getSession().Transaction.Enlist(command);
+			//Application.Current.Container.GetSession().Transaction.Enlist(command);
 			command.ExecuteNonQuery();
 			//if (state == "0ISCHECKED") {
 			//	Evaluator.DefaultCache.Clear();
@@ -1507,22 +1436,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		}
 
 		private void AssumeExistsState(string code) {
-			var s = myapp.storage.Get<IZetaRow>();
-			var row = s.Load(code);
-			if (null == row) {
-				var parentrow = s.Load("0STATE");
-				if (null == parentrow) {
-					parentrow = s.New();
-					parentrow.Code = "0STATE";
-					parentrow.Name = "Статус форм";
-					s.Save(parentrow);
-				}
-				row = s.New();
-				row.Code = code;
-				row.Name = Name;
-				row.Parent = parentrow;
-				s.Save(row);
-			}
+			throw new NotSupportedException("this method not supported by extreme core");
 		}
 
 		/// <summary>
@@ -1566,7 +1480,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public Task CanSetTask;
 
 		private IList<ColumnDesc> _cachedcolumns;
-		private IInversionContainer _container;
+		private IContainer _container;
 		private IDictionary<string, string> _documents = new Dictionary<string, string>();
 		private string[] _excludes;
 		private IZetaMainObject _fixedobj;

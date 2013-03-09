@@ -14,12 +14,8 @@ using System.Data;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Comdiv.Application;
-using Comdiv.Common;
-using Comdiv.Extensions;
-using Comdiv.Inversion;
-using Comdiv.Persistence;
 using Qorpent.Applications;
+using Qorpent.IoC;
 using Zeta.Extreme.BizProcess.StateManagement;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.InputTemplates;
@@ -35,16 +31,6 @@ namespace Zeta.Extreme.Form.StateManagement {
 	public class StateManager : IStateManager {
 		private static StateManager _default;
 
-		/// <summary>
-		/// </summary>
-		public StateManager() : this(true) {}
-
-		/// <summary>
-		/// </summary>
-		/// <param name="withreload"> </param>
-		public StateManager(bool withreload) {
-			myapp.OnReload += Reload;
-		}
 
 		/// <summary>
 		/// 	Инстанция по умолчанию
@@ -61,17 +47,8 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <summary>
 		/// 	Обратная ссылка на контейнер
 		/// </summary>
-		public IInversionContainer Container {
-			get {
-				if (_container.invalid()) {
-					lock (this) {
-						if (_container.invalid()) {
-							Container = ioc.Container;
-						}
-					}
-				}
-				return _container;
-			}
+		public IContainer Container {
+			get { return _container ?? (_container = Application.Current.Container); }
 			set { _container = value; }
 		}
 
@@ -180,17 +157,6 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <returns> </returns>
 		public int GetPeriodState(int year, int period) {
 			return new PeriodStateManager().Get(year, period).State ? 1 : 0;
-		}
-
-		/// <summary>
-		/// 	Установить статус периода
-		/// </summary>
-		/// <param name="year"> </param>
-		/// <param name="period"> </param>
-		/// <param name="state"> </param>
-		public void SetPeriodState(int year, int period, int state) {
-			new PeriodStateManager().UpdateState(new PeriodStateRecord
-				{Year = year, Period = period, State = state == 0 ? false : true});
 		}
 
 		/// <summary>
@@ -365,7 +331,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 						/*
 						 * var pkg = req.GetDefaultPkg();
 						var files =
-							myapp.ioc.get<IDbfsRepository>().Search(new Dictionary<string, string>
+							Application.Current.Container.Get<IDbfsRepository>().Search(new Dictionary<string, string>
 																	{{"pkg", pkg.Id.ToString()}});
 						 * 
                         var tags = template.NeedFiles.split();
@@ -431,7 +397,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 
 				/* правило 5 - нельзя открывать форму если утверждена финальная */
 				if (fs.ToBool() && state == "0ISOPEN") {
-					var periodmapper = Container.get<ILockPeriodMapper>();
+					var periodmapper = Container.Get<ILockPeriodMapper>();
 					var toperiods = new int[] {};
 					if (null != periodmapper) {
 						var op = LockOperation.None;
@@ -629,12 +595,6 @@ namespace Zeta.Extreme.Form.StateManagement {
 		}
 
 
-		private void Reload(object sender, EventWithDataArgs<int> args) {
-			lock (this) {
-				initialized = false;
-			}
-		}
-
 		/// <summary>
 		/// 	Получить формы - финализаторы
 		/// </summary>
@@ -692,7 +652,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 			lock (this) {
 				if (!initialized) {
 					//if (null == FactoryProvider) {
-					//	FactoryProvider = Qorpent.Applications.Application.Current.Container.Get<IThemaFactoryProvider>(); // myapp.ioc.get<IThemaFactoryProvider>();
+					//	FactoryProvider = Qorpent.Applications.Application.Current.Container.Get<IThemaFactoryProvider>(); // Application.Current.Container.Get<IThemaFactoryProvider>();
 					//}
 					var factory = Application.Current.Container.Get<IThemaFactory>("form.server.themas");
 					var x = XElement.Parse(factory.SrcXml);
@@ -765,7 +725,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 					}
 				}
 			}*/
-			if (myapp.roles.IsInRole(myapp.usr, "SYS_NOCONTROLPOINTS", false)) {
+			if (Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, "SYS_NOCONTROLPOINTS", false)) {
 				if (!result) {
 					cp = "cpavoid";
 				}
@@ -775,7 +735,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		}
 
 		private readonly IDictionary<int, int> perioddependency = new Dictionary<int, int>();
-		private IInversionContainer _container;
+		private IContainer _container;
 		private List<XElement> dependences;
 		private List<XElement> extensions;
 		private List<XElement> finals;

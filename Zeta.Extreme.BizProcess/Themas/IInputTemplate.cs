@@ -404,13 +404,6 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		string GetState(IZetaMainObject zetaMainObject, IZetaDetailObject detail, IDictionary<string, object> statecache);
 
 		/// <summary>
-		/// 	Получить лычку формы
-		/// </summary>
-		/// <param name="obj"> </param>
-		/// <returns> </returns>
-		IForm GetForm(IZetaMainObject obj);
-
-		/// <summary>
 		/// 	Проверить соответствие объекта форме
 		/// </summary>
 		/// <param name="obj"> </param>

@@ -10,7 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using Comdiv.Application;
+using Qorpent.Applications;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Poco.Inerfaces;
@@ -31,7 +31,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		public bool IsReadOnly {
 			get {
-				if (myapp.roles.IsInRole("NOBLOCK", false)) {
+				if (Application.Current.Roles.IsInRole("NOBLOCK", false)) {
 					return false;
 				}
 				return Template.GetState(Object, null) != "0ISOPEN" || !Template.IsPeriodOpen();
@@ -140,24 +140,6 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			get { return parameters; }
 		}
 
-		/// <summary>
-		/// 	Связанная длительная задача
-		/// </summary>
-		public LongTask Task { get; set; }
-
-
-
-		/// <summary>
-		/// 	Проверка активности формы
-		/// </summary>
-		/// <param name="full"> </param>
-		/// <exception cref="Exception"></exception>
-		public void CheckFormLive(bool full = false) {
-			if (Task.HaveToTerminate || (full && (null != Task.Context && !Task.Context.Response.IsClientConnected))) {
-				Task.Terminate();
-				throw new Exception("Выполнение формы было отменено (noerrc)");
-			}
-		}
 
 		/// <summary>
 		/// 	Создает копию

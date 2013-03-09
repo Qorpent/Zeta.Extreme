@@ -12,12 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using Comdiv.Application;
-using Comdiv.Extensions;
+using Qorpent.Applications;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Reports;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Form.InputTemplates;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -63,7 +61,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		/// <returns> </returns>
 		public IEnumerable<IThema> GetForUser() {
-			return GetForUser(myapp.usr);
+			return GetForUser(Application.Current.Principal.CurrentUser);
 		}
 
 		/// <summary>

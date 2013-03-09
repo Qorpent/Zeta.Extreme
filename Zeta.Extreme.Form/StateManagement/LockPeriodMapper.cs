@@ -10,10 +10,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Comdiv.Application;
-using Comdiv.Common;
-using Comdiv.Extensions;
-using Comdiv.IO;
 using Qorpent.Bxl;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.StateManagement;
@@ -27,10 +23,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 
 		private static readonly IDictionary<string, int[]> lockmap = new Dictionary<string, int[]>();
 
-		static LockPeriodMapper() {
-			myapp.OnReload += myapp_OnReload;
-		}
-
+		
 
 		/// <summary>
 		/// 	Получить список блокированных периодов с командами блокировки
@@ -54,7 +47,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		}
 
 		private static void reloadCheckMap() {
-			var file = myapp.files.Read("lockmap.bxl");
+			var file = Qorpent.Applications.Application.Current.Files.Read<string>("lockmap.bxl");
 			if (file.IsNotEmpty()) {
 				var xml = new BxlParser().Parse(file);
 				foreach (var element in xml.Elements()) {
@@ -73,13 +66,6 @@ namespace Zeta.Extreme.Form.StateManagement {
 				}
 			}
 			loaded = true;
-		}
-
-		private static void myapp_OnReload(object sender, EventWithDataArgs<int> args) {
-			lock (lockmap) {
-				lockmap.Clear();
-				loaded = false;
-			}
 		}
 	}
 }

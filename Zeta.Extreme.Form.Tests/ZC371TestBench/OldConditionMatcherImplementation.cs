@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Comdiv.Extensibility;
-using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Form.Tests.ZC371TestBench
 {
@@ -49,8 +47,8 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench
 
 		protected override bool EvaluateByListLikeCondition(string condition, IEnumerable<string> conds)
 		{
-			var condsets = condition.split(false, true, '|');
-			return condsets.Select(condset => conds.containsAll(condset.split().ToArray())).Any(match => match);
+			var condsets = condition.SmartSplit(false, true, '|');
+			return condsets.Select(condset => conds.ContainsAll(condset.SmartSplit().ToArray())).Any(match => match);
 		}
 
 		protected override bool IsConditionListLike(string condition)

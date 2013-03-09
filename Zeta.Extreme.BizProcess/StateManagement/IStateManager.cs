@@ -104,14 +104,6 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		string DoGet(int objid, int year, int period, string template);
 
 		/// <summary>
-		/// 	Установить статус периода
-		/// </summary>
-		/// <param name="year"> </param>
-		/// <param name="period"> </param>
-		/// <param name="state"> </param>
-		void SetPeriodState(int year, int period, int state);
-
-		/// <summary>
 		/// 	Получить статус периода
 		/// </summary>
 		/// <param name="year"> </param>

@@ -12,10 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using Comdiv.Application;
-using Comdiv.Extensions;
+using Qorpent.Applications;
 using Qorpent.Utils.Extensions;
-using Comdiv.Security.Acl;
 using Zeta.Extreme.BizProcess.Reports;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Poco.Inerfaces;
@@ -284,7 +282,7 @@ namespace Zeta.Extreme.Form.Themas {
 				if (!Qorpent.Applications.Application.Current.Roles.IsAdmin(usr)) {
 					var hasrole = false;
 					foreach (var r in Role.SmartSplit()) {
-						if (myapp.roles.IsInRole(r)) {
+						if (Application.Current.Roles.IsInRole(r)) {
 							hasrole = true;
 							break;
 						}
@@ -310,7 +308,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		/// <returns> </returns>
 		public bool IsVisible() {
-			return IsVisible(myapp.usr);
+			return IsVisible(Application.Current.Principal.CurrentUser);
 		}
 
 		/// <summary>
@@ -365,7 +363,8 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="usr"> </param>
 		/// <returns> </returns>
 		public IThema Personalize(IPrincipal usr) {
-			var result = Clone(false) as Thema;
+			throw new NotSupportedException("Персонализация на данный момент не поддерживается");
+			/*var result = Clone(false) as Thema;
 			foreach (var form in result.Forms.Values.ToArray()) {
 				if (!acl.get(form, null, null, usr, false)) {
 					result.Forms.Remove(form.Code);
@@ -402,7 +401,7 @@ namespace Zeta.Extreme.Form.Themas {
 				}
 			}
 
-			return result;
+			return result;*/
 		}
 
 		/// <summary>

@@ -14,11 +14,9 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Comdiv.Application;
-using Comdiv.IO;
-using Comdiv.Inversion;
 using Qorpent.Applications;
 using Qorpent.IO;
+using Qorpent.IoC;
 using Zeta.Extreme.BizProcess.Themas;
 
 using Qorpent.Utils.Extensions;
@@ -39,28 +37,19 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <summary>
 		/// 	Обратная ссылка на контейнер
 		/// </summary>
-		public IInversionContainer Container {
-			get {
-				if (_container.invalid()) {
-					lock (this) {
-						if (_container.invalid()) {
-							Container = myapp.Container;
-						}
-					}
-				}
-				return _container;
-			}
+		public IContainer Container {
+			get { return _container ?? (_container = Application.Current.Container); }
 			set { _container = value; }
 		}
 
 		/// <summary>
 		/// 	Резольвер файлов
 		/// </summary>
-		public IFilePathResolver PathResolver {
+		public IFileService PathResolver {
 			get {
 				lock (this) {
 					if (null == _pathResolver) {
-						_pathResolver = myapp.files;
+						_pathResolver = Application.Current.Files;
 					}
 					return _pathResolver;
 				}
@@ -99,7 +88,7 @@ namespace Zeta.Extreme.Form.Themas {
 					overfile = PathResolver.Resolve("~/usr/data/override.xml", false);
 					PathResolver.Write(overfile, "<root/>");
 				}
-				var content = XElement.Parse(PathResolver.Read(overfile));
+				var content = XElement.Parse(PathResolver.Read<string>(overfile));
 				var themaelement = content.XPathSelectElement("./thema[@id='" + themacode + "']");
 				if (themaelement == null) {
 					themaelement = new XElement("thema", new XAttribute("id", themacode));
@@ -366,43 +355,7 @@ namespace Zeta.Extreme.Form.Themas {
 				if (!input.Active) {
 					continue;
 				}
-				/*input.TemplateXml = new XElement("input");
-//NOTE: редкостная блуда для совместимости, просто редкостная
-				var exfile = PathResolver.ResolveAll("data", input.Template + ".xml", true).FirstOrDefault();
-				if (null == exfile) {
-					input.Template = "empty.in";
-				}
-
-				if (input.Template == "empty.in") {
-					input.TemplateXml = XElement.Parse("<input/>");
-				}
-				else {
-					var templateFile = PathResolver.ResolveAll("data", input.Template + ".xml", true).FirstOrDefault();
-					if (null == templateFile) {
-						input.IsError = true;
-						input.Warrnings.Add("отсутствует шаблон с кодом " + input.Template);
-					}
-					else {
-						input.TemplateXml =
-							XElement.Parse(PathResolver.ReadXml(templateFile, null,
-																new ReadXmlOptions
-																	{UseIncludes = true, IncludeRoot = "data/include/"}));
-#if ADAPT_TO_OLD_INPUT_TEMPLATES
-						foreach (var info in input.GetType().GetProperties()){
-							var name = "form." + info.Name.ToLower();
-							configuration.Parameters[name] = new TypedParameter{
-																				   Name = name,
-																				   Type = info.PropertyType,
-																				   Value =
-																					   input.getPropertySafe<string>(
-																						   info.Name)
-																			   };
-						}
-
-#endif
-						embedParametersIntoXml(configuration, input.TemplateXml);
-					}
-				}*/
+				
 				input.Sources = element.Elements("uselib").Select(x => x.Attr("id")).Where(x => x.IsNotEmpty()).ToArray();
 				input.ColumnDefinitions = element.XPathSelectElements("./col").ToArray();
 				input.RowDefinitions = element.XPathSelectElements("./row").ToArray();
@@ -481,82 +434,11 @@ namespace Zeta.Extreme.Form.Themas {
 						output.TemplateXml.Add(e);
 					}
 				}
-				else {
-					var templateFile = PathResolver.ResolveAll("data", output.Template + ".xml", true).FirstOrDefault();
-					if (null == templateFile) {
-						output.IsError = true;
-						output.Warrnings.Add("отсутствует шаблон с кодом " + output.Template);
-					}
-					else {
-						output.TemplateXml =
-							XElement.Parse(PathResolver.ReadXml(templateFile, null,
-							                                    new ReadXmlOptions
-								                                    {UseIncludes = true, IncludeRoot = "data/include/"}));
-#if ADAPT_TO_OLD_INPUT_TEMPLATES
-                        foreach (var info in output.GetType().GetProperties()){
-                            var name = "report." + info.Name.ToLower();
-                            configuration.Parameters[name] = new TypedParameter{
-                                                                                   Name = name,
-                                                                                   Type = info.PropertyType,
-                                                                                   Value =
-                                                                                       output.getPropertySafe<string>(
-                                                                                           info.Name)
-                                                                               };
-                        }
-
-#endif
-						embedParametersIntoXml(configuration, output.TemplateXml);
-
-						var parameters = element.XPathSelectElements("./param");
-
-						foreach (var parameter in parameters) {
-							var param = readParameter(parameter);
-							output.Parameters.Add(param);
-						}
-					}
-				}
-
-
 				configuration.Outputs[output.Code] = output;
 			}
 		}
 
-		//class processedannotation {}
-		//static processedannotation _defpa = new processedannotation();
-		private void embedParametersIntoXml(ThemaConfiguration configuration, XElement x) {
-			foreach (var e in x.DescendantsAndSelf()) {
-				//if (null != e.Annotations<processedannotation>().FirstOrDefault()) continue;
-
-				foreach (var a in e.Attributes()) {
-					if (-1 != a.Value.IndexOf('$')) {
-						a.Value = embedParameters(configuration, a.Value);
-					}
-					if (-1 != a.Value.IndexOf('#')) {
-						//escapes some custom constructions, that must use ${...} constructions further
-						a.Value = a.Value.Replace("#{", "${");
-					}
-				}
-				foreach (var n_ in e.Nodes()) {
-					if (n_ is XText) {
-						var a = n_ as XText;
-						if (-1 != a.Value.IndexOf('$')) {
-							a.Value = embedParameters(configuration, a.Value);
-						}
-						if (-1 != a.Value.IndexOf('#')) {
-							//escapes some custom constructions, that must use ${...} constructions further
-							a.Value = a.Value.Replace("#{", "${");
-						}
-					}
-				}
-				// e.AddAnnotation(_defpa);
-			}
-		}
-
-
-		private string embedParameters(ThemaConfiguration configuration, string val) {
-			return val.RegexReplace(@"\$\{([\.\w]+)\}", m => configuration.ResolveParameter(m.Groups[1].Value).Value);
-		}
-
+		
 
 		private TypedParameter readParameter(XElement parameter) {
 			var p = new TypedParameter
@@ -592,8 +474,8 @@ namespace Zeta.Extreme.Form.Themas {
 		}
 
 		private DateTime _cfgVersion;
-		private IInversionContainer _container;
+		private IContainer _container;
 
-		private IFilePathResolver _pathResolver;
+		private IFileService _pathResolver;
 	}
 }

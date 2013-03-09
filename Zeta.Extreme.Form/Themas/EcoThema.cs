@@ -12,12 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Inversion;
+using Qorpent.Applications;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Meta;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Form.Themas {
@@ -176,13 +173,13 @@ namespace Zeta.Extreme.Form.Themas {
 			var result = (EcoThema) base.Accomodate(obj, year, period);
 			if (obj != null) {
 				if (result.NeedResponsibility) {
-					result.Responsibility = myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility(Code, "Default", obj);
-					result.Responsibility2 = myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility2(Code, "Default", obj);
+					result.Responsibility = Application.Current.Container.Get<IUsrThemaMapRepository>().GetResponsibility(Code, "Default", obj);
+					result.Responsibility2 = Application.Current.Container.Get<IUsrThemaMapRepository>().GetResponsibility2(Code, "Default", obj);
 				}
 				var h = MetaCache.Default.Get<IZetaMainObject>("0CH");
 				if (null != h) {
 					result.HoldResponsibility =
-						myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility(Code, "Default", h);
+						Application.Current.Container.Get<IUsrThemaMapRepository>().GetResponsibility(Code, "Default", h);
 				}
 				if (obj.Id == h.Id) {
 					result.Responsibility = result.HoldResponsibility;

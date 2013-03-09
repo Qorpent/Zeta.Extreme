@@ -21,7 +21,6 @@ using System.Data;
 using System.Linq;
 using System.Security;
 using System.Security.Principal;
-using Comdiv.Application;
 using Qorpent.Applications;
 using Qorpent.IoC;
 using Qorpent.Utils.Extensions;
@@ -44,7 +43,7 @@ namespace Zeta.Extreme.Form.Meta{
         public static IPrincipal DefaultUser{
             get{
                 lock (sync){
-                    return myapp.usr;
+                    return Application.Current.Principal.CurrentUser;
                 }
             }
         }
@@ -121,7 +120,7 @@ namespace Zeta.Extreme.Form.Meta{
             lock (sync){
 				if (null == obj) return true;
                 if (TagHelper.Value(obj.Tag, "public").ToBool()) return true;
-                if (myapp.roles.IsAdmin(user)){
+                if (Application.Current.Roles.IsAdmin(user)){
                     return true;
                 }
                 if (HasAll(user)){
@@ -142,14 +141,9 @@ namespace Zeta.Extreme.Form.Meta{
             }
         }
 
-		private static IDbConnection getConnection()
-		{
-			if (null == Qorpent.Applications.Application.Current.DatabaseConnections)
-			{
-				return myapp.getConnection("Default");
-			}
-			return Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection("Default") ??
-				   myapp.getConnection("Default");
+		private static IDbConnection getConnection() {
+
+			return Application.Current.DatabaseConnections.GetConnection("Default");
 		}
 
         /// <summary>
@@ -227,7 +221,7 @@ namespace Zeta.Extreme.Form.Meta{
         /// <param name="start"></param>
         /// <returns></returns>
         public static IZetaMainObject[] GetAvailOrgs(bool start){
-            return GetAvailOrgs(myapp.usr, "", start);
+            return GetAvailOrgs(Application.Current.Principal.CurrentUser, "", start);
         }
 
 	    /// <summary>

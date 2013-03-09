@@ -15,10 +15,6 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">
-      <Project>{C51304FD-0406-48E0-833E-EEDC67425BC8}</Project>
-      <Name>Comdiv.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
       <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
       <Name>Qorpent.Core</Name>
