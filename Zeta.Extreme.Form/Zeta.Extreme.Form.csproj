@@ -14,22 +14,6 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">
-      <Project>{c51304fd-0406-48e0-833e-eedc67425bc8}</Project>
-      <Name>Comdiv.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\core\Comdiv.Dependency\Comdiv.Dependency.csproj">
-      <Project>{6e58c87c-2522-4aa5-9211-6109305b2d7b}</Project>
-      <Name>Comdiv.Dependency</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\core\Comdiv.Extensibility\Comdiv.Extensibility.csproj">
-      <Project>{C1944938-B798-478A-BA1C-FDA8BA152FF3}</Project>
-      <Name>Comdiv.Extensibility</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\core\Comdiv.Reporting\Comdiv.Reporting.csproj">
-      <Project>{053ae040-0545-4ed0-927a-69b3423ba66d}</Project>
-      <Name>Comdiv.Reporting</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Bxl\Qorpent.Bxl.csproj">
       <Project>{381DEC86-5709-4A64-BD9F-462E792884CE}</Project>
       <Name>Qorpent.Bxl</Name>
@@ -38,27 +22,24 @@
       <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
       <Name>Qorpent.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Dsl\Qorpent.Dsl.csproj">
+      <Project>{B758E220-22F5-47DF-A73B-BC9B1A3DBDC3}</Project>
+      <Name>Qorpent.Dsl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
       <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
       <Name>Qorpent.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Comdiv.Zeta.Data.Minimal\Comdiv.Zeta.Data.Minimal.csproj">
-      <Project>{d964fb40-aa23-4ec6-aef0-f418303ff5de}</Project>
-      <Name>Comdiv.Zeta.Data.Minimal</Name>
+    <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
+      <Project>{44653de7-dee5-4960-a906-e0d6b1f83fcc}</Project>
+      <Name>Zeta.Extreme.BizProcess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Comdiv.Zeta.Model\Comdiv.Zeta.Model.csproj">
-      <Project>{f939564a-d5a9-4bee-b8f2-47c384358afc}</Project>
-      <Name>Comdiv.Zeta.Model</Name>
+    <ProjectReference Include="..\Zeta.Extreme.Poco\Zeta.Extreme.Poco.csproj">
+      <Project>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</Project>
+      <Name>Zeta.Extreme.Poco</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Boo.Lang.Compiler, Version=2.0.9.4, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\exras\lib\Boo.Lang.Compiler.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL" />
-    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.XML" />
@@ -66,80 +47,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstracts\IFormDataSynchronize.cs" />
-    <Compile Include="Abstracts\IFormSession.cs" />
     <Compile Include="Abstracts\IFormSessionControlPointSource.cs" />
-    <Compile Include="FixHelper.cs" />
-    <Compile Include="InputTemplates\AttachedFileType.cs">
+    <Compile Include="DbfsAttachmentSource\DbfsAttachmentStorage.cs" />
+    <Compile Include="InputTemplates\InputTemplateRequest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SaveSupport\AutoFill.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SaveSupport\AutoFillType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SaveSupport\ICustomFormSaver.cs" />
+    <Compile Include="Meta\UserOrgDataMapper.cs" />
+    <Compile Include="SaveSupport\DataSaverBase.cs" />
+    <Compile Include="SaveSupport\DefaultSessionDataSaver.cs" />
+    <Compile Include="SaveSupport\IFormSessionDataSaver.cs" />
+    <Compile Include="SaveSupport\SaveResult.cs" />
+    <Compile Include="SaveSupport\SaveStage.cs" />
+    <Compile Include="SimpleZetaRoleResolver.cs" />
     <Compile Include="StateManagement\StateRule.cs" />
-    <Compile Include="SaveSupport\CellFixingValidator.cs" />
-    <Compile Include="SaveSupport\CellsAreOfTargetOrg.cs" />
-    <Compile Include="SaveSupport\CellSaver.cs" />
-    <Compile Include="SaveSupport\CellSerializer.cs" />
     <Compile Include="StateManagement\ControlPointResult.cs" />
-    <Compile Include="SaveSupport\DataSaveLock.cs" />
-    <Compile Include="SaveSupport\IAutoFillExecutor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SaveSupport\FormElement.cs" />
-    <Compile Include="SaveSupport\ICellFixingValidator.cs" />
-    <Compile Include="SaveSupport\ICheckRequestObject.cs" />
-    <Compile Include="InputTemplates\IDetailFilter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="SaveSupport\IFormDataValidator.cs" />
-    <Compile Include="InputTemplates\IInputTemplate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StateManagement\ILockPeriodMapper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="InputTemplates\IMvcBasedInputTemplate.cs" />
     <Compile Include="InputTemplates\InputTemplate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InputTemplates\InputTemplateRequest.cs" />
     <Compile Include="InputTemplates\InputTemplateXmlSerializer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StateManagement\IPeriodStateManager.cs" />
-    <Compile Include="SaveSupport\IRecreateCellValidator.cs" />
-    <Compile Include="StateManagement\IScheduleChecker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StateManagement\IStateCheckInterceptor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StateManagement\IStateManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StateManagement\LockOperation.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="StateManagement\LockPeriodMapper.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="StateManagement\PeriodStateManager.cs" />
-    <Compile Include="StateManagement\PeriodStateRecord.cs" />
-    <Compile Include="SaveSupport\InputRowHelper.cs" />
-    <Compile Include="SaveSupport\RecreateCellValidator.cs" />
-    <Compile Include="StateManagement\ScheduleOvertime.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StateManagement\ScheduleState.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SaveSupport\SqlAutoFiller.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="StateManagement\StateManager.cs" />
     <Compile Include="Themas\Command.cs">
       <SubType>Code</SubType>
@@ -159,51 +91,12 @@
     <Compile Include="Themas\EcoThemaHelper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Themas\ElementType.cs" />
     <Compile Include="Themas\ExtremeFormProvider.cs" />
     <Compile Include="Themas\HtmlListDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Themas\ICommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IDocument.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IExtremeFormProvider.cs" />
-    <Compile Include="Themas\InputConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\ItemConfigurationBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThema.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThemaConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThemaConfigurationProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThemaFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThemaFactoryConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThemaFactoryProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IThemaHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\IUsrThemaMapRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Themas\InputConfiguration.cs" />
+    <Compile Include="Themas\ItemConfigurationBase.cs" />
     <Compile Include="Themas\OutputConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -226,10 +119,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Themas\ThemaFactoryProvider.cs" />
-    <Compile Include="Themas\ThemaLoaderOptions.cs" />
-    <Compile Include="Themas\TypedParameter.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Themas\ThemaLoaderOptionsHelper.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />

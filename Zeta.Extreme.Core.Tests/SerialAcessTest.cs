@@ -13,11 +13,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using Comdiv.Application;
-using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
+using Zeta.Extreme.Meta;
+using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]
@@ -27,7 +27,7 @@ namespace Zeta.Extreme.Core.Tests {
 			base.setup();
 			_row = RowCache.get("m112");
 			_col = ColumnCache.get("PLAN");
-			_obj = myapp.storage.Get<IZetaMainObject>().Load(352);
+			_obj = MetaCache.Default.Get<IZetaMainObject>(352);//myapp.storage.Get<IZetaMainObject>().Load(352);
 			_serial = session.AsSerial();
 		}
 

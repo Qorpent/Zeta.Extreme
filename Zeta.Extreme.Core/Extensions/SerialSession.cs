@@ -10,6 +10,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -22,10 +23,10 @@ namespace Zeta.Extreme {
 		/// <param name="session"> </param>
 		public SerialSession(ISession session) {
 			var _serial = session as ISerializableSession;
-			if(null==_serial) {
+			if (null == _serial) {
 				throw new Exception("only serializable sessions supproted");
 			}
-			_session = (ISerializableSession)session;
+			_session = (ISerializableSession) session;
 		}
 
 		/// <summary>
@@ -34,14 +35,14 @@ namespace Zeta.Extreme {
 		/// <param name="query"> </param>
 		/// <param name="timeout"> </param>
 		/// <returns> </returns>
-		public QueryResult Eval(Query query, int timeout = -1) {
+		public QueryResult Eval(IQuery query, int timeout = -1) {
 			lock (_session.SerialSync) {
 				if (null != _session.SerialTask) {
 					_session.SerialTask.Wait();
 				}
 				Query realquery = null;
 
-				realquery = _session.Register(query);
+				realquery = (Query) _session.Register(query);
 
 				if (null == realquery) {
 					return new QueryResult();
@@ -59,7 +60,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		/// <returns> </returns>
-		public Task<QueryResult> EvalAsync(Query query) {
+		public Task<QueryResult> EvalAsync(IQuery query) {
 			lock (_session.SerialSync) {
 				if (null != _session.SerialTask) {
 					_session.SerialTask.Wait();
@@ -68,7 +69,7 @@ namespace Zeta.Extreme {
 				var task = Task.Run(() =>
 					{
 						realquery_.Wait();
-						var realquery = realquery_.Result;
+						var realquery = (Query) realquery_.Result;
 						if (null == realquery) {
 							return null;
 						}

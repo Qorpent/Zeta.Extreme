@@ -8,6 +8,8 @@
 
 #endregion
 
+using Zeta.Extreme.Poco.Inerfaces;
+
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Расширения для последовательного API сессии

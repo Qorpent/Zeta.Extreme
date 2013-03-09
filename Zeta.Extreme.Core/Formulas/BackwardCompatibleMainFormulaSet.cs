@@ -10,8 +10,8 @@
 
 using System;
 using System.Linq;
-using Comdiv.Extensions;
-using Comdiv.Zeta.Data.Minimal;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -29,24 +29,24 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Расчет количества месяцев в периоде
+		/// 	Расчет количества месяцев в периоде
 		/// </summary>
-		/// <param name="query"></param>
-		/// <returns></returns>
-		public int monthCount(Query query)
-		{
+		/// <param name="query"> </param>
+		/// <returns> </returns>
+		public int monthCount(Query query) {
 			return monthCount(query.Time.Period);
 		}
+
 		/// <summary>
-		/// Расчет месяцев в периоде
+		/// 	Расчет месяцев в периоде
 		/// </summary>
-		/// <param name="period"></param>
-		/// <returns></returns>
-		public int monthCount(int period)
-		{
+		/// <param name="period"> </param>
+		/// <returns> </returns>
+		public int monthCount(int period) {
 			var p = Periods.Get(period);
 			return p.MonthCount;
 		}
+
 		/// <summary>
 		/// 	Перебирает указанные дельты к запросу, пока не найдет не-нулевой
 		/// </summary>
@@ -100,7 +100,7 @@ namespace Zeta.Extreme {
 		/// <param name="value"> </param>
 		/// <returns> </returns>
 		public object positive(object value) {
-			var val = value.toDecimal();
+			var val = value.ToDecimal();
 			if (val < 0) {
 				return 0m;
 			}
@@ -113,7 +113,7 @@ namespace Zeta.Extreme {
 		/// <param name="value"> </param>
 		/// <returns> </returns>
 		public object negative(object value) {
-			var val = value.toDecimal();
+			var val = value.ToDecimal();
 			if (val > 0) {
 				return 0m;
 			}

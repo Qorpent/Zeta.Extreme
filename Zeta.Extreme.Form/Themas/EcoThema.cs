@@ -12,11 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Inversion;
-using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
+using Qorpent.Applications;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -42,7 +41,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Префикс роли
 		/// </summary>
 		public string Roleprefix {
-			get { return Parameters.get("roleprefix", ""); }
+			get { return Parameters.SafeGet("roleprefix", ""); }
 			set { Parameters["roleprefix"] = value; }
 		}
 
@@ -50,7 +49,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Ответственность основная
 		/// </summary>
 		public IUsrThemaMap Responsibility {
-			get { return Parameters.get<IUsrThemaMap>("responsibility", null); }
+			get { return Parameters.SafeGet<IUsrThemaMap>("responsibility"); }
 			set { Parameters["responsibility"] = value; }
 		}
 
@@ -58,7 +57,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Ответственность дополнительная
 		/// </summary>
 		public IUsrThemaMap Responsibility2 {
-			get { return Parameters.get<IUsrThemaMap>("responsibility2", null); }
+			get { return Parameters.SafeGet<IUsrThemaMap>("responsibility2"); }
 			set { Parameters["responsibility2"] = value; }
 		}
 
@@ -66,7 +65,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Отвественность холдинга
 		/// </summary>
 		public IUsrThemaMap HoldResponsibility {
-			get { return Parameters.get<IUsrThemaMap>("holdresponsibility", null); }
+			get { return Parameters.SafeGet<IUsrThemaMap>("holdresponsibility"); }
 			set { Parameters["holdresponsibility"] = value; }
 		}
 
@@ -74,7 +73,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Признак невалидности целевого объекта для
 		/// </summary>
 		public bool InvalidTargetObject {
-			get { return Parameters.get("invalidtargetobject", false); }
+			get { return Parameters.SafeGet("invalidtargetobject", false); }
 			set { Parameters["invalidtargetobject"] = value; }
 		}
 
@@ -82,7 +81,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Признак темы для детали
 		/// </summary>
 		public bool IsDetail {
-			get { return Parameters.get("isdetail", false); }
+			get { return Parameters.SafeGet("isdetail", false); }
 			set { Parameters["isdetail"] = value; }
 		}
 
@@ -90,7 +89,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Класс для деталей
 		/// </summary>
 		public string DetailClasses {
-			get { return Parameters.get("detailclasses", ""); }
+			get { return Parameters.SafeGet("detailclasses", ""); }
 			set { Parameters["detailclasses"] = value; }
 		}
 
@@ -98,7 +97,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Корневая строка
 		/// </summary>
 		public string RootRow {
-			get { return Parameters.get("rootrow", ""); }
+			get { return Parameters.SafeGet("rootrow", ""); }
 			set { Parameters["rootrow"] = value; }
 		}
 
@@ -106,7 +105,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Признак принадлежности к группе
 		/// </summary>
 		public string ForGroup {
-			get { return Parameters.get("forgroup", ""); }
+			get { return Parameters.SafeGet("forgroup", ""); }
 			set { Parameters["forgroup"] = value; }
 		}
 
@@ -114,7 +113,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Требование наличия ответственности
 		/// </summary>
 		public bool NeedResponsibility {
-			get { return Parameters.get("needresponsibility", false); }
+			get { return Parameters.SafeGet("needresponsibility", false); }
 			set { Parameters["needresponsibility"] = value; }
 		}
 
@@ -129,19 +128,19 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="obj"> The obj. </param>
 		/// <returns> <c>true</c> if the specified obj is match; otherwise, <c>false</c> . </returns>
 		public bool IsMatch(IZetaMainObject obj) {
-			if (ForGroup.noContent()) {
+			if (ForGroup.IsEmpty()) {
 				return true;
 			}
 			//если нет ограничений на группу - значит все в порядке, иначе...
 
-			if (obj.GroupCache.noContent()) {
+			if (obj.GroupCache.IsEmpty()) {
 				return false;
 			}
 			//если объект не в группе - все плохо, инача...
 
-			var groups = ForGroup.split();
+			var groups = ForGroup.SmartSplit();
 			foreach (var s in groups) {
-				foreach (var link in obj.GroupCache.split(false, true, '/')) {
+				foreach (var link in obj.GroupCache.SmartSplit(false, true, '/')) {
 					if (link == s) {
 						return true;
 					}
@@ -174,21 +173,21 @@ namespace Zeta.Extreme.Form.Themas {
 			var result = (EcoThema) base.Accomodate(obj, year, period);
 			if (obj != null) {
 				if (result.NeedResponsibility) {
-					result.Responsibility = myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility(Code, "Default", obj);
-					result.Responsibility2 = myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility2(Code, "Default", obj);
+					result.Responsibility = Application.Current.Container.Get<IUsrThemaMapRepository>().GetResponsibility(Code, "Default", obj);
+					result.Responsibility2 = Application.Current.Container.Get<IUsrThemaMapRepository>().GetResponsibility2(Code, "Default", obj);
 				}
-				var h = "0CH".asObject();
+				var h = MetaCache.Default.Get<IZetaMainObject>("0CH");
 				if (null != h) {
 					result.HoldResponsibility =
-						myapp.Container.get<IUsrThemaMapRepository>().GetResponsibility(Code, "Default", h);
+						Application.Current.Container.Get<IUsrThemaMapRepository>().GetResponsibility(Code, "Default", h);
 				}
-				if (obj.Id() == h.Id()) {
+				if (obj.Id == h.Id) {
 					result.Responsibility = result.HoldResponsibility;
 					result.Responsibility2 = result.HoldResponsibility;
 				}
 			}
 
-			if (result.ForGroup.hasContent()) {
+			if (result.ForGroup.IsNotEmpty()) {
 				result.InvalidTargetObject = !GroupFilterHelper.IsMatch(obj, ForGroup);
 			}
 			return result;
@@ -206,7 +205,7 @@ namespace Zeta.Extreme.Form.Themas {
 			var rr = Roleprefix + "_ANALYTIC";
 			Func<IZetaUnderwriter, string, bool> inrole = (x, s) =>
 				{
-					if (x.Roles.noContent()) {
+					if (x.Roles.IsEmpty()) {
 						return false;
 					}
 					return x.Roles.Contains(s);

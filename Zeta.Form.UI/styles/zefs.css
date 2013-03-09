@@ -7,19 +7,203 @@
     box-sizing: border-box;
 }
 
+/*Это чтобы тултипы не перекрывали открытые dropdown-menu*/
+div.open>.tooltip {
+    display: none !important;
+}
+
 .zefsformheader {
-    margin-left: 20px;
+    position: fixed;
+    top: 37px;
+    z-index: 998;
+    background-color: white;
+    width: 100%;
 }
 
-.zefsdebug {
-    margin: 4px;
+.zefsformheader h3 {
+    font-size: 11pt;
+    padding-left: 20px;
+    margin: 0;
 }
 
-.zefsstatus {
+.impersonator,.information,
+.zefsdebug, .feedback {
+    margin-top: 4px;
+    margin-right: 3px;
+}
+
+.authorizer {
+    margin-right: 3px;
+}
+
+.authorizer .btn-group {
+    margin-top: 4px;
+    margin-right: 2px;
+}
+
+.authorizer .login-form input,
+.authorizer .login-form button {
+    margin-right: 2px;
+}
+
+.authorizer li {
+    margin: 1px 3px;
+}
+
+.logininfo {
     margin-top: 6px;
+    margin-right: 3px;
+}
+
+.zefsstatus, .zefsformsave, .attacher,
+.objselector, .zefscolmanager, .zefsblockmanager {
+    margin-top: 4px;
     margin-left: 3px;
 }
 
-.objselector {
-    margin-top: 4px;
+.zefscolmanager label {
+    margin: 0;
+}
+
+.zefscolmanager li.primary {
+    background-color: #e6ffe1;
+}
+
+.attacher table,
+.zefsblockmanager table {
+    cursor: default;
+    font-size: 90%;
+    margin-bottom: 0;
+}
+
+.attacher table {
+    table-layout: fixed;
+}
+
+.attacher select[name="type"],
+.attacher input[name="filename"] {
+    font-size: 12px;
+    padding: 2px;
+    margin:0 0 0 5px;
+}
+
+.attacher select[name="type"] {
+    height: 22px;
+    margin-right: 5px;
+}
+.attacher input[name="filename"] {
+    height: 16px;
+}
+
+.attacher span.icon {
+    cursor: pointer;
+}
+
+.attacher td,
+.zefsblockmanager td {
+    padding: 2px;
+}
+
+.attacher .progress {
+    margin-bottom: 0;
+    height: 22px;
+}
+
+.attacher input[name="filename"] {
+    width: 140px;
+}
+
+.attacher select[name="type"] {
+    width: 76px;
+}
+
+.attacher td.filename {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.attacher td.type.PDF,
+.attacher td.type.pdf {
+    background-image: url("../images/document-pdf.png");
+}
+
+.attacher td.type.doc,
+.attacher td.type.DOC {
+    background-image: url("../images/document-word.png");
+}
+
+.attacher td.type.xls,
+.attacher td.type.XLS {
+    background-image: url("../images/document-excel.png");
+}
+
+.attacher td.type.TIF,
+.attacher td.type.JPG,
+.attacher td.type.tif,
+.attacher td.type.png,
+.attacher td.type.PNG,
+.attacher td.type.jpg,
+.attacher td.type.JPEG {
+    background-image: url("../images/document-image.png");
+}
+
+.attacher td.type {
+    background-image: url("../images/document.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.zefsblockmanager button {
+    margin-left: 2px;
+}
+
+.zefsblockmanager li button:first-child {
+    margin-left: 5px;
+}
+
+/*
+.zefsblockmanager span.state-check {
+    color: #006400;
+}
+
+.zefsblockmanager span.state-open {
+    color: #af0000;
+}
+
+.zefsblockmanager span.state-block {
+    color: #FF6600;
+}
+*/
+
+.attacher th,
+.zefsblockmanager th {
+    padding: 4px 2px;
+}
+
+.zefsblockmanager li>.btn-group {
+    margin: 0 5px;
+}
+
+.zefscolmanager label>input {
+    margin-bottom: 3px !important;
+    margin-right: 3px;
+    cursor: pointer;
+}
+
+.zefsalerter {
+    position: absolute;
+    top: 41px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.zefsalerter .alert {
+    padding: 5px 35px 5px 14px;
+}
+
+.zefsformheader {
+    font-size: 16px;
+    font-weight: bold;
+    color: #002a80;
 }

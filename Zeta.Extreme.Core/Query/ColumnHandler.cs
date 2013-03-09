@@ -8,20 +8,23 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Описание условия на колонку
 	/// </summary>
-	public sealed class ColumnHandler : CachedItemHandlerBase<IZetaColumn> {
+	public sealed class ColumnHandler : CachedItemHandlerBase<IZetaColumn>, IColumnHandler {
+		private static readonly IDictionary<string, string> _resolvedColFormulaCache = new Dictionary<string, string>();
+
 		/// <summary>
 		/// 	Простая копия условия на время
 		/// </summary>
 		/// <returns> </returns>
-		public ColumnHandler Copy() {
+		public IColumnHandler Copy() {
 			return MemberwiseClone() as ColumnHandler;
 		}
 
@@ -29,7 +32,7 @@ namespace Zeta.Extreme {
 		/// 	Нормализует колонку до нормали
 		/// </summary>
 		/// <param name="session"> </param>
-		public void Normalize(Session session) {
+		public override void Normalize(ISession session) {
 			var cache = session == null ? MetaCache.Default : session.MetaCache;
 			if (IsStandaloneSingletonDefinition()) {
 				//try load native
@@ -40,12 +43,27 @@ namespace Zeta.Extreme {
 
 		private void ResolveSingleColFormula() {
 			if (IsFormula && (FormulaType == "boo" || FormulaType == "cs")) {
-				var match = Regex.Match(Formula.Trim(), @"^@([\w\d]+)\?$", RegexOptions.Compiled);
-				if (match.Success) {
-					var reference = ColumnCache.get(match.Groups[1].Value);
+				string code = null;
+				var formula = Formula;
+				code = GetCodeFormFormula(formula);
+				if (null != code) {
+					var reference = ColumnCache.get(code);
 					Native = reference;
 				}
 			}
+		}
+
+		private static string GetCodeFormFormula(string formula) {
+			if (!_resolvedColFormulaCache.ContainsKey(formula)) {
+				string code = null;
+				var match = Regex.Match(formula, @"^@([\w\d]+)\?$", RegexOptions.Compiled);
+				if (match.Success) {
+					code = match.Groups[1].Value;
+				}
+				_resolvedColFormulaCache[formula] = code;
+				return code;
+			}
+			return _resolvedColFormulaCache[formula];
 		}
 	}
 }

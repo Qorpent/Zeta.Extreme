@@ -12,6 +12,7 @@
 using System;
 using System.Diagnostics;
 using NUnit.Framework;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
 	[TestFixture]

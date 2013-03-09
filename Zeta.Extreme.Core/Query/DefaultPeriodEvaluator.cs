@@ -8,7 +8,7 @@
 
 #endregion
 
-using Comdiv.Zeta.Data.Minimal;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
 	/// <summary>

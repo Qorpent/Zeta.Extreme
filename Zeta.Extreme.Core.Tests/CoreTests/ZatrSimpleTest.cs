@@ -15,10 +15,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Comdiv.Application;
-using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
 using NUnit.Framework;
+using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Meta;
+using Zeta.Extreme.Poco;
+using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
 	[TestFixture(Description = "Начинаем работать с простыми формами")]
@@ -62,8 +65,8 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				};
 			col = ColumnCache.get("Б1");
 			periods = new[] {11, 12, 13, 1, 401, 403};
-			obj = myapp.storage.AsQueryable<IZetaMainObject>().First(x => x.Id == 352);
-			objs = myapp.storage.AsQueryable<IZetaMainObject>().Where(x => x.ShowOnStartPage).ToArray();
+			obj = MetaCache.Default.Get<IZetaMainObject>(352);
+			objs = ObjCache.ObjById.Values.Where(_ => _.ShowOnStartPage).ToArray();
 		}
 
 		private void ExecuteFormBatch(int timespan, int rsn, int batchsize, int count, int qsize) {

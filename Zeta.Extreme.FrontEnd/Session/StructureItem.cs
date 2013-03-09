@@ -22,6 +22,11 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		public string code;
 
 		/// <summary>
+		/// 	Признак контрольной точки
+		/// </summary>
+		[SerializeNotNullOnly] public bool controlpoint;
+
+		/// <summary>
 		/// 	Индекс в таблице
 		/// </summary>
 		public int idx;
@@ -70,10 +75,5 @@ namespace Zeta.Extreme.FrontEnd.Session {
 		/// 	Год для колонок
 		/// </summary>
 		[SerializeNotNullOnly] public int year;
-		/// <summary>
-		/// Признак контрольной точки
-		/// </summary>
-		[SerializeNotNullOnly]
-		public bool controlpoint;
 	}
 }

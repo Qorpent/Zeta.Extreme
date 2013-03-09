@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Zeta.Extreme.Poco</RootNamespace>
+    <AssemblyName>Zeta.Extreme.Poco</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <CodePage>1251</CodePage>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\build</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ADAPTMODEL LIB2</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'IAS|AnyCPU' ">
+    <OutputPath>bin\IAS\</OutputPath>
+    <DebugType>none</DebugType>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MONO|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ADAPTMODEL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MIGRATION|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\build\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ADAPTMODEL LIB2</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>comdiv.core.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="corePoco\biztran.cs" />
+    <Compile Include="corePoco\Biztranfilter.cs" />
+    <Compile Include="corePoco\CellHistory.cs" />
+    <Compile Include="corePoco\ColumnMark.cs" />
+    <Compile Include="corePoco\CommonLog.cs" />
+    <Compile Include="corePoco\form.cs" />
+    <Compile Include="corePoco\formstate.cs" />
+    <Compile Include="corePoco\IBizTran.cs" />
+    <Compile Include="corePoco\IBizTranFilter.cs" />
+    <Compile Include="corePoco\UsrRow.cs" />
+    <Compile Include="corePoco\UsrThemaMap.cs" />
+    <Compile Include="corePoco\zone.cs" />
+    <Compile Include="corePoco\DetailRow.cs" />
+    <Compile Include="corePoco\FixRule.cs" />
+    <Compile Include="corePoco\GraphRelation.cs" />
+    <Compile Include="corePoco\objdiv.cs" />
+    <Compile Include="corePoco\cell.cs" />
+    <Compile Include="corePoco\row.cs" />
+    <Compile Include="corePoco\MainObjectMark.cs" />
+    <Compile Include="corePoco\Mark.cs" />
+    <Compile Include="corePoco\point.cs" />
+    <Compile Include="corePoco\ObjectGroup.cs" />
+    <Compile Include="corePoco\obj.cs" />
+    <Compile Include="corePoco\objrole.cs" />
+    <Compile Include="corePoco\Period.cs" />
+    <Compile Include="corePoco\Region.cs" />
+    <Compile Include="corePoco\detail.cs" />
+    <Compile Include="corePoco\SubpartMark.cs" />
+    <Compile Include="corePoco\TreeMark.cs" />
+    <Compile Include="corePoco\usr.cs" />
+    <Compile Include="corePoco\usrobjmap.cs" />
+    <Compile Include="corePoco\col.cs" />
+    <Compile Include="corePoco\objcls.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="corePoco\objtype.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DateRange.cs" />
+    <Compile Include="Deprecated\ClassicAttribute.cs" />
+    <Compile Include="Deprecated\ForSearchAttribute.cs" />
+    <Compile Include="Deprecated\ManyAttribute.cs" />
+    <Compile Include="Deprecated\MapAttribute.cs" />
+    <Compile Include="Deprecated\MappingAttribute.cs" />
+    <Compile Include="Deprecated\NestAttribute.cs" />
+    <Compile Include="Deprecated\NoMapAttribute.cs" />
+    <Compile Include="Deprecated\RefAttribute.cs" />
+    <Compile Include="Deprecated\SchemaAttribute.cs" />
+    <Compile Include="extPoco\ColumnMark.cs" />
+    <Compile Include="extPoco\zone.cs" />
+    <Compile Include="extPoco\DayCourse.cs" />
+    <Compile Include="extPoco\FixRule.cs" />
+    <Compile Include="extPoco\objdiv.cs" />
+    <Compile Include="extPoco\cell.cs" />
+    <Compile Include="extPoco\row.cs" />
+    <Compile Include="extPoco\MainObjectMark.cs" />
+    <Compile Include="extPoco\Mark.cs" />
+    <Compile Include="extPoco\point.cs" />
+    <Compile Include="extPoco\ObjectGroup.cs" />
+    <Compile Include="extPoco\obj.cs" />
+    <Compile Include="extPoco\objrole.cs" />
+    <Compile Include="extPoco\PeriodCourse.cs" />
+    <Compile Include="extPoco\Region.cs" />
+    <Compile Include="extPoco\detail.cs" />
+    <Compile Include="extPoco\SubpartMark.cs" />
+    <Compile Include="extPoco\TreeMark.cs" />
+    <Compile Include="extPoco\usr.cs" />
+    <Compile Include="extPoco\usrobjmap.cs" />
+    <Compile Include="extPoco\col.cs" />
+    <Compile Include="extPoco\objcls.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="extPoco\objtype.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Inerfaces\Advanced mark support\IZetaColumnMark.cs" />
+    <Compile Include="Inerfaces\Advanced mark support\IZetaDetailObjectMark.cs" />
+    <Compile Include="Inerfaces\Advanced mark support\IZetaMainObjectMark.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IDetailObjectClass.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IDetailObjectType.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IMainObjectGroup.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IMainObjectLocators.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IMainObjectRole.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IWithDetailObjectClass.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IWithDetailObjectType.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IWithDetailObjectTypes.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IWithMainObjects.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IWithPoints.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IWithRegion.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IWithRegions.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IWithZone.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IZetaPoint.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IZetaRegion.cs" />
+    <Compile Include="Inerfaces\Advanced zone support\IZetaZone.cs" />
+    <Compile Include="Inerfaces\ByIdxComparer.cs" />
+    <Compile Include="Inerfaces\Cube extensions\FormStates.cs" />
+    <Compile Include="Inerfaces\Cube extensions\ICellHistory.cs" />
+    <Compile Include="Inerfaces\Cube extensions\ICommonLog.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IForm.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IFormState.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IPeriod.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IWithAlternateDetailObjects.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IWithAlternateMainObject.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IWithAutoManualFlag.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IWithDocumentNumber.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IWithFormBind.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IWithPkgState.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IWithUsr.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IZetaCell.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IZetaColumn.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IZetaDetailObject.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IZetaFormsSupport.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IZetaMainObject.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IZetaObject.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IZetaRow.cs" />
+    <Compile Include="Inerfaces\Cube extensions\IZetaRowMark.cs" />
+    <Compile Include="Inerfaces\Cube extensions\PkgState.cs" />
+    <Compile Include="Inerfaces\Cube extensions\RowTestFunc.cs" />
+    <Compile Include="Inerfaces\Data fixing support\FixRulePriority.cs" />
+    <Compile Include="Inerfaces\Data fixing support\FixRuleResult.cs" />
+    <Compile Include="Inerfaces\Data fixing support\IFixable.cs" />
+    <Compile Include="Inerfaces\Data fixing support\IFixRule.cs" />
+    <Compile Include="Inerfaces\Data fixing support\IFixRuleCore.cs" />
+    <Compile Include="Inerfaces\Data fixing support\IWithFixRules.cs" />
+    <Compile Include="Inerfaces\DetailComparer.cs" />
+    <Compile Include="Inerfaces\Extensions\WithMarksExtension.cs" />
+    <Compile Include="Inerfaces\Extra data\GraphRelationType.cs" />
+    <Compile Include="Inerfaces\Extra data\IBizTran.cs" />
+    <Compile Include="Inerfaces\Extra data\IDayCourse.cs" />
+    <Compile Include="Inerfaces\Extra data\IDetailObjectGroup.cs" />
+    <Compile Include="Inerfaces\Extra data\IDetailObjectGroupLink.cs" />
+    <Compile Include="Inerfaces\Extra data\IDetailRow.cs" />
+    <Compile Include="Inerfaces\Extra data\IGraphRelation.cs" />
+    <Compile Include="Inerfaces\Extra data\IMark.cs" />
+    <Compile Include="Inerfaces\Extra data\IMarkLink.cs" />
+    <Compile Include="Inerfaces\Extra data\IMarkLinkBase.cs" />
+    <Compile Include="Inerfaces\Extra data\IObjectGroup.cs" />
+    <Compile Include="Inerfaces\Extra data\IOlapRowMark.cs" />
+    <Compile Include="Inerfaces\Extra data\IPeriodCourse.cs" />
+    <Compile Include="Inerfaces\Extra data\IUsrRow.cs" />
+    <Compile Include="Inerfaces\Extra data\IWithMark.cs" />
+    <Compile Include="Inerfaces\Extra data\IWithMarkCache.cs" />
+    <Compile Include="Inerfaces\Extra data\IZetaDetailObjectGroup.cs" />
+    <Compile Include="Inerfaces\Extra data\IZetaDetailObjectGroupLink.cs" />
+    <Compile Include="Inerfaces\Extra data\IZetaObjectGroup.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\DetailMode.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IColumnHandler.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IObjHandler.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IQuery.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IQueryDimension.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IQueryWithProcessing.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IRowHandler.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\ISession.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\ITimeHandler.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IWithCacheKey.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\ObjType.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\QueryResult.cs" />
+    <Compile Include="Inerfaces\ICanResolveTag.cs" />
+    <Compile Include="Inerfaces\IMetaCache.cs" />
+    <Compile Include="Inerfaces\IOlapCache.cs" />
+    <Compile Include="Inerfaces\IOlapCell.cs" />
+    <Compile Include="Inerfaces\IOlapColumn.cs" />
+    <Compile Include="Inerfaces\IOlapDetailObject.cs" />
+    <Compile Include="Inerfaces\IOlapForm.cs" />
+    <Compile Include="Inerfaces\IOlapMainObject.cs" />
+    <Compile Include="Inerfaces\ITree.cs" />
+    <Compile Include="Inerfaces\IWithCategory.cs" />
+    <Compile Include="Inerfaces\IWithClassRef.cs" />
+    <Compile Include="Inerfaces\IWithData.cs" />
+    <Compile Include="Inerfaces\IWithGroup.cs" />
+    <Compile Include="Inerfaces\IWithPath.cs" />
+    <Compile Include="Inerfaces\IWithPeriod.cs" />
+    <Compile Include="Inerfaces\IWithRange.cs" />
+    <Compile Include="Inerfaces\IWithStringValue.cs" />
+    <Compile Include="Inerfaces\IWithYear.cs" />
+    <Compile Include="Inerfaces\IWthRefTo.cs" />
+    <Compile Include="Inerfaces\RowComparer.cs" />
+    <Compile Include="Inerfaces\StubMetaCache.cs" />
+    <Compile Include="Inerfaces\Support\ICanCheckIsActive.cs" />
+    <Compile Include="Inerfaces\Support\ICanCountDetailObjects.cs" />
+    <Compile Include="Inerfaces\Support\ICanCountObjects.cs" />
+    <Compile Include="Inerfaces\Support\IDimension.cs" />
+    <Compile Include="Inerfaces\Support\IOlapDetailObjectBase.cs" />
+    <Compile Include="Inerfaces\Support\IOlapEvaluationExtensions.cs" />
+    <Compile Include="Inerfaces\Support\IOlapFact.cs" />
+    <Compile Include="Inerfaces\Support\IOlapMainObjectBase.cs" />
+    <Compile Include="Inerfaces\Support\IOlapRow.cs" />
+    <Compile Include="Inerfaces\Support\IOlapVector.cs" />
+    <Compile Include="Inerfaces\Support\IUserObjectMap.cs" />
+    <Compile Include="Inerfaces\Support\IUsrThemaMap.cs" />
+    <Compile Include="Inerfaces\Support\IWithAddress.cs" />
+    <Compile Include="Inerfaces\Support\IWithAllOrgs.cs" />
+    <Compile Include="Inerfaces\Support\IWithCell.cs" />
+    <Compile Include="Inerfaces\Support\IWithCellData.cs" />
+    <Compile Include="Inerfaces\Support\IWithCells.cs" />
+    <Compile Include="Inerfaces\Support\IWithContactHuman.cs" />
+    <Compile Include="Inerfaces\Support\IWithDataType.cs" />
+    <Compile Include="Inerfaces\Support\IWithDetailObject.cs" />
+    <Compile Include="Inerfaces\Support\IWithDetailObjectGroup.cs" />
+    <Compile Include="Inerfaces\Support\IWithDetailObjects.cs" />
+    <Compile Include="Inerfaces\Support\IWithDirectDate.cs" />
+    <Compile Include="Inerfaces\Support\IWithFormula.cs" />
+    <Compile Include="Inerfaces\Support\IWithLookup.cs" />
+    <Compile Include="Inerfaces\Support\IWithMainObject.cs" />
+    <Compile Include="Inerfaces\Support\IWithMeasure.cs" />
+    <Compile Include="Inerfaces\Support\IWithObjectGroup.cs" />
+    <Compile Include="Inerfaces\Support\IWithOlapColumn.cs" />
+    <Compile Include="Inerfaces\Support\IWithOlapObject.cs" />
+    <Compile Include="Inerfaces\Support\IWithOlapRow.cs" />
+    <Compile Include="Inerfaces\Support\IWithOlapTime.cs" />
+    <Compile Include="Inerfaces\Support\IWithOuterCode.cs" />
+    <Compile Include="Inerfaces\Support\IWithOwn.cs" />
+    <Compile Include="Inerfaces\Support\IWithUnderwriters.cs" />
+    <Compile Include="Inerfaces\Support\IZetaQueryDimension.cs" />
+    <Compile Include="Inerfaces\Support\IZetaUnderwriter.cs" />
+    <Compile Include="Inerfaces\Support\IZoneElement.cs" />
+    <Compile Include="Inerfaces\Support\StandardRowData.cs" />
+    <Compile Include="Inerfaces\Support\SubpartRelation.cs" />
+    <Compile Include="Inerfaces\Support\ValueDataType.cs" />
+    <Compile Include="MetaCache.cs" />
+    <Compile Include="MetalinkRecord.cs" />
+    <Compile Include="NativeSqlBind\ColumnCache.cs" />
+    <Compile Include="NativeSqlBind\IWithFormulaExtensions.cs" />
+    <Compile Include="NativeSqlBind\NativeZetaReader.cs" />
+    <Compile Include="NativeSqlBind\NativeZetaReader_Internals.cs" />
+    <Compile Include="NativeSqlBind\ObjCache.cs" />
+    <Compile Include="NativeSqlBind\PeriodDefinition.cs" />
+    <Compile Include="NativeSqlBind\Periods.cs" />
+    <Compile Include="NativeSqlBind\RowCache.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
+      <Project>{880F65EA-1A22-4672-A137-FFC91290A209}</Project>
+      <Name>Qorpent.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
+      <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
+      <Name>Qorpent.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="comdiv.core.snk" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

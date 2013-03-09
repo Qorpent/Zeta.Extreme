@@ -1,0 +1,46 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : IPeriodStateManager.cs
+// Project: Zeta.Extreme.Form
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
+namespace Zeta.Extreme.BizProcess.StateManagement {
+	/// <summary>
+	/// 	Интерфейс менеджера статуса периодов
+	/// </summary>
+	public interface IPeriodStateManager {
+		/// <summary>
+		/// 	Система
+		/// </summary>
+		string System { get; set; }
+
+		/// <summary>
+		/// 	БД
+		/// </summary>
+		string Database { get; set; }
+
+		/// <summary>
+		/// 	Получить запись по году и периоду
+		/// </summary>
+		/// <param name="year"> </param>
+		/// <param name="period"> </param>
+		/// <returns> </returns>
+		PeriodStateRecord Get(int year, int period);
+
+		/// <summary>
+		/// 	Обновить дедлайн
+		/// </summary>
+		/// <param name="record"> </param>
+		void UpdateDeadline(PeriodStateRecord record);
+
+		/// <summary>
+		/// 	Обновить дедлайн по подписанию
+		/// </summary>
+		/// <param name="record"> </param>
+		void UpdateUDeadline(PeriodStateRecord record);
+	}
+}

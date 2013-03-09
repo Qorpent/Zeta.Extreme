@@ -12,10 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Comdiv.Extensions;
-using Comdiv.Olap.Model;
-using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -150,12 +149,12 @@ namespace Zeta.Extreme {
 		}
 
 		private IEnumerable<QueryDelta> GetGroupSumDelta(IZetaRow row) {
-			var groups = row.Group.split(false, true, '/', ';').Distinct();
+			var groups = row.Group.SmartSplit(false, true, '/', ';').Distinct();
 			var pluses = groups.Where(_ => !_.StartsWith("-")).ToArray();
 			var minuses = groups.Where(_ => _.StartsWith("-")).Select(_ => _.Substring(1)).ToArray();
 			foreach (var p in pluses) {
-				if (RowCache.bygroup.ContainsKey(p)) {
-					foreach (var r in RowCache.bygroup[p]) {
+				if (RowCache.Bygroup.ContainsKey(p)) {
+					foreach (var r in RowCache.Bygroup[p]) {
 						if (r.IsMarkSeted("0MINUS")) {
 							yield return new QueryDelta {Row = r, Multiplicator = -1};
 						}
@@ -166,8 +165,8 @@ namespace Zeta.Extreme {
 				}
 			}
 			foreach (var m in minuses) {
-				if (RowCache.bygroup.ContainsKey(m)) {
-					foreach (var r in RowCache.bygroup[m]) {
+				if (RowCache.Bygroup.ContainsKey(m)) {
+					foreach (var r in RowCache.Bygroup[m]) {
 						if (r.IsMarkSeted("0MINUS")) {
 							yield return new QueryDelta {Row = r};
 						}
@@ -187,7 +186,7 @@ namespace Zeta.Extreme {
 				if (c.IsMarkSeted("0NOSUM")) {
 					continue;
 				}
-				if (!IsSum(c) && 0 != c.Children.Count) {
+				if (!IsSum(c) && !c.IsFormula && 0 != c.Children.Count) {
 					continue;
 				}
 				yield return new QueryDelta {Row = c};

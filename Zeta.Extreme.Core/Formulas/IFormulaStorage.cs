@@ -30,6 +30,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		int Count { get; }
 
+
 		///<summary>
 		///</summary>
 		///<param name="request"> </param>
@@ -66,11 +67,25 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Компилирует все формы в стеке
 		/// </summary>
-		void CompileAll();
+		void CompileAll(string savepath = null);
 
 		/// <summary>
 		/// 	Очистка кэша формул
 		/// </summary>
 		void Clear();
+
+		/// <summary>
+		/// 	Проверяет наличие формулы в хранилище
+		/// </summary>
+		/// <param name="key"> </param>
+		/// <returns> </returns>
+		bool Exists(string key);
+
+
+		/// <summary>
+		/// 	Строит кэш из указанной директории
+		/// </summary>
+		/// <param name="root"> </param>
+		void BuildCache(string root);
 	}
 }

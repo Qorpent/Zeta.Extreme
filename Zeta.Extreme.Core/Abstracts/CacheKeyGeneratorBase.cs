@@ -8,11 +8,13 @@
 
 #endregion
 
+using Zeta.Extreme.Poco.Inerfaces;
+
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Базовый класс для запросов и условий, отвечает за целостность кэш-строки
 	/// </summary>
-	public abstract class CacheKeyGeneratorBase {
+	public abstract class CacheKeyGeneratorBase : IWithCacheKey {
 		/// <summary>
 		/// 	Возвращает кэш-строку запроса
 		/// </summary>
@@ -28,6 +30,13 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	Сбрасывает кэш-строку
+		/// </summary>
+		public virtual void InvalidateCacheKey() {
+			_cacheKey = null;
+		}
+
+		/// <summary>
 		/// 	Возвращает строку, которая представляет текущий объект.
 		/// </summary>
 		/// <returns> Строка, представляющая текущий объект. </returns>
@@ -35,13 +44,6 @@ namespace Zeta.Extreme {
 		public override string ToString() {
 			//должен вернуть кэш строку, но не сохранять ее!!!
 			return GetCacheKey(false);
-		}
-
-		/// <summary>
-		/// 	Сбрасывает кэш-строку
-		/// </summary>
-		public virtual void InvalidateCacheKey() {
-			_cacheKey = null;
 		}
 
 		/// <summary>

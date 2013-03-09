@@ -8,6 +8,8 @@
 
 #endregion
 
+using Zeta.Extreme.Poco.Inerfaces;
+
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Базовый интерфейс формулы

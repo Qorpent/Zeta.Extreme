@@ -10,13 +10,7 @@
 #endregion
 
 using System;
-using System.Linq;
-using Comdiv.Application;
-using Comdiv.Persistence;
-using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
 using NUnit.Framework;
-using Zeta.Extreme.Core.Tests.CoreTests;
 
 namespace Zeta.Extreme.Core.Tests.SubQuery {
 	[TestFixture]
@@ -189,63 +183,7 @@ f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) 
 			Assert.NotNull(request.PreparedType);
 		}
 
-		[Test]
-		[Explicit]
-		public void AllIsCompilable() {
-			myapp.ioc.Clear();
-			myapp.ioc.setupHibernate(
-				new NamedConnection("Default",
-									"Data Source=assoibdx;Initial Catalog=eco;Persist Security Info=True;User ID=sfo_home;Password=rhfcysq$0;Application Name=zeta3"),
-				//"Data Source=(local);Initial Catalog=eco;Integrated Security=True;Min Pool Size=5;Application Name=zeta3"),
-				new ZetaMinimalMode());
-			Periods.Get(12);
-			RowCache.start("m111", "m112", "m260", "m250", "m218", "r590", "m220");
-			var storage = new FormulaStorage {AutoBatchCompile = false};
-			var _sumh = new StrongSumProvider();
-			var formulas = RowCache.byid.Values.Where(_ => _.IsFormula && !_sumh.IsSum(_)).ToArray();
-			bool fail = false;
-			foreach (var f in formulas)
-			{
-				var req = new FormulaRequest { Key = f.Code, Formula = f.Formula, Language = f.FormulaEvaluator };
-				storage.Register(req);
-				try
-				{
-					storage.CompileAll();
-				}
-				catch (Exception e) {
-					fail = true;
-					Console.WriteLine(f.Code + ":" +f.Formula+" : " + e.Message);
-					req.PreparedType = typeof(CompileErrorFormulaStub);
-					req.ErrorInCompilation = e;
-				}
-			}
-
-			var colformulas = (
-								  from c in myapp.storage.AsQueryable<col>()
-								  where c.IsFormula && c.FormulaEvaluator == "boo" && !c.Formula.Contains("~") && !c.Formula.Contains("*?") //unsupported feature
-								  select new { c = c.Code, f = c.Formula, t =c.Tag }
-							  ).ToArray();
-
-
-			foreach (var c in colformulas)
-			{
-				var req = new FormulaRequest { Key = c.c, Formula = c.f, Language = "boo" ,Tags = c.t};
-				storage.Register(req);
-				try
-				{
-					storage.CompileAll();
-				}
-				catch (Exception e) {
-					fail = true;
-					Console.WriteLine(c.c + ":" +c.f+": " + e.Message);
-					req.PreparedType = typeof(CompileErrorFormulaStub);
-					req.ErrorInCompilation = e;
-				}
-			}
-
-			if(fail)Assert.Fail("не все компилируется");
-		}
-
+	
 
 		[Test]
 		public void CanCheckNoExtremeTag() {

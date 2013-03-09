@@ -8,6 +8,8 @@
 
 #endregion
 
+using Zeta.Extreme.BizProcess.Themas;
+
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
 	/// 	Команда темы

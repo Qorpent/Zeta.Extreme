@@ -13,7 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Form.InputTemplates;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -54,7 +56,7 @@ namespace Zeta.Extreme.Form.Themas {
 				}
 			}
 			foreach (var thema in result.Themas) {
-				if (thema.Group.hasContent()) {
+				if (thema.Group.IsNotEmpty()) {
 					var grp = result.Themas.FirstOrDefault(x => x.Code == thema.Group);
 					if (null != grp) {
 						((Thema) grp).GroupMembers.Add(thema);
@@ -79,7 +81,7 @@ namespace Zeta.Extreme.Form.Themas {
                 }
 				*/
 				foreach (var r in thema.GetAllForms()) {
-					var c = r.Configuration;
+					var c = ((InputTemplate)r).Configuration;
 					if (c.Sources.Length != 0) {
 						foreach (var sourcecode in c.Sources) {
 							var lib = result.GetForm(sourcecode);
@@ -98,7 +100,7 @@ namespace Zeta.Extreme.Form.Themas {
                 }
 				 */
 				foreach (var it in thema.Forms.Values) {
-					it.Configuration = null;
+					((InputTemplate)it).Configuration = null;
 				}
 				foreach (var document in thema.Forms.Values) {
 					document.SourceXmlConfiguration = null;

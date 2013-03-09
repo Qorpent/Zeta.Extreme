@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Comdiv.Model.Interfaces;
 using NUnit.Framework;
+using Qorpent.Model;
+using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 {
@@ -37,7 +37,7 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 		/// <param name="queries"></param>
 		protected virtual IEnumerable<Query> Execute(Query[] queries ) {
 			foreach (var query in queries) {
-				var _q = _session.Register(query);
+				var _q = (Query)_session.Register(query);
 				_q.Result = _serial.Eval(_q);
 				yield return _q;
 			}
@@ -75,7 +75,7 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 		protected IDictionary<string, decimal> _key_to_value_pseudosql_storage = new Dictionary<string, decimal>();
 		private MetaCache _metacache;
 
-		protected void Add(IEntityDataPattern item) {
+		protected void Add(IEntity item) {
 			_metacache.Set(item);
 		}
 

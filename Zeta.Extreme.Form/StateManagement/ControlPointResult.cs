@@ -8,8 +8,9 @@
 
 #endregion
 
-using Comdiv.Zeta.Data.Minimal;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Meta;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Form.StateManagement {
 	/// <summary>
@@ -37,8 +38,9 @@ namespace Zeta.Extreme.Form.StateManagement {
 		public bool IsValid {
 			get { return Value == 0; }
 		}
+
 		/// <summary>
-		/// Ссылка на исходный запрос, позволяет отсрочить получение значения
+		/// 	Ссылка на исходный запрос, позволяет отсрочить получение значения
 		/// </summary>
 		public Query Query { get; set; }
 	}
