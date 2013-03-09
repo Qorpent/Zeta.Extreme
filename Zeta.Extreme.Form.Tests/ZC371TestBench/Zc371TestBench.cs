@@ -7,6 +7,7 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench {
 	[TestFixture]
 
 	public class Zc371TestBench {
+		[Explicit]
 		[TestCase("A|B|C", "A", true, true)]
 		[TestCase("A|B|C", "B", true, true)]
 		[TestCase("A|B|C", "C", true, true)]
@@ -43,7 +44,7 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench {
 			Assert.AreEqual(0, matcher.EvaluatedByScriptCount, "old matcher script");
 		}
 
-
+[Explicit]
 		[TestCase("A and B","A",false)]
 		[TestCase("A and B", "B", false)]
 		[TestCase("A and B", "A,B", true)]
@@ -58,6 +59,7 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench {
 		public void OldMatcherCanEvalFormulas (string condition, string conditions, bool value) {
 			PerformSingleConditionTest(condition, conditions, value, false);
 		}
+		[Explicit]
 		[TestCase("A and B", "A", false)]
 		[TestCase("A and B", "B", false)]
 		[TestCase("A and B", "A,B", true)]
@@ -74,7 +76,7 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench {
 			PerformSingleConditionTest(condition, conditions, value, true);
 		}
 
-
+		[Explicit]
 		[TestCase("FACT and Y10", "FACT,Y10")]
 		[TestCase("FACT and Y9", "FACT,Y9")]
 		[TestCase("FACT and Y8", "FACT,Y8")]
@@ -1099,6 +1101,7 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench {
 		}
 
 		[Test]
+		[Explicit]
 		public void ZC373_InvalidFormulaParsing_1_Not_Support_BraceThenOperator() {
 			var terms = new[] {"ONLYONEPERIOD", "Помесяцам", "yc1"};
 			var newmatcher = new NewConditionMatcherImplementation();
@@ -1107,6 +1110,7 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench {
 			Assert.Pass("no exception was thrown");
 		}
 		[Test]
+		[Explicit]
 		public void ZC373_InvalidFormulaParsing_2_Not_Support_StartThenOperator()
 		{
 			var terms = new[] { "ONLYONEPERIOD", "Помесяцам", "yc1" };

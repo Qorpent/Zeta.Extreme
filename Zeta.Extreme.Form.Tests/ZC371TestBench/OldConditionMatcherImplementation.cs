@@ -12,7 +12,9 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench
 	public class OldConditionMatcherImplementation : ConditionMatcherBase {
 		protected override bool EvaluateByScript(string condition, IEnumerable<string> conds)
 		{
+			#if TESWITHPYTHON
 			bool result;
+			
 			var e = PythonPool.Get();
 			var cond = condition;
 			try
@@ -41,6 +43,8 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench
 			{
 				PythonPool.Release(e);
 			}
+			#endif
+			return false;
 		}
 
 		protected override bool EvaluateByListLikeCondition(string condition, IEnumerable<string> conds)

@@ -10,6 +10,7 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench
 	public class InternalZC371Tests
 	{
 		[Test]
+		[Explicit]
 		public void ConditionSetGeneratorTest() {
 			//проверяем, что действительно возвращаются все варианты массивов
 			var conditions = new[] {"A", "B", "C"};
@@ -29,6 +30,7 @@ namespace Zeta.Extreme.Form.Tests.ZC371TestBench
 			CollectionAssert.Contains(results, "A,B,C");
 		}
 		[Test]
+		[Explicit]
 		public void ConditionSetGeneratorTestFromConditionString() {
 			//проверяем, что действительно возвращаются все варианты массивов
 			IList<string> results = new List<string>();
