@@ -32,7 +32,7 @@ namespace Zeta.Extreme.BizProcess.Themas {
 			if (Value != null && Type == typeof (Missing)) {
 				Type = typeof (string);
 			}
-			return Value.ToTypeDefinition();
+			return Value.ToTargetType(Type);
 		}
 
 		/// <summary>
