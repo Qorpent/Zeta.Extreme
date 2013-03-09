@@ -14,6 +14,7 @@ using Comdiv.Extensions;
 using Comdiv.Model;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Model;
+using TagHelper = Qorpent.Utils.Extensions.TagHelper;
 
 namespace Zeta.Extreme.Poco {
 	public partial class objcls : IDetailObjectClass {

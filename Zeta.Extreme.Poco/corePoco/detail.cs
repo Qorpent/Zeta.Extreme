@@ -17,6 +17,7 @@ using Comdiv.Persistence;
 using Comdiv.Zeta.Model;
 using Qorpent;
 using Qorpent.Serialization;
+using TagHelper = Qorpent.Utils.Extensions.TagHelper;
 
 namespace Zeta.Extreme.Poco {
 	public partial class detail : IZetaDetailObject {

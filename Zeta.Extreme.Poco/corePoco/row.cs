@@ -20,6 +20,7 @@ using Comdiv.Model;
 using Comdiv.Persistence;
 using Comdiv.Wiki;
 using Comdiv.Zeta.Model;
+using TagHelper = Qorpent.Utils.Extensions.TagHelper;
 
 namespace Zeta.Extreme.Poco {
 	public partial class row : IZetaRow, IDatabaseVerificator {
@@ -199,7 +200,7 @@ namespace Zeta.Extreme.Poco {
 
 
 		public virtual string ResolveTag(string name) {
-			if (TagHelper.Has(Tag, name)) {
+			if (Qorpent.Utils.Extensions.TagHelper.Has(Tag, name)) {
 				return TagHelper.Value(Tag, name) ?? "";
 			}
 			if (null != TemporalParent) {
