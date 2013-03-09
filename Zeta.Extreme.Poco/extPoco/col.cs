@@ -8,26 +8,12 @@
 
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
-using Comdiv.Application;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
-	public partial class col : IZetaColumn, IZetaQueryDimension {
-		public virtual IList<IMarkLinkBase> GetMarkLinks() {
-			if (null == _markLinks) {
-				if (0 != Id && (null != myapp.storage.Get<col>(false))) {
-					myapp.storage.Get<col>().Refresh(this);
-				}
-			}
-			if (null == _markLinks) {
-				_markLinks = MarkLinks;
-			}
-			return MarkLinks.OfType<IMarkLinkBase>().ToList();
-		}
-
+	public partial class col {
 		public virtual void RemoveMark(IMark mark) {
 			var todel = MarkLinks.FirstOrDefault(i => i.Mark.Id == mark.Id);
 			if (null != todel) {

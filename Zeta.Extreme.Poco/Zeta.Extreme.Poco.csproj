@@ -237,10 +237,7 @@
     <Compile Include="Inerfaces\Extra data\IPeriodCourse.cs" />
     <Compile Include="Inerfaces\Extra data\IUsrRow.cs" />
     <Compile Include="Inerfaces\Extra data\IWithMark.cs" />
-    <Compile Include="Inerfaces\Extra data\IWithMarkBase.cs" />
     <Compile Include="Inerfaces\Extra data\IWithMarkCache.cs" />
-    <Compile Include="Inerfaces\Extra data\IWithMarks.cs" />
-    <Compile Include="Inerfaces\Extra data\IWithMarksBase.cs" />
     <Compile Include="Inerfaces\Extra data\IZetaDetailObjectGroup.cs" />
     <Compile Include="Inerfaces\Extra data\IZetaDetailObjectGroupLink.cs" />
     <Compile Include="Inerfaces\Extra data\IZetaObjectGroup.cs" />
@@ -318,6 +315,7 @@
     <Compile Include="Inerfaces\Support\StandardRowData.cs" />
     <Compile Include="Inerfaces\Support\SubpartRelation.cs" />
     <Compile Include="Inerfaces\Support\ValueDataType.cs" />
+    <Compile Include="MetaCache.cs" />
     <Compile Include="MetalinkRecord.cs" />
     <Compile Include="NativeSqlBind\ColumnCache.cs" />
     <Compile Include="NativeSqlBind\IWithFormulaExtensions.cs" />

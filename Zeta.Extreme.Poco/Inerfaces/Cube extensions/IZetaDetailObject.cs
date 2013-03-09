@@ -19,7 +19,6 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		IZoneElement,
 		ICanResolveTag,
 		IOlapDetailObject<IZetaMainObject, IZetaDetailObject>,
-		IWithMarks<IZetaDetailObject, IZetaDetailObjectMark>,
 		IWithDetailObjectType,
 		IWithAlternateMainObject,
 		IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,

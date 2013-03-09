@@ -14,6 +14,7 @@ using System.Linq;
 using Comdiv.Application;
 using Comdiv.Model;
 using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Poco {
 	public partial class ObjectGroup : IZetaObjectGroup {
@@ -36,8 +37,7 @@ namespace Zeta.Extreme.Poco {
 		public virtual IList<IZetaMainObject> MainObjects {
 			get {
 				return _objcache ??
-				       (_objcache =
-				        myapp.storage.Get<IZetaMainObject>().Query("from ENTITY x where GroupCache like '%/'+?+'/%'", Code).ToList()
+				       (_objcache = new NativeZetaReader().ReadObjects("from ENTITY x where GroupCache like '%/'+"+Code+"+'/%'").OfType<IZetaMainObject>().ToList()
 				       )
 					;
 			}

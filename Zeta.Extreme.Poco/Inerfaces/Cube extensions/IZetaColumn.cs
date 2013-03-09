@@ -11,13 +11,12 @@
 using System.Collections.Generic;
 
 namespace Zeta.Extreme.Poco.Inerfaces {
-	[global::Zeta.Extreme.Poco.Deprecated.Classic("ValueType")]
-	[global::Zeta.Extreme.Poco.Deprecated.ForSearch("Колонка, показатель")]
+	[Deprecated.Classic("ValueType")]
+	[Deprecated.ForSearch("Колонка, показатель")]
 	public interface IZetaColumn :
 		IOlapColumn,
 
 		IZetaQueryDimension,
-		IWithMarks<IZetaColumn, IZetaColumnMark>,
 		IWithMarkCache,
 		IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
 		IWithFixRules {

@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Comdiv.Application;
 using Comdiv.Model;
 using Comdiv.Persistence;
 using Qorpent;
@@ -189,35 +188,7 @@ namespace Zeta.Extreme.Poco {
 		                                         string system = "Default") {
 			//TODO: implement!!! 
 			throw new NotImplementedException();
-			/*
-            var query = new MetalinkRecord
-                            {
-                                Src = this.Id.ToString(),
-                                SrcType = "zeta.obj",
-                                TrgType = nodetype,
-                                Type = linktype,
-                                SubType = subtype,
-                                Active = true,
-                            };
-            return new MetalinkRepository().Search(query, system);
-			 */
-		}
-
-		public virtual IZetaDetailObject[] GetDetails(string classcode, string typecode) {
-			classcode = classcode ?? "";
-			typecode = typecode ?? "";
-			return myapp.storage.Get<IZetaDetailObject>()
-				.Query("from ENTITY x where x.Org = ? and (? = '' or ? = x.Type.Code ) and (? = '' or ? = x.Type.Class.Code) "
-				       , this, typecode, typecode, classcode, classcode).OrderBy(x => x.Idx).ToArray();
-		}
-
-		public virtual IZetaMainObject[] GetChildren(string classcode, string typecode) {
-			classcode = classcode ?? "";
-			typecode = typecode ?? "";
-			return myapp.storage.Get<IZetaMainObject>()
-				.Query(
-					"from ENTITY x where x.Parent = ? and (? = '' or ? = x.ObjType.Code ) and (? = '' or ? = x.ObjType.Class.Code) "
-					, this, typecode, typecode, classcode, classcode).OrderBy(x => x.Idx).ToArray();
+		
 		}
 
 		public virtual string ResolveTag(string name) {
@@ -229,16 +200,6 @@ namespace Zeta.Extreme.Poco {
 				tag = Parent.ResolveTag(name);
 			}
 			return tag ?? "";
-		}
-
-		public virtual IList<IZetaObjectGroup> GetGroups() {
-			lock (this) {
-				if (_groups == null) {
-					var _storage = myapp.storage.Get<IZetaObjectGroup>();
-					_groups = GroupCache.SmartSplit(false, true, '/').Distinct().Select(_storage.Load).OrderBy(x => x.Id).ToList();
-				}
-				return _groups;
-			}
 		}
 
 		private bool matchTypeFilter(IZetaMainObject child, string typefiler) {

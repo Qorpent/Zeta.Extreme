@@ -8,7 +8,6 @@
 
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using Comdiv.Model;
 using Zeta.Extreme.Poco.Inerfaces;
@@ -39,13 +38,6 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual string FullName { get; set; }
 
-		public virtual IList<IMarkLinkBase> GetMarkLinks() {
-			if (null == MarkLinks && 0 == Id) {
-				return new IMarkLinkBase[] {};
-			}
-			return MarkLinks.OfType<IMarkLinkBase>().ToList();
-		}
-
 		public virtual void RemoveMark(IMark mark) {
 			var todel = MarkLinks.FirstOrDefault(i => i.Mark.Id == mark.Id);
 			if (null != todel) {
@@ -54,7 +46,7 @@ namespace Zeta.Extreme.Poco {
 		}
 
 		public virtual bool IsMarkSeted(string code) {
-			return WithMarksExtension.IsMarkSeted(this, code);
+			return false;
 		}
 
 		public virtual bool Equals(IZetaDetailObject detail) {

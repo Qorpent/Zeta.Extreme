@@ -21,7 +21,6 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		IZetaQueryDimension,
 		ICanResolveTag,
 		IOlapMainObject<IZetaMainObject, IZetaDetailObject>,
-		IWithMarks<IZetaMainObject, IZetaMainObjectMark>,
 		IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
 		IWithAddress, IMainObjectLocators,
 		IWithDetailObjectType,
@@ -50,9 +49,6 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		int? DivId { get; set; }
 
 		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
-		IList<IZetaObjectGroup> GetGroups();
-		IZetaDetailObject[] GetDetails(string classcode, string typecode);
-		IZetaMainObject[] GetChildren(string classcode, string typecode);
 		string[] GetConfiguredThemaCodes();
 		IUsrThemaMap GetUserMap(string themacode, bool plan);
 		IZetaUnderwriter[] GetConfiguredUsers();

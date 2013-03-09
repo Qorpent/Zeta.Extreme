@@ -45,27 +45,6 @@ namespace Zeta.Extreme.Poco {
 			return true;
 		}
 
-		public virtual IList<IMarkLinkBase> GetMarkLinks() {
-			if (null == MarkLinks && 0 == Id) {
-				return new IMarkLinkBase[] {};
-			}
-			if (null == MarkLinks) {
-				return new IMarkLinkBase[] {};
-			}
-			return MarkLinks.OfType<IMarkLinkBase>().ToList();
-		}
-
-		public virtual bool IsMarkSeted(string code) {
-			return WithMarksExtension.IsMarkSeted(this, code);
-		}
-
-		public virtual void RemoveMark(IMark mark) {
-			var todel = MarkLinks.FirstOrDefault(i => i.Mark.Id == mark.Id);
-			if (null != todel) {
-				MarkLinks.Remove(todel);
-			}
-		}
-
 		public virtual bool IsMatchZoneAcronim(string s) {
 			s = s.ToUpper();
 			if (!s.Contains("_")) {

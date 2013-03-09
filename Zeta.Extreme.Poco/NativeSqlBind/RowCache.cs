@@ -112,59 +112,17 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 #if USEROWCACHE
 			//lock (locker)
 			{
-				if (key is int) {
-					if (byid.ContainsKey((int) key)) {
-						var result = byid[(int) key];
-						if (result.LocalProperties.ContainsKey("dyn")) {
-							return get("file:" + result.LocalProperties["file"]);
-						}
-						return result;
+				IZetaRow zetaRow;
+				if (TryReturnByIntId(key, out zetaRow)) return zetaRow;
+				var sk = ((string) key).ToUpper();
+				if (bycode.ContainsKey(sk)) {
+					var result = bycode[sk];
+					if (result.LocalProperties.ContainsKey("dyn")) {
+						return get("file:" + result.LocalProperties["file"]);
 					}
-					else {
-						if (null == storage) {
-							storage = myapp.storage.Get<IZetaRow>(false);
-						}
-						if (storage != null) {
-							var result = storage.Load(key);
-
-							if (null != result) {
-								processIds(result);
-								processRefs(result);
-							}
-
-							return result;
-						}
-						else {
-							return null;
-						}
-					}
+					return result;
 				}
-				else {
-					var sk = ((string) key).ToUpper();
-					if (bycode.ContainsKey(sk)) {
-						var result = bycode[sk];
-						if (result.LocalProperties.ContainsKey("dyn")) {
-							return get("file:" + result.LocalProperties["file"]);
-						}
-						return result;
-					}
-					else {
-						if (null == storage) {
-							storage = myapp.storage.Get<IZetaRow>(false);
-						}
-						if (storage != null) {
-							var result = storage.Load(key);
-							if (null != result) {
-								processIds(result);
-								processRefs(result);
-							}
-							return result;
-						}
-						else {
-							return null;
-						}
-					}
-				}
+				return null;
 			}
 #else
             if (key.Equals(0) || key.Equals("0")) return null;
@@ -176,6 +134,24 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
                             return null;
                         }
 #endif
+		}
+
+		private static bool TryReturnByIntId(object key, out IZetaRow zetaRow) {
+			zetaRow = null;
+			if (key is int) {
+				if (byid.ContainsKey((int) key)) {
+					var result = byid[(int) key];
+					if (result.LocalProperties.ContainsKey("dyn")) {
+						{
+							zetaRow = get("file:" + result.LocalProperties["file"]);
+							return true;
+						}
+					}
+						zetaRow = result;
+						return true;
+				}
+			}
+			return false;
 		}
 
 		/// <summary>

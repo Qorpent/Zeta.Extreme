@@ -8,14 +8,8 @@
 
 #endregion
 
-using Comdiv.Application;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
-	public partial class zone : IZetaZone {
-		public virtual int CountObjects() {
-			return myapp.storage.Get<IZetaMainObject>().First<IZetaMainObject, int>(
-				"select count(x.Id) from Org x where x.Location.Region.Country=?", Id);
-		}
-	}
+	public partial class zone : IZetaZone {}
 }

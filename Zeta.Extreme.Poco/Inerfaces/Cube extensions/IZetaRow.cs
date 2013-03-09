@@ -20,7 +20,6 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		IZetaFormsSupport,
 		IWithFixRules,
 		IWithMarkCache,
-		IWithMarks<IZetaRow, IZetaRowMark>,
 		IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
 		IWithMainObject<IZetaMainObject> {
 		IDictionary<string, object> LocalProperties { get; }

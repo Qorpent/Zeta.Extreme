@@ -133,7 +133,7 @@ namespace Zeta.Extreme.Poco {
 			}
 			mes = mes ?? "";
 			if (mes.Contains("dir")) {
-				mes = myapp.storage.Get<IZetaRow>().Load(mes.Replace("/", "")).Measure;
+				mes = MetaCache.Default.Get<IZetaRow>(mes.Replace("/", "")).Measure;
 			}
 			return mes;
 		}

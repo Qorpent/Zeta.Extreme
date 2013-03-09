@@ -10,7 +10,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Comdiv.Application;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Poco.Inerfaces;
 
@@ -82,26 +81,6 @@ namespace Zeta.Extreme.Poco {
 					row.ResetAllChildren();
 				}
 			}
-		}
-
-		public virtual IList<IMarkLinkBase> GetMarkLinks() {
-			return SlashListHelper.ReadList(MarkCache).Select(x => (IMarkLinkBase) new TreeMark
-				{
-					Target = this,
-					Mark = myapp.storage.Get<IMark>().Load(x),
-				}).ToList();
-			/*
-
-            if (null == MarkLinks){
-                if (0 != Id && (null != myapp.storage.Get<row>(false))){
-                    myapp.storage.Get<row>().Refresh(this);
-                }
-            }
-            if (null == MarkLinks){
-                MarkLinks = new List<IZetaRowMark>();
-            }
-            return MarkLinks.OfType<IMarkLinkBase>().ToList();
-			 */
 		}
 
 		public virtual void RemoveMark(IMark mark) {

@@ -9,7 +9,5 @@
 #endregion
 
 namespace Zeta.Extreme.Poco.Inerfaces {
-	public interface ICanCountObjects {
-		int CountObjects();
-	}
+	public interface ICanCountObjects {}
 }

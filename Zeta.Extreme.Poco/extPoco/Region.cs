@@ -8,16 +8,10 @@
 
 #endregion
 
-using Comdiv.Application;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class region : IZetaRegion {
-		public virtual int CountObjects() {
-			return myapp.storage.Get<obj>().First<IZetaMainObject, int>(
-				"select count(x.Id) from Org x where x.Location.Region=" + Id);
-		}
-
 /*
         public virtual int CountMunicipals(){
             var crit = DetachedCriteria.For(typeof (IZetaPoint))
