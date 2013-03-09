@@ -196,7 +196,7 @@ namespace Zeta.Extreme.Form.Themas {
 			template.SqlOptimization = SqlOptimization;
 			template.PeriodRedirect = PeriodRedirect;
 			template.Name = Name;
-			template.ForPeriods = ForPeriods.SmartSplit().Select(x => x.toInt()).ToArray();
+			template.ForPeriods = ForPeriods.SmartSplit().Select(x => x.ToInt()).ToArray();
 			template.AutoFillDescription = AutoFill;
 			template.UnderwriteRole = UnderwriteRole;
 			template.ScheduleDelta = ScheduleDelta;
@@ -225,13 +225,13 @@ namespace Zeta.Extreme.Form.Themas {
 
 			template.Configuration = this;
 
-			if (ColumnDefinitions.yes()) {
+			if (ColumnDefinitions.ToBool()) {
 				var serializer = new InputTemplateXmlSerializer();
 				serializer.BindColumns(template, ColumnDefinitions);
 			}
 
 
-			if (RowDefinitions.yes()) {
+			if (RowDefinitions.ToBool()) {
 				var serializer = new InputTemplateXmlSerializer();
 				serializer.BindRows(template, RowDefinitions);
 			}

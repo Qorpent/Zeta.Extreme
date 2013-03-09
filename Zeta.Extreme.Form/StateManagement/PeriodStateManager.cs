@@ -61,9 +61,9 @@ namespace Zeta.Extreme.Form.StateManagement {
 				dict =
 				c.ExecuteDictionary(
 					"select state,deadline,udeadline from usm.periodstate where year=" + year + " and period=" + period, null));
-			result.State = dict.get("state", () => result.State);
-			result.DeadLine = dict.get("deadline", () => result.DeadLine);
-			result.UDeadLine = dict.get("udeadline", () => result.UDeadLine);
+			result.State = dict.SafeGet("state",result.State);
+			result.DeadLine = dict.SafeGet("deadline", result.DeadLine);
+			result.UDeadLine = dict.SafeGet("udeadline", result.UDeadLine);
 			return result;
 		}
 

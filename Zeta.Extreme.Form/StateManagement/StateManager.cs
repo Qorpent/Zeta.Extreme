@@ -158,12 +158,12 @@ namespace Zeta.Extreme.Form.StateManagement {
 		public IInputTemplate[] GetDependentTemplates(IInputTemplate source) {
 			lock (this) {
 				checkinit();
-				return dependences.Where(x => x.attr("source") == source.Code)
+				return dependences.Where(x => x.Attr("source") == source.Code)
 					.Select(x =>
 						{
-							var result = FactoryProvider.Get().GetForm(x.attr("target"));
+							var result = FactoryProvider.Get().GetForm(x.Attr("target"));
 							if (null == result) {
-								throw new Exception("Отсутствует целевая форма " + x.attr("target"));
+								throw new Exception("Отсутствует целевая форма " + x.Attr("target"));
 							}
 							return result.Clone();
 						})
@@ -202,14 +202,14 @@ namespace Zeta.Extreme.Form.StateManagement {
 		public IInputTemplate[] GetSourceTemplates(IInputTemplate target, IZetaMainObject obj) {
 			lock (this) {
 				checkinit();
-				return dependences.Where(x => x.attr("target") == target.Code)
-					.Where(x => x.attr("group", "").IsEmpty() || null == obj || obj.GroupCache.Contains(x.attr("group")))
+				return dependences.Where(x => x.Attr("target") == target.Code)
+					.Where(x => x.Attr("group", "").IsEmpty() || null == obj || obj.GroupCache.Contains(x.Attr("group")))
 					.Select(x =>
 						{
-							var result = FactoryProvider.Get().GetForm(x.attr("source"), true);
+							var result = FactoryProvider.Get().GetForm(x.Attr("source"), true);
 							if (null == result) {
 								throw new Exception("Не могу найти исходную форму для проверки блокировок - " +
-								                    x.attr("source"));
+								                    x.Attr("source"));
 							}
 							return result.Clone();
 						}
@@ -228,11 +228,11 @@ namespace Zeta.Extreme.Form.StateManagement {
 		public IInputTemplate GetMainTemplate(IInputTemplate safer) {
 			lock (this) {
 				checkinit();
-				var maine = safers.FirstOrDefault(x => x.attr("safer") == safer.Code);
+				var maine = safers.FirstOrDefault(x => x.Attr("safer") == safer.Code);
 				if (null == maine) {
 					return null;
 				}
-				var maincode = maine.attr("main");
+				var maincode = maine.Attr("main");
 				return update(FactoryProvider.Get().GetForm(maincode).Clone(), safer);
 			}
 		}
@@ -245,11 +245,11 @@ namespace Zeta.Extreme.Form.StateManagement {
 		public IInputTemplate GetSaferTemplate(IInputTemplate main) {
 			lock (this) {
 				checkinit();
-				var safere = safers.FirstOrDefault(x => x.attr("main") == main.Code);
+				var safere = safers.FirstOrDefault(x => x.Attr("main") == main.Code);
 				if (null == safere) {
 					return null;
 				}
-				var safercode = safere.attr("safer");
+				var safercode = safere.Attr("safer");
 				return update(FactoryProvider.Get().GetForm(safercode).Clone(), main);
 			}
 		}
@@ -315,7 +315,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 					}
 				}
 				if (state == "0ISBLOCK") {
-					var checkperiod = perioddependency.get(template.Period, defobj: 0);
+					var checkperiod = perioddependency.SafeGet(template.Period);
 					if (checkperiod != 0) {
 						var t2 = template.Clone();
 						t2.Period = checkperiod;
@@ -343,7 +343,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 				if (state == "0ISBLOCK" && template.NeedFiles.IsNotEmpty()) {
 					var validperiod = true;
 					if (template.NeedFilesPeriods.IsNotEmpty()) {
-						var needperiods = template.NeedFilesPeriods.SmartSplit().Select(x => x.toInt()).ToList();
+						var needperiods = template.NeedFilesPeriods.SmartSplit().Select(x => x.ToInt()).ToList();
 						if (!needperiods.Contains(template.Period)) {
 							validperiod = false;
 						}
@@ -407,7 +407,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 				var backcheckrules = GetMathchedRules(template, state, obj).Where(x => x.Type == "backcheck");
 				if (null == backcheckrules.FirstOrDefault()) {
 					/* правило 3 - дочка не может быть блокирована, если родитель открыт */
-					if (masters.yes() && state == "0ISBLOCK") {
+					if (masters.ToBool() && state == "0ISBLOCK") {
 						foreach (var master in masters) {
 							if (master.GetState(obj, detail) == "0ISOPEN") {
 								cause = "нельзя блокировать, пока открыта '" + master.Name + "'";
@@ -418,7 +418,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 
 
 					/* правило 4 - дочка не может быть проверена, пока мастер не проверен */
-					if (masters.yes() && state == "0ISCHECKED") {
+					if (masters.ToBool() && state == "0ISCHECKED") {
 						foreach (var master in masters) {
 							if (master.GetState(obj, detail) != "0ISCHECKED") {
 								cause = "нельзя выставить статус проверено, пока не проверена '" + master.Name + "'";
@@ -430,7 +430,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 
 
 				/* правило 5 - нельзя открывать форму если утверждена финальная */
-				if (fs.yes() && state == "0ISOPEN") {
+				if (fs.ToBool() && state == "0ISOPEN") {
 					var periodmapper = Container.get<ILockPeriodMapper>();
 					var toperiods = new int[] {};
 					if (null != periodmapper) {
@@ -549,13 +549,13 @@ namespace Zeta.Extreme.Form.StateManagement {
 		public IInputTemplate[] GetSourceTemplatesSimple(IInputTemplate target) {
 			lock (this) {
 				checkinit();
-				return dependences.Where(x => x.attr("target") == target.Code)
+				return dependences.Where(x => x.Attr("target") == target.Code)
 					.Select(x =>
 						{
-							var result = FactoryProvider.Get().GetForm(x.attr("source"), true);
+							var result = FactoryProvider.Get().GetForm(x.Attr("source"), true);
 							if (null == result) {
 								throw new Exception("Не могу найти исходную форму для проверки блокировок - " +
-								                    x.attr("source"));
+								                    x.Attr("source"));
 							}
 							return result.Clone();
 						}
@@ -574,13 +574,13 @@ namespace Zeta.Extreme.Form.StateManagement {
 		public IInputTemplate[] GetPrimaryTemplatesSimple(IInputTemplate target) {
 			lock (this) {
 				checkinit();
-				return primaries.Where(x => x.attr("result") == target.Code)
+				return primaries.Where(x => x.Attr("result") == target.Code)
 					.Select(x =>
 						{
-							var result = FactoryProvider.Get().GetForm(x.attr("source"), true);
+							var result = FactoryProvider.Get().GetForm(x.Attr("source"), true);
 							if (null == result) {
 								throw new Exception("Не могу найти исходную форму для проверки блокировок - " +
-								                    x.attr("source"));
+								                    x.Attr("source"));
 							}
 							return result.Clone();
 						}
@@ -599,13 +599,13 @@ namespace Zeta.Extreme.Form.StateManagement {
 		public IInputTemplate[] GetExtensionTemplatesSimple(IInputTemplate target) {
 			lock (this) {
 				checkinit();
-				return extensions.Where(x => x.attr("source") == target.Code)
+				return extensions.Where(x => x.Attr("source") == target.Code)
 					.Select(x =>
 						{
-							var result = FactoryProvider.Get().GetForm(x.attr("result"), true);
+							var result = FactoryProvider.Get().GetForm(x.Attr("result"), true);
 							if (null == result) {
 								throw new Exception("Не могу найти исходную форму для проверки блокировок - " +
-								                    x.attr("source"));
+								                    x.Attr("source"));
 							}
 							return result.Clone();
 						}
@@ -623,8 +623,8 @@ namespace Zeta.Extreme.Form.StateManagement {
 			if (y <= 1900) {
 				y = DateTime.Today.Year;
 			}
-			var tsy = t.Thema.Parameters.get("beginActualYear", 1900);
-			var tey = t.Thema.Parameters.get("endActualYear", 3000);
+			var tsy = t.Thema.Parameters.SafeGet("beginActualYear", 1900);
+			var tey = t.Thema.Parameters.SafeGet("endActualYear", 3000);
 			return y >= tsy && y <= tey;
 		}
 
@@ -645,12 +645,12 @@ namespace Zeta.Extreme.Form.StateManagement {
 			lock (this) {
 				checkinit();
 
-				return finals.Where(x => x.attr("source") == source.Code)
+				return finals.Where(x => x.Attr("source") == source.Code)
 					.Select(x =>
 						{
-							var form = FactoryProvider.Get().GetForm(x.attr("result"));
+							var form = FactoryProvider.Get().GetForm(x.Attr("result"));
 							if (form == null) {
-								throw new Exception(string.Format("no {0}->{1}", source.Code, x.attr("result")));
+								throw new Exception(string.Format("no {0}->{1}", source.Code, x.Attr("result")));
 							}
 							return form.Clone();
 						})
@@ -702,12 +702,12 @@ namespace Zeta.Extreme.Form.StateManagement {
 					primaries = x.XPathSelectElements("//processes/primaryform").ToList();
 					finals = x.XPathSelectElements("//processes/finalform").ToList();
 					foreach (var item in x.XPathSelectElements("//processes/perioddependency")) {
-						perioddependency[item.attr("on", 0)] = item.attr("need", 0);
+						perioddependency[item.Attr("on").ToInt()] = item.Attr("need").ToInt();
 					}
 					rules = x.XPathSelectElements("//processes/rule").Select(e =>
 						{
 							var result = new StateRule();
-							e.applyTo(result);
+							e.Apply(result);
 							return result;
 						}).ToList();
 

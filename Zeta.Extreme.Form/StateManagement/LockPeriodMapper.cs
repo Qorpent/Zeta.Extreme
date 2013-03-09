@@ -41,7 +41,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		public int[] GetLockingPeriods(LockOperation operation, int givenperiod) {
 			checkMap();
 			var prefix = operation.ToString() + givenperiod;
-			var toperiods = lockmap.get(prefix, new int[] {});
+			var toperiods = lockmap.SafeGet(prefix)?? new int[] {};
 			return toperiods;
 		}
 
@@ -58,7 +58,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 			if (file.IsNotEmpty()) {
 				var xml = new BxlParser().Parse(file);
 				foreach (var element in xml.Elements()) {
-					var fromperiod = element.attr("code");
+					var fromperiod = element.Attr("code");
 					var prefix = element.Name.LocalName;
 					if (prefix == "lock") {
 						prefix = "Block";
@@ -68,7 +68,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 					}
 					prefix = prefix + fromperiod;
 					var _toperiods = element.Value;
-					var toperiods = _toperiods.SmartSplit().Select(x => x.toInt()).ToArray();
+					var toperiods = _toperiods.SmartSplit().Select(x => x.ToInt()).ToArray();
 					lockmap[prefix] = toperiods;
 				}
 			}

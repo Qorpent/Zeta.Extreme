@@ -63,7 +63,8 @@ namespace Zeta.Extreme.Form.Themas {
 					if (th.IsGroup) {
 						continue;
 					}
-					if (!fav.get(th.Code, false)) {
+					if (!fav.SafeGet(th.Code, false))
+					{
 						toremove.Add(th);
 					}
 				}
@@ -96,7 +97,7 @@ namespace Zeta.Extreme.Form.Themas {
 			}
 			else {
 				foreach (var src1 in src) {
-					src1.IsFavorite = fav.get(src1.Code, false);
+					src1.IsFavorite = fav.SafeGet(src1.Code, false);
 				}
 			}
 			return active;

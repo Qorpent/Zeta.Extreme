@@ -132,7 +132,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Происхождение темы
 		/// </summary>
 		public string Evidence {
-			get { return SrcXml.attr("evidence"); }
+			get { return SrcXml.Attr("evidence"); }
 		}
 
 		/// <summary>
@@ -145,23 +145,24 @@ namespace Zeta.Extreme.Form.Themas {
 			if (Parameters.ContainsKey(name)) {
 				return Parameters[name];
 			}
-			var prop = GetType().resolveProperty(name);
+			var prop = GetType().FindValueMember(name);
 			if (null != prop) {
+				var propinfo = prop.Member as PropertyInfo;
 				return new TypedParameter
 					{
 						Name = name,
-						Type = prop.PropertyType,
-						Value = prop.GetValue(this, null).toStr(),
+						Type = propinfo.PropertyType,
+						Value = propinfo.GetValue(this, null).ToStr(),
 					};
 			}
 			foreach (var import in Imports) {
 				var value = import.ResolveParameter(name);
-				if (!typeof (Missing).Equals(value.Type)) {
+				if (!(typeof (Missing) == value.Type)) {
 					return value;
 				}
 			}
 
-			return new TypedParameter {Value = def.toStr()};
+			return new TypedParameter {Value = def.ToStr()};
 		}
 
 		/// <summary>
@@ -188,7 +189,7 @@ namespace Zeta.Extreme.Form.Themas {
 				}
 				type = Type.GetType(clsname, true);
 			}
-			var result = type.create<Thema>();
+			var result = type.Create<Thema>();
 			result.Configuration = this;
 			result.Code = Code;
 			result.Name = Name;

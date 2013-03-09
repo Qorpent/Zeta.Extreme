@@ -427,7 +427,7 @@ namespace Zeta.Extreme.Form.Themas {
 			if (code == "this.idx") {
 				return Idx;
 			}
-			return Parameters.get(code);
+			return Parameters.SafeGet(code);
 		}
 
 		/// <summary>
@@ -439,10 +439,10 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <returns> </returns>
 		public T GetParameter<T>(string code, T def) {
 			var p = GetParameter(code);
-			if (p.no()) {
+			if (!p.ToBool()) {
 				return def;
 			}
-			return p.to<T>();
+			return p.To<T>();
 		}
 
 		/// <summary>
@@ -506,7 +506,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <returns> </returns>
 		public IThema Clone(bool full) {
 			lock (this) {
-				var result = GetType().create<Thema>();
+				var result = GetType().Create<Thema>();
 				result.Code = Code;
 				result.Name = Name;
 				result.Role = Role;

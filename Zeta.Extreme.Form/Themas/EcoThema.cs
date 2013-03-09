@@ -44,7 +44,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Префикс роли
 		/// </summary>
 		public string Roleprefix {
-			get { return Parameters.get("roleprefix", ""); }
+			get { return Parameters.SafeGet("roleprefix", ""); }
 			set { Parameters["roleprefix"] = value; }
 		}
 
@@ -52,7 +52,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Ответственность основная
 		/// </summary>
 		public IUsrThemaMap Responsibility {
-			get { return Parameters.get<IUsrThemaMap>("responsibility", null); }
+			get { return Parameters.SafeGet<IUsrThemaMap>("responsibility"); }
 			set { Parameters["responsibility"] = value; }
 		}
 
@@ -60,7 +60,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Ответственность дополнительная
 		/// </summary>
 		public IUsrThemaMap Responsibility2 {
-			get { return Parameters.get<IUsrThemaMap>("responsibility2", null); }
+			get { return Parameters.SafeGet<IUsrThemaMap>("responsibility2"); }
 			set { Parameters["responsibility2"] = value; }
 		}
 
@@ -68,7 +68,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Отвественность холдинга
 		/// </summary>
 		public IUsrThemaMap HoldResponsibility {
-			get { return Parameters.get<IUsrThemaMap>("holdresponsibility", null); }
+			get { return Parameters.SafeGet<IUsrThemaMap>("holdresponsibility"); }
 			set { Parameters["holdresponsibility"] = value; }
 		}
 
@@ -76,7 +76,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Признак невалидности целевого объекта для
 		/// </summary>
 		public bool InvalidTargetObject {
-			get { return Parameters.get("invalidtargetobject", false); }
+			get { return Parameters.SafeGet("invalidtargetobject", false); }
 			set { Parameters["invalidtargetobject"] = value; }
 		}
 
@@ -84,7 +84,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Признак темы для детали
 		/// </summary>
 		public bool IsDetail {
-			get { return Parameters.get("isdetail", false); }
+			get { return Parameters.SafeGet("isdetail", false); }
 			set { Parameters["isdetail"] = value; }
 		}
 
@@ -92,7 +92,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Класс для деталей
 		/// </summary>
 		public string DetailClasses {
-			get { return Parameters.get("detailclasses", ""); }
+			get { return Parameters.SafeGet("detailclasses", ""); }
 			set { Parameters["detailclasses"] = value; }
 		}
 
@@ -100,7 +100,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Корневая строка
 		/// </summary>
 		public string RootRow {
-			get { return Parameters.get("rootrow", ""); }
+			get { return Parameters.SafeGet("rootrow", ""); }
 			set { Parameters["rootrow"] = value; }
 		}
 
@@ -108,7 +108,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Признак принадлежности к группе
 		/// </summary>
 		public string ForGroup {
-			get { return Parameters.get("forgroup", ""); }
+			get { return Parameters.SafeGet("forgroup", ""); }
 			set { Parameters["forgroup"] = value; }
 		}
 
@@ -116,7 +116,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Требование наличия ответственности
 		/// </summary>
 		public bool NeedResponsibility {
-			get { return Parameters.get("needresponsibility", false); }
+			get { return Parameters.SafeGet("needresponsibility", false); }
 			set { Parameters["needresponsibility"] = value; }
 		}
 

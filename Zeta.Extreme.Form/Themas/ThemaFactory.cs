@@ -84,7 +84,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="usr"> </param>
 		/// <returns> </returns>
 		public IEnumerable<IThema> GetForUser(IPrincipal usr) {
-			return cache.get(usr.Identity.Name, () => internalGetForUser(usr));
+			return (IEnumerable<IThema>) cache.CachedGet(usr.Identity.Name, () => internalGetForUser(usr));
 		}
 
 
@@ -98,7 +98,7 @@ namespace Zeta.Extreme.Form.Themas {
 			if (code.EndsWith(".in")) {
 				code = code.Replace(".in", "");
 			}
-			return cache.get(code + ".in", () =>
+			return (IInputTemplate) cache.CachedGet(code + ".in", () =>
 				{
 					var thema =
 						Themas.OrderByDescending(x => x.Code.Length).FirstOrDefault(
@@ -111,8 +111,7 @@ namespace Zeta.Extreme.Form.Themas {
 						throw new Exception("cannto find form with code " + code);
 					}
 					return result;
-				}, true
-				);
+				});
 		}
 
 		/// <summary>
@@ -121,7 +120,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="code"> </param>
 		/// <returns> </returns>
 		public IReportDefinition GetReport(string code) {
-			return cache.get(code + ".out", () =>
+			return (IReportDefinition) cache.CachedGet(code + ".out", () =>
 				{
 					var thema =
 						Themas.OrderByDescending(x => x.Code.Length).FirstOrDefault(
@@ -130,7 +129,7 @@ namespace Zeta.Extreme.Form.Themas {
 						return null;
 					}
 					return thema.GetReport(code);
-				}, true);
+				});
 		}
 
 		/// <summary>

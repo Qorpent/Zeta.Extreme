@@ -22,9 +22,9 @@ using System.Linq;
 using System.Security;
 using System.Security.Principal;
 using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Inversion;
-using Comdiv.Security;
+using Qorpent.Applications;
+using Qorpent.IoC;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
@@ -35,7 +35,7 @@ namespace Zeta.Extreme.Form.Meta{
     public static class UserOrgDataMapper{
         private static readonly object sync = new object();
 
-        private static IInversionContainer _container;
+        private static IContainer _container;
 
 
         /// <summary>
@@ -52,17 +52,8 @@ namespace Zeta.Extreme.Form.Meta{
         /// <summary>
         /// 
         /// </summary>
-        public static IInversionContainer Container{
-            get{
-                if (_container.invalid()){
-                    lock (typeof (UserOrgDataMapper)){
-                        if (_container.invalid()){
-                            Container = myapp.ioc;
-                        }
-                    }
-                }
-                return _container;
-            }
+        public static IContainer Container{
+            get { return _container ?? (_container = Application.Current.Container); }
             set { _container = value; }
         }
 
@@ -129,7 +120,7 @@ namespace Zeta.Extreme.Form.Meta{
         public static bool Authorize(this IZetaMainObject obj, IPrincipal user){
             lock (sync){
 				if (null == obj) return true;
-                if (TagHelper.Value(obj.Tag, "public").toBool()) return true;
+                if (TagHelper.Value(obj.Tag, "public").ToBool()) return true;
                 if (myapp.roles.IsAdmin(user)){
                     return true;
                 }
@@ -182,7 +173,7 @@ namespace Zeta.Extreme.Form.Meta{
                     return true;
                 }
 	            var name = principal.Identity.Name;
-	            var domain = name.toDomain();
+	            var domain = name.GetDomainNamePart();
 	            using (var c = getConnection()) {
 		            c.Open();
 		            var cmd = c.CreateCommand();
@@ -250,7 +241,7 @@ namespace Zeta.Extreme.Form.Meta{
 	        like = like ?? "";
             lock (sync){
 				var name = principal.Identity.Name;
-	            var domain = name.toDomain();
+	            var domain = name.GetDomainNamePart();
                 if (HasAll(principal)){
 					return (
 						from o in  ObjCache.ObjById.Values // myapp.storage.AsQueryable<IZetaMainObject>()

@@ -21,7 +21,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		/// <returns> </returns>
 		public override IDocument Configure() {
-			return new Document().bindfrom(this);
+			return new Document().BindFrom(this);
 		}
 	}
 }
