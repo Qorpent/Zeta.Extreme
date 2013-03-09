@@ -18,13 +18,13 @@ using Comdiv.Model;
 
 namespace Comdiv.Zeta.Model{
     public interface IMainObjectLocators{
-        [Classic("Holding")]
+        [global::Zeta.Extreme.Poco.Deprecated.Classic("Holding")]
         IMainObjectGroup Group { get; set; }
 
-        [Classic("Otrasl")]
+        [global::Zeta.Extreme.Poco.Deprecated.Classic("Otrasl")]
         IMainObjectRole Role { get; set; }
 
-        [Classic("Municipal")]
+        [global::Zeta.Extreme.Poco.Deprecated.Classic("Municipal")]
         IZetaPoint Location { get; set; }
     }
 }

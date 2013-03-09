@@ -19,7 +19,6 @@ using Comdiv.Model.Interfaces;
 using Comdiv.Olap.Model;
 
 namespace Comdiv.Zeta.Model{
-    [Classic("UserOrgMap")]
     public interface IUserObjectMap :
         IEntityDataPattern,
         IWithMainObject<IZetaMainObject>,

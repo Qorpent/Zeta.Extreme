@@ -18,7 +18,7 @@ using Comdiv.Model;
 
 namespace Comdiv.Olap.Model{
     public interface IWithMainObject<MainObjectType> where MainObjectType : IOlapMainObjectBase{
-        [Classic("Org")]
+        [global::Zeta.Extreme.Poco.Deprecated.Classic("Org")]
         MainObjectType Object { get; set; }
     }
 }

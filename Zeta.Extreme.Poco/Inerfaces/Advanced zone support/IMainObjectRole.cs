@@ -19,8 +19,8 @@ using Comdiv.Model.Interfaces;
 using Comdiv.Olap.Model;
 
 namespace Comdiv.Zeta.Model{
-    [Classic("Otrasl")]
-    [ForSearch("Роль, тип, отрасль объекта")]
+
+    [global::Zeta.Extreme.Poco.Deprecated.ForSearch("Роль, тип, отрасль объекта")]
     public interface IMainObjectRole :
         IZoneElement,
         ICanCountObjects,

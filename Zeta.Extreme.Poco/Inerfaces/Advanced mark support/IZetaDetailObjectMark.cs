@@ -18,7 +18,7 @@ using Comdiv.Model;
 using Comdiv.Olap.Model;
 
 namespace Comdiv.Zeta.Model{
-    [Classic("SubpartMark")]
+    [global::Zeta.Extreme.Poco.Deprecated.Classic("SubpartMark")]
     public interface IZetaDetailObjectMark :
         IItemDataPattern,
         IMarkLink<IZetaDetailObject> //,

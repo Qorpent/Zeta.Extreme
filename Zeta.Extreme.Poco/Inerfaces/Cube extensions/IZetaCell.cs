@@ -19,7 +19,7 @@ using Comdiv.Model.Interfaces;
 using Comdiv.Olap.Model;
 
 namespace Comdiv.Zeta.Model{
-    [Classic("MainDataRow")]
+    [global::Zeta.Extreme.Poco.Deprecated.Classic("MainDataRow")]
     public interface IZetaCell :
         IWithComment,
         IWithData,

@@ -21,8 +21,8 @@ using Comdiv.Olap.Model;
 using Comdiv.Persistence;
 
 namespace Comdiv.Zeta.Model{
-	[Classic("MainDataTree")]
-    [ForSearch("Строка, признак")]
+
+    [global::Zeta.Extreme.Poco.Deprecated.ForSearch("Строка, признак")]
     public interface IZetaRow :
         IOlapForm<IZetaRow>,
 		IZetaQueryDimension,

@@ -19,8 +19,8 @@ using Comdiv.Model.Interfaces;
 using Comdiv.Olap.Model;
 
 namespace Comdiv.Zeta.Model{
-    [Classic("Holding")]
-    [ForSearch("Группа, дивизион, холдинг")]
+    [global::Zeta.Extreme.Poco.Deprecated.Classic("Holding")]
+    [global::Zeta.Extreme.Poco.Deprecated.ForSearch("Группа, дивизион, холдинг")]
     public interface IMainObjectGroup :
         IZoneElement,
         ICanCountObjects,

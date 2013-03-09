@@ -19,8 +19,7 @@ using Comdiv.Model.Interfaces;
 using Comdiv.Olap.Model;
 
 namespace Comdiv.Zeta.Model{
-    [Classic("Country")]
-    [ForSearch("Зона, страна")]
+    [global::Zeta.Extreme.Poco.Deprecated.ForSearch("Зона, страна")]
     public interface IZetaZone :
         IZoneElement,
         ICanCountObjects,

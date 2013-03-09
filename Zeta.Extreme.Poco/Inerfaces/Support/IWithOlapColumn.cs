@@ -18,7 +18,6 @@ using Comdiv.Model;
 
 namespace Comdiv.Olap.Model{
     public interface IWithOlapColumn<ColumnType> where ColumnType : IOlapColumn{
-        [Classic("ValueType")]
         ColumnType Column { get; set; }
     }
 }

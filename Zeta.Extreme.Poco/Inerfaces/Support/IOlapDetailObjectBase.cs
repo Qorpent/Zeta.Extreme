@@ -18,7 +18,7 @@ using Comdiv.Model;
 using Comdiv.Model.Interfaces;
 
 namespace Comdiv.Olap.Model{
-    [Classic("Subpart")]
+    [global::Zeta.Extreme.Poco.Deprecated.Classic("Subpart")]
     public interface IOlapDetailObjectBase<MainObjectType> :
         IWithMainObject<MainObjectType>,
         IEntityDataPattern

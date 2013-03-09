@@ -19,7 +19,7 @@ using Comdiv.Model;
 namespace Comdiv.Olap.Model{
     public interface IWithOlapRow<RowType>
         where RowType : IOlapRow{
-        [Classic("MainDataTree")]
+        [global::Zeta.Extreme.Poco.Deprecated.Classic("MainDataTree")]
         RowType Row { get; set; }
         }
 }

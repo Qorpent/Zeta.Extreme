@@ -19,8 +19,8 @@ using Comdiv.Model.Interfaces;
 using Comdiv.Olap.Model;
 
 namespace Comdiv.Zeta.Model{
-    [Classic("Municipal")]
-    [ForSearch("Точка, город")]
+
+    [global::Zeta.Extreme.Poco.Deprecated.ForSearch("Точка, город")]
     public interface IZetaPoint :
         IZoneElement,
         IWithMainObjects,

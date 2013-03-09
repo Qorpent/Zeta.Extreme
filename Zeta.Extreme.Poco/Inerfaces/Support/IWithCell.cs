@@ -22,7 +22,7 @@ namespace Comdiv.Olap.Model{
                                               where C : IOlapColumn
                                               where M : IOlapMainObjectBase
                                               where D : IOlapDetailObjectBase<M>{
-        [Classic("MainDataRow")]
+        [global::Zeta.Extreme.Poco.Deprecated.Classic("MainDataRow")]
         T Cell { get; set; }
                                               }
 }

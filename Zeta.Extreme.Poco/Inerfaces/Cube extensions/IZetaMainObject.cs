@@ -23,8 +23,7 @@ using Comdiv.Olap.Model;
 using Comdiv.Persistence;
 
 namespace Comdiv.Zeta.Model{
-    [Classic("Org")]
-    [ForSearch("Старший объект (предприятие)")]
+    [global::Zeta.Extreme.Poco.Deprecated.ForSearch("Старший объект (предприятие)")]
     public interface IZetaMainObject :
         IZetaObject,
 		IZetaQueryDimension,

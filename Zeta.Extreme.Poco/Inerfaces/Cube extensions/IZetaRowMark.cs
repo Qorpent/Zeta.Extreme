@@ -18,7 +18,7 @@ using Comdiv.Model;
 using Comdiv.Olap.Model;
 
 namespace Comdiv.Zeta.Model{
-    [Classic("TreeMark")]
+    [global::Zeta.Extreme.Poco.Deprecated.Classic("TreeMark")]
     public interface IZetaRowMark : IOlapRowMark<IZetaRow>{
     }
 }

@@ -18,7 +18,7 @@ using Comdiv.Model;
 using Comdiv.Model.Interfaces;
 
 namespace Comdiv.Olap.Model{
-    [Classic("Org")]
+    
     public interface IOlapMainObjectBase :
         IZoneElement,
         IEntityDataPattern{

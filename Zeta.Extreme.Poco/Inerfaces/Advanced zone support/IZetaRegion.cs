@@ -19,7 +19,7 @@ using Comdiv.Model.Interfaces;
 using Comdiv.Olap.Model;
 
 namespace Comdiv.Zeta.Model{
-    [ForSearch("Регион")]
+    [global::Zeta.Extreme.Poco.Deprecated.ForSearch("Регион")]
     public interface IZetaRegion :
         IZoneElement,
         IWithMainObjects,

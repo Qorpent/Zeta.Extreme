@@ -18,7 +18,6 @@ using Comdiv.Model;
 
 namespace Comdiv.Zeta.Model{
     public interface IWithAlternateMainObject{
-        [Classic("AltParent")]
         IZetaMainObject AltObject { get; set; }
     }
 }

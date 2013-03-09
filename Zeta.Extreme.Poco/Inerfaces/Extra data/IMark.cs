@@ -18,7 +18,7 @@ using Comdiv.Model;
 using Comdiv.Model.Interfaces;
 
 namespace Comdiv.Olap.Model{
-    [ForSearch("Метка")]
+    [global::Zeta.Extreme.Poco.Deprecated.ForSearch("Метка")]
     public interface IMark :
         IEntityDataPattern{
         }

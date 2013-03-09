@@ -20,8 +20,7 @@ using Comdiv.Olap.Model;
 using Comdiv.Persistence;
 
 namespace Comdiv.Zeta.Model{
-    [Classic("Subpart")]
-    [ForSearch("Младший объект, подразделение, связь")]
+    [global::Zeta.Extreme.Poco.Deprecated.ForSearch("Младший объект, подразделение, связь")]
     public interface IZetaDetailObject :
         IZetaObject,
         IZoneElement,

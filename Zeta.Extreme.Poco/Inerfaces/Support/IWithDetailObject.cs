@@ -20,7 +20,7 @@ namespace Comdiv.Olap.Model{
     public interface IWithDetailObject<DetailObjectType, MainObjectType>
         where DetailObjectType : IOlapDetailObjectBase<MainObjectType>
         where MainObjectType : IOlapMainObjectBase{
-        [Classic("Subpart")]
+        [global::Zeta.Extreme.Poco.Deprecated.Classic("Subpart")]
         DetailObjectType DetailObject { get; set; }
         }
 }

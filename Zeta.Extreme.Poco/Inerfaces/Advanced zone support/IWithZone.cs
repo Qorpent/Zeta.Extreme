@@ -18,7 +18,7 @@ using Comdiv.Model;
 
 namespace Comdiv.Zeta.Model{
     public interface IWithZone{
-        [Classic("Country")]
+
         IZetaZone Zone { get; set; }
     }
 }
