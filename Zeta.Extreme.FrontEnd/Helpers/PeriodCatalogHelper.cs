@@ -9,8 +9,6 @@
 #endregion
 
 using System.Linq;
-using Comdiv.Application;
-using Zeta.Extreme.Meta;
 using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
@@ -19,20 +17,18 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 	/// 	Вспомогательный класс для работы с периодами
 	/// </summary>
 	public class PeriodCatalogHelper {
-
 		/// <summary>
-		/// Возвращает каталог периодов
+		/// 	Возвращает каталог периодов
 		/// </summary>
-		/// <returns></returns>
+		/// <returns> </returns>
 		public PeriodRecord[] GetAllPeriods() {
 			return
 				(Periods.All.OfType<period>().Where(_ => _.ClassicId > 0).ToArray())
-					.Select(_ => new PeriodRecord { id = _.ClassicId, name = _.Name, type = GetPeriodType(_), idx = GetIdx(_) })
+					.Select(_ => new PeriodRecord {id = _.ClassicId, name = _.Name, type = GetPeriodType(_), idx = GetIdx(_)})
 					.Where(_ => PeriodType.None != _.type)
 					.OrderBy(_ => _.type)
 					.ThenBy(_ => _.idx)
 					.ToArray();
-
 		}
 
 		/// <summary>
@@ -42,14 +38,30 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 		/// <returns> </returns>
 		public PeriodType GetPeriodType(period p) {
 			var id = p.ClassicId;
-			if((id>=11 && id<=19)||(id==110||id==111||id==112))return PeriodType.Month;
-			if(id>=1 && id<=4)return PeriodType.FromYearStartMain;
-			if (id >= 41 && id <= 49) return PeriodType.InYear;
-			if (id >= 31 && id <= 34) return PeriodType.Corrective;
-			if ((id >= 401 && id <= 419) || (id == 4110 || id == 4111 || id == 4112)) return PeriodType.Awaited;
-			if((id>=22 && id<=29)||(id==210||id==211||id==212))return PeriodType.FromYearStartExt;
-			if((id>=251 && id<=254)||(id>=301 && id<=309)||(id==3512)||(id>=641 && id<=649))return PeriodType.Plan;
-			if((id>=611 && id<=619)||(id==6110||id==6111||id==6112))return PeriodType.MonthPlan;
+			if ((id >= 11 && id <= 19) || (id == 110 || id == 111 || id == 112)) {
+				return PeriodType.Month;
+			}
+			if (id >= 1 && id <= 4) {
+				return PeriodType.FromYearStartMain;
+			}
+			if (id >= 41 && id <= 49) {
+				return PeriodType.InYear;
+			}
+			if (id >= 31 && id <= 34) {
+				return PeriodType.Corrective;
+			}
+			if ((id >= 401 && id <= 419) || (id == 4110 || id == 4111 || id == 4112)) {
+				return PeriodType.Awaited;
+			}
+			if ((id >= 22 && id <= 29) || (id == 210 || id == 211 || id == 212)) {
+				return PeriodType.FromYearStartExt;
+			}
+			if ((id >= 251 && id <= 254) || (id >= 301 && id <= 309) || (id == 3512) || (id >= 641 && id <= 649)) {
+				return PeriodType.Plan;
+			}
+			if ((id >= 611 && id <= 619) || (id == 6110 || id == 6111 || id == 6112)) {
+				return PeriodType.MonthPlan;
+			}
 			return PeriodType.None;
 		}
 
@@ -67,11 +79,11 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 					return 0;
 				case PeriodType.Awaited:
 					switch (period.ClassicId) {
-						case 403 :
+						case 403:
 							return 10;
-						case 406 :
+						case 406:
 							return 20;
-						case 409 :
+						case 409:
 							return 30;
 						case 401:
 							return 40;
@@ -80,7 +92,7 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 					}
 				case PeriodType.Plan:
 					switch (period.ClassicId) {
-						case 301 :
+						case 301:
 							return 10;
 						case 3512:
 							return 20;
@@ -89,7 +101,6 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 					}
 				default:
 					return period.ClassicId;
-
 			}
 		}
 	}

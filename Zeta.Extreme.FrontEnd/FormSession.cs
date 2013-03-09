@@ -34,7 +34,6 @@ using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 using Zeta.Extreme.Primary;
-using TagHelper = Qorpent.Utils.Extensions.TagHelper;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
@@ -215,6 +214,11 @@ namespace Zeta.Extreme.FrontEnd {
 		public FormServer FormServer { get; set; }
 
 		/// <summary>
+		/// 	Режим подготовки к сохранению
+		/// </summary>
+		public bool InitSaveMode { get; set; }
+
+		/// <summary>
 		/// 	Метод для ожидания окончания данных
 		/// </summary>
 		public void WaitData() {
@@ -329,11 +333,6 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		/// <summary>
-		/// Режим подготовки к сохранению
-		/// </summary>
-		public bool InitSaveMode { get; set; }
-
-		/// <summary>
 		/// 	Стартует сессию
 		/// </summary>
 		public void Start() {
@@ -361,7 +360,9 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		protected internal void StartCollectData() {
 			lock (this) {
-				if (null != PrepareDataTask) return;
+				if (null != PrepareDataTask) {
+					return;
+				}
 				_processed.Clear();
 				Data.Clear();
 				DataCollectionRequests++;
@@ -439,8 +440,8 @@ namespace Zeta.Extreme.FrontEnd {
 				LoadNoPrimary(queries);
 
 				QueriesCount = queries.Count;
-				DataStatistics = ((Extreme.Session) DataSession).GetStatisticString();
-				SqlLog = ((DefaultPrimarySource) ((Extreme.Session) DataSession).PrimarySource).QueryLog.ToArray();
+				DataStatistics = ((Session) DataSession).GetStatisticString();
+				SqlLog = ((DefaultPrimarySource) ((Session) DataSession).PrimarySource).QueryLog.ToArray();
 				DataSession = null;
 				DataCount = Data.Count;
 				LastDataTime = sw.Elapsed;
@@ -474,7 +475,7 @@ namespace Zeta.Extreme.FrontEnd {
 							Obj = {Native = Object},
 							Time = {Year = c._.Year, Period = c._.Period}
 						};
-					q = (Query)DataSession.Register(q, key);
+					q = (Query) DataSession.Register(q, key);
 
 					if (null != q) {
 						if (c._.ControlPoint && r._.IsMarkSeted("CONTROLPOINT")) {
@@ -511,7 +512,7 @@ namespace Zeta.Extreme.FrontEnd {
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
 						};
 					var key = primaryrow.i + ":" + primarycol.i;
-					queries[key] = (Query)DataSession.Register(q, key);
+					queries[key] = (Query) DataSession.Register(q, key);
 				}
 			}
 		}
@@ -527,7 +528,7 @@ namespace Zeta.Extreme.FrontEnd {
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
 						};
 					var key = primaryrow.i + ":" + primarycol.i;
-					queries[key] = (Query)DataSession.Register(q, key);
+					queries[key] = (Query) DataSession.Register(q, key);
 				}
 			}
 		}
@@ -731,6 +732,133 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 		}
 
+		/// <summary>
+		/// 	Рестартует сбор данных
+		/// </summary>
+		/// <returns> </returns>
+		public bool RestartData() {
+			lock (this) {
+				WaitData();
+				PrepareDataTask = null;
+				StartCollectData();
+				return true;
+			}
+		}
+
+		/// <summary>
+		/// 	Подчистка после загрузки данных
+		/// </summary>
+		/// <returns> </returns>
+		public object CleanupAfterDataLoaded() {
+			//Structure = null;
+			var npcells = Data.Where(_ => !_.canbefilled).ToArray();
+			foreach (var outCell in npcells) {
+				Data.Remove(outCell);
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// 	Вызов блокировки формы
+		/// </summary>
+		/// <returns> </returns>
+		public bool DoLockForm() {
+			var currentstate = GetCanBlockInfo();
+			if (currentstate.canblock) {
+				Template.SetState(Object, null, "0ISBLOCK");
+				return true;
+			}
+			throw new SecurityException("try lock form without valid state or permission");
+		}
+
+		/// <summary>
+		/// 	Возвращает историю блокировок
+		/// </summary>
+		/// <returns> </returns>
+		public formstate[] GetLockHistory() {
+			var states =
+				new NativeZetaReader().ReadFormStates(
+					string.Format("Year = {0} and Period = {1} and LockCode='{2}' and Object = {3} order by Version"
+					              , Year, Period, Template.UnderwriteCode, Object.Id)).ToArray();
+			return states;
+		}
+
+		/// <summary>
+		/// 	Присоединяет файл к сессии и возвращает итог сохранения
+		/// </summary>
+		/// <param name="datafile"> </param>
+		/// <param name="filename"> </param>
+		/// <param name="type"> </param>
+		/// <param name="uid"> </param>
+		/// <returns> </returns>
+		public FormAttachment AttachFile(HttpPostedFileBase datafile, string filename, string type, string uid) {
+			var storage = GetFormAttachStorage();
+			var realfilename = filename;
+			if (string.IsNullOrWhiteSpace(realfilename)) {
+				realfilename = string.Format("{0}_{1}_{2}_{3}", type, Object.Name.Replace("\"", "_"), Year,
+				                             Periods.Get(Period).Name.Replace(".", ""));
+			}
+			var result = storage.AttachHttpFile(this, datafile, realfilename, type, uid);
+			return result;
+		}
+
+		private static IFormAttachmentStorage GetFormAttachStorage() {
+			var result = Application.Current.Container.Get<IFormAttachmentStorage>();
+			if (null == result) {
+				result = new FormAttachmentSource();
+				((FormAttachmentSource) result).SetStorage(new DbfsAttachmentStorage());
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// 	Получает список связанных с сессией файлов
+		/// </summary>
+		/// <returns> </returns>
+		public FormAttachment[] GetAttachedFiles() {
+			var storage = GetFormAttachStorage();
+			return storage.GetAttachments(this).ToArray();
+		}
+
+		/// <summary>
+		/// 	Удалить присоединенный файл
+		/// </summary>
+		/// <param name="uid"> уникальный код аттача </param>
+		public void DeleteAttach(string uid) {
+			var attach = GetAttachedFiles().FirstOrDefault(_ => _.Uid == uid);
+			GetFormAttachStorage().Delete(attach);
+		}
+
+		/// <summary>
+		/// </summary>
+		/// <param name="uid"> </param>
+		/// <returns> </returns>
+		public IFileDescriptor GetDownloadAbleFileDescriptor(string uid) {
+			var attach = GetAttachedFiles().FirstOrDefault(_ => _.Uid == uid);
+			var filedesc = new FormAttachmentFileDescriptor(attach, GetFormAttachStorage());
+			return filedesc;
+		}
+
+		/// <summary>
+		/// 	Возвращает допустимые типы файлов для сессии
+		/// </summary>
+		/// <returns> </returns>
+		public FileTypeRecord[] GetAllowedFileTypes() {
+			EnsureDataSession();
+			var filetypes = DataSession.MetaCache.Get<IZetaRow>("DIR_FILE_TYPES").Children.ToArray();
+			return (
+				       from filetypedesc in filetypes
+				       from formcode in TagHelper.Value(filetypedesc.Tag, "form").Split(',')
+				       where "any" == formcode || Template.Thema.Code == formcode
+				       orderby filetypedesc.Idx
+				       select new FileTypeRecord {code = filetypedesc.OuterCode, name = filetypedesc.Name}
+			       ).ToArray();
+		}
+
+		private void EnsureDataSession() {
+			DataSession = DataSession ?? new Session(true);
+		}
+
 		#region Nested type: IdxCol
 
 		private class IdxCol {
@@ -763,131 +891,5 @@ namespace Zeta.Extreme.FrontEnd {
 		private IdxCol[] primarycols;
 		private IdxRow[] primaryrows;
 		private IdxRow[] rows;
-
-		/// <summary>
-		/// Рестартует сбор данных
-		/// </summary>
-		/// <returns></returns>
-		public bool RestartData() {
-			lock (this) {
-				WaitData();
-				PrepareDataTask = null;
-				StartCollectData();
-				return true;
-			}
 		}
-
-		/// <summary>
-		/// Подчистка после загрузки данных
-		/// </summary>
-		/// <returns></returns>
-		public object CleanupAfterDataLoaded() {
-			//Structure = null;
-			var npcells = Data.Where(_ => !_.canbefilled).ToArray();
-			foreach (var outCell in npcells) {
-				Data.Remove(outCell);
-			}
-			return true;
-		}
-
-		/// <summary>
-		/// Вызов блокировки формы
-		/// </summary>
-		/// <returns></returns>
-		public bool DoLockForm() {
-			var currentstate = GetCanBlockInfo();
-			if (currentstate.canblock) {
-				Template.SetState(Object, null, "0ISBLOCK");
-				return true;
-			}
-			throw new SecurityException("try lock form without valid state or permission");
-		}
-
-		/// <summary>
-		/// Возвращает историю блокировок
-		/// </summary>
-		/// <returns></returns>
-		public formstate[] GetLockHistory() {
-			 var states =
-				new NativeZetaReader().ReadFormStates(
-					string.Format("Year = {0} and Period = {1} and LockCode='{2}' and Object = {3} order by Version"
-					,Year,Period,Template.UnderwriteCode,Object.Id)).ToArray();
-			return states;
-		}
-
-		/// <summary>
-		/// Присоединяет файл к сессии и возвращает итог сохранения
-		/// </summary>
-		/// <param name="datafile"></param>
-		/// <param name="filename"></param>
-		/// <param name="type"></param>
-		/// <param name="uid"></param>
-		/// <returns></returns>
-		public FormAttachment AttachFile(HttpPostedFileBase datafile, string filename, string type,string uid) {
-			var storage = GetFormAttachStorage();
-			var realfilename = filename;
-			if(string.IsNullOrWhiteSpace(realfilename)) {
-				realfilename = string.Format("{0}_{1}_{2}_{3}", type, Object.Name.Replace("\"", "_"), Year, Periods.Get (Period).Name.Replace(".",""));
-			}
-			var result = storage.AttachHttpFile(this, datafile, realfilename, type, uid);
-			return result;
-		}
-
-		private static IFormAttachmentStorage GetFormAttachStorage() {
-			var result = Application.Current.Container.Get<IFormAttachmentStorage>();
-			if(null==result) {
-				result = new FormAttachmentSource();
-				((FormAttachmentSource)result).SetStorage(new DbfsAttachmentStorage());
-			}
-			return result;
-		}
-
-		/// <summary>
-		/// Получает список связанных с сессией файлов
-		/// </summary>
-		/// <returns></returns>
-		public FormAttachment[] GetAttachedFiles() {
-			var storage = GetFormAttachStorage();
-			return storage.GetAttachments(this).ToArray();
-		}
-		/// <summary>
-		/// Удалить присоединенный файл
-		/// </summary>
-		/// <param name="uid">уникальный код аттача</param>
-		public void DeleteAttach(string uid) {
-			var attach = GetAttachedFiles().FirstOrDefault(_ => _.Uid == uid); 
-			GetFormAttachStorage().Delete(attach);
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="uid"></param>
-		/// <returns></returns>
-		public IFileDescriptor GetDownloadAbleFileDescriptor(string uid) {
-			var attach = GetAttachedFiles().FirstOrDefault(_ => _.Uid == uid);
-			var filedesc = new FormAttachmentFileDescriptor(attach, GetFormAttachStorage());
-			return filedesc;
-
-		}
-		/// <summary>
-		/// Возвращает допустимые типы файлов для сессии
-		/// </summary>
-		/// <returns></returns>
-		public FileTypeRecord[] GetAllowedFileTypes() {
-			EnsureDataSession();
-			var filetypes = DataSession.MetaCache.Get<IZetaRow>("DIR_FILE_TYPES").Children.ToArray();
-			return (
-				       from filetypedesc in filetypes
-				       from formcode in TagHelper.Value(filetypedesc.Tag, "form").Split(',') 
-				       where "any"==formcode||Template.Thema.Code==formcode
-				       orderby filetypedesc.Idx
-				       select new FileTypeRecord {code = filetypedesc.OuterCode, name = filetypedesc.Name}
-			       ).ToArray();
-
-		}
-
-		private void EnsureDataSession() {
-			DataSession = DataSession ?? new Session(true);
-		}
-	}
 }

@@ -1239,7 +1239,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				var periodstate = new PeriodStateManager {System = "Default"}.Get(Year, Period);
 				var deadline = periodstate.DeadLine;
 				if (deadline.Year <= 1900) {
-					return new ScheduleState {Date = DateExtensions.Begin, Overtime = ScheduleOvertime.None};
+					return new ScheduleState {Date = Qorpent.QorpentConst.Date.Begin, Overtime = ScheduleOvertime.None};
 				}
 				if (DateTime.Now > deadline) {
 					return new ScheduleState {Date = deadline, Overtime = ScheduleOvertime.Fail};
@@ -1248,7 +1248,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 					return new ScheduleState {Date = deadline, Overtime = ScheduleOvertime.Critical};
 				}
 			}
-			return new ScheduleState {Date = DateExtensions.Begin, Overtime = ScheduleOvertime.None};
+			return new ScheduleState {Date = Qorpent.QorpentConst.Date.Begin, Overtime = ScheduleOvertime.None};
 		}
 
 

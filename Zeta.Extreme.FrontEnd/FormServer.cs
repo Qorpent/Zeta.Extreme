@@ -11,25 +11,16 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
-using Comdiv.Application;
-using Comdiv.Persistence;
 using Qorpent;
 using Qorpent.Applications;
 using Qorpent.Events;
-using Qorpent.IO;
 using Qorpent.IoC;
-using Qorpent.Security;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.Themas;
-using Zeta.Extreme.Meta;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
@@ -67,9 +58,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Проверяет общее состояние загрузки
 		/// </summary>
 		public bool IsOk {
-			get {
-				return MetaCacheLoad.IsCompleted && CompileFormulas.IsCompleted && LoadThemas.IsCompleted;
-			}
+			get { return MetaCacheLoad.IsCompleted && CompileFormulas.IsCompleted && LoadThemas.IsCompleted; }
 		}
 
 
@@ -109,7 +98,6 @@ namespace Zeta.Extreme.FrontEnd {
 		public TaskWrapper MetaCacheLoad { get; private set; }
 
 
-
 		/// <summary>
 		/// 	An index of object
 		/// </summary>
@@ -130,7 +118,7 @@ namespace Zeta.Extreme.FrontEnd {
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
-			ReadyToServeForms = new TaskWrapper(Task.FromResult(true),  LoadThemas, MetaCacheLoad,
+			ReadyToServeForms = new TaskWrapper(Task.FromResult(true), LoadThemas, MetaCacheLoad,
 			                                    CompileFormulas);
 
 			MetaCacheLoad.Run();
@@ -164,7 +152,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public object GetServerStateInfo() {
 			object sessions = null;
-			if(0!=Sessions.Count) {
+			if (0 != Sessions.Count) {
 				sessions = new
 					{
 						count = Sessions.Count,
@@ -215,9 +203,9 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="obj"> </param>
 		/// <param name="year"> </param>
 		/// <param name="period"> </param>
-		/// <param name="initsavemode">пред-открытие для сохранения </param>
+		/// <param name="initsavemode"> пред-открытие для сохранения </param>
 		/// <returns> </returns>
-		public FormSession Start(IInputTemplate template, IZetaMainObject obj, int year, int period, bool initsavemode=false) {
+		public FormSession Start(IInputTemplate template, IZetaMainObject obj, int year, int period, bool initsavemode = false) {
 			lock (this) {
 				var usr = Application.Principal.CurrentUser.Identity.Name;
 				var existed =
@@ -234,12 +222,11 @@ namespace Zeta.Extreme.FrontEnd {
 				}
 				else {
 					existed.Activations++;
-					if(!initsavemode) {
+					if (!initsavemode) {
 						if (!existed.IsStarted) {
 							existed.Start();
 						}
 						else {
-
 							if (existed.IsFinished) {
 								existed.Error = null;
 								existed.RestartData();
@@ -255,9 +242,8 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Перезагрузка системы
 		/// </summary>
 		public void Reload() {
-			((IResetable) ( Application.Files).GetResolver()).Reset(null);
-			((IResetable)Application.Roles).Reset(null);
-			myapp.files.Reload();
+			((IResetable) (Application.Files).GetResolver()).Reset(null);
+			((IResetable) Application.Roles).Reset(null);
 			Sessions.Clear();
 
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
@@ -313,13 +299,12 @@ namespace Zeta.Extreme.FrontEnd {
 					RowCache.start();
 					ColumnCache.Start();
 					ObjCache.Start();
-					
 				});
 		}
 
-		
+
 		private readonly bool _doNotRun;
-		private int _idx = -100;
 		private TimeSpan _formulaRegisterTime;
+		private int _idx = -100;
 	}
 }

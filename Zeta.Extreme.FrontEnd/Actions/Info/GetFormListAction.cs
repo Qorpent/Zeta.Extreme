@@ -1,7 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : FormListAction.cs
+// Original file : GetFormListAction.cs
 // Project: Zeta.Extreme.FrontEnd
 // This code cannot be used without agreement from 
 // Media Technology LTD 

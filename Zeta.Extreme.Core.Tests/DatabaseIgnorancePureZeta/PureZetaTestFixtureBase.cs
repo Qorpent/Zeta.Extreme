@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Comdiv.Model.Interfaces;
 using NUnit.Framework;
 using Qorpent.Model;
 using Zeta.Extreme.Poco.Inerfaces;

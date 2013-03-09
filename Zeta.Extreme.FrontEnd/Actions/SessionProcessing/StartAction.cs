@@ -1,7 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : FormStartAction.cs
+// Original file : StartAction.cs
 // Project: Zeta.Extreme.FrontEnd
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -16,7 +16,6 @@ namespace Zeta.Extreme.FrontEnd.Actions.SessionProcessing {
 	/// </summary>
 	[Action("zefs.start")]
 	public class StartAction : SessionStartBase {
-		
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>

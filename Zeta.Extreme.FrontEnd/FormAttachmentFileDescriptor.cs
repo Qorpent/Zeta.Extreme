@@ -1,3 +1,13 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : FormAttachmentFileDescriptor.cs
+// Project: Zeta.Extreme.FrontEnd
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System;
 using System.IO;
 using Qorpent.Mvc;
@@ -5,17 +15,14 @@ using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
-	/// Обертка атача в виде дескриптора файла для выгрузки
+	/// 	Обертка атача в виде дескриптора файла для выгрузки
 	/// </summary>
 	public class FormAttachmentFileDescriptor : IFileDescriptor {
-		private FormAttachment _attach;
-		private IFormAttachmentStorage _storage;
-
 		/// <summary>
-		/// Создает обертку с использованием 
+		/// 	Создает обертку с использованием
 		/// </summary>
-		/// <param name="attach"></param>
-		/// <param name="storage"></param>
+		/// <param name="attach"> </param>
+		/// <param name="storage"> </param>
 		public FormAttachmentFileDescriptor(FormAttachment attach, IFormAttachmentStorage storage) {
 			_attach = attach;
 			_storage = storage;
@@ -34,10 +41,10 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public string Name {
 			get {
-				var srcname = _attach.Name.Replace("\"","_");
+				var srcname = _attach.Name.Replace("\"", "_");
 				var ext = Path.GetExtension(srcname);
-				if (ext.Length<=1 || ext.Length>4) {
-					return (srcname+ "." + _attach.Extension).Replace("..",".");
+				if (ext.Length <= 1 || ext.Length > 4) {
+					return (srcname + "." + _attach.Extension).Replace("..", ".");
 				}
 				return srcname;
 			}
@@ -64,7 +71,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Длина файла
 		/// </summary>
 		public int Length {
-			get { return (int)_attach.Size; }
+			get { return (int) _attach.Size; }
 			set { throw new NotImplementedException(); }
 		}
 
@@ -77,7 +84,7 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		/// <summary>
-		/// Признак того что надо использовать хидер расположения файла
+		/// 	Признак того что надо использовать хидер расположения файла
 		/// </summary>
 		public bool NeedDisposition {
 			get { return true; }
@@ -85,7 +92,7 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		/// <summary>
-		/// Признак потокового файла
+		/// 	Признак потокового файла
 		/// </summary>
 		public bool IsStream {
 			get { return true; }
@@ -93,11 +100,14 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		/// <summary>
-		/// Возвращает поток данных файла
+		/// 	Возвращает поток данных файла
 		/// </summary>
-		/// <returns></returns>
+		/// <returns> </returns>
 		public Stream GetStream() {
 			return _storage.Open(_attach, FileAccess.Read);
 		}
+
+		private readonly FormAttachment _attach;
+		private readonly IFormAttachmentStorage _storage;
 	}
 }
