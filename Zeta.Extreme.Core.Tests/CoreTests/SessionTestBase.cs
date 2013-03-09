@@ -44,7 +44,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				Qorpent.Applications.Application.Current.DatabaseConnections.Register(new ConnectionDescriptor{PresereveCleanup=true, ConnectionString = "Data Source=assoibdx;Initial Catalog=eco;Persist Security Info=True;User ID=sfo_home;Password=rhfcysq$0;Application Name=zeta-test3",Name = "Default"},false);
 				Periods.Get(12);
 				RowCache.start();
-				ColumnCache.start();
+				ColumnCache.Start();
 				ObjCache.Start();
 				FormulaStorage.Default.AutoBatchCompile = false;
 				var _sumh = new StrongSumProvider();
@@ -71,7 +71,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				}
 				FormulaStorage.Default.CompileAll();
 				FormulaStorage.Default.AutoBatchCompile = true;
-				ColumnCache.start();
+				ColumnCache.Start();
 				wascallnhibernate = true;
 			}
 		}

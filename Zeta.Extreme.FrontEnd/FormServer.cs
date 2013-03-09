@@ -375,7 +375,7 @@ namespace Zeta.Extreme.FrontEnd {
 				{
 					Periods.Get(12);
 					RowCache.start();
-					ColumnCache.start();
+					ColumnCache.Start();
 					ObjCache.Start();
 					
 				});

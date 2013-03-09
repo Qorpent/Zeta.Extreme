@@ -137,19 +137,13 @@ namespace Zeta.Extreme.Poco.NativeSqlBind{
 		/// </summary>
 		/// <param name="_roots"></param>
 		public static void start(params string[] _roots){
-            myapp.OnReload += myapp_OnReload;
 #if USEROWCACHE
 			rootсodes = _roots;
             reloadCache();
             #endif
         }
 
-        private static void myapp_OnReload(object sender, EventWithDataArgs<int> args){
-            #if USEROWCACHE
-
-            reloadCache();
-            #endif
-        }
+       
 
 		private static IList<IZetaRow> formulas = new List<IZetaRow>();
 

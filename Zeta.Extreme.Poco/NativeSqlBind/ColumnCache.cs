@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Comdiv.Application;
-using Comdiv.Common;
 using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme.Poco.NativeSqlBind {
@@ -48,34 +47,16 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		/// <summary>
 		/// Перегрузка кэшу
 		/// </summary>
-		public static void start()
+		public static void Start()
 		{
 			lock (locker) {
-				
-			
-			myapp.OnReload += myapp_OnReload;
-
-
-			reloadCache(); 
-			}
-		}
-
-		private static void myapp_OnReload(object sender, EventWithDataArgs<int> args)
-		{
-
-
-			reloadCache();
-
-		}
-
-		private static void reloadCache()
-		{
-			Bycode.Clear();
-			byid.Clear();
-			var cols = new NativeZetaReader().ReadColumns(); // myapp.storage.Get<IZetaColumn>().All();
-			foreach (var col in cols)
-			{
-				process(col);
+				Bycode.Clear();
+				byid.Clear();
+				var cols = new NativeZetaReader().ReadColumns(); // myapp.storage.Get<IZetaColumn>().All();
+				foreach (var col in cols)
+				{
+					process(col);
+				}
 			}
 		}
 
