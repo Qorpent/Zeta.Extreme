@@ -17,7 +17,6 @@
 
 using System;
 using System.Xml.Serialization;
-using Comdiv.Model;
 using Qorpent.Model;
 using Qorpent.Serialization;
 using Zeta.Extreme.Poco.Inerfaces;
@@ -85,7 +84,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
 		/// </summary>
 		[SerializeNotNullOnly]
         public string Name{
-            get { return name ?? Target.Name(); }
+            get { return name ?? (null==Target?"":((IWithName)Target).Name); }
             set { name = value; }
         }
 		/// <summary>
@@ -110,7 +109,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
 		/// </summary>
 		[SerializeNotNullOnly]
         public string Code{
-            get { return code ?? Target.Code(); }
+            get { return code ?? (null==Target?"":((IWithCode)Target).Code); }
             set { code = value; }
         }
 		/// <summary>
@@ -195,8 +194,8 @@ namespace Zeta.Extreme.BizProcess.Themas{
 		public int Id {
 			get {
 				if(0==_id) {
-					if(null!=this.Target) {
-						return Target.Id();
+					if(null!=Target) {
+						return ((IWithId)Target).Id;
 					}
 				}
 				return _id;

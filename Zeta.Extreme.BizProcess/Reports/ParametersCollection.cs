@@ -21,10 +21,9 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.XPath;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Logging;
+using Qorpent.Applications;
 using Qorpent.Dsl.XmlInclude;
+using Qorpent.Log;
 using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.BizProcess.Reports
@@ -41,7 +40,8 @@ namespace Zeta.Extreme.BizProcess.Reports
         {
             Prefix = "tp.";
             Extensible = true;
-        }
+			log = Application.Current.LogManager.GetLog("zreport", this);
+		}
 		/// <summary>
 		/// Префикс параметра отчета
 		/// </summary>
@@ -86,7 +86,7 @@ namespace Zeta.Extreme.BizProcess.Reports
             base.Add(parameter);
         }
 
-        private ILog log = logger.get("zreport");
+        private IUserLog log ;
         private IEnumerable<Parameter> cachedall = null;
     	private bool cacheAble;
 		/// <summary>
@@ -130,7 +130,7 @@ namespace Zeta.Extreme.BizProcess.Reports
                 normalizeParameter(result, skipped,  "viewname");
                 normalizeParameter(result, skipped,  "generatorname");
 
-                cachedall = result.Where(x=>x.Authorize(myapp.usr)).OrderBy(x=>x.Idx).ToArray();
+                cachedall = result.Where(x=>x.Authorize(Application.Current.Principal.CurrentUser)).OrderBy(x=>x.Idx).ToArray();
             }
             return cachedall;
         }
@@ -184,16 +184,17 @@ namespace Zeta.Extreme.BizProcess.Reports
         {
             lock (this)
             {
-                log.debug(() => "start eval parameters");
+                log.Debug( "start eval parameters");
                 
                 //prepare
                 var result = new Dictionary<string, object>();
                 AllParameters().DoForEach(x => x.RawValue = null);
 
-                log.debug(() => "Initial parameters:\r\n" + this.Select(x => x.ToString()).ConcatString(";\r\n"));
+				if(log.Level<=LogLevel.Debug) {
+					log.Debug("Initial parameters:\r\n" + this.Select(x => x.ToString()).ConcatString(";\r\n"));
+				}
 
-
-                var outervalues = new Dictionary<string, object>();
+	            var outervalues = new Dictionary<string, object>();
                 collection.Where(x => x.Key.StartsWith(Prefix))
                     .DoForEach(x => outervalues[x.Key.Substring(Prefix.Length)] = x.Value);
                 // first - we need collect all targets from parameters and init rawvalues collection
@@ -208,10 +209,10 @@ namespace Zeta.Extreme.BizProcess.Reports
                         }
                     }
                 }
-
-                log.debug(() => "Outer parameters:\r\n" + outervalues.Select(x => x.Key+" : "+x.Value).ConcatString(";\r\n"));
-
-                // firstly we process STATIC parameters
+				if(log.Level<=LogLevel.Debug) {
+					log.Debug("Outer parameters:\r\n" + outervalues.Select(x => x.Key + " : " + x.Value).ConcatString(";\r\n"));
+				}
+	            // firstly we process STATIC parameters
                 foreach (var v in result.Keys.ToArray())
                 {
 
@@ -239,9 +240,7 @@ namespace Zeta.Extreme.BizProcess.Reports
 					}
 					if (value.IsEmpty()) value = parameter.Value.ToStr();
                     if(value.IsNotEmpty()) {
-                        var report = myapp.storage.Get<ISavedReport>().Load(value);
-                        
-                        this.AdvancedSavedReports.Add(report);
+                        throw new NotSupportedException("loading of saved reports is not realized in Extreme for now");
                     }
                 }
 
@@ -332,13 +331,14 @@ namespace Zeta.Extreme.BizProcess.Reports
                     }
                     catch (Exception)
                     {
-                        logger.get("comdiv.sys").Error("ошибка подготовки {0}({1})", key, result[key]);
+                        Application.Current.LogManager.GetLog("comdiv.sys",this).Error("ошибка подготовки {0}({1})", key, result[key]);
                         throw;
                     }
                 }
-                log.debug(() => "Result :\r\n" + result.Select(x => x.Key + " : " + x.Value).ConcatString(";\r\n"));
-
-                if(result.ContainsKey("year")){
+				if(log.Level<=LogLevel.Debug) {
+					log.Debug("Result :\r\n" + result.Select(x => x.Key + " : " + x.Value).ConcatString(";\r\n"));
+				}
+	            if(result.ContainsKey("year")){
                     var y = result.SafeGet("year").ToInt();
                     if(y>-20  && y < 20){
                         result["year"] = DateTime.Today.Year + y;

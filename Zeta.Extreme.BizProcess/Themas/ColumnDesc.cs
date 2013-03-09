@@ -23,11 +23,9 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Logging;
-using Comdiv.Security;
 using Qorpent;
+using Qorpent.Applications;
+using Qorpent.Log;
 using Qorpent.Serialization;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
@@ -46,7 +44,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
     public class ColumnDesc : DimensionDescriptor<IZetaColumn, ColumnDesc> {
 
 		
-        private readonly ILog log = logger.get("zinput");
+        private readonly IUserLog log = Application.Current.LogManager.GetLog("zinput",null);
         private readonly IDictionary<int, int> periodMap = new Dictionary<int, int>();
         /// <summary>
         /// 
@@ -545,11 +543,11 @@ namespace Zeta.Extreme.BizProcess.Themas{
                 return false;
             }
 
-            if (ForRole.IsNotEmpty() && !myapp.roles.IsAdmin()){
+            if (ForRole.IsNotEmpty() && !Application.Current.Roles.IsAdmin()){
                 var roles = ForRole.SmartSplit();
                 var has = false;
                 foreach (var r in roles){
-                    if (myapp.roles.IsInRole(r)){
+                    if (Application.Current.Roles.IsInRole(r)){
                         has = true;
                         break;
                     }
@@ -594,8 +592,8 @@ namespace Zeta.Extreme.BizProcess.Themas{
 		/// <param name="directDate"></param>
 		/// <returns></returns>
 		public ColumnDesc ApplyPeriod(int year, int period, DateTime directDate){
-            log.debug(
-                () =>
+            log.Debug(
+             
                 Code + "(" + ToString() + ") - start apply period " + year + " " + period + " to " + Year + " " + Period);
             InitialPeriod = period;
             InitialYear = year;
@@ -656,12 +654,12 @@ namespace Zeta.Extreme.BizProcess.Themas{
                     }
                 }
             }
-            log.debug(
-                () => Code + " result " + Year + " " + Period);
+            log.Debug(
+                Code + " result " + Year + " " + Period);
             SetTitle(Title);
 
-            log.debug(
-                () => Code + " title " + Title);
+            log.Debug(
+                 Code + " title " + Title);
             return this;
         }
 		/// <summary>

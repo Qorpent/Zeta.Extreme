@@ -19,8 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using Comdiv.Application;
-using Comdiv.Extensions;
 using Qorpent.Applications;
 using Qorpent.IoC;
 using Qorpent.Model;
