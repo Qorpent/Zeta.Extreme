@@ -1230,12 +1230,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 
 			result.Thema = Thema;
 
-			//  foreach (var pair in Queries) {
-			//      result.Queries[pair.Key] = pair.Value;
-			//    }
-			//    foreach (InputField field in Fields) {
-			//         result.Fields.Add(field);
-			//   }
+	
 			foreach (var row in Rows) {
 				result.Rows.Add(row);
 			}
