@@ -16,26 +16,26 @@ namespace Zeta.Extreme.Poco {
 	public class period : IPeriod {
 		public virtual Guid Uid { get; set; }
 
-		[Map] public virtual string Tag { get; set; }
+		[Deprecated.Map] public virtual string Tag { get; set; }
 
-		[Map(Title = "Старый Ид")] public virtual int ClassicId { get; set; }
+		[Deprecated.Map(Title = "Старый Ид")] public virtual int ClassicId { get; set; }
 
-		[Map(Title = "Категория")] public virtual string Category { get; set; }
+		[Deprecated.Map(Title = "Категория")] public virtual string Category { get; set; }
 
-		[Map] public virtual string ShortName { get; set; }
+		[Deprecated.Map] public virtual string ShortName { get; set; }
 
-		[Map(Title = "Для дней")] public virtual bool IsDayPeriod { get; set; }
+		[Deprecated.Map(Title = "Для дней")] public virtual bool IsDayPeriod { get; set; }
 
-		[Map(Title = "Начальная дата")] public virtual DateTime StartDate { get; set; }
+		[Deprecated.Map(Title = "Начальная дата")] public virtual DateTime StartDate { get; set; }
 
-		[Map(Title = "Конечная дата")] public virtual DateTime EndDate { get; set; }
+		[Deprecated.Map(Title = "Конечная дата")] public virtual DateTime EndDate { get; set; }
 
-		[Map(Title = "Число месяцев")] public virtual int MonthCount { get; set; }
+		[Deprecated.Map(Title = "Число месяцев")] public virtual int MonthCount { get; set; }
 
-		[Map(Title = "Явл. формулой")] public virtual bool IsFormula { get; set; }
+		[Deprecated.Map(Title = "Явл. формулой")] public virtual bool IsFormula { get; set; }
 
-		[Map(Title = "Формула")] public virtual string Formula { get; set; }
-		[Map] public virtual string FormulaEvaluator { get; set; }
+		[Deprecated.Map(Title = "Формула")] public virtual string Formula { get; set; }
+		[Deprecated.Map] public virtual string FormulaEvaluator { get; set; }
 
 		public virtual string ParsedFormula { get; set; }
 
@@ -46,7 +46,7 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual int Id { get; set; }
 
-		[Map(Title = "Индекс")] public virtual int Idx { get; set; }
+		[Deprecated.Map(Title = "Индекс")] public virtual int Idx { get; set; }
 
 		public virtual string Name { get; set; }
 

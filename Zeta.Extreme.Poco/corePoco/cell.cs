@@ -15,25 +15,25 @@ using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme.Poco {
 	public partial class cell : IZetaCell {
-		[Ref(ClassName = typeof (IZetaRow))] public virtual IZetaRow MainDataTree { get; set; }
+		[Deprecated.Ref(ClassName = typeof (IZetaRow))] public virtual IZetaRow MainDataTree { get; set; }
 
 
-		[Ref(ClassName = typeof (col))] public virtual IZetaColumn ValueType { get; set; }
+		[Deprecated.Ref(ClassName = typeof (col))] public virtual IZetaColumn ValueType { get; set; }
 
-		[Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
+		[Deprecated.Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
 
-		[Ref(ClassName = typeof (detail))] public virtual IZetaDetailObject Subpart { get; set; }
+		[Deprecated.Ref(ClassName = typeof (detail))] public virtual IZetaDetailObject Subpart { get; set; }
 
 		public virtual string Path { get; set; }
 		public virtual FixRuleResult? FixStatus { get; set; }
 
-		[Map] public virtual string Valuta { get; set; }
+		[Deprecated.Map] public virtual string Valuta { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		[Deprecated.Map] public virtual string Comment { get; set; }
 
-		[Map] public virtual string Data { get; set; }
+		[Deprecated.Map] public virtual string Data { get; set; }
 
-		[Map] public virtual bool Finished { get; set; }
+		[Deprecated.Map] public virtual bool Finished { get; set; }
 
 		//    [Many(ClassName = typeof (DataVersion))]
 		//   public virtual IList<IDataVersion> Versions { get; set; }
@@ -49,13 +49,13 @@ namespace Zeta.Extreme.Poco {
 		//   [Ref(ClassName = typeof (Scenario))]
 		// public virtual IScenario Scenario { get; set; }
 
-		[Map] public virtual int Id { get; set; }
+		[Deprecated.Map] public virtual int Id { get; set; }
 
-		[Map] public virtual Guid Uid { get; set; }
+		[Deprecated.Map] public virtual Guid Uid { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		[Deprecated.Map] public virtual DateTime Version { get; set; }
 
-		[Nest] public virtual StandardRowData RowData {
+		[Deprecated.Nest] public virtual StandardRowData RowData {
 			get { return rowData ?? (rowData = new StandardRowData()); }
 			set { rowData = value; }
 		}
@@ -70,11 +70,11 @@ namespace Zeta.Extreme.Poco {
 			set { MainDataTree = value; }
 		}
 
-		[Map] public virtual int Year { get; set; }
+		[Deprecated.Map] public virtual int Year { get; set; }
 
-		[Map("Kvart")] public virtual int Period { get; set; }
+		[Deprecated.Map("Kvart")] public virtual int Period { get; set; }
 
-		[Map] public virtual DateTime DirectDate { get; set; }
+		[Deprecated.Map] public virtual DateTime DirectDate { get; set; }
 
 		public virtual IZetaColumn Column {
 			get { return ValueType; }
@@ -102,8 +102,8 @@ namespace Zeta.Extreme.Poco {
 		public virtual object Tag { get; set; }
 
 		public virtual IPkg Pkg { get; set; }
-		[Map] public virtual bool IsAuto { get; set; }
-		[Map] public virtual string Usr { get; set; }
+		[Deprecated.Map] public virtual bool IsAuto { get; set; }
+		[Deprecated.Map] public virtual string Usr { get; set; }
 		private StandardRowData rowData;
 	}
 }

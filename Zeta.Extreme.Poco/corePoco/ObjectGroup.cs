@@ -17,21 +17,21 @@ using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme.Poco {
 	public partial class ObjectGroup : IZetaObjectGroup {
-		[Map] public virtual Guid Uid { get; set; }
+		[Deprecated.Map] public virtual Guid Uid { get; set; }
 
-		[Map] public virtual string Tag { get; set; }
+		[Deprecated.Map] public virtual string Tag { get; set; }
 
 		// [Many(ClassName = typeof (ObjectGroupLink))]
 
-		[Map] public virtual int Id { get; set; }
+		[Deprecated.Map] public virtual int Id { get; set; }
 
-		[Map] public virtual string Name { get; set; }
+		[Deprecated.Map] public virtual string Name { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		[Deprecated.Map] public virtual string Code { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		[Deprecated.Map] public virtual string Comment { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		[Deprecated.Map] public virtual DateTime Version { get; set; }
 
 		public virtual IList<IZetaMainObject> MainObjects {
 			get {

@@ -15,33 +15,33 @@ using Qorpent;
 
 namespace Zeta.Extreme.Poco {
 	public partial class fixrule : IFixRule {
-		[Ref(ClassName = typeof (IZetaRow))] public virtual IZetaRow MainDataTree { get; set; }
+		[Deprecated.Ref(ClassName = typeof (IZetaRow))] public virtual IZetaRow MainDataTree { get; set; }
 
 		public virtual int Kvart { get; set; }
 
-		[Ref(ClassName = typeof (col))] public virtual IZetaColumn ValueType { get; set; }
+		[Deprecated.Ref(ClassName = typeof (col))] public virtual IZetaColumn ValueType { get; set; }
 
-		[Ref(ClassName = typeof (detail))] public virtual IZetaDetailObject Subpart { get; set; }
+		[Deprecated.Ref(ClassName = typeof (detail))] public virtual IZetaDetailObject Subpart { get; set; }
 
-		[Map] public virtual int Id { get; set; }
+		[Deprecated.Map] public virtual int Id { get; set; }
 
-		[Map] public virtual Guid Uid { get; set; }
+		[Deprecated.Map] public virtual Guid Uid { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		[Deprecated.Map] public virtual DateTime Version { get; set; }
 
 		public virtual IZetaRow Row {
 			get { return MainDataTree; }
 			set { MainDataTree = value; }
 		}
 
-		[Map] public virtual int Year { get; set; }
+		[Deprecated.Map] public virtual int Year { get; set; }
 
-		[Map] public virtual int Period {
+		[Deprecated.Map] public virtual int Period {
 			get { return Kvart; }
 			set { Kvart = value; }
 		}
 
-		[Map] public virtual DateTime DirectDate {
+		[Deprecated.Map] public virtual DateTime DirectDate {
 			get { return ___DirectDate; }
 			set { ___DirectDate = value; }
 		}
@@ -59,17 +59,17 @@ namespace Zeta.Extreme.Poco {
 			set { Subpart = value; }
 		}
 
-		[Map] public virtual string Comment { get; set; }
+		[Deprecated.Map] public virtual string Comment { get; set; }
 
-		[Map] public virtual string Category { get; set; }
+		[Deprecated.Map] public virtual string Category { get; set; }
 
-		[Map] public virtual bool Active { get; set; }
+		[Deprecated.Map] public virtual bool Active { get; set; }
 
-		[Map(CustomType = typeof (int))] public virtual FixRulePriority Priority { get; set; }
+		[Deprecated.Map(CustomType = typeof (int))] public virtual FixRulePriority Priority { get; set; }
 
-		[Map(CustomType = typeof (int))] public virtual FixRuleResult Result { get; set; }
+		[Deprecated.Map(CustomType = typeof (int))] public virtual FixRuleResult Result { get; set; }
 
-		[Map(Formula = "usm.GetFixRuleSalience(Id)")] public virtual int AdvancedWeight { get; set; }
+		[Deprecated.Map(Formula = "usm.GetFixRuleSalience(Id)")] public virtual int AdvancedWeight { get; set; }
 		private DateTime ___DirectDate = QorpentConst.Date.Begin;
 	}
 }

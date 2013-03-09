@@ -25,7 +25,7 @@ namespace Comdiv.Zeta.Model {
 		DateTime CreateTime { get; set; }
 		string Usr { get; set; }
 
-		[Map(Title = "Дата")] DateTime Date { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Map(Title = "Дата")] DateTime Date { get; set; }
 
 		bool IsClosed();
 	                        }

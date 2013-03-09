@@ -25,28 +25,28 @@ namespace Zeta.Extreme.Poco {
 			SecondForm = nodef;
 		}
 
-		[Map] public virtual int Id { get; set; }
+		[Deprecated.Map] public virtual int Id { get; set; }
 
-		[Map] public virtual string Tag { get; set; }
+		[Deprecated.Map] public virtual string Tag { get; set; }
 
-		[Map] public virtual string Name { get; set; }
+		[Deprecated.Map] public virtual string Name { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		[Deprecated.Map] public virtual string Code { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		[Deprecated.Map] public virtual string Comment { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		[Deprecated.Map] public virtual DateTime Version { get; set; }
 
-		[Map] public virtual string FirstType { get; set; }
+		[Deprecated.Map] public virtual string FirstType { get; set; }
 
-		[Map] public virtual string FirstRole { get; set; }
+		[Deprecated.Map] public virtual string FirstRole { get; set; }
 
-		[Map] public virtual string FirstForm { get; set; }
+		[Deprecated.Map] public virtual string FirstForm { get; set; }
 
-		[Map] public virtual string SecondType { get; set; }
+		[Deprecated.Map] public virtual string SecondType { get; set; }
 
-		[Map] public virtual string SecondRole { get; set; }
+		[Deprecated.Map] public virtual string SecondRole { get; set; }
 
-		[Map] public virtual string SecondForm { get; set; }
+		[Deprecated.Map] public virtual string SecondForm { get; set; }
 	}
 }

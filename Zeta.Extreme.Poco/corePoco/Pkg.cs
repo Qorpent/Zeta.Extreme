@@ -28,29 +28,29 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual string Name { get; set; }
 
-		[Ref(Alias = "PkgType", Title = "Тип")] public virtual IPkgType Type { get; set; }
+		[Deprecated.Ref(Alias = "PkgType", Title = "Тип")] public virtual IPkgType Type { get; set; }
 
 		public virtual DateTime Version { get; set; }
 
-		[Ref(Alias = "Pkg", Title = "Родительский пакет", Nullable = true, IsAutoComplete = true,
+		[Deprecated.Ref(Alias = "Pkg", Title = "Родительский пакет", Nullable = true, IsAutoComplete = true,
 			AutoCompleteType = "pkg")] public virtual IPkg Parent { get; set; }
 
 		public virtual IList<IPkg> Children { get; set; }
 
-		[Ref(Alias = "Org", Title = "Объект", Nullable = true, IsAutoComplete = true, AutoCompleteType = "org")] public virtual IZetaDetailObject DetailObject { get; set; }
+		[Deprecated.Ref(Alias = "Org", Title = "Объект", Nullable = true, IsAutoComplete = true, AutoCompleteType = "org")] public virtual IZetaDetailObject DetailObject { get; set; }
 
-		[Ref(Alias = "Subpart", Title = "Деталь", Nullable = true, IsAutoComplete = true, AutoCompleteType = "sp")] public virtual IZetaMainObject Object { get; set; }
+		[Deprecated.Ref(Alias = "Subpart", Title = "Деталь", Nullable = true, IsAutoComplete = true, AutoCompleteType = "sp")] public virtual IZetaMainObject Object { get; set; }
 
-		[Map(Title = "Состояние", CustomType = typeof (int))] public virtual PkgState State { get; set; }
+		[Deprecated.Map(Title = "Состояние", CustomType = typeof (int))] public virtual PkgState State { get; set; }
 
-		[Map(Title = "Дата")] public virtual DateTime Date { get; set; }
+		[Deprecated.Map(Title = "Дата")] public virtual DateTime Date { get; set; }
 
-		[Map(Title = "Номер")] public virtual string Number { get; set; }
+		[Deprecated.Map(Title = "Номер")] public virtual string Number { get; set; }
 
 
-		[Map(Title = "Дата создания")] public virtual DateTime CreateTime { get; set; }
+		[Deprecated.Map(Title = "Дата создания")] public virtual DateTime CreateTime { get; set; }
 
-		[Map(Title = "Пользователь")] public virtual string Usr { get; set; }
+		[Deprecated.Map(Title = "Пользователь")] public virtual string Usr { get; set; }
 
 		public virtual bool IsClosed() {
 			if (State == PkgState.Closed) {

@@ -16,7 +16,6 @@ using Comdiv.Security;
 
 namespace Comdiv.Zeta.Model {
 	public interface IZetaUnderwriter :
-		IRoleResolverRecord,
 		IEntityDataPattern,
 		IWithMainObject<IZetaMainObject>,
 		IWithContactHuman {
@@ -27,7 +26,7 @@ namespace Comdiv.Zeta.Model {
 		/// <summary>
 		/// 	Free list of documents,where basis for security provided
 		/// </summary>
-		[Map] string Documents { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Map] string Documents { get; set; }
 
 		bool IsFor(string slot);
 		}

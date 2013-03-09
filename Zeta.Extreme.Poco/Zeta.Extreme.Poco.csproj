@@ -141,6 +141,13 @@
     </Compile>
     <Compile Include="Deprecated\ClassicAttribute.cs" />
     <Compile Include="Deprecated\ForSearchAttribute.cs" />
+    <Compile Include="Deprecated\ManyAttribute.cs" />
+    <Compile Include="Deprecated\MapAttribute.cs" />
+    <Compile Include="Deprecated\MappingAttribute.cs" />
+    <Compile Include="Deprecated\NestAttribute.cs" />
+    <Compile Include="Deprecated\NoMapAttribute.cs" />
+    <Compile Include="Deprecated\RefAttribute.cs" />
+    <Compile Include="Deprecated\SchemaAttribute.cs" />
     <Compile Include="extPoco\ColumnMark.cs" />
     <Compile Include="extPoco\zone.cs" />
     <Compile Include="extPoco\DayCourse.cs" />

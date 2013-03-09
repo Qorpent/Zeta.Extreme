@@ -12,10 +12,10 @@ using Comdiv.Model;
 
 namespace Comdiv.Olap.Model {
 	public interface IWithFormula {
-		[Map] bool IsFormula { get; set; }
-		[Map] string Formula { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Map] bool IsFormula { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Map] string Formula { get; set; }
 
 		string ParsedFormula { get; set; }
-		[Map] string FormulaEvaluator { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Map] string FormulaEvaluator { get; set; }
 	}
 }

@@ -17,7 +17,7 @@ using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Poco {
 	public partial class objcls : IDetailObjectClass {
-		[Map] public virtual Guid Uid { get; set; }
+		[Deprecated.Map] public virtual Guid Uid { get; set; }
 
 
 		public virtual MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null,
@@ -38,19 +38,19 @@ namespace Zeta.Extreme.Poco {
 			 */
 		}
 
-		[Map] public virtual string Tag { get; set; }
+		[Deprecated.Map] public virtual string Tag { get; set; }
 
-		[Many(ClassName = typeof (objtype))] public virtual IList<IDetailObjectType> Types { get; set; }
+		[Deprecated.Many(ClassName = typeof (objtype))] public virtual IList<IDetailObjectType> Types { get; set; }
 
-		[Map] public virtual int Id { get; set; }
+		[Deprecated.Map] public virtual int Id { get; set; }
 
-		[Map] public virtual string Name { get; set; }
+		[Deprecated.Map] public virtual string Name { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		[Deprecated.Map] public virtual string Code { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		[Deprecated.Map] public virtual string Comment { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		[Deprecated.Map] public virtual DateTime Version { get; set; }
 
 		public virtual int Idx { get; set; }
 

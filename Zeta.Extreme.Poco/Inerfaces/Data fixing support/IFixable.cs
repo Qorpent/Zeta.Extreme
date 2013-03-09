@@ -14,8 +14,8 @@ namespace Comdiv.Zeta.Model {
 	public interface IFixable {
 		bool Finished { get; set; }
 
-		[NoMap] FixRuleResult Fixed { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.NoMap] FixRuleResult Fixed { get; set; }
 
-		[NoMap] int FixRuleId { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.NoMap] int FixRuleId { get; set; }
 	}
 }

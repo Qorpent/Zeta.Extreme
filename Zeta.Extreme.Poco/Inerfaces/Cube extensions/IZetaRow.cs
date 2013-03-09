@@ -26,13 +26,13 @@ namespace Comdiv.Zeta.Model {
 		IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
 		IWithMainObject<IZetaMainObject> {
 		IDictionary<string, object> LocalProperties { get; }
-		[Map] string ObjectGroups { get; set; }
-		[Map] string FormElementType { get; set; }
-		[Map] string Validator { get; set; }
-		[Map] string ColumnSubstitution { get; set; }
-		[Map] string FullName { get; set; }
-		[Map] string Role { get; set; }
-		[Map] string Valuta { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Map] string ObjectGroups { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Map] string FormElementType { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Map] string Validator { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Map] string ColumnSubstitution { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Map] string FullName { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Map] string Role { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Map] string Valuta { get; set; }
 		int? ParentId { get; set; }
 		int? RefId { get; set; }
 		int? ObjectId { get; set; }
@@ -41,10 +41,10 @@ namespace Comdiv.Zeta.Model {
 		string FullRole { get; }
 		int Level { get; }
 
-		[Ref(ClassName = typeof (IZetaRow))] IZetaRow ExRefTo { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Ref(ClassName = typeof (IZetaRow))] IZetaRow ExRefTo { get; set; }
 
 		int? ExRefToId { get; set; }
-		[Map] bool Active { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.Map] bool Active { get; set; }
 		IZetaRow TemporalParent { get; set; }
 		string ResolveColumnCode(string incode);
 		IZetaRow Copy(bool withchildren);
@@ -52,7 +52,6 @@ namespace Comdiv.Zeta.Model {
 		void CleanupByChildren(IEnumerable<string> codes);
 		void ApplyProperty(string property, object value, bool cascade = true);
 		void ApplyPropertyIfNew(string property, object value, bool children = false);
-		bool HasHelp();
 		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
 		void ApplyPropertyByCondition(string prop, object value, bool applyUp, bool applyDown, Func<IZetaRow, bool> test);
 		void PropagateGroupAsProperty(string groupname, bool applyUp = true, string propname = null);

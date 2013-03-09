@@ -17,9 +17,9 @@ namespace Zeta.Extreme.Poco {
 	public class pkgtype : IPkgType {
 		public virtual Guid Uid { get; set; }
 
-		[Map] public virtual string Tag { get; set; }
+		[Deprecated.Map] public virtual string Tag { get; set; }
 		public virtual string Code { get; set; }
-		[Map] public virtual string Comment { get; set; }
+		[Deprecated.Map] public virtual string Comment { get; set; }
 
 		public virtual int Id { get; set; }
 
@@ -29,8 +29,8 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual DateTime Version { get; set; }
 
-		[Map(Title = "Версионный")] public virtual bool Versioned { get; set; }
+		[Deprecated.Map(Title = "Версионный")] public virtual bool Versioned { get; set; }
 
-		[Map(Title = "Связанная форма")] public virtual string FormCode { get; set; }
+		[Deprecated.Map(Title = "Связанная форма")] public virtual string FormCode { get; set; }
 	}
 }

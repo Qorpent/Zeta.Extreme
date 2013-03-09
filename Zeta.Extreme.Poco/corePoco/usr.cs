@@ -16,47 +16,47 @@ using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Poco {
 	public partial class usr : IZetaUnderwriter {
-		[Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
+		[Deprecated.Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
 
-		[Map] public virtual Guid Uid { get; set; }
+		[Deprecated.Map] public virtual Guid Uid { get; set; }
 
-		[Map] public virtual string Tag { get; set; }
+		[Deprecated.Map] public virtual string Tag { get; set; }
 
-		[Map] public virtual int Id { get; set; }
+		[Deprecated.Map] public virtual int Id { get; set; }
 
-		[Map] public virtual string Name { get; set; }
+		[Deprecated.Map] public virtual string Name { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		[Deprecated.Map] public virtual string Code { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		[Deprecated.Map] public virtual string Comment { get; set; }
 
 		/// <summary>
 		/// 	Free list of documents,where basis for security provided
 		/// </summary>
-		[Map] public virtual string Documents { get; set; }
+		[Deprecated.Map] public virtual string Documents { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		[Deprecated.Map] public virtual DateTime Version { get; set; }
 
 		public virtual IZetaMainObject Object {
 			get { return Org; }
 			set { Org = value; }
 		}
 
-		[Map] public virtual bool Boss { get; set; }
+		[Deprecated.Map] public virtual bool Boss { get; set; }
 
-		[Map] public virtual bool Worker { get; set; }
+		[Deprecated.Map] public virtual bool Worker { get; set; }
 
-		[Map] public virtual string Dolzh { get; set; }
+		[Deprecated.Map] public virtual string Dolzh { get; set; }
 
-		[Map] public virtual string Contact { get; set; }
+		[Deprecated.Map] public virtual string Contact { get; set; }
 
-		[Map] public virtual string Roles { get; set; }
-		[Map] public virtual string Login { get; set; }
-		[Map] public virtual bool Active { get; set; }
+		[Deprecated.Map] public virtual string Roles { get; set; }
+		[Deprecated.Map] public virtual string Login { get; set; }
+		[Deprecated.Map] public virtual bool Active { get; set; }
 
-		[Map] public virtual string Login2 { get; set; }
+		[Deprecated.Map] public virtual string Login2 { get; set; }
 
-		[Map] public virtual string SlotList {
+		[Deprecated.Map] public virtual string SlotList {
 			get { return _slotList; }
 			set {
 				_slotList = value;

@@ -19,14 +19,14 @@ namespace Zeta.Extreme.Poco {
 		public virtual int RowId { get; set; }
 		public virtual string Code { get; set; }
 
-		[Map] public virtual int Id { get; set; }
+		[Deprecated.Map] public virtual int Id { get; set; }
 
-		[Map] public virtual Guid Uid { get; set; }
+		[Deprecated.Map] public virtual Guid Uid { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		[Deprecated.Map] public virtual DateTime Version { get; set; }
 
-		[Ref(ClassName = typeof (IZetaRow))] public virtual IZetaRow Target { get; set; }
+		[Deprecated.Ref(ClassName = typeof (IZetaRow))] public virtual IZetaRow Target { get; set; }
 
-		[Ref(ClassName = typeof (Mark))] public virtual IMark Mark { get; set; }
+		[Deprecated.Ref(ClassName = typeof (Mark))] public virtual IMark Mark { get; set; }
 	}
 }

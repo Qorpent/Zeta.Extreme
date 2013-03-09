@@ -24,14 +24,14 @@ namespace Zeta.Extreme.Poco {
 		public virtual DateTime Version { get; set; }
 		public virtual string Code { get; set; }
 
-		[Ref(Alias = "Org", Title = "Корень", Nullable = true, IsAutoComplete = true, AutoCompleteType = "org")] public virtual IZetaMainObject Root { get; set; }
+		[Deprecated.Ref(Alias = "Org", Title = "Корень", Nullable = true, IsAutoComplete = true, AutoCompleteType = "org")] public virtual IZetaMainObject Root { get; set; }
 
-		[Ref(Alias = "Org", Title = "Цель", Nullable = true, IsAutoComplete = true, AutoCompleteType = "org")] public virtual
+		[Deprecated.Ref(Alias = "Org", Title = "Цель", Nullable = true, IsAutoComplete = true, AutoCompleteType = "org")] public virtual
 			IZetaMainObject Target { get; set; }
 
 
 		public virtual GraphRelationType Type { get; set; }
 
-		[Map] public virtual string TypeDetail { get; set; }
+		[Deprecated.Map] public virtual string TypeDetail { get; set; }
 	}
 }

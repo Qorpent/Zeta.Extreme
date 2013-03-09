@@ -15,23 +15,23 @@ using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme.Poco {
 	public partial class point : IZetaPoint {
-		[Map] public virtual Guid Uid { get; set; }
+		[Deprecated.Map] public virtual Guid Uid { get; set; }
 
 		public virtual string Tag { get; set; }
 
-		[Many(ClassName = typeof (obj))] public virtual IList<IZetaMainObject> MainObjects { get; set; }
+		[Deprecated.Many(ClassName = typeof (obj))] public virtual IList<IZetaMainObject> MainObjects { get; set; }
 
-		[Ref(ClassName = typeof (region))] public virtual IZetaRegion Region { get; set; }
+		[Deprecated.Ref(ClassName = typeof (region))] public virtual IZetaRegion Region { get; set; }
 
-		[Map] public virtual int Id { get; set; }
+		[Deprecated.Map] public virtual int Id { get; set; }
 
-		[Map] public virtual string Name { get; set; }
+		[Deprecated.Map] public virtual string Name { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		[Deprecated.Map] public virtual string Code { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		[Deprecated.Map] public virtual string Comment { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		[Deprecated.Map] public virtual DateTime Version { get; set; }
 
 		public virtual int Idx { get; set; }
 

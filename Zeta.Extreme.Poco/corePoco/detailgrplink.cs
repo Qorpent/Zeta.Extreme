@@ -15,20 +15,20 @@ using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme.Poco {
 	public partial class detailgrplink : IZetaDetailObjectGroupLink {
-		[Ref(ClassName = typeof (detail))] public virtual IZetaDetailObject Subpart { get; set; }
+		[Deprecated.Ref(ClassName = typeof (detail))] public virtual IZetaDetailObject Subpart { get; set; }
 
-		[Map] public virtual int Id { get; set; }
+		[Deprecated.Map] public virtual int Id { get; set; }
 
-		[Map] public virtual Guid Uid { get; set; }
+		[Deprecated.Map] public virtual Guid Uid { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		[Deprecated.Map] public virtual DateTime Version { get; set; }
 
 		public virtual IZetaDetailObject DetailObject {
 			get { return Subpart; }
 			set { Subpart = value; }
 		}
 
-		[Ref(ClassName = typeof (detailgrp))] public virtual IDetailObjectGroup<IZetaMainObject, IZetaDetailObject>
+		[Deprecated.Ref(ClassName = typeof (detailgrp))] public virtual IDetailObjectGroup<IZetaMainObject, IZetaDetailObject>
 			DetailObjectGroup { get; set; }
 	}
 }

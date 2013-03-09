@@ -38,7 +38,7 @@ namespace Comdiv.Zeta.Model {
 		/// <summary>
 		/// 	Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
-		[NoMap] string ForeignCode { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.NoMap] string ForeignCode { get; set; }
 
 		string GetStaticMeasure(string format);
 		string GetDynamicMeasure(IZetaRow source, string format);

@@ -13,8 +13,8 @@ using Comdiv.Model.Interfaces;
 
 namespace Comdiv.Olap.Model {
 	public interface IMarkLinkBase {
-		[NoMap] IEntityDataPattern MarkLinkTarget { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.NoMap] IEntityDataPattern MarkLinkTarget { get; set; }
 
-		[NoMap] IMark MarkLinkMark { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.NoMap] IMark MarkLinkMark { get; set; }
 	}
 }

@@ -36,7 +36,7 @@ namespace Zeta.Extreme.Poco {
 			get { return (AltObject == null ? Comment : AltObject.Comment) ?? ""; }
 		}
 
-		[Map] public virtual bool InverseControl { get; set; }
+		[Deprecated.Map] public virtual bool InverseControl { get; set; }
 
 		public virtual string FullName { get; set; }
 

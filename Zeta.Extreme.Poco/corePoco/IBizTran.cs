@@ -13,16 +13,16 @@ using Comdiv.Model.Interfaces;
 
 namespace Zeta.Extreme.Poco {
 	public interface IBizTran : IEntityDataPattern {
-		[Map] string FirstType { get; set; }
+		[Deprecated.Map] string FirstType { get; set; }
 
-		[Map] string FirstRole { get; set; }
+		[Deprecated.Map] string FirstRole { get; set; }
 
-		[Map] string FirstForm { get; set; }
+		[Deprecated.Map] string FirstForm { get; set; }
 
-		[Map] string SecondType { get; set; }
+		[Deprecated.Map] string SecondType { get; set; }
 
-		[Map] string SecondRole { get; set; }
+		[Deprecated.Map] string SecondRole { get; set; }
 
-		[Map] string SecondForm { get; set; }
+		[Deprecated.Map] string SecondForm { get; set; }
 	}
 }

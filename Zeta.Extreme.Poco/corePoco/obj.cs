@@ -28,14 +28,14 @@ namespace Zeta.Extreme.Poco {
 			// Properties = new Dictionary<string, object>();
 		}
 
-		[Ref(ClassName = typeof (objdiv))] public virtual IMainObjectGroup Holding { get; set; }
+		[Deprecated.Ref(ClassName = typeof (objdiv))] public virtual IMainObjectGroup Holding { get; set; }
 
 
-		[Ref(ClassName = typeof (objrole))] public virtual IMainObjectRole Otrasl { get; set; }
+		[Deprecated.Ref(ClassName = typeof (objrole))] public virtual IMainObjectRole Otrasl { get; set; }
 
-		[Ref(ClassName = typeof (point))] public virtual IZetaPoint Municipal { get; set; }
+		[Deprecated.Ref(ClassName = typeof (point))] public virtual IZetaPoint Municipal { get; set; }
 
-		[Map] public virtual Guid Uid { get; set; }
+		[Deprecated.Map] public virtual Guid Uid { get; set; }
 
 		public virtual IList<IZetaDetailObject> links {
 			get { return DetailObjects; }
@@ -56,48 +56,48 @@ namespace Zeta.Extreme.Poco {
 		}
 
 		public virtual int? DivId { get; set; }
-		[Map(ReadOnly = true)] public virtual string Path { get; set; }
+		[Deprecated.Map(ReadOnly = true)] public virtual string Path { get; set; }
 
-		[Map] public virtual string Tag { get; set; }
-		[Map] public virtual string Valuta { get; set; }
+		[Deprecated.Map] public virtual string Tag { get; set; }
+		[Deprecated.Map] public virtual string Valuta { get; set; }
 
-		[Map] public virtual string FullName { get; set; }
-		[Map] public virtual string ShortName { get; set; }
+		[Deprecated.Map] public virtual string FullName { get; set; }
+		[Deprecated.Map] public virtual string ShortName { get; set; }
 
-		[NoMap] public virtual bool IsFormula {
+		[Deprecated.NoMap] public virtual bool IsFormula {
 			get { return !string.IsNullOrWhiteSpace(Formula); }
 			set { _isFormula = value; }
 		}
 
-		[Map] public virtual string Formula { get; set; }
+		[Deprecated.Map] public virtual string Formula { get; set; }
 
-		[NoMap] public virtual string ParsedFormula { get; set; }
-		[NoMap] public virtual string FormulaEvaluator { get; set; }
+		[Deprecated.NoMap] public virtual string ParsedFormula { get; set; }
+		[Deprecated.NoMap] public virtual string FormulaEvaluator { get; set; }
 
-		[Map] public virtual bool ShowOnStartPage { get; set; }
-
-
-		[Many(ClassName = typeof (detail))] public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
+		[Deprecated.Map] public virtual bool ShowOnStartPage { get; set; }
 
 
-		[Map] public virtual int Id { get; set; }
-
-		[Map] public virtual string Name { get; set; }
+		[Deprecated.Many(ClassName = typeof (detail))] public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
 
 
-		[Map(ReadOnly = true)] public virtual string GroupCache { get; set; }
+		[Deprecated.Map] public virtual int Id { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		[Deprecated.Map] public virtual string Name { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		[Deprecated.Map(ReadOnly = true)] public virtual string GroupCache { get; set; }
 
-		[Many(ClassName = typeof (MainObjectMark))] public virtual IList<IZetaMainObjectMark> MarkLinks { get; set; }
+		[Deprecated.Map] public virtual string Code { get; set; }
 
-		[Many(ClassName = typeof (cell))] public virtual IList<IZetaCell> Cells { get; set; }
+		[Deprecated.Map] public virtual string Comment { get; set; }
 
-		[Map] public virtual string Address { get; set; }
+		[Deprecated.Map] public virtual DateTime Version { get; set; }
+
+		[Deprecated.Many(ClassName = typeof (MainObjectMark))] public virtual IList<IZetaMainObjectMark> MarkLinks { get; set; }
+
+		[Deprecated.Many(ClassName = typeof (cell))] public virtual IList<IZetaCell> Cells { get; set; }
+
+		[Deprecated.Map] public virtual string Address { get; set; }
 
 		public virtual IMainObjectGroup Group {
 			get { return Holding; }
@@ -152,18 +152,18 @@ namespace Zeta.Extreme.Poco {
 			return UsrThemaMaps.Where(x => x.Usr.Id == usr.Id && x.IsPlan == plan).Select(x => x.ThemaCode).Distinct().ToArray();
 		}
 
-		[Many(ClassName = typeof (usr))] public virtual IList<IZetaUnderwriter> Underwriters { get; set; }
+		[Deprecated.Many(ClassName = typeof (usr))] public virtual IList<IZetaUnderwriter> Underwriters { get; set; }
 
-		[Many(ClassName = typeof (fixrule))] public virtual IList<IFixRule> FixRules { get; set; }
+		[Deprecated.Many(ClassName = typeof (fixrule))] public virtual IList<IFixRule> FixRules { get; set; }
 
 		public virtual IList<IZetaDetailObject> AlternateDetailObjects { get; set; }
 
 		//public virtual IList<IDocumentOfCorrections> Documents { get; set; }
 
 		public virtual DateRange Range { get; set; }
-		[Map] public virtual int Idx { get; set; }
-		[Map] public virtual DateTime Start { get; set; }
-		[Map] public virtual DateTime Finish { get; set; }
+		[Deprecated.Map] public virtual int Idx { get; set; }
+		[Deprecated.Map] public virtual DateTime Start { get; set; }
+		[Deprecated.Map] public virtual DateTime Finish { get; set; }
 
 		public virtual IDetailObjectType ObjType { get; set; }
 
