@@ -13,12 +13,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Comdiv.Application;
-using Comdiv.Extensions;
 using Comdiv.Model;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Model;
 using Qorpent;
-using TagHelper = Qorpent.Utils.Extensions.TagHelper;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Poco {
 	public partial class obj : IZetaMainObject, IZetaQueryDimension {
@@ -40,11 +39,6 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual IList<IZetaDetailObject> links {
 			get { return DetailObjects; }
-		}
-
-		public virtual object this[string idx] {
-			get { return Properties.get(idx); }
-			set { Properties[idx] = value; }
 		}
 
 		public virtual string OuterCode { get; set; }
@@ -227,10 +221,10 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual string ResolveTag(string name) {
 			var tag = TagHelper.Value(Tag, name);
-			if (tag.noContent() && null != ObjType) {
+			if (tag.IsEmpty() && null != ObjType) {
 				tag = ObjType.ResolveTag(name);
 			}
-			if (tag.noContent() && null != Parent) {
+			if (tag.IsEmpty() && null != Parent) {
 				tag = Parent.ResolveTag(name);
 			}
 			return tag ?? "";
@@ -240,14 +234,14 @@ namespace Zeta.Extreme.Poco {
 			lock (this) {
 				if (_groups == null) {
 					var _storage = myapp.storage.Get<IZetaObjectGroup>();
-					_groups = GroupCache.split(false, true, '/').Distinct().Select(_storage.Load).OrderBy(x => x.Id).ToList();
+					_groups = GroupCache.SmartSplit(false, true, '/').Distinct().Select(_storage.Load).OrderBy(x => x.Id).ToList();
 				}
 				return _groups;
 			}
 		}
 
 		private bool matchTypeFilter(IZetaMainObject child, string typefiler) {
-			if (typefiler.noContent()) {
+			if (typefiler.IsEmpty()) {
 				return true;
 			}
 			if (null == child.ObjType) {

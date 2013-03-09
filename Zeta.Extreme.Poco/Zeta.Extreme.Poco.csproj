@@ -140,7 +140,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Deprecated\ClassicAttribute.cs" />
-    <Compile Include="Deprecated\ClassicAttributeExtension.cs" />
     <Compile Include="Deprecated\ForSearchAttribute.cs" />
     <Compile Include="extPoco\ColumnMark.cs" />
     <Compile Include="extPoco\zone.cs" />
@@ -271,7 +270,6 @@
     <Compile Include="Inerfaces\IOlapMainObject.cs" />
     <Compile Include="Inerfaces\IWithClassRef.cs" />
     <Compile Include="Inerfaces\IWthRefTo.cs" />
-    <Compile Include="Inerfaces\OlapCacheExtension.cs" />
     <Compile Include="Inerfaces\RowComparer.cs" />
     <Compile Include="Inerfaces\StubMetaCache.cs" />
     <Compile Include="Inerfaces\Support\ICanCheckIsActive.cs" />

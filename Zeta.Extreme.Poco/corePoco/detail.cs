@@ -10,14 +10,13 @@
 
 using System;
 using System.Collections.Generic;
-using Comdiv.Extensions;
 using Comdiv.Model;
 using Comdiv.Olap.Model;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Model;
 using Qorpent;
 using Qorpent.Serialization;
-using TagHelper = Qorpent.Utils.Extensions.TagHelper;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Poco {
 	public partial class detail : IZetaDetailObject {
@@ -121,13 +120,13 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual string ResolveTag(string name) {
 			var tag = TagHelper.Value(Tag, name);
-			if (tag.noContent()) {
+			if (tag.IsEmpty()) {
 				tag = Type.ResolveTag(name);
 			}
-			if (tag.noContent() && null != Parent) {
+			if (tag.IsEmpty() && null != Parent) {
 				tag = Parent.ResolveTag(name);
 			}
-			if (tag.noContent()) {
+			if (tag.IsEmpty()) {
 				tag = Object.ResolveTag(name);
 			}
 			return tag ?? "";

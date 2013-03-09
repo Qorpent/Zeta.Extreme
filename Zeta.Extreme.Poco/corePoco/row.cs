@@ -13,14 +13,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Comdiv.Application;
-using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.MVC;
 using Comdiv.Model;
 using Comdiv.Persistence;
 using Comdiv.Wiki;
 using Comdiv.Zeta.Model;
-using TagHelper = Qorpent.Utils.Extensions.TagHelper;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Poco {
 	public partial class row : IZetaRow, IDatabaseVerificator {
@@ -90,7 +89,7 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual string FullRole {
 			get {
-				if (Role.hasContent()) {
+				if (Role.IsNotEmpty()) {
 					return Role;
 				}
 				if (Parent == null) {
@@ -141,7 +140,7 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual string ResolveMeasure() {
 			var mes = Measure;
-			if (mes.noContent() && null != RefTo) {
+			if (mes.IsEmpty() && null != RefTo) {
 				mes = RefTo.Measure;
 			}
 			mes = mes ?? "";
@@ -195,12 +194,15 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual string ResolveColumnCode(string incode) {
 			prepareColumnMap();
-			return columnmap.get(incode, incode);
+			if (columnmap.ContainsKey(incode)) {
+				return columnmap[incode];
+			}
+			return incode;
 		}
 
 
 		public virtual string ResolveTag(string name) {
-			if (Qorpent.Utils.Extensions.TagHelper.Has(Tag, name)) {
+			if (TagHelper.Has(Tag, name)) {
 				return TagHelper.Value(Tag, name) ?? "";
 			}
 			if (null != TemporalParent) {
@@ -215,7 +217,7 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual void PropagateGroupAsProperty(string groupname, bool applyUp = true, string propname = null) {
 			propname = propname ?? groupname;
-			Func<IZetaRow, bool> test = r => r.Group.split(false, true, '/', ';').Any(x => x == groupname);
+			Func<IZetaRow, bool> test = r => r.Group.SmartSplit(false, true, '/', ';').Any(x => x == groupname);
 			ApplyPropertyByCondition(propname, true, applyUp, false, test);
 		}
 
@@ -252,11 +254,12 @@ namespace Zeta.Extreme.Poco {
 			var result = false;
 
 			if (grpcodes.Length != 0) {
-				var groups = Group.split(false, true, '/', ';');
+				var groups = Group.SmartSplit(false, true, '/', ';');
 				if (grpcodes.Any(x => groups.Contains(x))) {
 					result = true;
 				}
-				else if (null != AllChildren.FirstOrDefault(x => x.Group.split(false, true, ';', '/').Intersect(grpcodes).Count() != 0)) {
+				else if (null !=
+				         AllChildren.FirstOrDefault(x => x.Group.SmartSplit(false, true, ';', '/').Intersect(grpcodes).Count() != 0)) {
 					result = true;
 				}
 			}
@@ -314,12 +317,12 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual bool IsActiveFor(IZetaMainObject obj) {
 			var intag = ResolveTag("pr_stobj");
-			if (intag.noContent()) {
+			if (intag.IsEmpty()) {
 				intag = ResolveTag("viewforgroup");
 			}
 			var extag = ResolveTag("pr_exobj");
-			var ins = intag.ToUpper().split();
-			var exs = extag.ToUpper().split();
+			var ins = intag.ToUpper().SmartSplit();
+			var exs = extag.ToUpper().SmartSplit();
 			foreach (var ex in exs) {
 				if (obj.IsMatchZoneAcronim(ex)) {
 					return false;

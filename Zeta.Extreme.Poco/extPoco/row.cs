@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Comdiv.Application;
-using Comdiv.Extensions;
 using Comdiv.Olap.Model;
 using Comdiv.Zeta.Model;
 using Qorpent.Utils.Extensions;
@@ -51,7 +50,7 @@ namespace Zeta.Extreme.Poco {
 		public virtual IZetaRow FilterTree(int objid, string selectorname, bool usefilialfilter = false) {
 			var viewname = "zetai.hard_m140_filter";
 			if (usefilialfilter) {
-				if (selectorname.hasContent()) {
+				if (selectorname.IsNotEmpty()) {
 					viewname = "zetai.full_m140_filter";
 				}
 				else {
@@ -211,10 +210,10 @@ namespace Zeta.Extreme.Poco {
 		private void prepareColumnMap() {
 			if (columnmap == null) {
 				columnmap = new Dictionary<string, string>();
-				if (ColumnSubstitution.hasContent()) {
-					var rules = ColumnSubstitution.split();
+				if (ColumnSubstitution.IsNotEmpty()) {
+					var rules = ColumnSubstitution.SmartSplit();
 					foreach (var rule in rules) {
-						var pair = rule.split(false, true, '=');
+						var pair = rule.SmartSplit(false, true, '=');
 						columnmap[pair[0]] = pair[1];
 					}
 				}

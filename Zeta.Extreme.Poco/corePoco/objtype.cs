@@ -10,11 +10,10 @@
 
 using System;
 using System.Collections.Generic;
-using Comdiv.Extensions;
 using Comdiv.Model;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Model;
-using TagHelper = Qorpent.Utils.Extensions.TagHelper;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Poco {
 	public partial class objtype : IDetailObjectType {
@@ -61,7 +60,7 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual string ResolveTag(string name) {
 			var tag = TagHelper.Value(Tag, name);
-			if (tag.noContent()) {
+			if (tag.IsEmpty()) {
 				tag = Class.ResolveTag(name);
 			}
 			return tag ?? "";

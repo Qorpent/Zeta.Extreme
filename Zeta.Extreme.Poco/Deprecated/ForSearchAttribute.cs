@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Comdiv.Extensions;
 using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Poco.Deprecated {
@@ -51,7 +50,7 @@ namespace Zeta.Extreme.Poco.Deprecated {
 			if (null == attr) {
 				return type.Name;
 			}
-			if (attr.Name.noContent()) {
+			if (attr.Name.IsEmpty()) {
 				return type.Name;
 			}
 			return attr.Name;

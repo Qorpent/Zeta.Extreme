@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Comdiv.Extensions;
+using System.Text.RegularExpressions;
 using Comdiv.Olap.Model;
 using Comdiv.Zeta.Model;
 
@@ -70,7 +70,7 @@ namespace Zeta.Extreme.Poco {
 		public virtual bool IsMatchZoneAcronim(string s) {
 			s = s.ToUpper();
 			if (!s.Contains("_")) {
-				if (s.like(@"^\d+$")) {
+				if (Regex.IsMatch(s, @"^\d+$")) {
 					return s == Id.ToString();
 				}
 				return GroupCache.ToUpper().Contains("/" + s + "/");

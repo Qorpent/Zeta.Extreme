@@ -32,9 +32,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Comdiv.Application;
-using Comdiv.Extensions;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Model;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Poco.NativeSqlBind {
 	/// <summary>
@@ -276,7 +276,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 			row.Children = new List<IZetaRow>();
 			if (!string.IsNullOrWhiteSpace(row.Group)) {
 				if (!row.IsMarkSeted("0SA")) {
-					var groups = row.Group.split(false, true, ';', '/').Distinct();
+					var groups = row.Group.SmartSplit(false, true, ';', '/').Distinct();
 					foreach (var g in groups) {
 						if (!bygroup.ContainsKey(g)) {
 							bygroup[g] = new List<IZetaRow>();

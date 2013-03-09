@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Comdiv.Application;
-using Comdiv.Extensions;
 using Comdiv.Olap.Model;
 using Comdiv.Zeta.Model;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Poco {
 	public partial class col : IZetaColumn, IZetaQueryDimension {
@@ -44,8 +44,8 @@ namespace Zeta.Extreme.Poco {
 			if (IsDynamicMeasure) {
 				return "";
 			}
-			if (Measure.hasContent()) {
-				if (format.hasContent()) {
+			if (Measure.IsNotEmpty()) {
+				if (format.IsNotEmpty()) {
 					return string.Format(format, Measure);
 				}
 				return Measure;
@@ -57,8 +57,8 @@ namespace Zeta.Extreme.Poco {
 			if (!IsDynamicMeasure) {
 				return "";
 			}
-			if (source.Measure.hasContent()) {
-				if (format.hasContent()) {
+			if (source.Measure.IsNotEmpty()) {
+				if (format.IsNotEmpty()) {
 					return string.Format(format, source.Measure);
 				}
 				return source.Measure;

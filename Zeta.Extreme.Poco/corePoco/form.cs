@@ -11,8 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Comdiv.Extensions;
 using Comdiv.Zeta.Model;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Poco {
 	public class form : IForm {
@@ -47,7 +47,7 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual FormStates State {
 			get {
-				if (CurrentState.noContent()) {
+				if (CurrentState.IsEmpty()) {
 					return FormStates.None;
 				}
 				if (CurrentState == "0ISOPEN") {

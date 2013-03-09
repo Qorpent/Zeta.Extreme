@@ -11,10 +11,10 @@
 using System;
 using System.Linq;
 using Comdiv.Application;
-using Comdiv.Extensions;
 using Comdiv.Model;
 using Comdiv.Model.Interfaces;
 using Comdiv.Olap.Model;
+using Qorpent.Utils.Extensions;
 
 namespace Comdiv.Zeta.Model {
 	public static class WithMarksExtension {

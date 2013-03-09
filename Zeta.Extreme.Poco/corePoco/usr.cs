@@ -10,9 +10,9 @@
 
 using System;
 using System.Collections.Generic;
-using Comdiv.Extensions;
 using Comdiv.Model;
 using Comdiv.Zeta.Model;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Poco {
 	public partial class usr : IZetaUnderwriter {
@@ -65,7 +65,7 @@ namespace Zeta.Extreme.Poco {
 		}
 
 		public virtual IList<string> Slots {
-			get { return _slots ?? (_slots = SlotList.split()); }
+			get { return _slots ?? (_slots = SlotList.SmartSplit()); }
 		}
 
 		public virtual bool IsFor(string slot) {
@@ -73,7 +73,7 @@ namespace Zeta.Extreme.Poco {
 		}
 
 		public virtual bool IsInRole(string role) {
-			return Roles.split().Contains(role);
+			return Roles.SmartSplit().Contains(role);
 		}
 
 		private string _slotList;
