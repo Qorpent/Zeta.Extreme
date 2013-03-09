@@ -15,6 +15,7 @@ using Comdiv.Common;
 using Comdiv.Extensions;
 using Comdiv.IO;
 using Qorpent.Bxl;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.StateManagement;
 
 namespace Zeta.Extreme.Form.StateManagement {
@@ -54,7 +55,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 
 		private static void reloadCheckMap() {
 			var file = myapp.files.Read("lockmap.bxl");
-			if (file.hasContent()) {
+			if (file.IsNotEmpty()) {
 				var xml = new BxlParser().Parse(file);
 				foreach (var element in xml.Elements()) {
 					var fromperiod = element.attr("code");
@@ -67,7 +68,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 					}
 					prefix = prefix + fromperiod;
 					var _toperiods = element.Value;
-					var toperiods = _toperiods.split().Select(x => x.toInt()).ToArray();
+					var toperiods = _toperiods.SmartSplit().Select(x => x.toInt()).ToArray();
 					lockmap[prefix] = toperiods;
 				}
 			}

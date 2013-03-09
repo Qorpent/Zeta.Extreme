@@ -14,12 +14,10 @@ using System.Linq;
 using System.Security.Principal;
 using Comdiv.Application;
 using Comdiv.Extensions;
-using Comdiv.Security;
+using Qorpent.Utils.Extensions;
 using Comdiv.Security.Acl;
 using Zeta.Extreme.BizProcess.Reports;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Form.InputTemplates;
-using Zeta.Extreme.Meta;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Form.Themas {
@@ -130,13 +128,13 @@ namespace Zeta.Extreme.Form.Themas {
 
 			IList<IInputTemplate> realadd = new List<IInputTemplate>();
 			foreach (var f in result.Forms.Values) {
-				var t = f.PrepareForPeriod(year, period, DateExtensions.Begin, obj);
+				var t = f.PrepareForPeriod(year, period, Qorpent.QorpentConst.Date.Begin, obj);
 				if (!t.GetIsPeriodMatched()) {
 					continue;
 				}
 
 
-				if (t.ForGroup.hasContent()) {
+				if (t.ForGroup.IsNotEmpty()) {
 					if (null == obj) {
 						continue;
 					}
@@ -282,10 +280,10 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="usr"> </param>
 		/// <returns> </returns>
 		public bool IsActive(IPrincipal usr) {
-			if (Role.hasContent()) {
-				if (!myapp.roles.IsAdmin(usr)) {
+			if (Role.IsNotEmpty()) {
+				if (!Qorpent.Applications.Application.Current.Roles.IsAdmin(usr)) {
 					var hasrole = false;
-					foreach (var r in Role.split()) {
+					foreach (var r in Role.SmartSplit()) {
 						if (myapp.roles.IsInRole(r)) {
 							hasrole = true;
 							break;

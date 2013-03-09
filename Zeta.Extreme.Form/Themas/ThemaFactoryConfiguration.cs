@@ -14,6 +14,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.InputTemplates;
 
@@ -56,7 +57,7 @@ namespace Zeta.Extreme.Form.Themas {
 				}
 			}
 			foreach (var thema in result.Themas) {
-				if (thema.Group.hasContent()) {
+				if (thema.Group.IsNotEmpty()) {
 					var grp = result.Themas.FirstOrDefault(x => x.Code == thema.Group);
 					if (null != grp) {
 						((Thema) grp).GroupMembers.Add(thema);

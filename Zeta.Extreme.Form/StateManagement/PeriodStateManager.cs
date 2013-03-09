@@ -15,6 +15,7 @@ using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Persistence;
 using Qorpent.Applications;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.StateManagement;
 
 namespace Zeta.Extreme.Form.StateManagement {
@@ -112,7 +113,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		private void indatabase(Action<IDbConnection> action) {
 			using (var c = GetConnection(System)) {
 				c.WellOpen();
-				if (Database.hasContent()) {
+				if (Database.IsNotEmpty()) {
 					c.ChangeDatabase(Database);
 				}
 				action(c);

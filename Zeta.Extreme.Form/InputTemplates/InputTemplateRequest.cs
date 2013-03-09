@@ -11,9 +11,7 @@
 using System;
 using System.Collections.Generic;
 using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Persistence;
-using Comdiv.Security;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Poco.Inerfaces;
 
@@ -127,7 +125,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		public IInputTemplate Template {
 			get {
-				if (null == template && TemplateCode.hasContent()) {
+				if (null == template && TemplateCode.IsNotEmpty()) {
 					ReloadTemplate();
 				}
 				return template;

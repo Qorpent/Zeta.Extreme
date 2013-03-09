@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Comdiv.Application;
 using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 
 namespace Zeta.Extreme.Form.Themas {
@@ -28,7 +29,7 @@ namespace Zeta.Extreme.Form.Themas {
 		public static IEnumerable<T> BindParents<T>(this IEnumerable<T> active) where T : IThema {
 			var full = active.UnGroup();
 			foreach (var thema in full) {
-				if (thema.Parent.hasContent()) {
+				if (thema.Parent.IsNotEmpty()) {
 					thema.ParentThema = full.FirstOrDefault(x => x.Code == thema.Parent);
 					if (thema.ParentThema != null) {
 						thema.ParentThema.Children.Add(thema);
@@ -84,7 +85,7 @@ namespace Zeta.Extreme.Form.Themas {
 						}
 						continue;
 					}
-					if (th.Group.noContent()) {
+					if (th.Group.IsEmpty()) {
 						if (!toremove.Contains(th)) {
 							th.IsFavorite = true;
 							result.Add(th);

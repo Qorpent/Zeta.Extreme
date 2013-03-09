@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -41,7 +42,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Текст элекмента
 		/// </summary>
 		public string Text {
-			get { return _text.hasContent() ? _text : Value; }
+			get { return _text.IsNotEmpty() ? _text : Value; }
 			set { _text = value; }
 		}
 

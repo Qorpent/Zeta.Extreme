@@ -28,7 +28,7 @@ namespace Zeta.Extreme.Poco.Deprecated {
 		public string Name { get; set; }
 
 		public static Type[] Collect(params Assembly[] assemblies) {
-			if (assemblies.IsEmpty()) {
+			if (assemblies.IsEmptyCollection()) {
 				assemblies =
 					AppDomain.CurrentDomain.GetAssemblies().Where(x => !x.GetName().Name.StartsWith("System")).ToArray();
 			}

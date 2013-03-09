@@ -86,7 +86,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public IScheduleChecker ScheduleChecker {
 			get {
 				if (_scheduleChecker == null) {
-					if (ScheduleClass.hasContent()) {
+					if (ScheduleClass.IsNotEmpty()) {
 						_scheduleChecker = InversionExtensions.typenameOrIoc<IScheduleChecker>(ScheduleClass);
 					}
 				}
@@ -100,11 +100,11 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public IDictionary<string, int> RedirectPeriodMap {
 			get {
 				if (null == _redirectPeriodMap) {
-					if (PeriodRedirect.hasContent()) {
+					if (PeriodRedirect.IsNotEmpty()) {
 						_redirectPeriodMap = new Dictionary<string, int>();
-						var variants = PeriodRedirect.split(false, true, '|');
+						var variants = PeriodRedirect.SmartSplit(false, true, '|');
 						foreach (var variant in variants) {
-							var test = variant.split(false, true, ':');
+							var test = variant.SmartSplit(false, true, ':');
 							var v = "";
 							var rules_ = "";
 							if (test.Count == 1) {
@@ -115,9 +115,9 @@ namespace Zeta.Extreme.Form.InputTemplates {
 								v = test[0];
 								rules_ = test[1];
 							}
-							var rules = rules_.split();
+							var rules = rules_.SmartSplit();
 							foreach (var rule in rules) {
-								var record_ = rule.split(false, true, '=');
+								var record_ = rule.SmartSplit(false, true, '=');
 								var record = new {from = record_[0].toInt(), to = record_[1].toInt()};
 								_redirectPeriodMap[record.from + "_" + v] = record.to;
 							}
@@ -178,15 +178,15 @@ namespace Zeta.Extreme.Form.InputTemplates {
 
 		private IEnumerable<string> GetConditionList() {
 			var conds_ = Parameters.get("conditions", "");
-			if (conds_.noContent()) {
+			if (conds_.IsEmpty()) {
 				return null;
 			}
-			var conds = conds_.split();
+			var conds = conds_.SmartSplit();
 			return conds;
 		}
 
 		private static bool IsEmptyCondition(string condition) {
-			if (condition.noContent()) {
+			if (condition.IsEmpty()) {
 				return true;
 			}
 			return false;
@@ -243,13 +243,13 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				return values;
 			}
 			var balmet = obj.ResolveTag("BALMET");
-			if (balmet.noContent()) {
+			if (balmet.IsEmpty()) {
 				return values;
 			}
-			var balmets = balmet.split().Select(x => x.ToUpper()).ToArray();
+			var balmets = balmet.SmartSplit().Select(x => x.ToUpper()).ToArray();
 			var result = new List<ColumnDesc>();
 			foreach (var columnDesc in values) {
-				if (columnDesc.RedirectBasis.noContent()) {
+				if (columnDesc.RedirectBasis.IsEmpty()) {
 					result.Add(columnDesc);
 				}
 				else {
@@ -277,9 +277,9 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			var th = Thema as EcoThema;
 			if (null != th) {
 				var splitobj = th.GetParameter("splittoobj", "");
-				if (splitobj.hasContent()) {
+				if (splitobj.IsNotEmpty()) {
 					objects.Clear();
-					var subobjtypes = splitobj.split();
+					var subobjtypes = splitobj.SmartSplit();
 					foreach (var subobjtype in subobjtypes) {
 						if (subobjtype == "SELF") {
 							objects.Add(obj);
@@ -326,7 +326,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			if (null == _excludes) {
 				_excludes = new string[] {};
 				if (Parameters.ContainsKey("excluderows")) {
-					_excludes = Parameters.get("excluderows", "").split().ToArray();
+					_excludes = Parameters.get("excluderows", "").SmartSplit().ToArray();
 				}
 			}
 			if (0 == _excludes.Length) {
@@ -347,10 +347,10 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public string Biztran {
 			get {
 				var r = Parameters.get("biztran", "");
-				if (r.hasContent()) {
+				if (r.IsNotEmpty()) {
 					return r;
 				}
-				if (biztran.hasContent()) {
+				if (biztran.IsNotEmpty()) {
 					return biztran;
 				}
 				if (null == Thema) {
@@ -769,7 +769,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		public IDetailFilter DetailFilter {
 			get {
-				if (null == detailFilter && DetailFilterName.hasContent()) {
+				if (null == detailFilter && DetailFilterName.IsNotEmpty()) {
 					detailFilter = DetailFilterName.get<IDetailFilter>();
 					detailFilter.Configure(this);
 				}
@@ -1036,7 +1036,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			if (!yes) {
 				throw new Exception("ѕопытка установить недопустимый статус '" + m + "'");
 			}
-			if (UnderwriteCode.noContent()) {
+			if (UnderwriteCode.IsEmpty()) {
 				return 0;
 			}
 			AssumeExistsState(UnderwriteCode);
@@ -1211,7 +1211,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// 	ѕризнак использовани€ нестандартного вида
 		/// </summary>
 		public bool IsCustomView {
-			get { return CustomView.hasContent(); }
+			get { return CustomView.IsNotEmpty(); }
 		}
 
 		/// <summary>
@@ -1350,7 +1350,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		public IZetaMainObject FixedObject {
 			get {
-				if (_fixedobj == null && FixedObjectCode.hasContent()) {
+				if (_fixedobj == null && FixedObjectCode.IsNotEmpty()) {
 					_fixedobj = myapp.storage.Get<IZetaMainObject>().Load(FixedObjectCode);
 				}
 				return _fixedobj;
@@ -1383,7 +1383,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 
 		private string internalGetState(IZetaMainObject obj, IZetaDetailObject detail, IDictionary<string, object> statecache) {
 			obj = FixedObject ?? obj;
-			if (UnderwriteCode.noContent()) {
+			if (UnderwriteCode.IsEmpty()) {
 				return "0ISOPEN";
 			}
 			if (statecache != null) {
@@ -1391,12 +1391,12 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			}
 			foreach (var interceptor in StateInterceptors) {
 				var res = interceptor.GetState(this, obj, detail);
-				if (res.hasContent()) {
+				if (res.IsNotEmpty()) {
 					return res;
 				}
 			}
 			var dstate = DefaultState;
-			if (dstate.noContent()) {
+			if (dstate.IsEmpty()) {
 				dstate = "0ISOPEN";
 			}
 
@@ -1408,7 +1408,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				return stateCache[obj.Id];
 			}
 			//if (null != state_) return state_;
-			if (UnderwriteCode.noContent()) {
+			if (UnderwriteCode.IsEmpty()) {
 				return dstate;
 			}
 
@@ -1537,7 +1537,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 
 			var objperiodtype = "";
 			if (null != obj) {
-				if (obj.GroupCache.hasContent() && obj.GroupCache.Contains("/PR_")) {
+				if (obj.GroupCache.IsNotEmpty() && obj.GroupCache.Contains("/PR_")) {
 					objperiodtype = obj.GroupCache.find(@"/(PR_\w+)/", 1);
 				}
 			}

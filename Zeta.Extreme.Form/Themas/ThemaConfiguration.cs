@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Xml.Linq;
 using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 
 namespace Zeta.Extreme.Form.Themas {
@@ -180,7 +181,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <returns> </returns>
 		public IThema Configure() {
 			var type = typeof (Thema);
-			if (ClassName.hasContent()) {
+			if (ClassName.IsNotEmpty()) {
 				var clsname = ClassName;
 				if (ConfigurationProvider.Options.ClassRedirectMap.ContainsKey(clsname)) {
 					clsname = ConfigurationProvider.Options.ClassRedirectMap[clsname];

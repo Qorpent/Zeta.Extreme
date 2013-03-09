@@ -13,6 +13,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Meta;
 using Zeta.Extreme.Poco.NativeSqlBind;
@@ -56,7 +57,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				result.DetailFavorite = i.attr("detailfavorite", false);
 				result.SqlOptimization = i.attr("sqloptimization", "");
 				result.BindedReport = i.attr("bindedReport", "");
-				result.ForPeriods = i.attr("forPeriods", "").split().Select(s => s.toInt()).ToArray();
+				result.ForPeriods = i.attr("forPeriods", "").SmartSplit().Select(s => s.toInt()).ToArray();
 				result.UnderwriteCode = i.attr("underwriteCode");
 				result.Script = i.getText("script");
 				result.InputForDetail = i.attr("detail", "False").toBool();
@@ -66,7 +67,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				result.NeedFilesPeriods = i.attr("needfilesperiods", "");
 				result.NeedFiles = i.attr("needfiles", "");
 				result.DocumentRoot = i.attr("docroot", "");
-				if (result.DocumentRoot.noContent()) {
+				if (result.DocumentRoot.IsEmpty()) {
 					result.DocumentRoot = i.Elements("docroot").LastOrDefault().attr("code", "");
 				}
 
@@ -105,7 +106,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 
 
 				//альтернативный вариант привязки кодов исключения
-				var fixrowlist = i.attr("fixrows", "").split();
+				var fixrowlist = i.attr("fixrows", "").SmartSplit();
 				foreach (var row in fixrowlist) {
 					result.FixedRowCodes.Add(row);
 				}
@@ -131,12 +132,12 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		public void BindRows(IInputTemplate result, IEnumerable<XElement> rows) {
 			foreach (var row in rows) {
 				var code = row.attr("code");
-				if (code.hasContent()) {
+				if (code.IsNotEmpty()) {
 					var rd = new RowDescriptor(code);
 					rd.Name = row.attr("name", rd.Name);
-					if (rd.Formula.noContent()) {
+					if (rd.Formula.IsEmpty()) {
 						rd.Formula = row.attr("formula", rd.Formula);
-						if (rd.Formula.hasContent()) {
+						if (rd.Formula.IsNotEmpty()) {
 							rd.IsFormula = true;
 							rd.FormulaEvaluator = row.attr("formulatype", "boo");
 						}
@@ -297,7 +298,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 								}
 								break;
 							case "forperiods":
-								col.ForPeriods = v.split().Select(s => s.toInt()).ToArray();
+								col.ForPeriods = v.SmartSplit().Select(s => s.toInt()).ToArray();
 								break;
 							case "customCode":
 								col.CustomCode = v;

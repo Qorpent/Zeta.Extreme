@@ -24,9 +24,9 @@ using Zeta.Extreme.BizProcess.StateManagement;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.Themas;
-using Zeta.Extreme.Meta;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Form.StateManagement {
 	/// <summary>
@@ -203,7 +203,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 			lock (this) {
 				checkinit();
 				return dependences.Where(x => x.attr("target") == target.Code)
-					.Where(x => x.attr("group", "").noContent() || null == obj || obj.GroupCache.Contains(x.attr("group")))
+					.Where(x => x.attr("group", "").IsEmpty() || null == obj || obj.GroupCache.Contains(x.attr("group")))
 					.Select(x =>
 						{
 							var result = FactoryProvider.Get().GetForm(x.attr("source"), true);
@@ -340,10 +340,10 @@ namespace Zeta.Extreme.Form.StateManagement {
 					}
 				}
 
-				if (state == "0ISBLOCK" && template.NeedFiles.hasContent()) {
+				if (state == "0ISBLOCK" && template.NeedFiles.IsNotEmpty()) {
 					var validperiod = true;
-					if (template.NeedFilesPeriods.hasContent()) {
-						var needperiods = template.NeedFilesPeriods.split().Select(x => x.toInt()).ToList();
+					if (template.NeedFilesPeriods.IsNotEmpty()) {
+						var needperiods = template.NeedFilesPeriods.SmartSplit().Select(x => x.toInt()).ToList();
 						if (!needperiods.Contains(template.Period)) {
 							validperiod = false;
 						}
@@ -359,7 +359,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 								ObjectId = obj.Id,
 							/*	Detail = detail,
 								DetailId = detail.Id,*/
-								Date = DateExtensions.Begin
+								Date = Qorpent.QorpentConst.Date.Begin
 							};
 
 						/*
@@ -682,9 +682,9 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <returns> </returns>
 		private StateRule[] GetMathchedRules(IInputTemplate target, string state, IZetaMainObject obj) {
 			return rules.Where(x =>
-			                   (x.ResultState.noContent() || x.ResultState == state)
-			                   && (x.CurrentState.noContent() || x.CurrentState == target.GetState(obj, null))
-			                   && (x.Current.noContent() || x.Current + ".in" == target.Code)
+			                   (x.ResultState.IsEmpty() || x.ResultState == state)
+			                   && (x.CurrentState.IsEmpty() || x.CurrentState == target.GetState(obj, null))
+			                   && (x.Current.IsEmpty() || x.Current + ".in" == target.Code)
 				).ToArray();
 		}
 

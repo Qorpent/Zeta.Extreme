@@ -15,6 +15,7 @@ using System.Security.Principal;
 using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Inversion;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Meta;
 using Zeta.Extreme.Poco.Inerfaces;
@@ -130,19 +131,19 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="obj"> The obj. </param>
 		/// <returns> <c>true</c> if the specified obj is match; otherwise, <c>false</c> . </returns>
 		public bool IsMatch(IZetaMainObject obj) {
-			if (ForGroup.noContent()) {
+			if (ForGroup.IsEmpty()) {
 				return true;
 			}
 			//если нет ограничений на группу - значит все в порядке, иначе...
 
-			if (obj.GroupCache.noContent()) {
+			if (obj.GroupCache.IsEmpty()) {
 				return false;
 			}
 			//если объект не в группе - все плохо, инача...
 
-			var groups = ForGroup.split();
+			var groups = ForGroup.SmartSplit();
 			foreach (var s in groups) {
-				foreach (var link in obj.GroupCache.split(false, true, '/')) {
+				foreach (var link in obj.GroupCache.SmartSplit(false, true, '/')) {
 					if (link == s) {
 						return true;
 					}
@@ -189,7 +190,7 @@ namespace Zeta.Extreme.Form.Themas {
 				}
 			}
 
-			if (result.ForGroup.hasContent()) {
+			if (result.ForGroup.IsNotEmpty()) {
 				result.InvalidTargetObject = !GroupFilterHelper.IsMatch(obj, ForGroup);
 			}
 			return result;
@@ -207,7 +208,7 @@ namespace Zeta.Extreme.Form.Themas {
 			var rr = Roleprefix + "_ANALYTIC";
 			Func<IZetaUnderwriter, string, bool> inrole = (x, s) =>
 				{
-					if (x.Roles.noContent()) {
+					if (x.Roles.IsEmpty()) {
 						return false;
 					}
 					return x.Roles.Contains(s);

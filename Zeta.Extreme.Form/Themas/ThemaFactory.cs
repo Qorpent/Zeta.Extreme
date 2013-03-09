@@ -14,6 +14,7 @@ using System.Linq;
 using System.Security.Principal;
 using Comdiv.Application;
 using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Reports;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.InputTemplates;
@@ -167,19 +168,19 @@ namespace Zeta.Extreme.Form.Themas {
 			/// <param name="x"> Первый сравниваемый объект. </param>
 			/// <param name="y"> Второй сравниваемый объект. </param>
 			public int Compare(IThema x, IThema y) {
-				if (x.Parent.hasContent() && y.Parent.noContent()) {
+				if (x.Parent.IsNotEmpty() && y.Parent.IsEmpty()) {
 					return -1;
 				}
-				if (y.Parent.hasContent() && x.Parent.noContent()) {
+				if (y.Parent.IsNotEmpty() && x.Parent.IsEmpty()) {
 					return 1;
 				}
-				if (y.Parent.hasContent() && x.Parent.hasContent()) {
+				if (y.Parent.IsNotEmpty() && x.Parent.IsNotEmpty()) {
 					return 0;
 				}
-				if (x.Parent.hasContent() && y.Code == x.Parent) {
+				if (x.Parent.IsNotEmpty() && y.Code == x.Parent) {
 					return 1;
 				}
-				if (y.Parent.hasContent() && x.Code == y.Parent) {
+				if (y.Parent.IsNotEmpty() && x.Code == y.Parent) {
 					return -1;
 				}
 				return x.Idx.CompareTo(y.Idx);

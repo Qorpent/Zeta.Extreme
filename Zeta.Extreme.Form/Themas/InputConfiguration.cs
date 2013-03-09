@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Meta;
@@ -195,7 +196,7 @@ namespace Zeta.Extreme.Form.Themas {
 			template.SqlOptimization = SqlOptimization;
 			template.PeriodRedirect = PeriodRedirect;
 			template.Name = Name;
-			template.ForPeriods = ForPeriods.split().Select(x => x.toInt()).ToArray();
+			template.ForPeriods = ForPeriods.SmartSplit().Select(x => x.toInt()).ToArray();
 			template.AutoFillDescription = AutoFill;
 			template.UnderwriteRole = UnderwriteRole;
 			template.ScheduleDelta = ScheduleDelta;
@@ -213,8 +214,8 @@ namespace Zeta.Extreme.Form.Themas {
 			template.NeedFilesPeriods = NeedFilesPeriods;
 			template.UseQuickUpdate = UseQuickUpdate;
 			template.AdvDocs = AdvDocs;
-			if (FixRows.hasContent()) {
-				foreach (var s in FixRows.split()) {
+			if (FixRows.IsNotEmpty()) {
+				foreach (var s in FixRows.SmartSplit()) {
 					template.FixedRowCodes.Add(s);
 				}
 			}
@@ -237,11 +238,11 @@ namespace Zeta.Extreme.Form.Themas {
 
 			if (template.Form == null) {
 				var rowcodeparam = RootCode;
-				if (rowcodeparam.noContent()) {
+				if (rowcodeparam.IsEmpty()) {
 					rowcodeparam = Thema.ResolveParameter("rootrow").GetValue() as string;
 				}
 
-				if (rowcodeparam.hasContent()) {
+				if (rowcodeparam.IsNotEmpty()) {
 					template.Form = new RowDescriptor {Code = rowcodeparam};
 				}
 			}

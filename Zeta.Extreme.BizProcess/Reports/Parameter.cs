@@ -174,9 +174,9 @@ namespace Zeta.Extreme.BizProcess.Reports
             }
             if(val==null||!(val is string) || !((string)val).Contains(","))
             {
-                return val.ToType(RealType);
+                return val.ToTargetType(RealType);
             }
-            return ((string)val).SmartSplit(false, true, ',').Select(x => x.ToType(RealType)).ToArray();
+            return ((string)val).SmartSplit(false, true, ',').Select(x => x.ToTargetType(RealType)).ToArray();
         }
 
 		
