@@ -318,6 +318,7 @@
     <Compile Include="Inerfaces\Support\StandardRowData.cs" />
     <Compile Include="Inerfaces\Support\SubpartRelation.cs" />
     <Compile Include="Inerfaces\Support\ValueDataType.cs" />
+    <Compile Include="MetalinkRecord.cs" />
     <Compile Include="NativeSqlBind\ColumnCache.cs" />
     <Compile Include="NativeSqlBind\IWithFormulaExtensions.cs" />
     <Compile Include="NativeSqlBind\NativeZetaReader.cs" />

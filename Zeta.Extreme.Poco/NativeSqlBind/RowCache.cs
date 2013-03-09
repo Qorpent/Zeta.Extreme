@@ -201,16 +201,11 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 					roots = new NativeZetaReader().ReadRows().ToArray(); //myapp.storage.Get<IZetaRow>().All();
 				}
 				else {
-					var _r = new List<IZetaRow>();
+					var r = new List<IZetaRow>();
 					foreach (var rootсode in rootсodes) {
-						foreach (var entity in 
-							myapp.storage.AsQueryable<IZetaRow>()
-								.Where(_ => _.Path.Contains("/" + rootсode + "/"))
-							) {
-							_r.Add(entity);
-						}
+						r.AddRange(new NativeZetaReader().ReadRows("Path like '%/" + rootсode + "/%").ToArray());
 					}
-					roots = _r;
+					roots = r;
 				}
 
 				foreach (var row in roots) {

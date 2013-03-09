@@ -17,8 +17,6 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Comdiv.Extensions;
 
 namespace Zeta.Extreme.Poco{
     /// <summary>
@@ -75,27 +73,7 @@ namespace Zeta.Extreme.Poco{
             return new DateRange(new DateTime(1900, 1, 1, 0, 0, 0, 0), new DateTime(3000, 1, 1, 0, 0, 0, 0));
         }
 
-        public static DateRange Parse(string s){
-            return Parse(s, 0);
-        }
-
-        public static DateRange Parse(string s, int startIndex){
-            var pars = s.Split(';');
-            var startDescriptor = pars[startIndex];
-            var endDescriptor = pars[startIndex + 1];
-            var s_context = pars[startIndex + 2];
-            var e_context = pars[startIndex + 3];
-            return Parse(startDescriptor, endDescriptor, s_context, e_context);
-        }
-
-        public static DateRange Parse(string startDescriptor, string endDescriptor, string s_context,
-                                          string e_context){
-            var start = GetDelted(startDescriptor);
-            var end = GetDelted(endDescriptor);
-            return GetPeriod(start, end, s_context, e_context);
-        }
-
-        public static DateRange GetPeriod(DateTime startDelta, DateTime endDelta, string s_context, string e_context){
+	    public static DateRange GetPeriod(DateTime startDelta, DateTime endDelta, string s_context, string e_context){
             var start = GetCorrected(startDelta, s_context);
             var end = GetCorrected(endDelta, e_context);
             return new DateRange(start, end);
@@ -132,38 +110,7 @@ namespace Zeta.Extreme.Poco{
         }
 
 
-        public static DateTime GetDelted(string descriptor){
-            var res = deltaPatternRegex.toRegex().toDictionary(descriptor);
-            var l = new List<string>(res.Keys);
-            foreach (var k in l){
-                //	res[k] = ExtendedRegex.replace(res[k] as string,"^0+","0",System.Text.RegularExpressions.RegexOptions.Compiled);
-                if (string.IsNullOrEmpty(res[k])){
-                    res[k] = "0";
-                }
-            }
-            if (res["delta"].no()){
-                try{
-                    return new DateTime(
-                        res["year"].toInt(),
-                        res["month"].toInt(),
-                        res["day"].toInt(),
-                        res["hour"].toInt(),
-                        res["min"].toInt(), 0, 0);
-                }
-                catch (FormatException e){
-                    throw new Exception("date range parse error ${year},${month},${day},${hour},${min}"._formatex(res), e);
-                }
-            }
-            var s = new TimeSpan(res["day"].toInt(), res["hour"].toInt(),
-                                 res["min"].toInt(), 0, 0);
-            var result = DateTime.Now - s;
-            if (res["delta"] == "+"){
-                result = DateTime.Now + s;
-            }
-            return result;
-        }
-
-        public static DateRange[] Merge(IEnumerable periods){
+	    public static DateRange[] Merge(IEnumerable periods){
             var basis = new ArrayList();
             foreach (var p_ in periods){
                 var p = p_ as DateRange;
@@ -210,7 +157,7 @@ namespace Zeta.Extreme.Poco{
         }
 
         public static DateRange Infinite(){
-            return new DateRange(DateExtensions.Begin, DateExtensions.End);
+            return new DateRange(Qorpent.QorpentConst.Date.Begin, Qorpent.QorpentConst.Date.End);
         }
     }
 }

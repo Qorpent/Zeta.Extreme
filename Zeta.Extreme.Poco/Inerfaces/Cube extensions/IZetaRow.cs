@@ -56,23 +56,6 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		object GetLocal(string name);
 		string ResolveTag(string name);
 
-		/// <summary>
-		/// 	Возвращает копию строки, отфильтрованную по крыжу для предприятия по крыжу и (опционально) по филиалам
-		/// </summary>
-		/// <param name="objid"> ИД предприятия </param>
-		/// <param name="selectorname"> Код крыжа </param>
-		/// <param name="usefilialfilter"> Использовать фильтр по филиалам </param>
-		/// <returns> </returns>
-		IZetaRow FilterTree(int objid, string selectorname, bool usefilialfilter = false);
-
-		/// <summary>
-		/// 	Проверяет - является ли строка избранной для предприятия по указанному крыж-селектору
-		/// </summary>
-		/// <param name="objid"> ИД предприятия </param>
-		/// <param name="selectorname"> </param>
-		/// <returns> </returns>
-		bool IsFavorite(int objid, string selectorname);
-
 		string ResolveMeasure();
 		bool IsActiveFor(IZetaMainObject obj);
 		bool IsObsolete(int year);
