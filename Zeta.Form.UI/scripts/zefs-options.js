@@ -35,7 +35,7 @@ $.extend(options,(function(){
 				
 		/* КОМАНДЫ ЗАГРУЗКИ ДОПОЛНИТЕЛЬНЫХ МЕТАДАННЫХ */
 			//команда, возвращающая каталог периодов [] ( []->each ( asPeriod() ) ) упорядоченный по типам и индексам
-			getperiods_command : "zeta/getperiods.json.qweb" ,
+			getperiods_command : "zeta/getperiods.json.qweb",
 				//типы периодов
 				periodtype_none:"None",
 				// Месяц
@@ -173,6 +173,14 @@ $.extend(options,(function(){
 		    /* РАБОТА С ПРИСОЕДИНЕННЫМИ ФАЙЛАМИ */
 					// команда получения списка прикрепленных к форме файлов [от SESSIONID]
 					attachlist_command : "zefs/attachlist.json.qweb",
+					// команда прекрепления или обновления файла к форме
+					attachfile_command : "zefs/attachfile.json.qweb",
+					// команда скрытия/удаления файла [от SESSIONID и UID]
+                    deletefile_command : "zefs/deletefile.json.qweb",
+					// команда загрузки файла [от SESSIONID и UID]
+					downloadfile_command : "zefs/downloadfile.filedesc.qweb",
+					// команда получения возможных типов файлов [от SESSIONID]
+					getfiletypes_command : "zefs/getfiletypes.json.qweb",
 
 
 		// КОНВЕРТИРУЕТ ХЭШ ПАРАМЕТРЫ В ПАРАМЕТРЫ ВЫЗОВА ФОРМЫ ДЛЯ КОМАНДЫ START
@@ -272,12 +280,18 @@ $.extend(options,(function(){
 				getCanSave : function() {return !!this.cansave || false;},
 				// текущий статус формы, один из *_lock_state
 				getState : function() {return this.state || options.undef_lock_state;},
+                // признак того, что форма заблокирована
+                getIsBlock: function() {return (this.state == options.block_lock_state)},
+                // признак того, что форма открыта
+                getIsOpen: function() {return (this.state == options.open_lock_state)},
+                // признак того, что форма проверена
+                getIsChecked: function() {return (this.state == options.check_lock_state)},
 				// признак возможности заблокировать форму (видимость и/или доступность кнопки "блокировать")
 				getCanLock : function(){return !!this.canblock || false;},
 				// сообщение ошибки при невозможности блокировки
-				getErrorMessage : function(){return this.message||"";},
+				getErrorMessage : function(){return this.message||"";}
 				// резервный признак открытости формы (в терминах открытости периода и неустарелости формы), пока резерв
-				getIsOpen : function(){return !!this.isopen || false;}
+				//getIsOpen : function(){return !!this.isopen || false;}
 			});
             return obj;
 		},
@@ -291,6 +305,12 @@ $.extend(options,(function(){
                     getId: function() {return this.Id},
                     // возвращает код состояния блокировки
                     getStateCode : function() {return this.State},
+                    // признак того, что форма заблокирована
+                    getIsBlock: function() {return (this.State == options.block_lock_state)},
+                    // признак того, что форма открыта
+                    getIsOpen: function() {return (this.State == options.open_lock_state)},
+                    // признак того, что форма проверена
+                    getIsChecked: function() {return (this.State == options.check_lock_state)},
                     // возвращает имя пользователя, совершившего операцию
                     getUser : function() {return this.Usr},
                     // возвращает состояние блокировки в удобвном, читаемом виде
@@ -530,25 +550,46 @@ $.extend(options,(function(){
 
         // обертка для списка приложений к форме
         asAttachment : function(obj){
-            $.extend(obj,{
-                // год прикрепленного файла
-                getId : function(){return this.Year;},
-                // период
-                getPeriod : function(){return this.Period;},
-                // объект
-                getObj : function(){return this.ObjId;},
-                // шаблон
-                getTemplate : function(){return this.TemplateCode;},
-                // тип прикрепленного фала
-                getFileType : function(){return this.AttachType;},
-                // уникальный код файла
-                getUid : function(){return this.Uid;},
-                // имя файла
-                getName : function(){return this.Name;},
-                // тип файла (например balans)
-                getType : function(){return this.Type;}
-            });
-            return obj;
+            var attachlist = [];
+            var prepare = function() {
+                $.each(obj, function(k,v) {
+                    $.extend(v,{
+                        // год прикрепленного файла
+                        getId : function(){return this.Year;},
+                        // период
+                        getPeriod : function(){return this.Period;},
+                        // объект
+                        getObj : function(){return this.ObjId;},
+                        // шаблон
+                        getTemplate : function(){return this.TemplateCode;},
+                        // тип прикрепленного фала
+                        getFileType : function(){return this.AttachType;},
+                        // уникальный код файла
+                        getUid : function(){return this.Uid;},
+                        // имя файла
+                        getName : function(){return this.Name;},
+                        // тип файла (например balans)
+                        getType : function(){return this.Type;},
+                        // пользователь, прикрепивший файл
+                        getUser : function(){return this.User;},
+                        // дата прикрепления файла
+                        getDate : function(){return eval(this.Version.substring(2));},
+                        // MimeType
+                        getMimeType : function(){return this.MimeType;},
+                        // Hash
+                        getHash : function(){return this.Hash;},
+                        // размер файла
+                        getSize : function(){return this.Size;},
+                        // версия файла
+                        getRevision : function(){return this.Revision;},
+                        // расширение файла
+                        getExtension : function(){return this.Extension;}
+                    });
+                    attachlist.push(v);
+                });
+            };
+            prepare();
+            return attachlist;
         }
 	}
 	

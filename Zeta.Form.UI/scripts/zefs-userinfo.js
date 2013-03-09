@@ -7,12 +7,12 @@
     var ConfigurePermissions = function() {
         var user = window.zeta.security.user;
         if (user != null) {
-            if (user.getLogonName()) {
-                login.text(user.getLogonName());
+            if (user.getRealLogonName()) {
+                login.text(user.getRealLogonName());
                 var t1 = $('<div/>').append($('<ul class="login-permissions"/>').append(
-                    $("<li/>").html("Администратор<span>" + (user.getIsAdmin() ? "ДА" : "НЕТ") + "</span>"),
-                    $("<li/>").html("Разработчик<span>" + (user.getIsDeveloper() ? "ДА" : "НЕТ") + "</span>"),
-                    $("<li/>").html("Датамастер<span>" + (user.getIsDataMaster() ? "ДА" : "НЕТ") + "</span>")
+                    $("<li/>").html("Администратор<span>" + (user.getRealIsAdmin() ? "ДА" : "НЕТ") + "</span>"),
+                    $("<li/>").html("Разработчик<span>" + (user.getRealIsDeveloper() ? "ДА" : "НЕТ") + "</span>"),
+                    $("<li/>").html("Датамастер<span>" + (user.getRealIsDataMaster() ? "ДА" : "НЕТ") + "</span>")
                 ));
                 login.tooltip({title:t1.html(), placement: 'bottom', html: true});
             }
@@ -34,7 +34,7 @@
     $(window.zeta).on(window.zeta.handlers.on_getuserinfo, function() {
         ConfigurePermissions();
     });
-    var logininfo = new root.security.Widget("logininfo", root.console.layout.position.layoutHeader, "right", { authonly: false, priority: 70, adminonly: true, ready: function() {
+    var logininfo = new root.security.Widget("logininfo", root.console.layout.position.layoutHeader, "right", { authonly: false, priority: 70, ready: function() {
         ConfigurePermissions();
     }});
     logininfo.body = $('<div/>').append(login, loginas.hide());

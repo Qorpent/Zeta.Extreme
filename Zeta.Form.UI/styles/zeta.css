@@ -4,6 +4,10 @@ body {
     background-color: White;
 }
 
+form {
+    margin: 0;
+}
+
 button,
 a.btn {
     cursor: pointer !important;

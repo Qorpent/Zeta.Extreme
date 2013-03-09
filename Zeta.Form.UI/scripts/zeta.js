@@ -10,7 +10,9 @@ root.handlers = $.extend(root.handlers, {
     on_logout : "logount",
     on_impersonate : "impersonate",
     on_deimpersonate : "deimpersonate",
-    on_getuserinfo : "getuserinfo"
+    on_getuserinfo : "getuserinfo",
+
+    on_modal : "modal"
 });
 
 root.security = root.security || $.extend(root.security, {
@@ -58,27 +60,21 @@ root.security = root.security || $.extend(root.security, {
         },
 
         Setup : function() {
-            $.ajax({
-                url: siteroot+root.options.whoami_command,
-                context: this,
-                dataType: 'json'
-            }).success($.proxy(function(d) {
-                root.security.user = root.options.asUserInfo(d);
-                $('body').append(this.layout.header,this.layout.body,this.layout.footer);
-                $.each(this.widgets.sort(function(a,b) { return b.options.priority - a.options.priority }),
-                    $.proxy(function(i, e) {
-                        if ((root.security.user != null && root.security.user.getLogonName() != "" ) || !e.options.authonly) {
-                            if (e.options.adminonly && root.security.user != null) {
-                                if (!root.security.user.getIsAdmin()) return;
-                            }
-                            if (!this.widgets[i].installed) {
-                                this.layout.add(e);
-                                if (e.options.ready != null) e.options.ready();
-                                this.widgets[i].installed = true;
-                            }
+            $('body').append(this.layout.header,this.layout.body,this.layout.footer);
+            $.each(this.widgets.sort(function(a,b) { return b.options.priority - a.options.priority }),
+                $.proxy(function(i, e) {
+                    if ((root.security.user != null && root.security.user.getLogonName() != "" ) || !e.options.authonly) {
+                        if (e.options.adminonly && root.security.user != null) {
+                            if (!root.security.user.getIsAdmin()) return;
                         }
-                    }, this));
-            }, this));
+                        if (!this.widgets[i].installed) {
+                            this.layout.add(e);
+                            if (e.options.ready != null) e.options.ready();
+                            this.widgets[i].installed = true;
+                        }
+                    }
+                }, this)
+            );
         },
 
         Uninstallwidgets: function() {
@@ -97,8 +93,9 @@ root.security = root.security || $.extend(root.security, {
             context: this,
             dataType: 'json'
         }).success($.proxy(function(d) {
-            root.security.user = root.options.asUserInfo(d);
+            root.security.user = root.options.asUserAuth(d);
             $(root).trigger(root.handlers.on_getuserinfo);
+            window.zeta.console.Setup();
         }, this));
     };
 
@@ -159,7 +156,7 @@ root.security = root.security || $.extend(root.security, {
     root.console = new Console();
 }(window.jQuery);
 
-!function($) {
+/*!function($) {
     $.getScript("scripts/zefs-debug.js");
     $.getScript("scripts/zefs-auth.js");
     $.getScript("scripts/zefs-userinfo.js");
@@ -174,4 +171,24 @@ root.security = root.security || $.extend(root.security, {
     $.getScript("scripts/zefs-colmanager.js");
     $.getScript("scripts/zefs-lockmanager.js");
     $.getScript("scripts/zefs-alerter.js");
+}(window.jQuery);*/
+
+document.write('<script src="scripts/zefs-debug.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-auth.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-userinfo.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-formsave.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-feedback.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-info.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-formheader.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-form.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-attacher.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-periods.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-objs.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-colmanager.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-lockmanager.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-alerter.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zeta-modal.js" type="text/javascript"></script>');
+
+!function($) {
+    $(window).load(function() { window.zeta.console.whoami() });
 }(window.jQuery);

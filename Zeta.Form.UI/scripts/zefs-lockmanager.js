@@ -15,16 +15,16 @@
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
         var lock =  window.zefs.myform.lock;
         if (lock != null) {
-            if (lock.getState() == "0ISOPEN"){
+            if (lock.getIsOpen()){
                 b.addClass("btn-danger");
                 unlockbtn.removeClass("btn-danger").attr("disabled","disabled");
                 checkbtn.removeClass("btn-success").attr("disabled","disabled");
             }
-            else if (lock.getState() == "0ISBLOCK") {
+            else if (lock.getIsBlock()) {
                 b.addClass("btn-warning");
                 lockbtn.removeClass("btn-warning").attr("disabled","disabled");
             }
-            else if (lock.getState() == "0ISCHECKED") {
+            else if (lock.getIsChecked()) {
                 b.addClass("btn-success");
                 lockbtn.removeClass("btn-warning").attr("disabled","disabled");
                 checkbtn.removeClass("btn-success").attr("disabled","disabled");
@@ -49,21 +49,22 @@
             if (hist.length > 0){
                 body.empty();
                 $.each(hist.sort(function(a,b) { return a.getDate() < b.getDate() }), function(i,h) {
-                    var lockstate = $('<span class="label"/>').text(h.getState());
-                    if (h.getStateCode() == "0ISOPEN") lockstate.addClass("label-important");
-                    else if (h.getStateCode() == "0ISBLOCK") lockstate.addClass("label-warning");
-                    else if (h.getStateCode() == "0ISCHECKED") lockstate.addClass("label-success");
+                    var lockstate = $('<span/>').text(h.getState());
+                    if (h.getIsOpen()) lockstate.addClass("state-open");
+                    else if (h.getIsBlock()) lockstate.addClass("state-block");
+                    else if (h.getIsChecked()) lockstate.addClass("state-check");
                     body.append($('<tr/>').append(
                         $('<td/>').text(h.getDate().format("dd.mm.yyyy HH:MM:ss")),
-                        $('<td/>').text(h.getUser()),
-                        $('<td/>').html(lockstate)
+                        $('<td/>').html(lockstate),
+                        $('<td/>').append($('<span class="label label-inverse"/>').text(h.getUser()))
+//                      $('<td/>').append($('<span class="label label-inverse"/>').text(h.getUser())),
                     ));
                     lockstate = null;
                 });
             }
         }
         body = hist = null;
-    })
+    });
     b.tooltip({placement: 'bottom'});
     zefsblockmanager.body = $('<div/>').append(list);
     root.console.RegisterWidget(zefsblockmanager);
