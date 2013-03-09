@@ -16,9 +16,7 @@
 // // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
 using System;
 using System.Collections.Generic;
-using Comdiv.Common;
 using Comdiv.Model;
-using Comdiv.Model.Interfaces;
 using Comdiv.Olap.Model;
 using Comdiv.Persistence;
 
@@ -36,9 +34,7 @@ namespace Comdiv.Zeta.Model{
         IWithUnderwriters,
         IWithFixRules,
         IWithAlternateDetailObjects,
-        
-        IWithIdx,
-        IWithProperties{
+        Qorpent.Model.IWithProperties{
         [Map]
         string GroupCache { get; set; }
         [Map]
