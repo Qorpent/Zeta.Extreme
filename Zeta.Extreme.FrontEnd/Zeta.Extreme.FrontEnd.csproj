@@ -86,10 +86,6 @@
       <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
       <Name>Qorpent.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Comdiv.Zeta.Model\Comdiv.Zeta.Model.csproj">
-      <Project>{F939564A-D5A9-4BEE-B8F2-47C384358AFC}</Project>
-      <Name>Comdiv.Zeta.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
       <Project>{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}</Project>
       <Name>Zeta.Extreme.BizProcess</Name>
