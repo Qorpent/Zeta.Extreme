@@ -22,6 +22,12 @@
     <Compile Include="Forms\IAttachmentStorage.cs" />
     <Compile Include="Forms\IFormAttachmentStorage.cs" />
     <Compile Include="Forms\OutCell.cs" />
+    <Compile Include="Reports\IParameterConfigurator.cs" />
+    <Compile Include="Reports\IReportDefinition.cs" />
+    <Compile Include="Reports\ISavedReport.cs" />
+    <Compile Include="Reports\ISavedReportParameter.cs" />
+    <Compile Include="Reports\Parameter.cs" />
+    <Compile Include="Reports\ParametersCollection.cs" />
     <Compile Include="StateManagement\ILockPeriodMapper.cs" />
     <Compile Include="StateManagement\IPeriodStateManager.cs" />
     <Compile Include="StateManagement\IScheduleChecker.cs" />
@@ -63,13 +69,13 @@
       <Project>{C51304FD-0406-48E0-833E-EEDC67425BC8}</Project>
       <Name>Comdiv.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\core\Comdiv.Reporting\Comdiv.Reporting.csproj">
-      <Project>{053ae040-0545-4ed0-927a-69b3423ba66d}</Project>
-      <Name>Comdiv.Reporting</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
       <Project>{880F65EA-1A22-4672-A137-FFC91290A209}</Project>
       <Name>Qorpent.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
+      <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
+      <Name>Qorpent.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.Poco\Zeta.Extreme.Poco.csproj">
       <Project>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</Project>
