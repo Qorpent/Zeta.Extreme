@@ -23,14 +23,17 @@ using Comdiv.Extensions;
 using Comdiv.Model;
 using Comdiv.Persistence;
 
-using Comdiv.Zeta.Model;namespace Zeta.Extreme.Poco{
+using Comdiv.Zeta.Model;
+using Qorpent;
+
+namespace Zeta.Extreme.Poco{
     public partial class obj : IZetaMainObject,IZetaQueryDimension{
         private IDictionary<string, object> properties;
 
         public obj(){
-            Range = new DateRange(DateExtensions.Begin, DateExtensions.End);
-            Start = DateExtensions.Begin;
-            Finish = DateExtensions.End;
+            Range = new DateRange(Qorpent.QorpentConst.Date.Begin, QorpentConst.Date.End);
+            Start = Qorpent.QorpentConst.Date.Begin;
+            Finish = QorpentConst.Date.End;
             // Properties = new Dictionary<string, object>();
         }
 

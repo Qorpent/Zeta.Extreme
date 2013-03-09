@@ -21,7 +21,7 @@ using Comdiv.Extensions;
 namespace Comdiv.Olap.Model{
     public class StandardRowData{
         public StandardRowData(){
-            DateValue = DateExtensions.Begin;
+            DateValue = Qorpent.QorpentConst.Date.Begin;
             Multiplicator = 1;
         }
 
@@ -59,7 +59,7 @@ namespace Comdiv.Olap.Model{
             if (null != value){
                 StringValue = value.ToString();
             }
-            DateValue = DateExtensions.Begin;
+            DateValue = Qorpent.QorpentConst.Date.Begin;
             if (column.DataType == ValueDataType.Int){
                 IntValue = 0;
                 if (null != value){
@@ -109,12 +109,12 @@ namespace Comdiv.Olap.Model{
             if (column.DataType == ValueDataType.Bool){
                 if (null != value){
                     DateValue = (value is DateTime) ? (DateTime) value : DateTime.Parse(value.ToString());
-                    if (DateValue < DateExtensions.Begin){
-                        DateValue = DateExtensions.Begin;
+                    if (DateValue < Qorpent.QorpentConst.Date.Begin){
+                        DateValue = Qorpent.QorpentConst.Date.Begin;
                     }
-                    IntValue = DateValue == DateExtensions.Begin ? 0 : 1;
-                    DecimalValue = DateValue == DateExtensions.Begin ? 0 : 1;
-                    BoolValue = DateValue > DateExtensions.Begin;
+                    IntValue = DateValue == Qorpent.QorpentConst.Date.Begin ? 0 : 1;
+                    DecimalValue = DateValue == Qorpent.QorpentConst.Date.Begin ? 0 : 1;
+                    BoolValue = DateValue > Qorpent.QorpentConst.Date.Begin;
                 }
             }
         }

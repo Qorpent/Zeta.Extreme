@@ -21,7 +21,10 @@ using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Olap.Model;
 
-using Comdiv.Zeta.Model;namespace Zeta.Extreme.Poco{
+using Comdiv.Zeta.Model;
+using Qorpent.Utils.Extensions;
+
+namespace Zeta.Extreme.Poco{
     public partial class
         row : IZetaRow {
         private IZetaRow[] _allchildren;
@@ -77,7 +80,7 @@ using Comdiv.Zeta.Model;namespace Zeta.Extreme.Poco{
 			result.ResetAllChildren();
     		result.CleanupByChildren(codes);
     		foreach (var r in result.AllChildren) {
-    			if(!r.LocalProperties["cleaned"].toBool()) {
+    			if(!r.LocalProperties["cleaned"].ToBool()) {
     				r.Parent.NativeChildren.Remove(r);
     			}
     		}
@@ -103,7 +106,7 @@ using Comdiv.Zeta.Model;namespace Zeta.Extreme.Poco{
 		/// <param name="year"></param>
 		/// <returns></returns>
 	    public virtual bool IsObsolete(int year) {
-		    var obs = ResolveTag("obsolete").toInt();
+		    var obs = ResolveTag("obsolete").ToInt();
 			if(0==obs) return false;
 			if(obs>year) return false;
 		    return true;

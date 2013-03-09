@@ -21,7 +21,7 @@ using Comdiv.Zeta.Model;
 
 using Comdiv.Zeta.Model;namespace Zeta.Extreme.Poco{
     public partial class fixrule : IFixRule{
-        private DateTime ___DirectDate = DateExtensions.Begin;
+        private DateTime ___DirectDate = Qorpent.QorpentConst.Date.Begin;
 
         [Ref(ClassName = typeof (IZetaRow))]
         public virtual IZetaRow MainDataTree { get; set; }

@@ -57,7 +57,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind{
 		/// <param name="formula"></param>
 		/// <returns></returns>
         public static string ParsedFormula(this IWithFormula formula){
-            if (formula.no()){
+            if (null==formula){
                 return null;
             }
             return formula.ParsedFormula;
@@ -68,7 +68,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind{
 		/// <param name="formula"></param>
 		/// <returns></returns>
         public static bool IsFormula(this IWithFormula formula){
-            if (formula.no()){
+            if (null==formula){
                 return false;
             }
             return formula.IsFormula;

@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Comdiv.Extensions;
 using Comdiv.Zeta.Model;
+using Qorpent;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Poco.NativeSqlBind {
 	/// <summary>
@@ -39,7 +41,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		/// <param name="formulaperiod"> </param>
 		/// <returns> </returns>
 		public static PeriodDefinition Eval(int sourceyear, int sourceperiod, int formulaperiod) {
-			return Get(formulaperiod).Evaluate(sourceyear, DateExtensions.Begin, sourceperiod);
+			return Get(formulaperiod).Evaluate(sourceyear, Qorpent.QorpentConst.Date.Begin, sourceperiod);
 		}
 
 		/// <summary>
@@ -59,8 +61,8 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 			if (null == result) {
 				result = new period();
 				result.ClassicId = classicId;
-				result.StartDate = DateExtensions.Begin;
-				result.EndDate = DateExtensions.End;
+				result.StartDate = Qorpent.QorpentConst.Date.Begin;
+				result.EndDate = QorpentConst.Date.End;
 				if (classicId < 0) {
 					result.IsFormula = true;
 				}
@@ -75,7 +77,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		/// <param name="otherperiodId"> </param>
 		/// <returns> </returns>
 		public static int Evaluate(this IPeriod period, int otherperiodId) {
-			return period.Evaluate(DateTime.Today.Year, DateExtensions.Begin, otherperiodId).Periods[0];
+			return period.Evaluate(DateTime.Today.Year, Qorpent.QorpentConst.Date.Begin, otherperiodId).Periods[0];
 		}
 
 		/// <summary>
@@ -85,7 +87,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		/// <param name="otherperiodId"> </param>
 		/// <returns> </returns>
 		public static PeriodDefinition EvaluateDef(this IPeriod period, int otherperiodId) {
-			return period.Evaluate(DateTime.Today.Year, DateExtensions.Begin, otherperiodId);
+			return period.Evaluate(DateTime.Today.Year, Qorpent.QorpentConst.Date.Begin, otherperiodId);
 		}
 
 		/// <summary>
@@ -112,7 +114,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 					var rules = formula.split();
 					foreach (var r in rules) {
 						var parts = r.split(false, true, '=');
-						res[parts[0].toInt()] = parts[1];
+						res[parts[0].ToInt()] = parts[1];
 					}
 					return res;
 				});
@@ -123,14 +125,14 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 			if (rule.hasContent()) {
 				var pt = rule.split(false, true, '!');
 				if (pt.Count > 1) {
-					var titlesoruce = pt[1].toInt();
+					var titlesoruce = pt[1].ToInt();
 					definition.PeriodName = Get(titlesoruce).Name;
 				}
 				var py = pt[0].split(false, true, ':');
-				var ps = py[0].split(false, true, '+').Select(x => x.toInt()).ToArray();
+				var ps = py[0].split(false, true, '+').Select(x => x.ToInt()).ToArray();
 				var y = 0;
 				if (py.Count > 1) {
-					y = py[1].toInt();
+					y = py[1].ToInt();
 				}
 				definition.Year = definition.Year + y;
 				definition.Periods = ps;

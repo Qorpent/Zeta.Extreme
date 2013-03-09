@@ -21,16 +21,17 @@ using Comdiv.Model;
 using Comdiv.Olap.Model;
 using Comdiv.Persistence;
 using Comdiv.Zeta.Model;
+using Qorpent;
 using Qorpent.Serialization;
 
 using Comdiv.Zeta.Model;namespace Zeta.Extreme.Poco{
     public partial class detail : IZetaDetailObject{
         public detail(){
-            Range = new DateRange(DateExtensions.Begin, DateExtensions.End);
-        	Start = DateExtensions.Begin;
-        	Finish = DateExtensions.Begin;
-        	Date1 = DateExtensions.Begin;
-        	Date2 = DateExtensions.Begin;
+			Range = new DateRange(QorpentConst.Date.Begin, QorpentConst.Date.End);
+        	Start = Qorpent.QorpentConst.Date.Begin;
+        	Finish = Qorpent.QorpentConst.Date.Begin;
+        	Date1 = Qorpent.QorpentConst.Date.Begin;
+        	Date2 = Qorpent.QorpentConst.Date.Begin;
         }
 
         [Ref(ClassName = typeof (obj))]

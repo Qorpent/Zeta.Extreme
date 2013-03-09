@@ -109,14 +109,14 @@ namespace Zeta.Extreme.Poco.NativeSqlBind{
 		/// </summary>
 		/// <returns></returns>
         public bool IsStartDateDefined(){
-            return StartDate > DateExtensions.Begin;
+            return StartDate > Qorpent.QorpentConst.Date.Begin;
         }
 		/// <summary>
 		/// Признак определенности конечной даты
 		/// </summary>
 		/// <returns></returns>
         public bool IsEndDateDefined(){
-            return EndDate > DateExtensions.Begin;
+            return EndDate > Qorpent.QorpentConst.Date.Begin;
         }
 		/// <summary>
 		/// Признак единичного периода

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Poco.Deprecated {
 	/// <summary>
@@ -15,7 +16,7 @@ namespace Zeta.Extreme.Poco.Deprecated {
 		}
 
 		public static Type[] Collect(params Assembly[] assemblies){
-			if(assemblies.no()){
+			if(assemblies.IsEmpty()){
 				assemblies =
 					AppDomain.CurrentDomain.GetAssemblies().Where(x => !x.GetName().Name.StartsWith("System")).ToArray();
 			}

@@ -26,5 +26,6 @@ namespace Comdiv.Olap.Model{
         string ParsedFormula { get; set; }
         [Map]
         string FormulaEvaluator { get; set; }
+
     }
 }

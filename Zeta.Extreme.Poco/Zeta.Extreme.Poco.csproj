@@ -139,6 +139,9 @@
     <Compile Include="corePoco\objtype.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Deprecated\ClassicAttribute.cs" />
+    <Compile Include="Deprecated\ClassicAttributeExtension.cs" />
+    <Compile Include="Deprecated\ForSearchAttribute.cs" />
     <Compile Include="extPoco\ColumnMark.cs" />
     <Compile Include="extPoco\zone.cs" />
     <Compile Include="extPoco\DayCourse.cs" />
@@ -331,6 +334,10 @@
       <Project>{880F65EA-1A22-4672-A137-FFC91290A209}</Project>
       <Name>Qorpent.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
+      <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
+      <Name>Qorpent.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -352,9 +359,7 @@
   <ItemGroup>
     <None Include="comdiv.core.snk" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Inerfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
