@@ -18,6 +18,11 @@ namespace Zeta.Extreme {
 	/// </summary>
 	public class FormulaRequest {
 		/// <summary>
+		/// 	Версия
+		/// </summary>
+		public string Version { get; set; }
+
+		/// <summary>
 		/// 	Кэш формул - может использовтаься ххранилищем для организации пула
 		/// </summary>
 		public readonly ConcurrentStack<IFormula> Cache = new ConcurrentStack<IFormula>();
@@ -71,10 +76,5 @@ namespace Zeta.Extreme {
 		/// 	Теги
 		/// </summary>
 		public string Tags;
-
-		/// <summary>
-		/// Версия
-		/// </summary>
-		public string Version { get; set; }
 	}
 }

@@ -37,8 +37,12 @@ namespace Zeta.Extreme {
 			// ибо иначе отконтроллировать изменения препроцессора по сути невозможно
 			//сначала вызываем стандартную процедуру нормализации запроса
 			internalquery.Normalize(_session);
-			if (ChekoutCaption(internalquery)) return null;
-			if (CheckoutObsolete(internalquery)) return null;
+			if (ChekoutCaption(internalquery)) {
+				return null;
+			}
+			if (CheckoutObsolete(internalquery)) {
+				return null;
+			}
 			PrepareFormulas(internalquery);
 			return internalquery;
 		}
@@ -61,8 +65,7 @@ namespace Zeta.Extreme {
 				}
 			}
 
-			if (internalquery.Col.IsFormula && !_sumh.IsSum(internalquery.Col))
-			{
+			if (internalquery.Col.IsFormula && !_sumh.IsSum(internalquery.Col)) {
 				var key = "col:" + internalquery.Col.Code;
 				if (null == internalquery.Col.Native) {
 					key = "dyncol:" + internalquery.Col.Formula;
@@ -79,8 +82,7 @@ namespace Zeta.Extreme {
 				}
 			}
 
-			if (internalquery.Obj.IsFormula && !_sumh.IsSum(internalquery.Obj))
-			{
+			if (internalquery.Obj.IsFormula && !_sumh.IsSum(internalquery.Obj)) {
 				var key = "obj:" + internalquery.Row.Code;
 				if (null == internalquery.Obj.Native) {
 					key = "dynobj:" + internalquery.Obj.Formula;

@@ -13,7 +13,6 @@ namespace Zeta.Extreme.Primary {
 	/// 	Описатель прототипа первичного запроса
 	/// </summary>
 	public struct PrimaryQueryPrototype {
-		
 		/// <summary>
 		/// 	Признак использования агрегации
 		/// </summary>
@@ -33,12 +32,10 @@ namespace Zeta.Extreme.Primary {
 		/// 	Использование специального метода доступа к первичным значениям
 		/// </summary>
 		public bool RequreZetaEval { get; set; }
+
 		/// <summary>
-		/// Целевая валюта
+		/// 	Целевая валюта
 		/// </summary>
 		public string Valuta { get; set; }
-		
-
-		
 	}
 }

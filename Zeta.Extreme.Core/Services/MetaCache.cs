@@ -10,13 +10,9 @@
 
 using System;
 using System.Collections.Generic;
-using Comdiv.Application;
-using Comdiv.Model.Interfaces;
 using Qorpent.Model;
 using Zeta.Extreme.Poco.Inerfaces;
-using ColumnCache = Zeta.Extreme.Poco.NativeSqlBind.ColumnCache;
-using ObjCache = Zeta.Extreme.Poco.NativeSqlBind.ObjCache;
-using RowCache = Zeta.Extreme.Poco.NativeSqlBind.RowCache;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -29,7 +25,7 @@ namespace Zeta.Extreme {
 		public static readonly IMetaCache Default = new MetaCache();
 
 		/// <summary>
-		/// Родительский кэш
+		/// 	Родительский кэш
 		/// </summary>
 		public IMetaCache Parent { get; set; }
 
@@ -42,14 +38,15 @@ namespace Zeta.Extreme {
 		public T Get<T>(object id) where T : class, IEntity {
 			lock (this) {
 				T result = null;
-				if ( null != Parent) 
-				//сначала опрашивается родитель и это основной кейс, 
-				//так как кастом-коды редкость, плюс не надо чтобы кастом 
-				//коды перекрывали штатные
-				{ 
+				if (null != Parent) //сначала опрашивается родитель и это основной кейс, 
+					//так как кастом-коды редкость, плюс не надо чтобы кастом 
+					//коды перекрывали штатные
+				{
 					result = Parent.Get<T>(id);
 				}
-				if(null!=result) return result;
+				if (null != result) {
+					return result;
+				}
 				if (id is string) {
 					result = GetByCode<T>((string) id);
 				}
@@ -59,7 +56,7 @@ namespace Zeta.Extreme {
 				if (null == result) {
 					result = GetNative<T>(id);
 				}
-				
+
 				return result;
 			}
 		}
@@ -109,13 +106,13 @@ namespace Zeta.Extreme {
 				if (typeof (IZetaColumn).IsAssignableFrom(typeof (T))) {
 					return (T) ColumnCache.get(id);
 				}
-				if(typeof(IZetaMainObject).IsAssignableFrom(typeof(T))) {
-					return (T)ObjCache.Get(id);
+				if (typeof (IZetaMainObject).IsAssignableFrom(typeof (T))) {
+					return (T) ObjCache.Get(id);
 				}
-				if(typeof(IMainObjectGroup).IsAssignableFrom(typeof(T))) {
+				if (typeof (IMainObjectGroup).IsAssignableFrom(typeof (T))) {
 					return (T) ObjCache.GetDiv(id);
 				}
-				return myapp.storage.Get<T>().Load(id);
+				return null;
 			}
 			catch {
 				NativeIsError = true;

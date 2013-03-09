@@ -30,6 +30,13 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	Сбрасывает кэш-строку
+		/// </summary>
+		public virtual void InvalidateCacheKey() {
+			_cacheKey = null;
+		}
+
+		/// <summary>
 		/// 	Возвращает строку, которая представляет текущий объект.
 		/// </summary>
 		/// <returns> Строка, представляющая текущий объект. </returns>
@@ -37,13 +44,6 @@ namespace Zeta.Extreme {
 		public override string ToString() {
 			//должен вернуть кэш строку, но не сохранять ее!!!
 			return GetCacheKey(false);
-		}
-
-		/// <summary>
-		/// 	Сбрасывает кэш-строку
-		/// </summary>
-		public virtual void InvalidateCacheKey() {
-			_cacheKey = null;
 		}
 
 		/// <summary>

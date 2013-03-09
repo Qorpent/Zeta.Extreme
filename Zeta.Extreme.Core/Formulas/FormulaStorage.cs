@@ -30,8 +30,6 @@ namespace Zeta.Extreme {
 		private static IFormulaStorage _default;
 
 
-		
-
 		/// <summary>
 		/// 	Конструктор по умолчанию, также формирует простой препроцессор
 		/// </summary>
@@ -42,34 +40,10 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Кэш бибилиотек для автоматической привязки формул
+		/// 	Кэш бибилиотек для автоматической привязки формул
 		/// </summary>
 		public IList<Assembly> FormulaAssemblyCache {
-			get { return _formulaAssemblyCache ??(_formulaAssemblyCache = new List<Assembly>()); }
-
-		}
-		class CachedFormula {
-		/// <summary>
-		/// 
-		/// </summary>
-			public string Version;
-			/// <summary>
-			/// 
-			/// </summary>
-			public Type Formula;
-		}
-		IDictionary<string, CachedFormula> _cachedTypes = new Dictionary<string, CachedFormula>();
-
-		/// <summary>
-		/// Строит индекс по кэшированным типам
-		/// </summary>
-		public void BuildCacheIndex() {
-			_cachedTypes.Clear();
-			foreach (var formula in GetCachedFormulas()) {
-				var attr = ((FormulaAttribute)formula.GetCustomAttribute(typeof(FormulaAttribute), true));
-				if (null == attr) continue;
-				_cachedTypes[attr.Key] = new CachedFormula {Version = attr.Version, Formula = formula};
-			}
+			get { return _formulaAssemblyCache ?? (_formulaAssemblyCache = new List<Assembly>()); }
 		}
 
 		/// <summary>
@@ -89,8 +63,7 @@ namespace Zeta.Extreme {
 			lock (_register_lock)
 				lock (_compile_lock) //нельзя во время регистрации еще и компилировать
 				{
-					
-					if(null!=request.PreparedType) {
+					if (null != request.PreparedType) {
 						_registry[request.Key] = request;
 						return request.Key;
 					}
@@ -125,9 +98,8 @@ namespace Zeta.Extreme {
 						}
 					}
 
-					
-					if(null==request.PreparedType) {
 
+					if (null == request.PreparedType) {
 						var waitbatchsize =
 							_registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).Count();
 						if (AutoBatchCompile && BatchSize <= waitbatchsize) {
@@ -139,44 +111,22 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Возвращает список типов
+		/// 	Строит кэш из указанной директории
 		/// </summary>
-		/// <returns></returns>
-		public IEnumerable<Type> GetCachedFormulas() {
-			return FormulaAssemblyCache.SelectMany(_ => _.GetTypes());
-		}
-
-		private void TryResolveFromCache(FormulaRequest request) {
-			if(!_cachedTypes.ContainsKey(request.Key)) return;
-			var _cached = _cachedTypes[request.Key];
-			if(_cached.Version==request.Version) {
-				request.PreparedType = _cached.Formula;
-			}
-		}
-
-		/// <summary>
-		/// Строит кэш из указанной директории
-		/// </summary>
-		/// <param name="root"></param>
+		/// <param name="root"> </param>
 		public void BuildCache(string root) {
 			FormulaAssemblyCache.Clear();
-			
+
 			Directory.CreateDirectory(root);
 			var paths = Directory.GetFiles(root, "*.dll").OrderBy(File.GetLastWriteTime).ToArray();
-			foreach (var path in paths)
-			{
-				try
-				{
+			foreach (var path in paths) {
+				try {
 					var bin = File.ReadAllBytes(path);
 					FormulaAssemblyCache.Add(Assembly.Load(bin));
 				}
-				catch
-				{
-
-				}
+				catch {}
 			}
 			BuildCacheIndex();
-
 		}
 
 		/// <summary>
@@ -275,10 +225,10 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Проверяет наличие формулы в хранилище
+		/// 	Проверяет наличие формулы в хранилище
 		/// </summary>
-		/// <param name="key"></param>
-		/// <returns></returns>
+		/// <param name="key"> </param>
+		/// <returns> </returns>
 		public bool Exists(string key) {
 			return _registry.ContainsKey(key);
 		}
@@ -291,13 +241,45 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	Строит индекс по кэшированным типам
+		/// </summary>
+		public void BuildCacheIndex() {
+			_cachedTypes.Clear();
+			foreach (var formula in GetCachedFormulas()) {
+				var attr = ((FormulaAttribute) formula.GetCustomAttribute(typeof (FormulaAttribute), true));
+				if (null == attr) {
+					continue;
+				}
+				_cachedTypes[attr.Key] = new CachedFormula {Version = attr.Version, Formula = formula};
+			}
+		}
+
+		/// <summary>
+		/// 	Возвращает список типов
+		/// </summary>
+		/// <returns> </returns>
+		public IEnumerable<Type> GetCachedFormulas() {
+			return FormulaAssemblyCache.SelectMany(_ => _.GetTypes());
+		}
+
+		private void TryResolveFromCache(FormulaRequest request) {
+			if (!_cachedTypes.ContainsKey(request.Key)) {
+				return;
+			}
+			var _cached = _cachedTypes[request.Key];
+			if (_cached.Version == request.Version) {
+				request.PreparedType = _cached.Formula;
+			}
+		}
+
+		/// <summary>
 		/// 	Обертка над вызовом компилятора с корректной обработкой ошибок компиляции
 		/// </summary>
 		/// <param name="batch"> </param>
 		/// <param name="savepath"> </param>
 		protected internal void DoCompile(FormulaRequest[] batch, string savepath) {
 			try {
-				new FormulaCompiler().Compile(batch,savepath);
+				new FormulaCompiler().Compile(batch, savepath);
 			}
 			catch (Exception e) {
 				LastCompileError = e;
@@ -331,6 +313,22 @@ namespace Zeta.Extreme {
 				DoCompile(new[] {request}, null);
 			}
 		}
+
+		#region Nested type: CachedFormula
+
+		private class CachedFormula {
+			/// <summary>
+			/// </summary>
+			public Type Formula;
+
+			/// <summary>
+			/// </summary>
+			public string Version;
+		}
+
+		#endregion
+
+		private readonly IDictionary<string, CachedFormula> _cachedTypes = new Dictionary<string, CachedFormula>();
 
 		private readonly object _compile_lock = new object(); //синхронизатор компилятора
 		private readonly object _get_lock = new object(); //синхронизатор получения формулы

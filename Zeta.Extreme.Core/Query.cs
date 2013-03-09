@@ -38,31 +38,6 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// 	Условие на время
-		/// </summary>
-		public ITimeHandler Time { get; set; }
-
-		/// <summary>
-		/// 	Условие на строку
-		/// </summary>
-		public IRowHandler Row { get; set; }
-
-		/// <summary>
-		/// 	Условие на колонку
-		/// </summary>
-		public IColumnHandler Col { get; set; }
-
-		/// <summary>
-		/// 	Условие на объект
-		/// </summary>
-		public IObjHandler Obj { get; set; }
-
-		/// <summary>
-		/// 	Выходная валюта
-		/// </summary>
-		public string Valuta { get; set; }
-
-		/// <summary>
 		/// 	Дочерние запросы
 		/// </summary>
 		public IList<IQueryWithProcessing> FormulaDependency {
@@ -99,6 +74,82 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public IList<Tuple<decimal, IQueryWithProcessing>> SummaDependency {
 			get { return _summaDependency ?? (_summaDependency = new List<Tuple<decimal, IQueryWithProcessing>>()); }
+		}
+
+		/// <summary>
+		/// 	Условие на время
+		/// </summary>
+		public ITimeHandler Time { get; set; }
+
+		/// <summary>
+		/// 	Условие на строку
+		/// </summary>
+		public IRowHandler Row { get; set; }
+
+		/// <summary>
+		/// 	Условие на колонку
+		/// </summary>
+		public IColumnHandler Col { get; set; }
+
+		/// <summary>
+		/// 	Условие на объект
+		/// </summary>
+		public IObjHandler Obj { get; set; }
+
+		/// <summary>
+		/// 	Выходная валюта
+		/// </summary>
+		public string Valuta { get; set; }
+
+		/// <summary>
+		/// 	Сбрасывает кэш-строку
+		/// </summary>
+		public override void InvalidateCacheKey() {
+			base.InvalidateCacheKey();
+			Row.InvalidateCacheKey();
+			Col.InvalidateCacheKey();
+			Time.InvalidateCacheKey();
+			Obj.InvalidateCacheKey();
+		}
+
+		/// <summary>
+		/// 	Обеспечивает возврат результата запроса
+		/// </summary>
+		/// <param name="timeout"> </param>
+		/// <returns> </returns>
+		/// <exception cref="Exception"></exception>
+		public QueryResult GetResult(int timeout = -1) {
+			lock (this) {
+				WaitPrepare();
+				if (null != Result) {
+					return Result;
+				}
+				if (EvaluationType == QueryEvaluationType.Summa && null == Result) {
+					var result =
+						(from sq in SummaDependency let val = sq.Item2.GetResult() where null != val select val.NumericResult*sq.Item1).
+							Sum();
+					Result = new QueryResult {IsComplete = true, NumericResult = result};
+					return Result;
+				}
+
+				if (EvaluationType == QueryEvaluationType.Formula && null == Result) {
+					AssignedFormula.Init(this);
+					try {
+						Result = AssignedFormula.Eval();
+					}
+					finally {
+						AssignedFormula.CleanUp();
+						//FormulaStorage.Default.Return(key, formula);
+					}
+					return Result;
+				}
+
+				WaitResult(timeout);
+				if (null != Result) {
+					return Result;
+				}
+				return Result;
+			}
 		}
 
 
@@ -182,68 +233,17 @@ namespace Zeta.Extreme {
 			var objt = Task.Run(() => Obj.Normalize(session ?? Session)); //объекты зачастую из БД догружаются
 			Time.Normalize(session ?? Session);
 			Col.Normalize(session ?? Session);
-			while(null!=Col.Native && !string.IsNullOrWhiteSpace(Col.Native.ForeignCode)) {
+			while (null != Col.Native && !string.IsNullOrWhiteSpace(Col.Native.ForeignCode)) {
 				var _c = Col;
-				Col = new ColumnHandler{Code = _c.Native.ForeignCode};
-				if(0!=_c.Native.Year||0!=_c.Native.Period) {
+				Col = new ColumnHandler {Code = _c.Native.ForeignCode};
+				if (0 != _c.Native.Year || 0 != _c.Native.Period) {
 					Time = new TimeHandler {Year = _c.Native.Year, Period = _c.Native.Period};
 				}
-				Col.Normalize(session ??Session);
+				Col.Normalize(session ?? Session);
 			}
 			Row.Normalize(session ?? Session, Col.Native); //тут формулы парсим простые как рефы			
 			objt.Wait();
 			InvalidateCacheKey();
-		}
-
-		/// <summary>
-		/// 	Сбрасывает кэш-строку
-		/// </summary>
-		public override void InvalidateCacheKey() {
-			base.InvalidateCacheKey();
-			Row.InvalidateCacheKey();
-			Col.InvalidateCacheKey();
-			Time.InvalidateCacheKey();
-			Obj.InvalidateCacheKey();
-		}
-
-		/// <summary>
-		/// 	Обеспечивает возврат результата запроса
-		/// </summary>
-		/// <param name="timeout"> </param>
-		/// <returns> </returns>
-		/// <exception cref="Exception"></exception>
-		public QueryResult GetResult(int timeout = -1) {
-			lock (this) {
-				WaitPrepare();
-				if (null != Result) {
-					return Result;
-				}
-				if (EvaluationType == QueryEvaluationType.Summa && null == Result) {
-					var result =
-						(from sq in SummaDependency let val = sq.Item2.GetResult() where null != val select val.NumericResult*sq.Item1).
-							Sum();
-					Result = new QueryResult {IsComplete = true, NumericResult = result};
-					return Result;
-				}
-
-				if (EvaluationType == QueryEvaluationType.Formula && null == Result) {
-					AssignedFormula.Init(this);
-					try {
-						Result = AssignedFormula.Eval();
-					}
-					finally {
-						AssignedFormula.CleanUp();
-						//FormulaStorage.Default.Return(key, formula);
-					}
-					return Result;
-				}
-
-				WaitResult(timeout);
-				if (null != Result) {
-					return Result;
-				}
-				return Result;
-			}
 		}
 
 		/// <summary>

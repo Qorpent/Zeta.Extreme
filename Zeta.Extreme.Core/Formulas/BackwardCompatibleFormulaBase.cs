@@ -10,7 +10,8 @@
 
 using System;
 using System.Linq;
-using Comdiv.Extensions;
+using System.Text.RegularExpressions;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -136,7 +137,7 @@ namespace Zeta.Extreme {
 		/// <param name="name"> </param>
 		/// <returns> </returns>
 		protected string gets(string name) {
-			return getp(name).toStr();
+			return getp(name).ToStr();
 		}
 
 		/// <summary>
@@ -145,7 +146,7 @@ namespace Zeta.Extreme {
 		/// <param name="name"> </param>
 		/// <returns> </returns>
 		protected decimal getn(string name) {
-			return getp(name).toDecimal();
+			return getp(name).ToDecimal();
 		}
 
 		/// <summary>
@@ -201,7 +202,7 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		protected bool taglike(string tag, string mask) {
 			var tagvalue = q.Row.Native.ResolveTag(tag);
-			return tagvalue.like(mask);
+			return Regex.IsMatch(tagvalue, mask);
 		}
 
 		/// <summary>
@@ -318,7 +319,7 @@ namespace Zeta.Extreme {
 			if (null == q.Row.Native) {
 				return false;
 			}
-			var grps = q.Row.Native.Group.split(false, true, '/', ';');
+			var grps = q.Row.Native.Group.SmartSplit(false, true, '/', ';');
 			if (0 == grps.Count) {
 				return false;
 			}
@@ -342,7 +343,7 @@ namespace Zeta.Extreme {
 			}
 
 			while (null != current) {
-				var grps = current.Group.split(false, true, '/', ';');
+				var grps = current.Group.SmartSplit(false, true, '/', ';');
 				foreach (var g in groups) {
 					if (grps.Any(x => x == g)) {
 						return true;
@@ -405,7 +406,7 @@ namespace Zeta.Extreme {
 				foreach (var testt in test) {
 					var testval = testt.Value.ToLower();
 					var currentval = TagHelper.Value(q.Row.Tag, testt.Key).ToLower();
-					if (currentval.noContent()) {
+					if (currentval.IsEmpty()) {
 						return false;
 					}
 					if (testval == "*") {
@@ -436,7 +437,7 @@ namespace Zeta.Extreme {
 				foreach (var testt in test) {
 					var testval = testt.Value.ToLower();
 					var currentval = q.Row.Native.ResolveTag(testt.Key).ToLower();
-					if (currentval.noContent()) {
+					if (currentval.IsEmpty()) {
 						return false;
 					}
 					if (testval == "*") {

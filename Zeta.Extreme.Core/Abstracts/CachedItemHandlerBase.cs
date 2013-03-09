@@ -21,7 +21,8 @@ namespace Zeta.Extreme {
 	/// 	Базовый класс обертки измерения
 	/// </summary>
 	/// <typeparam name="TItem"> </typeparam>
-	public abstract class CachedItemHandlerBase<TItem> : CacheKeyGeneratorBase, IQueryDimension<TItem> where TItem : class, IWithCode, IWithId, IWithTag {
+	public abstract class CachedItemHandlerBase<TItem> : CacheKeyGeneratorBase, IQueryDimension<TItem>
+		where TItem : class, IWithCode, IWithId, IWithTag {
 		/// <summary>
 		/// 	Набор кодов элемента
 		/// </summary>
@@ -229,7 +230,6 @@ namespace Zeta.Extreme {
 
 		string IWithComment.Comment { get; set; }
 
-		
 
 		IDictionary<string, object> IZetaQueryDimension.LocalProperties {
 			get {
@@ -247,6 +247,23 @@ namespace Zeta.Extreme {
 		public virtual bool IsPrimary() {
 			return !IsFormula;
 		}
+
+		/// <summary>
+		/// 	Нормализует объект зоны
+		/// </summary>
+		/// <param name="session"> </param>
+		/// <exception cref="NotImplementedException"></exception>
+		public abstract void Normalize(ISession session);
+
+		/// <summary>
+		/// 	An index of object
+		/// </summary>
+		public int Idx { get; set; }
+
+		/// <summary>
+		/// 	Название
+		/// </summary>
+		public DateTime Version { get; set; }
 
 		/// <summary>
 		/// 	Применяет свойства от сущности без установки ее Native
@@ -364,24 +381,5 @@ namespace Zeta.Extreme {
 		private IDictionary<string, object> _localProperties;
 		private TItem _native;
 		private string _tag;
-
-		
-
-		/// <summary>
-		/// 	Нормализует объект зоны
-		/// </summary>
-		/// <param name="session"> </param>
-		/// <exception cref="NotImplementedException"></exception>
-		public abstract void Normalize(ISession session);
-
-		/// <summary>
-		/// 	An index of object
-		/// </summary>
-		public int Idx { get; set; }
-
-		/// <summary>
-		/// 	Название
-		/// </summary>
-		public DateTime Version { get; set; }
-	}
+		}
 }

@@ -39,7 +39,7 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Режим работы с деталями на уровне первичных запросов, по умолчанию NONE - выбор остается за системой
+		/// 	Режим работы с деталями на уровне первичных запросов, по умолчанию NONE - выбор остается за системой
 		/// </summary>
 		public DetailMode DetailMode { get; set; }
 
@@ -62,6 +62,36 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public IZetaMainObject ObjRef {
 			get { return Native as IZetaMainObject; }
+		}
+
+		/// <summary>
+		/// 	Простая копия зоны
+		/// </summary>
+		/// <returns> </returns>
+		public IObjHandler Copy() {
+			return MemberwiseClone() as ObjHandler;
+		}
+
+		/// <summary>
+		/// 	Нормализует объект зоны
+		/// </summary>
+		/// <param name="session"> </param>
+		/// <exception cref="NotImplementedException"></exception>
+		public override void Normalize(ISession session) {
+			if (IsStandaloneSingletonDefinition()) {
+				var cache = session == null ? MetaCache.Default : session.MetaCache;
+				switch (Type) {
+					case ObjType.Obj:
+						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
+						break;
+					case ObjType.Div:
+						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
+						break;
+					case ObjType.Grp:
+						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
+						break;
+				}
+			}
 		}
 
 		/// <summary>
@@ -93,19 +123,11 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <returns> </returns>
 		protected override string EvalCacheKey() {
-			var prefix = (int)Type + "::";
-			if(Type!=ObjType.Detail && DetailMode!=DetailMode.None) {
-				prefix += "d:" + (int)DetailMode + "/";
+			var prefix = (int) Type + "::";
+			if (Type != ObjType.Detail && DetailMode != DetailMode.None) {
+				prefix += "d:" + (int) DetailMode + "/";
 			}
 			return prefix + base.EvalCacheKey();
-		}
-
-		/// <summary>
-		/// 	Простая копия зоны
-		/// </summary>
-		/// <returns> </returns>
-		public IObjHandler Copy() {
-			return MemberwiseClone() as ObjHandler;
 		}
 
 		/// <summary>
@@ -126,29 +148,6 @@ namespace Zeta.Extreme {
 			return result;
 		}
 
-		/// <summary>
-		/// 	Нормализует объект зоны
-		/// </summary>
-		/// <param name="session"> </param>
-		/// <exception cref="NotImplementedException"></exception>
-		public override void Normalize(ISession session) {
-			if (IsStandaloneSingletonDefinition()) {
-				var cache = session == null ? MetaCache.Default : session.MetaCache;
-				switch (Type) {
-					case ObjType.Obj:
-						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
-						break;
-					case ObjType.Div:
-						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
-						break;
-					case ObjType.Grp:
-						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
-						break;
-				}
-			}
-
-		}
-		
 
 		private ObjType _type;
 	}

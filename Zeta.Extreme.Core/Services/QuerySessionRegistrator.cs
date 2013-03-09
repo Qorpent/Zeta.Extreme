@@ -40,7 +40,7 @@ namespace Zeta.Extreme {
 			//lock(ZexSession._register_lock) {
 			WriteInitialStatistics(uid);
 
-			var query = (Query)srcquery;
+			var query = (Query) srcquery;
 			Query result;
 			var preloadkey = srcquery.GetCacheKey();
 
@@ -91,13 +91,12 @@ namespace Zeta.Extreme {
 			_session.Registry[uid] = result;
 			_session.KeyMap[preloadkey] = uid;
 
-			
 
-				if (null == result.PrepareTask && PrepareState.Prepared != result.PrepareState) {
-					result.PrepareState = PrepareState.TaskStarted;
-					result.PrepareTask = _session.PrepareAsync(result);
-				}
-			
+			if (null == result.PrepareTask && PrepareState.Prepared != result.PrepareState) {
+				result.PrepareState = PrepareState.TaskStarted;
+				result.PrepareTask = _session.PrepareAsync(result);
+			}
+
 			//if (result.Session != _session) result.WaitPrepare();
 			return result;
 			//	}
