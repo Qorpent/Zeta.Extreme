@@ -1,18 +1,32 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : ISession.cs
+// Project: Zeta.Extreme.Poco
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System;
 using System.Threading.Tasks;
 
 namespace Comdiv.Zeta.Model.ExtremeSupport {
 	/// <summary>
-	/// Асинхронная, Zeta.Extrem cecсия, базовый интерфейс
+	/// 	Асинхронная, Zeta.Extrem cecсия, базовый интерфейс
 	/// </summary>
 	public interface ISession {
 		/// <summary>
-		/// 
+		/// 	Локальный кэш объектных данных
 		/// </summary>
-		/// <param name="key"></param>
+		IMetaCache MetaCache { get; }
+
+		/// <summary>
+		/// </summary>
+		/// <param name="key"> </param>
 		/// <param name="timeout"> </param>
-		/// <returns></returns>
-		QueryResult Get(string key,int timeout =-1);
+		/// <returns> </returns>
+		QueryResult Get(string key, int timeout = -1);
 
 		/// <summary>
 		/// 	Синхронная регистрация запроса в сессии
@@ -44,11 +58,5 @@ namespace Comdiv.Zeta.Model.ExtremeSupport {
 		/// </summary>
 		/// <param name="timeout"> </param>
 		void Execute(int timeout = -1);
-
-
-		/// <summary>
-		/// 	Локальный кэш объектных данных
-		/// </summary>
-		IMetaCache MetaCache { get;  }
 	}
 }

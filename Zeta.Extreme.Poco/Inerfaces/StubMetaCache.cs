@@ -1,9 +1,20 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : StubMetaCache.cs
+// Project: Zeta.Extreme.Poco
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using Comdiv.Model.Interfaces;
 using Comdiv.Zeta.Model;
 
 namespace Zeta.Extreme {
-	public class StubMetaCache:IMetaCache {
+	public class StubMetaCache : IMetaCache {
 		public static readonly StubMetaCache Default = new StubMetaCache();
+
 		/// <summary>
 		/// 	Получить объект из хранилища
 		/// </summary>
@@ -25,7 +36,7 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Родительский кэш
+		/// 	Родительский кэш
 		/// </summary>
 		public IMetaCache Parent { get; set; }
 	}

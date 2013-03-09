@@ -2,7 +2,7 @@
 
 // Copyright 2012-2013 Media Technology LTD 
 // Original file : IMetaCache.cs
-// Project: Zeta.Extreme.Core
+// Project: Zeta.Extreme.Poco
 // This code cannot be used without agreement from 
 // Media Technology LTD 
 
@@ -15,6 +15,11 @@ namespace Comdiv.Zeta.Model {
 	/// 	Интерфейс локального хранилища метаданных
 	/// </summary>
 	public interface IMetaCache {
+		/// <summary>
+		/// 	Родительский кэш
+		/// </summary>
+		IMetaCache Parent { get; set; }
+
 		/// <summary>
 		/// 	Получить объект из хранилища
 		/// </summary>
@@ -30,10 +35,5 @@ namespace Comdiv.Zeta.Model {
 		/// <param name="item"> </param>
 		/// <returns> </returns>
 		IMetaCache Set<T>(T item) where T : class, IEntityDataPattern;
-
-		/// <summary>
-		/// Родительский кэш
-		/// </summary>
-		IMetaCache Parent { get; set; }
 	}
 }

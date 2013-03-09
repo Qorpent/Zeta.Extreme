@@ -1,18 +1,27 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : IObjHandler.cs
+// Project: Zeta.Extreme.Poco
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using Comdiv.Olap.Model;
 
 namespace Comdiv.Zeta.Model.ExtremeSupport {
 	/// <summary>
-	/// —тандартный интерфейс измерени€ запроса Obj
+	/// 	—тандартный интерфейс измерени€ запроса Obj
 	/// </summary>
-	public interface IObjHandler : IQueryDimension<IZoneElement>
-	{
+	public interface IObjHandler : IQueryDimension<IZoneElement> {
 		/// <summary>
 		/// 	“ип зоны
 		/// </summary>
 		ObjType Type { get; set; }
 
 		/// <summary>
-		/// –ежим работы с детал€ми на уровне первичных запросов, по умолчанию NONE - выбор остаетс€ за системой
+		/// 	–ежим работы с детал€ми на уровне первичных запросов, по умолчанию NONE - выбор остаетс€ за системой
 		/// </summary>
 		DetailMode DetailMode { get; set; }
 

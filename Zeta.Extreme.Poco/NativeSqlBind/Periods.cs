@@ -41,7 +41,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		/// <param name="formulaperiod"> </param>
 		/// <returns> </returns>
 		public static PeriodDefinition Eval(int sourceyear, int sourceperiod, int formulaperiod) {
-			return Get(formulaperiod).Evaluate(sourceyear, Qorpent.QorpentConst.Date.Begin, sourceperiod);
+			return Get(formulaperiod).Evaluate(sourceyear, QorpentConst.Date.Begin, sourceperiod);
 		}
 
 		/// <summary>
@@ -61,7 +61,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 			if (null == result) {
 				result = new period();
 				result.ClassicId = classicId;
-				result.StartDate = Qorpent.QorpentConst.Date.Begin;
+				result.StartDate = QorpentConst.Date.Begin;
 				result.EndDate = QorpentConst.Date.End;
 				if (classicId < 0) {
 					result.IsFormula = true;
@@ -77,7 +77,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		/// <param name="otherperiodId"> </param>
 		/// <returns> </returns>
 		public static int Evaluate(this IPeriod period, int otherperiodId) {
-			return period.Evaluate(DateTime.Today.Year, Qorpent.QorpentConst.Date.Begin, otherperiodId).Periods[0];
+			return period.Evaluate(DateTime.Today.Year, QorpentConst.Date.Begin, otherperiodId).Periods[0];
 		}
 
 		/// <summary>
@@ -87,7 +87,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		/// <param name="otherperiodId"> </param>
 		/// <returns> </returns>
 		public static PeriodDefinition EvaluateDef(this IPeriod period, int otherperiodId) {
-			return period.Evaluate(DateTime.Today.Year, Qorpent.QorpentConst.Date.Begin, otherperiodId);
+			return period.Evaluate(DateTime.Today.Year, QorpentConst.Date.Begin, otherperiodId);
 		}
 
 		/// <summary>

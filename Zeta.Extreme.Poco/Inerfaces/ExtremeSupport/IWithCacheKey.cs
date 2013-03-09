@@ -1,6 +1,16 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : IWithCacheKey.cs
+// Project: Zeta.Extreme.Poco
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 namespace Comdiv.Zeta.Model.ExtremeSupport {
 	/// <summary>
-	/// Сущность, обладающая уникальной описательной строкой
+	/// 	Сущность, обладающая уникальной описательной строкой
 	/// </summary>
 	public interface IWithCacheKey {
 		/// <summary>

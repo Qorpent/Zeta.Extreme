@@ -1,12 +1,17 @@
-using System;
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : NativeZetaReader.cs
+// Project: Zeta.Extreme.Poco
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using Comdiv.Olap.Model;
 
 namespace Zeta.Extreme.Poco.NativeSqlBind {
 	public partial class NativeZetaReader {
-
 		private const string Divquerybase = @"
 				select 
 					Id, Code, Name, Comment, Version, Tag,Idx
@@ -63,89 +68,82 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		";
 
 		/// <summary>
-		/// Сериализует учетные записи пользователей
-		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+		/// 	Сериализует учетные записи пользователей
+		/// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
 		/// </summary>
-		/// <param name="condition"></param>
-		/// <returns></returns>
-		public IEnumerable<usr> ReadUsers(string condition = "")
-		{
+		/// <param name="condition"> </param>
+		/// <returns> </returns>
+		public IEnumerable<usr> ReadUsers(string condition = "") {
 			return Read(condition, Usrquerybase, ReaderToUsr);
 		}
 
 		/// <summary>
-		/// Сериализует периоды
-		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+		/// 	Сериализует периоды
+		/// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
 		/// </summary>
-		/// <param name="condition"></param>
-		/// <returns></returns>
-		public IEnumerable<period> ReadPeriods(string condition = "")
-		{
+		/// <param name="condition"> </param>
+		/// <returns> </returns>
+		public IEnumerable<period> ReadPeriods(string condition = "") {
 			return Read(condition, Peiodquerybase, ReaderToPeriod);
 		}
 
 		/// <summary>
-		/// Сериализует формы
-		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+		/// 	Сериализует формы
+		/// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
 		/// </summary>
-		/// <param name="condition"></param>
-		/// <returns></returns>
-		public IEnumerable<form> ReadForms(string condition = "")
-		{
+		/// <param name="condition"> </param>
+		/// <returns> </returns>
+		public IEnumerable<form> ReadForms(string condition = "") {
 			return Read(condition, Formquerybase, ReaderToForm);
 		}
 
 		/// <summary>
-		/// Сериализует статусы форм
-		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+		/// 	Сериализует статусы форм
+		/// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
 		/// </summary>
-		/// <param name="condition"></param>
-		/// <returns></returns>
-		public IEnumerable<formstate> ReadFormStates(string condition = "")
-		{
+		/// <param name="condition"> </param>
+		/// <returns> </returns>
+		public IEnumerable<formstate> ReadFormStates(string condition = "") {
 			return Read(condition, Formstatequerybase, ReaderToFormstate);
 		}
 
 
 		/// <summary>
-		/// Сериализует дивизионы
-		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+		/// 	Сериализует дивизионы
+		/// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
 		/// </summary>
-		/// <param name="condition"></param>
-		/// <returns></returns>
-		public IEnumerable<objdiv> ReadDivisions(string condition = "")
-		{
+		/// <param name="condition"> </param>
+		/// <returns> </returns>
+		public IEnumerable<objdiv> ReadDivisions(string condition = "") {
 			return Read(condition, Divquerybase, ReaderToDiv);
 		}
 
 		/// <summary>
-		/// Сериализует объекты
-		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+		/// 	Сериализует объекты
+		/// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
 		/// </summary>
-		/// <param name="condition"></param>
-		/// <returns></returns>
-		public IEnumerable<obj> ReadObjects(string condition = "")
-		{
+		/// <param name="condition"> </param>
+		/// <returns> </returns>
+		public IEnumerable<obj> ReadObjects(string condition = "") {
 			return Read(condition, Objquerybase, ReaderToObj);
 		}
 
 		/// <summary>
-		/// Сериализует строки по стандартному виду с использованием переданного условия condition
-		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+		/// 	Сериализует строки по стандартному виду с использованием переданного условия condition
+		/// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
 		/// </summary>
-		/// <param name="condition"></param>
-		/// <returns></returns>
-		public IEnumerable<col> ReadColumns(string condition = "")
-		{
+		/// <param name="condition"> </param>
+		/// <returns> </returns>
+		public IEnumerable<col> ReadColumns(string condition = "") {
 			return Read(condition, Colquerybase, ReaderToCol);
 		}
 
 		/// <summary>
-		/// Сериализует строки по стандартному виду с использованием переданного условия condition
-		/// Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+		/// 	Сериализует строки по стандартному виду с использованием переданного условия condition
+		/// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
 		/// </summary>
-		/// <param name="condition"></param>
-		/// <returns></returns>
+		/// <param name="condition"> </param>
+		/// <returns> </returns>
 		public IEnumerable<row> ReadRows(string condition = "") {
 			return Read(condition, Rowquerybase, ReaderToRow);
 		}

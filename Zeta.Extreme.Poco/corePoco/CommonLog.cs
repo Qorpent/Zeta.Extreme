@@ -1,17 +1,23 @@
-﻿using System;
+﻿#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : CommonLog.cs
+// Project: Zeta.Extreme.Poco
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
+using System;
 using Comdiv.Zeta.Model;
 
-using Comdiv.Zeta.Model;namespace Zeta.Extreme.Poco {
-    public class CommonLog : ICommonLog{
-        #region ICommonLog Members
-
-        public virtual int Id { get; set; }
-        public virtual string Code { get; set; }
-        public virtual string Type { get; set; }
-        public virtual string Usr { get; set; }
-        public virtual DateTime Version { get; set; }
-        public virtual string Message { get; set; }
-
-        #endregion
-    }
+namespace Zeta.Extreme.Poco {
+	public class CommonLog : ICommonLog {
+		public virtual int Id { get; set; }
+		public virtual string Code { get; set; }
+		public virtual string Type { get; set; }
+		public virtual string Usr { get; set; }
+		public virtual DateTime Version { get; set; }
+		public virtual string Message { get; set; }
+	}
 }

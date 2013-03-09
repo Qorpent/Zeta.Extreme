@@ -1,10 +1,18 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : IRowHandler.cs
+// Project: Zeta.Extreme.Poco
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 namespace Comdiv.Zeta.Model.ExtremeSupport {
 	/// <summary>
-	/// —тандартный описатель измерени€ Row
+	/// 	—тандартный описатель измерени€ Row
 	/// </summary>
-	public interface IRowHandler:IQueryDimension<IZetaRow> {
-
-
+	public interface IRowHandler : IQueryDimension<IZetaRow> {
 		/// <summary>
 		/// 	True если целева€ строка - ссылка
 		/// </summary>
