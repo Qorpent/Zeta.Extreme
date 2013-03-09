@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public enum PkgState {
 		None = 0,
 		Initial = 1,

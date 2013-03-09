@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IFixRuleCore {
 		FixRulePriority Priority { get; set; }
 		FixRuleResult Result { get; set; }

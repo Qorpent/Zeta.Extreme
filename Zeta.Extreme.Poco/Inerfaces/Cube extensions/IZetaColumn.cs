@@ -9,14 +9,13 @@
 #endregion
 
 using System.Collections.Generic;
-using Comdiv.Model;
-using Comdiv.Olap.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	[global::Zeta.Extreme.Poco.Deprecated.Classic("ValueType")]
 	[global::Zeta.Extreme.Poco.Deprecated.ForSearch("Колонка, показатель")]
 	public interface IZetaColumn :
 		IOlapColumn,
+
 		IZetaQueryDimension,
 		IWithMarks<IZetaColumn, IZetaColumnMark>,
 		IWithMarkCache,

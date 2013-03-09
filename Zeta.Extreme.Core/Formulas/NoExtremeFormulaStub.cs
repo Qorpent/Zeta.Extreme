@@ -9,7 +9,7 @@
 #endregion
 
 using System;
-using Comdiv.Zeta.Model.ExtremeSupport;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>

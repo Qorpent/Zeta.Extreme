@@ -11,12 +11,11 @@
 using System;
 using System.Collections.Generic;
 using Comdiv.Model;
-using Comdiv.Olap.Model;
 using Comdiv.Persistence;
-using Comdiv.Zeta.Model;
 using Qorpent;
 using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class detail : IZetaDetailObject {
@@ -67,9 +66,7 @@ namespace Zeta.Extreme.Poco {
 
 		[Deprecated.Map] public virtual DateTime Version { get; set; }
 
-		[Deprecated.Many(ClassName = typeof (detailgrplink))] public virtual
-			IList<IDetailObjectGroupLink<IZetaMainObject, IZetaDetailObject>> DetailGroupLinks { get; set; }
-
+		
 		[Deprecated.Many(ClassName = typeof (SubpartMark))] public virtual IList<IZetaDetailObjectMark> MarkLinks { get; set; }
 
 		[Serialize] public virtual IDetailObjectType Type { get; set; }

@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using Comdiv.Model;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class point : IZetaPoint {

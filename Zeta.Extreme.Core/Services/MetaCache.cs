@@ -12,7 +12,8 @@ using System;
 using System.Collections.Generic;
 using Comdiv.Application;
 using Comdiv.Model.Interfaces;
-using Comdiv.Zeta.Model;
+using Qorpent.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 using ColumnCache = Zeta.Extreme.Poco.NativeSqlBind.ColumnCache;
 using ObjCache = Zeta.Extreme.Poco.NativeSqlBind.ObjCache;
 using RowCache = Zeta.Extreme.Poco.NativeSqlBind.RowCache;
@@ -38,7 +39,7 @@ namespace Zeta.Extreme {
 		/// <typeparam name="T"> </typeparam>
 		/// <param name="id"> </param>
 		/// <returns> </returns>
-		public T Get<T>(object id) where T : class, IEntityDataPattern {
+		public T Get<T>(object id) where T : class, IEntity {
 			lock (this) {
 				T result = null;
 				if ( null != Parent) 
@@ -69,7 +70,7 @@ namespace Zeta.Extreme {
 		/// <typeparam name="T"> </typeparam>
 		/// <param name="item"> </param>
 		/// <returns> </returns>
-		public IMetaCache Set<T>(T item) where T : class, IEntityDataPattern {
+		public IMetaCache Set<T>(T item) where T : class, IEntity {
 			lock (this) {
 				var type = NormalizeType(item.GetType());
 				if (!_byid.ContainsKey(type)) {

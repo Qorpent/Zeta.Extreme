@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	[Flags]
 	public enum ValueDataType {
 		Decimal = 0,

@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithDetailObjectTypes {
 		IList<IDetailObjectType> Types { get; set; }
 	}

@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IMarkLink<TargetType, MarkType> : IMarkLinkBase, IWithMark<MarkType> where MarkType : IMark {
 		TargetType Target { get; set; }
 	}

@@ -9,9 +9,7 @@
 #endregion
 
 using System;
-using Comdiv.Olap.Model;
-using Comdiv.Zeta.Model;
-using Comdiv.Zeta.Model.ExtremeSupport;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>

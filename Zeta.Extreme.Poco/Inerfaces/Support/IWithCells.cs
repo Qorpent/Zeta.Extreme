@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithCells<T, R, C, M, D> where T : IOlapCell<R, C, M, D>
 	                                           where R : IOlapRow
 	                                           where C : IOlapColumn

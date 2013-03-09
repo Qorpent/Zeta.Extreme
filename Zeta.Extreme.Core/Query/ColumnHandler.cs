@@ -10,8 +10,7 @@
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Comdiv.Zeta.Model;
-using Comdiv.Zeta.Model.ExtremeSupport;
+using Zeta.Extreme.Poco.Inerfaces;
 using ColumnCache = Zeta.Extreme.Poco.NativeSqlBind.ColumnCache;
 
 namespace Zeta.Extreme {

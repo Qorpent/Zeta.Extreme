@@ -8,17 +8,15 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
 using Zeta.Extreme.Poco.Deprecated;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	[ForSearch("Роль, тип, отрасль объекта")]
 	public interface IMainObjectRole :
 		IZoneElement,
 		ICanCountObjects,
-		IWithIdx,
-		IWithMainObjects, IEntityDataPattern {
+		IWithMainObjects, IEntity {
 		bool ShowOnStartPage { get; set; }
 		}
 }

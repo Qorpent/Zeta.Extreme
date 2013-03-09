@@ -10,8 +10,7 @@
 
 using System;
 using Comdiv.Model;
-using Comdiv.Olap.Model;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class cell : IZetaCell {
@@ -99,9 +98,9 @@ namespace Zeta.Extreme.Poco {
 			set { Subpart = value; }
 		}
 
-		public virtual object Tag { get; set; }
+		public virtual string Tag { get; set; }
 
-		public virtual IPkg Pkg { get; set; }
+		
 		[Deprecated.Map] public virtual bool IsAuto { get; set; }
 		[Deprecated.Map] public virtual string Usr { get; set; }
 		private StandardRowData rowData;

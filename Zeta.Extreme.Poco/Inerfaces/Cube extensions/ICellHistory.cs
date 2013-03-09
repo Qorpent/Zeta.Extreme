@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface ICellHistory {
 		string PseudoCode { get; set; }
 		int RowId { get; set; }

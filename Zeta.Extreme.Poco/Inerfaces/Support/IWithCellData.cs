@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithCellData {
 		StandardRowData RowData { get; set; }
 		object Value { get; set; }

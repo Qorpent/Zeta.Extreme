@@ -18,7 +18,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Comdiv.Application;
 using Comdiv.Persistence;
-using Comdiv.Zeta.Model;
 using Qorpent;
 using Qorpent.Applications;
 using Qorpent.Events;
@@ -31,6 +30,7 @@ using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.Themas;
 using Zeta.Extreme.Meta;
+using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.FrontEnd {

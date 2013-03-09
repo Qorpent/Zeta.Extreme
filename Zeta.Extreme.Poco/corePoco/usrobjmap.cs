@@ -10,7 +10,7 @@
 
 using System;
 using Comdiv.Model;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class usrobjmap : IUserObjectMap {
@@ -43,5 +43,10 @@ namespace Zeta.Extreme.Poco {
 		}
 
 		[Deprecated.Map] public virtual bool AllOrgs { get; set; }
+
+		/// <summary>
+		/// 	An index of object
+		/// </summary>
+		public int Idx { get; set; }
 	}
 }

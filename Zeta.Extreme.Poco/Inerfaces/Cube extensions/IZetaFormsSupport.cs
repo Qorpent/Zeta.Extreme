@@ -8,9 +8,9 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
+using IWithIdx = Qorpent.Model.IWithIdx;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IZetaFormsSupport :
 		IWithIdx,
 		IWithOuterCode,

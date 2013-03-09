@@ -9,12 +9,12 @@
 #endregion
 
 using Comdiv.Model;
-using Comdiv.Olap.Model;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	[global::Zeta.Extreme.Poco.Deprecated.Classic("SubpartMark")]
 	public interface IZetaDetailObjectMark :
-		IItemDataPattern,
+		IWithId, IWithVersion,
 		IMarkLink<IZetaDetailObject> //,
 		//IWithDetailObject<IZetaDetailObject,IZetaMainObject> 
 	{}

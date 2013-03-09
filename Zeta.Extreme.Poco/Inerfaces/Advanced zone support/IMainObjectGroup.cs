@@ -8,16 +8,14 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
 using Zeta.Extreme.Poco.Deprecated;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	[Classic("Holding")]
 	[ForSearch("Группа, дивизион, холдинг")]
 	public interface IMainObjectGroup :
 		IZoneElement,
 		ICanCountObjects,
-		IWithIdx,
-		IWithMainObjects, IEntityDataPattern {}
+		IWithMainObjects, IEntity {}
 }

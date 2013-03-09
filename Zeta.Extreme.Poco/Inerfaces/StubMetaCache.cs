@@ -8,10 +8,9 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
-using Comdiv.Zeta.Model;
+using Qorpent.Model;
 
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public class StubMetaCache : IMetaCache {
 		public static readonly StubMetaCache Default = new StubMetaCache();
 
@@ -21,7 +20,7 @@ namespace Zeta.Extreme {
 		/// <typeparam name="T"> </typeparam>
 		/// <param name="id"> </param>
 		/// <returns> </returns>
-		public T Get<T>(object id) where T : class, IEntityDataPattern {
+		public T Get<T>(object id) where T : class, IEntity {
 			return null;
 		}
 
@@ -31,7 +30,7 @@ namespace Zeta.Extreme {
 		/// <typeparam name="T"> </typeparam>
 		/// <param name="item"> </param>
 		/// <returns> </returns>
-		public IMetaCache Set<T>(T item) where T : class, IEntityDataPattern {
+		public IMetaCache Set<T>(T item) where T : class, IEntity {
 			return this;
 		}
 

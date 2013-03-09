@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithDataType {
 		ValueDataType DataType { get; set; }
 		string DataTypeDetail { get; set; }

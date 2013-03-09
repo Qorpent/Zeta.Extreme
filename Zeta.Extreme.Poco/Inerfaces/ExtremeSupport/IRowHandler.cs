@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Zeta.Model.ExtremeSupport {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	/// <summary>
 	/// 	Стандартный описатель измерения Row
 	/// </summary>

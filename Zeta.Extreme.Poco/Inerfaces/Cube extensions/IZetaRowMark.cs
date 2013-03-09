@@ -8,10 +8,9 @@
 
 #endregion
 
-using Comdiv.Olap.Model;
 using Zeta.Extreme.Poco.Deprecated;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	[Classic("TreeMark")]
 	public interface IZetaRowMark : IOlapRowMark<IZetaRow> {}
 }

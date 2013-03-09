@@ -9,11 +9,10 @@
 #endregion
 
 using System;
-using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
-	public interface IPeriod : IEntityDataPattern, IWithIdx, IWithFormula {
+namespace Zeta.Extreme.Poco.Inerfaces {
+	public interface IPeriod : IEntity,  Qorpent.Model.IWithFormula {
 		int ClassicId { get; set; }
 		string Category { get; set; }
 		string ShortName { get; set; }

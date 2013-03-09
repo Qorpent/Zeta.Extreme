@@ -11,8 +11,8 @@
 using System;
 using System.Collections.Generic;
 using Comdiv.Model;
-using Comdiv.Zeta.Model;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class usr : IZetaUnderwriter {
@@ -78,5 +78,10 @@ namespace Zeta.Extreme.Poco {
 
 		private string _slotList;
 		private IList<string> _slots;
+
+		/// <summary>
+		/// 	An index of object
+		/// </summary>
+		public int Idx { get; set; }
 	}
 }

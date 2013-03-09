@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using Comdiv.Model.Interfaces;
 using Comdiv.Reporting;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>

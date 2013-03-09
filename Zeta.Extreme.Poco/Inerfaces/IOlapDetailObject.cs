@@ -10,11 +10,10 @@
 
 using Comdiv.Model;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IOlapDetailObject<M, D> :
 		IDimension, IWithRange,
-		IOlapDetailObjectBase<M>,
-		IWithDetailGroupLinks<M, D>
+		IOlapDetailObjectBase<M>
 		where M : IOlapMainObjectBase
 		where D : IOlapDetailObjectBase<M> {}
 }

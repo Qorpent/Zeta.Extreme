@@ -12,7 +12,7 @@ using System;
 using System.Globalization;
 using Qorpent;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public class StandardRowData {
 		public StandardRowData() {
 			DateValue = QorpentConst.Date.Begin;

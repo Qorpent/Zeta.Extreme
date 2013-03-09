@@ -10,7 +10,7 @@
 
 using Zeta.Extreme.Poco.Deprecated;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithCell<T, R, C, M, D> where T : IOlapCell<R, C, M, D>
 	                                          where R : IOlapRow
 	                                          where C : IOlapColumn

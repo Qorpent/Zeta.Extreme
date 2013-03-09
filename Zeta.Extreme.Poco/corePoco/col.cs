@@ -11,8 +11,7 @@
 using System;
 using System.Collections.Generic;
 using Comdiv.Model;
-using Comdiv.Olap.Model;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class col : IZetaColumn, IZetaQueryDimension {
@@ -90,5 +89,10 @@ namespace Zeta.Extreme.Poco {
 		[Deprecated.Many(ClassName = typeof (fixrule))] public virtual IList<IFixRule> FixRules { get; set; }
 		private IList<IZetaColumnMark> _markLinks;
 		private IDictionary<string, object> localProperties;
+
+		/// <summary>
+		/// 	An index of object
+		/// </summary>
+		public int Idx { get; set; }
 	}
 }

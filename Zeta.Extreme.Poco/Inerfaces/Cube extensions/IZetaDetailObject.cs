@@ -10,10 +10,9 @@
 
 using System;
 using Comdiv.Model;
-using Comdiv.Olap.Model;
 using Comdiv.Persistence;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	[global::Zeta.Extreme.Poco.Deprecated.ForSearch("Младший объект, подразделение, связь")]
 	public interface IZetaDetailObject :
 		IZetaObject,

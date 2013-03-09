@@ -9,10 +9,11 @@
 #endregion
 
 using Comdiv.Model;
+using Qorpent.Model;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IDetailObjectGroupLink<MainObjectType, DetailObjectType> :
-		IItemDataPattern,
+		IWithId, IWithVersion,
 		IWithDetailObject<DetailObjectType, MainObjectType>,
 		IWithDetailObjectGroup<MainObjectType, DetailObjectType>
 		where DetailObjectType : IOlapDetailObjectBase<MainObjectType>

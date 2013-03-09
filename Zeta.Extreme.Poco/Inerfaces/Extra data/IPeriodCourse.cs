@@ -8,9 +8,9 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IPeriodCourse : IWithId, IWithVersion {
 		int Year { get; set; }
 		int Period { get; set; }

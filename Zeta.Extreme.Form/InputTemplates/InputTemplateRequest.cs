@@ -14,8 +14,8 @@ using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Persistence;
 using Comdiv.Security;
-using Comdiv.Zeta.Model;
 using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Form.InputTemplates {
 	/// <summary>

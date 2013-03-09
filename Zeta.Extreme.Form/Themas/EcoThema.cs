@@ -15,9 +15,9 @@ using System.Security.Principal;
 using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Inversion;
-using Comdiv.Zeta.Model;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Meta;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>

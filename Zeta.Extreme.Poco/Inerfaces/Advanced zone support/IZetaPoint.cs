@@ -8,18 +8,16 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
 using Zeta.Extreme.Poco.Deprecated;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	[ForSearch("Точка, город")]
 	public interface IZetaPoint :
 		IZoneElement,
 		IWithMainObjects,
 		IWithDetailObjects<IZetaMainObject, IZetaDetailObject>,
 		IWithRegion,
-		IWithIdx,
 		ICanCountObjects,
-		IEntityDataPattern {}
+		IEntity {}
 }

@@ -9,9 +9,9 @@
 #endregion
 
 using System.Collections.Generic;
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public class ByIdxComparer<T> : IComparer<T> where T : IWithCode, IWithIdx {
 		public int Compare(T x, T y) {
 			if (x.Idx != y.Idx) {

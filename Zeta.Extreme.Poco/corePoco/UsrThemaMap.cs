@@ -9,7 +9,7 @@
 #endregion
 
 using System;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public class UsrThemaMap : IUsrThemaMap {

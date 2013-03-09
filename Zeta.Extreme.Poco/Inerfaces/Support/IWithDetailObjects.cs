@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithDetailObjects<M, D> where M : IOlapMainObjectBase where D : IOlapDetailObject<M, D> {
 		IList<D> DetailObjects { get; set; }
 	}

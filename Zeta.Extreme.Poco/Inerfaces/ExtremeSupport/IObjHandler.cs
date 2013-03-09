@@ -8,9 +8,7 @@
 
 #endregion
 
-using Comdiv.Olap.Model;
-
-namespace Comdiv.Zeta.Model.ExtremeSupport {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	/// <summary>
 	/// 	Стандартный интерфейс измерения запроса Obj
 	/// </summary>

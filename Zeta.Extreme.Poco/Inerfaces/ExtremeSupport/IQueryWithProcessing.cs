@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Comdiv.Zeta.Model.ExtremeSupport {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	/// <summary>
 	/// 	Описатель запроса с поддержкой обработки
 	/// </summary>

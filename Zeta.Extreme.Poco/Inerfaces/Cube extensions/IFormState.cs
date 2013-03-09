@@ -8,9 +8,9 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IFormState : IWithId, IWithVersion, IWithComment {
 		IForm Form { get; set; }
 		string State { get; set; }

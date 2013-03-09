@@ -9,18 +9,17 @@
 #endregion
 
 using Comdiv.Model;
-using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
 using Comdiv.Persistence;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IDetailObjectType :
 		IZoneElement,
 		ICanResolveTag,
 		IWithDetailObjects<IZetaMainObject, IZetaDetailObject>,
 		IWithDetailObjectClass,
 		ICanCountDetailObjects,
-		IEntityDataPattern, IWithIdx {
+		IEntity {
 		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
 		}
 }

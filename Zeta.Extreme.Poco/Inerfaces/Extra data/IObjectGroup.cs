@@ -8,12 +8,11 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
-using Comdiv.Zeta.Model;
+using Qorpent.Model;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IObjectGroup<M> :
 		IZoneElement,
 		IWithMainObjects,
-		IEntityDataPattern where M : IOlapMainObjectBase {}
+		IEntity where M : IOlapMainObjectBase {}
 }

@@ -8,9 +8,9 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface ICommonLog : IWithId, IWithVersion, IWithCode, IWithUsr {
 		string Type { get; set; }
 		string Message { get; set; }

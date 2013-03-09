@@ -101,7 +101,6 @@
     <Compile Include="corePoco\CellHistory.cs" />
     <Compile Include="corePoco\ColumnMark.cs" />
     <Compile Include="corePoco\CommonLog.cs" />
-    <Compile Include="corePoco\Contragent.cs" />
     <Compile Include="corePoco\form.cs" />
     <Compile Include="corePoco\formstate.cs" />
     <Compile Include="corePoco\IBizTran.cs" />
@@ -109,8 +108,6 @@
     <Compile Include="corePoco\UsrRow.cs" />
     <Compile Include="corePoco\UsrThemaMap.cs" />
     <Compile Include="corePoco\zone.cs" />
-    <Compile Include="corePoco\detailgrp.cs" />
-    <Compile Include="corePoco\detailgrplink.cs" />
     <Compile Include="corePoco\DetailRow.cs" />
     <Compile Include="corePoco\FixRule.cs" />
     <Compile Include="corePoco\GraphRelation.cs" />
@@ -124,8 +121,6 @@
     <Compile Include="corePoco\obj.cs" />
     <Compile Include="corePoco\objrole.cs" />
     <Compile Include="corePoco\Period.cs" />
-    <Compile Include="corePoco\Pkg.cs" />
-    <Compile Include="corePoco\PkgType.cs" />
     <Compile Include="corePoco\Region.cs" />
     <Compile Include="corePoco\detail.cs" />
     <Compile Include="corePoco\SubpartMark.cs" />
@@ -139,6 +134,7 @@
     <Compile Include="corePoco\objtype.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DateRange.cs" />
     <Compile Include="Deprecated\ClassicAttribute.cs" />
     <Compile Include="Deprecated\ForSearchAttribute.cs" />
     <Compile Include="Deprecated\ManyAttribute.cs" />
@@ -151,8 +147,6 @@
     <Compile Include="extPoco\ColumnMark.cs" />
     <Compile Include="extPoco\zone.cs" />
     <Compile Include="extPoco\DayCourse.cs" />
-    <Compile Include="extPoco\detailgrp.cs" />
-    <Compile Include="extPoco\detailgrplink.cs" />
     <Compile Include="extPoco\FixRule.cs" />
     <Compile Include="extPoco\objdiv.cs" />
     <Compile Include="extPoco\cell.cs" />
@@ -203,17 +197,12 @@
     <Compile Include="Inerfaces\Cube extensions\IForm.cs" />
     <Compile Include="Inerfaces\Cube extensions\IFormState.cs" />
     <Compile Include="Inerfaces\Cube extensions\IPeriod.cs" />
-    <Compile Include="Inerfaces\Cube extensions\IPkg.cs" />
-    <Compile Include="Inerfaces\Cube extensions\IPkgType.cs" />
     <Compile Include="Inerfaces\Cube extensions\IWithAlternateDetailObjects.cs" />
     <Compile Include="Inerfaces\Cube extensions\IWithAlternateMainObject.cs" />
     <Compile Include="Inerfaces\Cube extensions\IWithAutoManualFlag.cs" />
     <Compile Include="Inerfaces\Cube extensions\IWithDocumentNumber.cs" />
     <Compile Include="Inerfaces\Cube extensions\IWithFormBind.cs" />
-    <Compile Include="Inerfaces\Cube extensions\IWithPkg.cs" />
-    <Compile Include="Inerfaces\Cube extensions\IWithPkgs.cs" />
     <Compile Include="Inerfaces\Cube extensions\IWithPkgState.cs" />
-    <Compile Include="Inerfaces\Cube extensions\IWithTag.cs" />
     <Compile Include="Inerfaces\Cube extensions\IWithUsr.cs" />
     <Compile Include="Inerfaces\Cube extensions\IZetaCell.cs" />
     <Compile Include="Inerfaces\Cube extensions\IZetaColumn.cs" />
@@ -235,7 +224,6 @@
     <Compile Include="Inerfaces\Extensions\WithMarksExtension.cs" />
     <Compile Include="Inerfaces\Extra data\GraphRelationType.cs" />
     <Compile Include="Inerfaces\Extra data\IBizTran.cs" />
-    <Compile Include="Inerfaces\Extra data\IContragent.cs" />
     <Compile Include="Inerfaces\Extra data\IDayCourse.cs" />
     <Compile Include="Inerfaces\Extra data\IDetailObjectGroup.cs" />
     <Compile Include="Inerfaces\Extra data\IDetailObjectGroupLink.cs" />
@@ -268,6 +256,7 @@
     <Compile Include="Inerfaces\ExtremeSupport\IWithCacheKey.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\ObjType.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\QueryResult.cs" />
+    <Compile Include="Inerfaces\ICanResolveTag.cs" />
     <Compile Include="Inerfaces\IMetaCache.cs" />
     <Compile Include="Inerfaces\IOlapCache.cs" />
     <Compile Include="Inerfaces\IOlapCell.cs" />
@@ -275,7 +264,16 @@
     <Compile Include="Inerfaces\IOlapDetailObject.cs" />
     <Compile Include="Inerfaces\IOlapForm.cs" />
     <Compile Include="Inerfaces\IOlapMainObject.cs" />
+    <Compile Include="Inerfaces\ITree.cs" />
+    <Compile Include="Inerfaces\IWithCategory.cs" />
     <Compile Include="Inerfaces\IWithClassRef.cs" />
+    <Compile Include="Inerfaces\IWithData.cs" />
+    <Compile Include="Inerfaces\IWithGroup.cs" />
+    <Compile Include="Inerfaces\IWithPath.cs" />
+    <Compile Include="Inerfaces\IWithPeriod.cs" />
+    <Compile Include="Inerfaces\IWithRange.cs" />
+    <Compile Include="Inerfaces\IWithStringValue.cs" />
+    <Compile Include="Inerfaces\IWithYear.cs" />
     <Compile Include="Inerfaces\IWthRefTo.cs" />
     <Compile Include="Inerfaces\RowComparer.cs" />
     <Compile Include="Inerfaces\StubMetaCache.cs" />
@@ -298,7 +296,6 @@
     <Compile Include="Inerfaces\Support\IWithCells.cs" />
     <Compile Include="Inerfaces\Support\IWithContactHuman.cs" />
     <Compile Include="Inerfaces\Support\IWithDataType.cs" />
-    <Compile Include="Inerfaces\Support\IWithDetailGroupLinks.cs" />
     <Compile Include="Inerfaces\Support\IWithDetailObject.cs" />
     <Compile Include="Inerfaces\Support\IWithDetailObjectGroup.cs" />
     <Compile Include="Inerfaces\Support\IWithDetailObjects.cs" />

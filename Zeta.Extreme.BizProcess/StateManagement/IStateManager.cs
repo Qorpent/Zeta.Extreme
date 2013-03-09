@@ -8,8 +8,8 @@
 
 #endregion
 
-using Comdiv.Zeta.Model;
 using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>

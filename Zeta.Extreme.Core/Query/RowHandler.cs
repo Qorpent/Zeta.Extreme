@@ -11,9 +11,8 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Comdiv.Zeta.Model;
-using Comdiv.Zeta.Model.ExtremeSupport;
 using Zeta.Extreme.Meta;
+using Zeta.Extreme.Poco.Inerfaces;
 using RowCache = Zeta.Extreme.Poco.NativeSqlBind.RowCache;
 
 namespace Zeta.Extreme {

@@ -9,10 +9,9 @@
 #endregion
 
 using System.Collections.Generic;
-using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IForm : IWithId, IWithCode, IWithVersion,
 	                         // IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
 	                         IWithMainObject<IZetaMainObject> {

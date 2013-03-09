@@ -8,9 +8,7 @@
 
 #endregion
 
-using Comdiv.Model;
-
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IFixable {
 		bool Finished { get; set; }
 

@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithMarks<TargetType, LinkType, MarkType> : IWithMarksBase
 		where LinkType : IMarkLink<TargetType, MarkType> where MarkType : IMark {
 		IList<LinkType> MarkLinks { get; set; }

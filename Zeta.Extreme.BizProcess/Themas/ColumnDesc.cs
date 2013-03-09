@@ -26,10 +26,9 @@ using System.Xml.Serialization;
 using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Logging;
-using Comdiv.Olap.Model;
 using Comdiv.Security;
-using Comdiv.Zeta.Model;
 using Qorpent.Serialization;
+using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
 #endregion

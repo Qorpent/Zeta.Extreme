@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithFixRules {
 		IList<IFixRule> FixRules { get; set; }
 	}

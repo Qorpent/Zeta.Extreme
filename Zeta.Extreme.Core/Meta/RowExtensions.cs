@@ -16,9 +16,9 @@
 // // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
 #define NEWMODEL
 
-using Comdiv.Zeta.Model;
 using Comdiv.Extensions;
 using Qorpent.Utils;
+using Zeta.Extreme.Poco.Inerfaces;
 
 #if NEWMODEL
 

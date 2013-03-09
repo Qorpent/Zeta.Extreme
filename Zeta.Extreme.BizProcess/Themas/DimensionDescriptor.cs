@@ -20,8 +20,8 @@ using System.Xml.Serialization;
 using Comdiv.Extensions;
 using Comdiv.Model;
 using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
 using Qorpent.Serialization;
+using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
 #if NEWMODEL

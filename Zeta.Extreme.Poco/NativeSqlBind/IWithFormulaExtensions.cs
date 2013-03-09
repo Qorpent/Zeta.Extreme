@@ -8,7 +8,7 @@
 
 #endregion
 
-using Comdiv.Olap.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 #if NEWMODEL
 using Comdiv.Extensions;

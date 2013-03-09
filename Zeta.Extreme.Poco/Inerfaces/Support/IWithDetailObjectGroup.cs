@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithDetailObjectGroup<M, D> where M : IOlapMainObjectBase where D : IOlapDetailObjectBase<M> {
 		IDetailObjectGroup<M, D> DetailObjectGroup { get; set; }
 	}

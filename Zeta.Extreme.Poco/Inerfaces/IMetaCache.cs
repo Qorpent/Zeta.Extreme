@@ -8,9 +8,9 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	/// <summary>
 	/// 	Интерфейс локального хранилища метаданных
 	/// </summary>
@@ -26,7 +26,7 @@ namespace Comdiv.Zeta.Model {
 		/// <typeparam name="T"> </typeparam>
 		/// <param name="id"> </param>
 		/// <returns> </returns>
-		T Get<T>(object id) where T : class, IEntityDataPattern;
+		T Get<T>(object id) where T : class, IEntity;
 
 		/// <summary>
 		/// 	Сохранить объект в хранилище
@@ -34,6 +34,6 @@ namespace Comdiv.Zeta.Model {
 		/// <typeparam name="T"> </typeparam>
 		/// <param name="item"> </param>
 		/// <returns> </returns>
-		IMetaCache Set<T>(T item) where T : class, IEntityDataPattern;
+		IMetaCache Set<T>(T item) where T : class, IEntity;
 	}
 }

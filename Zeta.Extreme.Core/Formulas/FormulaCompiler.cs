@@ -17,9 +17,9 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Comdiv.Application;
-using Comdiv.Zeta.Model;
 using Microsoft.CSharp;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>

@@ -8,6 +8,6 @@
 
 #endregion
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public class DetailComparer : ByIdxComparer<IZetaDetailObject> {}
 }

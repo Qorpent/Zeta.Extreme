@@ -17,8 +17,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Comdiv.Application;
-using Comdiv.Zeta.Model.ExtremeSupport;
 using Qorpent.Applications;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Primary {
 	/// <summary>

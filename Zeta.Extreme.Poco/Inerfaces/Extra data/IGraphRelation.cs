@@ -8,11 +8,11 @@
 
 #endregion
 
-using Comdiv.Model;
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
-	public interface IGraphRelation : IItemDataPattern, IWithCode {
+namespace Zeta.Extreme.Poco.Inerfaces {
+	public interface IGraphRelation : IWithId,  IWithVersion,IWithCode
+	{
 		IZetaMainObject Root { get; set; }
 		IZetaMainObject Target { get; set; }
 		GraphRelationType Type { get; set; }

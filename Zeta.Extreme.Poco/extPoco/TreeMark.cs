@@ -9,8 +9,8 @@
 #endregion
 
 using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
+using IEntityDataPattern = Qorpent.Model.IEntity;
 
 namespace Zeta.Extreme.Poco {
 	public partial class TreeMark : IZetaRowMark {

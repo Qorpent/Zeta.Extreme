@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithMarksBase {
 		IList<IMarkLinkBase> GetMarkLinks();
 		bool IsMarkSeted(string code);

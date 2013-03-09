@@ -8,11 +8,11 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
 using Zeta.Extreme.Poco.Deprecated;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	[ForSearch("Метка")]
 	public interface IMark :
-		IEntityDataPattern {}
+		IEntity {}
 }

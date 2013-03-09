@@ -12,17 +12,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
-using Comdiv.Zeta.Model;
-using Comdiv.Zeta.Model.ExtremeSupport;
+using Qorpent.Model;
+using Zeta.Extreme.Poco.Inerfaces;
+using IWithFormula = Zeta.Extreme.Poco.Inerfaces.IWithFormula;
 
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Базовый класс обертки измерения
 	/// </summary>
 	/// <typeparam name="TItem"> </typeparam>
-	public abstract class CachedItemHandlerBase<TItem> : CacheKeyGeneratorBase, IQueryDimension<TItem> where TItem : class, IWithCode, IWithId, IWithNewTags {
+	public abstract class CachedItemHandlerBase<TItem> : CacheKeyGeneratorBase, IQueryDimension<TItem> where TItem : class, IWithCode, IWithId, IWithTag {
 		/// <summary>
 		/// 	Набор кодов элемента
 		/// </summary>
@@ -230,9 +229,7 @@ namespace Zeta.Extreme {
 
 		string IWithComment.Comment { get; set; }
 
-		DateTime IWithVersion.Version {
-			get { return _version; }
-		}
+		
 
 		IDictionary<string, object> IZetaQueryDimension.LocalProperties {
 			get {
@@ -357,8 +354,6 @@ namespace Zeta.Extreme {
 		}
 
 
-		private readonly DateTime _version = new DateTime();
-
 		private string _code;
 		private string[] _codes;
 		private string _formula;
@@ -370,11 +365,23 @@ namespace Zeta.Extreme {
 		private TItem _native;
 		private string _tag;
 
+		
+
 		/// <summary>
 		/// 	Нормализует объект зоны
 		/// </summary>
 		/// <param name="session"> </param>
 		/// <exception cref="NotImplementedException"></exception>
 		public abstract void Normalize(ISession session);
+
+		/// <summary>
+		/// 	An index of object
+		/// </summary>
+		public int Idx { get; set; }
+
+		/// <summary>
+		/// 	Название
+		/// </summary>
+		public DateTime Version { get; set; }
 	}
 }

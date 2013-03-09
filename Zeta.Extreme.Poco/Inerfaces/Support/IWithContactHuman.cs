@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithContactHuman {
 		bool Boss { get; set; }
 		bool Worker { get; set; }

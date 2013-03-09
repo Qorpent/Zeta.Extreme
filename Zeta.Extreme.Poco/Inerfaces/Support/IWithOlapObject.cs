@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithOlapObject<MainObjectType, DetailObjectType> :
 		IWithMainObject<MainObjectType>,
 		IWithDetailObject<DetailObjectType, MainObjectType>

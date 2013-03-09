@@ -12,8 +12,8 @@ using System;
 using System.Collections.Generic;
 using Comdiv.Model;
 using Comdiv.Persistence;
-using Comdiv.Zeta.Model;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class objcls : IDetailObjectClass {

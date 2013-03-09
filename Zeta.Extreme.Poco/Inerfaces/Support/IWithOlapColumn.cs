@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithOlapColumn<ColumnType> where ColumnType : IOlapColumn {
 		ColumnType Column { get; set; }
 	}

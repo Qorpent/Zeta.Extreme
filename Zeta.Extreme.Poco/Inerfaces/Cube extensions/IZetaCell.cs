@@ -8,11 +8,10 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
+using Qorpent.Model;
 using Zeta.Extreme.Poco.Deprecated;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	[Classic("MainDataRow")]
 	public interface IZetaCell :
 		IWithComment,
@@ -20,7 +19,6 @@ namespace Comdiv.Zeta.Model {
 		IFixable,
 		IOlapCell<IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
 		IWithTag,
-		IWithPkg,
 		IWithAutoManualFlag,
 		IWithUsr {
 		string Valuta { get; set; }

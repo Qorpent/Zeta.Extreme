@@ -25,7 +25,7 @@ using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Inversion;
 using Comdiv.Security;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Form.Meta{

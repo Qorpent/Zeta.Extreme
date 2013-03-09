@@ -9,11 +9,10 @@
 #endregion
 
 using System.Collections.Generic;
-using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
-	public interface IZetaQueryDimension : IEntityDataPattern, IWithFormula {
+namespace Zeta.Extreme.Poco.Inerfaces {
+	public interface IZetaQueryDimension : IEntity, IWithFormula {
 		IDictionary<string, object> LocalProperties { get; }
 	}
 }

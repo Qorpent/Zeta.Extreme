@@ -12,11 +12,10 @@ using System;
 using System.Linq;
 using Comdiv.Application;
 using Comdiv.Model;
-using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
+using Qorpent.Model;
 using Qorpent.Utils.Extensions;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public static class WithMarksExtension {
 		public static bool UseMarkCaching = true;
 
@@ -36,7 +35,7 @@ namespace Comdiv.Zeta.Model {
 				if (UseMarkCaching && (obj is IWithMarkCache)) {
 					var mc = ((IWithMarkCache) obj);
 					var storage = myapp.storage.Get<T>();
-					var copy = (IWithMarkCache) storage.Load<T>(obj.Id());
+					var copy = (IWithMarkCache) storage.Load<T>(((IWithId)obj).Id);
 					var existed = copy.MarkCache;
 					copy.MarkCache = SlashListHelper.SetMark(existed, code);
 					storage.Save(copy);
@@ -58,7 +57,7 @@ namespace Comdiv.Zeta.Model {
 			var storage = myapp.storage.Get(linkType);
 			var link = (IMarkLinkBase) storage.New(linkType, "");
 			link.MarkLinkMark = mark;
-			link.MarkLinkTarget = (IEntityDataPattern) obj;
+			link.MarkLinkTarget = (IEntity) obj;
 			storage.Save(link);
 			storage.Refresh(obj);
 		}
@@ -75,7 +74,7 @@ namespace Comdiv.Zeta.Model {
 				if (UseMarkCaching && (obj is IWithMarkCache)) {
 					var mc = ((IWithMarkCache) obj);
 					var storage = myapp.storage.Get<T>();
-					var copy = (IWithMarkCache) storage.Load<T>(obj.Id());
+					var copy = (IWithMarkCache) storage.Load<T>(((IWithId)obj).Id);
 					var existed = copy.MarkCache;
 					copy.MarkCache = SlashListHelper.RemoveMark(existed, code);
 					storage.Save(copy);
@@ -91,9 +90,14 @@ namespace Comdiv.Zeta.Model {
 		public static void UnSetMark(this IWithMarksBase obj, IMark mark) {
 			if (obj.IsMarkSeted(mark.Code)) {
 				var todelete = obj.GetMarkLinks().FirstOrDefault(l => l.MarkLinkMark.Code == mark.Code);
+				
 				obj.RemoveMark(mark);
 				var storage = myapp.storage.Get<IMark>();
-				storage.Delete(todelete.GetType(), todelete.Id(), null);
+				if (null != todelete)
+				{
+					storage.Delete(todelete.GetType(), ((IWithId)todelete).Id, null);
+				}
+				
 				// storage.Refresh(obj);
 			}
 		}

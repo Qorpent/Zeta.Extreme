@@ -8,9 +8,9 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IUsrThemaMap : IWithId, IWithVersion {
 		IZetaMainObject Object { get; set; }
 		IZetaUnderwriter Usr { get; set; }

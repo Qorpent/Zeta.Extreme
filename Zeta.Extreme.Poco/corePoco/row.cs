@@ -16,8 +16,8 @@ using Comdiv.Application;
 using Comdiv.MVC;
 using Comdiv.Model;
 using Comdiv.Persistence;
-using Comdiv.Zeta.Model;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class row : IZetaRow {

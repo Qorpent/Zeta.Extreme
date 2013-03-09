@@ -8,13 +8,11 @@
 
 #endregion
 
-using Comdiv.Model;
-using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IFixRule :
-		IItemDataPattern,
+		IWithId, IWithVersion,
 		IOlapVector<IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
 		IWithComment,
 		IWithCategory,

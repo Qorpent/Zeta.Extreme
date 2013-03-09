@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithMeasure {
 		string Measure { get; set; }
 		bool IsDynamicMeasure { get; set; }

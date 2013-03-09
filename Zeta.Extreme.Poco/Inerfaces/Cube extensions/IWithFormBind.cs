@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithFormBind {
 		bool Versioned { get; set; }
 		string FormCode { get; set; }

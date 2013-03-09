@@ -48,5 +48,10 @@ namespace Zeta.Extreme.Poco {
 		[Deprecated.Map] public virtual string SecondRole { get; set; }
 
 		[Deprecated.Map] public virtual string SecondForm { get; set; }
+
+		/// <summary>
+		/// 	An index of object
+		/// </summary>
+		public virtual int Idx { get; set; }
 	}
 }

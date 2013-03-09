@@ -1,6 +1,6 @@
-using Comdiv.Zeta.Model.ExtremeSupport;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]

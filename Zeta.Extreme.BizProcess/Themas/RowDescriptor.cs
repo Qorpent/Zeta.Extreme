@@ -16,7 +16,7 @@
 // // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
 
 using Comdiv.Extensions;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Themas{
     /// <summary>

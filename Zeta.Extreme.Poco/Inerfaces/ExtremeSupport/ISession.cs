@@ -11,7 +11,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Comdiv.Zeta.Model.ExtremeSupport {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	/// <summary>
 	/// 	Асинхронная, Zeta.Extrem cecсия, базовый интерфейс
 	/// </summary>

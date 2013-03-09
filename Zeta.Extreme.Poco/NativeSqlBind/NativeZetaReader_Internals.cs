@@ -12,8 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Comdiv.Application;
-using Comdiv.Olap.Model;
 using Qorpent.Applications;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco.NativeSqlBind {
 	/// <summary>

@@ -8,6 +8,6 @@
 
 #endregion
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public delegate bool RowTestFunc(IZetaRow row);
 }

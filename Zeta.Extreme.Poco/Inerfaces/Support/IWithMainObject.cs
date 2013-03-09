@@ -10,7 +10,7 @@
 
 using Zeta.Extreme.Poco.Deprecated;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithMainObject<MainObjectType> where MainObjectType : IOlapMainObjectBase {
 		[Classic("Org")] MainObjectType Object { get; set; }
 	}

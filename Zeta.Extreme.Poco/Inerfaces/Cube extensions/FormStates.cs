@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	[Flags]
 	public enum FormStates {
 		None = 0,

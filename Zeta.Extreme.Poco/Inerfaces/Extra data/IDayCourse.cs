@@ -9,9 +9,9 @@
 #endregion
 
 using System;
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IDayCourse : IWithId, IWithVersion {
 		DateTime Day { get; set; }
 		string InType { get; set; }

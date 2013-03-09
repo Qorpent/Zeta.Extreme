@@ -10,7 +10,7 @@
 
 using System;
 using Comdiv.Model;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public class GraphRelation : IGraphRelation {

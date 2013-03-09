@@ -8,9 +8,7 @@
 
 #endregion
 
-using Comdiv.Model;
-
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithFormula {
 		[global::Zeta.Extreme.Poco.Deprecated.Map] bool IsFormula { get; set; }
 		[global::Zeta.Extreme.Poco.Deprecated.Map] string Formula { get; set; }

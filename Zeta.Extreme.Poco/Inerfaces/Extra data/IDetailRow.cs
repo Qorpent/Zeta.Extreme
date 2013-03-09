@@ -8,10 +8,10 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
-	public interface IDetailRow : ISimpleEntityDataPattern, IWithCode {
+namespace Zeta.Extreme.Poco.Inerfaces {
+	public interface IDetailRow : IWithId,IWithName, IWithCode {
 		bool Active { get; set; }
 		IZetaDetailObject Detail { get; set; }
 		IZetaRow Row { get; set; }

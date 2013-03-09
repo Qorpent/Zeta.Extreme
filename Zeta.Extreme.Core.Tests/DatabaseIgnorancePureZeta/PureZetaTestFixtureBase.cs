@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Comdiv.Model.Interfaces;
-using Comdiv.Zeta.Model.ExtremeSupport;
 using NUnit.Framework;
+using Qorpent.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
@@ -77,7 +78,7 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 		protected IDictionary<string, decimal> _key_to_value_pseudosql_storage = new Dictionary<string, decimal>();
 		private MetaCache _metacache;
 
-		protected void Add(IEntityDataPattern item) {
+		protected void Add(IEntity item) {
 			_metacache.Set(item);
 		}
 

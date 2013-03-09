@@ -10,7 +10,7 @@
 
 using Zeta.Extreme.Poco.Deprecated;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithOlapRow<RowType>
 		where RowType : IOlapRow {
 		[Classic("MainDataTree")] RowType Row { get; set; }

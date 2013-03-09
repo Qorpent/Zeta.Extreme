@@ -9,15 +9,15 @@
 #endregion
 
 using System;
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model.ExtremeSupport {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	/// <summary>
 	/// 	Описывает стандартное измерение запросов Zeta
 	/// </summary>
 	/// <typeparam name="TItem"> </typeparam>
 	public interface IQueryDimension<TItem> : IWithCacheKey, IZetaQueryDimension
-		where TItem : class, IWithCode, IWithId, IWithNewTags {
+		where TItem : class, IWithCode, IWithId, IWithTag {
 		/// <summary>
 		/// 	Набор кодов элемента
 		/// </summary>

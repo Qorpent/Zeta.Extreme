@@ -8,8 +8,6 @@
 
 #endregion
 
-using Comdiv.Olap.Model;
-
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IZetaObjectGroup : IObjectGroup<IZetaMainObject> {}
 }

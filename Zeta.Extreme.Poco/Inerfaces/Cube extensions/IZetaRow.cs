@@ -10,11 +10,9 @@
 
 using System;
 using System.Collections.Generic;
-using Comdiv.Model;
-using Comdiv.Olap.Model;
 using Comdiv.Persistence;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	[global::Zeta.Extreme.Poco.Deprecated.ForSearch("Строка, признак")]
 	public interface IZetaRow :
 		IOlapForm<IZetaRow>,

@@ -11,11 +11,10 @@
 using System;
 using System.Collections.Generic;
 using Comdiv.Model;
-using Comdiv.Olap.Model;
 using Comdiv.Persistence;
 using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	[global::Zeta.Extreme.Poco.Deprecated.ForSearch("Старший объект (предприятие)")]
 	public interface IZetaMainObject :
 		IZetaObject,

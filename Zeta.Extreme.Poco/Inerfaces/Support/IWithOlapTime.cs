@@ -8,9 +8,7 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
-
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithOlapTime :
 		IWithYear,
 		IWithPeriod,

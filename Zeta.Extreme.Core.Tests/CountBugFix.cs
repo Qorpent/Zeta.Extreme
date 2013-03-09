@@ -1,7 +1,7 @@
 using System;
-using Comdiv.Zeta.Model.ExtremeSupport;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
+using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme.Core.Tests {

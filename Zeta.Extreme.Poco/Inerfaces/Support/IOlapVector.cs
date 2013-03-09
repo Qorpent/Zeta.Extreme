@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IOlapVector<RowType, ColumnType, MainObjectType, DetailObjectType> :
 		IWithOlapRow<RowType>,
 		IWithOlapTime,

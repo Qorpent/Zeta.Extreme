@@ -33,8 +33,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Comdiv.Application;
 using Comdiv.Persistence;
-using Comdiv.Zeta.Model;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco.NativeSqlBind {
 	/// <summary>

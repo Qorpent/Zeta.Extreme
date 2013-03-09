@@ -10,8 +10,8 @@
 
 using System;
 using Comdiv.Model;
-using Comdiv.Zeta.Model;
 using Qorpent;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class fixrule : IFixRule {

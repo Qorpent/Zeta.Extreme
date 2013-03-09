@@ -8,12 +8,11 @@
 
 #endregion
 
-using Comdiv.Model;
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IMarkLinkBase {
-		[global::Zeta.Extreme.Poco.Deprecated.NoMap] IEntityDataPattern MarkLinkTarget { get; set; }
+		[global::Zeta.Extreme.Poco.Deprecated.NoMap] IEntity MarkLinkTarget { get; set; }
 
 		[global::Zeta.Extreme.Poco.Deprecated.NoMap] IMark MarkLinkMark { get; set; }
 	}

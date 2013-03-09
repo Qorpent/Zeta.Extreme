@@ -9,10 +9,11 @@
 #endregion
 
 using Comdiv.Model;
+using Qorpent.Model;
 
-namespace Comdiv.Olap.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IOlapRowMark<RowType> :
-		IItemDataPattern,
+		IWithId, IWithVersion,
 		IMarkLink<RowType> //,
 		// IWithOlapRow<RowType>
 		where RowType : IOlapRow {}

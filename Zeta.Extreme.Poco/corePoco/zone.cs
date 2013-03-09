@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using Comdiv.Model;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class zone : IZetaZone {
@@ -30,5 +30,10 @@ namespace Zeta.Extreme.Poco {
 		[Deprecated.Map] public virtual string Comment { get; set; }
 
 		[Deprecated.Map] public virtual DateTime Version { get; set; }
+
+		/// <summary>
+		/// 	An index of object
+		/// </summary>
+		public int Idx { get; set; }
 	}
 }

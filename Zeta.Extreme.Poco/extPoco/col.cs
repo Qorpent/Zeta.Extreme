@@ -11,9 +11,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Comdiv.Application;
-using Comdiv.Olap.Model;
-using Comdiv.Zeta.Model;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class col : IZetaColumn, IZetaQueryDimension {

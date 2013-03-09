@@ -10,6 +10,7 @@
 
 using Comdiv.Model;
 using Comdiv.Model.Interfaces;
+using IEntityDataPattern = Qorpent.Model.IEntity;
 
 namespace Zeta.Extreme.Poco {
 	public interface IBizTran : IEntityDataPattern {

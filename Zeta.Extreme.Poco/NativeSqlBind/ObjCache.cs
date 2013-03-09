@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco.NativeSqlBind {
 	/// <summary>

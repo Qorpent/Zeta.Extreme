@@ -10,7 +10,6 @@
 
 using System.Linq;
 using Comdiv.Application;
-using Comdiv.Zeta.Model;
 using Zeta.Extreme.Meta;
 using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.NativeSqlBind;

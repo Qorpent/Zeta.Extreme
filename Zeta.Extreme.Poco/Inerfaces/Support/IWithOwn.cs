@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IWithOwn {
 		int IntOwn { get; set; }
 		SubpartRelation Own { get; set; }

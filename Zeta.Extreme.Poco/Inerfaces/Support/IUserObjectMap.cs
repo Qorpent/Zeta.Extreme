@@ -8,12 +8,11 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IUserObjectMap :
-		IEntityDataPattern,
+		IEntity,
 		IWithMainObject<IZetaMainObject>,
 		IWithAllOrgs {
 		string Domain { get; set; }

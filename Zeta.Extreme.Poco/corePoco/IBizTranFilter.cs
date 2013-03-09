@@ -9,7 +9,8 @@
 #endregion
 
 using Comdiv.Model;
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
+
 
 namespace Zeta.Extreme.Poco {
 	public interface IBizTranFilter : IWithId {

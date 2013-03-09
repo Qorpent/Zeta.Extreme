@@ -10,7 +10,7 @@
 
 using System;
 using Comdiv.Model;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public class period : IPeriod {
@@ -31,6 +31,11 @@ namespace Zeta.Extreme.Poco {
 		[Deprecated.Map(Title = " онечна€ дата")] public virtual DateTime EndDate { get; set; }
 
 		[Deprecated.Map(Title = "„исло мес€цев")] public virtual int MonthCount { get; set; }
+
+		/// <summary>
+		/// 	“ип формулы
+		/// </summary>
+		public string FormulaType { get; set; }
 
 		[Deprecated.Map(Title = "явл. формулой")] public virtual bool IsFormula { get; set; }
 

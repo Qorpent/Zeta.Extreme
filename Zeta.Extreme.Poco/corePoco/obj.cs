@@ -15,9 +15,10 @@ using System.Text.RegularExpressions;
 using Comdiv.Application;
 using Comdiv.Model;
 using Comdiv.Persistence;
-using Comdiv.Zeta.Model;
 using Qorpent;
+using Qorpent.Model;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class obj : IZetaMainObject, IZetaQueryDimension {

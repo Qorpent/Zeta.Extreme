@@ -9,19 +9,17 @@
 #endregion
 
 using System.Collections.Generic;
-using Comdiv.Model;
-using Comdiv.Model.Interfaces;
-using Comdiv.Olap.Model;
-using Comdiv.Security;
+using Qorpent.Model;
 
-namespace Comdiv.Zeta.Model {
+namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IZetaUnderwriter :
-		IEntityDataPattern,
+		IEntity,
 		IWithMainObject<IZetaMainObject>,
 		IWithContactHuman {
 		string Login2 { get; set; }
 		string SlotList { get; set; }
 		IList<string> Slots { get; }
+		string Roles { get; set; }
 
 		/// <summary>
 		/// 	Free list of documents,where basis for security provided

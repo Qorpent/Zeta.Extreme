@@ -8,7 +8,7 @@
 
 #endregion
 
-using Comdiv.Olap.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
 	public partial class Mark : IMark {}
