@@ -196,8 +196,6 @@ namespace Zeta.Extreme.FrontEnd {
 							compileerror =
 								FormulaStorage.Default.LastCompileError == null ? "" : FormulaStorage.Default.LastCompileError.ToString(),
 							formulacount = FormulaStorage.Default.Count,
-							cachetime = _formulaCacheTime,
-							findtime = _formulaFindTime,
 							compiletime = _formulaRegisterTime
 						},
 					themas = new
@@ -282,71 +280,9 @@ namespace Zeta.Extreme.FrontEnd {
 					FormulaStorage.Default.AutoBatchCompile = false;
 					FormulaStorage.Default.Clear();
 					var tmp = Application.Files.Resolve("~/.tmp/formula_dll", false);
-					FormulaStorage.Default.BuildCache(tmp);
-					_sw.Stop();
-					_formulaCacheTime = _sw.Elapsed;
-					_sw = Stopwatch.StartNew();
+					FormulaStorage.LoadDefaultFormulas(tmp);
 
 
-					var oldrowformulas = RowCache.Formulas.Where(
-						_ =>  _.Version < DateTime.Today
-						).ToArray();
-
-					var newrowformulas = RowCache.Formulas.Where(
-						_ => _.Version >= DateTime.Today
-						).ToArray();
-
-					
-
-					var oldcolformulas = (
-						                  from c in ColumnCache.Byid.Values//myapp.storage.AsQueryable<col>()
-						                  where c.IsFormula
-						                        && c.FormulaEvaluator == "boo" && !string.IsNullOrEmpty(c.Formula)
-												&& c.Version < DateTime.Today
-						                  select new {c = c.Code, f = c.Formula, tag = c.Tag, version=c.Version}
-					                  ).ToArray();
-
-					var newcolformulas = (
-						                     from c in ColumnCache.Byid.Values //myapp.storage.AsQueryable<col>()
-										  where c.IsFormula
-												&& c.FormulaEvaluator == "boo" && !string.IsNullOrEmpty(c.Formula)
-												&& c.Version >= DateTime.Today
-										  select new { c = c.Code, f = c.Formula, tag = c.Tag, version=c.Version }
-									  ).ToArray();
-
-					_sw.Stop();
-					_formulaFindTime = _sw.Elapsed;
-					_sw = Stopwatch.StartNew();
-					foreach (var f in oldrowformulas)
-					{
-						var req = new FormulaRequest { Key = "row:" + f.Code, Formula = f.Formula, Language = f.FormulaEvaluator,Version = f.Version.ToString(CultureInfo.InvariantCulture)};
-						FormulaStorage.Default.Register(req);
-					}
-					
-					foreach (var c in oldcolformulas)
-					{
-						var req = new FormulaRequest { Key = "col:" + c.c, Formula = c.f, Language = "boo", Tags = c.tag, Version = c.version.ToString(CultureInfo.InvariantCulture) };
-						FormulaStorage.Default.Register(req);
-					}
-					FormulaStorage.Default.CompileAll(tmp);
-
-
-					foreach (var f in newrowformulas)
-					{
-						var req = new FormulaRequest { Key = "row:" + f.Code, Formula = f.Formula, Language = f.FormulaEvaluator ,Version = f.Version.ToString(CultureInfo.InvariantCulture) };
-						FormulaStorage.Default.Register(req);
-					}
-
-					foreach (var c in newcolformulas)
-					{
-						var req = new FormulaRequest { Key = "col:" + c.c, Formula = c.f, Language = "boo", Tags = c.tag, Version = c.version.ToString(CultureInfo.InvariantCulture) };
-						FormulaStorage.Default.Register(req);
-					}
-					FormulaStorage.Default.CompileAll(tmp);
-
-					
-
-					
 					FormulaStorage.Default.AutoBatchCompile = true;
 					_sw.Stop();
 					_formulaRegisterTime = _sw.Elapsed;
@@ -384,8 +320,6 @@ namespace Zeta.Extreme.FrontEnd {
 		
 		private readonly bool _doNotRun;
 		private int _idx = -100;
-		private TimeSpan _formulaCacheTime;
-		private TimeSpan _formulaFindTime;
 		private TimeSpan _formulaRegisterTime;
 	}
 }

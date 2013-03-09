@@ -30,13 +30,13 @@ namespace Zeta.Extreme.Core.Tests {
 					Time = { Year = 2013, Period = 251 },
 					Obj = {Id=1067},
 				});
-			Assert.AreEqual(46417906m,result.NumericResult);
+			Assert.AreEqual(45935313m, result.NumericResult);
 		}
 
 		[Test]
 		public void ZC_233_Bug_PLANSNG1_Cause_0_Year_InPrimary_Test_One_Normalization()
 		{
-			Query query = new Query
+			var query = new Query
 				{
 					Row = { Code = "m2601311" },
 					Col = { Code = "PLANSNG1" },
@@ -101,7 +101,7 @@ namespace Zeta.Extreme.Core.Tests {
 			query.WaitPrepare();
 
 			_serial.Eval(query);
-			Assert.AreEqual(-416253m, query.Result.NumericResult);
+			Assert.AreEqual(-124472m, query.Result.NumericResult);
 		}
 
 		

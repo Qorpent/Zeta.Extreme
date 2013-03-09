@@ -47,29 +47,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				ColumnCache.Start();
 				ObjCache.Start();
 				FormulaStorage.Default.AutoBatchCompile = false;
-				var _sumh = new StrongSumProvider();
-				var formulas = RowCache. Byid.Values.Where(_ => _.IsFormula && !_sumh.IsSum(_) && _.ResolveTag("extreme")=="1").ToArray();
-
-				foreach (var f in formulas) {
-					var req = new FormulaRequest {Key ="row:"+ f.Code, Formula = f.Formula, Language = f.FormulaEvaluator};
-					FormulaStorage.Default.Register(req);
-					
-				}
-
-				var colformulas = (
-					                  from c in ColumnCache.Byid.Values//myapp.storage.AsQueryable<col>()
-					                  where c.IsFormula && c.FormulaEvaluator == "boo" && !string.IsNullOrEmpty(c.Formula)
-					                  select new {c = c.Code, f = c.Formula}
-				                  ).ToArray();
-
-
-				foreach (var c in colformulas)
-				{
-					var req = new FormulaRequest { Key = "col:"+c.c, Formula = c.f, Language = "boo" };
-					FormulaStorage.Default.Register(req);
-					
-				}
-				FormulaStorage.Default.CompileAll();
+				FormulaStorage.LoadDefaultFormulas(null);
 				FormulaStorage.Default.AutoBatchCompile = true;
 				ColumnCache.Start();
 				wascallnhibernate = true;

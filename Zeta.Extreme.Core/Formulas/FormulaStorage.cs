@@ -11,11 +11,13 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -67,7 +69,7 @@ namespace Zeta.Extreme {
 						_registry[request.Key] = request;
 						return request.Key;
 					}
-					if (string.IsNullOrWhiteSpace(request.Key)) {
+					if (String.IsNullOrWhiteSpace(request.Key)) {
 						request.Key = request.Formula.Trim();
 					}
 					if (_registry.ContainsKey(request.Key)) {
@@ -80,7 +82,7 @@ namespace Zeta.Extreme {
 							existed.PreparedType = request.PreparedType ?? existed.PreparedType;
 							existed.PreprocessedFormula = request.PreprocessedFormula;
 							existed.Cache.Clear();
-							if (null == existed.PreparedType && string.IsNullOrWhiteSpace(existed.PreprocessedFormula)) {
+							if (null == existed.PreparedType && String.IsNullOrWhiteSpace(existed.PreprocessedFormula)) {
 								Preprocess(existed);
 							}
 						}
@@ -92,7 +94,7 @@ namespace Zeta.Extreme {
 						}
 						else {
 							TryResolveFromCache(request);
-							if (null == request.PreparedType && string.IsNullOrWhiteSpace(request.PreprocessedFormula)) {
+							if (null == request.PreparedType && String.IsNullOrWhiteSpace(request.PreprocessedFormula)) {
 								Preprocess(request);
 							}
 						}
@@ -346,5 +348,91 @@ namespace Zeta.Extreme {
 		public int BatchSize = 5;
 
 		private IList<Assembly> _formulaAssemblyCache;
+
+		/// <summary>
+		/// Загружает формулы по умолчанию из кжша, с использованием указанной папки готовых DLL
+		/// </summary>
+		/// <param name="tmp"></param>
+		public static void LoadDefaultFormulas(string tmp) {
+			if(tmp.IsNotEmpty()) {
+				Default.BuildCache(tmp);
+			}
+			var oldrowformulas = RowCache.Formulas.Where(
+				_ => _.Version < DateTime.Today
+				).ToArray();
+
+			var newrowformulas = RowCache.Formulas.Where(
+				_ => _.Version >= DateTime.Today
+				).ToArray();
+
+
+			var oldcolformulas = (
+				                     from c in ColumnCache.Byid.Values
+				                     //myapp.storage.AsQueryable<col>()
+				                     where c.IsFormula
+				                           && c.FormulaEvaluator == "boo" && !String.IsNullOrEmpty(c.Formula)
+				                           && c.Version < DateTime.Today
+				                     select new {c = c.Code, f = c.Formula, tag = c.Tag, version = c.Version}
+			                     ).ToArray();
+
+			var newcolformulas = (
+				                     from c in ColumnCache.Byid.Values
+				                     //myapp.storage.AsQueryable<col>()
+				                     where c.IsFormula
+				                           && c.FormulaEvaluator == "boo" && !String.IsNullOrEmpty(c.Formula)
+				                           && c.Version >= DateTime.Today
+				                     select new {c = c.Code, f = c.Formula, tag = c.Tag, version = c.Version}
+			                     ).ToArray();
+
+
+			foreach (var f in oldrowformulas) {
+				var req = new FormulaRequest
+					{
+						Key = "row:" + f.Code,
+						Formula = f.Formula,
+						Language = f.FormulaEvaluator,
+						Version = f.Version.ToString(CultureInfo.InvariantCulture)
+					};
+				Default.Register(req);
+			}
+
+			foreach (var c in oldcolformulas) {
+				var req = new FormulaRequest
+					{
+						Key = "col:" + c.c,
+						Formula = c.f,
+						Language = "boo",
+						Tags = c.tag,
+						Version = c.version.ToString(CultureInfo.InvariantCulture)
+					};
+				Default.Register(req);
+			}
+			Default.CompileAll(tmp);
+
+
+			foreach (var f in newrowformulas) {
+				var req = new FormulaRequest
+					{
+						Key = "row:" + f.Code,
+						Formula = f.Formula,
+						Language = f.FormulaEvaluator,
+						Version = f.Version.ToString(CultureInfo.InvariantCulture)
+					};
+				Default.Register(req);
+			}
+
+			foreach (var c in newcolformulas) {
+				var req = new FormulaRequest
+					{
+						Key = "col:" + c.c,
+						Formula = c.f,
+						Language = "boo",
+						Tags = c.tag,
+						Version = c.version.ToString(CultureInfo.InvariantCulture)
+					};
+				Default.Register(req);
+			}
+			Default.CompileAll(tmp);
+		}
 	}
 }
