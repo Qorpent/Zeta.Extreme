@@ -10,6 +10,7 @@
 
 using System;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>
