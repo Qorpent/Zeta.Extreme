@@ -74,13 +74,7 @@
 			<Image Include="Zeta.Form.UI\images\*.*"/>
 			<RootFile Include="Zeta.Form.UI\*.html"/>
 		-->
-			<!--dependency -->
-			<!-- HAVE TO KILL ALL OF IT !!! -->
-		<!--	<Library Include="Comdiv.Zeta.Model" /> -->
-			<Library Include="Comdiv.Core" />			
-			<Library Include="Comdiv.Reporting" />
-			<Library Include="Comdiv.Extensibility" />
-			<Library Include="Microsoft.Scripting" /> 
+
 			
 			
 	</ItemGroup>
