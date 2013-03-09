@@ -1,18 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Security.Principal;
-using Comdiv.Application;
-using Comdiv.Model;
-using Comdiv.Model.Interfaces;
-using Comdiv.MVC;
-using Comdiv.Reporting;
-using Comdiv.Security;
-using Comdiv.Xml;
-using Zeta.Extreme.BizProcess.Reports;
+using Qorpent.IO;
+using Qorpent.Model;
 using Zeta.Extreme.BizProcess.Themas;
 
-namespace Comdiv.Reporting{
+namespace Zeta.Extreme.BizProcess.Reports{
     /// <summary>
     /// Static report definition - contains parameters which are stable for several requests, in 
     /// RGP it means as DEFAULT behaviour, intended ConvertTo be storable

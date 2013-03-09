@@ -15,7 +15,7 @@
 // // 
 // // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
 
-using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Themas{
@@ -54,7 +54,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
         {
             if (null == this.Target) return NumberFormat;
             var customformat = TagHelper.Value(this.Target.Tag, "numberformat");
-            if (customformat.hasContent()) return customformat;
+            if (customformat.IsNotEmpty()) return customformat;
             return NumberFormat;
         }
     }

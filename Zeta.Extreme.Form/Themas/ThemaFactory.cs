@@ -14,7 +14,7 @@ using System.Linq;
 using System.Security.Principal;
 using Comdiv.Application;
 using Comdiv.Extensions;
-using Comdiv.Reporting;
+using Zeta.Extreme.BizProcess.Reports;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.InputTemplates;
 

@@ -9,7 +9,7 @@
 #endregion
 
 using System;
-using Comdiv.Reporting;
+using Zeta.Extreme.BizProcess.Reports;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>

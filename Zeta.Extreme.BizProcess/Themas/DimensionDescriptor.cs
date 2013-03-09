@@ -17,12 +17,13 @@
 
 using System;
 using System.Xml.Serialization;
-using Comdiv.Extensions;
 using Comdiv.Model;
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
 using Qorpent.Serialization;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
+using Qorpent.Utils.Extensions;
+using IWithFormula = Zeta.Extreme.Poco.Inerfaces.IWithFormula;
 
 #if NEWMODEL
 
@@ -60,7 +61,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
 		/// </summary>
 		[IgnoreSerialize]
         public bool HasTarget{
-            get { return Target.yes(); }
+            get { return Target.ToBool(); }
         }
 		/// <summary>
 		/// Целевой объект измерения
@@ -72,7 +73,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
             set{
                 _target = value;
                 if (null != value){
-                    if (value.FormulaEvaluator.hasContent()){
+                    if (value.FormulaEvaluator.IsNotEmpty()){
                         Formula = value.Formula;
                         FormulaEvaluator = value.FormulaEvaluator;
                     }
@@ -157,8 +158,8 @@ namespace Zeta.Extreme.BizProcess.Themas{
 		public string Tag {
 			//#ZC-7
 			get {
-				if(_tag.hasContent()) return _tag;
-				if (null != this.Target) return ((IEntityDataPattern)this.Target).Tag ?? "";
+				if(_tag.IsNotEmpty()) return _tag;
+				if (null != this.Target) return ((IEntity)this.Target).Tag ?? "";
 				return _tag;
 			}
 			set { _tag = value; }

@@ -178,7 +178,7 @@ namespace Zeta.Extreme.BizProcess.Reports
             {
                 return val.ToType(RealType);
             }
-            return ((string)val).SmartSplit(false, true, ',').Select(x => x.to(RealType)).ToArray();
+            return ((string)val).SmartSplit(false, true, ',').Select(x => x.ToType(RealType)).ToArray();
         }
 
 		
@@ -284,9 +284,9 @@ namespace Zeta.Extreme.BizProcess.Reports
 		/// <returns></returns>
         public bool Authorize(IPrincipal usr) {
             var param = this;
-            if (param.Role.hasContent())
+            if (param.Role.IsNotEmpty())
             {
-                var roles = param.Role.split().ToList();
+                var roles = param.Role.SmartSplit().ToList();
                 var strict = false;
                 var remove = true;
                 if (roles.Contains("STRICT"))

@@ -20,11 +20,12 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml.XPath;
 using Comdiv.Application;
 using Comdiv.Extensions;
 using Comdiv.Logging;
-using Comdiv.Reporting;
 using Qorpent.Dsl.XmlInclude;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.BizProcess.Reports
 {
@@ -70,7 +71,7 @@ namespace Zeta.Extreme.BizProcess.Reports
         public IDictionary<string, object> Eval(NameValueCollection collection)
         {
             var dict = new Dictionary<string, string>();
-            collection.AllKeys.map(x => dict[x] = collection[x]);
+            collection.AllKeys.DoForEach(x => dict[x] = collection[x]);
             return Eval(dict);
         }
 
@@ -142,7 +143,8 @@ namespace Zeta.Extreme.BizProcess.Reports
 					file = "data/" + file + ".bxl";
 				}
     			var xml = Qorpent.Applications.Application.Current.Container.Get<IXmlIncludeProcessor>().Load(file);
-    			var parameters = xml.read<Parameter>("//param").ToArray();
+    			var paramelements = xml.XPathSelectElements("//param").ToArray();
+    			var parameters = paramelements.Select(_ => _.Deserialize<Parameter>("")).ToArray();
     			foreach (var p in parameters) {
 					if(!p.IsHidden) {
 						p.Static = false;
@@ -157,13 +159,13 @@ namespace Zeta.Extreme.BizProcess.Reports
     	}
 
     	private void normalizeParameter(List<Parameter> result, List<Parameter> skipped, string name){
-            var otherparam = skipped.LastOrDefault(x => x.Code == name && x.DefaultValue.yes());
+            var otherparam = skipped.LastOrDefault(x => x.Code == name && x.DefaultValue.ToBool());
             if (null != otherparam){
                 var myparam = result.FirstOrDefault(x => x.Code == name);
                 if (null == myparam){
                     result.Add(otherparam);
                 }else{
-                    if (myparam.DefaultValue.no()){
+                    if (!myparam.DefaultValue.ToBool()){
                         result.Remove(myparam);
                         result.Add(otherparam);
                     }    
@@ -186,16 +188,16 @@ namespace Zeta.Extreme.BizProcess.Reports
                 
                 //prepare
                 var result = new Dictionary<string, object>();
-                AllParameters().map(x => x.RawValue = null);
+                AllParameters().DoForEach(x => x.RawValue = null);
 
-                log.debug(() => "Initial parameters:\r\n" + this.Select(x => x.ToString()).concat(";\r\n"));
+                log.debug(() => "Initial parameters:\r\n" + this.Select(x => x.ToString()).ConcatString(";\r\n"));
 
 
                 var outervalues = new Dictionary<string, object>();
                 collection.Where(x => x.Key.StartsWith(Prefix))
-                    .map(x => outervalues[x.Key.Substring(Prefix.Length)] = x.Value);
+                    .DoForEach(x => outervalues[x.Key.Substring(Prefix.Length)] = x.Value);
                 // first - we need collect all targets from parameters and init rawvalues collection
-                AllParameters().Select(x => x.RealTarget).Distinct().map(x => result[x] = null);
+                AllParameters().Select(x => x.RealTarget).Distinct().DoForEach(x => result[x] = null);
                 if (Extensible)
                 {
                     foreach (var pair in outervalues)
@@ -207,7 +209,7 @@ namespace Zeta.Extreme.BizProcess.Reports
                     }
                 }
 
-                log.debug(() => "Outer parameters:\r\n" + outervalues.Select(x => x.Key+" : "+x.Value).concat(";\r\n"));
+                log.debug(() => "Outer parameters:\r\n" + outervalues.Select(x => x.Key+" : "+x.Value).ConcatString(";\r\n"));
 
                 // firstly we process STATIC parameters
                 foreach (var v in result.Keys.ToArray())
@@ -218,7 +220,7 @@ namespace Zeta.Extreme.BizProcess.Reports
                     if (parameters.Count == 1) result[v] = parameters[0].Value;
                     else
                     {
-                        result[v] = parameters.Select(x => x.Value.toStr()).concat(",");
+                        result[v] = parameters.Select(x => x.Value.ToStr()).ConcatString(",");
                     }
                 }
                 //next we must process template parameters that not shares targets with static except conditions
@@ -233,10 +235,10 @@ namespace Zeta.Extreme.BizProcess.Reports
                 foreach (var parameter in AllParameters().Where(x=>x.Code.StartsWith("param_template_")).OrderBy(x=>x.Code)) {
                 	string value = "";
 					if(collection.ContainsKey("tp."+parameter.Code)) {
-						value = collection["tp."+parameter.Code].toStr();
+						value = collection["tp."+parameter.Code].ToStr();
 					}
-					if (value.noContent()) value = parameter.Value.toStr();
-                    if(value.hasContent()) {
+					if (value.IsEmpty()) value = parameter.Value.ToStr();
+                    if(value.IsNotEmpty()) {
                         var report = myapp.storage.Get<ISavedReport>().Load(value);
                         
                         this.AdvancedSavedReports.Add(report);
@@ -294,7 +296,7 @@ namespace Zeta.Extreme.BizProcess.Reports
                         }
                         else
                         {    
-                            pseudo.RawValue = temps.Select(x => x.Value).Where(v => null != v).Select(v => v.toStr()).concat(",");
+                            pseudo.RawValue = temps.Select(x => x.Value).Where(v => null != v).Select(v => v.ToStr()).ConcatString(",");
                             
                         }
                     }
@@ -306,7 +308,7 @@ namespace Zeta.Extreme.BizProcess.Reports
                 {
                     var val = v.Value;
                     if(v.Key=="condition"){
-                        val = result["condition"].toStr() + "," + val;
+                        val = result["condition"].ToStr() + "," + val;
                     }
                     result[v.Key] = val;
                 }
@@ -334,10 +336,10 @@ namespace Zeta.Extreme.BizProcess.Reports
                         throw;
                     }
                 }
-                log.debug(() => "Result :\r\n" + result.Select(x => x.Key + " : " + x.Value).concat(";\r\n"));
+                log.debug(() => "Result :\r\n" + result.Select(x => x.Key + " : " + x.Value).ConcatString(";\r\n"));
 
                 if(result.ContainsKey("year")){
-                    var y = result.get<int>("year");
+                    var y = result.SafeGet("year").ToInt();
                     if(y>-20  && y < 20){
                         result["year"] = DateTime.Today.Year + y;
                     }
@@ -358,7 +360,7 @@ namespace Zeta.Extreme.BizProcess.Reports
 		/// <returns></returns>
         public IList<string> GetTemplateParametersTabs() {
             return
-                AllParameters().Select(x => x.Tab.hasContent() ? x.Tab : "00. Основные").Distinct().OrderBy(
+                AllParameters().Select(x => x.Tab.IsNotEmpty() ? x.Tab : "00. Основные").Distinct().OrderBy(
                     x => x).ToList();
         }
 		/// <summary>
@@ -368,7 +370,7 @@ namespace Zeta.Extreme.BizProcess.Reports
 		/// <returns></returns>
         public IList<string> GetTemplateParametersGroups(string tab) {
             return
-                AllParameters().Where(x => (x.Tab == tab || (x.Tab.noContent() && tab == "00. Основные"))).Select(x => x.Group.hasContent() ? x.Group : "99. Прочие").Distinct().OrderBy(
+                AllParameters().Where(x => (x.Tab == tab || (x.Tab.IsEmpty() && tab == "00. Основные"))).Select(x => x.Group.IsNotEmpty() ? x.Group : "99. Прочие").Distinct().OrderBy(
                     x => x == "99. Прочие" ? "ЯЯЯЯ" : x).ToList();
         }
 
@@ -380,7 +382,7 @@ namespace Zeta.Extreme.BizProcess.Reports
 		/// <returns></returns>
         public IList<Parameter> GetTemplateParameters(string tab,string group) {
             return
-                this.GetTemplateParameters().Where(x =>(x.Tab==tab || (x.Tab.noContent() && tab=="00. Основные") ) && ((x.Group == group) || (x.Group.noContent() && group == "99. Прочие"))).OrderBy(x=>x.Idx==0?1000:x.Idx).ToList();
+                this.GetTemplateParameters().Where(x =>(x.Tab==tab || (x.Tab.IsEmpty() && tab=="00. Основные") ) && ((x.Group == group) || (x.Group.IsEmpty() && group == "99. Прочие"))).OrderBy(x=>x.Idx==0?1000:x.Idx).ToList();
         }
 
         
@@ -390,7 +392,7 @@ namespace Zeta.Extreme.BizProcess.Reports
 		/// <returns></returns>
         public IList<string> GetTemplateParametersGroups(){
             return
-                AllParameters().Select(x => x.Group.hasContent() ? x.Group : "99. Прочие").Distinct().OrderBy(
+                AllParameters().Select(x => x.Group.IsNotEmpty() ? x.Group : "99. Прочие").Distinct().OrderBy(
                     x => x == "99. Прочие" ? "ЯЯЯЯ" : x).ToList();
         }
 
@@ -401,7 +403,7 @@ namespace Zeta.Extreme.BizProcess.Reports
 		/// <returns></returns>
         public IList<Parameter> GetTemplateParameters(string group){
             return
-                this.GetTemplateParameters().Where(x => (x.Group == group) || (x.Group.noContent() && group == "99. Прочие")).OrderBy(x=>x.Idx).ToList();
+                this.GetTemplateParameters().Where(x => (x.Group == group) || (x.Group.IsEmpty() && group == "99. Прочие")).OrderBy(x=>x.Idx).ToList();
         }
 		/// <summary>
 		/// Получить все параметры

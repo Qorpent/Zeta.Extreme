@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Security.Principal;
-using Comdiv.Model.Interfaces;
-using Comdiv.Reporting;
+using Qorpent.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Reports{
 	/// <summary>
 	/// Интерфейс сохраненного отчета
 	/// </summary>
-    public interface ISavedReport : IEntityDataPattern, IWithUsr{
+    public interface ISavedReport : IEntity, IWithUsr{
 		/// <summary>
 		/// Признак общего отчета
 		/// </summary>
