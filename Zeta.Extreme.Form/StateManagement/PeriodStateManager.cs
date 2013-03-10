@@ -11,10 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Persistence;
+
 using Qorpent.Applications;
+using Qorpent.Data;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.StateManagement;
 
 namespace Zeta.Extreme.Form.StateManagement {
@@ -60,9 +60,9 @@ namespace Zeta.Extreme.Form.StateManagement {
 				dict =
 				c.ExecuteDictionary(
 					"select state,deadline,udeadline from usm.periodstate where year=" + year + " and period=" + period, null));
-			result.State = dict.get("state", () => result.State);
-			result.DeadLine = dict.get("deadline", () => result.DeadLine);
-			result.UDeadLine = dict.get("udeadline", () => result.UDeadLine);
+			result.State = dict.SafeGet("state",result.State);
+			result.DeadLine = dict.SafeGet("deadline", result.DeadLine);
+			result.UDeadLine = dict.SafeGet("udeadline", result.UDeadLine);
 			return result;
 		}
 
@@ -112,7 +112,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		private void indatabase(Action<IDbConnection> action) {
 			using (var c = GetConnection(System)) {
 				c.WellOpen();
-				if (Database.hasContent()) {
+				if (Database.IsNotEmpty()) {
 					c.ChangeDatabase(Database);
 				}
 				action(c);

@@ -49,15 +49,17 @@
     });
 
     $(window.zeta).on(window.zeta.handlers.on_deimpersonate, function(e) {
-        window.zeta.console.whoami();
-        deimp.hide();
-        implogin.show();
+//        window.zeta.console.whoami();
+//        deimp.hide();
+//        implogin.show();
+        location.reload();
     });
 
     $(window.zeta).on(window.zeta.handlers.on_impersonate, function(e) {
-        window.zeta.console.whoami();
-        implogin.hide();
-        deimp.show();
+//        window.zeta.console.whoami();
+//        implogin.hide();
+//        deimp.show();
+        location.reload();
     });
 
     $(window.zeta).on(window.zeta.handlers.on_logout, function(e) {
@@ -69,14 +71,16 @@
     });
 
     var authorizer = new root.security.Widget("authorizer", root.console.layout.position.layoutHeader, "right", { authonly: false, priority: 100, ready: function() {
-        if (window.zeta.security.user.getLogonName() != "") {
-            m.show();
-            if (window.zeta.security.user.getImpersonation()) {
-                deimp.show();
-                implogin.hide();
+        if (window.zeta.security.user != null) {
+            if (window.zeta.security.user.getLogonName() != "") {
+                m.show();
+                if (window.zeta.security.user.getImpersonation()) {
+                    deimp.show();
+                    implogin.hide();
+                }
+            } else {
+                f.show();
             }
-        } else {
-            f.show();
         }
     }});
     authorizer.body = $('<div/>').append(f,m);

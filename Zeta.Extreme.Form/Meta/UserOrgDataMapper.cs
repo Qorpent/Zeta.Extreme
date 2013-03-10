@@ -21,11 +21,10 @@ using System.Data;
 using System.Linq;
 using System.Security;
 using System.Security.Principal;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Inversion;
-using Comdiv.Security;
-using Comdiv.Zeta.Model;
+using Qorpent.Applications;
+using Qorpent.IoC;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Form.Meta{
@@ -35,7 +34,7 @@ namespace Zeta.Extreme.Form.Meta{
     public static class UserOrgDataMapper{
         private static readonly object sync = new object();
 
-        private static IInversionContainer _container;
+        private static IContainer _container;
 
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace Zeta.Extreme.Form.Meta{
         public static IPrincipal DefaultUser{
             get{
                 lock (sync){
-                    return myapp.usr;
+                    return Application.Current.Principal.CurrentUser;
                 }
             }
         }
@@ -52,17 +51,8 @@ namespace Zeta.Extreme.Form.Meta{
         /// <summary>
         /// 
         /// </summary>
-        public static IInversionContainer Container{
-            get{
-                if (_container.invalid()){
-                    lock (typeof (UserOrgDataMapper)){
-                        if (_container.invalid()){
-                            Container = myapp.ioc;
-                        }
-                    }
-                }
-                return _container;
-            }
+        public static IContainer Container{
+            get { return _container ?? (_container = Application.Current.Container); }
             set { _container = value; }
         }
 
@@ -129,8 +119,8 @@ namespace Zeta.Extreme.Form.Meta{
         public static bool Authorize(this IZetaMainObject obj, IPrincipal user){
             lock (sync){
 				if (null == obj) return true;
-                if (TagHelper.Value(obj.Tag, "public").toBool()) return true;
-                if (myapp.roles.IsAdmin(user)){
+                if (TagHelper.Value(obj.Tag, "public").ToBool()) return true;
+                if (Application.Current.Roles.IsAdmin(user)){
                     return true;
                 }
                 if (HasAll(user)){
@@ -151,14 +141,9 @@ namespace Zeta.Extreme.Form.Meta{
             }
         }
 
-		private static IDbConnection getConnection()
-		{
-			if (null == Qorpent.Applications.Application.Current.DatabaseConnections)
-			{
-				return myapp.getConnection("Default");
-			}
-			return Qorpent.Applications.Application.Current.DatabaseConnections.GetConnection("Default") ??
-				   myapp.getConnection("Default");
+		private static IDbConnection getConnection() {
+
+			return Application.Current.DatabaseConnections.GetConnection("Default");
 		}
 
         /// <summary>
@@ -182,7 +167,7 @@ namespace Zeta.Extreme.Form.Meta{
                     return true;
                 }
 	            var name = principal.Identity.Name;
-	            var domain = name.toDomain();
+	            var domain = name.GetDomainNamePart();
 	            using (var c = getConnection()) {
 		            c.Open();
 		            var cmd = c.CreateCommand();
@@ -236,7 +221,7 @@ namespace Zeta.Extreme.Form.Meta{
         /// <param name="start"></param>
         /// <returns></returns>
         public static IZetaMainObject[] GetAvailOrgs(bool start){
-            return GetAvailOrgs(myapp.usr, "", start);
+            return GetAvailOrgs(Application.Current.Principal.CurrentUser, "", start);
         }
 
 	    /// <summary>
@@ -250,7 +235,7 @@ namespace Zeta.Extreme.Form.Meta{
 	        like = like ?? "";
             lock (sync){
 				var name = principal.Identity.Name;
-	            var domain = name.toDomain();
+	            var domain = name.GetDomainNamePart();
                 if (HasAll(principal)){
 					return (
 						from o in  ObjCache.ObjById.Values // myapp.storage.AsQueryable<IZetaMainObject>()

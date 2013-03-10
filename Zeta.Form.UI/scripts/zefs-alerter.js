@@ -1,5 +1,5 @@
 /**
- * Виджет окна с сообщениями
+ * Виджет сообщений
  */
 !function($) {
     var zefsalerter = new root.security.Widget("zefsalerter", root.console.layout.position.layoutBodyMain, null, { authonly: true });
@@ -31,9 +31,4 @@
     });
     zefsalerter.body = $(container).append();
     root.console.RegisterWidget(zefsalerter);
-}(window.jQuery);
-
-
-!function($) {
-    window.zeta.console.Setup();
 }(window.jQuery);

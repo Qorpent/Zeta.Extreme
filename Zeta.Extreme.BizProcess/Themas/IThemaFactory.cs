@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
-using Comdiv.Reporting;
+using Zeta.Extreme.BizProcess.Reports;
 
 namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>

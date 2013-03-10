@@ -8,8 +8,8 @@
 
 #endregion
 
-using Comdiv.Model.Interfaces;
-using Comdiv.Security;
+using Qorpent.Model;
+
 
 namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>

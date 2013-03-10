@@ -9,7 +9,8 @@
 #endregion
 
 using System.Collections.Generic;
-using Comdiv.Model.Interfaces;
+using Qorpent.Model;
+
 
 namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>

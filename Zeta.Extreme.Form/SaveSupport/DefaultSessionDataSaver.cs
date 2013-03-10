@@ -12,8 +12,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Security.Principal;
 using System.Xml.Linq;
-using Comdiv.Application;
-using Comdiv.Persistence;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.Form.SaveSupport {
@@ -73,7 +72,7 @@ namespace Zeta.Extreme.Form.SaveSupport {
 		}
 
 		private IDbConnection GetConnection() {
-			return (Application.DatabaseConnections.GetConnection("Default") ?? myapp.getConnection());
+			return Application.DatabaseConnections.GetConnection("Default") ;
 		}
 
 		private string GenerateSaveSql(OutCell cell, IPrincipal user) {

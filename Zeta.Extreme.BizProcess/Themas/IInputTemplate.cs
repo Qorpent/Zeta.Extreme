@@ -12,11 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.XPath;
-using Comdiv.Model.Interfaces;
-using Comdiv.Security;
-using Comdiv.Zeta.Model;
+using Qorpent.Model;
 using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.BizProcess.StateManagement;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
@@ -403,13 +402,6 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// <param name="statecache"> </param>
 		/// <returns> </returns>
 		string GetState(IZetaMainObject zetaMainObject, IZetaDetailObject detail, IDictionary<string, object> statecache);
-
-		/// <summary>
-		/// 	Получить лычку формы
-		/// </summary>
-		/// <param name="obj"> </param>
-		/// <returns> </returns>
-		IForm GetForm(IZetaMainObject obj);
 
 		/// <summary>
 		/// 	Проверить соответствие объекта форме

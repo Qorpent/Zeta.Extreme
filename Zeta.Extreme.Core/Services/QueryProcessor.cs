@@ -10,10 +10,7 @@
 
 using System;
 using System.Threading;
-using Comdiv.Extensions;
-using Comdiv.Zeta.Model;
-using Comdiv.Zeta.Model.ExtremeSupport;
-using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -41,9 +38,11 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		public void Prepare(Query query) {
-			if(query.PrepareState==PrepareState.InPrepare|| query.PrepareState==PrepareState.Prepared)return;
+			if (query.PrepareState == PrepareState.InPrepare || query.PrepareState == PrepareState.Prepared) {
+				return;
+			}
 			query.PrepareState = PrepareState.InPrepare;
-			
+
 			if (query.IsPrimary) {
 				RegisterPrimaryRequest(query);
 			}
@@ -63,10 +62,10 @@ namespace Zeta.Extreme {
 			if (query.Obj.IsFormula || (query.Obj.IsForObj && _sumh.IsSum(query.Obj))) {
 				return (query.Obj.ObjRef) ?? (IZetaQueryDimension) query.Obj;
 			}
-			if(query.Row.IsFormula || _sumh.IsSum(query.Row.Native)) {
-				if(query.Col.IsFormula && query.Col.Native!=null) {
-					if(query.Col.Native.IsMarkSeted("DOSUM")) {
-						return query.Row.Native ??(IZetaQueryDimension) query.Row;
+			if (query.Row.IsFormula || _sumh.IsSum(query.Row.Native)) {
+				if (query.Col.IsFormula && query.Col.Native != null) {
+					if (query.Col.Native.IsMarkSeted("DOSUM")) {
+						return query.Row.Native ?? (IZetaQueryDimension) query.Row;
 					}
 				}
 			}
@@ -126,7 +125,7 @@ namespace Zeta.Extreme {
 
 			foreach (var r in _sumh.GetSumDelta(mostpriority)) {
 				var sq = r.Apply(query);
-				sq = (Query)_session.Register(sq);
+				sq = (Query) _session.Register(sq);
 				if (null == sq) {
 					continue;
 				}

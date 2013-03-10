@@ -1,3 +1,13 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : SaveReadyAction.cs
+// Project: Zeta.Extreme.FrontEnd
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using Qorpent.Mvc;
 
 namespace Zeta.Extreme.FrontEnd.Actions.SessionProcessing {
@@ -5,15 +15,13 @@ namespace Zeta.Extreme.FrontEnd.Actions.SessionProcessing {
 	/// 	Инициирует сессию
 	/// </summary>
 	[Action("zefs.saveready")]
-	public class SaveReadyAction : SessionStartBase
-	{
+	public class SaveReadyAction : SessionStartBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
-		protected override object MainProcess()
-		{
-			var session =  MyFormServer.Start(_realform, _realobj, year, period,true);
+		protected override object MainProcess() {
+			var session = MyFormServer.Start(_realform, _realobj, year, period, true);
 			session.WaitData();
 			return session;
 		}

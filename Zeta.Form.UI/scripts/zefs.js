@@ -25,9 +25,14 @@ root.handlers = $.extend(root.handlers, {
     on_periodsfaild : "periodsfailed",
     on_objectsload : "objectsload",
     on_objectsfaild : "objectsfailed",
-    on_filelistload : "filelistload",
+    on_attachmentload : "attachmentload",
     // Message handlers:
-    on_message : "message"
+    on_message : "message",
+    // File handlers:
+    on_fileloadstart: "fileloadstart",
+    on_fileloadfinish: "fileloadfinish",
+    on_fileloaderror: "fileloaderror",
+    on_fileloadprocess: "fileloadprocess"
 });
 root.periods =  root.periods || {};
 root.divs =  root.divs || [];
@@ -39,7 +44,8 @@ root.init = root.init ||
         sessionId : null,
         currentSession : null,
         lock : null,
-        lockhistory : null
+        lockhistory : null,
+        attachment : null
     };
     var options = window.zefs.options;
 	var params = options.getParameters();
@@ -89,6 +95,7 @@ root.init = root.init ||
             Structure(session);
             GetLock();
             GetLockHistory();
+            GetAttachList();
             $(root).trigger(root.handlers.on_sessionload);
             window.setTimeout(function(){Data(session,0)},options.datadelay); //первый запрос на данные
         }));
@@ -125,7 +132,7 @@ root.init = root.init ||
             Fill(session);
             if(batch.getIsLast()){
                 FinishForm(session,batch);
-//                DataLoaded();
+//              DataLoaded();
             } else {
                 var s = session;
                 var idx = batch.getNextIdx();
@@ -164,7 +171,71 @@ root.init = root.init ||
             dataType: "json",
             data: {session: root.myform.sessionId}
         })
-    }
+    };
+
+    var AttachFile = function(form) {
+        var fd = new FormData();
+        fd.append("type", form.find('select[name="type"]').val());
+        fd.append("filename", form.find('input[name="filename"]').val());
+        fd.append("datafile", form.find('input[name="datafile"]').get(0).files[0]);
+        fd.append("uid", form.find('input[name="uid"]').val());
+        fd.append("session", root.myform.sessionId);
+        $(root).trigger(root.handlers.on_fileloadstart);
+        $.ajax({
+            url: siteroot+options.attachfile_command,
+            type: "POST",
+            context: this,
+            dataType: "json",
+            xhr: function() {
+                var x = $.ajaxSettings.xhr();
+                if(x.upload) {
+                    x.upload.addEventListener('progress', function(e) {
+                        $(root).trigger(root.handlers.on_fileloadprocess, e);
+                    }, false);
+                }
+                return x;
+            },
+            data: fd,
+            cache: false,
+            contentType: false,
+            processData: false
+        }).fail(function(error){
+            $(root).trigger(root.handlers.on_fileloaderror, JSON.parse(error.responseText));
+        }).success(function() {
+            $(root).trigger(root.handlers.on_fileloadfinish);
+            GetAttachList();
+        });
+    };
+
+    var DeleteFile = function(uid) {
+        $.ajax({
+            url: siteroot+options.deletefile_command,
+            type: "POST",
+            context: this,
+            dataType: "json",
+            data: {
+                session: root.myform.sessionId,
+                uid: uid
+            }
+        }).success(function() {
+             GetAttachList();
+        });
+    };
+
+    var DownloadFile = function(uid) {
+        return siteroot+options.downloadfile_command + "?session=" +
+            root.myform.sessionId + "&uid=" + uid;
+        /* $.ajax({
+             url: siteroot+options.downloadfile_command,
+             type: "POST",
+             context: this,
+             dataType: "json",
+             data: {
+                 session: root.myform.sessionId,
+                 uid: uid
+             }
+        })*/
+    };
 
     var GetAttachList = function() {
         $.ajax({
@@ -174,8 +245,8 @@ root.init = root.init ||
             dataType: "json",
             data: {session: root.myform.sessionId}
         }).success(function(d) {
-            root.myform.lock = options.asAttachment(d);
-            $(root).trigger(root.handlers.on_filelistload);
+            root.myform.attachment = options.asAttachment(d);
+            $(root).trigger(root.handlers.on_attachmentload);
         });
     };
 
@@ -361,7 +432,10 @@ root.init = root.init ||
         run : StartForm,
         save : ReadySave,
         message: Message,
-        lockform: Lock
+        lockform: Lock,
+        attachfile: AttachFile,
+        deletefile: DeleteFile,
+        downloadfile: DownloadFile
     });
 
     return root.myform;

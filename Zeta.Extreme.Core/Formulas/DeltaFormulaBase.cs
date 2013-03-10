@@ -9,7 +9,7 @@
 #endregion
 
 using System;
-using Comdiv.Zeta.Model.ExtremeSupport;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -56,7 +56,7 @@ namespace Zeta.Extreme {
 		protected internal decimal Eval(QueryDelta delta) {
 			var query = delta.Apply(Query);
 			if (IsInPlaybackMode) {
-				Query.FormulaDependency.Add((Query)Session.Register(query));
+				Query.FormulaDependency.Add((Query) Session.Register(query));
 				return 1;
 			}
 			var realq = Query.FormulaDependency[playbackCounter];

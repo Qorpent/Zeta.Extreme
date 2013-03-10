@@ -15,8 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Comdiv.Zeta.Model;
-using Comdiv.Zeta.Model.ExtremeSupport;
+using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme {
@@ -32,32 +31,6 @@ namespace Zeta.Extreme {
 	/// </remarks>
 	public class Session : ISerializableSession {
 		private static int ID;
-		/// <summary>
-		/// Сериальная синхронизация
-		/// </summary>
-		public object SerialSync {
-			get { return _sync_serial_access_lock; }
-		}
-
-		/// <summary>
-		/// Задача для выполнения в асинхронном режиме из сериализованного доступа
-		/// </summary>
-		public Task<QueryResult> SerialTask {
-			get { return _async_serial_acess_task; }
-			set { _async_serial_acess_task = value; }
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="key"></param>
-		/// <param name="timeout"> </param>
-		/// <returns></returns>
-		public QueryResult Get(string key,int timeout =-1) {
-			Query query;
-			Registry.TryGetValue(key, out query);
-			if(null==query)return new QueryResult{IsComplete = false};
-			return query.GetResult(timeout);
-		}
 
 		/// <summary>
 		/// 	Конструктор по умолчанию
@@ -78,28 +51,6 @@ namespace Zeta.Extreme {
 		/// 	Расчетчик первичных данных
 		/// </summary>
 		public IPrimarySource PrimarySource { get; set; }
-
-		/// <summary>
-		/// 	Локальный кэш объектных данных
-		/// </summary>
-		public IMetaCache MetaCache {
-			get {
-				lock (this) {
-					if (null != MasterSession) {
-						return MasterSession.MetaCache;
-					}
-					return _metaCache ?? (_metaCache = new MetaCache{Parent  = Extreme.MetaCache.Default});
-				}
-			}
-			set {
-				lock (this) {
-					if (null != MasterSession) { 
-						throw new Exception("cannot set on child session");
-					}
-					_metaCache = value;
-				}
-			}
-		}
 
 
 		/// <summary>
@@ -135,6 +86,123 @@ namespace Zeta.Extreme {
 		protected internal ConcurrentDictionary<string, Query> ActiveSet { get; private set; }
 
 		/// <summary>
+		/// 	Сериальная синхронизация
+		/// </summary>
+		public object SerialSync {
+			get { return _sync_serial_access_lock; }
+		}
+
+		/// <summary>
+		/// 	Задача для выполнения в асинхронном режиме из сериализованного доступа
+		/// </summary>
+		public Task<QueryResult> SerialTask {
+			get { return _async_serial_acess_task; }
+			set { _async_serial_acess_task = value; }
+		}
+
+		/// <summary>
+		/// </summary>
+		/// <param name="key"> </param>
+		/// <param name="timeout"> </param>
+		/// <returns> </returns>
+		public QueryResult Get(string key, int timeout = -1) {
+			Query query;
+			Registry.TryGetValue(key, out query);
+			if (null == query) {
+				return new QueryResult {IsComplete = false};
+			}
+			return query.GetResult(timeout);
+		}
+
+		/// <summary>
+		/// 	Локальный кэш объектных данных
+		/// </summary>
+		public IMetaCache MetaCache {
+			get {
+				lock (this) {
+					if (null != MasterSession) {
+						return MasterSession.MetaCache;
+					}
+					return _metaCache ?? (_metaCache = new MetaCache {Parent = Extreme.MetaCache.Default});
+				}
+			}
+			set {
+				lock (this) {
+					if (null != MasterSession) {
+						throw new Exception("cannot set on child session");
+					}
+					_metaCache = value;
+				}
+			}
+		}
+
+		/// <summary>
+		/// 	Синхронная регистрация запроса в сессии
+		/// </summary>
+		/// <param name="query"> исходный запрос </param>
+		/// <param name="uid"> позволяет явно указать словарный код для составления синхронизируемой коллекции запросов </param>
+		/// <returns> запрос по итогам регистрации в сессии </returns>
+		/// <remarks>
+		/// 	При регистрации запроса, он проходит дополнительную оптимизацию и проверку на дубляж,
+		/// 	возвращается именно итоговый запрос
+		/// </remarks>
+		/// <exception cref="NotImplementedException"></exception>
+		public IQuery Register(IQuery query, string uid = null) {
+			//lock (thissync) {
+			var helper = GetRegistryHelper();
+			var result = helper.Register(query, uid);
+			ReturnRegistryHelper(helper);
+			return result;
+			//}
+		}
+
+		/// <summary>
+		/// 	Асинхронная регистрация запроса в сессии
+		/// </summary>
+		/// <param name="query"> исходный запрос </param>
+		/// <param name="uid"> позволяет явно указать словарный код для составления синхронизируемой коллекции запросов </param>
+		/// <returns> задачу, по результатам которой возвращается запрос по итогам регистрации в сессии </returns>
+		/// <remarks>
+		/// 	При регистрации запроса, он проходит дополнительную оптимизацию и проверку на дубляж,
+		/// 	возвращается именно итоговый запрос
+		/// </remarks>
+		public Task<IQuery> RegisterAsync(IQuery query, string uid = null) {
+			lock (thissync) {
+				var id = _preEvalTaskCounter++;
+				var task = new Task<IQuery>(() =>
+					{
+						try {
+							var helper = GetRegistryHelper();
+							var result = helper.Register(query, uid);
+							ReturnRegistryHelper(helper);
+
+							return result;
+						}
+						finally {
+							Task t;
+							_preEvalTaskAgenda.TryRemove(id, out t);
+						}
+					});
+				_preEvalTaskAgenda[id] = task;
+				//должны делать в основном потоке, иначе 
+				//WaitRegistry может раньше отработать
+				task.Start();
+				return task;
+			}
+		}
+
+		/// <summary>
+		/// 	Выполняет синхронизацию и расчет значений в сессии
+		/// </summary>
+		/// <param name="timeout"> </param>
+		public void Execute(int timeout = -1) {
+			lock (syncexecute) {
+				WaitPreparation(timeout);
+				WaitEvaluation(timeout);
+			}
+		}
+
+		/// <summary>
 		/// 	Формирует дочернюю подсессию (например для формул)
 		/// 	Дочерняя сессия имеет доступ к кэшу запросов,
 		/// 	но задача обработки этих запросов полностью ложится на дочку
@@ -144,7 +212,7 @@ namespace Zeta.Extreme {
 			lock (thissync) {
 				ISerialSession result;
 				if (_subsessionpool.TryPop(out result)) {
-					((Session)result.GetUnderlinedSession())._preEvalTaskAgenda.Clear();
+					((Session) result.GetUnderlinedSession())._preEvalTaskAgenda.Clear();
 					return result;
 				}
 				var copy = new Session(CollectStatistics)
@@ -199,67 +267,12 @@ namespace Zeta.Extreme {
 				var subs = _subsessionpool.ToArray();
 				foreach (var s in subs) {
 					var ses = s.GetUnderlinedSession();
-					sb.AppendLine("Subsession: " + ((Session)ses).Id);
-					sb.Append(((Session)ses).GetStatisticString());
+					sb.AppendLine("Subsession: " + ((Session) ses).Id);
+					sb.Append(((Session) ses).GetStatisticString());
 					sb.AppendLine("--------------------------");
 				}
 			}
 			return sb.ToString();
-		}
-
-		/// <summary>
-		/// 	Синхронная регистрация запроса в сессии
-		/// </summary>
-		/// <param name="query"> исходный запрос </param>
-		/// <param name="uid"> позволяет явно указать словарный код для составления синхронизируемой коллекции запросов </param>
-		/// <returns> запрос по итогам регистрации в сессии </returns>
-		/// <remarks>
-		/// 	При регистрации запроса, он проходит дополнительную оптимизацию и проверку на дубляж,
-		/// 	возвращается именно итоговый запрос
-		/// </remarks>
-		/// <exception cref="NotImplementedException"></exception>
-		public IQuery Register(IQuery query, string uid = null) {
-			//lock (thissync) {
-				var helper = GetRegistryHelper();
-				var result = helper.Register(query, uid);
-				ReturnRegistryHelper(helper);
-				return result;
-			//}
-		}
-
-		/// <summary>
-		/// 	Асинхронная регистрация запроса в сессии
-		/// </summary>
-		/// <param name="query"> исходный запрос </param>
-		/// <param name="uid"> позволяет явно указать словарный код для составления синхронизируемой коллекции запросов </param>
-		/// <returns> задачу, по результатам которой возвращается запрос по итогам регистрации в сессии </returns>
-		/// <remarks>
-		/// 	При регистрации запроса, он проходит дополнительную оптимизацию и проверку на дубляж,
-		/// 	возвращается именно итоговый запрос
-		/// </remarks>
-		public Task<IQuery> RegisterAsync(IQuery query, string uid = null) {
-			lock (thissync) {
-				var id = _preEvalTaskCounter++;
-				var task = new Task<IQuery>(() =>
-					{
-						try {
-							var helper = GetRegistryHelper();
-							var result = helper.Register(query, uid);
-							ReturnRegistryHelper(helper);
-
-							return result;
-						}
-						finally {
-							Task t;
-							_preEvalTaskAgenda.TryRemove(id, out t);
-						}
-					});
-				_preEvalTaskAgenda[id] = task;
-				//должны делать в основном потоке, иначе 
-				//WaitRegistry может раньше отработать
-				task.Start();
-				return task;
-			}
 		}
 
 		/// <summary>
@@ -321,14 +334,14 @@ namespace Zeta.Extreme {
 		/// <exception cref="NotImplementedException"></exception>
 		public IQueryPreparator GetPreparator() {
 			//lock (thissync) {
-				IQueryPreparator result;
-				if (_preparators.TryPop(out result)) {
-					return result;
-				}
-				if (null != CustomPreparatorClass) {
-					return Activator.CreateInstance(CustomPreparatorClass, this) as IQueryPreparator;
-				}
-				return new QueryProcessor(this);
+			IQueryPreparator result;
+			if (_preparators.TryPop(out result)) {
+				return result;
+			}
+			if (null != CustomPreparatorClass) {
+				return Activator.CreateInstance(CustomPreparatorClass, this) as IQueryPreparator;
+			}
+			return new QueryProcessor(this);
 			//}
 		}
 
@@ -347,19 +360,18 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
 		private IRegistryHelper GetRegistryHelper() {
-		//	lock (thissync) {
-				IRegistryHelper result;
-				if (_registryhelperpool.TryPop(out result)) {
-					return result;
-				}
-				if (null != CustomRegistryHelperClass) {
-					return Activator.CreateInstance(CustomRegistryHelperClass, this) as IRegistryHelper;
-				}
-				return new QuerySessionRegistrator(this);
+			//	lock (thissync) {
+			IRegistryHelper result;
+			if (_registryhelperpool.TryPop(out result)) {
+				return result;
+			}
+			if (null != CustomRegistryHelperClass) {
+				return Activator.CreateInstance(CustomRegistryHelperClass, this) as IRegistryHelper;
+			}
+			return new QuerySessionRegistrator(this);
 			//}
 		}
 
-	
 
 		/// <summary>
 		/// 	Возвращает препроцессор в пул
@@ -375,16 +387,16 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		/// <exception cref="NotImplementedException"></exception>
 		protected internal IPreloadProcessor GetPreloadProcessor() {
-		//	lock (thissync) {
-				IPreloadProcessor result;
-				if (_preloadprocesspool.TryPop(out result)) {
-					return result;
-				}
-				if (null != CustomPreloadProcessorClass) {
-					return Activator.CreateInstance(CustomRegistryHelperClass, this) as IPreloadProcessor;
-				}
-				return new QueryLoader(this);
-		//	}
+			//	lock (thissync) {
+			IPreloadProcessor result;
+			if (_preloadprocesspool.TryPop(out result)) {
+				return result;
+			}
+			if (null != CustomPreloadProcessorClass) {
+				return Activator.CreateInstance(CustomRegistryHelperClass, this) as IPreloadProcessor;
+			}
+			return new QueryLoader(this);
+			//	}
 		}
 
 		/// <summary>
@@ -436,17 +448,6 @@ namespace Zeta.Extreme {
 			}
 		}
 
-
-		/// <summary>
-		/// 	Выполняет синхронизацию и расчет значений в сессии
-		/// </summary>
-		/// <param name="timeout"> </param>
-		public void Execute(int timeout = -1) {
-			lock (syncexecute) {
-				WaitPreparation(timeout);
-				WaitEvaluation(timeout);
-			}
-		}
 
 		/// <summary>
 		/// 	Если включено, службы накапливают статистические данные по работе сессии

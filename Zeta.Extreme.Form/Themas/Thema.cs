@@ -12,15 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Reporting;
-using Comdiv.Security;
-using Comdiv.Security.Acl;
-using Comdiv.Zeta.Model;
+using Qorpent.Applications;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.BizProcess.Reports;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Form.InputTemplates;
-using Zeta.Extreme.Meta;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -130,13 +126,13 @@ namespace Zeta.Extreme.Form.Themas {
 
 			IList<IInputTemplate> realadd = new List<IInputTemplate>();
 			foreach (var f in result.Forms.Values) {
-				var t = f.PrepareForPeriod(year, period, DateExtensions.Begin, obj);
+				var t = f.PrepareForPeriod(year, period, Qorpent.QorpentConst.Date.Begin, obj);
 				if (!t.GetIsPeriodMatched()) {
 					continue;
 				}
 
 
-				if (t.ForGroup.hasContent()) {
+				if (t.ForGroup.IsNotEmpty()) {
 					if (null == obj) {
 						continue;
 					}
@@ -282,11 +278,11 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="usr"> </param>
 		/// <returns> </returns>
 		public bool IsActive(IPrincipal usr) {
-			if (Role.hasContent()) {
-				if (!myapp.roles.IsAdmin(usr)) {
+			if (Role.IsNotEmpty()) {
+				if (!Qorpent.Applications.Application.Current.Roles.IsAdmin(usr)) {
 					var hasrole = false;
-					foreach (var r in Role.split()) {
-						if (myapp.roles.IsInRole(r)) {
+					foreach (var r in Role.SmartSplit()) {
+						if (Application.Current.Roles.IsInRole(r)) {
 							hasrole = true;
 							break;
 						}
@@ -312,7 +308,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		/// <returns> </returns>
 		public bool IsVisible() {
-			return IsVisible(myapp.usr);
+			return IsVisible(Application.Current.Principal.CurrentUser);
 		}
 
 		/// <summary>
@@ -367,7 +363,8 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="usr"> </param>
 		/// <returns> </returns>
 		public IThema Personalize(IPrincipal usr) {
-			var result = Clone(false) as Thema;
+			throw new NotSupportedException("Персонализация на данный момент не поддерживается");
+			/*var result = Clone(false) as Thema;
 			foreach (var form in result.Forms.Values.ToArray()) {
 				if (!acl.get(form, null, null, usr, false)) {
 					result.Forms.Remove(form.Code);
@@ -404,7 +401,7 @@ namespace Zeta.Extreme.Form.Themas {
 				}
 			}
 
-			return result;
+			return result;*/
 		}
 
 		/// <summary>
@@ -429,7 +426,7 @@ namespace Zeta.Extreme.Form.Themas {
 			if (code == "this.idx") {
 				return Idx;
 			}
-			return Parameters.get(code);
+			return Parameters.SafeGet(code);
 		}
 
 		/// <summary>
@@ -441,10 +438,10 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <returns> </returns>
 		public T GetParameter<T>(string code, T def) {
 			var p = GetParameter(code);
-			if (p.no()) {
+			if (!p.ToBool()) {
 				return def;
 			}
-			return p.to<T>();
+			return p.To<T>();
 		}
 
 		/// <summary>
@@ -508,7 +505,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <returns> </returns>
 		public IThema Clone(bool full) {
 			lock (this) {
-				var result = GetType().create<Thema>();
+				var result = GetType().Create<Thema>();
 				result.Code = Code;
 				result.Name = Name;
 				result.Role = Role;

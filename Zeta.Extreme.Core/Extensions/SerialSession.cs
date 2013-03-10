@@ -10,7 +10,7 @@
 
 using System;
 using System.Threading.Tasks;
-using Comdiv.Zeta.Model.ExtremeSupport;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -23,10 +23,10 @@ namespace Zeta.Extreme {
 		/// <param name="session"> </param>
 		public SerialSession(ISession session) {
 			var _serial = session as ISerializableSession;
-			if(null==_serial) {
+			if (null == _serial) {
 				throw new Exception("only serializable sessions supproted");
 			}
-			_session = (ISerializableSession)session;
+			_session = (ISerializableSession) session;
 		}
 
 		/// <summary>
@@ -42,7 +42,7 @@ namespace Zeta.Extreme {
 				}
 				Query realquery = null;
 
-				realquery = (Query)_session.Register(query);
+				realquery = (Query) _session.Register(query);
 
 				if (null == realquery) {
 					return new QueryResult();
@@ -69,7 +69,7 @@ namespace Zeta.Extreme {
 				var task = Task.Run(() =>
 					{
 						realquery_.Wait();
-						var realquery = (Query)realquery_.Result;
+						var realquery = (Query) realquery_.Result;
 						if (null == realquery) {
 							return null;
 						}
