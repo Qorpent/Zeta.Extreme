@@ -12,10 +12,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Comdiv.Zeta.Model;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 using Zeta.Extreme.Meta;
+using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Core.Tests.SubQuery {

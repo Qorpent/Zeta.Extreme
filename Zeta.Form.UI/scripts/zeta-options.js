@@ -26,16 +26,24 @@ $.extend(options,(function(){
             return obj;
         },
 
-		asUserInfo : function (obj) {
+		asUserAuth : function (obj) {
 			$.extend(obj,{
+				// реальное имя с которым входит пользователь
+				getRealLogonName : function(){return this.logonname},
+				// реальный признак того, что пользователь является администратором
+				getRealIsAdmin : function(){return this.logonadmin},
+				// реальный признак того, что пользователь является разработчиком
+				getRealIsDeveloper : function(){return this.logondeveloper},
+				// реальный признак того, что пользователь является администратором данных
+				getRealIsDataMaster : function(){return this.logondatamaster},
 				// имя с которым входит пользователь
-				getLogonName : function(){return this.logonname},
+				getLogonName : function(){return this.impersonation != null ? this.impersonation : this.logonname},
 				// признак того, что пользователь является администратором
-				getIsAdmin : function(){return this.logonadmin},
+				getIsAdmin : function(){return this.impadmin != null ? this.impadmin : this.logonadmin},
 				// признак того, что пользователь является разработчиком
-				getIsDeveloper : function(){return this.logondeveloper},
+				getIsDeveloper : function(){return this.impdeveloper != null ? this.impdeveloper : this.logondeveloper},
 				// признак того, что пользователь является администратором данных
-				getIsDataMaster : function(){return this.logondatamaster},
+				getIsDataMaster : function(){return this.impdatamaster != null ? this.impdatamaster : this.logondatamaster},
                 // возвращает логин пользователя за которого был осуществлен вход (если был)
                 getImpersonation : function() {return this.impersonation || null},
                 getIsImpAdmin : function(){return this.impadmin || null},

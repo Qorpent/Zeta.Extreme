@@ -11,8 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Comdiv.Extensions;
-using Comdiv.Zeta.Model;
+using Qorpent;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco.NativeSqlBind {
 	/// <summary>
@@ -39,7 +40,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		/// <param name="formulaperiod"> </param>
 		/// <returns> </returns>
 		public static PeriodDefinition Eval(int sourceyear, int sourceperiod, int formulaperiod) {
-			return Get(formulaperiod).Evaluate(sourceyear, DateExtensions.Begin, sourceperiod);
+			return Get(formulaperiod).Evaluate(sourceyear, QorpentConst.Date.Begin, sourceperiod);
 		}
 
 		/// <summary>
@@ -59,8 +60,8 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 			if (null == result) {
 				result = new period();
 				result.ClassicId = classicId;
-				result.StartDate = DateExtensions.Begin;
-				result.EndDate = DateExtensions.End;
+				result.StartDate = QorpentConst.Date.Begin;
+				result.EndDate = QorpentConst.Date.End;
 				if (classicId < 0) {
 					result.IsFormula = true;
 				}
@@ -75,7 +76,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		/// <param name="otherperiodId"> </param>
 		/// <returns> </returns>
 		public static int Evaluate(this IPeriod period, int otherperiodId) {
-			return period.Evaluate(DateTime.Today.Year, DateExtensions.Begin, otherperiodId).Periods[0];
+			return period.Evaluate(DateTime.Today.Year, QorpentConst.Date.Begin, otherperiodId).Periods[0];
 		}
 
 		/// <summary>
@@ -85,7 +86,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		/// <param name="otherperiodId"> </param>
 		/// <returns> </returns>
 		public static PeriodDefinition EvaluateDef(this IPeriod period, int otherperiodId) {
-			return period.Evaluate(DateTime.Today.Year, DateExtensions.Begin, otherperiodId);
+			return period.Evaluate(DateTime.Today.Year, QorpentConst.Date.Begin, otherperiodId);
 		}
 
 		/// <summary>
@@ -106,35 +107,59 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		}
 
 		private static void EvaluateFormula(PeriodDefinition definition, string formula) {
-			var dict = cache.get(formula, () =>
-				{
-					var res = new Dictionary<int, string>();
-					var rules = formula.split();
-					foreach (var r in rules) {
-						var parts = r.split(false, true, '=');
-						res[parts[0].toInt()] = parts[1];
-					}
-					return res;
-				});
-			var rule = dict.get(definition.Periods[0], defobj: "");
-			if (rule.noContent()) {
-				rule = dict.get(0, defobj: "");
+			var dict = PrepareFormulaDictionary(formula);
+			var rule = PrepareRule(definition, dict);
+			if (rule.IsNotEmpty()) {
+				ApplyRule(definition, rule);
 			}
-			if (rule.hasContent()) {
-				var pt = rule.split(false, true, '!');
-				if (pt.Count > 1) {
-					var titlesoruce = pt[1].toInt();
-					definition.PeriodName = Get(titlesoruce).Name;
-				}
-				var py = pt[0].split(false, true, ':');
-				var ps = py[0].split(false, true, '+').Select(x => x.toInt()).ToArray();
-				var y = 0;
-				if (py.Count > 1) {
-					y = py[1].toInt();
-				}
-				definition.Year = definition.Year + y;
-				definition.Periods = ps;
+		}
+
+		private static void ApplyRule(PeriodDefinition definition, string rule) {
+			var pt = rule.SmartSplit(false, true, '!');
+			if (pt.Count > 1) {
+				var titlesoruce = pt[1].ToInt();
+				definition.PeriodName = Get(titlesoruce).Name;
 			}
+			var py = pt[0].SmartSplit(false, true, ':');
+			var ps = py[0].SmartSplit(false, true, '+').Select(x => x.ToInt()).ToArray();
+			var y = 0;
+			if (py.Count > 1) {
+				y = py[1].ToInt();
+			}
+			definition.Year = definition.Year + y;
+			definition.Periods = ps;
+		}
+
+		private static string PrepareRule(PeriodDefinition definition, IDictionary<int, string> dict) {
+			var rule = "";
+			if (dict.ContainsKey(definition.Periods[0])) {
+				rule = dict[definition.Periods[0]];
+			}
+			else if (dict.ContainsKey(0)) {
+				rule = dict[0];
+			}
+			return rule;
+		}
+
+		private static IDictionary<int, string> PrepareFormulaDictionary(string formula) {
+			IDictionary<int, string> dict = null;
+			if (cache.ContainsKey(formula)) {
+				dict = cache[formula];
+			}
+			else {
+				cache[formula] = dict = GetFormulaDictionary(formula);
+			}
+			return dict;
+		}
+
+		private static Dictionary<int, string> GetFormulaDictionary(string formula) {
+			var res = new Dictionary<int, string>();
+			var rules = formula.SmartSplit();
+			foreach (var r in rules) {
+				var parts = r.SmartSplit(false, true, '=');
+				res[parts[0].ToInt()] = parts[1];
+			}
+			return res;
 		}
 	}
 }

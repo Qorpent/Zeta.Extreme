@@ -10,15 +10,16 @@
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Comdiv.Zeta.Model;
-using Comdiv.Zeta.Model.ExtremeSupport;
-using ColumnCache = Zeta.Extreme.Poco.NativeSqlBind.ColumnCache;
+using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Описание условия на колонку
 	/// </summary>
 	public sealed class ColumnHandler : CachedItemHandlerBase<IZetaColumn>, IColumnHandler {
+		private static readonly IDictionary<string, string> _resolvedColFormulaCache = new Dictionary<string, string>();
+
 		/// <summary>
 		/// 	Простая копия условия на время
 		/// </summary>
@@ -45,7 +46,7 @@ namespace Zeta.Extreme {
 				string code = null;
 				var formula = Formula;
 				code = GetCodeFormFormula(formula);
-				if(null!=code) {
+				if (null != code) {
 					var reference = ColumnCache.get(code);
 					Native = reference;
 				}
@@ -53,18 +54,16 @@ namespace Zeta.Extreme {
 		}
 
 		private static string GetCodeFormFormula(string formula) {
-			if(!_resolvedColFormulaCache.ContainsKey(formula)) {
+			if (!_resolvedColFormulaCache.ContainsKey(formula)) {
 				string code = null;
 				var match = Regex.Match(formula, @"^@([\w\d]+)\?$", RegexOptions.Compiled);
 				if (match.Success) {
 					code = match.Groups[1].Value;
 				}
-				_resolvedColFormulaCache[formula]= code;
+				_resolvedColFormulaCache[formula] = code;
 				return code;
 			}
 			return _resolvedColFormulaCache[formula];
 		}
-
-		static IDictionary<string,string> _resolvedColFormulaCache = new Dictionary<string, string>();
 	}
 }

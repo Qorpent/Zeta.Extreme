@@ -9,7 +9,7 @@
 #endregion
 
 using System;
-using Comdiv.Extensions;
+using Qorpent;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
@@ -20,7 +20,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		///	Создает стандартную запись
 		///</summary>
 		public PeriodStateRecord() {
-			DeadLine = DateExtensions.Begin;
+			DeadLine = QorpentConst.Date.Begin;
 		}
 
 		/// <summary>

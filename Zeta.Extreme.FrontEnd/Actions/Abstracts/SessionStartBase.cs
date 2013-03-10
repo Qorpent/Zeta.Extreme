@@ -1,41 +1,26 @@
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : SessionStartBase.cs
+// Project: Zeta.Extreme.FrontEnd
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System;
 using System.Linq;
 using System.Security;
-using Comdiv.Zeta.Model;
 using Qorpent.Mvc.Binding;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.FrontEnd.Helpers;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.FrontEnd.Actions {
 	/// <summary>
-	/// Базовое действие для стартующих сессию
+	/// 	Базовое действие для стартующих сессию
 	/// </summary>
 	public class SessionStartBase : FormServerActionBase {
-		/// <summary>
-		/// Исходный шаблон
-		/// </summary>
-		protected IInputTemplate _realform;
-		/// <summary>
-		/// Целевой объект
-		/// </summary>
-		protected IZetaMainObject _realobj;
-		/// <summary>
-		/// Код формы
-		/// </summary>
-		[Bind(Required = true)] protected string form = "";
-		/// <summary>
-		/// Код объекта
-		/// </summary>
-		[Bind(Required = true)] protected int obj = 0;
-		/// <summary>
-		/// Период
-		/// </summary>
-		[Bind(Required = true)] protected int period = 0;
-		/// <summary>
-		/// Год
-		/// </summary>
-		[Bind(Required = true)] protected int year = 0;
-
 		/// <summary>
 		/// 	Second phase - validate INPUT/REQUEST parameters here - it called before PREPARE so do not try validate
 		/// 	second-level internal state and authorization - only INPUT PARAMETERS must be validated
@@ -55,20 +40,49 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 				throw new Exception("obj not found");
 			}
 		}
+
 		/// <summary>
-		/// Авторизует предприятие и форму
+		/// 	Авторизует предприятие и форму
 		/// </summary>
-		protected override void Authorize()
-		{
+		protected override void Authorize() {
 			base.Authorize();
 			var acessobject = new AccessibleObjectsHelper().GetAccessibleObjects();
-			if (!acessobject.objs.Any(_ => _.id == _realobj.Id))
-			{
+			if (!acessobject.objs.Any(_ => _.id == _realobj.Id)) {
 				throw new SecurityException("try access not allowed object");
 			}
-			if(!Application.Roles.IsInRole(Application.Principal.CurrentUser, _realform.Role)) {
+			if (!Application.Roles.IsInRole(Application.Principal.CurrentUser, _realform.Role)) {
 				throw new SecurityException("try access not allowed form");
 			}
 		}
+
+		/// <summary>
+		/// 	Исходный шаблон
+		/// </summary>
+		protected IInputTemplate _realform;
+
+		/// <summary>
+		/// 	Целевой объект
+		/// </summary>
+		protected IZetaMainObject _realobj;
+
+		/// <summary>
+		/// 	Код формы
+		/// </summary>
+		[Bind(Required = true)] protected string form = "";
+
+		/// <summary>
+		/// 	Код объекта
+		/// </summary>
+		[Bind(Required = true)] protected int obj = 0;
+
+		/// <summary>
+		/// 	Период
+		/// </summary>
+		[Bind(Required = true)] protected int period = 0;
+
+		/// <summary>
+		/// 	Год
+		/// </summary>
+		[Bind(Required = true)] protected int year = 0;
 	}
 }

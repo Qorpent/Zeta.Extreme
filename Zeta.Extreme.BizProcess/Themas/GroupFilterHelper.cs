@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Comdiv.Extensions;
-using Comdiv.Zeta.Model;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Themas
 {
@@ -16,9 +16,9 @@ namespace Zeta.Extreme.BizProcess.Themas
 		/// <param name="forgroupstr"></param>
 		/// <returns></returns>
 		public static bool IsMatch(IZetaMainObject obj, string forgroupstr) {
-			if(forgroupstr.noContent()) return true;
+			if(forgroupstr.IsEmpty()) return true;
 			if (null == obj) return true;
-			var rules = forgroupstr.split(false,true,'/');
+			var rules = forgroupstr.SmartSplit(false,true,'/');
 			var includes = rules.Where(x => !x.StartsWith("!")).ToArray();
 			var excludes = rules.Where(x => x.StartsWith("!")).Select(x => x.Substring(1)).ToArray();
 			if (excludes.Any(exclude => IsMatchRule(obj, exclude))) {
@@ -45,7 +45,7 @@ namespace Zeta.Extreme.BizProcess.Themas
 				ismatch = obj.Group.Code == rule.Substring(4);
 			}
 			else if (rule.StartsWith("obj_")) {
-				ismatch = obj.Id == rule.Substring(4).toInt();
+				ismatch = obj.Id == rule.Substring(4).ToInt();
 			}
 			else if (rule.StartsWith("otr_")) {
 				ismatch = obj.Role.Code == rule.Substring(4);

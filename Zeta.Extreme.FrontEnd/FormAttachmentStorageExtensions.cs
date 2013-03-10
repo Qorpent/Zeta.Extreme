@@ -1,40 +1,51 @@
-using System;
+#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : FormAttachmentStorageExtensions.cs
+// Project: Zeta.Extreme.FrontEnd
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System.IO;
 using System.Web;
-using Qorpent.Applications;
 using Qorpent.IO;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
-	/// ¬спомогательный класс дл€ работы с хранилищем
+	/// 	¬спомогательный класс дл€ работы с хранилищем
 	/// </summary>
 	public static class FormAttachmentStorageExtensions {
 		/// <summary>
-		/// ¬спомогательный метод дл€ быстрой прив€зки файла из сессии
+		/// 	¬спомогательный метод дл€ быстрой прив€зки файла из сессии
 		/// </summary>
-		/// <param name="storage">целевое хранилище </param>
-		/// <param name="session">сесси€</param>
-		/// <param name="file">файл, переданный по Http</param>
+		/// <param name="storage"> целевое хранилище </param>
+		/// <param name="session"> сесси€ </param>
+		/// <param name="file"> файл, переданный по Http </param>
 		/// <param name="filename"> </param>
-		/// <param name="doctype">тип аттача (параметр)</param>
-		/// <param name="existeduid">переписвание существующего файла</param>
-		/// <returns></returns>
-		public static FormAttachment AttachHttpFile(this IFormAttachmentStorage storage, IFormSession session, HttpPostedFileBase file, string filename="", string doctype="" ,string existeduid="") {
+		/// <param name="doctype"> тип аттача (параметр) </param>
+		/// <param name="existeduid"> переписвание существующего файла </param>
+		/// <returns> </returns>
+		public static FormAttachment AttachHttpFile(this IFormAttachmentStorage storage, IFormSession session,
+		                                            HttpPostedFileBase file, string filename = "", string doctype = "",
+		                                            string existeduid = "") {
 			//подготавливаем атач к сохранению
 			var attachment = SetupAttachment(session, file, filename, doctype, existeduid);
 			//сохран€ем заголовок атача
-			attachment =storage.SaveAttachment(session, attachment);
+			attachment = storage.SaveAttachment(session, attachment);
 			//считываем через буфер исходный файл и пишем в поток
 			const int BUFFER_SIZE = 500;
-			using (var outstream = storage.Open(attachment,FileAccess.Write)) {
-				file.InputStream.CopyTo(outstream,BUFFER_SIZE);
+			using (var outstream = storage.Open(attachment, FileAccess.Write)) {
+				file.InputStream.CopyTo(outstream, BUFFER_SIZE);
 				outstream.Flush();
 			}
 			return attachment;
 		}
 
-		private static FormAttachment SetupAttachment(IFormSession session, HttpPostedFileBase file, string filename, string doctype,
+		private static FormAttachment SetupAttachment(IFormSession session, HttpPostedFileBase file, string filename,
+		                                              string doctype,
 		                                              string existeduid) {
 //‘ормируем атач, использу€ стандартные данные формы
 			var attachment = new FormAttachment(session, null, AttachedFileType.Default, false);

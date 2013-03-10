@@ -1,27 +1,31 @@
-﻿using System;
+﻿#region LICENSE
 
-using Comdiv.Zeta.Model;namespace Zeta.Extreme.Poco {
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : UsrThemaMap.cs
+// Project: Zeta.Extreme.Poco
+// This code cannot be used without agreement from 
+// Media Technology LTD 
 
+#endregion
 
+using System;
+using Zeta.Extreme.Poco.Inerfaces;
 
-    public class UsrThemaMap : IUsrThemaMap{
-        #region IUsrThemaMap Members
+namespace Zeta.Extreme.Poco {
+	public class UsrThemaMap : IUsrThemaMap {
+		public virtual int Id { get; set; }
+		public virtual IZetaUnderwriter Usr { get; set; }
+		public virtual IZetaMainObject Object { get; set; }
+		public virtual string System { get; set; }
+		public virtual string Thema { get; set; }
+		public virtual DateTime Version { get; set; }
 
-        public virtual int Id { get; set; }
-        public virtual IZetaUnderwriter Usr { get; set; }
-        public virtual IZetaMainObject Object { get; set; }
-        public virtual string System { get; set; }
-        public virtual string Thema { get; set; }
-        public virtual DateTime Version { get; set; }
-
-    	public virtual bool IsPlan {
+		public virtual bool IsPlan {
 			get { return Thema.EndsWith("_2"); }
-    	}
+		}
 
-    	public virtual string ThemaCode {
+		public virtual string ThemaCode {
 			get { return Thema.Replace("_2", ""); }
-    	}
-
-        #endregion
-    }
+		}
+	}
 }

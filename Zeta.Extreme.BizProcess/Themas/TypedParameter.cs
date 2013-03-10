@@ -10,7 +10,7 @@
 
 using System;
 using System.Reflection;
-using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
@@ -32,7 +32,7 @@ namespace Zeta.Extreme.BizProcess.Themas {
 			if (Value != null && Type == typeof (Missing)) {
 				Type = typeof (string);
 			}
-			return Value.to(Type);
+			return Value.ToTargetType(Type);
 		}
 
 		/// <summary>

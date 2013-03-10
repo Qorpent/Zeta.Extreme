@@ -11,7 +11,7 @@
 using System;
 using System.Linq;
 using System.Text;
-using Comdiv.Zeta.Model.ExtremeSupport;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -119,6 +119,45 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	Простая копия условия на время
+		/// </summary>
+		/// <returns> </returns>
+		public ITimeHandler Copy() {
+			return MemberwiseClone() as TimeHandler;
+		}
+
+		/// <summary>
+		/// 	Нормализует формульные года и периоды
+		/// </summary>
+		/// <param name="session"> </param>
+		public void Normalize(ISession session = null) {
+			if (!IsYearDefinied()) {
+				ResolveYear();
+			}
+			if (!IsPeriodDefined()) {
+				ResolvePeriod(session);
+			}
+			if (null != _periods && 0 != _periods.Length) {
+				Periods = _periods.Distinct().OrderBy(_ => _).ToArray();
+				var intstr = string.Join("", Periods);
+				if (intstr.Length <= 8) {
+					Period = Convert.ToInt32(intstr);
+				}
+				else {
+					var val = 0;
+					for (var i = 0; i < intstr.Length; i += 8) {
+						var chunk = intstr.Substring(i, Math.Min(8, intstr.Length - i));
+						val += Convert.ToInt32(chunk);
+					}
+					Period = val;
+				}
+			}
+			if (null != _years && 0 != _years.Length) {
+				Years = _years.Distinct().OrderBy(_ => _).ToArray();
+			}
+		}
+
+		/// <summary>
 		/// 	Функция непосредственного вычисления кэшевой строки
 		/// </summary>
 		/// <returns> </returns>
@@ -163,45 +202,6 @@ namespace Zeta.Extreme {
 			return sb.ToString();
 		}
 
-		/// <summary>
-		/// 	Простая копия условия на время
-		/// </summary>
-		/// <returns> </returns>
-		public ITimeHandler Copy() {
-			return MemberwiseClone() as TimeHandler;
-		}
-
-		/// <summary>
-		/// 	Нормализует формульные года и периоды
-		/// </summary>
-		/// <param name="session"> </param>
-		public void Normalize(ISession session = null) {
-			if (!IsYearDefinied()) {
-				ResolveYear();
-			}
-			if (!IsPeriodDefined()) {
-				ResolvePeriod(session);
-			}
-			if (null != _periods && 0 != _periods.Length) {
-				Periods = _periods.Distinct().OrderBy(_ => _).ToArray();
-				var intstr = string.Join("", Periods);
-				if(intstr.Length<=8) {
-					Period = Convert.ToInt32(intstr);
-				}else {
-					int val = 0;
-					for (var i=0;i<intstr.Length;i+=8) {
-						var chunk = intstr.Substring(i, Math.Min(8, intstr.Length - i));
-						val+=Convert.ToInt32(chunk);
-					}
-					Period = val;
-				}
-
-			}
-			if (null != _years && 0 != _years.Length) {
-				Years = _years.Distinct().OrderBy(_ => _).ToArray();
-			}
-		}
-
 		private void ResolvePeriod(ISession session) {
 			//TODO: fix to real logic, должен вызывать функцию
 			if (0 == Period) {
@@ -212,7 +212,7 @@ namespace Zeta.Extreme {
 				periodEvaluator = new DefaultPeriodEvaluator();
 			}
 			else {
-				periodEvaluator = ((Session)session).GetPeriodEvaluator();
+				periodEvaluator = ((Session) session).GetPeriodEvaluator();
 			}
 			var result = periodEvaluator.Evaluate(BasePeriod, Period, Year);
 			if (0 != result.Year && (null == _years || 0 == _years.Length)) {
@@ -226,7 +226,7 @@ namespace Zeta.Extreme {
 			}
 
 			if (null != session) {
-				((Session)session).Return(periodEvaluator);
+				((Session) session).Return(periodEvaluator);
 			}
 		}
 

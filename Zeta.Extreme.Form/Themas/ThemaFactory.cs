@@ -12,11 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Reporting;
+using Qorpent.Applications;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.BizProcess.Reports;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Form.InputTemplates;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -62,7 +61,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		/// <returns> </returns>
 		public IEnumerable<IThema> GetForUser() {
-			return GetForUser(myapp.usr);
+			return GetForUser(Application.Current.Principal.CurrentUser);
 		}
 
 		/// <summary>
@@ -83,7 +82,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="usr"> </param>
 		/// <returns> </returns>
 		public IEnumerable<IThema> GetForUser(IPrincipal usr) {
-			return cache.get(usr.Identity.Name, () => internalGetForUser(usr));
+			return (IEnumerable<IThema>) cache.CachedGet(usr.Identity.Name, () => internalGetForUser(usr));
 		}
 
 
@@ -97,7 +96,7 @@ namespace Zeta.Extreme.Form.Themas {
 			if (code.EndsWith(".in")) {
 				code = code.Replace(".in", "");
 			}
-			return cache.get(code + ".in", () =>
+			return (IInputTemplate) cache.CachedGet(code + ".in", () =>
 				{
 					var thema =
 						Themas.OrderByDescending(x => x.Code.Length).FirstOrDefault(
@@ -110,8 +109,7 @@ namespace Zeta.Extreme.Form.Themas {
 						throw new Exception("cannto find form with code " + code);
 					}
 					return result;
-				}, true
-				);
+				});
 		}
 
 		/// <summary>
@@ -120,7 +118,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="code"> </param>
 		/// <returns> </returns>
 		public IReportDefinition GetReport(string code) {
-			return cache.get(code + ".out", () =>
+			return (IReportDefinition) cache.CachedGet(code + ".out", () =>
 				{
 					var thema =
 						Themas.OrderByDescending(x => x.Code.Length).FirstOrDefault(
@@ -129,7 +127,7 @@ namespace Zeta.Extreme.Form.Themas {
 						return null;
 					}
 					return thema.GetReport(code);
-				}, true);
+				});
 		}
 
 		/// <summary>
@@ -167,19 +165,19 @@ namespace Zeta.Extreme.Form.Themas {
 			/// <param name="x"> Первый сравниваемый объект. </param>
 			/// <param name="y"> Второй сравниваемый объект. </param>
 			public int Compare(IThema x, IThema y) {
-				if (x.Parent.hasContent() && y.Parent.noContent()) {
+				if (x.Parent.IsNotEmpty() && y.Parent.IsEmpty()) {
 					return -1;
 				}
-				if (y.Parent.hasContent() && x.Parent.noContent()) {
+				if (y.Parent.IsNotEmpty() && x.Parent.IsEmpty()) {
 					return 1;
 				}
-				if (y.Parent.hasContent() && x.Parent.hasContent()) {
+				if (y.Parent.IsNotEmpty() && x.Parent.IsNotEmpty()) {
 					return 0;
 				}
-				if (x.Parent.hasContent() && y.Code == x.Parent) {
+				if (x.Parent.IsNotEmpty() && y.Code == x.Parent) {
 					return 1;
 				}
-				if (y.Parent.hasContent() && x.Code == y.Parent) {
+				if (y.Parent.IsNotEmpty() && x.Code == y.Parent) {
 					return -1;
 				}
 				return x.Idx.CompareTo(y.Idx);

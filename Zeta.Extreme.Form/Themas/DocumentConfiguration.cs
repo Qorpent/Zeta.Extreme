@@ -8,7 +8,7 @@
 
 #endregion
 
-using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 
 namespace Zeta.Extreme.Form.Themas {
@@ -21,7 +21,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		/// <returns> </returns>
 		public override IDocument Configure() {
-			return new Document().bindfrom(this);
+			return new Document().BindFrom(this);
 		}
 	}
 }

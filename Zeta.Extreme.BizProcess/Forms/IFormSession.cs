@@ -9,10 +9,10 @@
 #endregion
 
 using System.Collections.Generic;
-using Comdiv.Zeta.Model;
 using Qorpent.Serialization;
 using Zeta.Extreme.BizProcess.StateManagement;
 using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>

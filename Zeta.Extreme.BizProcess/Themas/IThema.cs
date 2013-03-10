@@ -11,15 +11,16 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
-using Comdiv.Model.Interfaces;
-using Comdiv.Reporting;
-using Comdiv.Zeta.Model;
+using Qorpent.Model;
+using Zeta.Extreme.BizProcess.Reports;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Ѕазовый интерфейс темы
 	/// </summary>
-	public interface IThema : IPseudoThema {
+	public interface IThema : IWithCode, IWithName, IWithGetParameter
+	{
 		/// <summary>
 		/// 	—сылка на фабрику, создавшую тему
 		/// </summary>

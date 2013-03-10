@@ -18,13 +18,11 @@ namespace Zeta.Extreme.FrontEnd.Actions.SessionProcessing {
 	///	Вызывает сохранение данных
 	///</summary>
 	[Action("zefs.save")]
-	public class SaveDataAction : FormSessionActionBase
-	{
+	public class SaveDataAction : FormSessionActionBase {
 		/// <summary>
 		/// 	Third part of execution - setup system-bound internal state here (called after validate, but before authorize)
 		/// </summary>
-		protected override void Prepare()
-		{
+		protected override void Prepare() {
 			_xmldata = new JsonToXmlParser().Parse(_jsonSaveData);
 		}
 
@@ -32,16 +30,14 @@ namespace Zeta.Extreme.FrontEnd.Actions.SessionProcessing {
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
-		protected override object MainProcess()
-		{
+		protected override object MainProcess() {
 			return MySession.BeginSaveData(_xmldata);
 		}
 
 		/// <summary>
 		/// 	Параметр для данных для сохранения
 		/// </summary>
-		[Bind(Name = "data", Required = true)]
-		private string _jsonSaveData = "";
+		[Bind(Name = "data", Required = true)] private string _jsonSaveData = "";
 
 		private XElement _xmldata;
 	}

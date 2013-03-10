@@ -40,7 +40,7 @@ namespace Zeta.Extreme {
 						.Replace(".Column.Period", ".Time.Period")
 						.Replace("q.Column", "q.Col")
 						.Replace("query.Column", "q.Col")
-						.Replace("MCOUNT"," f.monthCount(q) ")
+						.Replace("MCOUNT", " f.monthCount(q) ")
 					;
 
 				return result;

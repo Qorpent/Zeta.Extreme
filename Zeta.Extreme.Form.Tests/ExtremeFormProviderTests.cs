@@ -22,7 +22,7 @@ namespace Zeta.Extreme.Form.Tests
 		[TestCase("prib2011A.in",true)]
 		[TestCase("balans2011A.in",true)]
 		[TestCase("zatrA.in",true)]
-		[TestCase("free_activeA.in",false)]
+		[TestCase("free_activeA.in",true)]
 		public void CanAccessThemas(string code, bool existed) {
 			var form = _efp.Get(code);
 			if(existed) {
@@ -34,7 +34,7 @@ namespace Zeta.Extreme.Form.Tests
 		[Test]
 		public void LimitThemaSet()
 		{
-			Assert.AreEqual(6,_efp.Factory.GetAll().Count());
+			Assert.AreEqual(129,_efp.Factory.GetAll().Count());
 		}
 
 		[Test]
@@ -46,7 +46,7 @@ namespace Zeta.Extreme.Form.Tests
 			}
 			sw.Stop();
 			Console.WriteLine(sw.Elapsed);
-			Assert.Less(sw.ElapsedMilliseconds,10000);
+			Assert.Less(sw.ElapsedMilliseconds,20000);
 		} 
 	}
 }

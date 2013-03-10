@@ -10,8 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Comdiv.Application;
-using Comdiv.Extensions;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 
 namespace Zeta.Extreme.Form.Themas {
@@ -28,7 +27,7 @@ namespace Zeta.Extreme.Form.Themas {
 		public static IEnumerable<T> BindParents<T>(this IEnumerable<T> active) where T : IThema {
 			var full = active.UnGroup();
 			foreach (var thema in full) {
-				if (thema.Parent.hasContent()) {
+				if (thema.Parent.IsNotEmpty()) {
 					thema.ParentThema = full.FirstOrDefault(x => x.Code == thema.Parent);
 					if (thema.ParentThema != null) {
 						thema.ParentThema.Children.Add(thema);
@@ -45,60 +44,64 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <typeparam name="T"> </typeparam>
 		/// <returns> </returns>
 		public static IEnumerable<T> CheckFavorities<T>(this IEnumerable<T> active) where T : class, IThema {
-			var onlyfav = myapp.getProfile().Get("show_only_favorite_themas", false);
+			var onlyfav = false;
 			var src = active.UnGroup().ToArray();
-			var fav = myapp.getProfile().GetAsDictionary("favoritethemas");
+			IDictionary<string, object> fav = null;//myapp.getProfile().GetAsDictionary("favoritethemas");
 			foreach (var src1 in src) {
 				src1.IsFavorite = false;
 			}
 			if (onlyfav) {
-				if (fav.Count() == 0) {
-					return new List<T>();
-				}
-				var toremove = new List<T>();
-
-
-				foreach (var th in src) {
-					if (th.IsGroup) {
-						continue;
-					}
-					if (!fav.get(th.Code, false)) {
-						toremove.Add(th);
-					}
-				}
-
-				var result = new List<T>();
-
-				foreach (var th in active) {
-					if (th.IsGroup) {
-						var newg = (th as Thema).Clone(true) as Thema;
-						newg.GroupMembers.Clear();
-						foreach (var thema in th.GetGroup()) {
-							if (!toremove.Contains((T) thema)) {
-								thema.IsFavorite = true;
-								newg.GroupMembers.Add(thema);
-							}
-						}
-						if (newg.GroupMembers.Count != 0) {
-							result.Add(newg as T);
-						}
-						continue;
-					}
-					if (th.Group.noContent()) {
-						if (!toremove.Contains(th)) {
-							th.IsFavorite = true;
-							result.Add(th);
-						}
-					}
-				}
-				return result;
+				return CheckFavorities(active, fav, src);
 			}
 			else {
 				foreach (var src1 in src) {
-					src1.IsFavorite = fav.get(src1.Code, false);
+					src1.IsFavorite = fav.SafeGet(src1.Code, false);
 				}
 			}
 			return active;
+		}
+
+		private static IEnumerable<T> CheckFavorities<T>(IEnumerable<T> active, IDictionary<string, object> fav, T[] src) where T : class, IThema {
+			if (fav.Count() == 0) {
+				return new List<T>();
+			}
+			var toremove = new List<T>();
+
+
+			foreach (var th in src) {
+				if (th.IsGroup) {
+					continue;
+				}
+				if (!fav.SafeGet(th.Code, false)) {
+					toremove.Add(th);
+				}
+			}
+
+			var result = new List<T>();
+
+			foreach (var th in active) {
+				if (th.IsGroup) {
+					var newg = (th as Thema).Clone(true) as Thema;
+					newg.GroupMembers.Clear();
+					foreach (var thema in th.GetGroup()) {
+						if (!toremove.Contains((T) thema)) {
+							thema.IsFavorite = true;
+							newg.GroupMembers.Add(thema);
+						}
+					}
+					if (newg.GroupMembers.Count != 0) {
+						result.Add(newg as T);
+					}
+					continue;
+				}
+				if (th.Group.IsEmpty()) {
+					if (!toremove.Contains(th)) {
+						th.IsFavorite = true;
+						result.Add(th);
+					}
+				}
+			}
+			return result;
 		}
 
 		/// <summary>

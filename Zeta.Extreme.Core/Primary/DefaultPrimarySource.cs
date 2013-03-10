@@ -16,9 +16,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Comdiv.Application;
-using Comdiv.Zeta.Model.ExtremeSupport;
 using Qorpent.Applications;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Primary {
 	/// <summary>
@@ -174,7 +173,7 @@ namespace Zeta.Extreme.Primary {
 		}
 
 		private void ExecuteQuery(string script, Dictionary<long, Query> myrequests) {
-			var _grouped = myrequests.Values.GroupBy(_ => _.Row.Id, _ => _).ToDictionary(_ => _.Key, _=>_);
+			var _grouped = myrequests.Values.GroupBy(_ => _.Row.Id, _ => _).ToDictionary(_ => _.Key, _ => _);
 			using (var c = GetConnection()) {
 				c.Open();
 				var cmd = c.CreateCommand();
@@ -198,7 +197,11 @@ namespace Zeta.Extreme.Primary {
 						var period = r.GetInt32(5);
 						var value = r.GetDecimal(6);
 						var otype = r.GetInt32(7);
-						var target =_grouped[row].FirstOrDefault(_ => _.Col.Id == col && _.Obj.Id == obj && (int)_.Obj.Type==otype && _.Time.Year == year && _.Time.Period == period);
+						var target =
+							_grouped[row].FirstOrDefault(
+								_ =>
+								_.Col.Id == col && _.Obj.Id == obj && (int) _.Obj.Type == otype && _.Time.Year == year &&
+								_.Time.Period == period);
 						if (null != target) {
 							if (CollectStatistics) {
 								Interlocked.Increment(ref _session.Stat_Primary_Affected);
@@ -251,13 +254,14 @@ namespace Zeta.Extreme.Primary {
 				var detailgroup = valutagroup.GroupBy(_ => _.Obj.DetailMode, _ => _);
 				foreach (var dgroup in detailgroup) {
 					var prot = new PrimaryQueryPrototype();
-					if(valutagroup.Key!="NONE") {
+					if (valutagroup.Key != "NONE") {
 						prot.RequreZetaEval = true;
 						prot.Valuta = valutagroup.Key;
 					}
-					if(dgroup.Key==DetailMode.SafeObject) {
+					if (dgroup.Key == DetailMode.SafeObject) {
 						prot.PreserveDetails = true;
-					}else if(dgroup.Key==DetailMode.SafeSumObject) {
+					}
+					else if (dgroup.Key == DetailMode.SafeSumObject) {
 						prot.RequireDetails = true;
 					}
 					yield return
@@ -268,19 +272,8 @@ namespace Zeta.Extreme.Primary {
 		}
 
 
-
-
 		private IDbConnection GetConnection() {
-			try {
-				var result = Application.Current.DatabaseConnections.GetConnection("Default");
-				if (null == result) {
-					return myapp.sql.GetConnection("Default");
-				}
-				return result;
-			}
-			catch {
-				return myapp.sql.GetConnection("Default");
-			}
+			return Application.Current.DatabaseConnections.GetConnection("Default");
 		}
 
 		private readonly Session _session;

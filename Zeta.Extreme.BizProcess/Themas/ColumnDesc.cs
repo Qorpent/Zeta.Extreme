@@ -23,17 +23,15 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.Logging;
-using Comdiv.Olap.Model;
-using Comdiv.Security;
-using Comdiv.Zeta.Model;
+using Qorpent;
+using Qorpent.Applications;
+using Qorpent.Log;
 using Qorpent.Serialization;
+using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
 #endregion
-
+using Qorpent.Utils.Extensions;
 namespace Zeta.Extreme.BizProcess.Themas{
 
     #region
@@ -46,7 +44,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
     public class ColumnDesc : DimensionDescriptor<IZetaColumn, ColumnDesc> {
 
 		
-        private readonly ILog log = logger.get("zinput");
+        private readonly IUserLog log = Application.Current.LogManager.GetLog("zinput",null);
         private readonly IDictionary<int, int> periodMap = new Dictionary<int, int>();
         /// <summary>
         /// 
@@ -150,12 +148,12 @@ namespace Zeta.Extreme.BizProcess.Themas{
         /// <returns></returns>
         public ColumnRowCheckCondition[] GetMatched(IZetaRow row, decimal  value) {
             var key = row.Code + value;
-            return _gmcache.get(key, () =>
+            return _gmcache.CachedGet(key, () =>
                                          {
-                                             List<ColumnRowCheckCondition> result = new List<ColumnRowCheckCondition>();
+                                             var result = new List<ColumnRowCheckCondition>();
                                              foreach (var rule in RowCheckConditions) {
-                                                 if (rule.RowTag.hasContent()) {
-                                                     if (!row.Tag.like(rule.RowTag)) continue;
+                                                 if (rule.RowTag.IsNotEmpty()) {
+                                                     if (!row.Tag.Like(rule.RowTag)) continue;
                                                  }
                                                  if (value == Decimal.MinValue || isvaluematch(rule, value)) {
                                                      result.Add(rule);
@@ -304,7 +302,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
         public ColumnDesc(string code, int year, int period) : this(){
             SetCode(code);
             NeedPeriodPreparation = true;
-            ApplyPeriod(year, period, DateExtensions.Begin);
+            ApplyPeriod(year, period, QorpentConst.Date.Begin);
             NeedPeriodPreparation = false;
             Target =  ColumnCache.get(code);
         }
@@ -397,7 +395,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
 		[IgnoreSerialize]
         public ValueDataType DataType{
             get{
-                if (dataType == ValueDataType.Undefined && Target.yes()){
+                if (dataType == ValueDataType.Undefined && Target.ToBool()){
                     return Target.DataType;
                 }
                 return dataType;
@@ -499,25 +497,22 @@ namespace Zeta.Extreme.BizProcess.Themas{
         /// <param name="row"></param>
         /// <returns></returns>
         public IZetaRow Resolve(IZetaRow row){
-            if (TranslateRows.noContent()){
+            if (TranslateRows.IsEmpty()){
                 return row;
             }
             if (_transmap == null){
                 _transmap = new Dictionary<string, string>();
                 _rowcache = new Dictionary<IZetaRow, IZetaRow>();
-                var rules = TranslateRows.split();
+                var rules = TranslateRows.SmartSplit();
                 foreach (var rule in rules){
-                    var rule_ = rule.split(false, true, '=');
+                    var rule_ = rule.SmartSplit(false, true, '=');
                     _transmap[rule_[0]] = rule_[1];
                 }
             }
-            return _rowcache.get(row, () =>{
-                                          var newcode = _transmap.get(row.Code, "");
-                                          if (newcode.noContent()){
-                                              return row;
-                                          }
-										  return RowCache.get(newcode);
-                                      });
+            return _rowcache.CachedGet(row, () =>{
+                                          var newcode = _transmap.SafeGet(row.Code);
+                                          return newcode.IsEmpty() ? row : RowCache.get(newcode);
+            });
         }
 
 
@@ -548,11 +543,11 @@ namespace Zeta.Extreme.BizProcess.Themas{
                 return false;
             }
 
-            if (ForRole.hasContent() && !myapp.roles.IsAdmin()){
-                var roles = ForRole.split();
+            if (ForRole.IsNotEmpty() && !Application.Current.Roles.IsAdmin()){
+                var roles = ForRole.SmartSplit();
                 var has = false;
                 foreach (var r in roles){
-                    if (myapp.roles.IsInRole(r)){
+                    if (Application.Current.Roles.IsInRole(r)){
                         has = true;
                         break;
                     }
@@ -561,7 +556,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
                     return false;
                 }
             }
-			if (Condition.hasContent())
+			if (Condition.IsNotEmpty())
 			{
 				if (null == this.ConditionMatcher)
 				{
@@ -597,8 +592,8 @@ namespace Zeta.Extreme.BizProcess.Themas{
 		/// <param name="directDate"></param>
 		/// <returns></returns>
 		public ColumnDesc ApplyPeriod(int year, int period, DateTime directDate){
-            log.debug(
-                () =>
+            log.Debug(
+             
                 Code + "(" + ToString() + ") - start apply period " + year + " " + period + " to " + Year + " " + Period);
             InitialPeriod = period;
             InitialYear = year;
@@ -633,7 +628,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
                         deltp = period;
                         mainp = Period;
                     }
-                    if (deltp.between(-130, -101)){
+                    if (deltp.Between(-130, -101)){
                         //прошлый мес€ц
 
                         Period = getPrevPeriod(mainp, deltp);
@@ -659,12 +654,12 @@ namespace Zeta.Extreme.BizProcess.Themas{
                     }
                 }
             }
-            log.debug(
-                () => Code + " result " + Year + " " + Period);
+            log.Debug(
+                Code + " result " + Year + " " + Period);
             SetTitle(Title);
 
-            log.debug(
-                () => Code + " title " + Title);
+            log.Debug(
+                 Code + " title " + Title);
             return this;
         }
 		/// <summary>
@@ -750,26 +745,26 @@ namespace Zeta.Extreme.BizProcess.Themas{
 				if (null == title) {
 					title = "{1} {0}";
 				}
-				if (srctitle.noContent()) {
+				if (srctitle.IsEmpty()) {
 					srctitle = title;
 				}
-				if (DirectDate != DateExtensions.Begin) {
+				if (DirectDate != QorpentConst.Date.Begin) {
 					Title = String.Format(srctitle, "", "", "", DirectDate);
 				}
 				else {
 					var p = Poco.NativeSqlBind.Periods.Get(Period);
-					DateTime st = DateExtensions.Begin;
-					DateTime et = DateExtensions.End;
+					DateTime st = QorpentConst.Date.Begin;
+					DateTime et = QorpentConst.Date.End;
 					if (p != null) {
-						st = p.StartDate.accomodateToYear(Year);
+						st = p.StartDate.AccomodateToYear(Year);
 					}
 					if (p != null) {
-						et = p.EndDate.accomodateToYear(Year);
+						et = p.EndDate.AccomodateToYear(Year);
 					}
 					Title = String.Format(srctitle,
 					                      Year,
 					                      Period,
-					                      ResolvedPeriodName.hasContent() ? ResolvedPeriodName: Poco.NativeSqlBind.Periods.Get(Period).Name,
+					                      ResolvedPeriodName.IsNotEmpty() ? ResolvedPeriodName: Poco.NativeSqlBind.Periods.Get(Period).Name,
 					                      Year - 1,
 					                      st.ToString("dd.MM.yyyy"),
 					                      st.AddDays(-1).ToString("dd.MM.yyyy"),

@@ -31,7 +31,7 @@ namespace Zeta.Extreme {
 		public string Key { get; private set; }
 
 		/// <summary>
-		/// Строка с версией формулы
+		/// 	Строка с версией формулы
 		/// </summary>
 		public string Version { get; set; }
 	}

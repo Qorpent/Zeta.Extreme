@@ -2,7 +2,7 @@
 
 // Copyright 2012-2013 Media Technology LTD 
 // Original file : ObjCache.cs
-// Project: Comdiv.Zeta.Data.Minimal
+// Project: Zeta.Extreme.Poco
 // This code cannot be used without agreement from 
 // Media Technology LTD 
 
@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Comdiv.Zeta.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco.NativeSqlBind {
 	/// <summary>
@@ -23,35 +23,40 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		private static readonly IDictionary<string, IMainObjectGroup> _divByCode = new Dictionary<string, IMainObjectGroup>();
 		private static readonly object startsync = new object();
 		private static bool _instart;
+
 		/// <summary>
-		/// Словарь ID->Obj
+		/// 	Словарь ID->Obj
 		/// </summary>
 		public static IDictionary<int, IZetaMainObject> ObjById {
 			get { return _objById; }
 		}
+
 		/// <summary>
-		/// Словарь Code->Obj
+		/// 	Словарь Code->Obj
 		/// </summary>
 		public static IDictionary<string, IZetaMainObject> ObjByCode {
 			get { return _objByCode; }
 		}
+
 		/// <summary>
-		/// Словарь Id->Div
+		/// 	Словарь Id->Div
 		/// </summary>
 		public static IDictionary<int, IMainObjectGroup> DivById {
 			get { return _divById; }
 		}
+
 		/// <summary>
-		/// Словарь Code->Div
+		/// 	Словарь Code->Div
 		/// </summary>
 		public static IDictionary<string, IMainObjectGroup> DivByCode {
 			get { return _divByCode; }
 		}
+
 		/// <summary>
-		/// Получение объекта по ключу
+		/// 	Получение объекта по ключу
 		/// </summary>
-		/// <param name="key"></param>
-		/// <returns></returns>
+		/// <param name="key"> </param>
+		/// <returns> </returns>
 		public static IZetaMainObject Get(object key) {
 			if (_instart) {
 				lock (startsync) {}
@@ -66,11 +71,12 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 			}
 			return null;
 		}
+
 		/// <summary>
-		/// Получить дивизион по ключу
+		/// 	Получить дивизион по ключу
 		/// </summary>
-		/// <param name="key"></param>
-		/// <returns></returns>
+		/// <param name="key"> </param>
+		/// <returns> </returns>
 		public static IMainObjectGroup GetDiv(object key) {
 			if (_instart) {
 				lock (startsync) {}
@@ -148,10 +154,10 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 
 
 		/// <summary>
-		/// Инициализация кэша
+		/// 	Инициализация кэша
 		/// </summary>
-		/// <param name="divs"></param>
-		/// <param name="objs"></param>
+		/// <param name="divs"> </param>
+		/// <param name="objs"> </param>
 		public static void Start(IMainObjectGroup[] divs = null, IZetaMainObject[] objs = null) {
 			lock (startsync) {
 				_instart = true;

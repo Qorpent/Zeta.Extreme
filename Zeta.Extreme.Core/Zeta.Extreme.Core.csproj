@@ -19,6 +19,7 @@
       <Name>Comdiv.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
       <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
       <Name>Qorpent.Core</Name>
     </ProjectReference>
@@ -71,7 +72,6 @@
     <Compile Include="Query\QueryEvaluationType.cs" />
     <Compile Include="Primary\DefaultPrimarySource.cs" />
     <Compile Include="Abstracts\IPrimarySource.cs" />
-    <Compile Include="Services\MetaCache.cs" />
     <Compile Include="Query\StrongSumProvider.cs" />
     <Compile Include="Query\QueryDelta.cs" />
     <Compile Include="Primary\PrimaryQueryGroup.cs" />

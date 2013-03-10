@@ -14,15 +14,12 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Comdiv.Application;
-using Comdiv.Extensions;
-using Comdiv.IO;
-using Comdiv.Inversion;
 using Qorpent.Applications;
 using Qorpent.IO;
+using Qorpent.IoC;
 using Zeta.Extreme.BizProcess.Themas;
-using ConvertExtensions = Qorpent.Utils.Extensions.ConvertExtensions;
-using XmlExtensions = Qorpent.Utils.Extensions.XmlExtensions;
+
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -40,28 +37,19 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <summary>
 		/// 	Обратная ссылка на контейнер
 		/// </summary>
-		public IInversionContainer Container {
-			get {
-				if (_container.invalid()) {
-					lock (this) {
-						if (_container.invalid()) {
-							Container = myapp.Container;
-						}
-					}
-				}
-				return _container;
-			}
+		public IContainer Container {
+			get { return _container ?? (_container = Application.Current.Container); }
 			set { _container = value; }
 		}
 
 		/// <summary>
 		/// 	Резольвер файлов
 		/// </summary>
-		public IFilePathResolver PathResolver {
+		public IFileService PathResolver {
 			get {
 				lock (this) {
 					if (null == _pathResolver) {
-						_pathResolver = myapp.files;
+						_pathResolver = Application.Current.Files;
 					}
 					return _pathResolver;
 				}
@@ -100,7 +88,7 @@ namespace Zeta.Extreme.Form.Themas {
 					overfile = PathResolver.Resolve("~/usr/data/override.xml", false);
 					PathResolver.Write(overfile, "<root/>");
 				}
-				var content = XElement.Parse(PathResolver.Read(overfile));
+				var content = XElement.Parse(PathResolver.Read<string>(overfile));
 				var themaelement = content.XPathSelectElement("./thema[@id='" + themacode + "']");
 				if (themaelement == null) {
 					themaelement = new XElement("thema", new XAttribute("id", themacode));
@@ -149,7 +137,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		/// <returns> </returns>
 		public IEnumerable<XElement> LoadCompiled() {
-			var filters = LoadCompileFilters.split();
+			var filters = LoadCompileFilters.SmartSplit();
 			_cfgVersion = new DateTime();
 			string[] files = null;
 			if (!Options.RootDirectory.Contains("~") && Path.IsPathRooted(Options.RootDirectory)) {
@@ -204,7 +192,7 @@ namespace Zeta.Extreme.Form.Themas {
 					yield return XElement.Load(f);
 				}
 				else {
-					if (null != filters.FirstOrDefault(_ => f.like(_))) {
+					if (null != filters.FirstOrDefault(_ => f.Like(_))) {
 						yield return XElement.Load(f);
 					}
 				}
@@ -217,9 +205,9 @@ namespace Zeta.Extreme.Form.Themas {
 				var parameters = cfg.SrcXml.Elements("param");
 				var idx = 0;
 				foreach (var p in parameters) {
-					var id = p.attr("id");
-					var val = p.attr("value");
-					if (val.noContent()) {
+					var id = p.Attr("id");
+					var val = p.Attr("value");
+					if (val.IsEmpty()) {
 						val = p.Value;
 					}
 					idx += 10;
@@ -232,9 +220,9 @@ namespace Zeta.Extreme.Form.Themas {
 		private void applyRenames(IDictionary<string, ThemaConfiguration> configurations) {
 			foreach (var configuration in configurations.Values) {
 				foreach (var rreport in configuration.SrcXml.XPathSelectElements("./renamereport")) {
-					var code = configuration.Code + rreport.attr("code") + ".out";
-					var newv = configuration.Code + rreport.attr("name") + ".out";
-					var r = configuration.Outputs.get(code);
+					var code = configuration.Code + rreport.Attr("code") + ".out";
+					var newv = configuration.Code + rreport.Attr("name") + ".out";
+					var r = configuration.Outputs.SafeGet(code);
 					if (null != r) {
 						r.Code = newv;
 						configuration.Outputs.Remove(code);
@@ -242,9 +230,9 @@ namespace Zeta.Extreme.Form.Themas {
 					}
 				}
 				foreach (var rform in configuration.SrcXml.XPathSelectElements("./renameform")) {
-					var code = configuration.Code + rform.attr("code") + ".in";
-					var newv = configuration.Code + rform.attr("name") + ".in";
-					var r = configuration.Inputs.get(code);
+					var code = configuration.Code + rform.Attr("code") + ".in";
+					var newv = configuration.Code + rform.Attr("name") + ".in";
+					var r = configuration.Inputs.SafeGet(code);
 					if (null != r) {
 						r.Code = newv;
 						configuration.Inputs.Remove(code);
@@ -257,7 +245,7 @@ namespace Zeta.Extreme.Form.Themas {
 
 		private void readAll(IDictionary<string, ThemaConfiguration> configurations, XElement[] descriptor) {
 			foreach (var configuration in configurations.Values) {
-				configuration.Name = configuration.SrcXml.attr("name", configuration.Code);
+				configuration.Name = configuration.SrcXml.Attr("name", configuration.Code);
 				applyPseudoProperties(configuration);
 				if (Options.ElementTypes.HasFlag(ElementType.Command)) {
 					readCommands(configuration);
@@ -278,7 +266,7 @@ namespace Zeta.Extreme.Form.Themas {
 			foreach (var parameter in configuration.Parameters) {
 				if (parameter.Key.StartsWith(".")) {
 					var name = parameter.Key.Substring(1);
-					configuration.setPropertySafe(name, parameter.Value.GetValue());
+					configuration.SetValue(name, parameter.Value.GetValue());
 				}
 			}
 		}
@@ -287,11 +275,11 @@ namespace Zeta.Extreme.Form.Themas {
 			foreach (var element in configuration.SrcXml.Elements("command")) {
 				var cmd = new CommandConfiguration();
 				cmd.Thema = configuration;
-				cmd.Code = configuration.Code + element.attr("id", "") + ".cmd";
-				cmd.Name = element.attr("name", cmd.Code);
-				cmd.Url = element.attr("url", "");
-				cmd.Role = element.attr("role", configuration.DefaultElementRole);
-				element.update(cmd, "id", "name", "code", "role", "url");
+				cmd.Code = configuration.Code + element.Attr("id", "") + ".cmd";
+				cmd.Name = element.Attr("name", cmd.Code);
+				cmd.Url = element.Attr("url", "");
+				cmd.Role = element.Attr("role", configuration.DefaultElementRole);
+				element.Apply(cmd, "id", "name", "code", "role", "url");
 				if (!cmd.Active) {
 					continue;
 				}
@@ -303,12 +291,12 @@ namespace Zeta.Extreme.Form.Themas {
 			foreach (var element in configuration.SrcXml.Elements("doc")) {
 				var doc = new DocumentConfiguration();
 				doc.Thema = configuration;
-				doc.Code = configuration.Code + element.idorcode() + ".doc";
-				doc.Name = element.attr("name", doc.Code);
-				doc.Url = element.attr("url", "");
-				doc.Role = element.attr("role", configuration.DefaultElementRole);
-				doc.Type = element.attr("type", "link");
-				element.update(doc, "id", "name", "code", "role", "type");
+				doc.Code = configuration.Code + element.IdCodeOrValue() + ".doc";
+				doc.Name = element.Attr("name", doc.Code);
+				doc.Url = element.Attr("url", "");
+				doc.Role = element.Attr("role", configuration.DefaultElementRole);
+				doc.Type = element.Attr("type", "link");
+				element.Apply(doc, "id", "name", "code", "role", "type");
 				if (!doc.Active) {
 					continue;
 				}
@@ -317,12 +305,13 @@ namespace Zeta.Extreme.Form.Themas {
 		}
 
 		private void readInputs(ThemaConfiguration configuration) {
+			var groupcodes = new[] {"A", "B", "C"};
 			var inputs = configuration.SrcXml.Elements("in").Union(configuration.SrcXml.Elements("form")).ToArray();
 			foreach (var element in inputs) {
-				var id = element.idorcode();
-				if (id.isIn("A", "B", "C")) {
+				var id = element.IdCodeOrValue();
+				if (groupcodes.Any(_=>_==id)) {
 					if (configuration.Parameters.ContainsKey("active" + id)) {
-						var active = configuration.ResolveParameter("active" + id).Value.toBool();
+						var active = configuration.ResolveParameter("active" + id).Value.ToBool();
 						if (!active) {
 							element.Remove();
 							continue;
@@ -333,82 +322,46 @@ namespace Zeta.Extreme.Form.Themas {
 				foreach (var parameter in configuration.Parameters) {
 					if (parameter.Key.StartsWith("input.")) {
 						var name = parameter.Key.Substring(6);
-						input.setPropertySafe(name, parameter.Value.GetValue());
+						input.SetValue(name, parameter.Value.GetValue());
 					}
 				}
 
 				input.Thema = configuration;
-				input.Code = configuration.Code + element.idorcode() + ".in";
-				input.Name = element.attr("name", input.Name ?? input.Code);
-				input.Role = element.attr("role", input.Role ?? configuration.DefaultElementRole);
-				input.Template = element.attr("template", input.Template ?? input.Code);
-				input.SqlOptimization = element.attr("sqloptimization", "");
+				input.Code = configuration.Code + element.IdCodeOrValue() + ".in";
+				input.Name = element.Attr("name", input.Name ?? input.Code);
+				input.Role = element.Attr("role", input.Role ?? configuration.DefaultElementRole);
+				input.Template = element.Attr("template", input.Template ?? input.Code);
+				input.SqlOptimization = element.Attr("sqloptimization", "");
 				if (!input.Template.EndsWith(".in")) {
 					input.Template += ".in";
 				}
 
-				element.update(input, "id", "name", "code", "role", "template");
-				input.IgnorePeriodState = element.attr("ignoreperiodstate", false);
-				input.IsObjectDependent = element.attr("isobjectdependent", false);
+				element.Apply(input, "id", "name", "code", "role", "template");
+				input.IgnorePeriodState = element.Attr("ignoreperiodstate").ToBool();
+				input.IsObjectDependent = element.Attr("isobjectdependent").ToBool();
 
 
-				input.FixedObj = element.elementOrAttr("fixedobj", "");
+				input.FixedObj = element.ElementOrAttr("fixedobj", "");
 
-				input.Biztran = element.attr("biztran", "");
-				input.NeedPreloadScript = element.elementOrAttr("needpreloadscript", false);
-				input.UseQuickUpdate = element.elementOrAttr("usequickupdate", false);
-				input.DocumentRoot = element.attr("docroot", "");
-				if (input.DocumentRoot.noContent()) {
-					input.DocumentRoot = element.Elements("docroot").LastOrDefault().attr("code", "");
+				input.Biztran = element.Attr("biztran", "");
+				input.NeedPreloadScript = element.ElementOrAttr("needpreloadscript", false);
+				input.UseQuickUpdate = element.ElementOrAttr("usequickupdate", false);
+				input.DocumentRoot = element.Attr("docroot", "");
+				if (input.DocumentRoot.IsEmpty()) {
+					input.DocumentRoot = element.Elements("docroot").LastOrDefault().Attr("code", "");
 				}
 
 
 				if (!input.Active) {
 					continue;
 				}
-				/*input.TemplateXml = new XElement("input");
-//NOTE: редкостная блуда для совместимости, просто редкостная
-				var exfile = PathResolver.ResolveAll("data", input.Template + ".xml", true).FirstOrDefault();
-				if (null == exfile) {
-					input.Template = "empty.in";
-				}
-
-				if (input.Template == "empty.in") {
-					input.TemplateXml = XElement.Parse("<input/>");
-				}
-				else {
-					var templateFile = PathResolver.ResolveAll("data", input.Template + ".xml", true).FirstOrDefault();
-					if (null == templateFile) {
-						input.IsError = true;
-						input.Warrnings.Add("отсутствует шаблон с кодом " + input.Template);
-					}
-					else {
-						input.TemplateXml =
-							XElement.Parse(PathResolver.ReadXml(templateFile, null,
-																new ReadXmlOptions
-																	{UseIncludes = true, IncludeRoot = "data/include/"}));
-#if ADAPT_TO_OLD_INPUT_TEMPLATES
-						foreach (var info in input.GetType().GetProperties()){
-							var name = "form." + info.Name.ToLower();
-							configuration.Parameters[name] = new TypedParameter{
-																				   Name = name,
-																				   Type = info.PropertyType,
-																				   Value =
-																					   input.getPropertySafe<string>(
-																						   info.Name)
-																			   };
-						}
-
-#endif
-						embedParametersIntoXml(configuration, input.TemplateXml);
-					}
-				}*/
-				input.Sources = element.Elements("uselib").Select(x => x.attr("id")).Where(x => x.hasContent()).ToArray();
+				
+				input.Sources = element.Elements("uselib").Select(x => x.Attr("id")).Where(x => x.IsNotEmpty()).ToArray();
 				input.ColumnDefinitions = element.XPathSelectElements("./col").ToArray();
 				input.RowDefinitions = element.XPathSelectElements("./row").ToArray();
 				var root = element.XPathSelectElement("./root");
 				if (root != null) {
-					input.RootCode = root.attr("code", "");
+					input.RootCode = root.Attr("code", "");
 				}
 
 
@@ -420,7 +373,7 @@ namespace Zeta.Extreme.Form.Themas {
 
 				var docs = element.XPathSelectElements("./doc");
 				foreach (var x in docs) {
-					input.Documents[x.attr("code")] = x.attr("name");
+					input.Documents[x.Attr("code")] = x.Attr("name");
 				}
 
 
@@ -431,10 +384,10 @@ namespace Zeta.Extreme.Form.Themas {
 		private void readOutputs(ThemaConfiguration configuration) {
 			var outs = configuration.SrcXml.Elements("out").ToArray();
 			foreach (var element in outs) {
-				var id = element.attr("code", "");
-				if (id.isIn("Aa", "Ab", "Ba", "Bb", "Ca", "Cb")) {
+				var id = element.Attr("code", "");
+				if (id.IsIn("Aa", "Ab", "Ba", "Bb", "Ca", "Cb")) {
 					if (configuration.Parameters.ContainsKey("active" + id.Substring(0, 1))) {
-						var active = configuration.ResolveParameter("active" + id.Substring(0, 1)).Value.toBool();
+						var active = configuration.ResolveParameter("active" + id.Substring(0, 1)).Value.ToBool();
 						if (!active) {
 							element.Remove();
 							continue;
@@ -448,18 +401,18 @@ namespace Zeta.Extreme.Form.Themas {
 				foreach (var parameter in configuration.Parameters) {
 					if (parameter.Key.StartsWith("out.")) {
 						var name = parameter.Key.Substring(4);
-						output.setPropertySafe(name, parameter.Value.GetValue());
+						output.SetValue(name, parameter.Value.GetValue());
 					}
 				}
 
 				output.Thema = configuration;
 
-				output.Code = configuration.Code + element.idorcode() + ".out";
-				output.Name = element.attr("name", output.Code);
-				output.Role = element.attr("role", output.Role ?? configuration.DefaultElementRole);
-				output.Type = element.attr("type", "call");
-				output.Template = element.attr("template", output.Template ?? output.Code);
-				output.Sources = element.Elements("uselib").Select(x => x.idorcode()).Where(x => x.hasContent()).ToArray();
+				output.Code = configuration.Code + element.IdCodeOrValue() + ".out";
+				output.Name = element.Attr("name", output.Code);
+				output.Role = element.Attr("role", output.Role ?? configuration.DefaultElementRole);
+				output.Type = element.Attr("type", "call");
+				output.Template = element.Attr("template", output.Template ?? output.Code);
+				output.Sources = element.Elements("uselib").Select(x => x.IdCodeOrValue()).Where(x => x.IsNotEmpty()).ToArray();
 
 				if (!output.Template.EndsWith(".out")) {
 					output.Template += ".out";
@@ -469,7 +422,7 @@ namespace Zeta.Extreme.Form.Themas {
 					output.Template = "empty.out";
 				}
 
-				element.update(output, "id", "name", "code", "role", "type", "template");
+				element.Apply(output, "id", "name", "code", "role", "type", "template");
 
 
 				if (!output.Active) {
@@ -481,90 +434,19 @@ namespace Zeta.Extreme.Form.Themas {
 						output.TemplateXml.Add(e);
 					}
 				}
-				else {
-					var templateFile = PathResolver.ResolveAll("data", output.Template + ".xml", true).FirstOrDefault();
-					if (null == templateFile) {
-						output.IsError = true;
-						output.Warrnings.Add("отсутствует шаблон с кодом " + output.Template);
-					}
-					else {
-						output.TemplateXml =
-							XElement.Parse(PathResolver.ReadXml(templateFile, null,
-							                                    new ReadXmlOptions
-								                                    {UseIncludes = true, IncludeRoot = "data/include/"}));
-#if ADAPT_TO_OLD_INPUT_TEMPLATES
-                        foreach (var info in output.GetType().GetProperties()){
-                            var name = "report." + info.Name.ToLower();
-                            configuration.Parameters[name] = new TypedParameter{
-                                                                                   Name = name,
-                                                                                   Type = info.PropertyType,
-                                                                                   Value =
-                                                                                       output.getPropertySafe<string>(
-                                                                                           info.Name)
-                                                                               };
-                        }
-
-#endif
-						embedParametersIntoXml(configuration, output.TemplateXml);
-
-						var parameters = element.XPathSelectElements("./param");
-
-						foreach (var parameter in parameters) {
-							var param = readParameter(parameter);
-							output.Parameters.Add(param);
-						}
-					}
-				}
-
-
 				configuration.Outputs[output.Code] = output;
 			}
 		}
 
-		//class processedannotation {}
-		//static processedannotation _defpa = new processedannotation();
-		private void embedParametersIntoXml(ThemaConfiguration configuration, XElement x) {
-			foreach (var e in x.DescendantsAndSelf()) {
-				//if (null != e.Annotations<processedannotation>().FirstOrDefault()) continue;
-
-				foreach (var a in e.Attributes()) {
-					if (-1 != a.Value.IndexOf('$')) {
-						a.Value = embedParameters(configuration, a.Value);
-					}
-					if (-1 != a.Value.IndexOf('#')) {
-						//escapes some custom constructions, that must use ${...} constructions further
-						a.Value = a.Value.Replace("#{", "${");
-					}
-				}
-				foreach (var n_ in e.Nodes()) {
-					if (n_ is XText) {
-						var a = n_ as XText;
-						if (-1 != a.Value.IndexOf('$')) {
-							a.Value = embedParameters(configuration, a.Value);
-						}
-						if (-1 != a.Value.IndexOf('#')) {
-							//escapes some custom constructions, that must use ${...} constructions further
-							a.Value = a.Value.Replace("#{", "${");
-						}
-					}
-				}
-				// e.AddAnnotation(_defpa);
-			}
-		}
-
-
-		private string embedParameters(ThemaConfiguration configuration, string val) {
-			return val.replace(@"\$\{([\.\w]+)\}", m => configuration.ResolveParameter(m.Groups[1].Value).Value);
-		}
-
+		
 
 		private TypedParameter readParameter(XElement parameter) {
 			var p = new TypedParameter
 				{
-					Type = ReflectionExtensions.ResolveTypeByWellKnownName(parameter.attr("type", "str")),
-					Value = parameter.attr("value", null) ?? parameter.Value,
-					Name = parameter.idorcode(),
-					Mode = parameter.attr("mode", "static")
+					Type = ReflectionExtensions.ResolveTypeByWellKnownName(parameter.Attr("type", "str")),
+					Value = parameter.Attr("value", null) ?? parameter.Value,
+					Name = parameter.IdCodeOrValue(),
+					Mode = parameter.Attr("mode", "static")
 				};
 			return p;
 		}
@@ -573,16 +455,16 @@ namespace Zeta.Extreme.Form.Themas {
 			foreach (var thema in themas) {
 				var desc = new ThemaConfiguration
 					{
-						Code = thema.idorcode("default"),
-						Name = thema.attr("name", thema.attr("code", "default")),
-						Active = thema.attr("active", true),
-						AutoImport = thema.attr("autoimport", false),
-						Layout = thema.attr("layout", "default"),
-						Abstract = thema.attr("abst", false),
-						Idx = thema.attr("idx", 0),
+						Code = thema.IdCodeOrValue("default"),
+						Name = thema.Attr("name", thema.Attr("code", "default")),
+						Active = thema.Attr("active").IsEmpty() || thema.Attr("active").ToBool(),
+						AutoImport = thema.Attr("autoimport").ToBool(),
+						Layout = thema.Attr("layout", "default"),
+						Abstract = thema.Attr("abst").ToBool(),
+						Idx = thema.Attr("idx").ToInt(),
 						SrcXml = thema,
 					};
-				thema.update(desc, "id", "name", "code", "active", "autoimport", "layout", "abst", "idx");
+				thema.Apply(desc, "id", "name", "code", "active", "autoimport", "layout", "abst", "idx");
 				if (desc.Abstract) {
 					desc.Active = false;
 				}
@@ -592,8 +474,8 @@ namespace Zeta.Extreme.Form.Themas {
 		}
 
 		private DateTime _cfgVersion;
-		private IInversionContainer _container;
+		private IContainer _container;
 
-		private IFilePathResolver _pathResolver;
+		private IFileService _pathResolver;
 	}
 }

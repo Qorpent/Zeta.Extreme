@@ -11,12 +11,13 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Comdiv.Extensions;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -31,8 +32,6 @@ namespace Zeta.Extreme {
 		private static IFormulaStorage _default;
 
 
-		
-
 		/// <summary>
 		/// 	Конструктор по умолчанию, также формирует простой препроцессор
 		/// </summary>
@@ -43,34 +42,10 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Кэш бибилиотек для автоматической привязки формул
+		/// 	Кэш бибилиотек для автоматической привязки формул
 		/// </summary>
 		public IList<Assembly> FormulaAssemblyCache {
-			get { return _formulaAssemblyCache ??(_formulaAssemblyCache = new List<Assembly>()); }
-
-		}
-		class CachedFormula {
-		/// <summary>
-		/// 
-		/// </summary>
-			public string Version;
-			/// <summary>
-			/// 
-			/// </summary>
-			public Type Formula;
-		}
-		IDictionary<string, CachedFormula> _cachedTypes = new Dictionary<string, CachedFormula>();
-
-		/// <summary>
-		/// Строит индекс по кэшированным типам
-		/// </summary>
-		public void BuildCacheIndex() {
-			_cachedTypes.Clear();
-			foreach (var formula in GetCachedFormulas()) {
-				var attr = ((FormulaAttribute)formula.GetCustomAttribute(typeof(FormulaAttribute), true));
-				if (null == attr) continue;
-				_cachedTypes[attr.Key] = new CachedFormula {Version = attr.Version, Formula = formula};
-			}
+			get { return _formulaAssemblyCache ?? (_formulaAssemblyCache = new List<Assembly>()); }
 		}
 
 		/// <summary>
@@ -90,12 +65,11 @@ namespace Zeta.Extreme {
 			lock (_register_lock)
 				lock (_compile_lock) //нельзя во время регистрации еще и компилировать
 				{
-					
-					if(null!=request.PreparedType) {
+					if (null != request.PreparedType) {
 						_registry[request.Key] = request;
 						return request.Key;
 					}
-					if (string.IsNullOrWhiteSpace(request.Key)) {
+					if (String.IsNullOrWhiteSpace(request.Key)) {
 						request.Key = request.Formula.Trim();
 					}
 					if (_registry.ContainsKey(request.Key)) {
@@ -108,7 +82,7 @@ namespace Zeta.Extreme {
 							existed.PreparedType = request.PreparedType ?? existed.PreparedType;
 							existed.PreprocessedFormula = request.PreprocessedFormula;
 							existed.Cache.Clear();
-							if (null == existed.PreparedType && string.IsNullOrWhiteSpace(existed.PreprocessedFormula)) {
+							if (null == existed.PreparedType && String.IsNullOrWhiteSpace(existed.PreprocessedFormula)) {
 								Preprocess(existed);
 							}
 						}
@@ -120,15 +94,14 @@ namespace Zeta.Extreme {
 						}
 						else {
 							TryResolveFromCache(request);
-							if (null == request.PreparedType && string.IsNullOrWhiteSpace(request.PreprocessedFormula)) {
+							if (null == request.PreparedType && String.IsNullOrWhiteSpace(request.PreprocessedFormula)) {
 								Preprocess(request);
 							}
 						}
 					}
 
-					
-					if(null==request.PreparedType) {
 
+					if (null == request.PreparedType) {
 						var waitbatchsize =
 							_registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).Count();
 						if (AutoBatchCompile && BatchSize <= waitbatchsize) {
@@ -140,44 +113,22 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Возвращает список типов
+		/// 	Строит кэш из указанной директории
 		/// </summary>
-		/// <returns></returns>
-		public IEnumerable<Type> GetCachedFormulas() {
-			return FormulaAssemblyCache.SelectMany(_ => _.GetTypes());
-		}
-
-		private void TryResolveFromCache(FormulaRequest request) {
-			if(!_cachedTypes.ContainsKey(request.Key)) return;
-			var _cached = _cachedTypes[request.Key];
-			if(_cached.Version==request.Version) {
-				request.PreparedType = _cached.Formula;
-			}
-		}
-
-		/// <summary>
-		/// Строит кэш из указанной директории
-		/// </summary>
-		/// <param name="root"></param>
+		/// <param name="root"> </param>
 		public void BuildCache(string root) {
 			FormulaAssemblyCache.Clear();
-			
+
 			Directory.CreateDirectory(root);
 			var paths = Directory.GetFiles(root, "*.dll").OrderBy(File.GetLastWriteTime).ToArray();
-			foreach (var path in paths)
-			{
-				try
-				{
+			foreach (var path in paths) {
+				try {
 					var bin = File.ReadAllBytes(path);
 					FormulaAssemblyCache.Add(Assembly.Load(bin));
 				}
-				catch
-				{
-
-				}
+				catch {}
 			}
 			BuildCacheIndex();
-
 		}
 
 		/// <summary>
@@ -276,10 +227,10 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
-		/// Проверяет наличие формулы в хранилище
+		/// 	Проверяет наличие формулы в хранилище
 		/// </summary>
-		/// <param name="key"></param>
-		/// <returns></returns>
+		/// <param name="key"> </param>
+		/// <returns> </returns>
 		public bool Exists(string key) {
 			return _registry.ContainsKey(key);
 		}
@@ -292,13 +243,45 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	Строит индекс по кэшированным типам
+		/// </summary>
+		public void BuildCacheIndex() {
+			_cachedTypes.Clear();
+			foreach (var formula in GetCachedFormulas()) {
+				var attr = ((FormulaAttribute) formula.GetCustomAttribute(typeof (FormulaAttribute), true));
+				if (null == attr) {
+					continue;
+				}
+				_cachedTypes[attr.Key] = new CachedFormula {Version = attr.Version, Formula = formula};
+			}
+		}
+
+		/// <summary>
+		/// 	Возвращает список типов
+		/// </summary>
+		/// <returns> </returns>
+		public IEnumerable<Type> GetCachedFormulas() {
+			return FormulaAssemblyCache.SelectMany(_ => _.GetTypes());
+		}
+
+		private void TryResolveFromCache(FormulaRequest request) {
+			if (!_cachedTypes.ContainsKey(request.Key)) {
+				return;
+			}
+			var _cached = _cachedTypes[request.Key];
+			if (_cached.Version == request.Version) {
+				request.PreparedType = _cached.Formula;
+			}
+		}
+
+		/// <summary>
 		/// 	Обертка над вызовом компилятора с корректной обработкой ошибок компиляции
 		/// </summary>
 		/// <param name="batch"> </param>
 		/// <param name="savepath"> </param>
 		protected internal void DoCompile(FormulaRequest[] batch, string savepath) {
 			try {
-				new FormulaCompiler().Compile(batch,savepath);
+				new FormulaCompiler().Compile(batch, savepath);
 			}
 			catch (Exception e) {
 				LastCompileError = e;
@@ -333,6 +316,22 @@ namespace Zeta.Extreme {
 			}
 		}
 
+		#region Nested type: CachedFormula
+
+		private class CachedFormula {
+			/// <summary>
+			/// </summary>
+			public Type Formula;
+
+			/// <summary>
+			/// </summary>
+			public string Version;
+		}
+
+		#endregion
+
+		private readonly IDictionary<string, CachedFormula> _cachedTypes = new Dictionary<string, CachedFormula>();
+
 		private readonly object _compile_lock = new object(); //синхронизатор компилятора
 		private readonly object _get_lock = new object(); //синхронизатор получения формулы
 		private readonly List<IFormulaPreprocessor> _preprocessors = new List<IFormulaPreprocessor>();
@@ -349,5 +348,91 @@ namespace Zeta.Extreme {
 		public int BatchSize = 5;
 
 		private IList<Assembly> _formulaAssemblyCache;
+
+		/// <summary>
+		/// Загружает формулы по умолчанию из кжша, с использованием указанной папки готовых DLL
+		/// </summary>
+		/// <param name="tmp"></param>
+		public static void LoadDefaultFormulas(string tmp) {
+			if(tmp.IsNotEmpty()) {
+				Default.BuildCache(tmp);
+			}
+			var oldrowformulas = RowCache.Formulas.Where(
+				_ => _.Version < DateTime.Today
+				).ToArray();
+
+			var newrowformulas = RowCache.Formulas.Where(
+				_ => _.Version >= DateTime.Today
+				).ToArray();
+
+
+			var oldcolformulas = (
+				                     from c in ColumnCache.Byid.Values
+				                     //myapp.storage.AsQueryable<col>()
+				                     where c.IsFormula
+				                           && c.FormulaEvaluator == "boo" && !String.IsNullOrEmpty(c.Formula)
+				                           && c.Version < DateTime.Today
+				                     select new {c = c.Code, f = c.Formula, tag = c.Tag, version = c.Version}
+			                     ).ToArray();
+
+			var newcolformulas = (
+				                     from c in ColumnCache.Byid.Values
+				                     //myapp.storage.AsQueryable<col>()
+				                     where c.IsFormula
+				                           && c.FormulaEvaluator == "boo" && !String.IsNullOrEmpty(c.Formula)
+				                           && c.Version >= DateTime.Today
+				                     select new {c = c.Code, f = c.Formula, tag = c.Tag, version = c.Version}
+			                     ).ToArray();
+
+
+			foreach (var f in oldrowformulas) {
+				var req = new FormulaRequest
+					{
+						Key = "row:" + f.Code,
+						Formula = f.Formula,
+						Language = f.FormulaEvaluator,
+						Version = f.Version.ToString(CultureInfo.InvariantCulture)
+					};
+				Default.Register(req);
+			}
+
+			foreach (var c in oldcolformulas) {
+				var req = new FormulaRequest
+					{
+						Key = "col:" + c.c,
+						Formula = c.f,
+						Language = "boo",
+						Tags = c.tag,
+						Version = c.version.ToString(CultureInfo.InvariantCulture)
+					};
+				Default.Register(req);
+			}
+			Default.CompileAll(tmp);
+
+
+			foreach (var f in newrowformulas) {
+				var req = new FormulaRequest
+					{
+						Key = "row:" + f.Code,
+						Formula = f.Formula,
+						Language = f.FormulaEvaluator,
+						Version = f.Version.ToString(CultureInfo.InvariantCulture)
+					};
+				Default.Register(req);
+			}
+
+			foreach (var c in newcolformulas) {
+				var req = new FormulaRequest
+					{
+						Key = "col:" + c.c,
+						Formula = c.f,
+						Language = "boo",
+						Tags = c.tag,
+						Version = c.version.ToString(CultureInfo.InvariantCulture)
+					};
+				Default.Register(req);
+			}
+			Default.CompileAll(tmp);
+		}
 	}
 }

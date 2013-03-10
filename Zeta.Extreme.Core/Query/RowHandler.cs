@@ -11,10 +11,9 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Comdiv.Zeta.Model;
-using Comdiv.Zeta.Model.ExtremeSupport;
 using Zeta.Extreme.Meta;
-using RowCache = Zeta.Extreme.Poco.NativeSqlBind.RowCache;
+using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -65,18 +64,7 @@ namespace Zeta.Extreme {
 		/// <param name="session"> </param>
 		/// <exception cref="NotImplementedException"></exception>
 		public override void Normalize(ISession session) {
-			throw new System.NotImplementedException();
-		}
-
-		/// <summary>
-		/// 	Функция непосредственного вычисления кэшевой строки
-		/// </summary>
-		/// <returns> </returns>
-		protected override string EvalCacheKey() {
-			if (TreeUsage != RowTreeUsage.None && !string.IsNullOrWhiteSpace(Code)) {
-				return "TREE:" + Code + "~" + TreeUsage;
-			}
-			return base.EvalCacheKey();
+			throw new NotImplementedException();
 		}
 
 		/// <summary>
@@ -101,6 +89,17 @@ namespace Zeta.Extreme {
 			NormalizeReferencedRows(session, column);
 		}
 
+		/// <summary>
+		/// 	Функция непосредственного вычисления кэшевой строки
+		/// </summary>
+		/// <returns> </returns>
+		protected override string EvalCacheKey() {
+			if (TreeUsage != RowTreeUsage.None && !string.IsNullOrWhiteSpace(Code)) {
+				return "TREE:" + Code + "~" + TreeUsage;
+			}
+			return base.EvalCacheKey();
+		}
+
 
 		private void NormalizeReferencedRows(ISession session, IZetaColumn column) {
 			var initialcode = Code;
@@ -111,8 +110,8 @@ namespace Zeta.Extreme {
 				proceed = ResolveSingleRowFormula();
 			}
 			if (initialcode != Code) {
-				if (session != null && ((Session)session).CollectStatistics) {
-					Interlocked.Increment(ref ((Session)session).Stat_Row_Redirections);
+				if (session != null && ((Session) session).CollectStatistics) {
+					Interlocked.Increment(ref ((Session) session).Stat_Row_Redirections);
 				}
 			}
 		}

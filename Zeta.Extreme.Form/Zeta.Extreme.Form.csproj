@@ -54,6 +54,32 @@
       <HintPath>..\..\build\Qorpent.Utils.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration" />
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Bxl\Qorpent.Bxl.csproj">
+      <Project>{381DEC86-5709-4A64-BD9F-462E792884CE}</Project>
+      <Name>Qorpent.Bxl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
+      <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
+      <Name>Qorpent.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Dsl\Qorpent.Dsl.csproj">
+      <Project>{B758E220-22F5-47DF-A73B-BC9B1A3DBDC3}</Project>
+      <Name>Qorpent.Dsl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
+      <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
+      <Name>Qorpent.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
+      <Project>{44653de7-dee5-4960-a906-e0d6b1f83fcc}</Project>
+      <Name>Zeta.Extreme.BizProcess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.Poco\Zeta.Extreme.Poco.csproj">
+      <Project>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</Project>
+      <Name>Zeta.Extreme.Poco</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.XML" />

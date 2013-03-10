@@ -16,10 +16,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using Comdiv.Application;
-using Comdiv.Zeta.Model;
 using Microsoft.CSharp;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -50,13 +49,15 @@ namespace Zeta.Extreme.DyncamicFormulas {
 		/// 	полученные типы присваиваютс€ формулам
 		/// </summary>
 		/// <param name="formulaRequests"> </param>
-		/// <param name="savepath">путь дл€ сохранени€ сборки </param>
+		/// <param name="savepath"> путь дл€ сохранени€ сборки </param>
 		public void Compile(FormulaRequest[] formulaRequests, string savepath = null) {
-			if(0==formulaRequests.Length) return;
+			if (0 == formulaRequests.Length) {
+				return;
+			}
 			var codefiles = GetCodeFiles(formulaRequests).ToArray();
 			var codeprovider = new CSharpCodeProvider();
 			CompilerParameters parameters = null;
-			if(string.IsNullOrWhiteSpace(savepath)) {
+			if (string.IsNullOrWhiteSpace(savepath)) {
 				parameters = new CompilerParameters
 					{
 						IncludeDebugInformation = false,
@@ -65,19 +66,21 @@ namespace Zeta.Extreme.DyncamicFormulas {
 				
 						//OutputAssembly = ((DateTime.Now - new DateTime(1979,1,23)).TotalMilliseconds).ToString(),
 					};
-			}else {
+			}
+			else {
 				parameters = new CompilerParameters
 					{
 						IncludeDebugInformation = false,
 						GenerateInMemory = false,
 						TreatWarningsAsErrors = false,
-						OutputAssembly = Path.Combine(savepath,DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")+"-formulas-"+Environment.TickCount+".dll") 
+						OutputAssembly =
+							Path.Combine(savepath,
+							             DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "-formulas-" + Environment.TickCount + ".dll")
 					};
 			}
 			parameters.ReferencedAssemblies.Add("mscorlib.dll");
 			parameters.ReferencedAssemblies.Add("System.dll");
 			parameters.ReferencedAssemblies.Add("System.Core.dll");
-			parameters.ReferencedAssemblies.Add(Assembly.GetAssembly(typeof (myapp)).CodeBase.Replace("file:///", ""));
 			parameters.ReferencedAssemblies.Add(Assembly.GetAssembly(typeof (IZetaRow)).CodeBase.Replace("file:///", ""));
 			parameters.ReferencedAssemblies.Add(Assembly.GetAssembly(typeof (IFormula)).CodeBase.Replace("file:///", ""));
 
@@ -108,12 +111,13 @@ namespace Zeta.Extreme.DyncamicFormulas {
 			}
 
 			Assembly assembly = null;
-			if(string.IsNullOrWhiteSpace(savepath)) {
+			if (string.IsNullOrWhiteSpace(savepath)) {
 				assembly = result.CompiledAssembly;
-			}else {
-				assembly = Assembly.Load(File.ReadAllBytes( parameters.OutputAssembly));
 			}
-			 
+			else {
+				assembly = Assembly.Load(File.ReadAllBytes(parameters.OutputAssembly));
+			}
+
 			var types = assembly.GetTypes().Where(_ => typeof (IFormula).IsAssignableFrom(_));
 			foreach (var t in types) {
 				var attr = t.GetCustomAttributes(typeof (FormulaAttribute), true).OfType<FormulaAttribute>().First();
@@ -137,8 +141,8 @@ namespace Zeta.Extreme.DyncamicFormulas {
 						.Replace("_KEY_", key)
 						.Replace("_CLASS_", classname)
 						.Replace("_BASE_", basetype)
-						.Replace("_EXP_",expression)
-						.Replace("_VERSION_",fr.Version);
+						.Replace("_EXP_", expression)
+						.Replace("_VERSION_", fr.Version);
 			}
 		}
 	}

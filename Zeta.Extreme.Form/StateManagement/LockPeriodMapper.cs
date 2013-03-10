@@ -10,11 +10,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Comdiv.Application;
-using Comdiv.Common;
-using Comdiv.Extensions;
-using Comdiv.IO;
 using Qorpent.Bxl;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.StateManagement;
 
 namespace Zeta.Extreme.Form.StateManagement {
@@ -26,10 +23,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 
 		private static readonly IDictionary<string, int[]> lockmap = new Dictionary<string, int[]>();
 
-		static LockPeriodMapper() {
-			myapp.OnReload += myapp_OnReload;
-		}
-
+		
 
 		/// <summary>
 		/// 	Получить список блокированных периодов с командами блокировки
@@ -40,7 +34,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 		public int[] GetLockingPeriods(LockOperation operation, int givenperiod) {
 			checkMap();
 			var prefix = operation.ToString() + givenperiod;
-			var toperiods = lockmap.get(prefix, new int[] {});
+			var toperiods = lockmap.SafeGet(prefix)?? new int[] {};
 			return toperiods;
 		}
 
@@ -53,11 +47,11 @@ namespace Zeta.Extreme.Form.StateManagement {
 		}
 
 		private static void reloadCheckMap() {
-			var file = myapp.files.Read("lockmap.bxl");
-			if (file.hasContent()) {
+			var file = Qorpent.Applications.Application.Current.Files.Read<string>("lockmap.bxl");
+			if (file.IsNotEmpty()) {
 				var xml = new BxlParser().Parse(file);
 				foreach (var element in xml.Elements()) {
-					var fromperiod = element.attr("code");
+					var fromperiod = element.Attr("code");
 					var prefix = element.Name.LocalName;
 					if (prefix == "lock") {
 						prefix = "Block";
@@ -67,18 +61,11 @@ namespace Zeta.Extreme.Form.StateManagement {
 					}
 					prefix = prefix + fromperiod;
 					var _toperiods = element.Value;
-					var toperiods = _toperiods.split().Select(x => x.toInt()).ToArray();
+					var toperiods = _toperiods.SmartSplit().Select(x => x.ToInt()).ToArray();
 					lockmap[prefix] = toperiods;
 				}
 			}
 			loaded = true;
-		}
-
-		private static void myapp_OnReload(object sender, EventWithDataArgs<int> args) {
-			lock (lockmap) {
-				lockmap.Clear();
-				loaded = false;
-			}
 		}
 	}
 }

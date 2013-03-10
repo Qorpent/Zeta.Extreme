@@ -64,16 +64,11 @@
     <Compile Include="Helpers\UserInfoHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">
-      <Project>{C51304FD-0406-48E0-833E-EEDC67425BC8}</Project>
-      <Name>Comdiv.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
       <Project>{880F65EA-1A22-4672-A137-FFC91290A209}</Project>
       <Name>Qorpent.Core</Name>
@@ -82,21 +77,9 @@
       <Project>{B758E220-22F5-47DF-A73B-BC9B1A3DBDC3}</Project>
       <Name>Qorpent.Dsl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.IO\Qorpent.IO.csproj">
-      <Project>{426C92DF-3C40-426C-B0BE-40A1DF9044C2}</Project>
-      <Name>Qorpent.IO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Serialization\Qorpent.Serialization.csproj">
-      <Project>{21971F28-8ED8-4F50-B623-E9DB2658AF54}</Project>
-      <Name>Qorpent.Serialization</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
       <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
       <Name>Qorpent.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Comdiv.Zeta.Model\Comdiv.Zeta.Model.csproj">
-      <Project>{F939564A-D5A9-4BEE-B8F2-47C384358AFC}</Project>
-      <Name>Comdiv.Zeta.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
       <Project>{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}</Project>

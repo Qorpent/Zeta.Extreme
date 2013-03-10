@@ -24,25 +24,12 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		string Database { get; set; }
 
 		/// <summary>
-		/// 	Получить все записи
-		/// </summary>
-		/// <param name="year"> </param>
-		/// <returns> </returns>
-		PeriodStateRecord[] All(int year);
-
-		/// <summary>
 		/// 	Получить запись по году и периоду
 		/// </summary>
 		/// <param name="year"> </param>
 		/// <param name="period"> </param>
 		/// <returns> </returns>
 		PeriodStateRecord Get(int year, int period);
-
-		/// <summary>
-		/// 	Обновить статус
-		/// </summary>
-		/// <param name="record"> </param>
-		void UpdateState(PeriodStateRecord record);
 
 		/// <summary>
 		/// 	Обновить дедлайн

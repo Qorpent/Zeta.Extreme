@@ -25,8 +25,8 @@ div.open>.tooltip {
     padding-left: 20px;
     margin: 0;
 }
-.impersonator,
 
+.impersonator,.information,
 .zefsdebug, .feedback {
     margin-top: 4px;
     margin-right: 3px;
@@ -56,8 +56,7 @@ div.open>.tooltip {
 }
 
 .zefsstatus, .zefsformsave, .attacher,
-.objselector, .zefscolmanager, .zefsblockmanager,
-.information {
+.objselector, .zefscolmanager, .zefsblockmanager {
     margin-top: 4px;
     margin-left: 3px;
 }
@@ -70,13 +69,89 @@ div.open>.tooltip {
     background-color: #e6ffe1;
 }
 
+.attacher table,
 .zefsblockmanager table {
     cursor: default;
     font-size: 90%;
+    margin-bottom: 0;
 }
 
+.attacher table {
+    table-layout: fixed;
+}
+
+.attacher select[name="type"],
+.attacher input[name="filename"] {
+    font-size: 12px;
+    padding: 2px;
+    margin:0 0 0 5px;
+}
+
+.attacher select[name="type"] {
+    height: 22px;
+    margin-right: 5px;
+}
+.attacher input[name="filename"] {
+    height: 16px;
+}
+
+.attacher span.icon {
+    cursor: pointer;
+}
+
+.attacher td,
 .zefsblockmanager td {
     padding: 2px;
+}
+
+.attacher .progress {
+    margin-bottom: 0;
+    height: 22px;
+}
+
+.attacher input[name="filename"] {
+    width: 140px;
+}
+
+.attacher select[name="type"] {
+    width: 76px;
+}
+
+.attacher td.filename {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.attacher td.type.PDF,
+.attacher td.type.pdf {
+    background-image: url("../images/document-pdf.png");
+}
+
+.attacher td.type.doc,
+.attacher td.type.DOC {
+    background-image: url("../images/document-word.png");
+}
+
+.attacher td.type.xls,
+.attacher td.type.XLS {
+    background-image: url("../images/document-excel.png");
+}
+
+.attacher td.type.TIF,
+.attacher td.type.JPG,
+.attacher td.type.tif,
+.attacher td.type.png,
+.attacher td.type.PNG,
+.attacher td.type.jpg,
+.attacher td.type.JPEG {
+    background-image: url("../images/document-image.png");
+}
+
+.attacher td.type {
+    background-image: url("../images/document.png");
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .zefsblockmanager button {
@@ -87,23 +162,21 @@ div.open>.tooltip {
     margin-left: 5px;
 }
 
-.zefsblockmanager span {
-    font-size: 80%;
-    font-weight: bold;
-}
-
-.zefsblockmanager span[class="0ISCHECKED"] {
+/*
+.zefsblockmanager span.state-check {
     color: #006400;
 }
 
-.zefsblockmanager span[class="0ISOPEN"] {
+.zefsblockmanager span.state-open {
     color: #af0000;
 }
 
-.zefsblockmanager span[class="0ISBLOCK"] {
+.zefsblockmanager span.state-block {
     color: #FF6600;
 }
+*/
 
+.attacher th,
 .zefsblockmanager th {
     padding: 4px 2px;
 }

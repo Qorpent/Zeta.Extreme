@@ -41,10 +41,6 @@
     <Compile Include="SubQuery\QueryDeltaTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\core\Comdiv.Core\Comdiv.Core.csproj">
-      <Project>{c51304fd-0406-48e0-833e-eedc67425bc8}</Project>
-      <Name>Comdiv.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
       <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
       <Name>Qorpent.Core</Name>
@@ -57,17 +53,9 @@
       <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
       <Name>Qorpent.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Comdiv.Zeta.Model\Comdiv.Zeta.Model.csproj">
-      <Project>{f939564a-d5a9-4bee-b8f2-47c384358afc}</Project>
-      <Name>Comdiv.Zeta.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
       <Project>{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}</Project>
       <Name>Zeta.Extreme.BizProcess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Zeta.Extreme.Form\Zeta.Extreme.Form.csproj">
-      <Project>{FBD09F91-B185-4207-B05D-6051505CA868}</Project>
-      <Name>Zeta.Extreme.Form</Name>
     </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.Poco\Zeta.Extreme.Poco.csproj">
       <Project>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</Project>
