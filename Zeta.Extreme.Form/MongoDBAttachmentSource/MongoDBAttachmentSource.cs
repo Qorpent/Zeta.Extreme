@@ -1,14 +1,11 @@
-﻿using System;
-using System.Data;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-using Qorpent.Applications;
-using Zeta.Extreme.BizProcess.Forms;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
 using MongoDB.Bson;
 using MongoDB.Driver.GridFS;
+using Qorpent.Applications;
+using Zeta.Extreme.BizProcess.Forms;
 using Comdiv.Extensions;
 
 namespace Zeta.Extreme.Form.MongoDBAttachmentSource {
@@ -22,7 +19,12 @@ namespace Zeta.Extreme.Form.MongoDBAttachmentSource {
         private MongoDatabase database;
         private MongoGridFS GridFS;
 
+        // some system data
+        private FileAccess AccessMode;
+
         // Streams
+        private Stream UploadStream;
+        private Stream DownloadStream;
         private Stream DataStream;
 
         // Current file information for insert to the database
@@ -56,7 +58,22 @@ namespace Zeta.Extreme.Form.MongoDBAttachmentSource {
         }
 
         public Stream Open(Attachment attachment, FileAccess mode) {
-            return this.DataStream;
+            this.AccessMode = mode;
+
+            switch(mode) {
+                case FileAccess.Read:
+                    this.DownloadStream = new MemoryStream();
+                    return this.DownloadStream;
+                    break;
+
+                case FileAccess.Write:
+                    this.UploadStream = new MemoryStream();
+                    return this.UploadStream;
+                    break;
+
+                default:
+                    return this.DataStream;
+            }
         }
 
         /// <summary>
@@ -64,7 +81,7 @@ namespace Zeta.Extreme.Form.MongoDBAttachmentSource {
         /// </summary>
         /// <param name="attachment"></param>
         public void BinaryCommit(Attachment attachment) {
-            this.GridFS.Upload(this.DataStream, attachment.Uid);
+            this.GridFS.Upload(this.UploadStream, attachment.Uid);
         }
 
         /// <summary>
