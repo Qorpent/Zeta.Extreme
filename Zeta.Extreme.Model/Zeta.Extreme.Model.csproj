@@ -4,8 +4,8 @@
     <Configuration>Debug</Configuration>
     <ProjectGuid>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Zeta.Extreme.Poco</RootNamespace>
-    <AssemblyName>Zeta.Extreme.Poco</AssemblyName>
+    <RootNamespace>Zeta.Extreme.Model</RootNamespace>
+    <AssemblyName>Zeta.Extreme.Model</AssemblyName>
   </PropertyGroup>
    <ItemGroup>
     <None Include="Qorpent.Core.import" />
