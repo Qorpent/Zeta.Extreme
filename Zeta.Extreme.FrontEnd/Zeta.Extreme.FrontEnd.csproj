@@ -10,9 +10,7 @@
   <ItemGroup>
     <None Include="Zeta.Extreme.Core.import" />
     <None Include="Zeta.Extreme.Form.import" />
-    <None Include="Zeta.Extreme.Form.import" />
     <None Include="Zeta.Extreme.FrontEnd.export" />
-    <None Include="Zeta.Extreme.Core.import" />
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
