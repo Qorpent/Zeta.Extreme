@@ -10,7 +10,6 @@
   <ItemGroup>
     <None Include="*.import" />
     <None Include="Zeta.Extreme.Core.export" />
-    <None Include="Qorpent.Core.import" />
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
@@ -21,7 +20,7 @@
     <Compile Include="Extensions\SerialAccessExtensions.cs" />
     <Compile Include="Extensions\SerialSession.cs" />
     <Compile Include="Formulas\BackwardCompatibleFormulaBase.cs" />
-    <Compile Include="Formulas\BackwardCompatibleMainFormulaSet.cs"/>
+    <Compile Include="Formulas\BackwardCompatibleMainFormulaSet.cs" />
     <Compile Include="Formulas\BooConverter.cs" />
     <Compile Include="Formulas\CompileErrorFormulaStub.cs" />
     <Compile Include="Formulas\DefaultDeltaPreprocessor.cs" />

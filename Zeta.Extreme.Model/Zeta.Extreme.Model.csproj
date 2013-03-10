@@ -1,21 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
- <PropertyGroup>
+  <PropertyGroup>
     <Configuration>Debug</Configuration>
     <ProjectGuid>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Zeta.Extreme.Model</RootNamespace>
     <AssemblyName>Zeta.Extreme.Model</AssemblyName>
   </PropertyGroup>
-   <ItemGroup>
-    <None Include="Qorpent.Core.import" />
-    <None Include="Qorpent.Utils.import" />
+  <ItemGroup>
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core"/>
-    <Reference Include="System.Xml.Linq"/>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -55,7 +53,7 @@
     <Compile Include="corePoco\usrobjmap.cs" />
     <Compile Include="corePoco\col.cs" />
     <Compile Include="corePoco\objcls.cs" />
-    <Compile Include="corePoco\objtype.cs"/>
+    <Compile Include="corePoco\objtype.cs" />
     <Compile Include="DateRange.cs" />
     <Compile Include="Deprecated\ClassicAttribute.cs" />
     <Compile Include="Deprecated\ForSearchAttribute.cs" />
@@ -244,9 +242,13 @@
     <Compile Include="NativeSqlBind\Periods.cs" />
     <Compile Include="NativeSqlBind\RowCache.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="qorpent.sys.base.import" />
+    <None Include="Zeta.Extreme.Model.export" />
+  </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
-<PropertyGroup>
-	<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-	<DefineConstants>TRACE;DEBUG;ADAPTMODEL LIB2</DefineConstants>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DefineConstants>TRACE;DEBUG;ADAPTMODEL LIB2</DefineConstants>
+  </PropertyGroup>
 </Project>
