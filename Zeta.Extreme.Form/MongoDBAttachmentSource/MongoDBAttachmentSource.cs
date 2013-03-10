@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using MongoDB.Driver;
@@ -17,22 +18,17 @@ namespace Zeta.Extreme.Form.MongoDBAttachmentSource {
         private MongoClient client;
         private MongoServer server;
         private MongoDatabase database;
-        private MongoGridFS GridFS;
-
-        // some system data
-        private FileAccess AccessMode;
+        private MongoGridFS gridFS;
 
         // Streams
-        private Stream UploadStream;
-        private Stream DownloadStream;
-        private Stream DataStream;
+        private Stream uploadStream;
+        private Stream downloadStream;
 
         // Current file information for insert to the database
-        private BsonDocument CurrentFile;
+        private BsonDocument currentFile;
 
         public MongoDBAttachmentStorage() {
-            this.MongoConnect();
-            this.DataStream = new MemoryStream();
+            this.MongoDBConnect();
         }
 
         public IEnumerable<Attachment> Find(Attachment query) {
@@ -47,57 +43,64 @@ namespace Zeta.Extreme.Form.MongoDBAttachmentSource {
         public void Delete(Attachment attachment) {
             var query = MongoDB.Driver.Builders.Query.EQ("Code", attachment.Uid);
             
-            this.GridFS.Delete(attachment.Uid);
+            this.gridFS.Delete(attachment.Uid);
             this.database.GetCollection(DEFAULT_AV_COLLECTION_NAME).Remove(query);
         }
 
         public void Save(Attachment attachment) {
-            this.HandleVariables(attachment);   // prepare variables to insert into the database
-            this.SaveAttachmentView();          // first all, insert the view description
+            // handle input data and prepare the data stream for reading
+            this.SavingPrepare(attachment);
+
+            // ... and save description and binary data
+            this.AttachmentViewSave();
+            this.gridFS.Upload(
+                this.uploadStream,
+                this.currentFile["_id"].ToString()
+            );
         }
 
         public Stream Open(Attachment attachment, FileAccess mode) {
-            this.AccessMode = mode;
+            Stream ReturnStream = null;
 
             switch(mode) {
                 case FileAccess.Read:
-                    this.DownloadStream = new MemoryStream();
-                    return this.DownloadStream;
+                    this.downloadStream = new MemoryStream();
+                    ReturnStream = this.downloadStream;
                     break;
 
                 case FileAccess.Write:
-                    this.UploadStream = new MemoryStream();
-                    return this.UploadStream;
+                    this.uploadStream = new MemoryStream();
+                    ReturnStream = this.uploadStream;
                     break;
 
                 default:
-                    return this.DataStream;
+                    throw new Exception("Not supported accesss mode " + mode);
             }
+
+            return ReturnStream;
         }
 
         /// <summary>
-        /// After all binary file was uploaded onto the stream, commit it.
+        /// Preparing procedure to saving attachment
         /// </summary>
-        /// <param name="attachment"></param>
-        public void BinaryCommit(Attachment attachment) {
-            this.GridFS.Upload(this.UploadStream, attachment.Uid);
+        /// <param name="attachment">Attachment description</param>
+        private void SavingPrepare(Attachment attachment) {
+            this.HandleVariables(attachment);
+            this.uploadStream.Seek(0, SeekOrigin.Begin);
+        }
+
+        private void AttachmentViewSave() {
+            this.database.GetCollection(DEFAULT_AV_COLLECTION_NAME).Insert(this.currentFile);
         }
 
         /// <summary>
         /// Init the connection to the database
         /// </summary>
-        private void MongoConnect() {
-            this.client = new MongoClient();                        // connectint to the local server
+        private void MongoDBConnect() {
+            this.client = new MongoClient();
             this.server = client.GetServer();
-            this.database = server.GetDatabase(DEFAULT_DB_NAME);    // get database that specified in DEFAULT_DB_NAME
-            this.GridFS = new MongoGridFS(this.database);           // and initialize the GridFS engine
-        }
-
-        /// <summary>
-        /// Saving the attachement description to the database
-        /// </summary>
-        private void SaveAttachmentView() {
-            this.database.GetCollection(DEFAULT_AV_COLLECTION_NAME).Insert(this.CurrentFile);
+            this.database = server.GetDatabase(DEFAULT_DB_NAME);
+            this.gridFS = new MongoGridFS(this.database);
         }
 
         /// <summary>
@@ -106,23 +109,23 @@ namespace Zeta.Extreme.Form.MongoDBAttachmentSource {
         /// <param name="attachment">Входные параметры описания файла</param>
         /// <returns>Возвращает переформированные данные описания файла</returns>
         private void HandleVariables(Attachment attachment) {
-            this.CurrentFile = new BsonDocument();
+            this.currentFile = new BsonDocument();
 
-            this.CurrentFile["extension"] = attachment.Extension ?? "";
-            this.CurrentFile["Code"] = attachment.Uid ?? "";
-            this.CurrentFile["type"] = attachment.Type ?? "";
-            this.CurrentFile["Comment"] = attachment.Comment ?? "";
-            this.CurrentFile["User"] = attachment.User ?? Application.Current.Principal.CurrentUser.Identity.Name;
-            this.CurrentFile["MimeType"] = attachment.MimeType ?? "unknown/bin";
+            this.currentFile["extension"] = attachment.Extension ?? "";
+            this.currentFile["Code"] = attachment.Uid ?? "";
+            this.currentFile["type"] = attachment.Type ?? "";
+            this.currentFile["Comment"] = attachment.Comment ?? "";
+            this.currentFile["User"] = attachment.User ?? Application.Current.Principal.CurrentUser.Identity.Name;
+            this.currentFile["MimeType"] = attachment.MimeType ?? "unknown/bin";
 
-            this.CurrentFile["tag"] = TagHelper.ToString(
-                    attachment.Metadata.ToDictionary(
-                        _ => _.Key == "template" ? "form" : _.Key,
-                        _ => _.Value.ToString()
-                    )
+            this.currentFile["tag"] = TagHelper.ToString(
+                attachment.Metadata.ToDictionary(
+                    _ => _.Key == "template" ? "form" : _.Key,
+                    _ => _.Value.ToString()
+                )
             );
 
-            this.CurrentFile["tag"] = TagHelper.Merge(attachment.Type, "/doctype:" + attachment.Type + "/");
+            this.currentFile["tag"] = TagHelper.Merge(attachment.Type, "/doctype:" + attachment.Type + "/");
         }
     }
 }

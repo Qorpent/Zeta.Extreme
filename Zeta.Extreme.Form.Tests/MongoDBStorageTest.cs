@@ -14,36 +14,32 @@ namespace Zeta.Extreme.Form.Tests {
     public class MongoDBStorageTest {
         private MongoDBAttachmentStorage mdb = new MongoDBAttachmentStorage();
 
-
-        private void SaveView(Attachment attachment) {
-            this.mdb.Save(attachment);
-        }
-
-        private void SaveBinary(Attachment attachment) {
-            var source = new byte[] { 84, 101, 115, 116, 32, 79, 75, 33 };  // «Test OK!» phrase in ASCII
-
-                                                                            // open a stream to write data
-            using (var s = this.mdb.Open(attachment, FileAccess.Write)) {
-                s.Write(source, 0, source.Length);                          // writing...
-                s.Seek(0, SeekOrigin.Begin);                                // and move to the begin of data stream
-                this.mdb.BinaryCommit(attachment);                          // and commit new data
-            }
-        }
-
         public void CanSave() {
-            // Test attachment description
+            var source = new byte[] { 84, 101, 115, 116, 32, 79, 75, 33 };
             var attachment = new FormAttachment {
-                Uid = "Test_OK",
+                Uid = "Test_OK2",
                 Name = "Test OK File",
                 Type = "mdb-test"
             };
 
-            this.SaveView(attachment);
-            this.SaveBinary(attachment);
-
+            using (var stream = this.mdb.Open(attachment, FileAccess.Write)) {
+                stream.Write(source, 0, source.Length);
+                this.mdb.Save(attachment);
+            }
         }
 
-        public void CanFindAttachment() {
+        public void CanDelete() {
+            var attachment = new FormAttachment {
+                Uid = "Test_OK2",
+                Name = "Test OK File",
+                Type = "mdb-test"
+            };
+
+            this.mdb.Delete(attachment);
+        }
+
+
+        public void CanFind() {
             var attachment = new FormAttachment {                           // Test attachment description
                 Uid = "Test_OK",
                 Name = "Test OK File",
@@ -52,16 +48,5 @@ namespace Zeta.Extreme.Form.Tests {
 
             this.mdb.Find(attachment);
         }
-
-        public void CanDelete() {
-            var attachment = new FormAttachment {                           // Test attachment description
-                Uid = "Test_OK",
-                Name = "Test OK File",
-                Type = "mdb-test"
-            };
-
-            this.mdb.Delete(attachment);
-        }
-
     }
 }
