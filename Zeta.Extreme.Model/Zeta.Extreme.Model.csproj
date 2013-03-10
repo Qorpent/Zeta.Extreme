@@ -1,96 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
+    <Configuration>Debug</Configuration>
     <ProjectGuid>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Zeta.Extreme.Poco</RootNamespace>
-    <AssemblyName>Zeta.Extreme.Poco</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <CodePage>1251</CodePage>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\build</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ADAPTMODEL LIB2</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'IAS|AnyCPU' ">
-    <OutputPath>bin\IAS\</OutputPath>
-    <DebugType>none</DebugType>
-    <WarningLevel>4</WarningLevel>
-    <Optimize>false</Optimize>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MONO|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ADAPTMODEL</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MIGRATION|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\build\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ADAPTMODEL LIB2</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>comdiv.core.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>Zeta.Extreme.Model</RootNamespace>
+    <AssemblyName>Zeta.Extreme.Model</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -128,12 +52,8 @@
     <Compile Include="corePoco\usr.cs" />
     <Compile Include="corePoco\usrobjmap.cs" />
     <Compile Include="corePoco\col.cs" />
-    <Compile Include="corePoco\objcls.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="corePoco\objtype.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="corePoco\objcls.cs" />
+    <Compile Include="corePoco\objtype.cs" />
     <Compile Include="DateRange.cs" />
     <Compile Include="Deprecated\ClassicAttribute.cs" />
     <Compile Include="Deprecated\ForSearchAttribute.cs" />
@@ -165,12 +85,8 @@
     <Compile Include="extPoco\usr.cs" />
     <Compile Include="extPoco\usrobjmap.cs" />
     <Compile Include="extPoco\col.cs" />
-    <Compile Include="extPoco\objcls.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="extPoco\objtype.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="extPoco\objcls.cs" />
+    <Compile Include="extPoco\objtype.cs" />
     <Compile Include="Inerfaces\Advanced mark support\IZetaColumnMark.cs" />
     <Compile Include="Inerfaces\Advanced mark support\IZetaDetailObjectMark.cs" />
     <Compile Include="Inerfaces\Advanced mark support\IZetaMainObjectMark.cs" />
@@ -327,43 +243,12 @@
     <Compile Include="NativeSqlBind\RowCache.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
-      <Project>{880F65EA-1A22-4672-A137-FFC91290A209}</Project>
-      <Name>Qorpent.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
-      <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
-      <Name>Qorpent.Utils</Name>
-    </ProjectReference>
+    <None Include="qorpent.sys.base.import" />
+    <None Include="Zeta.Extreme.Model.export" />
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="comdiv.core.snk" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\qorpent.kernel\build.targets" />
+  <PropertyGroup>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DefineConstants>TRACE;DEBUG;ADAPTMODEL LIB2</DefineConstants>
+  </PropertyGroup>
 </Project>
