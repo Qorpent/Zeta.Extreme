@@ -6,24 +6,32 @@ using System.IO;
 using Qorpent.Applications;
 using Zeta.Extreme.BizProcess.Forms;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using MongoDB.Bson;
 using MongoDB.Driver.GridFS;
 using Comdiv.Extensions;
 
-
 namespace Zeta.Extreme.Form.MongoDBAttachmentSource {
-
     class MongoDBAttachmentStorage : IAttachmentStorage {
-        const string DEFAULT_DB_NAME = "db";
-        const string DEFAULT_AV_COLLECTION_NAME = "AttachmentView";
+        const string DEFAULT_DB_NAME = "db";                        // default db to store attachments
+        const string DEFAULT_AV_COLLECTION_NAME = "AttachmentView"; // default collection to store attachments
 
         // Connection information
         private MongoClient client;
         private MongoServer server;
         private MongoDatabase database;
+        private MongoGridFS GridFS;
+
+        // Streams
+        private Stream DataStream;
 
         // Current file information for insert to the database
         private BsonDocument CurrentFile;
+
+        public MongoDBAttachmentStorage() {
+            this.MongoConnect();
+            this.DataStream = new MemoryStream();
+        }
 
         public IEnumerable<Attachment> Find(Attachment query) {
             //this.database.GetCollection(DEFAULT_AV_COLLECTION_NAME);
@@ -35,45 +43,38 @@ namespace Zeta.Extreme.Form.MongoDBAttachmentSource {
         /// </summary>
         /// <param name="attachment">Attachment description</param>
         public void Delete(Attachment attachment) {
-            this.AttachmentRealDelete(attachment);
+            var query = MongoDB.Driver.Builders.Query.EQ("Code", attachment.Uid);
+            
+            this.GridFS.Delete(attachment.Uid);
+            this.database.GetCollection(DEFAULT_AV_COLLECTION_NAME).Remove(query);
         }
 
         public void Save(Attachment attachment) {
-            // nothing
-        }
-
-        public Stream Open(Attachment attachment, FileAccess mode) {
-            // nothing
-            return null;
-        }
-
-        /// <summary>
-        /// The real function for saving an attachment in the MongoDB database
-        /// </summary>
-        /// <param name="attachment">Attachment description</param>
-        /// <param name="FileRealTempPath">The real path where temptorary stored this file</param>
-        public void AttachmentSave(Attachment attachment, string FileRealTempPath) {
             this.HandleVariables(attachment);   // prepare variables to insert into the database
             this.MongoConnect();                // establish connection to the database
             this.SaveAttachmentView();          // first all, insert the view description
-            this.SaveAttachmentBinary(          // and then store the binary data
-                attachment,
-                FileRealTempPath
-            );
         }
 
-        private void AttachmentRealDelete(Attachment attachment) {
-            MongoGridFS GridFS = new MongoGridFS(this.database);
-            GridFS.Delete(attachment.Uid);
+        public Stream Open(Attachment attachment, FileAccess mode) {
+            return this.DataStream;
+        }
+
+        /// <summary>
+        /// After all binary file was uploaded onto the stream, commit it.
+        /// </summary>
+        /// <param name="attachment"></param>
+        public void BinaryCommit(Attachment attachment) {
+            this.GridFS.Upload(this.DataStream, attachment.Uid);
         }
 
         /// <summary>
         /// Init the connection to the database
         /// </summary>
         private void MongoConnect() {
-            this.client = new MongoClient();
+            this.client = new MongoClient();                        // connectint to the local server
             this.server = client.GetServer();
-            this.database = server.GetDatabase(DEFAULT_DB_NAME);
+            this.database = server.GetDatabase(DEFAULT_DB_NAME);    // get database that specified in DEFAULT_DB_NAME
+            this.GridFS = new MongoGridFS(this.database);           // and initialize the GridFS engine
         }
 
         /// <summary>
@@ -81,16 +82,6 @@ namespace Zeta.Extreme.Form.MongoDBAttachmentSource {
         /// </summary>
         private void SaveAttachmentView() {
             this.database.GetCollection(DEFAULT_AV_COLLECTION_NAME).Insert(this.CurrentFile);
-        }
-
-        /// <summary>
-        /// Saving the birany file to the database
-        /// </summary>
-        /// <param name="attachment">Attachment data type, describes the uploaded file</param>
-        /// <param name="FileRealTempPath">The real path where temptorary stored this file</param>
-        private void SaveAttachmentBinary(Attachment attachment, string FileRealTempPath) {
-            MongoGridFS GridFS = new MongoGridFS(this.database);
-            GridFS.Upload(FileRealTempPath, attachment.Uid);
         }
 
         /// <summary>
