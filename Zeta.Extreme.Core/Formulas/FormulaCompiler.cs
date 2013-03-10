@@ -56,7 +56,7 @@ namespace Zeta.Extreme.DyncamicFormulas {
 			}
 			var codefiles = GetCodeFiles(formulaRequests).ToArray();
 			var codeprovider = new CSharpCodeProvider();
-			CompilerParameters parameters = null;
+			CompilerParameters parameters;
 			if (string.IsNullOrWhiteSpace(savepath)) {
 				parameters = new CompilerParameters
 					{
@@ -110,13 +110,7 @@ namespace Zeta.Extreme.DyncamicFormulas {
 				}
 			}
 
-			Assembly assembly = null;
-			if (string.IsNullOrWhiteSpace(savepath)) {
-				assembly = result.CompiledAssembly;
-			}
-			else {
-				assembly = Assembly.Load(File.ReadAllBytes(parameters.OutputAssembly));
-			}
+			Assembly assembly = savepath.IsEmpty() ? result.CompiledAssembly : Assembly.Load(File.ReadAllBytes(parameters.OutputAssembly));
 
 			var types = assembly.GetTypes().Where(_ => typeof (IFormula).IsAssignableFrom(_));
 			foreach (var t in types) {
@@ -127,7 +121,7 @@ namespace Zeta.Extreme.DyncamicFormulas {
 			}
 		}
 
-		private IEnumerable<string> GetCodeFiles(FormulaRequest[] formulaRequests) {
+		private  IEnumerable<string> GetCodeFiles(IEnumerable<FormulaRequest> formulaRequests) {
 			foreach (var fr in formulaRequests) {
 				var classname = Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "");
 				var basetype = typeof (BackwardCompatibleFormulaBase).FullName;

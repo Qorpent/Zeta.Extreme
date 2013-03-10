@@ -103,7 +103,7 @@ namespace Zeta.Extreme {
 
 					if (null == request.PreparedType) {
 						var waitbatchsize =
-							_registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).Count();
+							_registry.Values.Count(_ => null == _.PreparedType && null == _.FormulaCompilationTask);
 						if (AutoBatchCompile && BatchSize <= waitbatchsize) {
 							StartAsyncCompilation();
 						}
@@ -297,10 +297,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="request"> </param>
 		public void Preprocess(FormulaRequest request) {
-			var result = request.Formula;
-			foreach (var p in _preprocessors) {
-				result = p.Preprocess(result, request);
-			}
+			string result = _preprocessors.Aggregate(request.Formula, (current, p) => p.Preprocess(current, request));
 			request.PreprocessedFormula = result;
 		}
 

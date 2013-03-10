@@ -95,7 +95,7 @@ namespace Zeta.Extreme.Primary {
 		/// </summary>
 		public void Wait() {
 			RunSqlBatch();
-			Task t = null;
+			Task t;
 			while (_sqltasks.TryTake(out t)) {
 				t.Wait();
 			}
@@ -124,10 +124,7 @@ namespace Zeta.Extreme.Primary {
 		/// </summary>
 		public Task<QueryResult> RunSqlBatch() {
 			lock (_syncsqlawait) {
-				var task = _currentSqlBatchTask;
-				if (null == task) {
-					task = CreateNewSqlBatchTask();
-				}
+				var task = _currentSqlBatchTask ?? CreateNewSqlBatchTask();
 				_currentSqlBatchTask = null;
 				_sqltasks.Add(task);
 				task.Start();
@@ -248,7 +245,7 @@ namespace Zeta.Extreme.Primary {
 			return string.Join("\r\n", groups.Select(_ => _.GenerateSqlScript()));
 		}
 
-		private IEnumerable<PrimaryQueryGroup> ExplodeToGroups(Query[] myrequests) {
+		private  IEnumerable<PrimaryQueryGroup> ExplodeToGroups(IEnumerable<Query> myrequests) {
 			var valutagroups = myrequests.GroupBy(_ => _.Valuta, _ => _);
 			foreach (var valutagroup in valutagroups) {
 				var detailgroup = valutagroup.GroupBy(_ => _.Obj.DetailMode, _ => _);

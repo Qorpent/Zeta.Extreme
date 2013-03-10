@@ -43,9 +43,8 @@ namespace Zeta.Extreme {
 
 		private void ResolveSingleColFormula() {
 			if (IsFormula && (FormulaType == "boo" || FormulaType == "cs")) {
-				string code = null;
 				var formula = Formula;
-				code = GetCodeFormFormula(formula);
+				var code = GetCodeFormFormula(formula);
 				if (null != code) {
 					var reference = ColumnCache.get(code);
 					Native = reference;

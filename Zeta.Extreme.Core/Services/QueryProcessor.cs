@@ -134,7 +134,6 @@ namespace Zeta.Extreme {
 
 			if (query.SummaDependency.Count == 0) {
 				query.Result = new QueryResult {IsComplete = true, NumericResult = 0m};
-				return;
 			}
 		}
 

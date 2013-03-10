@@ -47,9 +47,7 @@ namespace Zeta.Extreme {
 				}
 				return result;
 			}
-			else {
-				return currentResult;
-			}
+			return currentResult;
 		}
 	}
 }

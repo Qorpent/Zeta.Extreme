@@ -112,10 +112,9 @@ namespace Zeta.Extreme {
 
 		private Query RegisterRequestInAgendaAndStart(Query query, string key) {
 			//lock(ZexSession._register_lock) {
-			Query result;
 			query.Session = _session; //надо установить сессию раз новый запрос
 			query = _session.ActiveSet.GetOrAdd(key, query);
-			result = query;
+			var result = query;
 			lock (typeof (QuerySessionRegistrator)) {
 				result.UID = ++QUERYID;
 			}
@@ -134,8 +133,7 @@ namespace Zeta.Extreme {
 
 		private bool TryGetFromActiveAgenda(string key, out Query result) {
 			//	lock(ZexSession._register_lock) {
-			bool found;
-			found = _session.ActiveSet.TryGetValue(key, out result);
+			var found = _session.ActiveSet.TryGetValue(key, out result);
 			if (_stat && found) {
 				_session.Stat_Registry_Resolved_By_Key++;
 			}

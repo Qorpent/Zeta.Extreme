@@ -37,9 +37,7 @@ namespace Zeta.Extreme {
 				if (result is decimal || result is int) {
 					return new QueryResult((decimal) result);
 				}
-				else {
-					return new QueryResult {IsComplete = true, StringResult = result.ToString()};
-				}
+				return new QueryResult {IsComplete = true, StringResult = result.ToString()};
 			}
 			catch (DivideByZeroException) {
 				return new QueryResult {IsComplete = true, StringResult = "-"};

@@ -207,13 +207,7 @@ namespace Zeta.Extreme {
 			if (0 == Period) {
 				Period = BasePeriod;
 			}
-			IPeriodEvaluator periodEvaluator = null;
-			if (null == session) {
-				periodEvaluator = new DefaultPeriodEvaluator();
-			}
-			else {
-				periodEvaluator = ((Session) session).GetPeriodEvaluator();
-			}
+			var periodEvaluator = null == session ? new DefaultPeriodEvaluator() : ((Session) session).GetPeriodEvaluator();
 			var result = periodEvaluator.Evaluate(BasePeriod, Period, Year);
 			if (0 != result.Year && (null == _years || 0 == _years.Length)) {
 				Year = Year;

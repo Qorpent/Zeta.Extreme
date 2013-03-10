@@ -56,13 +56,7 @@ namespace Zeta.Extreme {
 		/// </remarks>
 		/// <returns> </returns>
 		public decimal choose(params QueryDelta[] deltas) {
-			foreach (var d in deltas) {
-				var qr = _host.Eval(d);
-				if (0 != qr) {
-					return qr;
-				}
-			}
-			return 0m;
+			return deltas.Select(d => _host.Eval(d)).FirstOrDefault(qr => 0 != qr);
 		}
 
 		/// <summary>
@@ -142,9 +136,7 @@ namespace Zeta.Extreme {
 			if (periods.Contains(query.Time.Period)) {
 				return main;
 			}
-			else {
-				return other;
-			}
+			return other;
 		}
 
 
@@ -160,9 +152,7 @@ namespace Zeta.Extreme {
 			if (periods.Contains(_host.Query.Time.Period)) {
 				return main;
 			}
-			else {
-				return other;
-			}
+			return other;
 		}
 
 		/// <summary>
@@ -178,9 +168,7 @@ namespace Zeta.Extreme {
 			if (periods.Contains(delta.Apply(_host.Query).Time.Period)) {
 				return main;
 			}
-			else {
-				return other;
-			}
+			return other;
 		}
 
 		/// <summary>

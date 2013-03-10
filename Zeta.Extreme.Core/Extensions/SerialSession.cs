@@ -22,8 +22,8 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="session"> </param>
 		public SerialSession(ISession session) {
-			var _serial = session as ISerializableSession;
-			if (null == _serial) {
+			var serial = session as ISerializableSession;
+			if (null == serial) {
 				throw new Exception("only serializable sessions supproted");
 			}
 			_session = (ISerializableSession) session;
@@ -40,9 +40,8 @@ namespace Zeta.Extreme {
 				if (null != _session.SerialTask) {
 					_session.SerialTask.Wait();
 				}
-				Query realquery = null;
 
-				realquery = (Query) _session.Register(query);
+				var realquery = (Query) _session.Register(query);
 
 				if (null == realquery) {
 					return new QueryResult();
@@ -65,22 +64,22 @@ namespace Zeta.Extreme {
 				if (null != _session.SerialTask) {
 					_session.SerialTask.Wait();
 				}
-				var realquery_ = _session.RegisterAsync(query);
+				var queryRegister = _session.RegisterAsync(query);
 				var task = Task.Run(() =>
 					{
-						realquery_.Wait();
-						var realquery = (Query) realquery_.Result;
+						queryRegister.Wait();
+						var realquery = (Query) queryRegister.Result;
 						if (null == realquery) {
 							return null;
 						}
 						if (realquery.Session != _session) {
-							realquery.WaitPrepare(-1); //it can be from another session
+							realquery.WaitPrepare(); //it can be from another session
 						}
-						_session.Execute(-1);
+						_session.Execute();
 						// but here we not worry about another session
 						// because GetResult() will cause evaluation anyway
 						_session.SerialTask = null;
-						return realquery.GetResult(-1);
+						return realquery.GetResult();
 					});
 				_session.SerialTask = task;
 				return task;

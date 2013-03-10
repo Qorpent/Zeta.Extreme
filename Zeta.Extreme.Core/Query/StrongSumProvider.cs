@@ -149,7 +149,7 @@ namespace Zeta.Extreme {
 		}
 
 		private IEnumerable<QueryDelta> GetGroupSumDelta(IZetaRow row) {
-			var groups = row.Group.SmartSplit(false, true, '/', ';').Distinct();
+			var groups = row.Group.SmartSplit(false, true, '/', ';').Distinct().ToArray();
 			var pluses = groups.Where(_ => !_.StartsWith("-")).ToArray();
 			var minuses = groups.Where(_ => _.StartsWith("-")).Select(_ => _.Substring(1)).ToArray();
 			foreach (var p in pluses) {
@@ -179,18 +179,12 @@ namespace Zeta.Extreme {
 		}
 
 		private IEnumerable<QueryDelta> GetNativeSumDelta(IZetaRow row) {
-			foreach (var c in row.Children) {
-				if (c.IsMarkSeted("0CAPTION")) {
-					continue;
-				}
-				if (c.IsMarkSeted("0NOSUM")) {
-					continue;
-				}
-				if (!IsSum(c) && !c.IsFormula && 0 != c.Children.Count) {
-					continue;
-				}
-				yield return new QueryDelta {Row = c};
-			}
+			return 
+				from c in row.Children 
+				where !c.IsMarkSeted("0CAPTION") 
+				where !c.IsMarkSeted("0NOSUM") 
+				where IsSum(c) || c.IsFormula || 0 == c.Children.Count 
+				select new QueryDelta {Row = c};
 		}
 	}
 }
