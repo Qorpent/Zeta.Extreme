@@ -53,7 +53,6 @@ namespace Zeta.Extreme.Form.MongoDBAttachmentSource {
 
         public void Save(Attachment attachment) {
             this.HandleVariables(attachment);   // prepare variables to insert into the database
-            this.MongoConnect();                // establish connection to the database
             this.SaveAttachmentView();          // first all, insert the view description
         }
 
