@@ -9,8 +9,9 @@
 #endregion
 
 using System;
+using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Описатель запроса с поддержкой обработки
 	/// </summary>
@@ -22,5 +23,10 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		/// <returns> </returns>
 		/// <exception cref="Exception"></exception>
 		QueryResult GetResult(int timeout = -1);
+
+		/// <summary>
+		/// 	Синхронный результат
+		/// </summary>
+		QueryResult Result { get; set; }
 	}
 }

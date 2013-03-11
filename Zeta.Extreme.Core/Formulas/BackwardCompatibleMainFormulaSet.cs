@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
@@ -33,7 +34,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		/// <returns> </returns>
-		public int monthCount(Query query) {
+		public int monthCount(IQuery query) {
 			return monthCount(query.Time.Period);
 		}
 
@@ -132,7 +133,7 @@ namespace Zeta.Extreme {
 		/// <param name="main"> </param>
 		/// <param name="other"> </param>
 		/// <returns> </returns>
-		public object onperiods<T>(int[] periods, Query query, Func<T> main, Func<T> other) {
+		public object onperiods<T>(int[] periods, IQuery query, Func<T> main, Func<T> other) {
 			if (periods.Contains(query.Time.Period)) {
 				return main;
 			}

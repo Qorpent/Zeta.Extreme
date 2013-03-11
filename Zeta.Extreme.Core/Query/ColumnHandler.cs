@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 

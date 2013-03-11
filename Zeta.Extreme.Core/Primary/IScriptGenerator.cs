@@ -8,6 +8,8 @@
 
 #endregion
 
+using Zeta.Extreme.Poco.Inerfaces;
+
 namespace Zeta.Extreme.Primary {
 	/// <summary>
 	/// 	Интерфейс генератора скриптов
@@ -19,6 +21,6 @@ namespace Zeta.Extreme.Primary {
 		/// <param name="queries"> </param>
 		/// <param name="prototype"> </param>
 		/// <returns> </returns>
-		string Generate(Query[] queries, PrimaryQueryPrototype prototype);
+		string Generate(IQuery[] queries, PrimaryQueryPrototype prototype);
 	}
 }

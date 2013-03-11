@@ -8,6 +8,8 @@
 
 #endregion
 
+using Zeta.Extreme.Poco.Inerfaces;
+
 namespace Zeta.Extreme.Primary {
 	/// <summary>
 	/// 	Группа первичных запросов
@@ -16,7 +18,7 @@ namespace Zeta.Extreme.Primary {
 		/// <summary>
 		/// 	Запросы в группе
 		/// </summary>
-		public Query[] Queries { get; set; }
+		public IQuery[] Queries { get; set; }
 
 		/// <summary>
 		/// 	Прототип первичного запроса

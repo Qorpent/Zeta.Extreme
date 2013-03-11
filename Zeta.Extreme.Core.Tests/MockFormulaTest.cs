@@ -12,6 +12,7 @@
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 using Zeta.Extreme.Meta;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
@@ -32,8 +33,8 @@ namespace Zeta.Extreme.Core.Tests {
 				{Row = {Code = "r2"}, Col = {Code = "PLAN"}, Obj = {Id = 352}, Time = {Year = 2012, Period = 301}};
 		}
 
-		private Query _mquery;
-		private Query _mquery_ss;
+		private IQuery _mquery;
+		private IQuery _mquery_ss;
 
 		public class MockFormula : IFormula {
 			/// <summary>
@@ -124,9 +125,9 @@ namespace Zeta.Extreme.Core.Tests {
 				}
 			}
 
-			private Session _mastersession;
+			private ISession _mastersession;
 			private ISerialSession _session;
-			private Query _subquery;
+			private IQuery _subquery;
 		}
 
 		[Test]

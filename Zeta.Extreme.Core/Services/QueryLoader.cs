@@ -10,6 +10,7 @@
 
 using System;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
@@ -22,7 +23,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="session"> </param>
 		/// <exception cref="NotImplementedException"></exception>
-		public QueryLoader(Session session) {
+		public QueryLoader(ISession session) {
 			_session = session;
 			_sumh = new StrongSumProvider();
 		}
@@ -48,7 +49,7 @@ namespace Zeta.Extreme {
 			return internalquery;
 		}
 
-		private void PrepareFormulas(Query internalquery) {
+		private void PrepareFormulas(IQuery internalquery) {
 			if (internalquery.Row.IsFormula && !_sumh.IsSum(internalquery.Row)) {
 				var key = "row:" + internalquery.Row.Code;
 				if (null == internalquery.Row.Native) {
@@ -100,7 +101,7 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		private static bool CheckoutObsolete(Query internalquery) {
+		private static bool CheckoutObsolete(IQuery internalquery) {
 			var obsolete = TagHelper.Value(internalquery.Row.Tag, "obsolete").ToInt();
 			if (obsolete != 0) {
 				if (obsolete <= internalquery.Time.Year) {
@@ -110,7 +111,7 @@ namespace Zeta.Extreme {
 			return false;
 		}
 
-		private static bool ChekoutCaption(Query internalquery) {
+		private static bool ChekoutCaption(IQuery internalquery) {
 			if (internalquery.Row.Native != null && internalquery.Row.Native.IsMarkSeted("0CAPTION")) {
 				return true;
 			}
@@ -123,6 +124,6 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	обратная ссылка на сессию
 		/// </summary>
-		protected Session _session;
+		protected ISession _session;
 	}
 }

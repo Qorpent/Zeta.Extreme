@@ -35,7 +35,7 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 		/// Выполняет полученные ранее из модели запросы
 		/// </summary>
 		/// <param name="queries"></param>
-		protected virtual IEnumerable<Query> Execute(Query[] queries ) {
+		protected virtual IEnumerable<Query> Execute(IQuery[] queries ) {
 			foreach (var query in queries) {
 				var _q = (Query)_session.Register(query);
 				_q.Result = _serial.Eval(_q);
@@ -49,7 +49,7 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 			Examinate(_examenlist);
 		}
 
-		protected virtual void Examinate(Query[] queries) {
+		protected virtual void Examinate(IQuery[] queries) {
 			IList<Query> bads = new List<Query>();
 			foreach (var query in queries) {
 				try {
@@ -79,17 +79,17 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 			_metacache.Set(item);
 		}
 
-		protected void Add(Query q, decimal value) {
+		protected void Add(IQuery q, decimal value) {
 			_key_to_value_pseudosql_storage[q.GetCacheKey()] = value;
 		}
 
 		protected int primarycallscount = 0;
-		protected Query[] _storedqueries;
-		protected Query[] _examenlist;
+		protected IQuery[] _storedqueries;
+		protected IQuery[] _examenlist;
 		protected ISerialSession _serial;
 
 
-		protected QueryResult StubDataGenerator(Query query) {
+		protected QueryResult StubDataGenerator(IQuery query) {
 			primarycallscount++;
 			var result = CustomStub(query);
 			if(null!=result) return result;
@@ -100,7 +100,7 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 			return new QueryResult{IsComplete = false, Error =new Exception("no data provided with db")};
 		}
 
-		protected virtual QueryResult CustomStub(Query query) {
+		protected virtual QueryResult CustomStub(IQuery query) {
 			return null;
 		}
 	}

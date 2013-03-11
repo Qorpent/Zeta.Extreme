@@ -10,6 +10,7 @@
 
 using System;
 using System.Threading;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
@@ -58,7 +59,7 @@ namespace Zeta.Extreme {
 			query.PrepareState = PrepareState.Prepared;
 		}
 
-		private IZetaQueryDimension GetMostPriorityNoPrimarySource(Query query) {
+		private IZetaQueryDimension GetMostPriorityNoPrimarySource(IQuery query) {
 			if (query.Obj.IsFormula || (query.Obj.IsForObj && _sumh.IsSum(query.Obj))) {
 				return (query.Obj.ObjRef) ?? (IZetaQueryDimension) query.Obj;
 			}

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Qorpent.Model;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 using IWithFormula = Zeta.Extreme.Poco.Inerfaces.IWithFormula;
 

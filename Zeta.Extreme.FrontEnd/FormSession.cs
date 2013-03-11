@@ -30,6 +30,7 @@ using Zeta.Extreme.Form.DbfsAttachmentSource;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
 using Zeta.Extreme.Meta;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
@@ -428,7 +429,7 @@ namespace Zeta.Extreme.FrontEnd {
 			_controlpoints.Clear();
 			Data.Clear();
 			var sw = Stopwatch.StartNew();
-			IDictionary<string, Query> queries = new Dictionary<string, Query>();
+			IDictionary<string, IQuery> queries = new Dictionary<string, IQuery>();
 			LoadEditablePrimaryData(queries);
 			if (!InitSaveMode) {
 				LoadNonEditablePrimaryData(queries);
@@ -454,7 +455,7 @@ namespace Zeta.Extreme.FrontEnd {
 			InitSaveMode = false;
 		}
 
-		private void LoadNoPrimary(IDictionary<string, Query> queries) {
+		private void LoadNoPrimary(IDictionary<string, IQuery> queries) {
 			foreach (var c in cols) {
 				foreach (var r in rows) {
 					var key = r.i + ":" + c.i;
@@ -489,19 +490,19 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 		}
 
-		private void LoadEditablePrimaryData(IDictionary<string, Query> queries) {
+		private void LoadEditablePrimaryData(IDictionary<string, IQuery> queries) {
 			BuildEditablePrimarySet(queries);
 			DataSession.Execute(500);
 			ProcessValues(queries, true);
 		}
 
-		private void LoadNonEditablePrimaryData(IDictionary<string, Query> queries) {
+		private void LoadNonEditablePrimaryData(IDictionary<string, IQuery> queries) {
 			BuildNonEditablePrimarySet(queries);
 			DataSession.Execute(500);
 			ProcessValues(queries, false);
 		}
 
-		private void BuildEditablePrimarySet(IDictionary<string, Query> queries) {
+		private void BuildEditablePrimarySet(IDictionary<string, IQuery> queries) {
 			foreach (var primaryrow in primaryrows) {
 				foreach (var primarycol in primarycols) {
 					var q = new Query
@@ -512,12 +513,12 @@ namespace Zeta.Extreme.FrontEnd {
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
 						};
 					var key = primaryrow.i + ":" + primarycol.i;
-					queries[key] = (Query) DataSession.Register(q, key);
+					queries[key] = (IQuery) DataSession.Register(q, key);
 				}
 			}
 		}
 
-		private void BuildNonEditablePrimarySet(IDictionary<string, Query> queries) {
+		private void BuildNonEditablePrimarySet(IDictionary<string, IQuery> queries) {
 			foreach (var primaryrow in primaryrows) {
 				foreach (var primarycol in neditprimarycols) {
 					var q = new Query
@@ -528,12 +529,12 @@ namespace Zeta.Extreme.FrontEnd {
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
 						};
 					var key = primaryrow.i + ":" + primarycol.i;
-					queries[key] = (Query) DataSession.Register(q, key);
+					queries[key] = (IQuery) DataSession.Register(q, key);
 				}
 			}
 		}
 
-		private void ProcessValues(IDictionary<string, Query> queries, bool canbefilled) {
+		private void ProcessValues(IDictionary<string, IQuery> queries, bool canbefilled) {
 			foreach (var q_ in queries.Where(_ => null != _.Value)) {
 				if (_processed.ContainsKey(q_.Key)) {
 					continue;
@@ -880,7 +881,7 @@ namespace Zeta.Extreme.FrontEnd {
 
 		private readonly IList<ControlPointResult> _controlpoints = new List<ControlPointResult>();
 
-		private readonly IDictionary<string, Query> _processed = new Dictionary<string, Query>();
+		private readonly IDictionary<string, IQuery> _processed = new Dictionary<string, IQuery>();
 		private IFormSessionDataSaver CurrentSaver;
 		private Task<SaveResult> _currentSaveTask;
 

@@ -37,5 +37,12 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		/// 	Выходная валюта
 		/// </summary>
 		string Valuta { get; set; }
+
+		/// <summary>
+		/// 	Простая копия условия на время
+		/// </summary>
+		/// <param name="deep"> Если да, то делает копии вложенных измерений </param>
+		/// <returns> </returns>
+		IQuery Copy(bool deep = false);
 	}
 }

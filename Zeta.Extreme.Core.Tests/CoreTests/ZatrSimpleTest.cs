@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Meta;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
@@ -145,7 +146,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		private IZetaMainObject[] objs;
 		private ColumnDesc[] colset;
 
-		private Session RunForm(int batchsize = 100, int objnum = -1, bool usecolset = false, int rowset = 0) {
+		private ISession RunForm(int batchsize = 100, int objnum = -1, bool usecolset = false, int rowset = 0) {
 			var sw = Stopwatch.StartNew();
 			var rs = rows;
 			if (rowset == 1) {

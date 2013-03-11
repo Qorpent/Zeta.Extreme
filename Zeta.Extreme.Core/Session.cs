@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Primary;
 
@@ -42,7 +43,7 @@ namespace Zeta.Extreme {
 			Id = ++ID;
 			CollectStatistics = collectStatistics;
 			Registry = new ConcurrentDictionary<string, Query>();
-			ActiveSet = new ConcurrentDictionary<string, Query>();
+			ActiveSet = new ConcurrentDictionary<string, IQuery>();
 			KeyMap = new ConcurrentDictionary<string, string>();
 			PrimarySource = new DefaultPrimarySource(this);
 		}
@@ -52,7 +53,13 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public IPrimarySource PrimarySource { get; set; }
 
-
+		/// <summary>
+		/// Ожидает завершения задач, связанных с первичными данными
+		/// </summary>
+		/// <param name="timeout"></param>
+		public void WaitPrimarySource(int timeout = -1) {
+			PrimarySource.Wait();
+		}
 		/// <summary>
 		/// 	Уникальный идентификатор сессии в процессе
 		/// </summary>
@@ -70,7 +77,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Родительская сессия
 		/// </summary>
-		protected internal Session MasterSession { get; set; }
+		protected internal ISession MasterSession { get; set; }
 
 
 		/// <summary>
@@ -83,7 +90,7 @@ namespace Zeta.Extreme {
 		/// 	Набор всех уникальных, еще не обработанных запросов (агенда)
 		/// 	ключ - хэшкей
 		/// </summary>
-		protected internal ConcurrentDictionary<string, Query> ActiveSet { get; private set; }
+		protected internal ConcurrentDictionary<string, IQuery> ActiveSet { get; private set; }
 
 		/// <summary>
 		/// 	Сериальная синхронизация
@@ -323,7 +330,7 @@ namespace Zeta.Extreme {
 		/// <param name="timeout"> </param>
 		protected internal void WaitEvaluation(int timeout = -1) {
 			PrimarySource.Wait();
-			ActiveSet.Values.AsParallel().Where(_ => null == _.Result).ForAll(_ => _.GetResult());
+			ActiveSet.Values.Cast<IQueryWithProcessing>().AsParallel().Where(_ => null == _.Result).ForAll(_ => _.GetResult());
 			ActiveSet.Clear();
 		}
 
@@ -465,7 +472,7 @@ namespace Zeta.Extreme {
 
 		private readonly ConcurrentStack<IRegistryHelper> _registryhelperpool = new ConcurrentStack<IRegistryHelper>();
 		private readonly ConcurrentStack<ISerialSession> _subsessionpool = new ConcurrentStack<ISerialSession>();
-		private readonly IDictionary<int, Session> _subsessions = new Dictionary<int, Session>();
+		private readonly IDictionary<int, ISession> _subsessions = new Dictionary<int, ISession>();
 		private readonly object syncexecute = new object();
 
 

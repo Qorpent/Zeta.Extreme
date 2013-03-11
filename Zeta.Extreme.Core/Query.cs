@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
@@ -202,7 +203,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="deep"> Если да, то делает копии вложенных измерений </param>
 		/// <returns> </returns>
-		public Query Copy(bool deep = false) {
+		public IQuery Copy(bool deep = false) {
 			var result = (Query) MemberwiseClone();
 			result.PrepareTask = null;
 			result.Result = null;
@@ -252,10 +253,10 @@ namespace Zeta.Extreme {
 		/// <param name="zetaRow"> </param>
 		/// <param name="selfcopy"> </param>
 		/// <param name="rowcopy"> </param>
-		public Query ToRow(IZetaRow zetaRow, bool selfcopy = false, bool rowcopy = false) {
+		public IQuery ToRow(IZetaRow zetaRow, bool selfcopy = false, bool rowcopy = false) {
 			var q = this;
 			if (selfcopy) {
-				q = Copy();
+				q = (Query)Copy();
 			}
 			if (rowcopy || selfcopy) {
 				q.Row = q.Row.Copy();
@@ -269,10 +270,10 @@ namespace Zeta.Extreme {
 		/// 	Синхронизатор результата
 		/// </summary>
 		/// <param name="timeout"> </param>
-		public void WaitResult(int timeout) {
+		public void WaitResult(int timeout =-1) {
 			WaitPrepare(timeout);
 			if (IsPrimary && null == Result) {
-				Session.PrimarySource.Wait();
+				Session.WaitPrimarySource(timeout);
 			}
 		}
 
@@ -304,7 +305,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Обратная ссылка на сессию
 		/// </summary>
-		public Session Session;
+		public ISession Session { get; set; }
 
 		/// <summary>
 		/// 	Кэшированный запрос SQL

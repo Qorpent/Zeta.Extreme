@@ -10,6 +10,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {

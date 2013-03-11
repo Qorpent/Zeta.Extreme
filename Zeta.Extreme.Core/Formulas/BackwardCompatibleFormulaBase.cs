@@ -37,14 +37,14 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	шоткат для совместимости со старыми формулами
 		/// </summary>
-		protected Query q {
+		protected IQuery q {
 			get { return Query; }
 		}
 
 		/// <summary>
 		/// 	шоткат для совместимости со старыми формулами
 		/// </summary>
-		protected Query query {
+		protected IQuery query {
 			get { return Query; }
 		}
 

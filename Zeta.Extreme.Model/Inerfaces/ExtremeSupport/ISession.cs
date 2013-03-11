@@ -10,8 +10,9 @@
 
 using System;
 using System.Threading.Tasks;
+using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Асинхронная, Zeta.Extrem cecсия, базовый интерфейс
 	/// </summary>
@@ -58,5 +59,11 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		/// </summary>
 		/// <param name="timeout"> </param>
 		void Execute(int timeout = -1);
+
+		/// <summary>
+		/// Ожидает завершения задач, связанных с первичными данными
+		/// </summary>
+		/// <param name="timeout"></param>
+		void WaitPrimarySource(int timeout = -1);
 	}
 }

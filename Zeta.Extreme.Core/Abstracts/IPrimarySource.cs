@@ -37,6 +37,6 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Выполняет все требуемые запросы в режиме ожидания
 		/// </summary>
-		void Wait();
+		void Wait(int timeout = -1);
 	}
 }

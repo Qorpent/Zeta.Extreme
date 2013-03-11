@@ -93,11 +93,11 @@ namespace Zeta.Extreme.Primary {
 		/// <summary>
 		/// 	Выполняет все требуемые запросы в режиме ожидания
 		/// </summary>
-		public void Wait() {
+		public void Wait(int timeout =-1) {
 			RunSqlBatch();
 			Task t;
 			while (_sqltasks.TryTake(out t)) {
-				t.Wait();
+				t.Wait(timeout);
 			}
 		}
 
@@ -221,7 +221,7 @@ namespace Zeta.Extreme.Primary {
 					return null;
 				}
 				_myrequests = _sqlDataAwaiters.ToArray().Distinct().ToDictionary(_ => _.UID, _ => _);
-				_sqlDataAwaiters = new ConcurrentBag<Query>();
+				_sqlDataAwaiters = new ConcurrentBag<IQuery>();
 			}
 			if (TraceQuery) {
 				foreach (var q in _myrequests.Values) {
@@ -240,12 +240,12 @@ namespace Zeta.Extreme.Primary {
 		/// </summary>
 		/// <param name="_myrequests"> </param>
 		/// <returns> </returns>
-		public string GenerateScript(Query[] _myrequests) {
+		public string GenerateScript(IQuery[] _myrequests) {
 			var groups = ExplodeToGroups(_myrequests);
 			return string.Join("\r\n", groups.Select(_ => _.GenerateSqlScript()));
 		}
 
-		private  IEnumerable<PrimaryQueryGroup> ExplodeToGroups(IEnumerable<Query> myrequests) {
+		private  IEnumerable<PrimaryQueryGroup> ExplodeToGroups(IEnumerable<IQuery> myrequests) {
 			var valutagroups = myrequests.GroupBy(_ => _.Valuta, _ => _);
 			foreach (var valutagroup in valutagroups) {
 				var detailgroup = valutagroup.GroupBy(_ => _.Obj.DetailMode, _ => _);
@@ -290,9 +290,9 @@ namespace Zeta.Extreme.Primary {
 		/// <summary>
 		/// 	Отладочный делегат для имитации работы БД
 		/// </summary>
-		public Func<Query, QueryResult> StubDataGenerator;
+		public Func<IQuery, QueryResult> StubDataGenerator;
 
 		private Task<QueryResult> _currentSqlBatchTask;
-		private ConcurrentBag<Query> _sqlDataAwaiters = new ConcurrentBag<Query>();
+		private ConcurrentBag<IQuery> _sqlDataAwaiters = new ConcurrentBag<IQuery>();
 	}
 }

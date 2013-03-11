@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
@@ -97,6 +98,6 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Базовая сессия
 		/// </summary>
-		protected internal Session Session;
+		protected internal ISession Session;
 	}
 }

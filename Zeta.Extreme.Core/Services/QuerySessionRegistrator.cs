@@ -155,7 +155,7 @@ namespace Zeta.Extreme {
 			//	}
 		}
 
-		private bool CheckNullQuery(Query query) {
+		private bool CheckNullQuery(IQuery query) {
 			//	lock(ZexSession._register_lock) {
 			if (null == query) {
 				if (_stat) {
