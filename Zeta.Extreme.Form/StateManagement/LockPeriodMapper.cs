@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Qorpent.Applications;
 using Qorpent.Bxl;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.StateManagement;
@@ -47,9 +48,9 @@ namespace Zeta.Extreme.Form.StateManagement {
 		}
 
 		private static void reloadCheckMap() {
-			var file = Qorpent.Applications.Application.Current.Files.Read<string>("lockmap.bxl");
+			var file = Application.Current.Files.Read<string>("lockmap.bxl");
 			if (file.IsNotEmpty()) {
-				var xml = new BxlParser().Parse(file);
+				var xml = Application.Current.Bxl.Parse(file);
 				foreach (var element in xml.Elements()) {
 					var fromperiod = element.Attr("code");
 					var prefix = element.Name.LocalName;

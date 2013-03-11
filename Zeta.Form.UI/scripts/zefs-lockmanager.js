@@ -53,12 +53,14 @@
                     if (h.getIsOpen()) lockstate.addClass("state-open");
                     else if (h.getIsBlock()) lockstate.addClass("state-block");
                     else if (h.getIsChecked()) lockstate.addClass("state-check");
+                    var u = $('<span class="label label-inverse"/>');
                     body.append($('<tr/>').append(
                         $('<td/>').text(h.getDate().format("dd.mm.yyyy HH:MM:ss")),
                         $('<td/>').html(lockstate),
-                        $('<td/>').append($('<span class="label label-inverse"/>').text(h.getUser()))
+                        $('<td/>').append(u.text(h.getUser()))
 //                      $('<td/>').append($('<span class="label label-inverse"/>').text(h.getUser())),
                     ));
+                    u.zetauser();
                     lockstate = null;
                 });
             }

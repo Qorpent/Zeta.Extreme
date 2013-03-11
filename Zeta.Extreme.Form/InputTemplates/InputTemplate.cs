@@ -140,7 +140,9 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			}
 			return EvaluateByScript(condition, conds);
 		}
-		readonly LogicalExpressionEvaluator _evaluator = new LogicalExpressionEvaluator();
+
+		private readonly ILogicalExpressionEvaluator _evaluator =
+			Application.Current.Container.Get<ILogicalExpressionEvaluator>();
 		private  bool EvaluateByScript(string condition, IEnumerable<string> conds) {
 			var normalizedCondition = (" " + condition + " ").Replace("(", " ( ").Replace(")", " ) ")
 				//fix not processable formulas

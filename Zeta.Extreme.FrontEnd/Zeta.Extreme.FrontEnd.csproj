@@ -9,7 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="qorpent.sys.base.import" />
-    <None Include="Zeta.Extreme.Core.import" />
+    <None Include="Zeta.Extreme.BizProcess.import" />
     <None Include="Zeta.Extreme.Form.import" />
     <None Include="Zeta.Extreme.FrontEnd.export" />
     <EmbeddedResource Include=".\**\*.*resource" />

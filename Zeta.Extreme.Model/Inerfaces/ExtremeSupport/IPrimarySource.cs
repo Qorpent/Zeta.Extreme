@@ -8,9 +8,11 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Абстракция акцессора первичных данных
 	/// </summary>
@@ -19,7 +21,7 @@ namespace Zeta.Extreme {
 		/// 	Регистрирует целевой запрос
 		/// </summary>
 		/// <param name="query"> </param>
-		void Register(Query query);
+		void Register(IQuery query);
 
 		/// <summary>
 		/// 	Регистрирует заранее подготовленный SQL-запрос
@@ -37,6 +39,11 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Выполняет все требуемые запросы в режиме ожидания
 		/// </summary>
-		void Wait();
+		void Wait(int timeout = -1);
+
+		/// <summary>
+		/// 	Журнал выполненных SQL
+		/// </summary>
+		IList<string> QueryLog { get; }
 	}
 }

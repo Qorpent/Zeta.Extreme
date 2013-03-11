@@ -11,6 +11,8 @@
 using System;
 using System.Linq;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
@@ -33,7 +35,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		/// <returns> </returns>
-		public int monthCount(Query query) {
+		public int monthCount(IQuery query) {
 			return monthCount(query.Time.Period);
 		}
 
@@ -56,13 +58,7 @@ namespace Zeta.Extreme {
 		/// </remarks>
 		/// <returns> </returns>
 		public decimal choose(params QueryDelta[] deltas) {
-			foreach (var d in deltas) {
-				var qr = _host.Eval(d);
-				if (0 != qr) {
-					return qr;
-				}
-			}
-			return 0m;
+			return deltas.Select(d => _host.Eval(d)).FirstOrDefault(qr => 0 != qr);
 		}
 
 		/// <summary>
@@ -138,13 +134,11 @@ namespace Zeta.Extreme {
 		/// <param name="main"> </param>
 		/// <param name="other"> </param>
 		/// <returns> </returns>
-		public object onperiods<T>(int[] periods, Query query, Func<T> main, Func<T> other) {
+		public object onperiods<T>(int[] periods, IQuery query, Func<T> main, Func<T> other) {
 			if (periods.Contains(query.Time.Period)) {
 				return main;
 			}
-			else {
-				return other;
-			}
+			return other;
 		}
 
 
@@ -160,9 +154,7 @@ namespace Zeta.Extreme {
 			if (periods.Contains(_host.Query.Time.Period)) {
 				return main;
 			}
-			else {
-				return other;
-			}
+			return other;
 		}
 
 		/// <summary>
@@ -178,9 +170,7 @@ namespace Zeta.Extreme {
 			if (periods.Contains(delta.Apply(_host.Query).Time.Period)) {
 				return main;
 			}
-			else {
-				return other;
-			}
+			return other;
 		}
 
 		/// <summary>

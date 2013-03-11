@@ -3,12 +3,16 @@ ref Qorpent.Core
 ref Zeta.Extreme.Frontend
 ref Zeta.Extreme.Form
 ref Comdiv.Core
+ref Zeta.Extreme.Model
+ref Zeta.Extreme.Core
 
+using Zeta.Extreme
 using Zeta.Extreme.FrontEnd
-using  Zeta.Extreme.Form
+using Zeta.Extreme.Form
 using Qorpent.Applications
 using Comdiv.Security
 using Qorpent.Security 
+using Zeta.Extreme.Model.Inerfaces
 
 mvc Zeta.Extreme.FrontEnd
 transient "form.server" FormServer : IApplicationStartup
@@ -20,5 +24,4 @@ transient "securitymap.roles.extension"  BxlXmlRoleProvider : IRoleResolverExten
 
 transient "zetaroles.roles.extension" SimpleZetaRoleResolver : IRoleResolverExtension
 
-#transient "persisitent.roles.extension"  PersistentRoleProvider : IRoleResolverExtension -- Так как зависит от гибернейта, выставлять будем в коде
-#	Idx = 20
+singleton "extreme.factory" DefaultExtremeFactory : IExtremeFactory

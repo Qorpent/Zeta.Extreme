@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	—тандартный описатель измерени€ времени
 	/// </summary>

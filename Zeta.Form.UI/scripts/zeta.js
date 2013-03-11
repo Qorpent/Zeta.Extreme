@@ -151,7 +151,7 @@ root.security = root.security || $.extend(root.security, {
         }, o);
         this.body = null;
         this.installed = false;
-    }
+    };
 
     root.console = new Console();
 }(window.jQuery);
@@ -159,12 +159,12 @@ root.security = root.security || $.extend(root.security, {
 /*!function($) {
     $.getScript("scripts/zefs-debug.js");
     $.getScript("scripts/zefs-auth.js");
-    $.getScript("scripts/zefs-userinfo.js");
+    $.getScript("scripts/zefs-authinfo.js");
     $.getScript("scripts/zefs-formsave.js");
     $.getScript("scripts/zefs-feedback.js");
     $.getScript("scripts/zefs-info.js");
     $.getScript("scripts/zefs-formheader.js");
-    $.getScript("scripts/zefs-form.js");
+    $.getScript("scripts/zefs-table.js");
     $.getScript("scripts/zefs-attacher.js");
     $.getScript("scripts/zefs-periods.js");
     $.getScript("scripts/zefs-objs.js");
@@ -175,12 +175,12 @@ root.security = root.security || $.extend(root.security, {
 
 document.write('<script src="scripts/zefs-debug.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-auth.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-userinfo.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-authinfo.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-formsave.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-feedback.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-info.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-formheader.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-form.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-table.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-attacher.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-periods.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-objs.js" type="text/javascript"></script>');

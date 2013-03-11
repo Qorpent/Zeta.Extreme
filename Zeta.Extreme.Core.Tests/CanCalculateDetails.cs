@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Core.Tests {
