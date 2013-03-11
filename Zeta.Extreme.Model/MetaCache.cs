@@ -11,8 +11,8 @@
 using System;
 using System.Collections.Generic;
 using Qorpent.Model;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
-using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Model {
 	/// <summary>

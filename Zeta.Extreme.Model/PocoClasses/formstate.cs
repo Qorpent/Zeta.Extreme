@@ -10,9 +10,9 @@
 
 using System;
 using Qorpent.Serialization;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model {
+namespace Zeta.Extreme.Model.PocoClasses {
 	[Serialize]
 	public class formstate : IFormState {
 		[Serialize] public virtual string ReadableState {

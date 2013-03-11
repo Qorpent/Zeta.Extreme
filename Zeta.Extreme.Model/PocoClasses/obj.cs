@@ -14,11 +14,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Poco;
-using Zeta.Extreme.Poco.Deprecated;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Deprecated;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces.Bases;
+using Zeta.Extreme.Model.Inerfaces.Partial;
 
-namespace Zeta.Extreme.Model {
+namespace Zeta.Extreme.Model.PocoClasses {
 	public partial class obj : IZetaMainObject, IZetaQueryDimension {
 		public obj() {
 

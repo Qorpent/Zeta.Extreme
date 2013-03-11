@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Poco.Deprecated {
+namespace Zeta.Extreme.Model.Deprecated {
 	public class ClassicAttribute : Attribute {
 		public ClassicAttribute(string name) {
 			Name = name;

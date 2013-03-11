@@ -8,9 +8,9 @@
 
 #endregion
 
-using Zeta.Extreme.Poco;
+using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model {
+namespace Zeta.Extreme.Model.PocoClasses {
 	public partial class biztranfilter : IBizTranFilter {
 		public virtual int Id { get; set; }
 		public virtual int Action { get; set; }

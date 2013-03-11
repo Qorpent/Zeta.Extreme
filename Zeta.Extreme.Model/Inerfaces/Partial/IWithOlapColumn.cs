@@ -8,7 +8,9 @@
 
 #endregion
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+using Zeta.Extreme.Model.Inerfaces.Bases;
+
+namespace Zeta.Extreme.Model.Inerfaces.Partial {
 	public interface IWithOlapColumn<ColumnType> where ColumnType : IOlapColumn {
 		ColumnType Column { get; set; }
 	}

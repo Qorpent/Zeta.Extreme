@@ -13,8 +13,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces.Bases;
+using Zeta.Extreme.Model.Inerfaces.Partial;
 using Zeta.Extreme.Model.MetaCaches;
-using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>

@@ -11,10 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model {
+namespace Zeta.Extreme.Model.PocoClasses {
 	public class form : IForm {
 		public virtual string TemplateCode { get; set; }
 
@@ -44,27 +43,6 @@ namespace Zeta.Extreme.Model {
 
 		public virtual IZetaMainObject Object { get; set; }
 
-
-		public virtual FormStates State {
-			get {
-				if (CurrentState.IsEmpty()) {
-					return FormStates.None;
-				}
-				if (CurrentState == "0ISOPEN") {
-					return FormStates.Open;
-				}
-				if (CurrentState == "0ISBLOCK") {
-					return FormStates.Closed;
-				}
-				if (CurrentState == "0ISCHECKED") {
-					return FormStates.Accepted;
-				}
-				if (CurrentState == "0ISREJECTED") {
-					return FormStates.Rejected;
-				}
-				return FormStates.None;
-			}
-		}
 
 		public virtual IFormState GetLastState() {
 			var result = States != null ? States.OrderBy(x => x.Version).LastOrDefault() : null;

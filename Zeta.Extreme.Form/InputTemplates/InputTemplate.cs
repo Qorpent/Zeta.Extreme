@@ -23,7 +23,7 @@ using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.StateManagement;
 using Zeta.Extreme.Form.Themas;
 using Zeta.Extreme.Model;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
 using ColumnDesc = Zeta.Extreme.BizProcess.Themas.ColumnDesc;
 using IConditionMatcher = Zeta.Extreme.BizProcess.Themas.IConditionMatcher;
 using Qorpent.Utils.Extensions;

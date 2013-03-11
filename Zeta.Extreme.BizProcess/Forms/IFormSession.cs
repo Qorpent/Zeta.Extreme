@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using Qorpent.Serialization;
 using Zeta.Extreme.BizProcess.StateManagement;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>

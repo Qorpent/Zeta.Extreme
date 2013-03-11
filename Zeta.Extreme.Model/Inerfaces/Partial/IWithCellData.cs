@@ -8,7 +8,9 @@
 
 #endregion
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+using Zeta.Extreme.Model.PocoClasses;
+
+namespace Zeta.Extreme.Model.Inerfaces.Partial {
 	public interface IWithCellData {
 		StandardRowData RowData { get; set; }
 		object Value { get; set; }

@@ -8,9 +8,9 @@
 
 #endregion
 
-using Zeta.Extreme.Poco.Deprecated;
+using Zeta.Extreme.Model.Deprecated;
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+namespace Zeta.Extreme.Model.Inerfaces.Partial {
 	public interface IWithFormula {
 		[Map] bool IsFormula { get; set; }
 		[Map] string Formula { get; set; }

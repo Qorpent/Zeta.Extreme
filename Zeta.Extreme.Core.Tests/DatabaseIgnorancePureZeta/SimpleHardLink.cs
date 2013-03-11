@@ -12,7 +12,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Zeta.Extreme.Model;
-using Zeta.Extreme.Poco;
+using Zeta.Extreme.Model.PocoClasses;
 
 namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta {
 	[TestFixture]

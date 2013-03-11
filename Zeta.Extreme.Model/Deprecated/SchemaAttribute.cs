@@ -11,7 +11,7 @@
 using System;
 using Qorpent.Model;
 
-namespace Zeta.Extreme.Poco.Deprecated {
+namespace Zeta.Extreme.Model.Deprecated {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class SchemaAttribute : MappingAttribute, IWithName {
 		public SchemaAttribute(string name) {

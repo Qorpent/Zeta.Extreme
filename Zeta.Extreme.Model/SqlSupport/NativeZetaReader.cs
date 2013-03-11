@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using Zeta.Extreme.Model.PocoClasses;
 
 namespace Zeta.Extreme.Model.SqlSupport {
 	public partial class NativeZetaReader {
