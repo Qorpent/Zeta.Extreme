@@ -17,10 +17,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	/// 	Асинхронная, Zeta.Extrem cecсия, базовый интерфейс
 	/// </summary>
 	public interface ISession {
-		/// <summary>
-		/// 	Локальный кэш объектных данных
-		/// </summary>
-		IMetaCache MetaCache { get; }
+		
 
 		/// <summary>
 		/// </summary>
@@ -60,10 +57,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <param name="timeout"> </param>
 		void Execute(int timeout = -1);
 
-		/// <summary>
-		/// Ожидает завершения задач, связанных с первичными данными
-		/// </summary>
-		/// <param name="timeout"></param>
-		void WaitPrimarySource(int timeout = -1);
+
 	}
 }

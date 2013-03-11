@@ -80,7 +80,7 @@ namespace Zeta.Extreme {
 		/// <exception cref="NotImplementedException"></exception>
 		public override void Normalize(ISession session) {
 			if (IsStandaloneSingletonDefinition()) {
-				var cache = session == null ? MetaCache.Default : session.MetaCache;
+				var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 				switch (Type) {
 					case ObjType.Obj:
 						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());

@@ -256,7 +256,7 @@ namespace Zeta.Extreme.Core.Tests {
 				var equal = Math.Round(v.Value, 2) == Math.Round(res.GetResult().NumericResult, 2);
 				if (!equal) {
 					fail = true;
-					Console.WriteLine(v.Key + " " + res.UID + " : " + Math.Round(v.Value, 2) + " : " +
+					Console.WriteLine(v.Key + " " + res.Uid + " : " + Math.Round(v.Value, 2) + " : " +
 					                  Math.Round(res.GetResult().NumericResult, 2));
 					if (null != res.TraceList) {
 						foreach (var s in res.TraceList) {

@@ -8,6 +8,9 @@
 
 #endregion
 
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Poco.Inerfaces;
+
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Интерфейс службы, выполняющей работы по доводке запроса ДО входа в расчетчик
@@ -19,6 +22,6 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		/// <returns> </returns>
-		Query Process(Query query);
+		IQuery Process(IQuery query);
 	}
 }

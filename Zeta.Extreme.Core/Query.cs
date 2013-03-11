@@ -26,7 +26,7 @@ namespace Zeta.Extreme {
 	/// 	интерфейсов IQuery, IQueryBuilder, наоборот ZexQuery
 	/// 	создан с учетом оптимизации и минимальной мутации
 	/// </remarks>
-	public sealed class Query : CacheKeyGeneratorBase, IQueryWithProcessing {
+	public sealed class Query : CacheKeyGeneratorBase, IQueryWithProcessing, IWithSession {
 		/// <summary>
 		/// 	Конструктор запроса по умолчанию
 		/// </summary>
@@ -273,7 +273,7 @@ namespace Zeta.Extreme {
 		public void WaitResult(int timeout =-1) {
 			WaitPrepare(timeout);
 			if (IsPrimary && null == Result) {
-				Session.WaitPrimarySource(timeout);
+				Session.WaitForPrimary(timeout);
 			}
 		}
 
@@ -295,7 +295,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Sign that primary was not set
 		/// </summary>
-		public bool HavePrimary;
+		public bool HavePrimary { get; set; }
 
 		/// <summary>
 		/// 	Статус по подготовке
@@ -320,7 +320,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Автоматический код запроса, присваиваемый системой
 		/// </summary>
-		public long UID;
+		public long Uid { get; set; }
 
 		private List<IQueryWithProcessing> _formulaDependency;
 

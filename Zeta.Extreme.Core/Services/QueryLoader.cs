@@ -33,7 +33,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		/// <returns> </returns>
-		public virtual Query Process(Query query) {
+		public virtual IQuery Process(IQuery query) {
 			var internalquery = query.Copy(true);
 			// внутри сессии работаем только с копиями
 			// ибо иначе отконтроллировать изменения препроцессора по сути невозможно

@@ -9,8 +9,9 @@
 #endregion
 
 using System.Threading.Tasks;
+using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Абстракция акцессора первичных данных
 	/// </summary>
@@ -19,7 +20,7 @@ namespace Zeta.Extreme {
 		/// 	Регистрирует целевой запрос
 		/// </summary>
 		/// <param name="query"> </param>
-		void Register(Query query);
+		void Register(IQuery query);
 
 		/// <summary>
 		/// 	Регистрирует заранее подготовленный SQL-запрос

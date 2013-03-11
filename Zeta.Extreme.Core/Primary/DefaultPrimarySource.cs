@@ -14,9 +14,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Qorpent.Applications;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Primary {
@@ -32,9 +32,8 @@ namespace Zeta.Extreme.Primary {
 		/// 	Конструктор с учетом сессии
 		/// </summary>
 		/// <param name="session"> </param>
-		public DefaultPrimarySource(Session session) {
+		public DefaultPrimarySource(ISession session) {
 			_session = session;
-			TraceQuery = session.TraceQuery;
 			QueryLog = new List<string>();
 		}
 
@@ -43,10 +42,7 @@ namespace Zeta.Extreme.Primary {
 		/// </summary>
 		public IList<string> QueryLog { get; private set; }
 
-		/// <summary>
-		/// 	Признак трассировки сессии
-		/// </summary>
-		private bool TraceQuery { get; set; }
+
 
 		/// <summary>
 		/// 	Объект синхронизации с PrimarySource
@@ -56,14 +52,14 @@ namespace Zeta.Extreme.Primary {
 		}
 
 		private bool CollectStatistics {
-			get { return null != _session && _session.CollectStatistics; }
+			get { return null != _session && _session.IsCollectStatistics(); }
 		}
 
 		/// <summary>
 		/// 	Регистрирует целевой запрос
 		/// </summary>
 		/// <param name="query"> </param>
-		public void Register(Query query) {
+		public void Register(IQuery query) {
 			lock (_syncsqlawait) {
 				if (DoNotExecuteRealSql) {
 					if (null != StubDataGenerator) {
@@ -152,24 +148,21 @@ namespace Zeta.Extreme.Primary {
 				});
 		}
 
-		private void PostProcessQuery(Stopwatch sw, string script, Dictionary<long, Query> myrequests) {
+		private void PostProcessQuery(Stopwatch sw, string script, Dictionary<long, IQueryWithProcessing> myrequests) {
 			if (CollectStatistics) {
 				sw.Stop();
 
 				lock (_syncsqlawait) {
 					QueryLog.Add("/* EXECUTE TIME " + sw.Elapsed + " */" + script);
-					_session.Stat_Batch_Time += sw.Elapsed;
+					_session.StatIncStatBatchTime(sw.Elapsed);
 				}
 			}
 			foreach (var myrequest in myrequests.Values.Where(_ => !_.HavePrimary)) {
-				if (TraceQuery) {
-					myrequest.TraceList.Add("primary not found ");
-				}
 				myrequest.Result = new QueryResult {IsComplete = true, IsNull = true};
 			}
 		}
 
-		private void ExecuteQuery(string script, Dictionary<long, Query> myrequests) {
+		private void ExecuteQuery(string script, Dictionary<long, IQueryWithProcessing> myrequests) {
 			var _grouped = myrequests.Values.GroupBy(_ => _.Row.Id, _ => _).ToDictionary(_ => _.Key, _ => _);
 			using (var c = GetConnection()) {
 				c.Open();
@@ -184,9 +177,7 @@ namespace Zeta.Extreme.Primary {
 						}
 						var id = r.GetInt32(0);
 
-						if (CollectStatistics) {
-							Interlocked.Increment(ref _session.Stat_Primary_Catched);
-						}
+						_session.StatIncPrimaryCatched();
 						var col = r.GetInt32(1);
 						var row = r.GetInt32(2);
 						var obj = r.GetInt32(3);
@@ -200,12 +191,7 @@ namespace Zeta.Extreme.Primary {
 								_.Col.Id == col && _.Obj.Id == obj && (int) _.Obj.Type == otype && _.Time.Year == year &&
 								_.Time.Period == period);
 						if (null != target) {
-							if (CollectStatistics) {
-								Interlocked.Increment(ref _session.Stat_Primary_Affected);
-							}
-							if (TraceQuery) {
-								target.TraceList.Add("primary found " + value);
-							}
+							_session.StatIncPrimaryAffected();
 							target.HavePrimary = true;
 							target.Result = new QueryResult {IsComplete = true, NumericResult = value, CellId = id};
 						}
@@ -214,24 +200,16 @@ namespace Zeta.Extreme.Primary {
 			}
 		}
 
-		private Dictionary<long, Query> CollectRequests() {
-			Dictionary<long, Query> _myrequests;
+		private Dictionary<long, IQueryWithProcessing> CollectRequests() {
+			Dictionary<long, IQueryWithProcessing> _myrequests;
 			lock (_syncsqlawait) {
 				if (_sqlDataAwaiters.IsEmpty) {
 					return null;
 				}
-				_myrequests = _sqlDataAwaiters.ToArray().Distinct().ToDictionary(_ => _.UID, _ => _);
+				_myrequests = _sqlDataAwaiters.Cast<IQueryWithProcessing>().ToArray().Distinct().ToDictionary(_ => _.Uid, _ => _);
 				_sqlDataAwaiters = new ConcurrentBag<IQuery>();
 			}
-			if (TraceQuery) {
-				foreach (var q in _myrequests.Values) {
-					q.TraceList.Add("Session " + _session.Id + " added to primreq ");
-				}
-			}
-
-			if (CollectStatistics) {
-				Interlocked.Increment(ref _session.Stat_Batch_Count);
-			}
+			_session.StatIncBatchCount();
 			return _myrequests;
 		}
 
@@ -240,7 +218,7 @@ namespace Zeta.Extreme.Primary {
 		/// </summary>
 		/// <param name="_myrequests"> </param>
 		/// <returns> </returns>
-		public string GenerateScript(IQuery[] _myrequests) {
+		public string GenerateScript(IQueryWithProcessing[] _myrequests) {
 			var groups = ExplodeToGroups(_myrequests);
 			return string.Join("\r\n", groups.Select(_ => _.GenerateSqlScript()));
 		}
@@ -273,7 +251,7 @@ namespace Zeta.Extreme.Primary {
 			return Application.Current.DatabaseConnections.GetConnection("Default");
 		}
 
-		private readonly Session _session;
+		private readonly ISession _session;
 		private readonly ConcurrentBag<Task> _sqltasks = new ConcurrentBag<Task>();
 		private readonly object _syncsqlawait = new object();
 

@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
@@ -167,7 +168,7 @@ namespace Zeta.Extreme {
 						}
 					}
 				}
-				result.Time.Normalize(result.Session);
+				result.Time.Normalize(result.GetSession());
 			}
 		}
 

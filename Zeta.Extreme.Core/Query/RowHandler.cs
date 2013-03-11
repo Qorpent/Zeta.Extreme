@@ -82,7 +82,7 @@ namespace Zeta.Extreme {
 		/// <param name="session"> </param>
 		/// <param name="column"> </param>
 		public void Normalize(ISession session, IZetaColumn column) {
-			var cache = session == null ? MetaCache.Default : session.MetaCache;
+			var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 			if (IsStandaloneSingletonDefinition()) {
 				//try load native
 				Native = cache.Get<IZetaRow>(0 == Id ? (object) Code : Id);
@@ -110,8 +110,8 @@ namespace Zeta.Extreme {
 				Native = Native.ResolveExRef(column);
 				proceed = ResolveSingleRowFormula();
 			}
-			if (initialcode != Code) {
-				if (session != null && ((Session) session).CollectStatistics) {
+			if (initialcode != Code && session is Session) {
+				if (((Session) session).CollectStatistics) {
 					Interlocked.Increment(ref ((Session) session).Stat_Row_Redirections);
 				}
 			}

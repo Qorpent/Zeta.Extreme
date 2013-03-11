@@ -30,7 +30,7 @@ namespace Zeta.Extreme {
 	/// 	create session ==- register queries ==- evaluate  ==- collect result
 	/// 	Сессия работает с максимальным использованием async - оптимизации
 	/// </remarks>
-	public class Session : ISerializableSession {
+	public class Session : ISerializableSession, IWithSessionStatistics, IWithDataServices {
 		private static int ID;
 
 		/// <summary>
@@ -42,11 +42,18 @@ namespace Zeta.Extreme {
 		public Session(bool collectStatistics = false) {
 			Id = ++ID;
 			CollectStatistics = collectStatistics;
+			if(CollectStatistics) {
+				Statistics = new SessionStatistics();
+			}
 			Registry = new ConcurrentDictionary<string, Query>();
 			ActiveSet = new ConcurrentDictionary<string, IQuery>();
 			KeyMap = new ConcurrentDictionary<string, string>();
 			PrimarySource = new DefaultPrimarySource(this);
 		}
+		/// <summary>
+		/// Доступ к статистике сессии
+		/// </summary>
+		public SessionStatistics Statistics { get; set; }
 
 		/// <summary>
 		/// 	Расчетчик первичных данных
@@ -128,7 +135,7 @@ namespace Zeta.Extreme {
 			get {
 				lock (this) {
 					if (null != MasterSession) {
-						return MasterSession.MetaCache;
+						return MasterSession.GetMetaCache();
 					}
 					return _metaCache ?? (_metaCache = new MetaCache {Parent = Extreme.MetaCache.Default});
 				}
@@ -233,7 +240,7 @@ namespace Zeta.Extreme {
 						thissync = thissync,
 					};
 				if (CollectStatistics) {
-					Stat_SubSession_Count ++;
+					Statistics.Stat_SubSession_Count ++;
 				}
 				//share query cache
 				//but not task queues
@@ -416,24 +423,6 @@ namespace Zeta.Extreme {
 
 
 		/// <summary>
-		/// 	Возвращает объект препроцессора
-		/// </summary>
-		/// <returns> </returns>
-		/// <exception cref="NotImplementedException"></exception>
-		protected internal IPeriodEvaluator GetPeriodEvaluator() {
-			lock (thissync) {
-				IPeriodEvaluator result;
-				if (_periodevalpool.TryPop(out result)) {
-					return result;
-				}
-				if (null != CustomPeriodEvaluatorClass) {
-					return Activator.CreateInstance(CustomPeriodEvaluatorClass, this) as IPeriodEvaluator;
-				}
-				return new DefaultPeriodEvaluator();
-			}
-		}
-
-		/// <summary>
 		/// 	Возвращает препроцессор в пул
 		/// </summary>
 		/// <param name="periodEvaluator"> </param>
@@ -459,7 +448,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Если включено, службы накапливают статистические данные по работе сессии
 		/// </summary>
-		public readonly bool CollectStatistics;
+		public bool CollectStatistics { get; private set; }
 
 
 		private readonly ConcurrentStack<IPeriodEvaluator> _periodevalpool = new ConcurrentStack<IPeriodEvaluator>();
@@ -501,100 +490,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public Type CustomSqlBuilderClass;
 
-		/// <summary>
-		/// 	Статистика батчей
-		/// </summary>
-		public int Stat_Batch_Count;
-
-		/// <summary>
-		/// 	Статистика времени батчей
-		/// </summary>
-		public TimeSpan Stat_Batch_Time;
-
-		/// <summary>
-		/// 	Статистика использованных значений
-		/// </summary>
-		public int Stat_Primary_Affected;
-
-		/// <summary>
-		/// 	Статистика возвращеных ячеек
-		/// </summary>
-		public int Stat_Primary_Catched;
-
-		/// <summary>
-		/// 	Счетчик формул
-		/// </summary>
-		public int Stat_QueryType_Formula;
-
-		/// <summary>
-		/// 	Счетчик первичных запросов
-		/// </summary>
-		public int Stat_QueryType_Primary;
-
-		/// <summary>
-		/// 	Счетчик сумм
-		/// </summary>
-		public int Stat_QueryType_Sum;
-
-		/// <summary>
-		/// 	Счетчик игнорируемых запросов
-		/// </summary>
-		public int Stat_Registry_Ignored;
-
-		/// <summary>
-		/// 	Статистика действительно уникальных регистраций
-		/// </summary>
-		public int Stat_Registry_New;
-
-		/// <summary>
-		/// 	Статистика вызовов препроцессора
-		/// </summary>
-		public int Stat_Registry_Preprocessed;
-
-		/// <summary>
-		/// 	Статистика резольвинга по внутреннему ключу
-		/// </summary>
-		public int Stat_Registry_Resolved_By_Key;
-
-		/// <summary>
-		/// 	Статистика количества дублированных запросов без препроцессинга
-		/// </summary>
-		public int Stat_Registry_Resolved_By_Map_Key;
-
-		/// <summary>
-		/// 	Статистика резольвинга по наличию в кэше
-		/// </summary>
-		public int Stat_Registry_Resolved_By_Uid;
-
-		/// <summary>
-		/// 	Статистика количества вызовов регистрации
-		/// </summary>
-		public int Stat_Registry_Started;
-
-		/// <summary>
-		/// 	Статистика пользовтельских регистраций
-		/// </summary>
-		public int Stat_Registry_Started_User;
-
-		/// <summary>
-		/// 	Счетчик результативных клиентских запросов
-		/// </summary>
-		public int Stat_Registry_User;
-
-		/// <summary>
-		/// 	Счетчик переводов строки
-		/// </summary>
-		public int Stat_Row_Redirections;
-
-		/// <summary>
-		/// 	Статистика созданных под-сессий
-		/// </summary>
-		public int Stat_SubSession_Count;
-
-		/// <summary>
-		/// 	Статистика общего времени выполнения
-		/// </summary>
-		public TimeSpan Stat_Time_Total;
+		
 
 		/// <summary>
 		/// 	Ведение полной трассировки запросов

@@ -25,8 +25,8 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		QueryResult GetResult(int timeout = -1);
 
 		/// <summary>
-		/// 	Синхронный результат
+		/// 	Sign that primary was not set
 		/// </summary>
-		QueryResult Result { get; set; }
+		bool HavePrimary { get; set; }
 	}
 }

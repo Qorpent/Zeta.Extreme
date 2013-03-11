@@ -603,7 +603,7 @@ namespace Zeta.Extreme.FrontEnd {
 				return;
 			}
 			var src = columnDesc._;
-			DataSession.MetaCache.Set(
+			DataSession.GetMetaCache().Set(
 				new col
 					{
 						Code = src.CustomCode,
@@ -846,7 +846,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public FileTypeRecord[] GetAllowedFileTypes() {
 			EnsureDataSession();
-			var filetypes = DataSession.MetaCache.Get<IZetaRow>("DIR_FILE_TYPES").Children.ToArray();
+			var filetypes = DataSession.GetMetaCache().Get<IZetaRow>("DIR_FILE_TYPES").Children.ToArray();
 			return (
 				       from filetypedesc in filetypes
 				       from formcode in TagHelper.Value(filetypedesc.Tag, "form").Split(',')

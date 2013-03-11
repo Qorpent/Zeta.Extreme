@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
@@ -116,14 +117,14 @@ namespace Zeta.Extreme {
 			query = _session.ActiveSet.GetOrAdd(key, query);
 			var result = query;
 			lock (typeof (QuerySessionRegistrator)) {
-				result.UID = ++QUERYID;
+				result.Uid = ++QUERYID;
 			}
 			if (_stat) {
 				Interlocked.Increment(ref _session.Stat_Registry_New);
 			}
 			if (_session.TraceQuery) {
 				result.TraceList = result.TraceList ?? new List<string>();
-				result.TraceList.Add(Environment.TickCount + " " + _session.Id + " r " + result.UID + " " + result.GetCacheKey());
+				result.TraceList.Add(Environment.TickCount + " " + _session.Id + " r " + result.Uid + " " + result.GetCacheKey());
 			}
 
 

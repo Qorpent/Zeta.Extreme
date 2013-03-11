@@ -45,7 +45,6 @@
     <Compile Include="Query\PrepareState.cs" />
     <Compile Include="Query\QueryEvaluationType.cs" />
     <Compile Include="Primary\DefaultPrimarySource.cs" />
-    <Compile Include="Abstracts\IPrimarySource.cs" />
     <Compile Include="Query\StrongSumProvider.cs" />
     <Compile Include="Query\QueryDelta.cs" />
     <Compile Include="Primary\PrimaryQueryGroup.cs" />

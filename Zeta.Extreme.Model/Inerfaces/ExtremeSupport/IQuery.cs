@@ -8,7 +8,9 @@
 
 #endregion
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+using Zeta.Extreme.Poco.Inerfaces;
+
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Интерфейс описателя запроса
 	/// </summary>
@@ -39,10 +41,27 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		string Valuta { get; set; }
 
 		/// <summary>
+		/// 	Синхронный результат
+		/// </summary>
+		QueryResult Result { get; set; }
+
+		/// <summary>
+		/// 	Автоматический код запроса, присваиваемый системой
+		/// </summary>
+		long Uid { get; set; }
+
+		/// <summary>
 		/// 	Простая копия условия на время
 		/// </summary>
 		/// <param name="deep"> Если да, то делает копии вложенных измерений </param>
 		/// <returns> </returns>
 		IQuery Copy(bool deep = false);
+
+		/// <summary>
+		/// 	Стандартная процедура нормализации
+		/// </summary>
+		void Normalize(ISession session = null);
+
+	
 	}
 }
