@@ -51,6 +51,11 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		long Uid { get; set; }
 
 		/// <summary>
+		/// 	Обратная ссылка на сессию
+		/// </summary>
+		ISession Session { get; set; }
+
+		/// <summary>
 		/// 	Простая копия условия на время
 		/// </summary>
 		/// <param name="deep"> Если да, то делает копии вложенных измерений </param>

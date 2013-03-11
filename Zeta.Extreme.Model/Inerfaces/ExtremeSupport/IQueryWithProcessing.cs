@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Model.Inerfaces {
@@ -28,5 +29,26 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// 	Sign that primary was not set
 		/// </summary>
 		bool HavePrimary { get; set; }
+
+		/// <summary>
+		/// 	Back-reference to preparation tasks
+		/// </summary>
+		Task PrepareTask { get; set; }
+
+		/// <summary>
+		/// 	Client processed mark
+		/// </summary>
+		bool Processed { get; set; }
+
+		/// <summary>
+		/// 	Статус по подготовке
+		/// </summary>
+		PrepareState PrepareState { get; set; }
+
+		/// <summary>
+		/// 	Позволяет синхронизировать запросы в подсессиях
+		/// </summary>
+		/// <param name="timeout"> </param>
+		void WaitPrepare(int timeout = -1);
 	}
 }

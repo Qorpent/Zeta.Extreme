@@ -38,7 +38,7 @@ namespace Zeta.Extreme {
 		/// 	выполн€етс€ после препроцессора и проверок
 		/// </summary>
 		/// <param name="query"> </param>
-		public void Prepare(Query query) {
+		public void Prepare(IQuery query) {
 			if (query.PrepareState == PrepareState.InPrepare || query.PrepareState == PrepareState.Prepared) {
 				return;
 			}

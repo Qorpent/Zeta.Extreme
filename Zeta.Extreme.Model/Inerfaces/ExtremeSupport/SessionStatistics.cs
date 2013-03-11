@@ -9,96 +9,93 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <summary>
 		/// 	Статистика батчей
 		/// </summary>
-		public int Stat_Batch_Count;
+		public int BatchCount;
 
 		/// <summary>
 		/// 	Статистика времени батчей
 		/// </summary>
-		public TimeSpan Stat_Batch_Time;
+		public TimeSpan BatchTime;
 
 		/// <summary>
 		/// 	Статистика использованных значений
 		/// </summary>
-		public int Stat_Primary_Affected;
+		public int PrimaryAffected;
 
 		/// <summary>
 		/// 	Статистика возвращеных ячеек
 		/// </summary>
-		public int Stat_Primary_Catched;
+		public int PrimaryCatched;
 
 		/// <summary>
 		/// 	Счетчик формул
 		/// </summary>
-		public int Stat_QueryType_Formula;
+		public int QueryTypeFormula;
 
 		/// <summary>
 		/// 	Счетчик первичных запросов
 		/// </summary>
-		public int Stat_QueryType_Primary;
+		public int QueryTypePrimary;
 
 		/// <summary>
 		/// 	Счетчик сумм
 		/// </summary>
-		public int Stat_QueryType_Sum;
+		public int QueryTypeSum;
 
 		/// <summary>
 		/// 	Счетчик игнорируемых запросов
 		/// </summary>
-		public int Stat_Registry_Ignored;
+		public int RegistryIgnored;
 
 		/// <summary>
 		/// 	Статистика действительно уникальных регистраций
 		/// </summary>
-		public int Stat_Registry_New;
+		public int RegistryNew;
 
 		/// <summary>
 		/// 	Статистика вызовов препроцессора
 		/// </summary>
-		public int Stat_Registry_Preprocessed;
+		public int RegistryPreprocessed;
 
 		/// <summary>
 		/// 	Статистика резольвинга по внутреннему ключу
 		/// </summary>
-		public int Stat_Registry_Resolved_By_Key;
+		public int RegistryResolvedByKey;
 
 		/// <summary>
 		/// 	Статистика количества дублированных запросов без препроцессинга
 		/// </summary>
-		public int Stat_Registry_Resolved_By_Map_Key;
+		public int RegistryResolvedByMapKey;
 
 		/// <summary>
 		/// 	Статистика резольвинга по наличию в кэше
 		/// </summary>
-		public int Stat_Registry_Resolved_By_Uid;
+		public int RegistryResolvedByUid;
 
 		/// <summary>
 		/// 	Статистика количества вызовов регистрации
 		/// </summary>
-		public int Stat_Registry_Started;
+		public int RegistryStarted;
 
 		/// <summary>
 		/// 	Статистика пользовтельских регистраций
 		/// </summary>
-		public int Stat_Registry_Started_User;
+		public int RegistryStartedUser;
 
 		/// <summary>
 		/// 	Счетчик результативных клиентских запросов
 		/// </summary>
-		public int Stat_Registry_User;
+		public int RegistryUser;
 
 		/// <summary>
 		/// 	Счетчик переводов строки
 		/// </summary>
-		public int Stat_Row_Redirections;
+		public int RowRedirections;
 
-		/// <summary>
-		/// 	Статистика созданных под-сессий
-		/// </summary>
-		public int Stat_SubSession_Count;
+	
 
 		/// <summary>
 		/// 	Статистика общего времени выполнения
 		/// </summary>
-		public TimeSpan Stat_Time_Total;
+		public TimeSpan TimeTotal;
 	}
 }

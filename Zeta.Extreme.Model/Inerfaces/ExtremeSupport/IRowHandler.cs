@@ -8,9 +8,9 @@
 
 #endregion
 
-using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Стандартный описатель измерения Row
 	/// </summary>

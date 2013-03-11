@@ -17,6 +17,7 @@ using Qorpent.Data;
 using Qorpent.Data.Connections;
 using Qorpent.IoC;
 using Zeta.Extreme.Meta;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {

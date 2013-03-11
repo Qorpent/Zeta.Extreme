@@ -26,7 +26,7 @@ namespace Zeta.Extreme {
 	/// 	интерфейсов IQuery, IQueryBuilder, наоборот ZexQuery
 	/// 	создан с учетом оптимизации и минимальной мутации
 	/// </remarks>
-	public sealed class Query : CacheKeyGeneratorBase, IQueryWithProcessing, IWithSession {
+	public sealed class Query : CacheKeyGeneratorBase, IQueryWithProcessing {
 		/// <summary>
 		/// 	Конструктор запроса по умолчанию
 		/// </summary>
@@ -300,7 +300,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Статус по подготовке
 		/// </summary>
-		public PrepareState PrepareState;
+		public PrepareState PrepareState { get; set; }
 
 		/// <summary>
 		/// 	Обратная ссылка на сессию

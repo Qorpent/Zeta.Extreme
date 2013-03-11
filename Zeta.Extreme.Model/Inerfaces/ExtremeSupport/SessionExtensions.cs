@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Model.Inerfaces {
@@ -50,15 +52,47 @@ namespace Zeta.Extreme.Model.Inerfaces {
 			if(null==sessionAsDataSession)return;
 			sessionAsDataSession.WaitPrimarySource(timeout); 
 		}
+	
+
 		/// <summary>
-		/// null-safe обертка для запросов с IWithSession
+		/// Акцессор реестра запросов
 		/// </summary>
-		/// <param name="query"></param>
+		/// <param name="session"></param>
 		/// <returns></returns>
-		public static ISession GetSession(this IQuery query) {
-			if(null==query) return null;
-			var queryAsWithSession = query as IWithSession;
-			return null==queryAsWithSession ? null : queryAsWithSession.Session;
+		/// <exception cref="Exception"></exception>
+		public static ConcurrentDictionary<string,IQueryWithProcessing> GetRegistry(this ISession session) {
+			if(null==session)throw new Exception("session is null");
+			var sessionAsRegistry = session as IWithQueryRegistry;
+			if (null == sessionAsRegistry) throw new Exception("session is not with registry support");
+			return sessionAsRegistry.Registry;
+		}
+
+		/// <summary>
+		/// Акцессор реестра запросов (необработанные)
+		/// </summary>
+		/// <param name="session"></param>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
+		public static ConcurrentDictionary<string, IQueryWithProcessing> GetRegistryActiveSet(this ISession session)
+		{
+			if (null == session) throw new Exception("session is null");
+			var sessionAsRegistry = session as IWithQueryRegistry;
+			if (null == sessionAsRegistry) throw new Exception("session is not with registry support");
+			return sessionAsRegistry.ActiveSet;
+		}
+
+		/// <summary>
+		/// Акцессор реестра запросов (кеймапинг)
+		/// </summary>
+		/// <param name="session"></param>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
+		public static IDictionary<string, string> GetRegistryKeyMap(this ISession session)
+		{
+			if (null == session) throw new Exception("session is null");
+			var sessionAsRegistry = session as IWithQueryRegistry;
+			if (null == sessionAsRegistry) throw new Exception("session is not with registry support");
+			return sessionAsRegistry.KeyMap;
 		}
 	}
 }

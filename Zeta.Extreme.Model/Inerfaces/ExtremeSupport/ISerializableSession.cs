@@ -9,10 +9,8 @@
 #endregion
 
 using System.Threading.Tasks;
-using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Сериализуемая сессия
 	/// </summary>

@@ -10,9 +10,9 @@
 
 using System;
 using Qorpent.Model;
-using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	ќписывает стандартное измерение запросов Zeta
 	/// </summary>

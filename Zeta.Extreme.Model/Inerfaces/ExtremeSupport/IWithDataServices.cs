@@ -1,7 +1,6 @@
-using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// Вспомогательный интерфейс для сесси для доступа к хранимым данным
 	/// </summary>

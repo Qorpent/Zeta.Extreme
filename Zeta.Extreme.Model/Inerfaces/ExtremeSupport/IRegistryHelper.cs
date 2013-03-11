@@ -8,10 +8,7 @@
 
 #endregion
 
-using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
-
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	¬спомогательный интерфейс класса дл€
 	/// 	регистрации запроса в сессии
