@@ -25,7 +25,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private MongoCollection _mongoDBCurrentCollection;
 
         private BsonDocument _currentDocument;
-        private string _currentDocumentID;
 
         public MongoDBAttachmentsSource() {
             MongoDBConnect();
@@ -40,8 +39,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
             HandleVariables(attachment);
             AttachmentViewSave();
-
-            _currentDocumentID = _currentDocument["_id"].ToString();
         }
 
         public void Delete(Attachment attachment) {
@@ -59,7 +56,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         /// <summary>
-        /// Creates a stream to the file identified by _id in _currentDocumentID
+        /// Creates a stream to the file identified by _id in _currentDocument["_id"].ToString()
         /// </summary>
         /// <param name="mode">Acces mode to the stream</param>
         /// <returns></returns>
@@ -67,7 +64,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             return new MongoGridFSStream(
                 new MongoGridFSFileInfo(
                     _gridFS,
-                    _currentDocumentID
+                    _currentDocument["_id"].ToString()
                 ),
                 FileMode.Append,
                 mode
@@ -94,13 +91,20 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         private void HandleVariables(Attachment attachment) {
-            _currentDocument["Extension"] = attachment.Extension;
-            _currentDocument["MimeType"] = attachment.MimeType;
-            _currentDocument["Filename"] = attachment.Name;
+            if (attachment.Uid != null) {
+                _currentDocument["_id"] = attachment.Uid;
+            }
 
-            _currentDocument["Owner"] = attachment.User;
-            _currentDocument["Comment"] = attachment.Comment;
-            _currentDocument["Revision"] = attachment.Revision;
+            _currentDocument["File"] = new BsonDocument();
+            _currentDocument["Attachment"] = new BsonDocument();
+
+            _currentDocument["File"]["Extension"] = attachment.Extension;
+            _currentDocument["File"]["MimeType"] = attachment.MimeType;
+            _currentDocument["File"]["Filename"] = attachment.Name;
+
+            _currentDocument["Attachment"]["Owner"] = attachment.User;
+            _currentDocument["Attachment"]["Comment"] = attachment.Comment;
+            _currentDocument["Attachment"]["Revision"] = attachment.Revision;
 
             _currentDocument["Metadata"] = attachment.Metadata.ToBson();
 
