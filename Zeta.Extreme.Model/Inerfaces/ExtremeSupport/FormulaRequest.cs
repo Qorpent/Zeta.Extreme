@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>

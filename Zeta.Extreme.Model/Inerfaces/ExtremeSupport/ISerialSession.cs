@@ -9,9 +9,8 @@
 #endregion
 
 using System.Threading.Tasks;
-using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Описывает самый простой, синхронизированный вариант доступа к сессии
 	/// 	все запросы должны четко следовать один за другим

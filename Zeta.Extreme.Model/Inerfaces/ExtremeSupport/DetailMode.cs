@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Тип работы с деталями при входном объекте типа "объект" или агрегатный объект,
 	/// 	при работе с деталями напрямую - не имеет сущностного смысла

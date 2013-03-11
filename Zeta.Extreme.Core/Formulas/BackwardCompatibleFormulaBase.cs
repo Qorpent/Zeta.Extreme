@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
@@ -37,14 +38,14 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	шоткат для совместимости со старыми формулами
 		/// </summary>
-		protected Query q {
+		protected IQuery q {
 			get { return Query; }
 		}
 
 		/// <summary>
 		/// 	шоткат для совместимости со старыми формулами
 		/// </summary>
-		protected Query query {
+		protected IQuery query {
 			get { return Query; }
 		}
 

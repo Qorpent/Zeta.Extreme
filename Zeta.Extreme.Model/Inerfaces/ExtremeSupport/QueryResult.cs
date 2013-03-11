@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	»нкапсул€ци€ результата
 	/// </summary>

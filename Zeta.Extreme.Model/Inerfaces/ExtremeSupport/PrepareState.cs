@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Статус подготовки запроса
 	/// </summary>

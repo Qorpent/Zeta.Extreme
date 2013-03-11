@@ -8,7 +8,9 @@
 
 #endregion
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+using Zeta.Extreme.Poco.Inerfaces;
+
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	—тандартный описатель измерени€ "колонка"
 	/// </summary>

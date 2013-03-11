@@ -158,17 +158,37 @@
     <Compile Include="Inerfaces\Extra data\IZetaDetailObjectGroupLink.cs" />
     <Compile Include="Inerfaces\Extra data\IZetaObjectGroup.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\DetailMode.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\ExtremeFactory.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\FormulaRequest.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IColumnHandler.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IExtremeFactory.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IFormula.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IFormulaPreprocessor.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IFormulaStorage.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IObjHandler.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IPreloadProcessor.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IQuery.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IQueryDimension.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IQueryPreparator.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IQueryWithProcessing.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IRegistryHelper.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IRowHandler.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\ISerializableSession.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\ISerialSession.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\ISession.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\ITimeHandler.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IWithCacheKey.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\ISessionWithExtendedServices.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IWithQueryRegistry.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\ObjType.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\PrepareState.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\QueryEvaluationType.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\QueryResult.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\QuerySetupInfo.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\SessionExtensions.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\SessionSetupInfo.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\SessionStatisticsExtensions.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\StubExtremeFactory.cs" />
     <Compile Include="Inerfaces\ICanResolveTag.cs" />
     <Compile Include="Inerfaces\IMetaCache.cs" />
     <Compile Include="Inerfaces\IOlapCache.cs" />
@@ -177,10 +197,13 @@
     <Compile Include="Inerfaces\IOlapDetailObject.cs" />
     <Compile Include="Inerfaces\IOlapForm.cs" />
     <Compile Include="Inerfaces\IOlapMainObject.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IWithSessionStatistics.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IPrimarySource.cs" />
     <Compile Include="Inerfaces\ITree.cs" />
     <Compile Include="Inerfaces\IWithCategory.cs" />
     <Compile Include="Inerfaces\IWithClassRef.cs" />
     <Compile Include="Inerfaces\IWithData.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IWithDataServices.cs" />
     <Compile Include="Inerfaces\IWithGroup.cs" />
     <Compile Include="Inerfaces\IWithPath.cs" />
     <Compile Include="Inerfaces\IWithPeriod.cs" />
@@ -189,6 +212,7 @@
     <Compile Include="Inerfaces\IWithYear.cs" />
     <Compile Include="Inerfaces\IWthRefTo.cs" />
     <Compile Include="Inerfaces\RowComparer.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\SessionStatistics.cs" />
     <Compile Include="Inerfaces\StubMetaCache.cs" />
     <Compile Include="Inerfaces\Support\ICanCheckIsActive.cs" />
     <Compile Include="Inerfaces\Support\ICanCountDetailObjects.cs" />
@@ -241,6 +265,7 @@
     <Compile Include="NativeSqlBind\PeriodDefinition.cs" />
     <Compile Include="NativeSqlBind\Periods.cs" />
     <Compile Include="NativeSqlBind\RowCache.cs" />
+    <Compile Include="NativeSqlBind\RowExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="qorpent.sys.base.import" />

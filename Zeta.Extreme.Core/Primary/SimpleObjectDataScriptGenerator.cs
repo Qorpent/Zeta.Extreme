@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Primary {
@@ -23,7 +24,7 @@ namespace Zeta.Extreme.Primary {
 		/// <param name="queries"> </param>
 		/// <param name="prototype"> </param>
 		/// <returns> </returns>
-		public string Generate(Query[] queries, PrimaryQueryPrototype prototype) {
+		public string Generate(IQuery[] queries, PrimaryQueryPrototype prototype) {
 			var script = "";
 			if (0 != queries.Length) {
 				var times =
