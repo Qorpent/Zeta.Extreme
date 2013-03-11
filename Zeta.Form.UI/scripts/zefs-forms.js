@@ -364,7 +364,7 @@
                     }
                     break;
                 default :
-                    if (!printable) return;
+                    if (!printable || e.ctrlKey) return;
                     if (!$cell.hasClass('editing')) {
                         this.inputCell("replace");
                     }

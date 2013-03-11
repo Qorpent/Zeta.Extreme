@@ -7,6 +7,9 @@ $.extend(options,(function(){
 		logout_command : "_sys/logout.json.qweb",
 		impersonate_command : "_sys/impersonate.json.qweb",
 		whoami_command : "_sys/whoami.json.qweb",
+
+        // Возвращает полную информацию о пользователе [от Login]
+        getuserinfo_command : "zeta/getuserinfo.json.qweb",
 			
 		getParameters : function(){
 			return null;
@@ -22,6 +25,29 @@ $.extend(options,(function(){
                 getError : function() {return this.errortype},
                 // сообщение ошибки
                 getErrorMessage : function() {return this.errormessage}
+            });
+            return obj;
+        },
+
+        asUserInfo : function (obj) {
+            $.extend(obj, {
+                getLogin : function() {return this.Login},
+                getName : function() {return this.Name != "NOTREGISTERED IN DB" ? this.Name : null},
+                getShortName : function() {
+                    var n = this.Name.trim().split(" ");
+                    if (this.Name != "NOT REGISTERED IN DB" && n.length == 3) {
+                        return n[0] + " " + n[1].substring(0,1) + ". " + n[2].substring(0,1) + ".";
+                    } else {
+                        return this.Name;
+                    }
+                },
+                getJob : function() {return this.Dolzh},
+                getContact : function() {return this.Contact},
+                getEmail : function() {return this.Email},
+                getObj : function() {return this.ObjId},
+                getObjName : function() {return this.ObjName},
+                getIsObjAdmin : function() {return this.IsObjAdmin},
+                getIsActive : function() {return this.Active}
             });
             return obj;
         },
