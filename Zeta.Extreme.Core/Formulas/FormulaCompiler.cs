@@ -82,8 +82,8 @@ namespace Zeta.Extreme.DyncamicFormulas {
 			parameters.ReferencedAssemblies.Add("mscorlib.dll");
 			parameters.ReferencedAssemblies.Add("System.dll");
 			parameters.ReferencedAssemblies.Add("System.Core.dll");
-			parameters.ReferencedAssemblies.Add(Assembly.GetAssembly(typeof (IZetaRow)).CodeBase.Replace("file:///", ""));
 			parameters.ReferencedAssemblies.Add(Assembly.GetAssembly(typeof (IFormula)).CodeBase.Replace("file:///", ""));
+			parameters.ReferencedAssemblies.Add(Assembly.GetAssembly(typeof(BackwardCompatibleFormulaBase)).CodeBase.Replace("file:///", ""));
 
 			var result = codeprovider.CompileAssemblyFromSource(parameters, codefiles.ToArray());
 			if (result.Errors.Count > 0) {
