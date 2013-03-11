@@ -17,6 +17,20 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             this.mdb = new MongoDBAttachmentsSource();
         }
 
+        private void Save(byte[] source, FormAttachment attachment) {
+            this.mdb.Save(attachment);
+            using (var stream = this.mdb.Open(attachment, FileAccess.Write)) {
+                stream.Write(source, 0, source.Length);
+                stream.Flush();
+            }
+        }
+
+        private void Delete(FormAttachment attachment) {
+            this.mdb.Delete(attachment);
+        }
+
+       
+
         public void CanSave() {
             var source = new byte[] { 84, 101, 115, 116, 32, 79, 75, 33 };
             var attachment = new FormAttachment {
@@ -25,11 +39,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                 Type = "mdb-test"
             };
 
-            this.mdb.Save(attachment);
-            using (var stream = this.mdb.Open(attachment, FileAccess.Write)) {
-                stream.Write(source, 0, source.Length);
-                stream.Flush();
-            }
+            this.Save(source, attachment);
         }
 
         public void CanDelete() {
@@ -39,7 +49,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                 Type = "mdb-test"
             };
 
-            this.mdb.Delete(attachment);
+            this.Delete(attachment);
         }
 
 

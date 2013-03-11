@@ -28,8 +28,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private string _currentDocumentID;
 
         public MongoDBAttachmentsSource() {
-            this.MongoDBConnect();
-            this._currentDocument = new BsonDocument();
+            MongoDBConnect();
+            _currentDocument = new BsonDocument();
         }
 
         public IEnumerable<Attachment> Find(Attachment query) {
@@ -37,10 +37,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         public void Save(Attachment attachment) {
-            this.HandleVariables(attachment);
-            this.AttachmentViewSave();
+            HandleVariables(attachment);
+            AttachmentViewSave();
 
-            this._currentDocumentID = this._currentDocument["_id"].ToString();
+            _currentDocumentID = _currentDocument["_id"].ToString();
         }
 
         public void Delete(Attachment attachment) {
@@ -54,19 +54,19 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="mode"></param>
         /// <returns></returns>
         public Stream Open(Attachment attachment, FileAccess mode) {
-            return this.CreateStreamToCurrentFile(mode);
+            return CreateStreamToCurrentFile(mode);
         }
 
         /// <summary>
-        /// Creates a stream to the file identified by _id in this._currentDocumentID
+        /// Creates a stream to the file identified by _id in _currentDocumentID
         /// </summary>
         /// <param name="mode">Acces mode to the stream</param>
         /// <returns></returns>
         private Stream CreateStreamToCurrentFile(FileAccess mode) {
             return new MongoGridFSStream(
                 new MongoGridFSFileInfo(
-                    this._gridFS,
-                    this._currentDocumentID
+                    _gridFS,
+                    _currentDocumentID
                 ),
                 FileMode.Append,
                 mode
@@ -74,40 +74,40 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         /// <summary>
-        /// Create a connection to database and select the collection in this.mongoDBCurrentCollection
+        /// Create a connection to database and select the collection in mongoDBCurrentCollection
         /// </summary>
         private void MongoDBConnect() {
-            this._client = new MongoClient();
-            this._server = _client.GetServer();
-            this._database = _server.GetDatabase(DEFAULT_DB_NAME);
-            this._gridFS = new MongoGridFS(this._database);
+            _client = new MongoClient();
+            _server = _client.GetServer();
+            _database = _server.GetDatabase(DEFAULT_DB_NAME);
+            _gridFS = new MongoGridFS(_database);
 
-            this._mongoDBCurrentCollection = this._database.GetCollection(DB_COLLECTION_NAME);
+            _mongoDBCurrentCollection = _database.GetCollection(DB_COLLECTION_NAME);
         }
 
         /// <summary>
         /// Save the attachment view information to database
         /// </summary>
         private void AttachmentViewSave() {
-            this._mongoDBCurrentCollection.Save(this._currentDocument);
+            _mongoDBCurrentCollection.Save(_currentDocument);
         }
 
         private void HandleVariables(Attachment attachment) {
-            this._currentDocument["extension"] = attachment.Extension ?? "";
-            this._currentDocument["Code"] = attachment.Uid ?? "";
-            this._currentDocument["type"] = attachment.Type ?? "";
-            this._currentDocument["Comment"] = attachment.Comment ?? "";
-        //    this._currentDocument["User"] = attachment.User ?? Application.Current.Principal.CurrentUser.Identity.Name;
-            this._currentDocument["MimeType"] = attachment.MimeType ?? "unknown/bin";
+            _currentDocument["extension"] = attachment.Extension ?? "";
+            _currentDocument["Code"] = attachment.Uid ?? "";
+            _currentDocument["type"] = attachment.Type ?? "";
+            _currentDocument["Comment"] = attachment.Comment ?? "";
+        //    _currentDocument["User"] = attachment.User ?? Application.Current.Principal.CurrentUser.Identity.Name;
+            _currentDocument["MimeType"] = attachment.MimeType ?? "unknown/bin";
 
-          /*  this._currentDocument["tag"] = TagHelper.ToString(
+          /*  _currentDocument["tag"] = TagHelper.ToString(
                 attachment.Metadata.ToDictionary(
                     _ => _.Key == "template" ? "form" : _.Key,
                     _ => _.Value.ToString()
                 )
             );
 
-            this._currentDocument["tag"] = TagHelper.Merge(attachment.Type, "/doctype:" + attachment.Type + "/");
+            _currentDocument["tag"] = TagHelper.Merge(attachment.Type, "/doctype:" + attachment.Type + "/");
            */
         }
     }
