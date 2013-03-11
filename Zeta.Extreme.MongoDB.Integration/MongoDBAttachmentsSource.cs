@@ -89,7 +89,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// Save the attachment view information to database
         /// </summary>
         private void AttachmentViewSave() {
-            this._mongoDBCurrentCollection.Insert(this._currentDocument);
+            this._mongoDBCurrentCollection.Save(this._currentDocument);
         }
 
         private void HandleVariables(Attachment attachment) {
