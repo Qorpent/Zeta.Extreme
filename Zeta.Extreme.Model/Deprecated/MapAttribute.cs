@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Poco.Deprecated {
+namespace Zeta.Extreme.Model.Deprecated {
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 	public class MapAttribute : MappingAttribute {
 		public MapAttribute(string colname = "", bool notnull = false, string type = "", string title = "") {

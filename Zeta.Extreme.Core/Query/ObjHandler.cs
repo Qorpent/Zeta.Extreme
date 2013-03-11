@@ -9,8 +9,10 @@
 #endregion
 
 using System;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces.Bases;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
 	/// <summary>

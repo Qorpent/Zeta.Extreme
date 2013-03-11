@@ -10,7 +10,7 @@
 
 using System;
 using System.Linq;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.FrontEnd.Helpers {
 	/// <summary>

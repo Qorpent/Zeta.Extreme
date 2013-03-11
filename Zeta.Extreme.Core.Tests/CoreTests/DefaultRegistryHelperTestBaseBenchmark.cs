@@ -13,7 +13,7 @@ using System;
 using System.Diagnostics;
 using NUnit.Framework;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
 	[TestFixture]

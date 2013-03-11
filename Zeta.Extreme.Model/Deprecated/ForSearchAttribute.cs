@@ -14,7 +14,7 @@ using System.Linq;
 using System.Reflection;
 using Qorpent.Utils.Extensions;
 
-namespace Zeta.Extreme.Poco.Deprecated {
+namespace Zeta.Extreme.Model.Deprecated {
 	/// <summary>
 	/// 	Marks interfaces to be found throug total search between distinct databases
 	/// </summary>

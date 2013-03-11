@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]

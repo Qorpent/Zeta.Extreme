@@ -14,8 +14,9 @@ using System.Linq;
 using System.Text;
 using Qorpent.Model;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
-using IWithFormula = Zeta.Extreme.Poco.Inerfaces.IWithFormula;
+using Zeta.Extreme.Model.Inerfaces.Bases;
+using Zeta.Extreme.Model.Querying;
+using IWithFormula = Zeta.Extreme.Model.Inerfaces.Partial.IWithFormula;
 
 namespace Zeta.Extreme {
 	/// <summary>

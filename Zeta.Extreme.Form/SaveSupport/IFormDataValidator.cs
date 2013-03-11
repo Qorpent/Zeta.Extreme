@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using Qorpent.Mvc;
 using Zeta.Extreme.Form.InputTemplates;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Form.SaveSupport {
 	/// <summary>

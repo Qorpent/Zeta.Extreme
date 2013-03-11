@@ -15,7 +15,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]

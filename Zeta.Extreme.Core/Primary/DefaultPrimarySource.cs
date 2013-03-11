@@ -17,7 +17,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Qorpent.Applications;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Primary {
 	/// <summary>

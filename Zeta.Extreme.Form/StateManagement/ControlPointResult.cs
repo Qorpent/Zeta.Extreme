@@ -10,7 +10,7 @@
 
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Form.StateManagement {
 	/// <summary>

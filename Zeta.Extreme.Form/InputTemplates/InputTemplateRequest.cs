@@ -13,7 +13,8 @@ using System.Collections.Generic;
 using Qorpent.Applications;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Form.InputTemplates {
 	/// <summary>

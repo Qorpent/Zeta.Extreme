@@ -29,11 +29,13 @@ using Zeta.Extreme.Form;
 using Zeta.Extreme.Form.DbfsAttachmentSource;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.NativeSqlBind;
-using Zeta.Extreme.Poco;
-using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.PocoClasses;
+using Zeta.Extreme.Model.Querying;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>

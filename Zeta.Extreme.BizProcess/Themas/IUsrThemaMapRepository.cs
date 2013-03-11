@@ -8,7 +8,7 @@
 
 #endregion
 
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>

@@ -14,8 +14,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme {
@@ -140,7 +141,7 @@ namespace Zeta.Extreme {
 					if (null != MasterSession) {
 						return MasterSession.GetMetaCache();
 					}
-					return _metaCache ?? (_metaCache = new MetaCache {Parent = Extreme.MetaCache.Default});
+					return _metaCache ?? (_metaCache = new MetaCache {Parent = Model.MetaCache.Default});
 				}
 			}
 			set {

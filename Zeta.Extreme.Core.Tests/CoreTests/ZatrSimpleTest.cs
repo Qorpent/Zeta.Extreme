@@ -17,11 +17,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.NativeSqlBind;
-using Zeta.Extreme.Poco;
-using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.PocoClasses;
+using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {

@@ -16,7 +16,7 @@ using Qorpent.Applications;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Reports;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
