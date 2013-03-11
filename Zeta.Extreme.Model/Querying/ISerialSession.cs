@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// 	Описывает самый простой, синхронизированный вариант доступа к сессии
 	/// 	все запросы должны четко следовать один за другим

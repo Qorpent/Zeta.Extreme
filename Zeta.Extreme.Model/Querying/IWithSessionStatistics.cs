@@ -1,4 +1,4 @@
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// Вспомогательный интерфейс для сессий для доступа к статистике
 	/// </summary>

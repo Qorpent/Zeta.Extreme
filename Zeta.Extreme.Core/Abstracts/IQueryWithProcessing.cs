@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>

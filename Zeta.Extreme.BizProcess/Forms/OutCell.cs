@@ -1,5 +1,5 @@
 using Qorpent.Serialization;
-using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Forms {

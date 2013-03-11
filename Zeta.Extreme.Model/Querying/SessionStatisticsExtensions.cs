@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// ¬спомогательный класс нивилирующий проблемы сбора статистики сессии
 	/// </summary>

@@ -9,9 +9,8 @@
 #endregion
 
 using System;
-using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// 	Интерфейс описателя запроса
 	/// </summary>

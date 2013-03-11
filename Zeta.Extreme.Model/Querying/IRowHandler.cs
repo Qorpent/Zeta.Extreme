@@ -10,7 +10,7 @@
 
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// 	Стандартный описатель измерения Row
 	/// </summary>

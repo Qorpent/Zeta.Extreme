@@ -10,9 +10,8 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// 	Абстракция акцессора первичных данных
 	/// </summary>

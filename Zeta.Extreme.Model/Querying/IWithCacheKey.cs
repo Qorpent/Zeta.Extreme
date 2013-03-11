@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// 	Сущность, обладающая уникальной описательной строкой
 	/// </summary>

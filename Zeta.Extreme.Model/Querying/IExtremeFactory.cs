@@ -1,4 +1,4 @@
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// Абстрактная фабрика запросов и сессий
 	/// </summary>

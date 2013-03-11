@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// 	»нкапсул€ци€ результата
 	/// </summary>

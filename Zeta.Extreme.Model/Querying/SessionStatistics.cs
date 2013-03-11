@@ -1,7 +1,7 @@
 using System;
 using Qorpent.Serialization;
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// Инкапсулирует статистические данные по сессии
 	/// </summary>

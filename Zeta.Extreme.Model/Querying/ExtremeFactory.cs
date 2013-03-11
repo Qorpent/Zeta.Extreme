@@ -1,6 +1,6 @@
 using Qorpent.Applications;
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// Фабрика для создания сессий и запросов
 	/// </summary>

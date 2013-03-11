@@ -12,7 +12,7 @@ using System;
 using Qorpent.Model;
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// 	ќписывает стандартное измерение запросов Zeta
 	/// </summary>

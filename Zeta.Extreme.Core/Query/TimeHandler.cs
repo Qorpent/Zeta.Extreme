@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using System.Text;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {

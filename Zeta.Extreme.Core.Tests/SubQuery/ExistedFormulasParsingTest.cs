@@ -15,6 +15,7 @@ using System.Linq;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Core.Tests.SubQuery {

@@ -1,6 +1,4 @@
-using Zeta.Extreme.Poco.Inerfaces;
-
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// Вспомогательный интерфейс для сесси для доступа к хранимым данным
 	/// </summary>

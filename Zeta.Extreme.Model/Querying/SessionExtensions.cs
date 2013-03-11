@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 
 
 

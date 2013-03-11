@@ -18,6 +18,7 @@ using Qorpent.Data.Connections;
 using Qorpent.IoC;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
 	public class SessionTestBase {

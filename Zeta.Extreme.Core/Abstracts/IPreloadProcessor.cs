@@ -8,6 +8,8 @@
 
 #endregion
 
+using Zeta.Extreme.Model.Querying;
+
 namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Интерфейс службы, выполняющей работы по доводке запроса ДО входа в расчетчик

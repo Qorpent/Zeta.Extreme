@@ -9,7 +9,7 @@
 #endregion
 
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Form.StateManagement {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta {

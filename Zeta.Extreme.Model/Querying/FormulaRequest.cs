@@ -11,9 +11,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// 	Запрос на компиляцию формулы
 	/// </summary>

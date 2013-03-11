@@ -1,4 +1,4 @@
- namespace Zeta.Extreme.Model.Inerfaces {
+ namespace Zeta.Extreme.Model.Querying {
 	class StubExtremeFactory : IExtremeFactory {
 
 		/// <summary>

@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// Интерфейс индексатора запроса
 	/// </summary>

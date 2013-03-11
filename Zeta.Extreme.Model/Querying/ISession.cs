@@ -10,9 +10,8 @@
 
 using System;
 using System.Threading.Tasks;
-using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// 	Асинхронная, Zeta.Extrem cecсия, базовый интерфейс
 	/// </summary>

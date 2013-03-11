@@ -8,6 +8,8 @@
 
 #endregion
 
+using Zeta.Extreme.Model.Querying;
+
 namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Описывает исполнителя фазы подготовки запроса
