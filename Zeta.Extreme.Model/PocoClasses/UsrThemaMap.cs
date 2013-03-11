@@ -9,9 +9,9 @@
 #endregion
 
 using System;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model {
+namespace Zeta.Extreme.Model.PocoClasses {
 	public class UsrThemaMap : IUsrThemaMap {
 		public virtual int Id { get; set; }
 		public virtual IZetaUnderwriter Usr { get; set; }

@@ -12,7 +12,7 @@
 
 using Qorpent.Utils;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
 
 #if NEWMODEL
 

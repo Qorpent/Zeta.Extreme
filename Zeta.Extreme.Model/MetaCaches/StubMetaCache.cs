@@ -9,7 +9,6 @@
 #endregion
 
 using Qorpent.Model;
-using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Model.MetaCaches {
 	public class StubMetaCache : IMetaCache {

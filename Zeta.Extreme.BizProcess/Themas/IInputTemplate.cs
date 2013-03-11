@@ -15,7 +15,7 @@ using System.Xml.XPath;
 using Qorpent.Model;
 using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.BizProcess.StateManagement;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>

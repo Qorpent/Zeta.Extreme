@@ -19,7 +19,6 @@ using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
-using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]

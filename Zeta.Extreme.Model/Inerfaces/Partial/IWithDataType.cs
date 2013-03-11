@@ -8,7 +8,9 @@
 
 #endregion
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+using Zeta.Extreme.Model.PocoClasses;
+
+namespace Zeta.Extreme.Model.Inerfaces.Partial {
 	public interface IWithDataType {
 		ValueDataType DataType { get; set; }
 		string DataTypeDetail { get; set; }

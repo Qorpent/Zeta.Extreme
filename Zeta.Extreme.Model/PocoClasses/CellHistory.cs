@@ -9,9 +9,9 @@
 #endregion
 
 using System;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model {
+namespace Zeta.Extreme.Model.PocoClasses {
 	public class cellhistory : ICellHistory {
 		public virtual int Type { get; set; }
 		public virtual string PseudoCode { get; set; }

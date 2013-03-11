@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+namespace Zeta.Extreme.Model.Inerfaces.Partial {
 	public interface IWithDirectDate {
 		DateTime DirectDate { get; set; }
 	}

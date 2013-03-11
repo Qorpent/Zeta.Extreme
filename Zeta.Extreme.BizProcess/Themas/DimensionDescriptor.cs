@@ -20,9 +20,9 @@ using System.Xml.Serialization;
 using Qorpent.Model;
 using Qorpent.Serialization;
 using Zeta.Extreme.Model.Extensions;
-using Zeta.Extreme.Poco.Inerfaces;
 using Qorpent.Utils.Extensions;
-using IWithFormula = Zeta.Extreme.Poco.Inerfaces.IWithFormula;
+using Zeta.Extreme.Model.Inerfaces.Bases;
+using IWithFormula = Zeta.Extreme.Model.Inerfaces.Partial.IWithFormula;
 
 #if NEWMODEL
 

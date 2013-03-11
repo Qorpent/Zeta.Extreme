@@ -10,7 +10,7 @@
 
 using System;
 using Qorpent.Model;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces.Bases;
 
 namespace Zeta.Extreme.Model.Querying {
 	/// <summary>

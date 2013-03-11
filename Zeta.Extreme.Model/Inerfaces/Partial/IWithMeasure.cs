@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+namespace Zeta.Extreme.Model.Inerfaces.Partial {
 	public interface IWithMeasure {
 		string Measure { get; set; }
 		bool IsDynamicMeasure { get; set; }

@@ -31,11 +31,11 @@ using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.PocoClasses;
 using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Model.SqlSupport;
-using Zeta.Extreme.Poco;
-using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>

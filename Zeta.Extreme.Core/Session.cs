@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
-using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme {

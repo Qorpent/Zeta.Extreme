@@ -8,6 +8,6 @@
 
 #endregion
 
-namespace Zeta.Extreme.Poco.Deprecated {
+namespace Zeta.Extreme.Model.Deprecated {
 	public class NestAttribute : MappingAttribute {}
 }

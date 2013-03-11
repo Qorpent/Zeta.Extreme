@@ -11,11 +11,10 @@
 using System;
 using System.Collections.Generic;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Poco;
-using Zeta.Extreme.Poco.Deprecated;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Deprecated;
+using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model {
+namespace Zeta.Extreme.Model.PocoClasses {
 	public partial class objcls : IDetailObjectClass {
 		[Map] public virtual Guid Uid { get; set; }
 

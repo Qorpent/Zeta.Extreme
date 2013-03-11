@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+namespace Zeta.Extreme.Model.Inerfaces.Partial {
 	public interface IWithPoints {
 		IList<IZetaPoint> Points { get; set; }
 	}

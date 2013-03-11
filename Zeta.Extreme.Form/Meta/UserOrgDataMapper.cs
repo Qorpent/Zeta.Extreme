@@ -25,8 +25,8 @@ using Qorpent.Applications;
 using Qorpent.IoC;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
-using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Form.Meta{
     /// <summary>

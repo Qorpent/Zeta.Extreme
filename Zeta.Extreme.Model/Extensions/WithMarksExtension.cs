@@ -8,7 +8,9 @@
 
 #endregion
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+using Zeta.Extreme.Model.Inerfaces.Partial;
+
+namespace Zeta.Extreme.Model.Extensions {
 	public static class WithMarksExtension {
 		public static bool UseMarkCaching = true;
 

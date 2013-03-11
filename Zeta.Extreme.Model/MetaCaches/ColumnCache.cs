@@ -9,8 +9,8 @@
 #endregion
 
 using System.Collections.Generic;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.SqlSupport;
-using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Model.MetaCaches {
 	/// <summary>

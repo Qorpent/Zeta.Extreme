@@ -9,7 +9,7 @@
 #endregion
 
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>

@@ -10,6 +10,6 @@
 
 using System;
 
-namespace Zeta.Extreme.Poco.Deprecated {
+namespace Zeta.Extreme.Model.Deprecated {
 	public class MappingAttribute : Attribute {}
 }

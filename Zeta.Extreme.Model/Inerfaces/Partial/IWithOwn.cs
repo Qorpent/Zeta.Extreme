@@ -8,7 +8,9 @@
 
 #endregion
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+using Zeta.Extreme.Model.PocoClasses;
+
+namespace Zeta.Extreme.Model.Inerfaces.Partial {
 	public interface IWithOwn {
 		int IntOwn { get; set; }
 		SubpartRelation Own { get; set; }

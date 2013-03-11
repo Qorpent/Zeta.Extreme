@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Poco.Deprecated {
+namespace Zeta.Extreme.Model.Deprecated {
 	public class RefAttribute : MappingAttribute {
 		public bool IsAutoComplete { get; set; }
 		public string AutoComplete { get; set; }

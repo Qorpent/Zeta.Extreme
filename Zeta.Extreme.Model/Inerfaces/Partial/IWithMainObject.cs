@@ -8,9 +8,10 @@
 
 #endregion
 
-using Zeta.Extreme.Poco.Deprecated;
+using Zeta.Extreme.Model.Deprecated;
+using Zeta.Extreme.Model.Inerfaces.Bases;
 
-namespace Zeta.Extreme.Poco.Inerfaces {
+namespace Zeta.Extreme.Model.Inerfaces.Partial {
 	public interface IWithMainObject<MainObjectType> where MainObjectType : IOlapMainObjectBase {
 		[Classic("Org")] MainObjectType Object { get; set; }
 	}
