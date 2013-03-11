@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
@@ -33,7 +34,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="session"> </param>
 		public override void Normalize(ISession session) {
-			var cache = session == null ? MetaCache.Default : session.MetaCache;
+			var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 			if (IsStandaloneSingletonDefinition()) {
 				//try load native
 				Native = cache.Get<IZetaColumn>(0 == Id ? (object) Code : Id);
@@ -43,9 +44,8 @@ namespace Zeta.Extreme {
 
 		private void ResolveSingleColFormula() {
 			if (IsFormula && (FormulaType == "boo" || FormulaType == "cs")) {
-				string code = null;
 				var formula = Formula;
-				code = GetCodeFormFormula(formula);
+				var code = GetCodeFormFormula(formula);
 				if (null != code) {
 					var reference = ColumnCache.get(code);
 					Native = reference;

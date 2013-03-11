@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
@@ -103,7 +104,7 @@ namespace Zeta.Extreme {
 
 					if (null == request.PreparedType) {
 						var waitbatchsize =
-							_registry.Values.Where(_ => null == _.PreparedType && null == _.FormulaCompilationTask).Count();
+							_registry.Values.Count(_ => null == _.PreparedType && null == _.FormulaCompilationTask);
 						if (AutoBatchCompile && BatchSize <= waitbatchsize) {
 							StartAsyncCompilation();
 						}
@@ -297,10 +298,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="request"> </param>
 		public void Preprocess(FormulaRequest request) {
-			var result = request.Formula;
-			foreach (var p in _preprocessors) {
-				result = p.Preprocess(result, request);
-			}
+			string result = _preprocessors.Aggregate(request.Formula, (current, p) => p.Preprocess(current, request));
 			request.PreprocessedFormula = result;
 		}
 
@@ -352,10 +350,10 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// Загружает формулы по умолчанию из кжша, с использованием указанной папки готовых DLL
 		/// </summary>
-		/// <param name="tmp"></param>
-		public static void LoadDefaultFormulas(string tmp) {
-			if(tmp.IsNotEmpty()) {
-				Default.BuildCache(tmp);
+		/// <param name="rootDirectory"></param>
+		public  void LoadDefaultFormulas(string rootDirectory) {
+			if(rootDirectory.IsNotEmpty()) {
+				BuildCache(rootDirectory);
 			}
 			var oldrowformulas = RowCache.Formulas.Where(
 				_ => _.Version < DateTime.Today
@@ -393,7 +391,7 @@ namespace Zeta.Extreme {
 						Language = f.FormulaEvaluator,
 						Version = f.Version.ToString(CultureInfo.InvariantCulture)
 					};
-				Default.Register(req);
+				Register(req);
 			}
 
 			foreach (var c in oldcolformulas) {
@@ -405,9 +403,9 @@ namespace Zeta.Extreme {
 						Tags = c.tag,
 						Version = c.version.ToString(CultureInfo.InvariantCulture)
 					};
-				Default.Register(req);
+				Register(req);
 			}
-			Default.CompileAll(tmp);
+			CompileAll(rootDirectory);
 
 
 			foreach (var f in newrowformulas) {
@@ -418,7 +416,7 @@ namespace Zeta.Extreme {
 						Language = f.FormulaEvaluator,
 						Version = f.Version.ToString(CultureInfo.InvariantCulture)
 					};
-				Default.Register(req);
+				Register(req);
 			}
 
 			foreach (var c in newcolformulas) {
@@ -430,9 +428,9 @@ namespace Zeta.Extreme {
 						Tags = c.tag,
 						Version = c.version.ToString(CultureInfo.InvariantCulture)
 					};
-				Default.Register(req);
+				Register(req);
 			}
-			Default.CompileAll(tmp);
+			CompileAll(rootDirectory);
 		}
 	}
 }

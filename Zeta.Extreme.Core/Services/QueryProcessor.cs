@@ -10,6 +10,7 @@
 
 using System;
 using System.Threading;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
@@ -28,7 +29,6 @@ namespace Zeta.Extreme {
 		/// <param name="session"> </param>
 		public QueryProcessor(Session session) {
 			_session = session;
-			_stat = _session.CollectStatistics;
 			_sumh = new StrongSumProvider();
 		}
 
@@ -37,28 +37,32 @@ namespace Zeta.Extreme {
 		/// 	выполняется после препроцессора и проверок
 		/// </summary>
 		/// <param name="query"> </param>
-		public void Prepare(Query query) {
-			if (query.PrepareState == PrepareState.InPrepare || query.PrepareState == PrepareState.Prepared) {
+		public void Prepare(IQuery query) {
+			var processableQuery = query as IQueryWithProcessing;
+			if(null==processableQuery)return;
+			if (processableQuery.PrepareState == PrepareState.InPrepare || processableQuery.PrepareState == PrepareState.Prepared)
+			{
 				return;
 			}
-			query.PrepareState = PrepareState.InPrepare;
+			processableQuery.PrepareState = PrepareState.InPrepare;
 
-			if (query.IsPrimary) {
-				RegisterPrimaryRequest(query);
+			if (processableQuery.IsPrimary)
+			{
+				RegisterPrimaryRequest(processableQuery);
 			}
 			else {
-				var mostpriority = GetMostPriorityNoPrimarySource(query);
+				var mostpriority = GetMostPriorityNoPrimarySource(processableQuery);
 				if (_sumh.IsSum(mostpriority)) {
-					ExpandSum(query, mostpriority);
+					ExpandSum(processableQuery, mostpriority);
 				}
 				else {
-					PrepareFormulas(query, mostpriority);
+					PrepareFormulas(processableQuery, mostpriority);
 				}
 			}
-			query.PrepareState = PrepareState.Prepared;
+			processableQuery.PrepareState = PrepareState.Prepared;
 		}
 
-		private IZetaQueryDimension GetMostPriorityNoPrimarySource(Query query) {
+		private IZetaQueryDimension GetMostPriorityNoPrimarySource(IQuery query) {
 			if (query.Obj.IsFormula || (query.Obj.IsForObj && _sumh.IsSum(query.Obj))) {
 				return (query.Obj.ObjRef) ?? (IZetaQueryDimension) query.Obj;
 			}
@@ -75,12 +79,9 @@ namespace Zeta.Extreme {
 			return query.Row.Native ?? (IZetaQueryDimension) query.Row;
 		}
 
-		private void PrepareFormulas(Query query, IZetaQueryDimension mostpriority) {
+		private void PrepareFormulas(IQueryWithProcessing query, IZetaQueryDimension mostpriority) {
 			query.EvaluationType = QueryEvaluationType.Formula;
-
-			if (_stat) {
-				Interlocked.Increment(ref _session.Stat_QueryType_Formula);
-			}
+			_session.StatIncQueryTypeFormula();
 			var key = GetKey(mostpriority);
 			var formula = FormulaStorage.Default.GetFormula(key, false);
 			if (null == formula) {
@@ -116,25 +117,22 @@ namespace Zeta.Extreme {
 			return key;
 		}
 
-		private void ExpandSum(Query query, IZetaQueryDimension mostpriority) {
-			query.EvaluationType = QueryEvaluationType.Summa;
-
-			if (_stat) {
-				Interlocked.Increment(ref _session.Stat_QueryType_Sum);
-			}
-
+		private void ExpandSum(IQuery query, IZetaQueryDimension mostpriority) {
+			var peocessablequery = query as IQueryWithProcessing;
+			if(null==peocessablequery)return;
+			peocessablequery.EvaluationType = QueryEvaluationType.Summa;
+			_session.StatIncQueryTypeSum();
 			foreach (var r in _sumh.GetSumDelta(mostpriority)) {
-				var sq = r.Apply(query);
-				sq = (Query) _session.Register(sq);
+				var sq = r.Apply(peocessablequery);
+				sq = _session.Register(sq);
 				if (null == sq) {
 					continue;
 				}
-				query.SummaDependency.Add(new Tuple<decimal, IQueryWithProcessing>(r.Multiplicator, sq));
+				peocessablequery.SummaDependency.Add(new Tuple<decimal, IQuery>(r.Multiplicator, sq));
 			}
 
-			if (query.SummaDependency.Count == 0) {
-				query.Result = new QueryResult {IsComplete = true, NumericResult = 0m};
-				return;
+			if (peocessablequery.SummaDependency.Count == 0) {
+				peocessablequery.Result = new QueryResult {IsComplete = true, NumericResult = 0m};
 			}
 		}
 
@@ -142,18 +140,12 @@ namespace Zeta.Extreme {
 		/// 	Регистрирует первичный запрос
 		/// </summary>
 		/// <param name="query"> </param>
-		protected virtual void RegisterPrimaryRequest(Query query) {
-			if (_stat) {
-				Interlocked.Increment(ref _session.Stat_QueryType_Primary);
-			}
-			_session.PrimarySource.Register(query);
-			if (_session.TraceQuery) {
-				query.TraceList.Add(_session.Id + " registered to primary ");
-			}
+		protected virtual void RegisterPrimaryRequest(IQuery query) {
+			_session.StatIncQueryTypePrimary();
+			_session.GetPrimarySource().Register(query);
 		}
 
-		private readonly Session _session;
-		private readonly bool _stat;
+		private readonly ISession _session;
 		private readonly StrongSumProvider _sumh;
 	}
 }

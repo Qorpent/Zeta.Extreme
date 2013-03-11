@@ -9,6 +9,7 @@
 #endregion
 
 using System.Text.RegularExpressions;
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -47,9 +48,7 @@ namespace Zeta.Extreme {
 				}
 				return result;
 			}
-			else {
-				return currentResult;
-			}
+			return currentResult;
 		}
 	}
 }

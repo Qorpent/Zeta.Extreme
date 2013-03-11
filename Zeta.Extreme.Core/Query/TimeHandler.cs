@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
@@ -207,13 +208,7 @@ namespace Zeta.Extreme {
 			if (0 == Period) {
 				Period = BasePeriod;
 			}
-			IPeriodEvaluator periodEvaluator = null;
-			if (null == session) {
-				periodEvaluator = new DefaultPeriodEvaluator();
-			}
-			else {
-				periodEvaluator = ((Session) session).GetPeriodEvaluator();
-			}
+			var periodEvaluator  = new DefaultPeriodEvaluator();
 			var result = periodEvaluator.Evaluate(BasePeriod, Period, Year);
 			if (0 != result.Year && (null == _years || 0 == _years.Length)) {
 				Year = Year;
@@ -223,10 +218,6 @@ namespace Zeta.Extreme {
 			}
 			else {
 				Period = result.Period;
-			}
-
-			if (null != session) {
-				((Session) session).Return(periodEvaluator);
 			}
 		}
 
@@ -241,5 +232,6 @@ namespace Zeta.Extreme {
 		private int[] _periods;
 		private int _year;
 		private int[] _years;
+		
 	}
 }

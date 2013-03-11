@@ -8,36 +8,11 @@
     <AssemblyName>Zeta.Extreme.Form</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="*.import" />
+    <None Include="qorpent.sys.base.import" />
+    <None Include="Zeta.Extreme.BizProcess.import" />
+    <None Include="Zeta.Extreme.Model.import" />
     <None Include="Zeta.Extreme.Form.export" />
-    <None Include="Zeta.Extreme.Core.import" />
     <EmbeddedResource Include=".\**\*.*resource" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Bxl\Qorpent.Bxl.csproj">
-      <Project>{381DEC86-5709-4A64-BD9F-462E792884CE}</Project>
-      <Name>Qorpent.Bxl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
-      <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
-      <Name>Qorpent.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Dsl\Qorpent.Dsl.csproj">
-      <Project>{B758E220-22F5-47DF-A73B-BC9B1A3DBDC3}</Project>
-      <Name>Qorpent.Dsl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Qorpent\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
-      <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
-      <Name>Qorpent.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
-      <Project>{44653de7-dee5-4960-a906-e0d6b1f83fcc}</Project>
-      <Name>Zeta.Extreme.BizProcess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Zeta.Extreme.Poco\Zeta.Extreme.Poco.csproj">
-      <Project>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</Project>
-      <Name>Zeta.Extreme.Poco</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data" />
@@ -49,9 +24,7 @@
     <Compile Include="Abstracts\IFormDataSynchronize.cs" />
     <Compile Include="Abstracts\IFormSessionControlPointSource.cs" />
     <Compile Include="DbfsAttachmentSource\DbfsAttachmentStorage.cs" />
-    <Compile Include="InputTemplates\InputTemplateRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="InputTemplates\InputTemplateRequest.cs" />
     <Compile Include="Meta\UserOrgDataMapper.cs" />
     <Compile Include="SaveSupport\DataSaverBase.cs" />
     <Compile Include="SaveSupport\DefaultSessionDataSaver.cs" />
@@ -62,62 +35,28 @@
     <Compile Include="StateManagement\StateRule.cs" />
     <Compile Include="StateManagement\ControlPointResult.cs" />
     <Compile Include="SaveSupport\IFormDataValidator.cs" />
-    <Compile Include="InputTemplates\InputTemplate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="InputTemplates\InputTemplateXmlSerializer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StateManagement\LockPeriodMapper.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="InputTemplates\InputTemplate.cs" />
+    <Compile Include="InputTemplates\InputTemplateXmlSerializer.cs" />
+    <Compile Include="StateManagement\LockPeriodMapper.cs" />
     <Compile Include="StateManagement\PeriodStateManager.cs" />
     <Compile Include="StateManagement\StateManager.cs" />
-    <Compile Include="Themas\Command.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\CommandConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\Document.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\DocumentConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\EcoThema.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\EcoThemaHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Themas\Command.cs" />
+    <Compile Include="Themas\CommandConfiguration.cs" />
+    <Compile Include="Themas\Document.cs" />
+    <Compile Include="Themas\DocumentConfiguration.cs" />
+    <Compile Include="Themas\EcoThema.cs" />
+    <Compile Include="Themas\EcoThemaHelper.cs" />
     <Compile Include="Themas\ExtremeFormProvider.cs" />
-    <Compile Include="Themas\HtmlListDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Themas\HtmlListDefinition.cs" />
     <Compile Include="Themas\InputConfiguration.cs" />
     <Compile Include="Themas\ItemConfigurationBase.cs" />
-    <Compile Include="Themas\OutputConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\Thema.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\ThemaConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\ThemaConfigurationProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\ThemaExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\ThemaFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themas\ThemaFactoryConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Themas\OutputConfiguration.cs" />
+    <Compile Include="Themas\Thema.cs" />
+    <Compile Include="Themas\ThemaConfiguration.cs" />
+    <Compile Include="Themas\ThemaConfigurationProvider.cs" />
+    <Compile Include="Themas\ThemaExtensions.cs" />
+    <Compile Include="Themas\ThemaFactory.cs" />
+    <Compile Include="Themas\ThemaFactoryConfiguration.cs" />
     <Compile Include="Themas\ThemaFactoryProvider.cs" />
     <Compile Include="Themas\ThemaLoaderOptionsHelper.cs" />
   </ItemGroup>

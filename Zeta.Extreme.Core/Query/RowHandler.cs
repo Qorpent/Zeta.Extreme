@@ -11,7 +11,8 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Zeta.Extreme.Meta;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.NativeSqlBind;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
@@ -81,7 +82,7 @@ namespace Zeta.Extreme {
 		/// <param name="session"> </param>
 		/// <param name="column"> </param>
 		public void Normalize(ISession session, IZetaColumn column) {
-			var cache = session == null ? MetaCache.Default : session.MetaCache;
+			var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 			if (IsStandaloneSingletonDefinition()) {
 				//try load native
 				Native = cache.Get<IZetaRow>(0 == Id ? (object) Code : Id);
@@ -109,10 +110,8 @@ namespace Zeta.Extreme {
 				Native = Native.ResolveExRef(column);
 				proceed = ResolveSingleRowFormula();
 			}
-			if (initialcode != Code) {
-				if (session != null && ((Session) session).CollectStatistics) {
-					Interlocked.Increment(ref ((Session) session).Stat_Row_Redirections);
-				}
+			if (initialcode != Code && session is Session) {
+				session.StatIncRowRedirections();
 			}
 		}
 

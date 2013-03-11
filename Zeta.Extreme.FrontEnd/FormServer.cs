@@ -21,6 +21,7 @@ using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.Themas;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
@@ -114,7 +115,8 @@ namespace Zeta.Extreme.FrontEnd {
 			if (_doNotRun) {
 				return; //singleton imitation
 			}
-
+			var container = Application.Container;
+			Debug.Assert(null!=container.Get<IExtremeFactory>());
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
@@ -151,6 +153,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns> </returns>
 		public object GetServerStateInfo() {
+			var formulas = ExtremeFactory.GetFormulaStorage();
 			object sessions = null;
 			if (0 != Sessions.Count) {
 				sessions = new
@@ -182,8 +185,8 @@ namespace Zeta.Extreme.FrontEnd {
 							taskerror = CompileFormulas.Error.ToStr(),
 							time = CompileFormulas.ExecuteTime,
 							compileerror =
-								FormulaStorage.Default.LastCompileError == null ? "" : FormulaStorage.Default.LastCompileError.ToString(),
-							formulacount = FormulaStorage.Default.Count,
+								formulas.LastCompileError == null ? "" : formulas.LastCompileError.ToString(),
+							formulacount = formulas.Count,
 							compiletime = _formulaRegisterTime
 						},
 					themas = new
@@ -262,14 +265,13 @@ namespace Zeta.Extreme.FrontEnd {
 		private Task GetCompileFormulasTask() {
 			return new Task(() =>
 				{
+					var formulas = ExtremeFactory.GetFormulaStorage();
 					var _sw = Stopwatch.StartNew();
-					FormulaStorage.Default.AutoBatchCompile = false;
-					FormulaStorage.Default.Clear();
+					formulas.AutoBatchCompile = false;
+					formulas.Clear();
 					var tmp = Application.Files.Resolve("~/.tmp/formula_dll", false);
-					FormulaStorage.LoadDefaultFormulas(tmp);
-
-
-					FormulaStorage.Default.AutoBatchCompile = true;
+					formulas.LoadDefaultFormulas(tmp);
+					formulas.AutoBatchCompile = true;
 					_sw.Stop();
 					_formulaRegisterTime = _sw.Elapsed;
 				});
