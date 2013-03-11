@@ -38,6 +38,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public void Save(Attachment attachment) {
             _currentDocument = new BsonDocument();
 
+            if (attachment.Uid != null) {
+                _currentDocument["_id"] = attachment.Uid;
+            }
+
             HandleVariables(attachment);
             AttachmentViewSave();
 
