@@ -47,7 +47,6 @@ namespace Zeta.Extreme.Poco {
 		public virtual int? RoleId { get; set; }
 
 		public virtual int? TypeId { get; set; }
-		[Many(ClassName = typeof (MainObjectMark))] public virtual IList<IZetaMainObjectMark> MarkLinks { get; set; }
 
 		public virtual IDictionary<string, object> LocalProperties {
 			get { return localProperties ?? (localProperties = new Dictionary<string, object>()); }

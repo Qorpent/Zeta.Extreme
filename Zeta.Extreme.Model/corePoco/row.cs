@@ -28,7 +28,7 @@ namespace Zeta.Extreme.Poco {
 		public virtual int ExtremeFormulaMode { get; set; }
 
 		[Map] public virtual Guid Uid { get; set; }
-		[Many(ClassName = typeof (TreeMark))] public virtual IList<IZetaRowMark> MarkLinks { get; set; }
+
 
 		[Map] public virtual bool Active { get; set; }
 

@@ -14,7 +14,7 @@ using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco {
-	public partial class col : IZetaColumn, IZetaQueryDimension {
+	public partial class col : IZetaColumn {
 		[Map] public virtual Guid Uid { get; set; }
 
 		public virtual string DataTypeString {
@@ -22,7 +22,6 @@ namespace Zeta.Extreme.Poco {
 			set { DataType = (ValueDataType) Enum.Parse(typeof (ValueDataType), value, true); }
 		}
 
-		[Many(ClassName = typeof (ColumnMark))] public virtual IList<IZetaColumnMark> MarkLinks { get; set; }
 
 		public virtual IDictionary<string, object> LocalProperties {
 			get { return localProperties ?? (localProperties = new Dictionary<string, object>()); }

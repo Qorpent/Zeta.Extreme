@@ -40,13 +40,6 @@ namespace Zeta.Extreme.Poco {
 			return GetStaticMeasure(format);
 		}
 
-		public virtual void RemoveMark(IMark mark) {
-			var todel = MarkLinks.FirstOrDefault(i => i.Mark.Id == mark.Id);
-			if (null != todel) {
-				MarkLinks.Remove(todel);
-			}
-		}
-
 		public virtual bool IsMarkSeted(string code) {
 			return WithMarksExtension.IsMarkSeted(this, code);
 		}

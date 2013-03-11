@@ -30,7 +30,7 @@ namespace Zeta.Extreme.Poco {
 
 		[Ref(ClassName = typeof (obj))] public virtual IZetaMainObject AltParent { get; set; }
 		[Map] [IgnoreSerialize] public virtual Guid Uid { get; set; }
-		[Many(ClassName = typeof (SubpartMark))] public virtual IList<IZetaDetailObjectMark> MarkLinks { get; set; }
+		
 		[Map(ReadOnly = true)] public virtual string Path { get; set; }
 		[Map] public virtual string Valuta { get; set; }
 

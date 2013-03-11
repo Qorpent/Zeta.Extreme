@@ -4,7 +4,7 @@
     <Configuration>Debug</Configuration>
     <ProjectGuid>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Zeta.Extreme.Model</RootNamespace>
+    <RootNamespace>Zeta.Extreme</RootNamespace>
     <AssemblyName>Zeta.Extreme.Model</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
@@ -23,7 +23,6 @@
     <Compile Include="corePoco\biztran.cs" />
     <Compile Include="corePoco\Biztranfilter.cs" />
     <Compile Include="corePoco\CellHistory.cs" />
-    <Compile Include="corePoco\ColumnMark.cs" />
     <Compile Include="corePoco\CommonLog.cs" />
     <Compile Include="corePoco\form.cs" />
     <Compile Include="corePoco\formstate.cs" />
@@ -32,9 +31,7 @@
     <Compile Include="corePoco\UsrRow.cs" />
     <Compile Include="corePoco\UsrThemaMap.cs" />
     <Compile Include="corePoco\zone.cs" />
-    <Compile Include="corePoco\DetailRow.cs" />
     <Compile Include="corePoco\FixRule.cs" />
-    <Compile Include="corePoco\GraphRelation.cs" />
     <Compile Include="corePoco\objdiv.cs" />
     <Compile Include="corePoco\cell.cs" />
     <Compile Include="corePoco\row.cs" />
@@ -64,7 +61,6 @@
     <Compile Include="Deprecated\NoMapAttribute.cs" />
     <Compile Include="Deprecated\RefAttribute.cs" />
     <Compile Include="Deprecated\SchemaAttribute.cs" />
-    <Compile Include="extPoco\ColumnMark.cs" />
     <Compile Include="extPoco\zone.cs" />
     <Compile Include="extPoco\DayCourse.cs" />
     <Compile Include="extPoco\FixRule.cs" />
@@ -166,21 +162,16 @@
     <Compile Include="Inerfaces\ExtremeSupport\IFormulaPreprocessor.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IFormulaStorage.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IObjHandler.cs" />
-    <Compile Include="Inerfaces\ExtremeSupport\IPreloadProcessor.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IQuery.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IQueryDimension.cs" />
-    <Compile Include="Inerfaces\ExtremeSupport\IQueryPreparator.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IRegistryHelper.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IRowHandler.cs" />
-    <Compile Include="Inerfaces\ExtremeSupport\ISerializableSession.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\ISerialSession.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\ISession.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\ITimeHandler.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IWithCacheKey.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IWithQueryRegistry.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\ObjType.cs" />
-    <Compile Include="Inerfaces\ExtremeSupport\PrepareState.cs" />
-    <Compile Include="Inerfaces\ExtremeSupport\QueryEvaluationType.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\QueryResult.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\QuerySetupInfo.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\SessionExtensions.cs" />
@@ -268,6 +259,9 @@
   <ItemGroup>
     <None Include="qorpent.sys.base.import" />
     <None Include="Zeta.Extreme.Model.export" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
   <PropertyGroup>
