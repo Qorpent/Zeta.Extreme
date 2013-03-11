@@ -170,7 +170,6 @@
     <Compile Include="Inerfaces\ExtremeSupport\IQuery.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IQueryDimension.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IQueryPreparator.cs" />
-    <Compile Include="Inerfaces\ExtremeSupport\IQueryWithProcessing.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IRegistryHelper.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IRowHandler.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\ISerializableSession.cs" />
@@ -178,7 +177,6 @@
     <Compile Include="Inerfaces\ExtremeSupport\ISession.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\ITimeHandler.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IWithCacheKey.cs" />
-    <Compile Include="Inerfaces\ExtremeSupport\ISessionWithExtendedServices.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IWithQueryRegistry.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\ObjType.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\PrepareState.cs" />
