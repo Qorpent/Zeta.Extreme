@@ -55,9 +55,6 @@
     <Compile Include="Deprecated\NoMapAttribute.cs" />
     <Compile Include="Deprecated\RefAttribute.cs" />
     <Compile Include="Deprecated\SchemaAttribute.cs" />
-    <Compile Include="Inerfaces\Advanced mark support\IZetaColumnMark.cs" />
-    <Compile Include="Inerfaces\Advanced mark support\IZetaDetailObjectMark.cs" />
-    <Compile Include="Inerfaces\Advanced mark support\IZetaMainObjectMark.cs" />
     <Compile Include="Inerfaces\Advanced zone support\IDetailObjectClass.cs" />
     <Compile Include="Inerfaces\Advanced zone support\IDetailObjectType.cs" />
     <Compile Include="Inerfaces\Advanced zone support\IMainObjectGroup.cs" />
@@ -150,7 +147,7 @@
     <Compile Include="Inerfaces\ExtremeSupport\SessionStatisticsExtensions.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\StubExtremeFactory.cs" />
     <Compile Include="Inerfaces\ICanResolveTag.cs" />
-    <Compile Include="Inerfaces\IMetaCache.cs" />
+    <Compile Include="IMetaCache.cs" />
     <Compile Include="Inerfaces\IOlapCache.cs" />
     <Compile Include="Inerfaces\IOlapCell.cs" />
     <Compile Include="Inerfaces\IOlapColumn.cs" />
@@ -172,7 +169,7 @@
     <Compile Include="Inerfaces\IWthRefTo.cs" />
     <Compile Include="Inerfaces\RowComparer.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\SessionStatistics.cs" />
-    <Compile Include="Inerfaces\StubMetaCache.cs" />
+    <Compile Include="MetaCaches\StubMetaCache.cs" />
     <Compile Include="Inerfaces\Support\ICanCheckIsActive.cs" />
     <Compile Include="Inerfaces\Support\ICanCountDetailObjects.cs" />
     <Compile Include="Inerfaces\Support\ICanCountObjects.cs" />

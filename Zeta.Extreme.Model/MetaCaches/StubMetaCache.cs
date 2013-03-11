@@ -1,7 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : IMetaCache.cs
+// Original file : StubMetaCache.cs
 // Project: Zeta.Extreme.Poco
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -9,16 +9,11 @@
 #endregion
 
 using Qorpent.Model;
+using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco.Inerfaces {
-	/// <summary>
-	/// 	Интерфейс локального хранилища метаданных
-	/// </summary>
-	public interface IMetaCache {
-		/// <summary>
-		/// 	Родительский кэш
-		/// </summary>
-		IMetaCache Parent { get; set; }
+namespace Zeta.Extreme.Model.MetaCaches {
+	public class StubMetaCache : IMetaCache {
+		public static readonly StubMetaCache Default = new StubMetaCache();
 
 		/// <summary>
 		/// 	Получить объект из хранилища
@@ -26,7 +21,9 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		/// <typeparam name="T"> </typeparam>
 		/// <param name="id"> </param>
 		/// <returns> </returns>
-		T Get<T>(object id) where T : class, IEntity;
+		public T Get<T>(object id) where T : class, IEntity {
+			return null;
+		}
 
 		/// <summary>
 		/// 	Сохранить объект в хранилище
@@ -34,6 +31,13 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		/// <typeparam name="T"> </typeparam>
 		/// <param name="item"> </param>
 		/// <returns> </returns>
-		IMetaCache Set<T>(T item) where T : class, IEntity;
+		public IMetaCache Set<T>(T item) where T : class, IEntity {
+			return this;
+		}
+
+		/// <summary>
+		/// 	Родительский кэш
+		/// </summary>
+		public IMetaCache Parent { get; set; }
 	}
 }
