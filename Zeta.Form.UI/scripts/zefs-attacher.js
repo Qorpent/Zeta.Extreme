@@ -8,11 +8,17 @@
     b.tooltip({title: "Прикрепленные файлы", placement: 'bottom'});
     var attachlist = $('<table class="table table-striped"/>');
     attachlist.append(
-        $('<colgroup/>').html('<col style="width: 30px;"><col style="width: 80px;"><col style="width: 70px;"><col style="width: 200px;"><col style="width: 20px;">'),
+        $('<colgroup/>').append(
+            $('<col/>').css("width",22),
+            $('<col/>').css("width",70),
+            $('<col/>').css("width","25%"),
+            $('<col/>').css("width",""),
+            $('<col/>').css("width",22)
+        ),
         $('<thead/>').append($('<tr/>').append($('<th colspan="5"/>').text("Прикрепленные файлы"))),
         $('<tbody/>').append($('<tr/>').append($('<td colspan="5"/>').text("Пока прикрепленных фалов нет")))
     );
-    var filelist = $('<ul class="dropdown-menu"/>').css("padding", 5);
+    var filelist = $('<ul class="dropdown-menu"/>').css({"padding": 5, "width": 500});
     var ConfigureAttachList = function() {
         var f = window.zefs.myform.attachment;
         var body = $(attachlist.find('tbody'));
@@ -22,10 +28,11 @@
             b.find("i").addClass("icon-white");
             $.each(f, function(i,file) {
                 var tr = $('<tr/>');
+                var u = $('<span class="label label-inverse"/>');
                 body.append(tr.append(
                     $('<td class="type"/>').addClass(file.getExtension().substring(1)),
                     $('<td/>').text(file.getDate().format("dd.mm.yyyy")),
-                    $('<td/>').append($('<span class="label label-inverse"/>').text(file.getUser())),
+                    $('<td class="username"/>').append(u.text(file.getUser())),
                     $('<td class="filename"/>').html('<a href="' + window.zefs.myform.downloadfile(file.getUid()) + '" target="_blank">' + file.getName() + '</a>')
                 ));
                 if (window.zeta.security.user != null) {
@@ -40,7 +47,8 @@
                         )));
                     }
                 }
-                tr = null;
+                u.zetauser();
+                tr = u = null;
             });
         } else {
             body.html($('<tr/>').append($('<td colspan="10"/>').text("Пока прикрепленных фалов нет")));
@@ -69,11 +77,22 @@
     file.change(function() { filename.attr("placeholder", this.files[0].name) });
     selectbtn.click(function() { file.trigger("click") });
     uploadform.append(
-        selectbtn,
-        file, filename, type, uid,
-        uploadbtn
+        $('<table/>').append(
+            $('<colgroup/>').append(
+                $('<col/>').css("width",92),
+                $('<col/>').css("width", ""),
+                $('<col/>').css("width",85),
+                $('<col/>').css("width",80)
+            ),
+            $('<tr/>').append(
+                $('<td/>').append(selectbtn),
+                $('<td/>').append(file, filename),
+                $('<td/>').append(type),
+                $('<td/>').append(uid,uploadbtn)
+            )
+        )
     );
-    filelist.append(progress.hide(), uploadform, $('<div/>').append(attachlist));
+    filelist.append(progress.hide(), uploadform, attachlist);
     $(document).on('click.dropdown.data-api', '.attacher div', function (e) {
         // e.preventDefault();
         e.stopPropagation();
@@ -96,7 +115,6 @@
             text: "Во время загрузки файла произошла ошибка: " + error.message
         });
     });
-
 
     $(window.zefs).on(window.zefs.handlers.on_attachmentload, function() {
         ConfigureAttachList();
