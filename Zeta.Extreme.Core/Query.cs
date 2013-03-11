@@ -41,8 +41,8 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Дочерние запросы
 		/// </summary>
-		public IList<IQueryWithProcessing> FormulaDependency {
-			get { return _formulaDependency ?? (_formulaDependency = new List<IQueryWithProcessing>()); }
+		public IList<IQuery> FormulaDependency {
+			get { return _formulaDependency ?? (_formulaDependency = new List<IQuery>()); }
 		}
 
 		/// <summary>
@@ -73,8 +73,8 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Зависимости для суммовых запросов
 		/// </summary>
-		public IList<Tuple<decimal, IQueryWithProcessing>> SummaDependency {
-			get { return _summaDependency ?? (_summaDependency = new List<Tuple<decimal, IQueryWithProcessing>>()); }
+		public IList<Tuple<decimal, IQuery>> SummaDependency {
+			get { return _summaDependency ?? (_summaDependency = new List<Tuple<decimal, IQuery>>()); }
 		}
 
 		/// <summary>
@@ -280,7 +280,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Формула, которая присоединяется к запросу на фазе подготовки
 		/// </summary>
-		public IFormula AssignedFormula;
+		public IFormula AssignedFormula { get; set; }
 
 		/// <summary>
 		/// 	Модификатор кэш-строки (префикс)
@@ -290,7 +290,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Тип вычисления запроса
 		/// </summary>
-		public QueryEvaluationType EvaluationType;
+		public QueryEvaluationType EvaluationType { get; set; }
 
 		/// <summary>
 		/// 	Sign that primary was not set
@@ -322,8 +322,8 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public long Uid { get; set; }
 
-		private List<IQueryWithProcessing> _formulaDependency;
+		private List<IQuery> _formulaDependency;
 
-		private List<Tuple<decimal, IQueryWithProcessing>> _summaDependency;
+		private List<Tuple<decimal, IQuery>> _summaDependency;
 	}
 }

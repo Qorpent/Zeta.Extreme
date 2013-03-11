@@ -41,6 +41,19 @@ namespace Zeta.Extreme.Model.Inerfaces {
 			if(null==sessionAsDataSession) return MetaCache.Default;
 			return sessionAsDataSession.MetaCache ?? MetaCache.Default;
 		}
+
+		/// <summary>
+		/// null-safe and type safe accessor to global or session-bound metacache
+		/// </summary>
+		/// <param name="session"></param>
+		/// <returns>resultat is guaranted from nulls</returns>
+		public static IPrimarySource GetPrimarySource(this ISession session)
+		{
+			if (null == session) throw new Exception("null session");
+			var sessionAsDataSession = session as IWithDataServices;
+			if (null == sessionAsDataSession) throw new Exception("not primary data session");
+			return sessionAsDataSession.PrimarySource;
+		}
 		/// <summary>
 		/// Wrapper for session to wait data
 		/// </summary>
@@ -60,7 +73,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <param name="session"></param>
 		/// <returns></returns>
 		/// <exception cref="Exception"></exception>
-		public static ConcurrentDictionary<string,IQueryWithProcessing> GetRegistry(this ISession session) {
+		public static ConcurrentDictionary<string,IQuery> GetRegistry(this ISession session) {
 			if(null==session)throw new Exception("session is null");
 			var sessionAsRegistry = session as IWithQueryRegistry;
 			if (null == sessionAsRegistry) throw new Exception("session is not with registry support");
@@ -73,7 +86,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <param name="session"></param>
 		/// <returns></returns>
 		/// <exception cref="Exception"></exception>
-		public static ConcurrentDictionary<string, IQueryWithProcessing> GetRegistryActiveSet(this ISession session)
+		public static ConcurrentDictionary<string, IQuery> GetRegistryActiveSet(this ISession session)
 		{
 			if (null == session) throw new Exception("session is null");
 			var sessionAsRegistry = session as IWithQueryRegistry;
@@ -94,5 +107,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 			if (null == sessionAsRegistry) throw new Exception("session is not with registry support");
 			return sessionAsRegistry.KeyMap;
 		}
+
+		
 	}
 }

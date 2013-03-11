@@ -16,9 +16,9 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta {
 		/// <returns></returns>
 		protected override IEnumerable<Query> BuildModel() {
 			IQuery q;
-			yield return q = new Query();
+			yield return (Query) (q = new Query());
 			Add(q,10);
-			yield return q = new Query{Row={Code="x"}};
+			yield return (Query) (q = new Query{Row={Code="x"}});
 			Add(q,20);
 		}
 

@@ -111,9 +111,7 @@ namespace Zeta.Extreme {
 				proceed = ResolveSingleRowFormula();
 			}
 			if (initialcode != Code && session is Session) {
-				if (((Session) session).CollectStatistics) {
-					Interlocked.Increment(ref ((Session) session).Stat_Row_Redirections);
-				}
+				session.StatIncRowRedirections();
 			}
 		}
 

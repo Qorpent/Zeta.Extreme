@@ -40,7 +40,7 @@ namespace Zeta.Extreme {
 			WriteInitialStatistics(uid);
 
 			var query = srcquery;
-			IQueryWithProcessing result;
+			IQuery result;
 			var preloadkey = srcquery.GetCacheKey();
 
 			// мы сразу ловим ключ запроса на тот случай, если он уже 
@@ -84,16 +84,19 @@ namespace Zeta.Extreme {
 			registry[uid] = result;
 			keymap[preloadkey] = uid;
 
-
-			if (null == result.PrepareTask && PrepareState.Prepared != result.PrepareState) {
-				result.PrepareState = PrepareState.TaskStarted;
-				result.PrepareTask = _session.PrepareAsync(result);
+			var processable = result as IQueryWithProcessing;
+			if(null!=processable) {
+				if (null == processable.PrepareTask && PrepareState.Prepared != processable.PrepareState)
+				{
+					processable.PrepareState = PrepareState.TaskStarted;
+					processable.PrepareTask = _session.PrepareAsync(processable);
+				}
 			}
 			return result;
 		}
 
 
-		private IQueryWithProcessing RegisterRequestInAgendaAndStart(IQueryWithProcessing query, string key) {
+		private IQuery RegisterRequestInAgendaAndStart(IQuery query, string key) {
 			query.Session = _session; //надо установить сессию раз новый запрос
 			query = _session.GetRegistryActiveSet().GetOrAdd(key, query);
 			var result = query;
@@ -105,13 +108,13 @@ namespace Zeta.Extreme {
 			return result;
 		}
 
-		private bool TryGetFromActiveAgenda(string key, out IQueryWithProcessing result) {
+		private bool TryGetFromActiveAgenda(string key, out IQuery result) {
 			var found = _session.GetRegistryActiveSet().TryGetValue(key, out result);
 			_session.StatIncRegistryResolvedByKey();
 			return found;
 		}
 
-		private bool TryReturnAlreadyRegistered(string uid, out IQueryWithProcessing result) {
+		private bool TryReturnAlreadyRegistered(string uid, out IQuery result) {
 			if (_session.GetRegistry().TryGetValue(uid, out result)) {
 				_session.StatIncRegistryResolvedByUid();
 				return true;
@@ -140,7 +143,7 @@ namespace Zeta.Extreme {
 			return query;
 		}
 
-		private bool TryResolveByKeyMap(string uid, string preloadkey, out IQueryWithProcessing result) {
+		private bool TryResolveByKeyMap(string uid, string preloadkey, out IQuery result) {
 			result = null;
 			var registry = _session.GetRegistry();
 			var keymap = _session.GetRegistryKeyMap();

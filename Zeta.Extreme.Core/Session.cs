@@ -45,7 +45,7 @@ namespace Zeta.Extreme {
 				Statistics = new SessionStatistics();
 			}
 			Registry = new ConcurrentDictionary<string, IQuery>();
-			ActiveSet = new ConcurrentDictionary<string, IQueryWithProcessing>();
+			ActiveSet = new ConcurrentDictionary<string, IQuery>();
 			KeyMap = new ConcurrentDictionary<string, string>();
 			PrimarySource = new DefaultPrimarySource(this);
 		}
@@ -96,7 +96,7 @@ namespace Zeta.Extreme {
 		/// 	Набор всех уникальных, еще не обработанных запросов (агенда)
 		/// 	ключ - хэшкей
 		/// </summary>
-		public ConcurrentDictionary<string, IQueryWithProcessing> ActiveSet { get; private set; }
+		public ConcurrentDictionary<string, IQuery> ActiveSet { get; private set; }
 
 		/// <summary>
 		/// 	Сериальная синхронизация

@@ -26,9 +26,7 @@
     <Compile Include="Formulas\FormulaAttribute.cs" />
     <Compile Include="Formulas\FormulaBase.cs" />
     <Compile Include="Formulas\FormulaCompiler.cs" />
-    <Compile Include="Formulas\FormulaRequest.cs" />
     <Compile Include="Formulas\FormulaStorage.cs" />
-    <Compile Include="Formulas\IFormula.cs" />
     <Compile Include="Formulas\IFormulaPreprocessor.cs" />
     <Compile Include="Formulas\IFormulaStorage.cs" />
     <Compile Include="Formulas\FormulaParserConstants.cs" />
@@ -39,7 +37,6 @@
     <Compile Include="Primary\ObjColQueryGeneratorStruct.cs" />
     <Compile Include="Primary\SimpleObjectDataScriptGenerator.cs" />
     <Compile Include="Primary\TimeQueryGeneratorStruct.cs" />
-    <Compile Include="Query\QueryEvaluationType.cs" />
     <Compile Include="Primary\DefaultPrimarySource.cs" />
     <Compile Include="Query\StrongSumProvider.cs" />
     <Compile Include="Query\QueryDelta.cs" />

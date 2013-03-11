@@ -8,10 +8,7 @@
 
 #endregion
 
-using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
-
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Базовый интерфейс формулы
 	/// </summary>
@@ -20,7 +17,7 @@ namespace Zeta.Extreme {
 		/// 	Настраивает формулу на конкретный переданный запрос
 		/// </summary>
 		/// <param name="query"> </param>
-		void Init(Query query);
+		void Init(IQuery query);
 
 		/// <summary>
 		/// 	Устанавливает контекст использования формулы
@@ -32,7 +29,7 @@ namespace Zeta.Extreme {
 		/// 	Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 		/// </summary>
 		/// <param name="query"> </param>
-		void Playback(Query query);
+		void Playback(IQuery query);
 
 		/// <summary>
 		/// 	Команда вычисления результата

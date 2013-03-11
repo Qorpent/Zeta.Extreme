@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme {
 	/// <summary>

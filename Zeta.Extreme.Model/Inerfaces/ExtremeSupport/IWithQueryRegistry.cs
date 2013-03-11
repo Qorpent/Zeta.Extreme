@@ -24,6 +24,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// 	Набор всех уникальных, еще не обработанных запросов (агенда)
 		/// 	ключ - хэшкей
 		/// </summary>
-		ConcurrentDictionary<string, IQueryWithProcessing> ActiveSet { get; }
+		ConcurrentDictionary<string, IQuery> ActiveSet { get; }
 	}
 }

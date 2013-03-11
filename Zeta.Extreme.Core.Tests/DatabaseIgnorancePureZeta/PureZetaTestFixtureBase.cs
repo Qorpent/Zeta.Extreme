@@ -54,10 +54,10 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 			IList<Query> bads = new List<Query>();
 			foreach (var query in queries) {
 				try {
-					Examinate(query);
+					Examinate((Query) query);
 					
 				}catch(Exception e) {
-					bads.Add(query);
+					bads.Add((Query) query);
 					Console.WriteLine(query);
 					Console.WriteLine(e);
 				}

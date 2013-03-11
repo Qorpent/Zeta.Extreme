@@ -8,6 +8,7 @@
 
 #endregion
 
+using System;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Model.Inerfaces {
@@ -41,9 +42,17 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		string Valuta { get; set; }
 
 		/// <summary>
-		/// 	Синхронный результат
+		/// Текущий кэшированный резултат
 		/// </summary>
 		QueryResult Result { get; set; }
+
+		/// <summary>
+		/// 	Обеспечивает возврат результата запроса с ожиданием
+		/// </summary>
+		/// <param name="timeout"> </param>
+		/// <returns> </returns>
+		/// <exception cref="Exception"></exception>
+		QueryResult GetResult(int timeout = -1);
 
 		/// <summary>
 		/// 	Автоматический код запроса, присваиваемый системой

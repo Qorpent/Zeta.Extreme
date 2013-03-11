@@ -168,7 +168,7 @@ namespace Zeta.Extreme {
 						}
 					}
 				}
-				result.Time.Normalize(result.GetSession());
+				result.Time.Normalize(result.Session);
 			}
 		}
 
