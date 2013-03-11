@@ -158,9 +158,13 @@
     <Compile Include="Inerfaces\Extra data\IZetaDetailObjectGroupLink.cs" />
     <Compile Include="Inerfaces\Extra data\IZetaObjectGroup.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\DetailMode.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\ExtremeFactory.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\FormulaRequest.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IColumnHandler.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IExtremeFactory.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IFormula.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IFormulaPreprocessor.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\IFormulaStorage.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IObjHandler.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IPreloadProcessor.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\IQuery.cs" />
@@ -180,8 +184,11 @@
     <Compile Include="Inerfaces\ExtremeSupport\PrepareState.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\QueryEvaluationType.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\QueryResult.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\QuerySetupInfo.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\SessionExtensions.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\SessionSetupInfo.cs" />
     <Compile Include="Inerfaces\ExtremeSupport\SessionStatisticsExtensions.cs" />
+    <Compile Include="Inerfaces\ExtremeSupport\StubExtremeFactory.cs" />
     <Compile Include="Inerfaces\ICanResolveTag.cs" />
     <Compile Include="Inerfaces\IMetaCache.cs" />
     <Compile Include="Inerfaces\IOlapCache.cs" />
@@ -258,6 +265,7 @@
     <Compile Include="NativeSqlBind\PeriodDefinition.cs" />
     <Compile Include="NativeSqlBind\Periods.cs" />
     <Compile Include="NativeSqlBind\RowCache.cs" />
+    <Compile Include="NativeSqlBind\RowExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="qorpent.sys.base.import" />

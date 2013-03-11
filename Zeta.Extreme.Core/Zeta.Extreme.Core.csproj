@@ -17,6 +17,7 @@
     <Compile Include="Abstracts\CachedItemHandlerBase.cs" />
     <Compile Include="Extensions\SerialAccessExtensions.cs" />
     <Compile Include="Extensions\SerialSession.cs" />
+    <Compile Include="DefaultExtremeFactory.cs" />
     <Compile Include="Formulas\BackwardCompatibleFormulaBase.cs" />
     <Compile Include="Formulas\BackwardCompatibleMainFormulaSet.cs" />
     <Compile Include="Formulas\BooConverter.cs" />
@@ -27,12 +28,9 @@
     <Compile Include="Formulas\FormulaBase.cs" />
     <Compile Include="Formulas\FormulaCompiler.cs" />
     <Compile Include="Formulas\FormulaStorage.cs" />
-    <Compile Include="Formulas\IFormulaPreprocessor.cs" />
-    <Compile Include="Formulas\IFormulaStorage.cs" />
     <Compile Include="Formulas\FormulaParserConstants.cs" />
     <Compile Include="Formulas\IllegalSyntaxFormulaStub.cs" />
     <Compile Include="Formulas\NoExtremeFormulaStub.cs" />
-    <Compile Include="Meta\RowExtensions.cs" />
     <Compile Include="Primary\IScriptGenerator.cs" />
     <Compile Include="Primary\ObjColQueryGeneratorStruct.cs" />
     <Compile Include="Primary\SimpleObjectDataScriptGenerator.cs" />
@@ -59,6 +57,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Meta\" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

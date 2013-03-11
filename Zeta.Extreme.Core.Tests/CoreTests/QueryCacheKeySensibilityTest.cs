@@ -13,7 +13,6 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Meta;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.Inerfaces;

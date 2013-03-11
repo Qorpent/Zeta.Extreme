@@ -350,10 +350,10 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// Загружает формулы по умолчанию из кжша, с использованием указанной папки готовых DLL
 		/// </summary>
-		/// <param name="tmp"></param>
-		public static void LoadDefaultFormulas(string tmp) {
-			if(tmp.IsNotEmpty()) {
-				Default.BuildCache(tmp);
+		/// <param name="rootDirectory"></param>
+		public  void LoadDefaultFormulas(string rootDirectory) {
+			if(rootDirectory.IsNotEmpty()) {
+				BuildCache(rootDirectory);
 			}
 			var oldrowformulas = RowCache.Formulas.Where(
 				_ => _.Version < DateTime.Today
@@ -391,7 +391,7 @@ namespace Zeta.Extreme {
 						Language = f.FormulaEvaluator,
 						Version = f.Version.ToString(CultureInfo.InvariantCulture)
 					};
-				Default.Register(req);
+				Register(req);
 			}
 
 			foreach (var c in oldcolformulas) {
@@ -403,9 +403,9 @@ namespace Zeta.Extreme {
 						Tags = c.tag,
 						Version = c.version.ToString(CultureInfo.InvariantCulture)
 					};
-				Default.Register(req);
+				Register(req);
 			}
-			Default.CompileAll(tmp);
+			CompileAll(rootDirectory);
 
 
 			foreach (var f in newrowformulas) {
@@ -416,7 +416,7 @@ namespace Zeta.Extreme {
 						Language = f.FormulaEvaluator,
 						Version = f.Version.ToString(CultureInfo.InvariantCulture)
 					};
-				Default.Register(req);
+				Register(req);
 			}
 
 			foreach (var c in newcolformulas) {
@@ -428,9 +428,9 @@ namespace Zeta.Extreme {
 						Tags = c.tag,
 						Version = c.version.ToString(CultureInfo.InvariantCulture)
 					};
-				Default.Register(req);
+				Register(req);
 			}
-			Default.CompileAll(tmp);
+			CompileAll(rootDirectory);
 		}
 	}
 }

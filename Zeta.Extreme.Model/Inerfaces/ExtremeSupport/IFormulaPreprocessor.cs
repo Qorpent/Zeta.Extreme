@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Препроцессор формул - конвертирует исходный текст в компилируемый код на C# с учетом шаблона
 	/// </summary>

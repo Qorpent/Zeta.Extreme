@@ -29,12 +29,11 @@ using Zeta.Extreme.Form;
 using Zeta.Extreme.Form.DbfsAttachmentSource;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
-using Zeta.Extreme.Meta;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.NativeSqlBind;
 using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
-using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
@@ -177,7 +176,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// 	Статистика сессии данных
 		/// </summary>
-		[IgnoreSerialize] public string DataStatistics { get; set; }
+		[IgnoreSerialize] public SessionStatistics DataStatistics { get; set; }
 
 		/// <summary>
 		/// 	Общее количество запросов в обработке
@@ -441,8 +440,8 @@ namespace Zeta.Extreme.FrontEnd {
 				LoadNoPrimary(queries);
 
 				QueriesCount = queries.Count;
-				DataStatistics = ((Session) DataSession).GetStatisticString();
-				SqlLog = ((DefaultPrimarySource) ((Session) DataSession).PrimarySource).QueryLog.ToArray();
+				DataStatistics = DataSession.GetStatistics();
+				SqlLog = DataSession.GetPrimarySource().QueryLog.ToArray();
 				DataSession = null;
 				DataCount = Data.Count;
 				LastDataTime = sw.Elapsed;
@@ -462,21 +461,22 @@ namespace Zeta.Extreme.FrontEnd {
 					if (queries.ContainsKey(key)) {
 						continue;
 					}
-					var ch = new ColumnHandler {Native = c._.Target};
+					var ch = ExtremeFactory.CreateColumnHandler();
+					ch.Native = c._.Target;
 					if (null == ch.Native) {
 						ch.Code = c._.Code;
 						ch.IsFormula = c._.IsFormula;
 						ch.Formula = c._.Formula;
 						ch.FormulaType = c._.FormulaEvaluator;
 					}
-					var q = new Query
+					var q = ExtremeFactory.CreateQuery( new QuerySetupInfo
 						{
 							Row = {Native = r._},
 							Col = ch,
 							Obj = {Native = Object},
 							Time = {Year = c._.Year, Period = c._.Period}
-						};
-					q = (Query) DataSession.Register(q, key);
+						});
+					q = DataSession.Register(q, key);
 
 					if (null != q) {
 						if (c._.ControlPoint && r._.IsMarkSeted("CONTROLPOINT")) {
@@ -505,13 +505,13 @@ namespace Zeta.Extreme.FrontEnd {
 		private void BuildEditablePrimarySet(IDictionary<string, IQuery> queries) {
 			foreach (var primaryrow in primaryrows) {
 				foreach (var primarycol in primarycols) {
-					var q = new Query
+					var q = ExtremeFactory.CreateQuery(  new QuerySetupInfo
 						{
 							Row = {Native = primaryrow._},
 							Col = {Native = primarycol._.Target},
 							Obj = {Native = Object},
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
-						};
+						});
 					var key = primaryrow.i + ":" + primarycol.i;
 					queries[key] = (IQuery) DataSession.Register(q, key);
 				}
@@ -521,15 +521,15 @@ namespace Zeta.Extreme.FrontEnd {
 		private void BuildNonEditablePrimarySet(IDictionary<string, IQuery> queries) {
 			foreach (var primaryrow in primaryrows) {
 				foreach (var primarycol in neditprimarycols) {
-					var q = new Query
+					var q =  ExtremeFactory.CreateQuery( new QuerySetupInfo
 						{
 							Row = {Native = primaryrow._},
 							Col = {Native = primarycol._.Target},
 							Obj = {Native = Object},
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
-						};
+						});
 					var key = primaryrow.i + ":" + primarycol.i;
-					queries[key] = (IQuery) DataSession.Register(q, key);
+					queries[key] = DataSession.Register(q, key);
 				}
 			}
 		}
@@ -565,10 +565,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns> </returns>
 		public object CollectDebugInfo() {
-			var stats = string.IsNullOrWhiteSpace(DataStatistics)
-				            ? null
-				            : DataStatistics.SmartSplit(false, true, '\r', '\n').ToArray();
-			return new {stats, sql = SqlLog, colset = Colset};
+			return new {stats=DataStatistics, sql = SqlLog, colset = Colset};
 		}
 
 		private void PrepareMetaSets() {
@@ -857,7 +854,7 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void EnsureDataSession() {
-			DataSession = DataSession ?? new Session(true);
+			DataSession = DataSession ?? ExtremeFactory.CreateSession(new SessionSetupInfo {CollectStatistics = true});
 		}
 
 		#region Nested type: IdxCol

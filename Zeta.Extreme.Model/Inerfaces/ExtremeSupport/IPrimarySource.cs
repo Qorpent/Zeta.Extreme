@@ -8,6 +8,7 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Zeta.Extreme.Poco.Inerfaces;
 
@@ -39,5 +40,10 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// 	Выполняет все требуемые запросы в режиме ожидания
 		/// </summary>
 		void Wait(int timeout = -1);
+
+		/// <summary>
+		/// 	Журнал выполненных SQL
+		/// </summary>
+		IList<string> QueryLog { get; }
 	}
 }

@@ -11,8 +11,8 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Zeta.Extreme.Meta;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.NativeSqlBind;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 

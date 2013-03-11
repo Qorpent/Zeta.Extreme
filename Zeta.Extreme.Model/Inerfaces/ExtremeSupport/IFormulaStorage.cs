@@ -9,9 +9,8 @@
 #endregion
 
 using System;
-using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Интерфейс коллекции формул
 	/// </summary>
@@ -88,5 +87,11 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="root"> </param>
 		void BuildCache(string root);
+
+		/// <summary>
+		/// Загружает формулы по умолчанию из кжша, с использованием указанной папки готовых DLL
+		/// </summary>
+		/// <param name="rootDirectory"></param>
+		void LoadDefaultFormulas(string rootDirectory);
 	}
 }
