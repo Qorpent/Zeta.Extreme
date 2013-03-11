@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.NativeSqlBind;
 

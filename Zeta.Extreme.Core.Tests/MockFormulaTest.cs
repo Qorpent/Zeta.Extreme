@@ -11,6 +11,7 @@
 
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.Inerfaces;

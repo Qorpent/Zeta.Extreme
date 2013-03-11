@@ -12,7 +12,7 @@ using System;
 using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco {
+namespace Zeta.Extreme.Model {
 	public class period : IPeriod {
 		public virtual Guid Uid { get; set; }
 		[Map] public virtual string FormulaEvaluator { get; set; }

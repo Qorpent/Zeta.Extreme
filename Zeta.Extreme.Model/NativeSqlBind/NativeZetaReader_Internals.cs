@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Qorpent.Applications;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Poco.NativeSqlBind {

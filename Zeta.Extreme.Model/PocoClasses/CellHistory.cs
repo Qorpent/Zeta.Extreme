@@ -11,7 +11,7 @@
 using System;
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco {
+namespace Zeta.Extreme.Model {
 	public class cellhistory : ICellHistory {
 		public virtual int Type { get; set; }
 		public virtual string PseudoCode { get; set; }

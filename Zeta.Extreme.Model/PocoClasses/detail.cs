@@ -13,10 +13,11 @@ using System.Collections.Generic;
 using Qorpent;
 using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco {
+namespace Zeta.Extreme.Model {
 	public partial class detail : IZetaDetailObject {
 		public detail() {
 			Range = new DateRange(QorpentConst.Date.Begin, QorpentConst.Date.End);

@@ -11,7 +11,7 @@
 using System;
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco {
+namespace Zeta.Extreme.Model {
 	public class CommonLog : ICommonLog {
 		public virtual int Id { get; set; }
 		public virtual string Code { get; set; }

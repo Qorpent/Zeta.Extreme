@@ -4,7 +4,7 @@
     <Configuration>Debug</Configuration>
     <ProjectGuid>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Zeta.Extreme</RootNamespace>
+    <RootNamespace>Zeta.Extreme.Model</RootNamespace>
     <AssemblyName>Zeta.Extreme.Model</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
@@ -56,10 +56,6 @@
     <Compile Include="Deprecated\NoMapAttribute.cs" />
     <Compile Include="Deprecated\RefAttribute.cs" />
     <Compile Include="Deprecated\SchemaAttribute.cs" />
-    <Compile Include="extPoco\row.cs" />
-    <Compile Include="extPoco\obj.cs" />
-    <Compile Include="extPoco\objrole.cs" />
-    <Compile Include="extPoco\objtype.cs" />
     <Compile Include="Inerfaces\Advanced mark support\IZetaColumnMark.cs" />
     <Compile Include="Inerfaces\Advanced mark support\IZetaDetailObjectMark.cs" />
     <Compile Include="Inerfaces\Advanced mark support\IZetaMainObjectMark.cs" />

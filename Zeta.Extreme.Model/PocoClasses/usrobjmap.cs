@@ -12,7 +12,7 @@ using System;
 using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco {
+namespace Zeta.Extreme.Model {
 	public partial class usrobjmap : IUserObjectMap {
 		[Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
 

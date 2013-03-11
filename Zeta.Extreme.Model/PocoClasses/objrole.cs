@@ -1,7 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : objdiv.cs
+// Original file : objrole.cs
 // Project: Zeta.Extreme.Poco
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -13,8 +13,8 @@ using System.Collections.Generic;
 using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco {
-	public partial class objdiv : IMainObjectGroup {
+namespace Zeta.Extreme.Model {
+	public partial class objrole : IMainObjectRole {
 		[Map] public virtual Guid Uid { get; set; }
 
 		public virtual string Tag { get; set; }
@@ -32,5 +32,7 @@ namespace Zeta.Extreme.Poco {
 		[Map] public virtual DateTime Version { get; set; }
 
 		public virtual int Idx { get; set; }
+
+		public virtual bool ShowOnStartPage { get; set; }
 	}
 }

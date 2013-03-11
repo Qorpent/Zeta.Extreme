@@ -17,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.NativeSqlBind;
 using Zeta.Extreme.Poco;

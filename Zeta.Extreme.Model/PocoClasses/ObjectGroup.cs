@@ -15,7 +15,7 @@ using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 
-namespace Zeta.Extreme.Poco {
+namespace Zeta.Extreme.Model {
 	public partial class ObjectGroup : IZetaObjectGroup {
 		[Map] public virtual Guid Uid { get; set; }
 

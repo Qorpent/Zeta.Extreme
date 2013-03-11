@@ -14,10 +14,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco {
+namespace Zeta.Extreme.Model {
 	public partial class obj : IZetaMainObject, IZetaQueryDimension {
 		public obj() {
 			Range = new DateRange(QorpentConst.Date.Begin, QorpentConst.Date.End);

@@ -14,7 +14,7 @@ using System.Linq;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco {
+namespace Zeta.Extreme.Model {
 	public class form : IForm {
 		public virtual string TemplateCode { get; set; }
 

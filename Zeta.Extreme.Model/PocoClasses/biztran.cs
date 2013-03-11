@@ -9,9 +9,10 @@
 #endregion
 
 using System;
+using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.Deprecated;
 
-namespace Zeta.Extreme.Poco {
+namespace Zeta.Extreme.Model {
 	public partial class biztran : IBizTran {
 		private const string nodef = "Не определено";
 

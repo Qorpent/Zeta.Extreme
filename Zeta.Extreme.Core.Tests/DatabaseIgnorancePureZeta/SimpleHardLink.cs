@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using NUnit.Framework;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Poco;
 
 namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta {

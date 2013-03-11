@@ -1,7 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : objtype.cs
+// Original file : objcls.cs
 // Project: Zeta.Extreme.Poco
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -11,11 +11,12 @@
 using System;
 using System.Collections.Generic;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco {
-	public partial class objtype : IDetailObjectType {
+namespace Zeta.Extreme.Model {
+	public partial class objcls : IDetailObjectClass {
 		[Map] public virtual Guid Uid { get; set; }
 
 
@@ -27,7 +28,7 @@ namespace Zeta.Extreme.Poco {
 			var query = new MetalinkRecord
 			{
 				Src = this.Code,
-				SrcType = "zeta.objtype",
+				SrcType = "zeta.objcls",
 				TrgType = nodetype,
 				Type = linktype,
 				SubType = subtype,
@@ -39,11 +40,7 @@ namespace Zeta.Extreme.Poco {
 
 		[Map] public virtual string Tag { get; set; }
 
-		[Many(ClassName = typeof (detail))] public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
-
-
-		public virtual IDetailObjectClass Class { get; set; }
-
+		[Many(ClassName = typeof (objtype))] public virtual IList<IDetailObjectType> Types { get; set; }
 
 		[Map] public virtual int Id { get; set; }
 
@@ -58,11 +55,7 @@ namespace Zeta.Extreme.Poco {
 		public virtual int Idx { get; set; }
 
 		public virtual string ResolveTag(string name) {
-			var tag = TagHelper.Value(Tag, name);
-			if (tag.IsEmpty()) {
-				tag = Class.ResolveTag(name);
-			}
-			return tag ?? "";
+			return TagHelper.Value(Tag, name);
 		}
 	}
 }
