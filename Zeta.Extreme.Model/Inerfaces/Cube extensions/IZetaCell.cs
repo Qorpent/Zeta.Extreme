@@ -16,13 +16,11 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IZetaCell :
 		IWithComment,
 		IWithData,
-		IFixable,
 		IOlapCell<IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
 		IWithTag,
 		IWithAutoManualFlag,
 		IWithUsr {
 		string Valuta { get; set; }
-		FixRuleResult? FixStatus { get; set; }
 		IZetaMainObject AltObj { get; set; }
 		int AltObjId { get; set; }
 		int RowId { get; set; }

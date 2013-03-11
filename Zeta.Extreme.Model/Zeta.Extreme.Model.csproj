@@ -20,37 +20,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="corePoco\biztran.cs" />
-    <Compile Include="corePoco\Biztranfilter.cs" />
-    <Compile Include="corePoco\CellHistory.cs" />
-    <Compile Include="corePoco\CommonLog.cs" />
-    <Compile Include="corePoco\form.cs" />
-    <Compile Include="corePoco\formstate.cs" />
+    <Compile Include="Model\biztran.cs" />
+    <Compile Include="Model\Biztranfilter.cs" />
+    <Compile Include="Model\CellHistory.cs" />
+    <Compile Include="Model\CommonLog.cs" />
+    <Compile Include="Model\form.cs" />
+    <Compile Include="Model\formstate.cs" />
     <Compile Include="corePoco\IBizTran.cs" />
     <Compile Include="corePoco\IBizTranFilter.cs" />
-    <Compile Include="corePoco\UsrRow.cs" />
-    <Compile Include="corePoco\UsrThemaMap.cs" />
-    <Compile Include="corePoco\zone.cs" />
-    <Compile Include="corePoco\FixRule.cs" />
-    <Compile Include="corePoco\objdiv.cs" />
-    <Compile Include="corePoco\cell.cs" />
-    <Compile Include="corePoco\row.cs" />
-    <Compile Include="corePoco\MainObjectMark.cs" />
-    <Compile Include="corePoco\Mark.cs" />
-    <Compile Include="corePoco\point.cs" />
-    <Compile Include="corePoco\ObjectGroup.cs" />
-    <Compile Include="corePoco\obj.cs" />
-    <Compile Include="corePoco\objrole.cs" />
-    <Compile Include="corePoco\Period.cs" />
-    <Compile Include="corePoco\Region.cs" />
-    <Compile Include="corePoco\detail.cs" />
-    <Compile Include="corePoco\SubpartMark.cs" />
-    <Compile Include="corePoco\TreeMark.cs" />
-    <Compile Include="corePoco\usr.cs" />
-    <Compile Include="corePoco\usrobjmap.cs" />
-    <Compile Include="corePoco\col.cs" />
-    <Compile Include="corePoco\objcls.cs" />
-    <Compile Include="corePoco\objtype.cs" />
+    <Compile Include="Model\UsrThemaMap.cs" />
+    <Compile Include="Model\zone.cs" />
+    <Compile Include="Model\objdiv.cs" />
+    <Compile Include="Model\cell.cs" />
+    <Compile Include="Model\row.cs" />
+    <Compile Include="Model\Mark.cs" />
+    <Compile Include="Model\point.cs" />
+    <Compile Include="Model\ObjectGroup.cs" />
+    <Compile Include="Model\obj.cs" />
+    <Compile Include="Model\objrole.cs" />
+    <Compile Include="Model\Period.cs" />
+    <Compile Include="Model\Region.cs" />
+    <Compile Include="Model\detail.cs" />
+    <Compile Include="Model\usr.cs" />
+    <Compile Include="Model\usrobjmap.cs" />
+    <Compile Include="Model\col.cs" />
+    <Compile Include="Model\objcls.cs" />
+    <Compile Include="Model\objtype.cs" />
     <Compile Include="DateRange.cs" />
     <Compile Include="Deprecated\ClassicAttribute.cs" />
     <Compile Include="Deprecated\ForSearchAttribute.cs" />
@@ -61,27 +56,9 @@
     <Compile Include="Deprecated\NoMapAttribute.cs" />
     <Compile Include="Deprecated\RefAttribute.cs" />
     <Compile Include="Deprecated\SchemaAttribute.cs" />
-    <Compile Include="extPoco\zone.cs" />
-    <Compile Include="extPoco\DayCourse.cs" />
-    <Compile Include="extPoco\FixRule.cs" />
-    <Compile Include="extPoco\objdiv.cs" />
-    <Compile Include="extPoco\cell.cs" />
     <Compile Include="extPoco\row.cs" />
-    <Compile Include="extPoco\MainObjectMark.cs" />
-    <Compile Include="extPoco\Mark.cs" />
-    <Compile Include="extPoco\point.cs" />
-    <Compile Include="extPoco\ObjectGroup.cs" />
     <Compile Include="extPoco\obj.cs" />
     <Compile Include="extPoco\objrole.cs" />
-    <Compile Include="extPoco\PeriodCourse.cs" />
-    <Compile Include="extPoco\Region.cs" />
-    <Compile Include="extPoco\detail.cs" />
-    <Compile Include="extPoco\SubpartMark.cs" />
-    <Compile Include="extPoco\TreeMark.cs" />
-    <Compile Include="extPoco\usr.cs" />
-    <Compile Include="extPoco\usrobjmap.cs" />
-    <Compile Include="extPoco\col.cs" />
-    <Compile Include="extPoco\objcls.cs" />
     <Compile Include="extPoco\objtype.cs" />
     <Compile Include="Inerfaces\Advanced mark support\IZetaColumnMark.cs" />
     <Compile Include="Inerfaces\Advanced mark support\IZetaDetailObjectMark.cs" />
@@ -131,7 +108,6 @@
     <Compile Include="Inerfaces\Data fixing support\IFixable.cs" />
     <Compile Include="Inerfaces\Data fixing support\IFixRule.cs" />
     <Compile Include="Inerfaces\Data fixing support\IFixRuleCore.cs" />
-    <Compile Include="Inerfaces\Data fixing support\IWithFixRules.cs" />
     <Compile Include="Inerfaces\DetailComparer.cs" />
     <Compile Include="Inerfaces\Extensions\WithMarksExtension.cs" />
     <Compile Include="Inerfaces\Extra data\GraphRelationType.cs" />
@@ -219,7 +195,6 @@
     <Compile Include="Inerfaces\Support\IWithAllOrgs.cs" />
     <Compile Include="Inerfaces\Support\IWithCell.cs" />
     <Compile Include="Inerfaces\Support\IWithCellData.cs" />
-    <Compile Include="Inerfaces\Support\IWithCells.cs" />
     <Compile Include="Inerfaces\Support\IWithContactHuman.cs" />
     <Compile Include="Inerfaces\Support\IWithDataType.cs" />
     <Compile Include="Inerfaces\Support\IWithDetailObject.cs" />
@@ -260,9 +235,7 @@
     <None Include="qorpent.sys.base.import" />
     <None Include="Zeta.Extreme.Model.export" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />
   <PropertyGroup>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>

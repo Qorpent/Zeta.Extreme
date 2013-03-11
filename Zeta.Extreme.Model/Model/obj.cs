@@ -91,7 +91,7 @@ namespace Zeta.Extreme.Poco {
 
 		[Map] public virtual DateTime Version { get; set; }
 
-		[Many(ClassName = typeof (cell))] public virtual IList<IZetaCell> Cells { get; set; }
+		
 
 		[Map] public virtual string Address { get; set; }
 
@@ -150,7 +150,7 @@ namespace Zeta.Extreme.Poco {
 
 		[Many(ClassName = typeof (usr))] public virtual IList<IZetaUnderwriter> Underwriters { get; set; }
 
-		[Many(ClassName = typeof (fixrule))] public virtual IList<IFixRule> FixRules { get; set; }
+
 
 		public virtual IList<IZetaDetailObject> AlternateDetailObjects { get; set; }
 
@@ -178,6 +178,18 @@ namespace Zeta.Extreme.Poco {
 		public virtual IDictionary<string, object> Properties {
 			get { return properties ?? (properties = new Dictionary<string, object>()); }
 			protected set { properties = value; }
+		}
+
+		public virtual IMainObjectRole Type {
+			get { return Otrasl; }
+		}
+
+		public virtual IList<IZetaDetailObject> InLinks {
+			get { return AlternateDetailObjects; }
+		}
+
+		public virtual IList<IZetaDetailObject> OutLinks {
+			get { return DetailObjects; }
 		}
 
 		public virtual MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null,
@@ -212,5 +224,79 @@ namespace Zeta.Extreme.Poco {
 		private bool _isFormula;
 		private IDictionary<string, object> localProperties;
 		private IDictionary<string, object> properties;
+
+		public virtual bool Equals(obj org) {
+			if (org == null) {
+				return false;
+			}
+			if (Id != org.Id) {
+				return false;
+			}
+			if (!Equals(Name, org.Name)) {
+				return false;
+			}
+			if (!Equals(Code, org.Code)) {
+				return false;
+			}
+
+			return true;
+		}
+
+		public virtual bool IsMatchZoneAcronim(string s) {
+			s = s.ToUpper();
+			if (!s.Contains("_")) {
+				if (Regex.IsMatch(s, @"^\d+$")) {
+					return s == Id.ToString();
+				}
+				return GroupCache.ToUpper().Contains("/" + s + "/");
+			}
+			if (s.StartsWith("OBJ_")) {
+				return s.Substring(4) == Id.ToString();
+			}
+			if (s.StartsWith("GRP_") || s.StartsWith("OG_")) {
+				var grp = s.Split('_')[1];
+				return GroupCache.ToUpper().Contains("/" + grp + "/");
+			}
+			if (s.StartsWith("DIV_")) {
+				if (null == Group) {
+					return false;
+				}
+				return Group.Code.ToUpper() == s.Substring(4);
+			}
+			if (s.StartsWith("OTR_")) {
+				if (null == Role) {
+					return false;
+				}
+				return Role.Code.ToUpper() == s.Substring(4);
+			}
+			return GroupCache.ToUpper().Contains("/" + s + "/");
+		}
+
+		public override bool Equals(object obj) {
+			if (ReferenceEquals(this, obj)) {
+				return true;
+			}
+			return Equals(obj as obj);
+		}
+
+		public override int GetHashCode() {
+			var result = Id;
+			result = 29*result + (Code != null ? Code.GetHashCode() : 0);
+			result = 29*result + (Name != null ? Name.GetHashCode() : 0);
+
+			return result;
+		}
+
+		public virtual detail[] FindOwnSubparts() {
+			return DetailObjects.Cast<detail>().ToArray();
+		}
+
+		public virtual detail[] FindOwnSubparts(int year) {
+			return DetailObjects.Where(d => d.Range.IsInRange(new DateTime(year, 1, 1))).Cast<detail>().ToArray();
+		}
+
+		public virtual int CountOwnSubparts() {
+			return DetailObjects.Count;
+		}
 	}
 }

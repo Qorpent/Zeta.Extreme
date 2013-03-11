@@ -20,11 +20,9 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		IZetaQueryDimension,
 		ICanResolveTag,
 		IOlapMainObject<IZetaMainObject, IZetaDetailObject>,
-		IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
 		IWithAddress, IMainObjectLocators,
 		IWithDetailObjectType,
 		IWithUnderwriters,
-		IWithFixRules,
 		IWithAlternateDetailObjects,
 		IWithProperties {
 		[Map] string GroupCache { get; set; }

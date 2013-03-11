@@ -17,9 +17,7 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IZetaColumn :
 		IOlapColumn,
 		IZetaQueryDimension,
-		IWithMarkCache,
-		IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
-		IWithFixRules {
+		IWithMarkCache {
 		string Valuta { get; set; }
 		IDictionary<string, object> LocalProperties { get; set; }
 

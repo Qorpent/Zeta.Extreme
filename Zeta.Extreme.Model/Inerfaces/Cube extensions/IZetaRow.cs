@@ -18,9 +18,7 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		IOlapForm<IZetaRow>,
 		IZetaQueryDimension,
 		IZetaFormsSupport,
-		IWithFixRules,
 		IWithMarkCache,
-		IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
 		IWithMainObject<IZetaMainObject> {
 		IDictionary<string, object> LocalProperties { get; }
 		[Map] string ObjectGroups { get; set; }

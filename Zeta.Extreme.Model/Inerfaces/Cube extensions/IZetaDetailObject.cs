@@ -20,9 +20,7 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 		IOlapDetailObject<IZetaMainObject, IZetaDetailObject>,
 		IWithDetailObjectType,
 		IWithAlternateMainObject,
-		IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
 		IWithOwn,
-		IWithFixRules,
 		IWithDetailObjects<IZetaMainObject, IZetaDetailObject>, IWithOuterCode {
 		string Verb { get; set; }
 		IZetaDetailObject Parent { get; set; }

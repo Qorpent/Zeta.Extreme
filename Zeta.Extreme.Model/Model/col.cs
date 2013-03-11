@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
 
@@ -80,9 +81,9 @@ namespace Zeta.Extreme.Poco {
 		[Map] public virtual string DataTypeDetail { get; set; }
 
 
-		[Many(ClassName = typeof (cell))] public virtual IList<IZetaCell> Cells { get; set; }
+		
 
-		[Many(ClassName = typeof (fixrule))] public virtual IList<IFixRule> FixRules { get; set; }
+		
 
 		/// <summary>
 		/// 	An index of object
@@ -90,5 +91,35 @@ namespace Zeta.Extreme.Poco {
 		public int Idx { get; set; }
 
 		private IDictionary<string, object> localProperties;
+
+		public virtual string GetStaticMeasure(string format) {
+			if (IsDynamicMeasure) {
+				return "";
+			}
+			if (Measure.IsNotEmpty()) {
+				if (format.IsNotEmpty()) {
+					return string.Format(format, Measure);
+				}
+				return Measure;
+			}
+			return "";
+		}
+
+		public virtual string GetDynamicMeasure(IZetaRow source, string format) {
+			if (!IsDynamicMeasure) {
+				return "";
+			}
+			if (source.Measure.IsNotEmpty()) {
+				if (format.IsNotEmpty()) {
+					return string.Format(format, source.Measure);
+				}
+				return source.Measure;
+			}
+			return GetStaticMeasure(format);
+		}
+
+		public virtual bool IsMarkSeted(string code) {
+			return WithMarksExtension.IsMarkSeted(this, code);
+		}
 	}
 }

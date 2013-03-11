@@ -25,7 +25,6 @@ namespace Zeta.Extreme.Poco {
 
 		public virtual string Path { get; set; }
 		[Map] public virtual Guid Uid { get; set; }
-		public virtual FixRuleResult? FixStatus { get; set; }
 
 		[Map] public virtual string Valuta { get; set; }
 
@@ -103,5 +102,12 @@ namespace Zeta.Extreme.Poco {
 		[Map] public virtual bool IsAuto { get; set; }
 		[Map] public virtual string Usr { get; set; }
 		private StandardRowData rowData;
+
+		public override string ToString() {
+			return string.Format("cell:{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}",
+			                     Row.Code, Column.Code, Object.Code, null == DetailObject ? "" : DetailObject.Code, Year, Period,
+			                     DirectDate.ToString("yyyy-MM-dd"), Value
+				);
+		}
 	}
 }
