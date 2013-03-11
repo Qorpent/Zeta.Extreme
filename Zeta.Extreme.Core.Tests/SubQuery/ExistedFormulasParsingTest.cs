@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
-using Zeta.Extreme.Meta;
 using Zeta.Extreme.Poco.Inerfaces;
 using Zeta.Extreme.Poco.NativeSqlBind;
 

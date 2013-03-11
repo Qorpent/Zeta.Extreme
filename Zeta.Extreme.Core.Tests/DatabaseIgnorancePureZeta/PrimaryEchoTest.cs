@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta {
 	/// <summary>
@@ -13,10 +15,10 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta {
 		/// </summary>
 		/// <returns></returns>
 		protected override IEnumerable<Query> BuildModel() {
-			Query q;
-			yield return q = new Query();
+			IQuery q;
+			yield return (Query) (q = new Query());
 			Add(q,10);
-			yield return q = new Query{Row={Code="x"}};
+			yield return (Query) (q = new Query{Row={Code="x"}});
 			Add(q,20);
 		}
 

@@ -47,7 +47,7 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 										Year = y + 1,
 										Period = p + 1
 									};
-								q = d.Apply(q);
+								q = (Query) d.Apply(q);
 								//Assert.AreEqual(r+"+",q.Row.Code);
 								//Assert.AreEqual(c + "+", q.Col.Code);
 								//Assert.AreEqual(o + 10, q.Obj.Id);

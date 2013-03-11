@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
@@ -30,21 +31,21 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Конструктор по умолчанию - инициирует часть старых сервисов
 		/// </summary>
-		public BackwardCompatibleFormulaBase() {
+		protected BackwardCompatibleFormulaBase() {
 			f = new BackwardCompatibleMainFormulaSet(this);
 		}
 
 		/// <summary>
 		/// 	шоткат для совместимости со старыми формулами
 		/// </summary>
-		protected Query q {
+		protected IQuery q {
 			get { return Query; }
 		}
 
 		/// <summary>
 		/// 	шоткат для совместимости со старыми формулами
 		/// </summary>
-		protected Query query {
+		protected IQuery query {
 			get { return Query; }
 		}
 
@@ -324,12 +325,7 @@ namespace Zeta.Extreme {
 			if (0 == grps.Count) {
 				return false;
 			}
-			foreach (var g in groups) {
-				if (grps.Any(x => x == g)) {
-					return true;
-				}
-			}
-			return false;
+			return groups.Any(g => grps.Any(x => x == g));
 		}
 
 		/// <summary>
@@ -345,10 +341,8 @@ namespace Zeta.Extreme {
 
 			while (null != current) {
 				var grps = current.Group.SmartSplit(false, true, '/', ';');
-				foreach (var g in groups) {
-					if (grps.Any(x => x == g)) {
-						return true;
-					}
+				if (groups.Any(g => grps.Any(x => x == g))) {
+					return true;
 				}
 				current = current.Parent;
 			}
@@ -383,10 +377,8 @@ namespace Zeta.Extreme {
 				return false;
 			}
 			while (null != current) {
-				foreach (var m in marks) {
-					if (current.IsMarkSeted(m)) {
-						return true;
-					}
+				if (marks.Any(m => current.IsMarkSeted(m))) {
+					return true;
 				}
 				current = current.Parent;
 			}

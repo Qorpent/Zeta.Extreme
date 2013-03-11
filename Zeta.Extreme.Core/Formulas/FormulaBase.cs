@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme {
@@ -28,8 +29,9 @@ namespace Zeta.Extreme {
 		/// 	Настраивает формулу на конкретный переданный запрос
 		/// </summary>
 		/// <param name="query"> </param>
-		public virtual void Init(Query query) {
-			Query = query;
+		public virtual void Init(IQuery query) {
+			if (!(query is IQueryWithProcessing)) throw new Exception("cannot process query that are not IQueryWithProcessing");
+			Query = query as IQueryWithProcessing;
 			Session = query.Session;
 		}
 
@@ -45,7 +47,7 @@ namespace Zeta.Extreme {
 		/// 	Вызывается в фазе подготовки, имитирует вызов функции, но без вычисления значений
 		/// </summary>
 		/// <param name="query"> </param>
-		public void Playback(Query query) {
+		public void Playback(IQuery query) {
 			IsInPlaybackMode = true;
 			Init(query);
 			InternalEval();
@@ -92,11 +94,11 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Ссылка на контекст текущего запроса
 		/// </summary>
-		protected internal Query Query;
+		protected internal IQueryWithProcessing Query;
 
 		/// <summary>
 		/// 	Базовая сессия
 		/// </summary>
-		protected internal Session Session;
+		protected internal ISession Session;
 	}
 }

@@ -57,23 +57,20 @@ root.init = root.init ||
             dataType: 'json'
         }).success($.proxy(function(d) {
             //дожидаемся готовности сервера
-            // serverstatus - это виджет на панели, отвечающий за отображения статуса сервера
-            var serverstatus = $('div.zefsstatus>span.label').first();
             if (!d) {
-                $(serverstatus).attr("class","label label-warning").text("Получение статуса сервера");
                 options.timeout -= options.readydelay;
                 if(options.timeout<=0){
-                    $(serverstatus).attr("class","label label-important").text("Сервер не доступен");
                     FailStartServer();
                     return;
                 }
                 window.setTimeout(StartForm, options.readydelay);
                 return;
             }
-            $(serverstatus).attr("class","label label-success").text("Сервер доступен");
             options.timeout = options.default_timeout;
             $(root).trigger(root.handlers.on_zefsready);
-            ExecuteSession();
+            if (!!params) {
+                ExecuteSession();
+            }
             GetPeriods();
             GetObjects();
         }));

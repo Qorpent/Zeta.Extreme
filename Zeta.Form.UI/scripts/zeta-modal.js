@@ -39,12 +39,15 @@
         $(modal).modal({backdrop: false});
 
         // Убиваем окно после его закрытия
-        $(modal).on('hidden', function(e) { $(this).remove() });
+        $(modal).on('hidden', function() { $(this).remove() });
         $(modal).draggable();
     };
     $(window.zeta).on(window.zeta.handlers.on_modal, function(e,params) {
         ShowModal(params);
     });
+//    $(document).on('click.dropdown.data-api', function(e) {
+//        console.log(e);
+//    });
     zetamodal.body = $(container).append();
     root.console.RegisterWidget(zetamodal);
 }(window.jQuery);

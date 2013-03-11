@@ -63,7 +63,7 @@
 		-->
 		
 			<Library Include="Zeta.Extreme.Core" />
-			<Library Include="Zeta.Extreme.Poco" />
+			<Library Include="Zeta.Extreme.Model" />
 			<Library Include="Zeta.Extreme.Form" />
 			<Library Include="Zeta.Extreme.BizProcess" />
 			<Library Include="Zeta.Extreme.FrontEnd" />

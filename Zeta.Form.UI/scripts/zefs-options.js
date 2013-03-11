@@ -59,9 +59,6 @@ $.extend(options,(function(){
 				
 			//команда, возвращающая список доступных предприятий ( применить asObjectList())
 			getobject_command : "zeta/getobjects.json.qweb",
-
-			//команда, возвращающая информацию о пользователе (Login - логин пользователя)
-			getuserinfo_command : "zeta/getuserinfo.json.qweb",
 				
 			
 		

@@ -9,7 +9,7 @@
 #endregion
 
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Meta;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Poco.Inerfaces;
 
 namespace Zeta.Extreme.Form.StateManagement {
@@ -42,6 +42,6 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// <summary>
 		/// 	Ссылка на исходный запрос, позволяет отсрочить получение значения
 		/// </summary>
-		public Query Query { get; set; }
+		public IQuery Query { get; set; }
 	}
 }
