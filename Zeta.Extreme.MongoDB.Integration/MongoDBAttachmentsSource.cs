@@ -94,22 +94,17 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         private void HandleVariables(Attachment attachment) {
-            _currentDocument["extension"] = attachment.Extension ?? "";
-            _currentDocument["Code"] = attachment.Uid ?? "";
-            _currentDocument["type"] = attachment.Type ?? "";
-            _currentDocument["Comment"] = attachment.Comment ?? "";
-        //    _currentDocument["User"] = attachment.User ?? Application.Current.Principal.CurrentUser.Identity.Name;
-            _currentDocument["MimeType"] = attachment.MimeType ?? "unknown/bin";
+            _currentDocument["Extension"] = attachment.Extension;
+            _currentDocument["MimeType"] = attachment.MimeType;
+            _currentDocument["Filename"] = attachment.Name;
 
-          /*  _currentDocument["tag"] = TagHelper.ToString(
-                attachment.Metadata.ToDictionary(
-                    _ => _.Key == "template" ? "form" : _.Key,
-                    _ => _.Value.ToString()
-                )
-            );
+            _currentDocument["Owner"] = attachment.User;
+            _currentDocument["Comment"] = attachment.Comment;
+            _currentDocument["Revision"] = attachment.Revision;
 
-            _currentDocument["tag"] = TagHelper.Merge(attachment.Type, "/doctype:" + attachment.Type + "/");
-           */
+            _currentDocument["Metadata"] = attachment.Metadata.ToBson();
+
+            // The "tag" field is temporarily removed
         }
     }
 }

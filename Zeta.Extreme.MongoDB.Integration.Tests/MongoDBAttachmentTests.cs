@@ -35,8 +35,21 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             var source = new byte[] { 84, 101, 115, 116, 32, 79, 75, 33 };
             var attachment = new FormAttachment {
                 Uid = "Test_OK2",
+                Extension = "sda",
+                MimeType = "dada",
+                User = "remalloc",
+                Comment = "test",
+                Revision = 0123456789,
                 Name = "Test OK File",
-                Type = "mdb-test"
+                Type = "mdb-test",
+                Metadata = {
+                    {
+                        "s", "sdffsdf"
+                    },
+                    {
+                        "test", "ok"
+                    }
+                }
             };
 
             this.Save(source, attachment);
