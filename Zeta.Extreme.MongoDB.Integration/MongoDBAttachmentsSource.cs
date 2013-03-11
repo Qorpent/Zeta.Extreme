@@ -15,14 +15,14 @@ namespace Zeta.Extreme.MongoDB.Integration {
     class MongoDBAttachmentsSource : IAttachmentStorage {
         // connection constants
         const string DEFAULT_DB_NAME = "db";
-        const string DEFAULT_AV_COLLECTION_NAME = "AttachmentView";
+        const string DB_COLLECTION_NAME = "AttachmentView";
 
         // Connection information
-        private MongoClient client;
-        private MongoServer server;
-        private MongoDatabase database;
-        private MongoGridFS gridFS;
-        private MongoCollection mongoDBCurrentCollection;
+        private MongoClient _client;
+        private MongoServer _server;
+        private MongoDatabase _database;
+        private MongoGridFS _gridFS;
+        private MongoCollection _mongoDBCurrentCollection;
 
         private BsonDocument _currentDocument;
         private string _currentDocumentID;
@@ -65,7 +65,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private Stream CreateStreamToCurrentFile(FileAccess mode) {
             return new MongoGridFSStream(
                 new MongoGridFSFileInfo(
-                    this.gridFS,
+                    this._gridFS,
                     this._currentDocumentID
                 ),
                 FileMode.Append,
@@ -77,18 +77,19 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// Create a connection to database and select the collection in this.mongoDBCurrentCollection
         /// </summary>
         private void MongoDBConnect() {
-            this.client = new MongoClient();
-            this.server = client.GetServer();
-            this.database = server.GetDatabase(DEFAULT_DB_NAME);
-            this.gridFS = new MongoGridFS(this.database);
-            this.mongoDBCurrentCollection = this.database.GetCollection(DEFAULT_AV_COLLECTION_NAME);
+            this._client = new MongoClient();
+            this._server = _client.GetServer();
+            this._database = _server.GetDatabase(DEFAULT_DB_NAME);
+            this._gridFS = new MongoGridFS(this._database);
+
+            this._mongoDBCurrentCollection = this._database.GetCollection(DB_COLLECTION_NAME);
         }
 
         /// <summary>
         /// Save the attachment view information to database
         /// </summary>
         private void AttachmentViewSave() {
-            this.mongoDBCurrentCollection.Insert(this._currentDocument);
+            this._mongoDBCurrentCollection.Insert(this._currentDocument);
         }
 
         private void HandleVariables(Attachment attachment) {
