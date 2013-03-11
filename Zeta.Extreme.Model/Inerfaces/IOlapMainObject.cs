@@ -12,6 +12,5 @@ namespace Zeta.Extreme.Poco.Inerfaces {
 	public interface IOlapMainObject<M, D> :
 		IDimension,
 		IWithDetailObjects<M, D>,
-		IWithRange,
 		IOlapMainObjectBase where M : IOlapMainObjectBase where D : IOlapDetailObject<M, D> {}
 }

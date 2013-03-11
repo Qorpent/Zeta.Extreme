@@ -27,10 +27,10 @@ using Qorpent;
 using Qorpent.Applications;
 using Qorpent.Log;
 using Qorpent.Serialization;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
 
-#endregion
+	#endregion
 using Qorpent.Utils.Extensions;
 namespace Zeta.Extreme.BizProcess.Themas{
 
@@ -634,7 +634,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
                         Period = getPrevPeriod(mainp, deltp);
                     }
                     else{
-                        var dp = Poco.NativeSqlBind.Periods.Get(deltp);
+                        var dp = Model.MetaCaches.Periods.Get(deltp);
                         
                         if (dp.IsFormula){
                             var x = dp.Evaluate(Year, DirectDate, mainp);
@@ -752,7 +752,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
 					Title = String.Format(srctitle, "", "", "", DirectDate);
 				}
 				else {
-					var p = Poco.NativeSqlBind.Periods.Get(Period);
+					var p = Model.MetaCaches.Periods.Get(Period);
 					DateTime st = QorpentConst.Date.Begin;
 					DateTime et = QorpentConst.Date.End;
 					if (p != null) {
@@ -764,7 +764,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
 					Title = String.Format(srctitle,
 					                      Year,
 					                      Period,
-					                      ResolvedPeriodName.IsNotEmpty() ? ResolvedPeriodName: Poco.NativeSqlBind.Periods.Get(Period).Name,
+					                      ResolvedPeriodName.IsNotEmpty() ? ResolvedPeriodName: Model.MetaCaches.Periods.Get(Period).Name,
 					                      Year - 1,
 					                      st.ToString("dd.MM.yyyy"),
 					                      st.AddDays(-1).ToString("dd.MM.yyyy"),

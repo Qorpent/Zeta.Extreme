@@ -11,10 +11,11 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.NativeSqlBind;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
 	/// <summary>

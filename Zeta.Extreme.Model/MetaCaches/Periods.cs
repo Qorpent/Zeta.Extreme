@@ -13,10 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Qorpent;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.SqlSupport;
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco.NativeSqlBind {
+namespace Zeta.Extreme.Model.MetaCaches {
 	/// <summary>
 	/// 	Обслуживание логики периодов
 	/// </summary>

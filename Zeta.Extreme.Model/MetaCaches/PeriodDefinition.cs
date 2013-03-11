@@ -16,7 +16,7 @@ using Qorpent;
 
 #endregion
 
-namespace Zeta.Extreme.Poco.NativeSqlBind {
+namespace Zeta.Extreme.Model.MetaCaches {
 	/// <summary>
 	/// 	Определение периода (с учетом года и дат)
 	/// </summary>
@@ -131,7 +131,7 @@ namespace Zeta.Extreme.Poco.NativeSqlBind {
 		/// <returns> Строка, представляющая текущий объект. </returns>
 		/// <filterpriority>2</filterpriority>
 		public override string ToString() {
-			return string.Format("{0} {1} {2}-{3}", NativeSqlBind.Periods.Get(Periods[0]).Name, Year,
+			return string.Format("{0} {1} {2}-{3}", MetaCaches.Periods.Get(Periods[0]).Name, Year,
 			                     StartDate.ToString("dd.MM.yyyy"), EndDate.ToString("dd.MM.yyyy"));
 		}
 	}

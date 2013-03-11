@@ -12,10 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Qorpent.Applications;
-using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Poco.Inerfaces;
 
-namespace Zeta.Extreme.Poco.NativeSqlBind {
+namespace Zeta.Extreme.Model.SqlSupport {
 	/// <summary>
 	/// 	Замена ORM для загрузки метаданных из БД напрямую
 	/// </summary>

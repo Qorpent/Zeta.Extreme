@@ -11,9 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Zeta.Extreme.Model.SqlSupport;
 using Zeta.Extreme.Poco.Deprecated;
 using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Model {
 	public partial class ObjectGroup : IZetaObjectGroup {

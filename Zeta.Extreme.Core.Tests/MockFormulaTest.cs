@@ -13,9 +13,9 @@ using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]

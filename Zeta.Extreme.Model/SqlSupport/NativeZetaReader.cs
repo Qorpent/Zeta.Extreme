@@ -9,9 +9,8 @@
 #endregion
 
 using System.Collections.Generic;
-using Zeta.Extreme.Model;
 
-namespace Zeta.Extreme.Poco.NativeSqlBind {
+namespace Zeta.Extreme.Model.SqlSupport {
 	public partial class NativeZetaReader {
 		private const string Divquerybase = @"
 				select 

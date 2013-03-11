@@ -14,8 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Core.Tests.SubQuery {
 	[TestFixture]

@@ -11,10 +11,10 @@
 using System;
 using System.Collections.Generic;
 using Qorpent.Model;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
 
-namespace Zeta.Extreme {
+namespace Zeta.Extreme.Model {
 	/// <summary>
 	/// 	Стандартная реализация, работает как с временным, так и реальными хранилищами
 	/// </summary>

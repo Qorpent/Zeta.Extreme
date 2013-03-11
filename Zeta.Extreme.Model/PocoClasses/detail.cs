@@ -20,7 +20,7 @@ using Zeta.Extreme.Poco.Inerfaces;
 namespace Zeta.Extreme.Model {
 	public partial class detail : IZetaDetailObject {
 		public detail() {
-			Range = new DateRange(QorpentConst.Date.Begin, QorpentConst.Date.End);
+			
 			Start = QorpentConst.Date.Begin;
 			Finish = QorpentConst.Date.Begin;
 			Date1 = QorpentConst.Date.Begin;
@@ -87,7 +87,7 @@ namespace Zeta.Extreme.Model {
 
 		
 
-		public virtual DateRange Range { get; set; }
+		
 
 		public virtual string Verb { get; set; }
 

@@ -21,7 +21,7 @@ using Zeta.Extreme.Poco.Inerfaces;
 namespace Zeta.Extreme.Model {
 	public partial class obj : IZetaMainObject, IZetaQueryDimension {
 		public obj() {
-			Range = new DateRange(QorpentConst.Date.Begin, QorpentConst.Date.End);
+
 			Start = QorpentConst.Date.Begin;
 			Finish = QorpentConst.Date.End;
 			// Properties = new Dictionary<string, object>();
@@ -157,7 +157,7 @@ namespace Zeta.Extreme.Model {
 
 		//public virtual IList<IDocumentOfCorrections> Documents { get; set; }
 
-		public virtual DateRange Range { get; set; }
+		
 		[Map] public virtual int Idx { get; set; }
 		[Map] public virtual DateTime Start { get; set; }
 		[Map] public virtual DateTime Finish { get; set; }
@@ -292,9 +292,7 @@ namespace Zeta.Extreme.Model {
 			return DetailObjects.Cast<detail>().ToArray();
 		}
 
-		public virtual detail[] FindOwnSubparts(int year) {
-			return DetailObjects.Where(d => d.Range.IsInRange(new DateTime(year, 1, 1))).Cast<detail>().ToArray();
-		}
+	
 
 		public virtual int CountOwnSubparts() {
 			return DetailObjects.Count;

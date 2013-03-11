@@ -12,8 +12,8 @@ using System;
 using System.Linq;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme {
 	/// <summary>

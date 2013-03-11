@@ -15,9 +15,9 @@ using NUnit.Framework;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Poco;
 using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
 	[TestFixture(Description = "Проверка корректности и уникальности кэш строк")]

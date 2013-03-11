@@ -19,8 +19,8 @@ using System;
 using System.Xml.Serialization;
 using Qorpent.Model;
 using Qorpent.Serialization;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
 using Qorpent.Utils.Extensions;
 using IWithFormula = Zeta.Extreme.Poco.Inerfaces.IWithFormula;
 

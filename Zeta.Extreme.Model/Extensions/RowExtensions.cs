@@ -18,7 +18,7 @@ using Zeta.Extreme.Poco.Inerfaces;
 
 #endif
 
-namespace Zeta.Extreme.Model.NativeSqlBind {
+namespace Zeta.Extreme.Model.Extensions {
 	/// <summary>
 	/// 	Расширения для строк
 	/// </summary>
