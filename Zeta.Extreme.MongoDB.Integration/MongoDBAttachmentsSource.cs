@@ -14,8 +14,8 @@ using Zeta.Extreme.BizProcess.Forms;
 namespace Zeta.Extreme.MongoDB.Integration {
     class MongoDBAttachmentsSource : IAttachmentStorage {
         // connection constants
-        const string DEFAULT_DB_NAME = "db";
-        const string DB_COLLECTION_NAME = "AttachmentView";
+        const string DB_NAME = "db";
+        const string COLLECTION_NAME = "AttachmentView";
 
         // Connection information
         private MongoClient _client;
@@ -29,7 +29,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
         public MongoDBAttachmentsSource() {
             MongoDBConnect();
-            _currentDocument = new BsonDocument();
         }
 
         public IEnumerable<Attachment> Find(Attachment query) {
@@ -37,6 +36,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         public void Save(Attachment attachment) {
+            _currentDocument = new BsonDocument();
+
             HandleVariables(attachment);
             AttachmentViewSave();
 
@@ -79,10 +80,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private void MongoDBConnect() {
             _client = new MongoClient();
             _server = _client.GetServer();
-            _database = _server.GetDatabase(DEFAULT_DB_NAME);
+            _database = _server.GetDatabase(DB_NAME);
             _gridFS = new MongoGridFS(_database);
 
-            _mongoDBCurrentCollection = _database.GetCollection(DB_COLLECTION_NAME);
+            _mongoDBCurrentCollection = _database.GetCollection(COLLECTION_NAME);
         }
 
         /// <summary>

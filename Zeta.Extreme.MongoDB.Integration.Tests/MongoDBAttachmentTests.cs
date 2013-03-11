@@ -42,6 +42,24 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             this.Save(source, attachment);
         }
 
+        public void CanDoubleSave() {
+            var source = new byte[] { 84, 101, 115, 116, 32, 79, 75, 33 };
+            var attachment = new FormAttachment {
+                Uid = "Test_OK2",
+                Name = "Test OK File",
+                Type = "mdb-test"
+            };
+
+            var attachment2 = new FormAttachment {
+                Uid = "Test_OK_Double",
+                Name = "Test OK File Double",
+                Type = "mdb-test"
+            };
+
+            this.Save(source, attachment);
+            this.Save(source, attachment2);
+        }
+
         public void CanDelete() {
             var attachment = new FormAttachment {
                 Uid = "Test_OK2",
