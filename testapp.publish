@@ -8,6 +8,6 @@
 	<Import Project="testapp.base" />
 	<ItemGroup>	
 		<Config Include="assoibd-eco-as-default.db-connection"/>
-		<Config Include="..\..\qorpent\config\devel.rolemap.bxl"/>
+		<Config Include="..\deployconfig\devel.rolemap.bxl"/>
 	</ItemGroup>
 </Project>
