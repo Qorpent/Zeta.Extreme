@@ -4,21 +4,21 @@
 !function($) {
     var attacher = new root.security.Widget("attacher", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 30 });
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown"/>')
-        .html('<i class="icon-file"></i><span class="caret"></span>');
-    b.tooltip({title: "Прикрепленные файлы", placement: 'bottom'});
+        .html('<i class="icon-file"></i>');
+    b.tooltip({title: "Прикрепленные файлы", placement: 'bottom',container: $('body')});
     var attachlist = $('<table class="table table-striped"/>');
     attachlist.append(
         $('<colgroup/>').append(
             $('<col/>').css("width",22),
             $('<col/>').css("width",70),
-            $('<col/>').css("width","25%"),
             $('<col/>').css("width",""),
+            $('<col/>').css("width","25%"),
             $('<col/>').css("width",22)
         ),
         $('<thead/>').append($('<tr/>').append($('<th colspan="5"/>').text("Прикрепленные файлы"))),
         $('<tbody/>').append($('<tr/>').append($('<td colspan="5"/>').text("Пока прикрепленных фалов нет")))
     );
-    var filelist = $('<ul class="dropdown-menu"/>').css({"padding": 5, "width": 500});
+    var filelist = $('<div class="dropdown-menu"/>').css({"padding": 5, "width": 450});
     var ConfigureAttachList = function() {
         var f = window.zefs.myform.attachment;
         var body = $(attachlist.find('tbody'));
@@ -32,8 +32,8 @@
                 body.append(tr.append(
                     $('<td class="type"/>').addClass(file.getExtension().substring(1)),
                     $('<td/>').text(file.getDate().format("dd.mm.yyyy")),
-                    $('<td class="username"/>').append(u.text(file.getUser())),
-                    $('<td class="filename"/>').html('<a href="' + window.zefs.myform.downloadfile(file.getUid()) + '" target="_blank">' + file.getName() + '</a>')
+                    $('<td class="filename"/>').html('<a href="' + window.zefs.myform.downloadfile(file.getUid()) + '" target="_blank">' + file.getName() + '</a>'),
+                    $('<td class="username"/>').append(u.text(file.getUser()))
                 ));
                 if (window.zeta.security.user != null) {
                     if (window.zeta.security.user.getIsAdmin()) {
@@ -92,7 +92,18 @@
             )
         )
     );
-    filelist.append(progress.hide(), uploadform, attachlist);
+    var floating = $('<div class="floatmode"/>').click(function() {
+        $(this).toggleClass("active");
+        filelist.toggleClass("floating");
+        b.toggleClass("active");
+        if (filelist.hasClass("ui-draggable")) {
+            filelist.draggable('destroy');
+            filelist.css({"top": "", "left": ""});
+        } else {
+            filelist.draggable();
+        }
+    });
+    filelist.append(floating, progress.hide(), uploadform, attachlist);
     $(document).on('click.dropdown.data-api', '.attacher div', function (e) {
         // e.preventDefault();
         e.stopPropagation();
