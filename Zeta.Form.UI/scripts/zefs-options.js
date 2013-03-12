@@ -15,12 +15,34 @@ var Command = function(sourceoptions){
     }
     if(!this.onsuccess)this.onsuccess=this.url+":success";
     if(!this.onsuccess)this.onsuccess=this.url+":error";
-    var self=  this;
+    var self = this;
     this.execute = function() {
-        var call = self.call || specification.call;
-        call(self);
+        self.call();
+    }
+    self.call = function (params,onsuccess,onerror) {
+        var dataType = self.dataType || specification.dataType;
+        var url = self.url;
+        var onsuccess = onsuccess || (function(result){
+            if (!result) {
+                $(root).trigger(self.onerror, result);
+                return;
+            }
+            $(root).trigger(self.onsuccess, result);
+        });
+        self.nativeCall(url,dataType,params,onsuccess, onerror) ;
     }
 };
+$.extend(Command.prototype,{
+        nativeCall : function(url,datatype,params,onsuccess,onerror){
+        $.ajax({
+            url: siteroot+url.replace('{DATATYPE}',datatype),
+            dataType: datatype,
+            data : params || {}
+        })
+            .success(onsuccess)
+            .error(onerror);
+    }
+})  ;
 
 $.extend(specification,(function(){
 	return {
@@ -41,8 +63,7 @@ $.extend(specification,(function(){
                     var params = specification.getParameters();
                     var self = this;
                     var call = this.call || specification.call;
-                    call(this,null,
-                        function(result){
+                    call(null,function(result){
                             if(!result){
                                 self.currenttimeout -= self.delay;
                                 if(self.currenttimeout<=0){
@@ -691,44 +712,7 @@ $.extend(specification,(function(){
             return attachlist;
         },
 
-        dataType : "json",
-        /**
-         * ЭТОТ МЕТОД - ТОЧКА ВЫХОДА НА СЕРВЕР, ЕСЛИ НАДО ИНУЮ ЛОГИКУ ИЛИ ТРАНСПОРТ - ПЕРЕКРЫВАЕМ
-         * @param url
-         * @param datatype
-         * @param params
-         * @param onsuccess
-         * @param onerror
-         */
-        nativeCall : function(url,datatype,params,onsuccess,onerror){
-            $.ajax({
-                url: siteroot+url.replace('{DATATYPE}',datatype),
-                dataType: datatype,
-                data : params || {}
-            })
-                .success(onsuccess)
-                .error(onerror);
-        },
-
-        /**
-         *
-         * @param command
-         * @param params
-         * @param onsuccess
-         * @param onerror
-         */
-        call : function (command,params,onsuccess,onerror) {
-            var dataType = command.dataType || specification.dataType;
-            var url = command.url;
-            var onsuccess = onsuccess || (function(result){
-                if (!result) {
-                    $(root).trigger(command.onerror, result);
-                    return;
-                }
-                $(root).trigger(command.onsuccess, result);
-            });
-            specification.nativeCall(url,dataType,params,onsuccess, onerror) ;
-        }
+        dataType : "json"
 	}
 })())
 })();
