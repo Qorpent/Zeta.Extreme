@@ -13,22 +13,6 @@
         }
         if(!this.successEventName)this.successEventName=this.url+":success";
         if(!this.errorEventName)this.errorEventName=this.url+":error";
-        var self = this;
-        this.execute = function(params) {
-            params = params || self.getParameters();
-            self.call(params);
-        };
-        self.call = function (params,onsuccess,onerror) {
-            onsuccess = onsuccess || (function(result){
-                if (!result) {
-                   self.triggerOnError(result);
-                    return;
-                }
-                if (self.wrap) result = self.wrap(result);
-                self.triggerOnSuccess(result);
-            });
-            self.nativeCall(params,onsuccess, onerror);
-        }
     };
 
     $.extend(root.Command.prototype,{
@@ -49,6 +33,21 @@
         },
         onError: function( func ){
             $(this).on(this.errorEventName, func);
+        },
+		execute : function(params) {
+            params = params || this.getParameters();
+            this.call(params);
+        },
+		call : function (params,onsuccess,onerror) {
+            onsuccess = onsuccess || (function(result){
+                if (!result) {
+                   this.triggerOnError(result);
+                    return;
+                }
+                if (this.wrap) result = this.wrap(result);
+                this.triggerOnSuccess(result);
+            });
+            this.nativeCall(params,onsuccess, onerror);
         },
         nativeCall : function(params,onsuccess,onerror,url,datatype){
             datatype = datatype || this.datatype;
