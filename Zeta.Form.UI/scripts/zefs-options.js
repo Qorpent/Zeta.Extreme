@@ -324,7 +324,7 @@ $.extend(specification,(function(){
 		// ФОРМИРУЕТ ПАРАМЕТРЫ AJAX ДЛЯ КОМАНД, ОПИРАЮЩИХСЯ НА СЕССИЮ
 		getSessionParameters  : function (session,startIdx) {
 			var params = {};
-			params[options.session_param] = session.getUid();
+			params[options.session_param] = session.Uid;
 			if (!!startIdx) {
 				params[options.startidx_param] = startIdx;
 			}

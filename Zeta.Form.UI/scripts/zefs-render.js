@@ -16,14 +16,14 @@ $.extend(root,{
 				$("<col/>").addClass("number"),
 				$("<col/>").addClass("name")
 			);
-			if (session.getNeedMeasure()) {
+			if (session.NeedMeasure) {
 				colgroup.append($("<col/>").addClass("measure"));
 			}
 			var thead = $('<thead/>').append($("<tr/>").append(
 				$('<th class="number"/>').text("№"),
 				$('<th class="name"/>').text("Наименование")
 			));
-			if (session.getNeedMeasure()) {
+			if (session.NeedMeasure) {
 				$(thead.find("tr").first()).append($('<th class="measure"/>').text("Ед. изм."));
 			}
 			$.each(session.structure.cols, function(i,col) {
@@ -38,7 +38,7 @@ $.extend(root,{
 			table.append(thead);
 		    //table.find("thead tr").first().append($("<th/>").text(col.getName()).data("src_column",col))
 				var body = $("<tbody/>");
-			if (session.getNeedMeasure()) {
+			if (session.NeedMeasure) {
 				thead.find("thead").append($('<th class="measure"/>').text("Ед. изм."));
 			}
 			$.each(session.structure.rows, function(rowidx,row) {
@@ -54,7 +54,7 @@ $.extend(root,{
 					tr.append(td.attr("colspan", "100"));
 				} else {
 					tr.append(td);
-					if (session.getNeedMeasure()) {
+					if (session.NeedMeasure) {
 						tr.append($('<td class="measure"/>').text(row.getMeasure()));
 					}
                     $.each(session.structure.cols, function(i,col) {

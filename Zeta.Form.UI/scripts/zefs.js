@@ -276,8 +276,8 @@ root.init = root.init ||
             data: params
         }).success(function(d) {
             d = options.asSession(d);
-            if(d.getUid() != root.myform.sessionId) {
-                root.myform.sessionId = d.getUid();
+            if(d.Uid != root.myform.sessionId) {
+                root.myform.sessionId = d.Uid;
                 root.myform.currentSession = d;
             }
             Save(obj);
