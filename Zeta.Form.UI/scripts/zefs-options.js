@@ -3,6 +3,9 @@ var root = window.zefs = window.zefs || {};
 var options = root.options = root.options || {};
 $.extend(options,(function(){
 	return {
+		security : {
+
+        },
 		/* ПАРАМЕТРЫ ДЛЯ ОБРАБОТКИ ИЗ ХЭША (зарезервированные) */
 			//параметр кода формы в хэше вызова HTML, может но не обязан включать в себя .in
 			form_hash_param : "form",
@@ -36,6 +39,8 @@ $.extend(options,(function(){
 		/* КОМАНДЫ ЗАГРУЗКИ ДОПОЛНИТЕЛЬНЫХ МЕТАДАННЫХ */
 			//команда, возвращающая каталог периодов [] ( []->each ( asPeriod() ) ) упорядоченный по типам и индексам
 			getperiods_command : "zeta/getperiods.json.qweb",
+
+
 				//типы периодов
 				periodtype_none:"None",
 				// Месяц
