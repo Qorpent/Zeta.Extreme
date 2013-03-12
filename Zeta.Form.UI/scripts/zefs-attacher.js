@@ -2,7 +2,9 @@
  * Виджет менеджера прикрепленных файлов
  */
 !function($) {
-    var attacher = new root.security.Widget("attacher", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 30 });
+    var attacher = new root.security.Widget("attacher", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 30, ready: function() {
+        attacher.body.find('.btn-group').floatmenu();
+    } });
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown"/>')
         .html('<i class="icon-file"></i>');
     b.tooltip({title: "Прикрепленные файлы", placement: 'bottom',container: $('body')});
