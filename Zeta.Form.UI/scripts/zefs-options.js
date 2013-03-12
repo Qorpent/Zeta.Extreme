@@ -5,12 +5,10 @@ var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 var options = root.options = root.specification;
 $.extend(specification,(function(){
 	return {
-        getFormStartFunction : function(){
-           return function(){
-               specification.server.ready.run();
-           }
-        },
 		server : {
+            start : function(){
+              this.ready.run();
+            },
             state : {
                 // команда получения статуса сервера (прямой JSON)
                 url :  "zefs/server.{DATATYPE}.qweb"
@@ -53,9 +51,6 @@ $.extend(specification,(function(){
 
             }
         },
-
-        onServerReady : function(){return this.server.ready.onsuccess},
-        onServerError : function(){return this.server.ready.onerror},
 
         commands : {
             //команда, возвращающая каталог периодов [] ( []->each ( asPeriod() ) ) упорядоченный по типам и индексам

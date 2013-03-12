@@ -400,21 +400,13 @@ root.init = root.init ||
 
     // Обработчики событий
 
-    $(root).on(spec.onServerReady(), function(e, params) {
+    $(root).on(spec.server.ready.onsuccess, function(e, params) {
         if (!!params) {
             ExecuteSession();
         }
-    });
-
-    $(root).on(spec.onServerReady(), function(e, params) {
         GetObjects();
-    });
-
-    $(root).on(spec.onServerReady(), function(e, params) {
         GetPeriods();
     });
-
-
 
 
     $.extend(root, {
@@ -422,7 +414,7 @@ root.init = root.init ||
     });
 
     $.extend(root.myform, {
-        run : spec.getFormStartFunction(),
+        run : function(){spec.server.start()},
         save : ReadySave,
         message: Message,
         lockform: Lock,
