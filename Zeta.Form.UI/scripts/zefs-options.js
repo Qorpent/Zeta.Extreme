@@ -10,8 +10,8 @@ $.extend(specification,(function(){
             start : function(){
               this.ready.execute();
             },
-            state : new Command({domain:"zefs",name:"server"}),
-            restart : new Command({domain:"zefs",name:"restart"}),
+            state : new Command({domain:"zefs",name:"server",title:"Статус сервера"}),
+            restart : new Command({domain:"zefs",name:"restart",title:"Перезапуск сервера"}),
             ready : $.extend (new Command({domain:"zefs",name:"ready"}), {
                 // общий таймаут ожидания
                 basetimeout : 30000,
@@ -38,8 +38,7 @@ $.extend(specification,(function(){
                         }
                     );
                 }
-
-            } )
+            })
         },
 
         commands : {

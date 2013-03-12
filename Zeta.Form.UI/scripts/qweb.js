@@ -17,9 +17,9 @@
         this.execute = function() {
             self.call();
         }
+
         self.call = function (params,onsuccess,onerror) {
-            var dataType = self.dataType || "json";
-            var url = self.url;
+
             var onsuccess = onsuccess || (function(result){
                 if (!result) {
                     $(root).trigger(self.onerror, result);
@@ -27,14 +27,21 @@
                 }
                 $(root).trigger(self.onsuccess, result);
             });
-            self.nativeCall(url,dataType,params,onsuccess, onerror) ;
+            self.nativeCall(params,onsuccess, onerror) ;
         }
     };
 
     $.extend(root.Command.prototype,{
-        nativeCall : function(url,datatype,params,onsuccess,onerror){
+        datatype : "json",
+        getUrl:function(datatype){
+            var datatype = datatype || self.dataType || "json";
+                       return siteroot+this.url.replace('{DATATYPE}',datatype);
+        },
+        nativeCall : function(params,onsuccess,onerror,url,datatype){
+            var datatype = datatype || this.datatype || "json";
+            var url =url || this.getUrl(this.datatype);
             $.ajax({
-                url: siteroot+url.replace('{DATATYPE}',datatype),
+                url:url ,
                 dataType: datatype,
                 data : params || {}
             })

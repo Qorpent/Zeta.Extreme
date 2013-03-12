@@ -2,6 +2,7 @@
  * Виджет инструментов для отладки
  */
 !function($) {
+    var spec = window.zefs.specification;
     var zefsdebug = new root.security.Widget("zefsdebug", root.console.layout.position.layoutHeader, "right", { authonly: true, priority: 90, adminonly: true });
     var sid = "";
     var session = $('<a id="sessionInfo"/>')
@@ -11,13 +12,13 @@
         .click(function(e) { Debug("zefs/debuginfo.json.qweb?session=" + sid, "Отладочные данные") })
         .html('<i class="icon-warning-sign"></i> Отладочная информация');
     var restart = $('<a id="restartInfo"/>')
-        .click(function(e) { Debug("zefs/restart.json.qweb", "Рестарт приложения") })
+        .click(function(e) { Debug(spec.server.restart) })
         .html('<i class="icon-repeat"></i> Рестарт');
     var lock = $('<a id="currentlockInfo"/>')
         .click(function(e) { Debug("zefs/currentlockstate.json.qweb?session=" + sid, "Статус блокировки") })
         .html('<i class="icon-lock"></i> Текущий статус');
     var serverstatus = $('<a id="serverInfo"/>')
-        .click(function(e) { Debug("zefs/server.json.qweb", "Статус сервера") })
+        .click(function(e) { Debug(spec.server.state) })
         .html('<i class="icon-tasks"></i> Статус сервера');
     var canlock = $('<a id="canlockInfo"/>')
         .click(function(e) { Debug("zefs/canlockstate.json.qweb?session=" + sid, "Возможность блокировки") })
@@ -31,7 +32,13 @@
         ));
     b.tooltip({placement: 'bottom'});
     var Debug = function(command, title) {
-        var iframe = $('<iframe id="debugResult"/>').css("height", 340).attr("src", command);
+        var url =  command;
+        var title = title;
+        if(typeof(command)=="object"){
+            url = command.getUrl("json");
+            title = command.title;
+        }
+        var iframe = $('<iframe id="debugResult"/>').css("height", 340).attr("src", url);
         $(window.zeta).trigger(window.zeta.handlers.on_modal, { title: title, content: iframe, width: 700, height: 350});
         iframe = null;
     }
