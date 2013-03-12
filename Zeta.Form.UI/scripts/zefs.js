@@ -52,15 +52,6 @@ root.init = root.init ||
 	var params = options.getParameters();
     var render = root.getRender();
 
-    $.extend(spec.server.ready,{
-        call: function(onsucces){
-            $.ajax({
-                url: this.url,
-                context: this,
-                dataType: 'json'
-            }).success(onsucces);
-        }
-    });
 
     var ExecuteSession = function() {
         $.ajax({
@@ -409,17 +400,17 @@ root.init = root.init ||
 
     // Обработчики событий
 
-    $(root).on(spec.server.ready.onsuccess, function(e, params) {
+    $(root).on(spec.onServerReady(), function(e, params) {
         if (!!params) {
             ExecuteSession();
         }
     });
 
-    $(root).on(spec.server.ready.onsuccess, function(e, params) {
+    $(root).on(spec.onServerReady(), function(e, params) {
         GetObjects();
     });
 
-    $(root).on(spec.server.ready.onsuccess, function(e, params) {
+    $(root).on(spec.onServerReady(), function(e, params) {
         GetPeriods();
     });
 
@@ -431,7 +422,7 @@ root.init = root.init ||
     });
 
     $.extend(root.myform, {
-        run : function(){spec.server.ready.run()},
+        run : spec.getFormStartFunction(),
         save : ReadySave,
         message: Message,
         lockform: Lock,

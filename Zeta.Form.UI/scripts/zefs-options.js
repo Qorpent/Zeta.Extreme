@@ -5,18 +5,23 @@ var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 var options = root.options = root.specification;
 $.extend(specification,(function(){
 	return {
+        getFormStartFunction : function(){
+           return function(){
+               specification.server.ready.run();
+           }
+        },
 		server : {
             state : {
                 // команда получения статуса сервера (прямой JSON)
-                url : siteroot + "zefs/server.json.qweb"
+                url :  "zefs/server.{DATATYPE}.qweb"
             },
             restart : {
                 // команда перезапуска сервера (true|false)
-                url : siteroot + "zefs/restart.json.qweb"
+                url :  "zefs/restart.{DATATYPE}.qweb"
             },
             ready : {
                 // команда проверки готовности сервера форм к обслуживанию запросов (true|false)
-                url : siteroot + "zefs/ready.json.qweb",
+                url :  "zefs/ready.{DATATYPE}.qweb",
                 // общий таймаут ожидания
                 basetimeout : 30000,
                 // текущий таймаут ожидания
@@ -25,13 +30,11 @@ $.extend(specification,(function(){
                 delay : 1000,
                 onsuccess : "zefs.ready.success",
                 onerror : "zefs.ready.error",
-                call : function(onsuccess){
-                    throw "U must implement it in client code";
-                },
                 run : function (){
                     var params = specification.getParameters();
                     var self = this;
-                    this.call(
+                    var call = this.call || specification.call;
+                    call(this,null,
                         function(result){
                             if(!result){
                                 self.currenttimeout -= self.delay;
@@ -42,15 +45,17 @@ $.extend(specification,(function(){
                                 window.setTimeout(self.run, self.delay);
                                 return;
                             }
-                          self.currenttimeout = self.basetimeout;
-                          $(root).trigger(self.onsuccess, params);
+                            self.currenttimeout = self.basetimeout;
+                            $(root).trigger(self.onsuccess, params);
                         }
-
                     );
-
                 }
+
             }
         },
+
+        onServerReady : function(){return this.server.ready.onsuccess},
+        onServerError : function(){return this.server.ready.onerror},
 
         commands : {
             //команда, возвращающая каталог периодов [] ( []->each ( asPeriod() ) ) упорядоченный по типам и индексам
@@ -680,6 +685,24 @@ $.extend(specification,(function(){
             };
             prepare();
             return attachlist;
+        },
+
+        dataType : "json",
+        // ЭТОТ МЕТОД - ТОЧКА ВЫХОДА НА СЕРВЕР, ЕСЛИ НАДО ИНУЮ ЛОГИКУ ИЛИ ТРАНСПОРТ - ПЕРЕКРЫВАЕМ
+        nativeCall : function(url,datatype,params,onsuccess,onerror){
+            $.ajax({
+                url: siteroot+url.replace('{DATATYPE}',datatype),
+                dataType: datatype,
+                data : params ||{}
+            })
+                .success(onsuccess)
+                .error(onerror);
+        },
+        //////////////////////////////////////////////////////////
+        call : function (command,params,onsuccess,onerror) {
+            var dataType = command.dataType || specification.dataType;
+            var url = command.url;
+            specification.nativeCall(url,dataType,params,onsuccess, onerror) ;
         }
 	}
 	
