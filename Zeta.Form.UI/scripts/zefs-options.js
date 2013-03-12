@@ -12,7 +12,7 @@ $.extend(specification,(function(){
             },
             state : new Command({domain:"zefs",name:"server",title:"Статус сервера"}),
             restart : new Command({domain:"zefs",name:"restart",title:"Перезапуск сервера"}),
-            ready : new Command({domain:"zefs",name:"ready", timeout:10000})
+            ready : new Command({domain:"zefs",name:"ready",title:"Проверка доступности сервера", timeout:10000})
         },
 
         session : {

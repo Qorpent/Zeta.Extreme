@@ -16,7 +16,7 @@
 		this.repeatWait = false;
 		if(options.timeout){
 			this.basetimeout = options.timeout;
-			this.currenttimeout = options.basetimeout;
+			this.currenttimeout = this.basetimeout;
 			this.delay  = options.delay || 1000;
 			this.repeatWait = true;
 		}
@@ -68,18 +68,18 @@
 		},
 		_getRepeatWaitCallFunciton : function(){
 			var self = this;
-			return (function(result){
+			return (function(result,params){
                 if(!result){
 					self.currenttimeout -= self.delay;
 					if(self.currenttimeout<=0){
 						self.triggerOnError(null);
 						return;
 					}
-					window.setTimeout(self.execute, self.delay);
+					window.setTimeout(function(){self.execute(params)}, self.delay);
 					return;
 				}
 				self.currenttimeout = self.basetimeout;
-				self.triggerOnSuccess(params);
+				self.triggerOnSuccess(result);
 			});
 		},
         nativeCall : function(params,onsuccess,onerror,url,datatype){
@@ -91,7 +91,7 @@
                 dataType: datatype,
                 data : params || {}
             })
-                .success(onsuccess)
+                .success(function(r){onsuccess(r,params)})
                 .error(onerror||function(error){console.log(error)});
         }
     });
