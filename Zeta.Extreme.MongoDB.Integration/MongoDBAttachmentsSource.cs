@@ -24,7 +24,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private MongoGridFS _gridFS;
         private MongoCollection _mongoDBCurrentCollection;
 
-        private BsonDocument _currentDocument;
+        private IDictionary<string, BsonDocument> _attachments = new Dictionary<string, BsonDocument>();
 
         public MongoDBAttachmentsSource() {
             MongoDBConnect();
@@ -35,10 +35,12 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         public void Save(Attachment attachment) {
-            _currentDocument = new BsonDocument();
-
-            HandleVariables(attachment);
-            AttachmentViewSave();
+            // Add the KeyValuePair <string, BsonDocument> to the local storage _attachments
+            _attachments.Add(
+                AttachmentViewSave(
+                    HandleVariables(attachment)
+                )
+            );
         }
 
         public void Delete(Attachment attachment) {
@@ -52,7 +54,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="mode"></param>
         /// <returns></returns>
         public Stream Open(Attachment attachment, FileAccess mode) {
-            return CreateStreamToCurrentFile(mode);
+            return CreateStreamToFile(mode, attachment.Uid);
         }
 
         /// <summary>
@@ -60,11 +62,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="mode">Acces mode to the stream</param>
         /// <returns></returns>
-        private Stream CreateStreamToCurrentFile(FileAccess mode) {
+        private Stream CreateStreamToFile(FileAccess mode, string id) {
             return new MongoGridFSStream(
                 new MongoGridFSFileInfo(
                     _gridFS,
-                    _currentDocument["_id"].ToString()
+                    id
                 ),
                 FileMode.Append,
                 mode
@@ -86,29 +88,41 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <summary>
         /// Save the attachment view information to database
         /// </summary>
-        private void AttachmentViewSave() {
-            _mongoDBCurrentCollection.Save(_currentDocument);
+        private KeyValuePair<string, BsonDocument> AttachmentViewSave(BsonDocument document) {
+            // save the document
+            _mongoDBCurrentCollection.Save(document);
+
+            // and return back the pair as _id:Document
+            return new KeyValuePair<string, BsonDocument>(
+                document["_id"].ToString(),
+                document
+            );
         }
 
-        private void HandleVariables(Attachment attachment) {
+        private BsonDocument HandleVariables(Attachment attachment) {
+            BsonDocument document = new BsonDocument();
+
             if (attachment.Uid != null) {
-                _currentDocument["_id"] = attachment.Uid;
+                document["_id"] = attachment.Uid;
             }
 
-            _currentDocument["File"] = new BsonDocument();
-            _currentDocument["Attachment"] = new BsonDocument();
+            document["File"] = new BsonDocument();
+            document["Attachment"] = new BsonDocument();
 
-            _currentDocument["File"]["Extension"] = attachment.Extension;
-            _currentDocument["File"]["MimeType"] = attachment.MimeType;
-            _currentDocument["File"]["Filename"] = attachment.Name;
+            document["File"]["Extension"] = attachment.Extension;
+            document["File"]["MimeType"] = attachment.MimeType;
+            document["File"]["Filename"] = attachment.Name;
 
-            _currentDocument["Attachment"]["Owner"] = attachment.User;
-            _currentDocument["Attachment"]["Comment"] = attachment.Comment;
-            _currentDocument["Attachment"]["Revision"] = attachment.Revision;
+            document["Attachment"]["Deleted"] = false;
+            document["Attachment"]["Owner"] = attachment.User;
+            document["Attachment"]["Comment"] = attachment.Comment;
+            document["Attachment"]["Revision"] = attachment.Revision;
 
-            _currentDocument["Metadata"] = attachment.Metadata.ToBson();
+            document["Metadata"] = attachment.Metadata.ToBson();
 
             // The "tag" field is temporarily removed
+
+            return document;
         }
     }
 }
