@@ -29,7 +29,11 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             this.mdb.Delete(attachment);
         }
 
-       
+        private void find(Attachment attachment) {
+            IEnumerable<Attachment> result = this.mdb.Find(attachment);
+                Console.WriteLine("{0}", result.ToDictionary.Uid);
+
+        }
 
         public void CanSave() {
             var source = new byte[] { 84, 101, 115, 116, 32, 79, 75, 33 };
@@ -71,6 +75,15 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
             this.Save(source, attachment);
             this.Save(source, attachment2);
+        }
+
+        public void CanFind() {
+            var attachment = new FormAttachment {
+                Uid = "Test_OK2",
+                User = "remalloc"
+            };
+
+            this.find(attachment);
         }
 
         public void CanSaveIntoSave() {
@@ -149,17 +162,6 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             };
 
             this.Delete(attachment);
-        }
-
-
-        public void CanFind() {
-            var attachment = new FormAttachment {                           // Test attachment description
-                Uid = "Test_OK",
-                Name = "Test OK File",
-                Type = "mdb-test"
-            };
-
-            this.mdb.Find(attachment);
         }
     }
 }

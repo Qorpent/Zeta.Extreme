@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,9 +31,13 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
         public IEnumerable<Attachment> Find(Attachment query) {
             BsonDocument document = HandleVariables(query);
+            IMongoQuery clause = new QueryDocument(document);
 
-
-            return null;
+            return _collection.FindAs<IEnumerable<Attachment>>(
+                Query.And(
+                    clause 
+                )
+            ) as IEnumerable<Attachment>;
         }
 
         public void Save(Attachment attachment) {
