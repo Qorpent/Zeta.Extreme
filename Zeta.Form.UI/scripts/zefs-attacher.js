@@ -94,7 +94,19 @@
             )
         )
     );
-    filelist.append(progress.hide(), uploadform, attachlist);
+    var floating = $('<div class="floatmode"/>').click(function() {
+        $(this).toggleClass("active");
+        filelist.toggleClass("floating");
+        b.toggleClass("active");
+        if (filelist.hasClass("ui-draggable")) {
+            filelist.draggable('destroy');
+            filelist.css({"top": "", "left": ""});
+            $(document).trigger('click.dropdown.data-api');
+        } else {
+            filelist.draggable();
+        }
+    });
+    filelist.append(floating, progress.hide(), uploadform, attachlist);
     $(document).on('click.dropdown.data-api', '.attacher div', function (e) {
         // e.preventDefault();
         e.stopPropagation();
