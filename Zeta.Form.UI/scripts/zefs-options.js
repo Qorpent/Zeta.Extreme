@@ -1,10 +1,98 @@
 ﻿(function(){
 var root = window.zefs = window.zefs || {};
-var options = root.options = root.options || {};
-$.extend(options,(function(){
+var specification = root.specification = root.specification || {};
+var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
+var options = root.options = root.specification;
+$.extend(specification,(function(){
 	return {
-		security : {
+		server : {
+            state : {
+                // команда получения статуса сервера (прямой JSON)
+                url : siteroot + "zefs/server.json.qweb"
+            },
+            restart : {
+                // команда перезапуска сервера (true|false)
+                url : siteroot + "zefs/restart.json.qweb"
+            },
+            ready : {
+                // команда проверки готовности сервера форм к обслуживанию запросов (true|false)
+                url : siteroot + "zefs/ready.json.qweb",
+                // общий таймаут ожидания
+                basetimeout : 30000,
+                // текущий таймаут ожидания
+                currenttimeout : 30000,
+                // период опроса ожидания
+                delay : 1000,
+                onsuccess : "zefs.ready.success",
+                onerror : "zefs.ready.error",
+                call : function(onsuccess){
+                    throw "U must implement it in client code";
+                },
+                run : function (){
+                    var params = specification.getParameters();
+                    var self = this;
+                    this.call(
+                        function(result){
+                            if(!result){
+                                self.currenttimeout -= self.delay;
+                                if(self.currenttimeout<=0){
+                                    $(root).trigger(self.onerror,params );
+                                    return;
+                                }
+                                window.setTimeout(self.run, self.delay);
+                                return;
+                            }
+                          self.currenttimeout = self.basetimeout;
+                          $(root).trigger(self.onsuccess, params);
+                        }
 
+                    );
+
+                }
+            }
+        },
+
+        commands : {
+            //команда, возвращающая каталог периодов [] ( []->each ( asPeriod() ) ) упорядоченный по типам и индексам
+            getperiods_command : "zeta/getperiods.json.qweb",
+            //команда, возвращающая список доступных предприятий ( применить asObjectList())
+            getobject_command : "zeta/getobjects.json.qweb",
+            // команда вызова сессии формы (как  asSession() )
+            start_command : "zefs/start.json.qweb",
+            // команда получения данных о сессии [от SESSIONID] (как asSession() )
+            session_command : "zefs/session.json.qweb",
+            // команда получения отладочной таблицы [от SESSIONID] (прямой JSON)
+            debug_command : "zefs/debuginfo.json.qweb",
+            // команда получения структуры таблицы [от SESSIONID] (как asStruct() )
+            struct_command : "zefs/struct.json.qweb",
+            // команда получения батча данных [от SESSIONID ] (как asDataBatch() )
+            data_command : "zefs/data.json.qweb",
+            // команда уведомления сервера о завершении загрузки данных [от SESSIONID ]
+            dataloaded_command : "zefs/dataloaded.json.qweb",
+            // команда инициализации сессии сохранения [от SESSIONID ] (true|false )
+            saveready_command : "zefs/saveready.json.qweb",
+            // команда инициализации сохранения [от SESSIONID ] (true|false )
+            save_command : "zefs/save.json.qweb",
+            // команда проверки состояния сохранения [от SESSIONID ] (как asSaveState() ) должна быть еще и в DEBUG-меню
+            savestate_command : "zefs/savestate.json.qweb",
+            // команда получения текущего статуса блокировки [от SESSIONID] (как asLockState() )
+            currentlock_command : "zefs/currentlockstate.json.qweb",
+            // команда получения статуса возможности блокировки [от SESSIONID] (как asLockState() )
+            canlock_command : "zefs/canlockstate.json.qweb",
+            // команда получения истории блокировок [от SESSIONID]
+            locklist_command : "zefs/locklist.json.qweb",
+            // команда блокировки формы [от SESSIONID]
+            lockform_command : "zefs/lockform.json.qweb",
+            // команда получения списка прикрепленных к форме файлов [от SESSIONID]
+            attachlist_command : "zefs/attachlist.json.qweb",
+            // команда прекрепления или обновления файла к форме
+            attachfile_command : "zefs/attachfile.json.qweb",
+            // команда скрытия/удаления файла [от SESSIONID и UID]
+            deletefile_command : "zefs/deletefile.json.qweb",
+            // команда загрузки файла [от SESSIONID и UID]
+            downloadfile_command : "zefs/downloadfile.filedesc.qweb",
+            // команда получения возможных типов файлов [от SESSIONID]
+            getfiletypes_command : "zefs/getfiletypes.json.qweb"
         },
 		/* ПАРАМЕТРЫ ДЛЯ ОБРАБОТКИ ИЗ ХЭША (зарезервированные) */
 			//параметр кода формы в хэше вызова HTML, может но не обязан включать в себя .in

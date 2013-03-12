@@ -1,6 +1,7 @@
 (function(){
 var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 var root = window.zefs = window.zefs || {};
+var spec = root.specification;
 root.handlers = $.extend(root.handlers, {
     // Zefs handlers:
     on_zefsready : "zefsready",
@@ -50,34 +51,18 @@ root.init = root.init ||
     var options = window.zefs.options;
 	var params = options.getParameters();
     var render = root.getRender();
-    var StartForm = function() {
-        $.ajax({
-            url: siteroot+options.ready_command,
-            context: this,
-            dataType: 'json'
-        }).success($.proxy(function(d) {
-            //дожидаемся готовности сервера
-            if (!d) {
-                options.timeout -= options.readydelay;
-                if(options.timeout<=0){
-                    FailStartServer();
-                    return;
-                }
-                window.setTimeout(StartForm, options.readydelay);
-                return;
-            }
-            options.timeout = options.default_timeout;
-            $(root).trigger(root.handlers.on_zefsready);
-            if (!!params) {
-                ExecuteSession();
-            }
-            GetPeriods();
-            GetObjects();
-        }));
-    };
 
-    var FailStartServer = function(){};
-    var ExecuteSession = $.proxy(function() {
+    $.extend(spec.server.ready,{
+        call: function(onsucces){
+            $.ajax({
+                url: this.url,
+                context: this,
+                dataType: 'json'
+            }).success(onsucces);
+        }
+    });
+
+    var ExecuteSession = function() {
         $.ajax({
             url: siteroot+options.start_command,
             context: this,
@@ -96,7 +81,7 @@ root.init = root.init ||
             $(root).trigger(root.handlers.on_sessionload);
             window.setTimeout(function(){Data(session,0)},options.datadelay); //первый запрос на данные
         }));
-    }, this);
+    };
 
     var Structure = $.proxy(function(session) {
         var params = GetSessionParams(session);
@@ -421,12 +406,32 @@ root.init = root.init ||
         return name;
     };
 
+
+    // Обработчики событий
+
+    $(root).on(spec.server.ready.onsuccess, function(e, params) {
+        if (!!params) {
+            ExecuteSession();
+        }
+    });
+
+    $(root).on(spec.server.ready.onsuccess, function(e, params) {
+        GetObjects();
+    });
+
+    $(root).on(spec.server.ready.onsuccess, function(e, params) {
+        GetPeriods();
+    });
+
+
+
+
     $.extend(root, {
         getperiodbyid : GetPeriodName
     });
 
     $.extend(root.myform, {
-        run : StartForm,
+        run : function(){spec.server.ready.run()},
         save : ReadySave,
         message: Message,
         lockform: Lock,
