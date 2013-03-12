@@ -1,6 +1,6 @@
 (function(){
     var root = window.qweb = window.qweb || {};
-    var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
+    var siteroot = document.location.pathname.match(/([\\w\\d_\-]+)?/)[0];
     root.Command = function(sourceoptions){
         var options = sourceoptions || {};
         if (typeof(options)=="string"){
@@ -14,34 +14,36 @@
         if(!this.onsuccess)this.onsuccess=this.url+":success";
         if(!this.onsuccess)this.onsuccess=this.url+":error";
         var self = this;
-        this.execute = function() {
-            self.call();
-        }
-
+        this.execute = function(params) {
+            params = params || self.getParameters();
+            self.call(params);
+        };
         self.call = function (params,onsuccess,onerror) {
-
-            var onsuccess = onsuccess || (function(result){
+            onsuccess = onsuccess || (function(result){
                 if (!result) {
                     $(root).trigger(self.onerror, result);
                     return;
                 }
+                if (self.wrap) result = self.wrap(result);
                 $(root).trigger(self.onsuccess, result);
             });
-            self.nativeCall(params,onsuccess, onerror) ;
+            self.nativeCall(params,onsuccess, onerror);
         }
     };
 
     $.extend(root.Command.prototype,{
         datatype : "json",
+        getParameters : function() { return null },
         getUrl:function(datatype){
-            var datatype = datatype || self.dataType || "json";
+            datatype = datatype || self.dataType || "json";
                        return siteroot+this.url.replace('{DATATYPE}',datatype);
         },
         nativeCall : function(params,onsuccess,onerror,url,datatype){
-            var datatype = datatype || this.datatype || "json";
-            var url =url || this.getUrl(this.datatype);
+            datatype = datatype || this.datatype;
+            url = url || this.getUrl(this.datatype);
             $.ajax({
-                url:url ,
+                url: url,
+                type : !params ? "GET" : "POST",
                 dataType: datatype,
                 data : params || {}
             })
