@@ -12,34 +12,7 @@ $.extend(specification,(function(){
             },
             state : new Command({domain:"zefs",name:"server",title:"Статус сервера"}),
             restart : new Command({domain:"zefs",name:"restart",title:"Перезапуск сервера"}),
-            ready : $.extend (new Command({domain:"zefs",name:"ready"}), {
-                // общий таймаут ожидания
-                basetimeout : 30000,
-                // текущий таймаут ожидания
-                currenttimeout : 30000,
-                // период опроса ожидания
-                delay : 1000,
-                execute : function (){
-                    var params = specification.getParameters();
-                    var self = this;
-                    var call = this.call || specification.call;
-                    call(null,
-                        function(result){
-                            if(!result){
-                                self.currenttimeout -= self.delay;
-                                if(self.currenttimeout<=0){
-                                    self.triggerOnError(null);
-                                    return;
-                                }
-                                window.setTimeout(self.execute, self.delay);
-                                return;
-                            }
-                            self.currenttimeout = self.basetimeout;
-                           self.triggerOnSuccess(params);
-                        }
-                    );
-                }
-            })
+            ready : new Command({domain:"zefs",name:"ready", timeout:10000})
         },
 
         session : {
