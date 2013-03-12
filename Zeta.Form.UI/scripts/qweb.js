@@ -11,8 +11,8 @@
             var domain = this.domain || "_sys";
             this.url = domain+"/"+this.name+".{DATATYPE}.qweb";
         }
-        if(!this.onsuccess)this.onsuccess=this.url+":success";
-        if(!this.onsuccess)this.onsuccess=this.url+":error";
+        if(!this.successEventName)this.successEventName=this.url+":success";
+        if(!this.errorEventName)this.errorEventName=this.url+":error";
         var self = this;
         this.execute = function(params) {
             params = params || self.getParameters();
@@ -21,11 +21,11 @@
         self.call = function (params,onsuccess,onerror) {
             onsuccess = onsuccess || (function(result){
                 if (!result) {
-                    $(root).trigger(self.onerror, result);
+                   self.triggerOnError(result);
                     return;
                 }
                 if (self.wrap) result = self.wrap(result);
-                $(root).trigger(self.onsuccess, result);
+                self.triggerOnSuccess(result);
             });
             self.nativeCall(params,onsuccess, onerror);
         }
@@ -37,6 +37,18 @@
         getUrl:function(datatype){
             datatype = datatype || self.dataType || "json";
                        return siteroot+this.url.replace('{DATATYPE}',datatype);
+        },
+        triggerOnSuccess : function(result){
+            $(this).trigger(this.successEventName,result);
+        },
+        triggerOnError : function(result){
+            $(this).trigger(this.errorEventName,result);
+        },
+        onSuccess: function( func ){
+          $(this).on(this.successEventName, func);
+        },
+        onError: function( func ){
+            $(this).on(this.errorEventName, func);
         },
         nativeCall : function(params,onsuccess,onerror,url,datatype){
             datatype = datatype || this.datatype;

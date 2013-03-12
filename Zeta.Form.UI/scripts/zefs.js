@@ -52,28 +52,6 @@ root.init = root.init ||
 	var params = options.getParameters();
     var render = root.getRender();
 
-
-    var ExecuteSession = function() {
-        $.ajax({
-            url: siteroot+options.start_command,
-            context: this,
-            type: "POST",
-            dataType: "json",
-            data: params
-        }).success($.proxy(function(d) {
-            var session = options.asSession(d);
-            root.myform.currentSession = session;
-            root.myform.sessionId = session.getUid();
-            document.title = session.getFormInfo().getName();
-            Structure(session);
-            GetLock();
-            GetLockHistory();
-            GetAttachList();
-            $(root).trigger(root.handlers.on_sessionload);
-            window.setTimeout(function(){Data(session,0)},options.datadelay); //первый запрос на данные
-        }));
-    };
-
     var Structure = $.proxy(function(session) {
         var params = GetSessionParams(session);
         $.ajax({
@@ -399,14 +377,27 @@ root.init = root.init ||
 
 
     // Обработчики событий
-
-    $(root).on(spec.server.ready.onsuccess, function(e, params) {
+    spec.server.ready.onSuccess(function(e, params) {
         if (!!params) {
-            ExecuteSession();
+            spec.session.start.execute();
         }
         GetObjects();
         GetPeriods();
     });
+
+    spec.session.start.onSuccess(function(e, params) {
+        root.myform.currentSession = params;
+        root.myform.sessionId = params.Uid;
+        document.title = params.FormInfo.Name;
+        Structure(params);
+        GetLock();
+        GetLockHistory();
+        GetAttachList();
+        $(root).trigger(root.handlers.on_sessionload);
+        window.setTimeout(function(){Data(params,0)},options.datadelay); //первый запрос на данные
+    });
+
+
 
 
     $.extend(root, {

@@ -23,20 +23,63 @@ $.extend(specification,(function(){
                     var params = specification.getParameters();
                     var self = this;
                     var call = this.call || specification.call;
-                    call(null,function(result){
+                    call(null,
+                        function(result){
                             if(!result){
                                 self.currenttimeout -= self.delay;
                                 if(self.currenttimeout<=0){
-                                    $(root).trigger(self.onerror, params);
+                                    self.triggerOnError(null);
                                     return;
                                 }
                                 window.setTimeout(self.execute, self.delay);
                                 return;
                             }
                             self.currenttimeout = self.basetimeout;
-                            $(root).trigger(self.onsuccess, params);
+                           self.triggerOnSuccess(params);
                         }
                     );
+                }
+            })
+        },
+
+        session : {
+            /**
+            example {
+                Uid: "89f3ef74-39c6-433d-b6e6-f3270240a25e"
+                FormInfo: {Code: "balans2011A.in", Name: "Бухгалтерский баланс"}
+                ObjInfo: {Id: 353, Code: "obj1523", Name: "ОАО Святогор"}
+                Year: 2012
+                Period: 16
+                NeedMeasure: false
+
+                Activations: 1
+                Created: "##new Date(2013,2,12,15,28,41)"
+                DataCollectionRequests: 1
+                DataCount: 0
+                InitSaveMode: false
+                IsFinished: false
+                IsStarted: true
+                LastDataTime: "00:00:00"
+                OverallDataTime: "00:00:00"
+                PrimaryCount: 0
+                QueriesCount: 0
+                TimeToPrepare: "00:00:00.0742906"
+                TimeToPrimary: "00:00:00"
+                TimeToStructure: "00:00:00.0119778"
+                Usr: "ugmk\mia"
+            }*/
+            start : $.extend (new Command({domain: "zefs", name: "start"}), {
+                getParameters : function() { return specification.getParameters() },
+                wrap : function (obj) {
+                    $.extend(obj,{
+                        // признак завершения отрисовки сессии
+                        wasRendered : false,
+                        // контейнер для структуры
+                        structure : {},
+                        // контейнер для ячеек с данными
+                        data : []
+                    });
+                    return obj;
                 }
             })
         },
