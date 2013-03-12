@@ -1,48 +1,8 @@
 ﻿(function(){
 var root = window.zefs = window.zefs || {};
 var specification = root.specification = root.specification || {};
-var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 var options = root.options = root.specification;
-var Command = function(sourceoptions){
-    var options = sourceoptions || {};
-    if (typeof(options)=="string"){
-        options = {name:options};
-    }
-    $.extend(this,options);
-    if(!this.url){
-        var domain = this.domain || "zefs";
-        this.url = domain+"/"+this.name+".{DATATYPE}.qweb";
-    }
-    if(!this.onsuccess)this.onsuccess=this.url+":success";
-    if(!this.onsuccess)this.onsuccess=this.url+":error";
-    var self = this;
-    this.execute = function() {
-        self.call();
-    }
-    self.call = function (params,onsuccess,onerror) {
-        var dataType = self.dataType || specification.dataType;
-        var url = self.url;
-        var onsuccess = onsuccess || (function(result){
-            if (!result) {
-                $(root).trigger(self.onerror, result);
-                return;
-            }
-            $(root).trigger(self.onsuccess, result);
-        });
-        self.nativeCall(url,dataType,params,onsuccess, onerror) ;
-    }
-};
-$.extend(Command.prototype,{
-        nativeCall : function(url,datatype,params,onsuccess,onerror){
-        $.ajax({
-            url: siteroot+url.replace('{DATATYPE}',datatype),
-            dataType: datatype,
-            data : params || {}
-        })
-            .success(onsuccess)
-            .error(onerror);
-    }
-})  ;
+var Command = window.qweb.Command;
 
 $.extend(specification,(function(){
 	return {
@@ -50,9 +10,9 @@ $.extend(specification,(function(){
             start : function(){
               this.ready.execute();
             },
-            state : new Command("server"),
-            restart : new Command("restart"),
-            ready : $.extend (new Command("ready"), {
+            state : new Command({domain:"zefs",name:"server"}),
+            restart : new Command({domain:"zefs",name:"restart"}),
+            ready : $.extend (new Command({domain:"zefs",name:"ready"}), {
                 // общий таймаут ожидания
                 basetimeout : 30000,
                 // текущий таймаут ожидания
