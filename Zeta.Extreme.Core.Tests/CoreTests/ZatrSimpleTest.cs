@@ -17,10 +17,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Meta;
-using Zeta.Extreme.Poco;
-using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.PocoClasses;
+using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
@@ -108,7 +110,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 
 			var sqltime = new TimeSpan();
 			foreach (var task in t.OfType<Task<Session>>()) {
-				sqltime += task.Result.Stat_Batch_Time;
+				sqltime += task.Result.GetStatistics().BatchTime;
 			}
 
 			Console.WriteLine();
@@ -117,27 +119,27 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			Console.WriteLine("fulltime: " + sw.Elapsed);
 			Console.WriteLine("syncwaittime: " + waittime);
 			Console.WriteLine("srvresponsetime: " + (sw.Elapsed - TimeSpan.FromMilliseconds(500*100)));
-			var cntresponsetime = TimeSpan.FromMilliseconds(sessions.Select(x => x.Stat_Time_Total.TotalMilliseconds).Sum());
+			var cntresponsetime = TimeSpan.FromMilliseconds(sessions.Select(x => x.GetStatistics().TimeTotal.TotalMilliseconds).Sum());
 			Console.WriteLine("clntresponsetime: " + cntresponsetime);
 			var avgclntresponce =
-				TimeSpan.FromMilliseconds(sessions.Select(x => x.Stat_Time_Total.TotalMilliseconds).Average());
+				TimeSpan.FromMilliseconds(sessions.Select(x => x.GetStatistics().TimeTotal.TotalMilliseconds).Average());
 			Console.WriteLine("clnavgresponsetime: " + avgclntresponce);
 			Console.WriteLine("clnminresponsetime: " +
-			                  TimeSpan.FromMilliseconds(sessions.Select(x => x.Stat_Time_Total.TotalMilliseconds).Min()));
+							  TimeSpan.FromMilliseconds(sessions.Select(_ => _.GetStatistics().TimeTotal.TotalMilliseconds).Min()));
 			Console.WriteLine("clnmaxresponsetime: " +
-			                  TimeSpan.FromMilliseconds(sessions.Select(x => x.Stat_Time_Total.TotalMilliseconds).Max()));
-			Console.WriteLine("sqlquerycnt: " + sessions.Select(_ => _.Stat_Batch_Count).Sum());
+							  TimeSpan.FromMilliseconds(sessions.Select(_ => _.GetStatistics().TimeTotal.TotalMilliseconds).Max()));
+			Console.WriteLine("sqlquerycnt: " + sessions.Select(_ => _.GetStatistics().BatchCount).Sum());
 			Console.WriteLine("sqltotaltime: " +
-			                  TimeSpan.FromMilliseconds(sessions.Select(_ => _.Stat_Batch_Time.TotalMilliseconds).Sum()));
-			Console.WriteLine("primarycount: " + sessions.Select(_ => _.Stat_QueryType_Primary).Sum());
-			Console.WriteLine("getprimarycount: " + sessions.Select(_ => _.Stat_Primary_Catched).Sum());
-			Console.WriteLine("useprimarycount: " + sessions.Select(_ => _.Stat_Primary_Affected).Sum());
+							  TimeSpan.FromMilliseconds(sessions.Select(_ => _.GetStatistics().BatchTime.TotalMilliseconds).Sum()));
+			Console.WriteLine("primarycount: " + sessions.Select(_ => _.GetStatistics().QueryTypePrimary).Sum());
+			Console.WriteLine("getprimarycount: " + sessions.Select(_ => _.GetStatistics().PrimaryCatched).Sum());
+			Console.WriteLine("useprimarycount: " + sessions.Select(_ => _.GetStatistics().PrimaryAffected).Sum());
 			Console.WriteLine("wavgsrvcellcost: " +
 			                  TimeSpan.FromMilliseconds(
-				                  sessions.Select(_ => _.Stat_Time_Total.TotalMilliseconds/_.Stat_QueryType_Primary).Sum()/count));
+								  sessions.Select(_ => _.GetStatistics().TimeTotal.TotalMilliseconds / _.GetStatistics().QueryTypePrimary).Sum() / count));
 			Console.WriteLine("wavgclncellcost: " +
 			                  TimeSpan.FromMilliseconds(
-				                  sessions.Select(_ => _.Stat_Time_Total.TotalMilliseconds/_.Stat_QueryType_Primary).Sum()/count));
+								  sessions.Select(_ => _.GetStatistics().TimeTotal.TotalMilliseconds / _.GetStatistics().QueryTypePrimary).Sum() / count));
 			Console.WriteLine();
 		}
 
@@ -145,7 +147,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		private IZetaMainObject[] objs;
 		private ColumnDesc[] colset;
 
-		private Session RunForm(int batchsize = 100, int objnum = -1, bool usecolset = false, int rowset = 0) {
+		private ISession RunForm(int batchsize = 100, int objnum = -1, bool usecolset = false, int rowset = 0) {
 			var sw = Stopwatch.StartNew();
 			var rs = rows;
 			if (rowset == 1) {
@@ -207,7 +209,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			_session.WaitEvaluation();
 			Console.WriteLine("finish " + id);
 			sw.Stop();
-			_session.Stat_Time_Total = sw.Elapsed;
+			_session.GetStatistics().TimeTotal = sw.Elapsed;
 			return _session;
 		}
 
@@ -239,7 +241,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 
 			var q1 = session.Registry["test"];
 			Assert.AreEqual("r590610", q1.Row.Code); //redirect performed
-			Assert.AreEqual(1, session.Stat_Row_Redirections); //statistics acounted
+			Assert.AreEqual(1, session.GetStatistics().RowRedirections); //statistics acounted
 		}
 
 		[Test]
@@ -321,12 +323,12 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			RunForm(2000);
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
-			Assert.AreEqual(990, session.Registry.Where(x => x.Key != x.Value.GetCacheKey()).Count());
-			Assert.AreEqual(1032, session.Stat_Registry_Started_User);
+			Assert.AreEqual(990, session.Registry.Count(x => x.Key != x.Value.GetCacheKey()));
+			Assert.AreEqual(1032, session.GetStatistics().RegistryStartedUser);
 			Assert.AreEqual(1032
 			                - CAPT_COUNT*periods.Length
 			                - OBS_COUNT*periods.Length
-			                , session.Stat_Registry_User);
+			                , session.GetStatistics().RegistryUser);
 
 			Assert.True(session.Registry.Values.Any(_ => _.Row.IsSum && _.Result.NumericResult > 0));
 		}
@@ -341,11 +343,11 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
 			Assert.AreEqual(996, session.Registry.Where(x => x.Key != x.Value.GetCacheKey()).Count());
-			Assert.AreEqual(1038, session.Stat_Registry_Started_User);
+			Assert.AreEqual(1038, session.GetStatistics().RegistryStartedUser);
 			Assert.AreEqual(1038
 			                - CAPT_COUNT*periods.Length
 			                - OBS_COUNT*periods.Length
-			                , session.Stat_Registry_User);
+			                , session.GetStatistics().RegistryUser);
 
 			Assert.True(session.Registry.Values.Any(_ => _.Row.IsSum && _.GetResult().NumericResult > 0));
 		}

@@ -1,7 +1,8 @@
 using System;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme.Core.Tests {
@@ -160,7 +161,7 @@ namespace Zeta.Extreme.Core.Tests {
 					Session = session,
 
 				};
-			query = new QueryDelta { Period = -501 }.Apply(query);
+			query = (Query) new QueryDelta { Period = -501 }.Apply(query);
 			query.Normalize();
 			Console.WriteLine(query);
 			Assert.NotNull(query.Time.Periods);

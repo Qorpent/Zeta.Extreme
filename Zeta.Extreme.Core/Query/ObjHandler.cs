@@ -9,7 +9,10 @@
 #endregion
 
 using System;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces.Bases;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -79,7 +82,7 @@ namespace Zeta.Extreme {
 		/// <exception cref="NotImplementedException"></exception>
 		public override void Normalize(ISession session) {
 			if (IsStandaloneSingletonDefinition()) {
-				var cache = session == null ? MetaCache.Default : session.MetaCache;
+				var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 				switch (Type) {
 					case ObjType.Obj:
 						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());

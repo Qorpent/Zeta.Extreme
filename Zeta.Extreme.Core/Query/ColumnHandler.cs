@@ -10,8 +10,10 @@
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -33,7 +35,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="session"> </param>
 		public override void Normalize(ISession session) {
-			var cache = session == null ? MetaCache.Default : session.MetaCache;
+			var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 			if (IsStandaloneSingletonDefinition()) {
 				//try load native
 				Native = cache.Get<IZetaColumn>(0 == Id ? (object) Code : Id);

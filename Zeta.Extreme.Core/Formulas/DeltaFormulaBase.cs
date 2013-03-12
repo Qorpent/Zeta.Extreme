@@ -9,7 +9,8 @@
 #endregion
 
 using System;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -54,17 +55,30 @@ namespace Zeta.Extreme {
 		protected internal decimal Eval(QueryDelta delta) {
 			var query = delta.Apply(Query);
 			if (IsInPlaybackMode) {
-				Query.FormulaDependency.Add((Query) Session.Register(query));
+				Query.FormulaDependency.Add(Session.Register(query));
 				return 1;
 			}
 			var realq = Query.FormulaDependency[playbackCounter];
 			playbackCounter++;
+			return GetNumericResult(realq);
+		}
+
+		private  decimal GetNumericResult(IQuery realq) {
 			if (null == realq) {
 				return 0m;
 			}
-			var result = realq.GetResult();
-			if (null != result) {
-				return result.NumericResult;
+			var processable = realq as IQueryWithProcessing;
+			if (null == processable) {
+				var result = realq.Result;
+				if (null != result) {
+					return result.NumericResult;
+				}
+			}
+			else {
+				var result = processable.GetResult();
+				if (null != result) {
+					return result.NumericResult;
+				}
 			}
 			return 0m;
 		}

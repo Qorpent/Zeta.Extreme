@@ -8,7 +8,9 @@
 
 #endregion
 
-namespace Zeta.Extreme {
+using Zeta.Extreme.Model.Querying;
+
+namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// 	Описывает исполнителя фазы подготовки запроса
 	/// </summary>
@@ -18,6 +20,6 @@ namespace Zeta.Extreme {
 		/// 	выполняется после препроцессора и проверок
 		/// </summary>
 		/// <param name="query"> </param>
-		void Prepare(Query query);
+		void Prepare(IQuery query);
 	}
 }

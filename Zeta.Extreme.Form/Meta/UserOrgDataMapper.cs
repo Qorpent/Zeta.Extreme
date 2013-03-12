@@ -24,8 +24,9 @@ using System.Security.Principal;
 using Qorpent.Applications;
 using Qorpent.IoC;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
 
 namespace Zeta.Extreme.Form.Meta{
     /// <summary>

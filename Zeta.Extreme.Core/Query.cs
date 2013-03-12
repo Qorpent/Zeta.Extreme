@@ -14,7 +14,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -40,8 +41,8 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Дочерние запросы
 		/// </summary>
-		public IList<IQueryWithProcessing> FormulaDependency {
-			get { return _formulaDependency ?? (_formulaDependency = new List<IQueryWithProcessing>()); }
+		public IList<IQuery> FormulaDependency {
+			get { return _formulaDependency ?? (_formulaDependency = new List<IQuery>()); }
 		}
 
 		/// <summary>
@@ -72,8 +73,8 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Зависимости для суммовых запросов
 		/// </summary>
-		public IList<Tuple<decimal, IQueryWithProcessing>> SummaDependency {
-			get { return _summaDependency ?? (_summaDependency = new List<Tuple<decimal, IQueryWithProcessing>>()); }
+		public IList<Tuple<decimal, IQuery>> SummaDependency {
+			get { return _summaDependency ?? (_summaDependency = new List<Tuple<decimal, IQuery>>()); }
 		}
 
 		/// <summary>
@@ -202,7 +203,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="deep"> Если да, то делает копии вложенных измерений </param>
 		/// <returns> </returns>
-		public Query Copy(bool deep = false) {
+		public IQuery Copy(bool deep = false) {
 			var result = (Query) MemberwiseClone();
 			result.PrepareTask = null;
 			result.Result = null;
@@ -252,10 +253,10 @@ namespace Zeta.Extreme {
 		/// <param name="zetaRow"> </param>
 		/// <param name="selfcopy"> </param>
 		/// <param name="rowcopy"> </param>
-		public Query ToRow(IZetaRow zetaRow, bool selfcopy = false, bool rowcopy = false) {
+		public IQuery ToRow(IZetaRow zetaRow, bool selfcopy = false, bool rowcopy = false) {
 			var q = this;
 			if (selfcopy) {
-				q = Copy();
+				q = (Query)Copy();
 			}
 			if (rowcopy || selfcopy) {
 				q.Row = q.Row.Copy();
@@ -269,17 +270,17 @@ namespace Zeta.Extreme {
 		/// 	Синхронизатор результата
 		/// </summary>
 		/// <param name="timeout"> </param>
-		public void WaitResult(int timeout) {
+		public void WaitResult(int timeout =-1) {
 			WaitPrepare(timeout);
 			if (IsPrimary && null == Result) {
-				Session.PrimarySource.Wait();
+				Session.WaitForPrimary(timeout);
 			}
 		}
 
 		/// <summary>
 		/// 	Формула, которая присоединяется к запросу на фазе подготовки
 		/// </summary>
-		public IFormula AssignedFormula;
+		public IFormula AssignedFormula { get; set; }
 
 		/// <summary>
 		/// 	Модификатор кэш-строки (префикс)
@@ -289,22 +290,22 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Тип вычисления запроса
 		/// </summary>
-		public QueryEvaluationType EvaluationType;
+		public QueryEvaluationType EvaluationType { get; set; }
 
 		/// <summary>
 		/// 	Sign that primary was not set
 		/// </summary>
-		public bool HavePrimary;
+		public bool HavePrimary { get; set; }
 
 		/// <summary>
 		/// 	Статус по подготовке
 		/// </summary>
-		public PrepareState PrepareState;
+		public PrepareState PrepareState { get; set; }
 
 		/// <summary>
 		/// 	Обратная ссылка на сессию
 		/// </summary>
-		public Session Session;
+		public ISession Session { get; set; }
 
 		/// <summary>
 		/// 	Кэшированный запрос SQL
@@ -319,10 +320,10 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Автоматический код запроса, присваиваемый системой
 		/// </summary>
-		public long UID;
+		public long Uid { get; set; }
 
-		private List<IQueryWithProcessing> _formulaDependency;
+		private List<IQuery> _formulaDependency;
 
-		private List<Tuple<decimal, IQueryWithProcessing>> _summaDependency;
+		private List<Tuple<decimal, IQuery>> _summaDependency;
 	}
 }

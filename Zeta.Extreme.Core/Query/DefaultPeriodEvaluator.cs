@@ -8,7 +8,7 @@
 
 #endregion
 
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model.MetaCaches;
 
 namespace Zeta.Extreme {
 	/// <summary>

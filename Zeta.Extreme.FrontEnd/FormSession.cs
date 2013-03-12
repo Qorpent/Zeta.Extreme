@@ -29,11 +29,13 @@ using Zeta.Extreme.Form;
 using Zeta.Extreme.Form.DbfsAttachmentSource;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
-using Zeta.Extreme.Meta;
-using Zeta.Extreme.Poco;
-using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
-using Zeta.Extreme.Primary;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.PocoClasses;
+using Zeta.Extreme.Model.Querying;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
@@ -176,7 +178,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// 	Статистика сессии данных
 		/// </summary>
-		[IgnoreSerialize] public string DataStatistics { get; set; }
+		[IgnoreSerialize] public SessionStatistics DataStatistics { get; set; }
 
 		/// <summary>
 		/// 	Общее количество запросов в обработке
@@ -428,7 +430,7 @@ namespace Zeta.Extreme.FrontEnd {
 			_controlpoints.Clear();
 			Data.Clear();
 			var sw = Stopwatch.StartNew();
-			IDictionary<string, Query> queries = new Dictionary<string, Query>();
+			IDictionary<string, IQuery> queries = new Dictionary<string, IQuery>();
 			LoadEditablePrimaryData(queries);
 			if (!InitSaveMode) {
 				LoadNonEditablePrimaryData(queries);
@@ -440,8 +442,8 @@ namespace Zeta.Extreme.FrontEnd {
 				LoadNoPrimary(queries);
 
 				QueriesCount = queries.Count;
-				DataStatistics = ((Session) DataSession).GetStatisticString();
-				SqlLog = ((DefaultPrimarySource) ((Session) DataSession).PrimarySource).QueryLog.ToArray();
+				DataStatistics = DataSession.GetStatistics();
+				SqlLog = DataSession.GetPrimarySource().QueryLog.ToArray();
 				DataSession = null;
 				DataCount = Data.Count;
 				LastDataTime = sw.Elapsed;
@@ -454,28 +456,29 @@ namespace Zeta.Extreme.FrontEnd {
 			InitSaveMode = false;
 		}
 
-		private void LoadNoPrimary(IDictionary<string, Query> queries) {
+		private void LoadNoPrimary(IDictionary<string, IQuery> queries) {
 			foreach (var c in cols) {
 				foreach (var r in rows) {
 					var key = r.i + ":" + c.i;
 					if (queries.ContainsKey(key)) {
 						continue;
 					}
-					var ch = new ColumnHandler {Native = c._.Target};
+					var ch = ExtremeFactory.CreateColumnHandler();
+					ch.Native = c._.Target;
 					if (null == ch.Native) {
 						ch.Code = c._.Code;
 						ch.IsFormula = c._.IsFormula;
 						ch.Formula = c._.Formula;
 						ch.FormulaType = c._.FormulaEvaluator;
 					}
-					var q = new Query
+					var q = ExtremeFactory.CreateQuery( new QuerySetupInfo
 						{
 							Row = {Native = r._},
 							Col = ch,
 							Obj = {Native = Object},
 							Time = {Year = c._.Year, Period = c._.Period}
-						};
-					q = (Query) DataSession.Register(q, key);
+						});
+					q = DataSession.Register(q, key);
 
 					if (null != q) {
 						if (c._.ControlPoint && r._.IsMarkSeted("CONTROLPOINT")) {
@@ -489,51 +492,51 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 		}
 
-		private void LoadEditablePrimaryData(IDictionary<string, Query> queries) {
+		private void LoadEditablePrimaryData(IDictionary<string, IQuery> queries) {
 			BuildEditablePrimarySet(queries);
 			DataSession.Execute(500);
 			ProcessValues(queries, true);
 		}
 
-		private void LoadNonEditablePrimaryData(IDictionary<string, Query> queries) {
+		private void LoadNonEditablePrimaryData(IDictionary<string, IQuery> queries) {
 			BuildNonEditablePrimarySet(queries);
 			DataSession.Execute(500);
 			ProcessValues(queries, false);
 		}
 
-		private void BuildEditablePrimarySet(IDictionary<string, Query> queries) {
+		private void BuildEditablePrimarySet(IDictionary<string, IQuery> queries) {
 			foreach (var primaryrow in primaryrows) {
 				foreach (var primarycol in primarycols) {
-					var q = new Query
+					var q = ExtremeFactory.CreateQuery(  new QuerySetupInfo
 						{
 							Row = {Native = primaryrow._},
 							Col = {Native = primarycol._.Target},
 							Obj = {Native = Object},
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
-						};
+						});
 					var key = primaryrow.i + ":" + primarycol.i;
-					queries[key] = (Query) DataSession.Register(q, key);
+					queries[key] = (IQuery) DataSession.Register(q, key);
 				}
 			}
 		}
 
-		private void BuildNonEditablePrimarySet(IDictionary<string, Query> queries) {
+		private void BuildNonEditablePrimarySet(IDictionary<string, IQuery> queries) {
 			foreach (var primaryrow in primaryrows) {
 				foreach (var primarycol in neditprimarycols) {
-					var q = new Query
+					var q =  ExtremeFactory.CreateQuery( new QuerySetupInfo
 						{
 							Row = {Native = primaryrow._},
 							Col = {Native = primarycol._.Target},
 							Obj = {Native = Object},
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
-						};
+						});
 					var key = primaryrow.i + ":" + primarycol.i;
-					queries[key] = (Query) DataSession.Register(q, key);
+					queries[key] = DataSession.Register(q, key);
 				}
 			}
 		}
 
-		private void ProcessValues(IDictionary<string, Query> queries, bool canbefilled) {
+		private void ProcessValues(IDictionary<string, IQuery> queries, bool canbefilled) {
 			foreach (var q_ in queries.Where(_ => null != _.Value)) {
 				if (_processed.ContainsKey(q_.Key)) {
 					continue;
@@ -564,10 +567,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns> </returns>
 		public object CollectDebugInfo() {
-			var stats = string.IsNullOrWhiteSpace(DataStatistics)
-				            ? null
-				            : DataStatistics.SmartSplit(false, true, '\r', '\n').ToArray();
-			return new {stats, sql = SqlLog, colset = Colset};
+			return new {stats=DataStatistics, sql = SqlLog, colset = Colset};
 		}
 
 		private void PrepareMetaSets() {
@@ -602,7 +602,7 @@ namespace Zeta.Extreme.FrontEnd {
 				return;
 			}
 			var src = columnDesc._;
-			DataSession.MetaCache.Set(
+			DataSession.GetMetaCache().Set(
 				new col
 					{
 						Code = src.CustomCode,
@@ -845,7 +845,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public FileTypeRecord[] GetAllowedFileTypes() {
 			EnsureDataSession();
-			var filetypes = DataSession.MetaCache.Get<IZetaRow>("DIR_FILE_TYPES").Children.ToArray();
+			var filetypes = DataSession.GetMetaCache().Get<IZetaRow>("DIR_FILE_TYPES").Children.ToArray();
 			return (
 				       from filetypedesc in filetypes
 				       from formcode in TagHelper.Value(filetypedesc.Tag, "form").Split(',')
@@ -856,7 +856,7 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void EnsureDataSession() {
-			DataSession = DataSession ?? new Session(true);
+			DataSession = DataSession ?? ExtremeFactory.CreateSession(new SessionSetupInfo {CollectStatistics = true});
 		}
 
 		#region Nested type: IdxCol
@@ -880,7 +880,7 @@ namespace Zeta.Extreme.FrontEnd {
 
 		private readonly IList<ControlPointResult> _controlpoints = new List<ControlPointResult>();
 
-		private readonly IDictionary<string, Query> _processed = new Dictionary<string, Query>();
+		private readonly IDictionary<string, IQuery> _processed = new Dictionary<string, IQuery>();
 		private IFormSessionDataSaver CurrentSaver;
 		private Task<SaveResult> _currentSaveTask;
 

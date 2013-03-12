@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Poco.Deprecated {
+namespace Zeta.Extreme.Model.Deprecated {
 	public class
 		ManyAttribute : MappingAttribute {
 		public Type ClassName { get; set; }

@@ -13,8 +13,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -27,7 +28,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="target"> </param>
 		/// <returns> </returns>
-		public Query Apply(Query target) {
+		public IQuery Apply(IQuery target) {
 			if (NoChanges(target)) {
 				return target;
 			}
@@ -141,7 +142,7 @@ namespace Zeta.Extreme {
 			return s.ToString();
 		}
 
-		private void MoveTime(Query result) {
+		private void MoveTime(IQuery result) {
 			if ((Year != 0 && Year != result.Time.Year) || (Period != 0 && Period != result.Time.Period)) {
 				result.Time = result.Time.Copy();
 				if (0 != Year && Year < 1900) {
@@ -171,7 +172,7 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		private void MoveColumn(Query result) {
+		private void MoveColumn(IQuery result) {
 			if (null != Col) {
 				if (Col != result.Col.Native) {
 					result.Col = new ColumnHandler {Native = Col};
@@ -184,7 +185,7 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		private void MoveRow(Query result) {
+		private void MoveRow(IQuery result) {
 			if (null != Row) {
 				if (Row != result.Row.Native) {
 					result.Row = new RowHandler {Native = Row};
@@ -197,7 +198,7 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		private void MoveObj(Query result) {
+		private void MoveObj(IQuery result) {
 			if (null != Obj) {
 				if (!Equals(Obj, result.Obj.Native)) {
 					result.Obj = new ObjHandler {Native = Obj};
@@ -211,7 +212,7 @@ namespace Zeta.Extreme {
 		}
 
 
-		private bool NoChanges(Query target) {
+		private bool NoChanges(IQuery target) {
 			if (0 > Period) {
 				return false; //формульный период
 			}

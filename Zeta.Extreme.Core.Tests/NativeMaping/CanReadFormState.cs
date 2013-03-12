@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
-using Zeta.Extreme.Meta;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Core.Tests.NativeMaping
 {

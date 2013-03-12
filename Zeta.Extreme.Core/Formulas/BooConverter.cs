@@ -8,6 +8,9 @@
 
 #endregion
 
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Querying;
+
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Конвертирует фигурные скобки с ламбдами BOO в С# ламбды

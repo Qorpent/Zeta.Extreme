@@ -19,10 +19,10 @@ using System;
 using System.Xml.Serialization;
 using Qorpent.Model;
 using Qorpent.Serialization;
-using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model.Extensions;
 using Qorpent.Utils.Extensions;
-using IWithFormula = Zeta.Extreme.Poco.Inerfaces.IWithFormula;
+using Zeta.Extreme.Model.Inerfaces.Bases;
+using IWithFormula = Zeta.Extreme.Model.Inerfaces.Partial.IWithFormula;
 
 #if NEWMODEL
 

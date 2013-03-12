@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using Qorpent.Model;
 using Zeta.Extreme.BizProcess.Reports;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>

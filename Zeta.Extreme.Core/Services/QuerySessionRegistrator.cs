@@ -8,10 +8,8 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -37,20 +35,19 @@ namespace Zeta.Extreme {
 		/// <param name="uid"> </param>
 		/// <returns> итоговый запрос после регистрации </returns>
 		public virtual IQuery Register(IQuery srcquery, string uid) {
-			//lock(ZexSession._register_lock) {
+			var registry = _session.GetRegistry();
+			var keymap = _session.GetRegistryKeyMap();
+
 			WriteInitialStatistics(uid);
 
-			var query = (Query) srcquery;
-			Query result;
+			var query = srcquery;
+			IQuery result;
 			var preloadkey = srcquery.GetCacheKey();
 
 			// мы сразу ловим ключ запроса на тот случай, если он уже 
 			// был когда либо запрошен, в этом случае мы минуя все 
 			// обработки берем запрос из кэша
 			if (TryResolveByKeyMap(uid, preloadkey, out result)) {
-				if (result.Session != _session) {
-					result.WaitPrepare();
-				}
 				return result;
 			}
 
@@ -70,9 +67,6 @@ namespace Zeta.Extreme {
 
 			//пытаемся вернуть готовый запрос из общего хранилища (ключ - пользовательский)
 			if (TryReturnAlreadyRegistered(uid, out result)) {
-				if (result.Session != _session) {
-					result.WaitPrepare();
-				}
 				return result;
 			}
 
@@ -80,143 +74,104 @@ namespace Zeta.Extreme {
 			var found = TryGetFromActiveAgenda(key, out result);
 			if (!found) {
 				// вот теперь понятно, что запрос новый - регистрируем и запускаем
-				result = RegisterRequestInAgendaAndStart(query, key);
+				result = RegisterRequestInAgendaAndStart((IQueryWithProcessing) query, key);
 			}
-			CheckUserRegistryStatistics(uid, key);
+			_session.StatIncRegistryUser();
 
 			// и в завершении прописываем запрос собственно в основных регистраторах
 			// пользовательский мапинг uid->запрос
 			// и KeyMap для быстрого кэширования
 
-			_session.Registry[uid] = result;
-			_session.KeyMap[preloadkey] = uid;
+			registry[uid] = result;
+			keymap[preloadkey] = uid;
 
-
-			if (null == result.PrepareTask && PrepareState.Prepared != result.PrepareState) {
-				result.PrepareState = PrepareState.TaskStarted;
-				result.PrepareTask = _session.PrepareAsync(result);
+			var processable = result as IQueryWithProcessing;
+			if(null!=processable) {
+				if (null == processable.PrepareTask && PrepareState.Prepared != processable.PrepareState)
+				{
+					processable.PrepareState = PrepareState.TaskStarted;
+					processable.PrepareTask = _session.PrepareAsync(processable);
+				}
 			}
-
-			//if (result.Session != _session) result.WaitPrepare();
 			return result;
-			//	}
 		}
 
-		private void CheckUserRegistryStatistics(string uid, string key) {
-			//	lock(ZexSession._register_lock) {
-			if (_stat && uid != key) {
-				Interlocked.Increment(ref _session.Stat_Registry_User);
-			}
-			//	}
-		}
 
-		private Query RegisterRequestInAgendaAndStart(Query query, string key) {
-			//lock(ZexSession._register_lock) {
+		private IQuery RegisterRequestInAgendaAndStart(IQuery query, string key) {
 			query.Session = _session; //надо установить сессию раз новый запрос
-			query = _session.ActiveSet.GetOrAdd(key, query);
+			query = _session.GetRegistryActiveSet().GetOrAdd(key, query);
 			var result = query;
 			lock (typeof (QuerySessionRegistrator)) {
-				result.UID = ++QUERYID;
+				result.Uid = ++QUERYID;
 			}
-			if (_stat) {
-				Interlocked.Increment(ref _session.Stat_Registry_New);
-			}
-			if (_session.TraceQuery) {
-				result.TraceList = result.TraceList ?? new List<string>();
-				result.TraceList.Add(Environment.TickCount + " " + _session.Id + " r " + result.UID + " " + result.GetCacheKey());
-			}
-
+			_session.StatIncRegistryNew();
 
 			return result;
-			//	}
 		}
 
-		private bool TryGetFromActiveAgenda(string key, out Query result) {
-			//	lock(ZexSession._register_lock) {
-			var found = _session.ActiveSet.TryGetValue(key, out result);
-			if (_stat && found) {
-				_session.Stat_Registry_Resolved_By_Key++;
-			}
+		private bool TryGetFromActiveAgenda(string key, out IQuery result) {
+			var found = _session.GetRegistryActiveSet().TryGetValue(key, out result);
+			_session.StatIncRegistryResolvedByKey();
 			return found;
-			//	}
 		}
 
-		private bool TryReturnAlreadyRegistered(string uid, out Query result) {
-			//	lock(ZexSession._register_lock) {
-			if (_session.Registry.TryGetValue(uid, out result)) {
-				if (_stat) {
-					Interlocked.Increment(ref _session.Stat_Registry_Resolved_By_Uid);
-				}
-				{
-					return true;
-				}
-			}
-			return false;
-			//	}
-		}
-
-		private bool CheckNullQuery(Query query) {
-			//	lock(ZexSession._register_lock) {
-			if (null == query) {
-				if (_stat) {
-					Interlocked.Increment(ref _session.Stat_Registry_Ignored);
-				}
+		private bool TryReturnAlreadyRegistered(string uid, out IQuery result) {
+			if (_session.GetRegistry().TryGetValue(uid, out result)) {
+				_session.StatIncRegistryResolvedByUid();
 				return true;
 			}
 			return false;
-			//	}
 		}
 
-		private Query PreprocessQuery(Query query) {
+		private bool CheckNullQuery(IQuery query) {
+			if (null == query) {
+				_session.StatIncRegistryIgnored();
+				return true;
+			}
+			return false;
+		}
+
+		private IQuery PreprocessQuery(IQuery query) {
 			//		lock(ZexSession._register_lock) {
 			var preprocessor = _session.GetPreloadProcessor();
 			try {
-				if (_stat) {
-					Interlocked.Increment(ref _session.Stat_Registry_Preprocessed);
-				}
+				_session.StatIncRegistryPreprocessed();
 				query = preprocessor.Process(query);
 			}
 			finally {
 				_session.Return(preprocessor);
 			}
 			return query;
-			//		}
 		}
 
-		private bool TryResolveByKeyMap(string uid, string preloadkey, out Query result) {
-			//		lock(ZexSession._register_lock) {
+		private bool TryResolveByKeyMap(string uid, string preloadkey, out IQuery result) {
 			result = null;
+			var registry = _session.GetRegistry();
+			var keymap = _session.GetRegistryKeyMap();
 			string mappedkey;
-			if (_session.KeyMap.TryGetValue(preloadkey, out mappedkey)) {
-				if (_stat) {
-					Interlocked.Increment(ref _session.Stat_Registry_Resolved_By_Map_Key);
-				}
-
-				result = _session.Registry[mappedkey];
+			if (keymap.TryGetValue(preloadkey, out mappedkey)) {
+				_session.StatIncRegistryResolvedByMapKey();
+				result = registry[mappedkey];
 				if (!string.IsNullOrWhiteSpace(uid) && mappedkey != uid) {
-					if (_stat) {
-						Interlocked.Increment(ref _session.Stat_Registry_User);
-					}
-					_session.Registry[uid] = result;
+					_session.StatIncRegistryUser();
+					registry[uid] = result;
 				}
 				return true;
 			}
 			return false;
-			//	}
 		}
 
 		private void WriteInitialStatistics(string uid) {
-			//		lock(ZexSession._register_lock) {
-			if (_stat) {
-				Interlocked.Increment(ref _session.Stat_Registry_Started);
-				if (!string.IsNullOrWhiteSpace(uid)) {
-					Interlocked.Increment(ref _session.Stat_Registry_Started_User);
-				}
+			if (!_stat) {
+				return;
 			}
-			//		}
+			_session.StatIncRegistryStarted();
+			if (!string.IsNullOrWhiteSpace(uid)) {
+				_session.StatIncRegistryStartedUser();
+			}
 		}
 
-		private readonly Session _session;
+		private readonly ISessionWithExtendedServices _session;
 		private readonly bool _stat;
 	}
 }

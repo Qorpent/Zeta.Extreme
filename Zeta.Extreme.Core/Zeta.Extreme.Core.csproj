@@ -15,10 +15,14 @@
   <ItemGroup>
     <Compile Include="Abstracts\CacheKeyGeneratorBase.cs" />
     <Compile Include="Abstracts\CachedItemHandlerBase.cs" />
+    <Compile Include="Abstracts\IPreloadProcessor.cs" />
     <Compile Include="Abstracts\IQueryPreparator.cs" />
-    <Compile Include="Abstracts\ISerialSession.cs" />
+    <Compile Include="Abstracts\IQueryWithProcessing.cs" />
+    <Compile Include="Abstracts\ISerializableSession.cs" />
+    <Compile Include="Abstracts\ISessionWithExtendedServices.cs" />
     <Compile Include="Extensions\SerialAccessExtensions.cs" />
     <Compile Include="Extensions\SerialSession.cs" />
+    <Compile Include="DefaultExtremeFactory.cs" />
     <Compile Include="Formulas\BackwardCompatibleFormulaBase.cs" />
     <Compile Include="Formulas\BackwardCompatibleMainFormulaSet.cs" />
     <Compile Include="Formulas\BooConverter.cs" />
@@ -28,24 +32,17 @@
     <Compile Include="Formulas\FormulaAttribute.cs" />
     <Compile Include="Formulas\FormulaBase.cs" />
     <Compile Include="Formulas\FormulaCompiler.cs" />
-    <Compile Include="Formulas\FormulaRequest.cs" />
     <Compile Include="Formulas\FormulaStorage.cs" />
-    <Compile Include="Formulas\IFormula.cs" />
-    <Compile Include="Formulas\IFormulaPreprocessor.cs" />
-    <Compile Include="Formulas\IFormulaStorage.cs" />
     <Compile Include="Formulas\FormulaParserConstants.cs" />
     <Compile Include="Formulas\IllegalSyntaxFormulaStub.cs" />
     <Compile Include="Formulas\NoExtremeFormulaStub.cs" />
-    <Compile Include="Abstracts\ISerializableSession.cs" />
-    <Compile Include="Meta\RowExtensions.cs" />
     <Compile Include="Primary\IScriptGenerator.cs" />
     <Compile Include="Primary\ObjColQueryGeneratorStruct.cs" />
     <Compile Include="Primary\SimpleObjectDataScriptGenerator.cs" />
     <Compile Include="Primary\TimeQueryGeneratorStruct.cs" />
+    <Compile Include="Primary\DefaultPrimarySource.cs" />
     <Compile Include="Query\PrepareState.cs" />
     <Compile Include="Query\QueryEvaluationType.cs" />
-    <Compile Include="Primary\DefaultPrimarySource.cs" />
-    <Compile Include="Abstracts\IPrimarySource.cs" />
     <Compile Include="Query\StrongSumProvider.cs" />
     <Compile Include="Query\QueryDelta.cs" />
     <Compile Include="Primary\PrimaryQueryGroup.cs" />
@@ -57,8 +54,6 @@
     <Compile Include="Query\RowTreeUsage.cs" />
     <Compile Include="Services\QueryLoader.cs" />
     <Compile Include="Services\QuerySessionRegistrator.cs" />
-    <Compile Include="Abstracts\IPreloadProcessor.cs" />
-    <Compile Include="Abstracts\IRegistryHelper.cs" />
     <Compile Include="Query\RowHandler.cs" />
     <Compile Include="Query\TimeHandler.cs" />
     <Compile Include="Query.cs" />
@@ -70,5 +65,6 @@
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

@@ -8,9 +8,10 @@
     <AssemblyName>Zeta.Extreme.Form</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="*.import" />
+    <None Include="qorpent.sys.base.import" />
+    <None Include="Zeta.Extreme.BizProcess.import" />
+    <None Include="Zeta.Extreme.Model.import" />
     <None Include="Zeta.Extreme.Form.export" />
-    <None Include="Zeta.Extreme.Core.import" />
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>

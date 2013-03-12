@@ -7,9 +7,9 @@
 	</PropertyGroup>
 	<Import Project="testapp.base" />
 	<ItemGroup>	
-	 <Config Include="assoibdx-eco-as-default.db-connection"/> 
+	<!-- <Config Include="assoibdx-eco-as-default.db-connection"/>  -->
 		<!-- <Config Include="..\..\qorpent\config\local-eco-as-default.db-connection"/> -->
-		<Config Include="..\..\qorpent\config\local-debug-sfo.rolemap.bxl"/>
+		<!--<Config Include="..\..\qorpent\config\local-debug-sfo.rolemap.bxl"/> -->
 		<Script Include="Zeta.Form.UI\scripts\*.js"/>
 			<Style Include="Zeta.Form.UI\styles\*.css"/>
 			<Image Include="Zeta.Form.UI\images\*.*"/>

@@ -16,8 +16,9 @@ using NUnit.Framework;
 using Qorpent.Data;
 using Qorpent.Data.Connections;
 using Qorpent.IoC;
-using Zeta.Extreme.Meta;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
 	public class SessionTestBase {
@@ -47,7 +48,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 				ColumnCache.Start();
 				ObjCache.Start();
 				FormulaStorage.Default.AutoBatchCompile = false;
-				FormulaStorage.LoadDefaultFormulas(null);
+				FormulaStorage.Default.LoadDefaultFormulas(null);
 				FormulaStorage.Default.AutoBatchCompile = true;
 				ColumnCache.Start();
 				wascallnhibernate = true;

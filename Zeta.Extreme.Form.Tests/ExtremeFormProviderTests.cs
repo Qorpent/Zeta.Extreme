@@ -38,6 +38,7 @@ namespace Zeta.Extreme.Form.Tests
 		}
 
 		[Test]
+		[Explicit]
 		public void TimeToReloadMustBeMinimal() {
 			var sw = Stopwatch.StartNew();
 			for(var i=0;i<20;i++) {

@@ -22,7 +22,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			}
 			session.WaitPreparation();
 			foreach (var zexQuery in session.Registry) {
-				Assert.AreEqual(zexQuery.Value.CustomHashPrefix, zexQuery.Key.Substring(3));
+				Assert.AreEqual(((Query)zexQuery.Value).CustomHashPrefix, zexQuery.Key.Substring(3));
 			}
 		}
 
