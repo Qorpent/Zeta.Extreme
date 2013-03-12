@@ -414,7 +414,7 @@ root.init = root.init ||
     });
 
     $.extend(root.myform, {
-        run : function(){spec.server.start()},
+        execute : function(){spec.server.start()},
         save : ReadySave,
         message: Message,
         lockform: Lock,
