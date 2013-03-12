@@ -41,9 +41,9 @@ $.extend(specification,(function(){
                 TimeToStructure: "00:00:00.0119778"
                 Usr: "ugmk\mia"
             }*/
-            start : $.extend (new Command({domain: "zefs", name: "start"}), {
+            start : $.extend (new Command({domain:"zefs", name:"start"}), {
                 getParameters : function() { return specification.getParameters() },
-                wrap : function (obj) {
+                wrap : function(obj) {
                     $.extend(obj,{
                         // признак завершения отрисовки сессии
                         wasRendered : false,
@@ -52,6 +52,32 @@ $.extend(specification,(function(){
                         // контейнер для ячеек с данными
                         data : []
                     });
+                    return obj;
+                }
+            }),
+
+            structure : $.extend(new Command({domain:"zefs", name:"struct"}), {
+                wrap : function(obj) {
+                    $.extend(obj, {
+                        // массив строк
+                        rows : [],
+                        // массив колонок
+                        cols : [],
+                        prepare : function() {
+                            for (var s in this) {
+                                var item = this[s];
+                                if (item.type=="c") {
+                                    this.cols.push(item);
+                                }
+                                if (item.type=="r") {
+                                    this.rows.push($.extend(item,{
+                                        getMeasure : function(){return this.measure || "тыс. руб."}
+                                    }));
+                                }
+                            }
+                        }
+                    });
+                    obj.prepare();
                     return obj;
                 }
             })

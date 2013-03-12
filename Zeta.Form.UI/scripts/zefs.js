@@ -377,24 +377,31 @@ root.init = root.init ||
 
 
     // Обработчики событий
-    spec.server.ready.onSuccess(function(e, params) {
-        if (!!params) {
+    spec.server.ready.onSuccess(function(e, result) {
+        if (!!result) {
             spec.session.start.execute();
         }
         GetObjects();
         GetPeriods();
     });
 
-    spec.session.start.onSuccess(function(e, params) {
-        root.myform.currentSession = params;
-        root.myform.sessionId = params.Uid;
-        document.title = params.FormInfo.Name;
-        Structure(params);
+    spec.session.start.onSuccess(function(e, result) {
+        root.myform.currentSession = result;
+        root.myform.sessionId = result.Uid;
+        document.title = result.FormInfo.Name;
+        spec.session.structure.execute({session: root.myform.sessionId});
         GetLock();
         GetLockHistory();
         GetAttachList();
         $(root).trigger(root.handlers.on_sessionload);
-        window.setTimeout(function(){Data(params,0)},options.datadelay); //первый запрос на данные
+        window.setTimeout(function(){Data(result,0)},options.datadelay); //первый запрос на данные
+    });
+
+    spec.session.structure.onSuccess(function(e, result) {
+        Render(result);
+        Fill(result);
+        $(root).trigger(root.handlers.on_structureload);
+        $('table.data').zefs();
     });
 
 
