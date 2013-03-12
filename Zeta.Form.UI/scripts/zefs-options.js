@@ -3,32 +3,41 @@ var root = window.zefs = window.zefs || {};
 var specification = root.specification = root.specification || {};
 var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 var options = root.options = root.specification;
+var Command = function(sourceoptions){
+    var options = sourceoptions || {};
+    if (typeof(options)=="string"){
+        options = {name:options};
+    }
+    $.extend(this,options);
+    if(!this.url){
+        var domain = this.domain || "zefs";
+        this.url = domain+"/"+this.name+".{DATATYPE}.qweb";
+    }
+    if(!this.onsuccess)this.onsuccess=this.url+":success";
+    if(!this.onsuccess)this.onsuccess=this.url+":error";
+    var self=  this;
+    this.execute = function() {
+        var call = self.call || specification.call;
+        call(self);
+    }
+};
+
 $.extend(specification,(function(){
 	return {
 		server : {
             start : function(){
-              this.ready.run();
+              this.ready.execute();
             },
-            state : {
-                // команда получения статуса сервера (прямой JSON)
-                url :  "zefs/server.{DATATYPE}.qweb"
-            },
-            restart : {
-                // команда перезапуска сервера (true|false)
-                url :  "zefs/restart.{DATATYPE}.qweb"
-            },
-            ready : {
-                // команда проверки готовности сервера форм к обслуживанию запросов (true|false)
-                url :  "zefs/ready.{DATATYPE}.qweb",
+            state : new Command("server"),
+            restart : new Command("restart"),
+            ready : $.extend (new Command("ready"), {
                 // общий таймаут ожидания
                 basetimeout : 30000,
                 // текущий таймаут ожидания
                 currenttimeout : 30000,
                 // период опроса ожидания
                 delay : 1000,
-                onsuccess : "zefs.ready.success",
-                onerror : "zefs.ready.error",
-                run : function (){
+                execute : function (){
                     var params = specification.getParameters();
                     var self = this;
                     var call = this.call || specification.call;
@@ -37,10 +46,10 @@ $.extend(specification,(function(){
                             if(!result){
                                 self.currenttimeout -= self.delay;
                                 if(self.currenttimeout<=0){
-                                    $(root).trigger(self.onerror,params );
+                                    $(root).trigger(self.onerror, params);
                                     return;
                                 }
-                                window.setTimeout(self.run, self.delay);
+                                window.setTimeout(self.execute, self.delay);
                                 return;
                             }
                             self.currenttimeout = self.basetimeout;
@@ -49,7 +58,7 @@ $.extend(specification,(function(){
                     );
                 }
 
-            }
+            } )
         },
 
         commands : {
@@ -683,23 +692,43 @@ $.extend(specification,(function(){
         },
 
         dataType : "json",
-        // ЭТОТ МЕТОД - ТОЧКА ВЫХОДА НА СЕРВЕР, ЕСЛИ НАДО ИНУЮ ЛОГИКУ ИЛИ ТРАНСПОРТ - ПЕРЕКРЫВАЕМ
+        /**
+         * ЭТОТ МЕТОД - ТОЧКА ВЫХОДА НА СЕРВЕР, ЕСЛИ НАДО ИНУЮ ЛОГИКУ ИЛИ ТРАНСПОРТ - ПЕРЕКРЫВАЕМ
+         * @param url
+         * @param datatype
+         * @param params
+         * @param onsuccess
+         * @param onerror
+         */
         nativeCall : function(url,datatype,params,onsuccess,onerror){
             $.ajax({
                 url: siteroot+url.replace('{DATATYPE}',datatype),
                 dataType: datatype,
-                data : params ||{}
+                data : params || {}
             })
                 .success(onsuccess)
                 .error(onerror);
         },
-        //////////////////////////////////////////////////////////
+
+        /**
+         *
+         * @param command
+         * @param params
+         * @param onsuccess
+         * @param onerror
+         */
         call : function (command,params,onsuccess,onerror) {
             var dataType = command.dataType || specification.dataType;
             var url = command.url;
+            var onsuccess = onsuccess || (function(result){
+                if (!result) {
+                    $(root).trigger(command.onerror, result);
+                    return;
+                }
+                $(root).trigger(command.onsuccess, result);
+            });
             specification.nativeCall(url,dataType,params,onsuccess, onerror) ;
         }
 	}
-	
 })())
 })();
