@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Driver.GridFS;
+using MongoDB.Driver.Builders;
 
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -18,11 +19,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         const string COLLECTION_NAME = "AttachmentView";
 
         // Connection information
-        private MongoClient _client;
-        private MongoServer _server;
-        private MongoDatabase _database;
         private MongoGridFS _gridFS;
-        private MongoCollection _mongoDBCurrentCollection;
+        private MongoCollection _collection;
 
         private IDictionary<string, BsonDocument> _attachments = new Dictionary<string, BsonDocument>();
 
@@ -31,6 +29,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         public IEnumerable<Attachment> Find(Attachment query) {
+            BsonDocument document = HandleVariables(query);
+
+
             return null;
         }
 
@@ -43,8 +44,32 @@ namespace Zeta.Extreme.MongoDB.Integration {
             );
         }
 
+        /// <summary>
+        /// Delete an attachment
+        /// </summary>
+        /// <param name="attachment">attachment description</param>
         public void Delete(Attachment attachment) {
+            BsonDocument document = HandleVariables(attachment);
 
+            _collection.Update(
+                    Query.EQ(
+                        "_id",
+                        document["_id"]
+                    ),
+                    Update.Set(
+                        "Deleted",
+                        true
+                    )
+                );
+        }
+
+        /// <summary>
+        /// Real deleting an attachment from the database
+        /// </summary>
+        /// <param name="attachment">attachment description</param>
+        private void DeleteReal(Attachment attachment) {
+            DeleteAttachmentBin(attachment);    // deleting from the gridfs
+            DeleteAttachmentView(attachment);   // and delete the view description
         }
 
         /// <summary>
@@ -57,10 +82,26 @@ namespace Zeta.Extreme.MongoDB.Integration {
             return CreateStreamToFile(mode, attachment.Uid);
         }
 
+        private void DeleteAttachmentBin(Attachment attachment) {
+            _gridFS.Delete(attachment.Uid);
+        }
+
+        private void DeleteAttachmentView(Attachment attachment) {
+            BsonDocument document = HandleVariables(attachment);
+
+            _collection.Remove(
+                Query.EQ(
+                    "_id",
+                    document["_id"]
+                )
+            );
+        }
+
         /// <summary>
         /// Creates a stream to the file identified by _id in _currentDocument["_id"].ToString()
         /// </summary>
         /// <param name="mode">Acces mode to the stream</param>
+        /// <param name="id">mongoDB internal document/file identifier</param>
         /// <returns></returns>
         private Stream CreateStreamToFile(FileAccess mode, string id) {
             return new MongoGridFSStream(
@@ -77,12 +118,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// Create a connection to database and select the collection in mongoDBCurrentCollection
         /// </summary>
         private void MongoDBConnect() {
-            _client = new MongoClient();
-            _server = _client.GetServer();
-            _database = _server.GetDatabase(DB_NAME);
-            _gridFS = new MongoGridFS(_database);
+            MongoServer     server  = new MongoClient().GetServer();
+            MongoDatabase   db      = server.GetDatabase(DB_NAME);
 
-            _mongoDBCurrentCollection = _database.GetCollection(COLLECTION_NAME);
+            _gridFS = new MongoGridFS(db);
+            _collection = db.GetCollection(COLLECTION_NAME);
         }
 
         /// <summary>
@@ -90,7 +130,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         private KeyValuePair<string, BsonDocument> AttachmentViewSave(BsonDocument document) {
             // save the document
-            _mongoDBCurrentCollection.Save(document);
+            _collection.Save(document);
 
             // and return back the pair as _id:Document
             return new KeyValuePair<string, BsonDocument>(
@@ -102,9 +142,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private BsonDocument HandleVariables(Attachment attachment) {
             BsonDocument document = new BsonDocument();
 
-            if (attachment.Uid != null) {
-                document["_id"] = attachment.Uid;
-            }
+            document["_id"] = attachment.Uid;
 
             document["File"] = new BsonDocument();
             document["Attachment"] = new BsonDocument();
