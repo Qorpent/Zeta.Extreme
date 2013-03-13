@@ -30,7 +30,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         }
 
         private void find(Attachment attachment) {
-
+            Console.WriteLine("{0}", this.mdb.Find(attachment));
 
         }
 
@@ -79,7 +79,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         public void CanFind() {
             var attachment = new FormAttachment {
                 Uid = "Test_OK2",
-                User = "remalloc"
+                User = "remalloc",
+                Revision = 0123456789
             };
 
             this.find(attachment);
@@ -147,7 +148,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             var attachment = new FormAttachment {
                 Uid = "Test_OK2",
                 User = "remalloc",
-                Comment = "test"
+                Comment = "test",
+                Revision = 0123456789
             };
 
             this.Delete(attachment);
