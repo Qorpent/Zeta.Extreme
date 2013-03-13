@@ -302,7 +302,7 @@ root.init = root.init ||
             }
             $(root).trigger(root.handlers.on_message, { text: "Сохранение успешно завершено", autohide: 5000, type: "alert-success" });
             $(root).trigger(root.handlers.on_savefinished);
-            ResetData();
+            spec.session.reset.execute({session: root.myform.currentSession});
         });
     };
 
@@ -315,13 +315,13 @@ root.init = root.init ||
             data: {session: root.myform.sessionId}
         }).success(function(d) {
              root.myform.currentSession.data = [];
-             Data(root.myform.currentSession,0);
+             spec.session.data.execute({session: root.myform.currentSession, startidx: 0});
         });
     };
 
     var SortObjectsByIdx = function(a, b) {
         return ((a.idx < b.idx) ? -1 : ((a.idx > b.idx) ? 1 : 0));
-    }
+    };
 
     var GetObjects = function() {
         $.ajax({
@@ -405,7 +405,7 @@ root.init = root.init ||
         $('table.data').zefs();
     });
 
-    spec.session.data.onSuccess(function(e, result) {
+    spec.data.start.onSuccess(function(e, result) {
         root.myform.currentSession.data.push(result);
         Fill(root.myform.currentSession);
         if(result.state != "w"){
@@ -414,6 +414,16 @@ root.init = root.init ||
             var idx = $.isEmptyObject(result.data) ? result.ei+1 : result.si;
             window.setTimeout(function(){spec.session.data.execute({session: root.myform.sessionId,startidx: idx})},options.datadelay);
         }
+    });
+
+    spec.data.reset.onSuccess(function() {
+        root.myform.currentSession.data = [];
+        spec.session.data.execute({session: root.myform.currentSession, startidx: 0});
+    });
+
+    spec.data.save.onSuccess(function() {
+        $(root).trigger(root.handlers.on_savefinished);
+        spec.data.savestate.execute({session: root.myform.currentSession});
     });
 
 

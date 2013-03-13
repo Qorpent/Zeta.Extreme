@@ -7,40 +7,13 @@ var Command = window.qweb.Command;
 $.extend(specification,(function(){
 	return {
 		server : {
-            start : function(){
-              this.ready.execute();
-            },
+            start : function(){ this.ready.execute() },
             state : new Command({domain:"zefs",name:"server",title:"Статус сервера"}),
             restart : new Command({domain:"zefs",name:"restart",title:"Перезапуск сервера"}),
             ready : new Command({domain:"zefs",name:"ready",title:"Проверка доступности сервера", timeout:10000})
         },
 
         session : {
-            /**
-            example {
-                Uid: "89f3ef74-39c6-433d-b6e6-f3270240a25e"
-                FormInfo: {Code: "balans2011A.in", Name: "Бухгалтерский баланс"}
-                ObjInfo: {Id: 353, Code: "obj1523", Name: "ОАО Святогор"}
-                Year: 2012
-                Period: 16
-                NeedMeasure: false
-
-                Activations: 1
-                Created: "##new Date(2013,2,12,15,28,41)"
-                DataCollectionRequests: 1
-                DataCount: 0
-                InitSaveMode: false
-                IsFinished: false
-                IsStarted: true
-                LastDataTime: "00:00:00"
-                OverallDataTime: "00:00:00"
-                PrimaryCount: 0
-                QueriesCount: 0
-                TimeToPrepare: "00:00:00.0742906"
-                TimeToPrimary: "00:00:00"
-                TimeToStructure: "00:00:00.0119778"
-                Usr: "ugmk\mia"
-            }*/
             start : $.extend (new Command({domain:"zefs", name:"start"}), {
                 getParameters : function() { return specification.getParameters() },
                 wrap : function(obj) {
@@ -76,9 +49,11 @@ $.extend(specification,(function(){
                     });
                     return result;
                 }
-            }),
+            })
+        },
 
-            data : $.extend(new Command({domain: "zefs", name: "data"}), {
+        data : {
+            start : $.extend(new Command({domain: "zefs", name: "data"}), {
                  wrap : function(obj) {
                      $.extend(obj, {
                          // признак применения батча к таблице
@@ -92,74 +67,13 @@ $.extend(specification,(function(){
                      });
                      return obj;
                  }
-            })
-        },
+            }),
 
-        // КОНВЕРТИРУЕТ РЕЗУЛЬТАТ команды data_command в стандартный объект БАТЧА
-        asDataBatch : function(obj){
-            $.extend(obj,{
-                // первый индекс ячейки батча
-                getFirstIdx : function(){return this.si;},
-                // последний индекс ячейки батча
-                getLastIdx : function(){return this.ei;},
-                // статус закачки finished_state,error_state, inprocess_state
-                getState : function(){return this.state;},
-                // признак наличия ошибки в процессе загрузки
-                getIsError : function(){return this.getState()==options.error_state;},
-                // текст ошибки в процессе загрузки
-                getError : function(){return this.e;},
-                // признак завершения процесса загрузки ( по окончанию данных или ошибке)
-                getIsLast : function(){return this.getState()!=options.inprocess_state;},
-                // признак наличия реальных данных в батче
-                getWasData : function(){
-                    var data  = this.getData();
-                    if(!data)return false;
-                    if(0==data.length)return false;
-                    return true;
-                },
-                // индекс для стартового индекса следующей прокачки
-                getNextIdx : function(){
-                    if(this.getWasData()){
-                        return this.getLastIdx()+1;
-                    }
-                    return this.getFirstIdx();
-                },
-                // массив ячеек в батче (собственно данные)
-                getData : function(){ return this.data || {};} ,
-                // признак применения батча к таблице
-                wasFilled : false
-            });
-            var data = obj.getData();
-            for (var i in data) {
-                // приводим элементы данных к стандартному виду
-                options.asDataItem(data[i]);
-            }
-            return obj;
-        },
-        // КОНВЕРТИРУЕТ элемент РЕЗУЛЬТАТА команды data_command в стандартный источник для ячейки
-        asDataItem : function(obj){
-            obj.v = obj.v || null,
-                $.extend(obj,{
-                    // признак того, что ячейка является прямым отображением ячейки в БД
-                    getIsCell : function(){return this.getCellId()!=0;},
-                    // идентификатор ячейки в БД (или 0)
-                    getCellId :  function(){return this.c || 0;},
-                    // идентификатор ячейки в таблице В ВИДЕ "ROWIDX:COLIDX"
-                    getId : function() {return this.i;},
-                    // RealID строки для ключа ячейки
-                    getRealId : function(){return this.ri || "";},
-                    // признак наличия данных
-                    hasValue : function(){return null!=this.v;},
-                    // собственно значение
-                    getValue : function(){return this.v;}
-                });
-            // нормализуем ID ячейки в индексы строки и колонки
-            var rc = obj.getId().split(":");
-            // индекс строки
-            obj.row = rc[0];
-            // индекс колонки
-            obj.col = rc[1];
-            return obj;
+            loaded : new Command({domain: "zefs", name: "dataloaded"}),
+            reset : new Command({domain: "zefs", name: "resetdata"}),
+            save : new Command({domain: "zefs", name: "save"}),
+            saveready : new Command({domain: "zefs", name: "saveready"}),
+            savestate : new Command({domain: "zefs", name: "savestate"})
         },
 
         commands : {
@@ -627,7 +541,73 @@ $.extend(specification,(function(){
 			});
 			return obj;
 		},
-		
+
+        // КОНВЕРТИРУЕТ РЕЗУЛЬТАТ команды data_command в стандартный объект БАТЧА
+        asDataBatch : function(obj){
+            $.extend(obj,{
+                // первый индекс ячейки батча
+                getFirstIdx : function(){return this.si;},
+                // последний индекс ячейки батча
+                getLastIdx : function(){return this.ei;},
+                // статус закачки finished_state,error_state, inprocess_state
+                getState : function(){return this.state;},
+                // признак наличия ошибки в процессе загрузки
+                getIsError : function(){return this.getState()==options.error_state;},
+                // текст ошибки в процессе загрузки
+                getError : function(){return this.e;},
+                // признак завершения процесса загрузки ( по окончанию данных или ошибке)
+                getIsLast : function(){return this.getState()!=options.inprocess_state;},
+                // признак наличия реальных данных в батче
+                getWasData : function(){
+                    var data  = this.getData();
+                    if(!data)return false;
+                    if(0==data.length)return false;
+                    return true;
+                },
+                // индекс для стартового индекса следующей прокачки
+                getNextIdx : function(){
+                    if(this.getWasData()){
+                        return this.getLastIdx()+1;
+                    }
+                    return this.getFirstIdx();
+                },
+                // массив ячеек в батче (собственно данные)
+                getData : function(){ return this.data || {};} ,
+                // признак применения батча к таблице
+                wasFilled : false
+            });
+            var data = obj.getData();
+            for (var i in data) {
+                // приводим элементы данных к стандартному виду
+                options.asDataItem(data[i]);
+            }
+            return obj;
+        },
+        // КОНВЕРТИРУЕТ элемент РЕЗУЛЬТАТА команды data_command в стандартный источник для ячейки
+        asDataItem : function(obj){
+            obj.v = obj.v || null,
+                $.extend(obj,{
+                    // признак того, что ячейка является прямым отображением ячейки в БД
+                    getIsCell : function(){return this.getCellId()!=0;},
+                    // идентификатор ячейки в БД (или 0)
+                    getCellId :  function(){return this.c || 0;},
+                    // идентификатор ячейки в таблице В ВИДЕ "ROWIDX:COLIDX"
+                    getId : function() {return this.i;},
+                    // RealID строки для ключа ячейки
+                    getRealId : function(){return this.ri || "";},
+                    // признак наличия данных
+                    hasValue : function(){return null!=this.v;},
+                    // собственно значение
+                    getValue : function(){return this.v;}
+                });
+            // нормализуем ID ячейки в индексы строки и колонки
+            var rc = obj.getId().split(":");
+            // индекс строки
+            obj.row = rc[0];
+            // индекс колонки
+            obj.col = rc[1];
+            return obj;
+        },
 
 		//возвращает нормализованный список дивизионов и объектов, вызывая на них соответственно asDiv, asObject
 		asObjectList : function (obj ){
