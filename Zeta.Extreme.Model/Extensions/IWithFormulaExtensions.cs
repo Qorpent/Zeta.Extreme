@@ -8,6 +8,7 @@
 
 #endregion
 
+using Qorpent.Model;
 using Zeta.Extreme.Model.Inerfaces.Partial;
 
 #if NEWMODEL
@@ -38,24 +39,14 @@ namespace Zeta.Extreme.Model.Extensions {
 		/// </summary>
 		/// <param name="formula"> </param>
 		/// <returns> </returns>
-		public static string FormulaEvaluator(this IWithFormula formula) {
+		public static string FormulaType(this IWithFormula formula) {
 			if (null == formula) {
 				return null;
 			}
-			return formula.FormulaEvaluator;
+			return formula.FormulaType;
 		}
 
-		/// <summary>
-		/// 	null-safe parsed formula
-		/// </summary>
-		/// <param name="formula"> </param>
-		/// <returns> </returns>
-		public static string ParsedFormula(this IWithFormula formula) {
-			if (null == formula) {
-				return null;
-			}
-			return formula.ParsedFormula;
-		}
+		
 
 		/// <summary>
 		/// 	null-safe is formula

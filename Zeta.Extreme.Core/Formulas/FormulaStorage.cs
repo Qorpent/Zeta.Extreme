@@ -369,7 +369,7 @@ namespace Zeta.Extreme {
 				                     from c in ColumnCache.Byid.Values
 				                     //myapp.storage.AsQueryable<col>()
 				                     where c.IsFormula
-				                           && c.FormulaEvaluator == "boo" && !String.IsNullOrEmpty(c.Formula)
+				                           && c.FormulaType == "boo" && !String.IsNullOrEmpty(c.Formula)
 				                           && c.Version < DateTime.Today
 				                     select new {c = c.Code, f = c.Formula, tag = c.Tag, version = c.Version}
 			                     ).ToArray();
@@ -378,7 +378,7 @@ namespace Zeta.Extreme {
 				                     from c in ColumnCache.Byid.Values
 				                     //myapp.storage.AsQueryable<col>()
 				                     where c.IsFormula
-				                           && c.FormulaEvaluator == "boo" && !String.IsNullOrEmpty(c.Formula)
+				                           && c.FormulaType == "boo" && !String.IsNullOrEmpty(c.Formula)
 				                           && c.Version >= DateTime.Today
 				                     select new {c = c.Code, f = c.Formula, tag = c.Tag, version = c.Version}
 			                     ).ToArray();
@@ -389,7 +389,7 @@ namespace Zeta.Extreme {
 					{
 						Key = "row:" + f.Code,
 						Formula = f.Formula,
-						Language = f.FormulaEvaluator,
+						Language = f.FormulaType,
 						Version = f.Version.ToString(CultureInfo.InvariantCulture)
 					};
 				Register(req);
@@ -414,7 +414,7 @@ namespace Zeta.Extreme {
 					{
 						Key = "row:" + f.Code,
 						Formula = f.Formula,
-						Language = f.FormulaEvaluator,
+						Language = f.FormulaType,
 						Version = f.Version.ToString(CultureInfo.InvariantCulture)
 					};
 				Register(req);

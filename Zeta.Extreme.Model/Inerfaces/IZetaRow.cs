@@ -10,19 +10,19 @@
 
 using System;
 using System.Collections.Generic;
+using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces.Bases;
 using Zeta.Extreme.Model.Inerfaces.Partial;
 using Zeta.Extreme.Model.PocoClasses;
 
+
 namespace Zeta.Extreme.Model.Inerfaces {
 	[ForSearch("Строка, признак")]
-	public interface IZetaRow :
-		IOlapForm<IZetaRow>,
-		IZetaQueryDimension,
+	public interface IZetaRow : IZetaQueryDimension,
 		IZetaFormsSupport,
 		IWithMarkCache,
-		IWithMainObject<IZetaMainObject> {
+		IWithMainObject, ITree<IZetaRow>, IWthRefTo<IZetaRow>, IEntity, IWithFormula, IWithMeasure {
 		IDictionary<string, object> LocalProperties { get; }
 		[Map] string ObjectGroups { get; set; }
 		[Map] string FormElementType { get; set; }

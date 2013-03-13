@@ -40,14 +40,14 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 		[TestCase("-$rcode1? ", true)]
 		[TestCase(" - $rcode1? ", true)]
 		public void FormulaIsSumTest(string formula, bool result) {
-			var r = new row {Formula = formula, IsFormula = true, FormulaEvaluator = "boo"};
+			var r = new row {Formula = formula, IsFormula = true, FormulaType = "boo"};
 			Assert.AreEqual(result, h.IsSum(r));
 		}
 
 		[Test]
 		public void CanRetrieveValidDeltasFromFormula() {
 			const string formula = "-$r100@c1.Y-1.P-3? + $r2@c2.Y2014? - $r3.P1?";
-			var r = new row {IsFormula = true, Formula = formula, FormulaEvaluator = "boo"};
+			var r = new row {IsFormula = true, Formula = formula, FormulaType = "boo"};
 			var result = h.GetSumDelta(r);
 			Assert.AreEqual(3, result.Length);
 			Assert.AreEqual("r100", result[0].RowCode);

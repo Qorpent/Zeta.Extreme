@@ -18,5 +18,5 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	[ForSearch("Группа, дивизион, холдинг")]
 	public interface IMainObjectGroup :
 		IZoneElement,
-		IWithMainObjects, IEntity {}
+		IWithMainObjects, IEntity, IWithId, IWithCode, IWithName, IWithTag {}
 }

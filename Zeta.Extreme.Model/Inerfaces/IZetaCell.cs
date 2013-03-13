@@ -10,7 +10,6 @@
 
 using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
-using Zeta.Extreme.Model.Inerfaces.Bases;
 using Zeta.Extreme.Model.Inerfaces.Partial;
 
 namespace Zeta.Extreme.Model.Inerfaces {
@@ -18,10 +17,9 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IZetaCell :
 		IWithComment,
 		IWithData,
-		IOlapCell<IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
 		IWithTag,
 		IWithAutoManualFlag,
-		IWithUsr {
+		IWithUsr, IWithId, IWithVersion, IWithCellData, IWithOlapTime, IWithOlapObject {
 		string Valuta { get; set; }
 		IZetaMainObject AltObj { get; set; }
 		int AltObjId { get; set; }

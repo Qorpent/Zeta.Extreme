@@ -17,7 +17,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	[ForSearch("Роль, тип, отрасль объекта")]
 	public interface IMainObjectRole :
 		IZoneElement,
-		IWithMainObjects, IEntity {
+		IWithMainObjects, IEntity, IWithId, IWithCode, IWithName, IWithTag {
 		bool ShowOnStartPage { get; set; }
 		}
 }

@@ -13,10 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Qorpent.Model;
-using Zeta.Extreme.Model.Inerfaces;
+
 using Zeta.Extreme.Model.Inerfaces.Bases;
 using Zeta.Extreme.Model.Querying;
-using IWithFormula = Zeta.Extreme.Model.Inerfaces.Partial.IWithFormula;
+
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -81,7 +81,7 @@ namespace Zeta.Extreme {
 				if (null != Native) {
 					var isformula = Native as IWithFormula;
 					if (null != isformula) {
-						return isformula.FormulaEvaluator;
+						return isformula.FormulaType;
 					}
 					return string.Empty;
 				}
@@ -199,12 +199,7 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		string IWithFormula.ParsedFormula { get; set; }
-
-		string IWithFormula.FormulaEvaluator {
-			get { return FormulaType; }
-			set { FormulaType = value; }
-		}
+		
 
 
 		/// <summary>
@@ -282,7 +277,7 @@ namespace Zeta.Extreme {
 			if (null != isformula) {
 				_isFormula = isformula.IsFormula;
 				_formula = isformula.Formula;
-				_formulaType = isformula.FormulaEvaluator;
+				_formulaType = isformula.FormulaType;
 			}
 			else {
 				_isFormula = false;

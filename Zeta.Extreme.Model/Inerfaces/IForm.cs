@@ -15,7 +15,7 @@ using Zeta.Extreme.Model.Inerfaces.Partial;
 namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IForm : IWithId, IWithCode, IWithVersion,
 	                         // IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
-	                         IWithMainObject<IZetaMainObject> {
+	                         IWithMainObject {
 		int Year { get; set; }
 		int Period { get; set; }
 		string Template { get; set; }

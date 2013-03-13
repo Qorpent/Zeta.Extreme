@@ -18,7 +18,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		IZoneElement,
 		ICanResolveTag,
 		IWithDetailObjectTypes,
-		IEntity {
+		IEntity, IWithId, IWithCode, IWithName, IWithTag {
 		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
 		}
 }

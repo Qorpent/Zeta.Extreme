@@ -22,7 +22,7 @@ using Qorpent.Serialization;
 using Zeta.Extreme.Model.Extensions;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces.Bases;
-using IWithFormula = Zeta.Extreme.Model.Inerfaces.Partial.IWithFormula;
+
 
 #if NEWMODEL
 
@@ -35,7 +35,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
 	/// <typeparam name="T"></typeparam>
 	/// <typeparam name="R"></typeparam>
 	[Serialize]
-	public abstract class DimensionDescriptor<T, R> : IDimension, ICloneable where T : IWithFormula{
+	public abstract class DimensionDescriptor<T, R> :  ICloneable where T : IWithFormula{
 		/// <summary>
 		/// Формат числа
 		/// </summary>
@@ -44,10 +44,10 @@ namespace Zeta.Extreme.BizProcess.Themas{
         private T _target;
         private string code;
         private string formula;
-        private string formulaEvaluator;
+        
         private bool? isFormula;
         private string name;
-        private string parsedFormula;
+        
 		/// <summary>
 		/// Коды
 		/// </summary>
@@ -72,9 +72,9 @@ namespace Zeta.Extreme.BizProcess.Themas{
             set{
                 _target = value;
                 if (null != value){
-                    if (value.FormulaEvaluator.IsNotEmpty()){
+                    if (value.FormulaType.IsNotEmpty()){
                         Formula = value.Formula;
-                        FormulaEvaluator = value.FormulaEvaluator;
+                        FormulaType = value.FormulaType;
                     }
                 }
             }
@@ -120,21 +120,14 @@ namespace Zeta.Extreme.BizProcess.Themas{
             get { return formula ?? Target.Formula(); }
             set { formula = value; }
         }
-		/// <summary>
-		/// Парсенная формула
-		/// </summary>
-		[IgnoreSerialize]
-        public string ParsedFormula{
-            get { return parsedFormula ?? Target.ParsedFormula(); }
-            set { parsedFormula = value; }
-        }
+
 		/// <summary>
 		/// Тип формулы
 		/// </summary>
 		[SerializeNotNullOnly]
-        public string FormulaEvaluator{
-            get { return formulaEvaluator ?? Target.FormulaEvaluator(); }
-            set { formulaEvaluator = value; }
+        public string FormulaType{
+            get { return _formulaType ?? Target.FormulaType(); }
+            set { _formulaType = value; }
         }
 		/// <summary>
 		/// Признак формулы
@@ -217,6 +210,8 @@ namespace Zeta.Extreme.BizProcess.Themas{
 		}
 
 		private DateTime _version;
+		private string _formulaType;
+
 		/// <summary>
 		/// Версия
 		/// </summary>

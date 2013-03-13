@@ -100,13 +100,16 @@ namespace Zeta.Extreme.Model.PocoClasses {
 
 		[Map] public virtual DateTime Version { get; set; }
 
+		/// <summary>
+		/// 	Тип формулы
+		/// </summary>
+		public string FormulaType { get; set; }
+
 		[Map] public virtual bool IsFormula { get; set; }
 
 		[Map] public virtual string Formula { get; set; }
 
-		[Map] public virtual string ParsedFormula { get; set; }
 
-		[Map] public virtual string FormulaEvaluator { get; set; }
 
 		[Map] public virtual string Measure { get; set; }
 
@@ -349,6 +352,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 		private IDictionary<string, string> columnmap;
 		private IDictionary<string, object> localProperties;
 		private IZetaRow[] _allchildren;
+		
 
 		/// <summary>
 		/// 	Проверяет, что строка не устарела

@@ -16,7 +16,7 @@ using Zeta.Extreme.Model.Inerfaces.Partial;
 namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IZetaUnderwriter :
 		IEntity,
-		IWithMainObject<IZetaMainObject>,
+		IWithMainObject,
 		IWithContactHuman {
 		string Login2 { get; set; }
 		string SlotList { get; set; }

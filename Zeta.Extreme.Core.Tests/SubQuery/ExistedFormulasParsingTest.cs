@@ -23,7 +23,7 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 	public class ExistedFormulasParsingTest : SessionTestBase {
 		private bool CheckFormula(IZetaRow _row, out string result) {
 			var p = new DefaultDeltaPreprocessor();
-			result = p.Preprocess(_row.Formula, new FormulaRequest {Language = _row.FormulaEvaluator});
+			result = p.Preprocess(_row.Formula, new FormulaRequest {Language = _row.FormulaType});
 			return !(result.Contains("$") || result.Contains("@"));
 		}
 
@@ -33,7 +33,7 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 			IDictionary<string, string> Errors = new Dictionary<string, string>();
 			var sumh = new StrongSumProvider();
 			var formulas = RowCache.Byid.Values.Where(
-				_ => _.IsFormula && _.FormulaEvaluator == "boo" && !sumh.IsSum(_)
+				_ => _.IsFormula && _.FormulaType == "boo" && !sumh.IsSum(_)
 				);
 			foreach (var f in formulas.ToArray()) {
 				string result;

@@ -88,7 +88,7 @@ namespace Zeta.Extreme {
 			var formula = FormulaStorage.Default.GetFormula(key, false);
 			if (null == formula) {
 				FormulaStorage.Default.Register(new FormulaRequest
-					{Formula = mostpriority.Formula, Language = mostpriority.FormulaEvaluator, Key = key});
+					{Formula = mostpriority.Formula, Language = mostpriority.FormulaType, Key = key});
 				formula = FormulaStorage.Default.GetFormula(key, false);
 			}
 

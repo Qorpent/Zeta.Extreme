@@ -9,5 +9,5 @@
 #endregion
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IZetaObjectGroup : IObjectGroup<IZetaMainObject> {}
+	public interface IZetaObjectGroup : IObjectGroup {}
 }

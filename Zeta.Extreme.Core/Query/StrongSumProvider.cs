@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Qorpent.Model;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
@@ -66,7 +67,7 @@ namespace Zeta.Extreme {
 					return true;
 				}
 			}
-			if (item.IsFormula && item.FormulaEvaluator == "boo" && IsSumableFormula(item.Formula)) {
+			if (item.IsFormula && item.FormulaType == "boo" && IsSumableFormula(item.Formula)) {
 				return true;
 			}
 

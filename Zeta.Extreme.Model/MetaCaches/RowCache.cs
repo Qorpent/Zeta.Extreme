@@ -193,7 +193,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 				}
 				//	var _sumh = new StrongSumProvider();
 				foreach (var row in roots) {
-					if (row.IsFormula && row.FormulaEvaluator == "boo" && ((row) row).ExtremeFormulaMode == 1) {
+					if (row.IsFormula && row.FormulaType == "boo" && ((row) row).ExtremeFormulaMode == 1) {
 						//if (row.ResolveTag("extreme") != "1") continue;
 						//if (_sumh.IsSum(row)) continue;
 						formulas.Add(row);

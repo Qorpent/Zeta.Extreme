@@ -72,7 +72,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			var target = RowCache.get("m260113");
 			var r = new row {Code = "x1", RefTo = target};
 			RowCache.Bycode["X1"]=r;
-			var r2 = new row {Code = "x2", Formula = " $x1? ", IsFormula = true, FormulaEvaluator = "boo"};
+			var r2 = new row {Code = "x2", Formula = " $x1? ", IsFormula = true, FormulaType = "boo"};
 			RowCache.Bycode["X2"] =r2;
 
 			var q1 = new Query {Row = {Code = "x1"}};

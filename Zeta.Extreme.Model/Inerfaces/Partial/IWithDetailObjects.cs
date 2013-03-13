@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using Zeta.Extreme.Model.Inerfaces.Bases;
 
 namespace Zeta.Extreme.Model.Inerfaces.Partial {
-	public interface IWithDetailObjects<M, D> where M : IOlapMainObjectBase where D : IOlapDetailObject<M, D> {
-		IList<D> DetailObjects { get; set; }
+	public interface IWithDetailObjects {
+		IList<IZetaDetailObject> DetailObjects { get; set; }
 	}
 }

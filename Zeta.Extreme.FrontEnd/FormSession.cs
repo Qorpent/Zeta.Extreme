@@ -469,7 +469,7 @@ namespace Zeta.Extreme.FrontEnd {
 						ch.Code = c._.Code;
 						ch.IsFormula = c._.IsFormula;
 						ch.Formula = c._.Formula;
-						ch.FormulaType = c._.FormulaEvaluator;
+						ch.FormulaType = c._.FormulaType;
 					}
 					var q = ExtremeFactory.CreateQuery( new QuerySetupInfo
 						{
@@ -610,7 +610,7 @@ namespace Zeta.Extreme.FrontEnd {
 						Year = src.Year,
 						Period = src.Period,
 						Formula = src.Formula,
-						FormulaEvaluator = src.FormulaEvaluator,
+						FormulaType = src.FormulaType,
 						IsFormula = src.IsFormula
 					}
 				);

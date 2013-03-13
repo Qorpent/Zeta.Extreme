@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces.Bases;
 using Zeta.Extreme.Model.Inerfaces.Partial;
@@ -16,15 +17,12 @@ using Zeta.Extreme.Model.PocoClasses;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	[ForSearch("Младший объект, подразделение, связь")]
-	public interface IZetaDetailObject :
-		IZetaObject,
-		IZoneElement,
+	public interface IZetaDetailObject : IZoneElement,
 		ICanResolveTag,
-		IOlapDetailObject<IZetaMainObject, IZetaDetailObject>,
 		IWithDetailObjectType,
 		IWithAlternateMainObject,
 		IWithOwn,
-		IWithDetailObjects<IZetaMainObject, IZetaDetailObject>, IWithOuterCode {
+		IWithDetailObjects, IWithOuterCode, IWithMainObject, IEntity, IWithId, IWithCode, IWithName, IWithTag {
 		string Verb { get; set; }
 		IZetaDetailObject Parent { get; set; }
 		IZetaPoint Location { get; set; }

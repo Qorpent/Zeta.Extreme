@@ -16,11 +16,10 @@ using Qorpent;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.Inerfaces.Bases;
 using Zeta.Extreme.Model.Inerfaces.Partial;
 
 namespace Zeta.Extreme.Model.PocoClasses {
-	public partial class obj : IZetaMainObject, IZetaQueryDimension {
+	public partial class obj : IZetaMainObject {
 		public obj() {
 
 			Start = QorpentConst.Date.Begin;
@@ -64,6 +63,11 @@ namespace Zeta.Extreme.Model.PocoClasses {
 		[Map] public virtual string FullName { get; set; }
 		[Map] public virtual string ShortName { get; set; }
 
+		/// <summary>
+		/// 	Тип формулы
+		/// </summary>
+		public string FormulaType { get; set; }
+
 		[NoMap] public virtual bool IsFormula {
 			get { return !string.IsNullOrWhiteSpace(Formula); }
 			set { _isFormula = value; }
@@ -71,8 +75,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 
 		[Map] public virtual string Formula { get; set; }
 
-		[NoMap] public virtual string ParsedFormula { get; set; }
-		[NoMap] public virtual string FormulaEvaluator { get; set; }
+		
 
 		[Map] public virtual bool ShowOnStartPage { get; set; }
 

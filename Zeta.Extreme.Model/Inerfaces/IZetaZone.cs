@@ -17,5 +17,5 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	[ForSearch("Зона, страна")]
 	public interface IZetaZone :
 		IZoneElement,
-		IWithRegions, IEntity {}
+		IWithRegions, IEntity, IWithId, IWithCode, IWithName, IWithTag {}
 }

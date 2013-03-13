@@ -15,9 +15,6 @@ using Zeta.Extreme.Model.Inerfaces;
 namespace Zeta.Extreme.Model.PocoClasses {
 	public class period : IPeriod {
 		public virtual Guid Uid { get; set; }
-		[Map] public virtual string FormulaEvaluator { get; set; }
-
-		public virtual string ParsedFormula { get; set; }
 
 		[Map] public virtual string Tag { get; set; }
 

@@ -137,7 +137,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 						rd.Formula = row.Attr("formula", rd.Formula);
 						if (rd.Formula.IsNotEmpty()) {
 							rd.IsFormula = true;
-							rd.FormulaEvaluator = row.Attr("formulatype", "boo");
+							rd.FormulaType = row.Attr("formulatype", "boo");
 						}
 					}
 					result.Rows.Add(rd);
@@ -158,7 +158,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 					col.Editable = true; //default
 					col.Visible = true;
 					col.MatrixFormulaType = "sum";
-					col.FormulaEvaluator = "boo";
+					col.FormulaType = "boo";
 					foreach (var attribute in x.Attributes().ToArray()) {
 						var n = attribute.Name.LocalName;
 						var v = attribute.Value;
@@ -281,7 +281,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 							case "evaluator":
 								goto case "formulatype";
 							case "formulatype":
-								col.FormulaEvaluator = v;
+								col.FormulaType = v;
 								break;
 							case "calcidx":
 								col.CalcIdx = v.ToInt();

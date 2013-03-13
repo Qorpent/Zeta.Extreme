@@ -57,7 +57,6 @@
     <Compile Include="Inerfaces\IDetailObjectClass.cs" />
     <Compile Include="Inerfaces\IDetailObjectType.cs" />
     <Compile Include="Inerfaces\IMainObjectGroup.cs" />
-    <Compile Include="Inerfaces\Bases\IMainObjectLocators.cs" />
     <Compile Include="Inerfaces\IMainObjectRole.cs" />
     <Compile Include="Inerfaces\Partial\IWithDetailObjectClass.cs" />
     <Compile Include="Inerfaces\Partial\IWithDetailObjectType.cs" />
@@ -84,7 +83,6 @@
     <Compile Include="Inerfaces\IZetaDetailObject.cs" />
     <Compile Include="Inerfaces\Partial\IZetaFormsSupport.cs" />
     <Compile Include="Inerfaces\IZetaMainObject.cs" />
-    <Compile Include="Inerfaces\Bases\IZetaObject.cs" />
     <Compile Include="Inerfaces\IZetaRow.cs" />
     <Compile Include="Extensions\DetailComparer.cs" />
     <Compile Include="Extensions\WithMarksExtension.cs" />
@@ -119,12 +117,6 @@
     <Compile Include="Querying\StubExtremeFactory.cs" />
     <Compile Include="Inerfaces\Partial\ICanResolveTag.cs" />
     <Compile Include="IMetaCache.cs" />
-    <Compile Include="Inerfaces\Bases\IOlapCache.cs" />
-    <Compile Include="Inerfaces\Bases\IOlapCell.cs" />
-    <Compile Include="Inerfaces\Bases\IOlapColumn.cs" />
-    <Compile Include="Inerfaces\Bases\IOlapDetailObject.cs" />
-    <Compile Include="Inerfaces\Bases\IOlapForm.cs" />
-    <Compile Include="Inerfaces\Bases\IOlapMainObject.cs" />
     <Compile Include="Querying\IWithSessionStatistics.cs" />
     <Compile Include="Querying\IPrimarySource.cs" />
     <Compile Include="Inerfaces\Partial\ITree.cs" />
@@ -141,13 +133,6 @@
     <Compile Include="Extensions\RowComparer.cs" />
     <Compile Include="Querying\SessionStatistics.cs" />
     <Compile Include="MetaCaches\StubMetaCache.cs" />
-    <Compile Include="Inerfaces\Bases\IDimension.cs" />
-    <Compile Include="Inerfaces\Bases\IOlapDetailObjectBase.cs" />
-    <Compile Include="Inerfaces\Bases\IOlapEvaluationExtensions.cs" />
-    <Compile Include="Inerfaces\Bases\IOlapFact.cs" />
-    <Compile Include="Inerfaces\Bases\IOlapMainObjectBase.cs" />
-    <Compile Include="Inerfaces\Bases\IOlapRow.cs" />
-    <Compile Include="Inerfaces\Bases\IOlapVector.cs" />
     <Compile Include="Inerfaces\IUserObjectMap.cs" />
     <Compile Include="Inerfaces\IUsrThemaMap.cs" />
     <Compile Include="Inerfaces\Partial\IWithAddress.cs" />
@@ -158,14 +143,11 @@
     <Compile Include="Inerfaces\Partial\IWithDetailObject.cs" />
     <Compile Include="Inerfaces\Partial\IWithDetailObjects.cs" />
     <Compile Include="Inerfaces\Partial\IWithDirectDate.cs" />
-    <Compile Include="Inerfaces\Partial\IWithFormula.cs" />
     <Compile Include="Inerfaces\Partial\IWithLookup.cs" />
     <Compile Include="Inerfaces\Partial\IWithMainObject.cs" />
     <Compile Include="Inerfaces\Partial\IWithMeasure.cs" />
     <Compile Include="Inerfaces\Partial\IWithObjectGroup.cs" />
-    <Compile Include="Inerfaces\Partial\IWithOlapColumn.cs" />
     <Compile Include="Inerfaces\Partial\IWithOlapObject.cs" />
-    <Compile Include="Inerfaces\Partial\IWithOlapRow.cs" />
     <Compile Include="Inerfaces\Partial\IWithOlapTime.cs" />
     <Compile Include="Inerfaces\Partial\IWithOuterCode.cs" />
     <Compile Include="Inerfaces\Partial\IWithOwn.cs" />

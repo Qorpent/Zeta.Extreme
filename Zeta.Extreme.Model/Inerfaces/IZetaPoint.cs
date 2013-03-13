@@ -18,7 +18,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IZetaPoint :
 		IZoneElement,
 		IWithMainObjects,
-		IWithDetailObjects<IZetaMainObject, IZetaDetailObject>,
+		IWithDetailObjects,
 		IWithRegion,
-		IEntity {}
+		IEntity, IWithId, IWithCode, IWithName, IWithTag {}
 }

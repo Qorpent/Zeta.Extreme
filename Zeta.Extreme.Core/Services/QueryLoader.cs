@@ -51,23 +51,30 @@ namespace Zeta.Extreme {
 		}
 
 		private void PrepareFormulas(IQuery internalquery) {
-			if (internalquery.Row.IsFormula && !_sumh.IsSum(internalquery.Row)) {
-				var key = "row:" + internalquery.Row.Code;
-				if (null == internalquery.Row.Native) {
-					key = "dynrow:" + internalquery.Row.Formula;
+			PrepareFormulaForRows(internalquery);
+			PrepareFormulaForColumn(internalquery);
+			PrepareFormulaForObject(internalquery);
+		}
+
+		private void PrepareFormulaForObject(IQuery internalquery) {
+			if (internalquery.Obj.IsFormula && !_sumh.IsSum(internalquery.Obj)) {
+				var key = "obj:" + internalquery.Row.Code;
+				if (null == internalquery.Obj.Native) {
+					key = "dynobj:" + internalquery.Obj.Formula;
 				}
 				if (!FormulaStorage.Default.Exists(key)) {
 					FormulaStorage.Default.Register(new FormulaRequest
 						{
 							Key = key,
-							Formula = internalquery.Row.Formula,
-							Language = internalquery.Row.FormulaType,
-							Tags = internalquery.Row.Tag,
-							Marks = internalquery.Row.Native == null ? "" : internalquery.Row.Native.MarkCache
+							Formula = internalquery.Obj.Formula,
+							Language = internalquery.Obj.FormulaType,
+							Tags = internalquery.Obj.Tag
 						});
 				}
 			}
+		}
 
+		private void PrepareFormulaForColumn(IQuery internalquery) {
 			if (internalquery.Col.IsFormula && !_sumh.IsSum(internalquery.Col)) {
 				var key = "col:" + internalquery.Col.Code;
 				if (null == internalquery.Col.Native) {
@@ -84,19 +91,22 @@ namespace Zeta.Extreme {
 						});
 				}
 			}
+		}
 
-			if (internalquery.Obj.IsFormula && !_sumh.IsSum(internalquery.Obj)) {
-				var key = "obj:" + internalquery.Row.Code;
-				if (null == internalquery.Obj.Native) {
-					key = "dynobj:" + internalquery.Obj.Formula;
+		private void PrepareFormulaForRows(IQuery internalquery) {
+			if (internalquery.Row.IsFormula && !_sumh.IsSum(internalquery.Row)) {
+				var key = "row:" + internalquery.Row.Code;
+				if (null == internalquery.Row.Native) {
+					key = "dynrow:" + internalquery.Row.Formula;
 				}
 				if (!FormulaStorage.Default.Exists(key)) {
 					FormulaStorage.Default.Register(new FormulaRequest
 						{
 							Key = key,
-							Formula = internalquery.Obj.Formula,
-							Language = internalquery.Obj.FormulaType,
-							Tags = internalquery.Obj.Tag
+							Formula = internalquery.Row.Formula,
+							Language = internalquery.Row.FormulaType,
+							Tags = internalquery.Row.Tag,
+							Marks = internalquery.Row.Native == null ? "" : internalquery.Row.Native.MarkCache
 						});
 				}
 			}

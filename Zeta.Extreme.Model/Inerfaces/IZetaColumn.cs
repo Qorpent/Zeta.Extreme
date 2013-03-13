@@ -9,17 +9,17 @@
 #endregion
 
 using System.Collections.Generic;
+using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces.Bases;
 using Zeta.Extreme.Model.Inerfaces.Partial;
 
+
 namespace Zeta.Extreme.Model.Inerfaces {
 	[Classic("ValueType")]
 	[ForSearch("Колонка, показатель")]
-	public interface IZetaColumn :
-		IOlapColumn,
-		IZetaQueryDimension,
-		IWithMarkCache {
+	public interface IZetaColumn : IZetaQueryDimension,
+		IWithMarkCache, IEntity, IWithFormula, IWithDataType, IWithMeasure {
 		string Valuta { get; set; }
 		IDictionary<string, object> LocalProperties { get; set; }
 

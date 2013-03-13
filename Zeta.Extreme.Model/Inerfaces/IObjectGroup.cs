@@ -13,8 +13,8 @@ using Zeta.Extreme.Model.Inerfaces.Bases;
 using Zeta.Extreme.Model.Inerfaces.Partial;
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IObjectGroup<M> :
+	public interface IObjectGroup :
 		IZoneElement,
 		IWithMainObjects,
-		IEntity where M : IOlapMainObjectBase {}
+		IEntity {}
 }

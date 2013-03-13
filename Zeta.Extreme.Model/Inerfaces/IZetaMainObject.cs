@@ -16,18 +16,16 @@ using Zeta.Extreme.Model.Inerfaces.Bases;
 using Zeta.Extreme.Model.Inerfaces.Partial;
 using Zeta.Extreme.Model.PocoClasses;
 
+
 namespace Zeta.Extreme.Model.Inerfaces {
 	[ForSearch("Старший объект (предприятие)")]
-	public interface IZetaMainObject :
-		IZetaObject,
-		IZetaQueryDimension,
+	public interface IZetaMainObject : IZetaQueryDimension,
 		ICanResolveTag,
-		IOlapMainObject<IZetaMainObject, IZetaDetailObject>,
-		IWithAddress, IMainObjectLocators,
+		IWithAddress,
 		IWithDetailObjectType,
 		IWithUnderwriters,
 		IWithAlternateDetailObjects,
-		IWithProperties {
+		IWithProperties, IWithDetailObjects, IZoneElement, IEntity, IWithFormula {
 		[Map] string GroupCache { get; set; }
 		[Map] string FullName { get; set; }
 		[Map] string Formula { get; set; }
@@ -47,6 +45,9 @@ namespace Zeta.Extreme.Model.Inerfaces {
 
 		int Level { get; }
 		int? DivId { get; set; }
+		[Classic("Holding")] IMainObjectGroup Group { get; set; }
+		[Classic("Otrasl")] IMainObjectRole Role { get; set; }
+		[Classic("Municipal")] IZetaPoint Location { get; set; }
 
 		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
 		string[] GetConfiguredThemaCodes();

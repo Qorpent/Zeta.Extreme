@@ -18,8 +18,8 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IZetaRegion :
 		IZoneElement,
 		IWithMainObjects,
-		IWithDetailObjects<IZetaMainObject, IZetaDetailObject>,
+		IWithDetailObjects,
 		IWithPoints,
 		IWithZone,
-		IEntity {}
+		IEntity, IWithId, IWithCode, IWithName, IWithTag {}
 }

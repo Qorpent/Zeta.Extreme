@@ -12,13 +12,13 @@ using System;
 using Qorpent.Model;
 using Zeta.Extreme.Model.Inerfaces.Bases;
 
+
 namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// 	Описывает стандартное измерение запросов Zeta
 	/// </summary>
 	/// <typeparam name="TItem"> </typeparam>
-	public interface IQueryDimension<TItem> : IWithCacheKey, IZetaQueryDimension
-		where TItem : class, IWithCode, IWithId, IWithTag {
+	public interface IQueryDimension<TItem> : IWithCacheKey, IZetaQueryDimension, IEntity, IWithFormula where TItem : class, IWithCode, IWithId, IWithTag {
 		/// <summary>
 		/// 	Набор кодов элемента
 		/// </summary>
