@@ -30,8 +30,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         }
 
         private void find(Attachment attachment) {
-            IEnumerable<Attachment> result = this.mdb.Find(attachment);
-                Console.WriteLine("{0}", result.ToDictionary.Uid);
+
 
         }
 
@@ -118,7 +117,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                 Type = "mdb-test",
                 Metadata = {
                     {
-                        "s", "sdffsdf"
+                        "Owner", "FUCKKKKKKK!"
                     },
                     {
                         "test", "ok"
@@ -144,21 +143,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         public void CanDelete() {
             var attachment = new FormAttachment {
                 Uid = "Test_OK2",
-                Extension = "sda",
-                MimeType = "dada",
                 User = "remalloc",
-                Comment = "test",
-                Revision = 0123456789,
-                Name = "Test OK File",
-                Type = "mdb-test",
-                Metadata = {
-                    {
-                        "s", "sdffsdf"
-                    },
-                    {
-                        "test", "ok"
-                    }
-                }
+                Comment = "test"
             };
 
             this.Delete(attachment);

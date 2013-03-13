@@ -55,11 +55,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="attachment">attachment description</param>
         public void Delete(Attachment attachment) {
             BsonDocument document = HandleVariables(attachment);
+            IMongoQuery clause = new QueryDocument(document);
 
             _collection.Update(
-                    Query.EQ(
-                        "_id",
-                        document["_id"]
+                    Query.And(
+                        clause
                     ),
                     Update.Set(
                         "Deleted",
@@ -73,8 +73,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="attachment">attachment description</param>
         private void DeleteReal(Attachment attachment) {
-            DeleteAttachmentBin(attachment);    // deleting from the gridfs
-            DeleteAttachmentView(attachment);   // and delete the view description
+            DeleteAttachmentBinReal(attachment);    // deleting from the gridfs
+            DeleteAttachmentViewReal(attachment);   // and delete the view description
         }
 
         /// <summary>
@@ -87,11 +87,15 @@ namespace Zeta.Extreme.MongoDB.Integration {
             return CreateStreamToFile(mode, attachment.Uid);
         }
 
-        private void DeleteAttachmentBin(Attachment attachment) {
+        /// <summary>
+        /// Delete the attachment represents by Attachment class
+        /// </summary>
+        /// <param name="attachment"></param>
+        private void DeleteAttachmentBinReal(Attachment attachment) {
             _gridFS.Delete(attachment.Uid);
         }
 
-        private void DeleteAttachmentView(Attachment attachment) {
+        private void DeleteAttachmentViewReal(Attachment attachment) {
             BsonDocument document = HandleVariables(attachment);
 
             _collection.Remove(
@@ -147,23 +151,19 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private BsonDocument HandleVariables(Attachment attachment) {
             BsonDocument document = new BsonDocument();
 
+            // first all, we have to add the metadata 
+            document.AddRange(attachment.Metadata);
+
             document["_id"] = attachment.Uid;
 
-            document["File"] = new BsonDocument();
-            document["Attachment"] = new BsonDocument();
+            document["Extension"] = attachment.Extension ?? "";
+            document["MimeType"] = attachment.MimeType ?? "";
+            document["Filename"] = attachment.Name ?? "";
 
-            document["File"]["Extension"] = attachment.Extension;
-            document["File"]["MimeType"] = attachment.MimeType;
-            document["File"]["Filename"] = attachment.Name;
-
-            document["Attachment"]["Deleted"] = false;
-            document["Attachment"]["Owner"] = attachment.User;
-            document["Attachment"]["Comment"] = attachment.Comment;
-            document["Attachment"]["Revision"] = attachment.Revision;
-
-            document["Metadata"] = attachment.Metadata.ToBson();
-
-            // The "tag" field is temporarily removed
+            document["Deleted"] = false;
+            document["Owner"] = attachment.User ?? "";
+            document["Comment"] = attachment.Comment ?? "";
+            document["Revision"] = attachment.Revision;
 
             return document;
         }
