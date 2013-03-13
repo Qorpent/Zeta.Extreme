@@ -62,7 +62,7 @@
                    self.triggerOnError(result);
                     return;
                 }
-                if (self.wrap) result = self.wrap(result);
+                if (!!self.wrap) result = self.wrap(result);
                 self.triggerOnSuccess(result);
             });
 		},

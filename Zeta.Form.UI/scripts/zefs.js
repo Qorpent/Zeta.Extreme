@@ -394,7 +394,7 @@ root.init = root.init ||
         GetLockHistory();
         GetAttachList();
         $(root).trigger(root.handlers.on_sessionload);
-        window.setTimeout(function(){Data(result,0)},options.datadelay); //первый запрос на данные
+        window.setTimeout(function(){spec.session.data.execute(result,0)},options.datadelay); //первый запрос на данные
     });
 
     spec.session.structure.onSuccess(function(e, result) {

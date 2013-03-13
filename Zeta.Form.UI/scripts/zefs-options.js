@@ -58,29 +58,108 @@ $.extend(specification,(function(){
 
             structure : $.extend(new Command({domain:"zefs", name:"struct"}), {
                 wrap : function(obj) {
-                    $.extend(obj, {
+                    var result = {
                         // массив строк
                         rows : [],
                         // массив колонок
-                        cols : [],
-                        prepare : function() {
-                            for (var s in this) {
-                                var item = this[s];
-                                if (item.type=="c") {
-                                    this.cols.push(item);
-                                }
-                                if (item.type=="r") {
-                                    this.measure = this.measure || "тыс. руб.";
-                                    this.level = this.level || 0;
-                                    this.rows.push(item);
-                                }
-                            }
+                        cols : []
+                    };
+                    $.each(obj, function(i,o) {
+                        if (o.type=="c") {
+                            result.cols.push(o);
+                        }
+                        if (o.type=="r") {
+                            o.measure = o.measure || "тыс. руб.";
+                            o.level = o.level || 0;
+                            result.rows.push(o);
                         }
                     });
-                    obj.prepare();
-                    return obj;
+                    return result;
                 }
+            }),
+
+            data : $.extend(new Command({domain: "zefs", name: "data"}), {
+                 wrap : function(obj) {
+                     $.extend(obj, {
+                         // признак применения батча к таблице
+                         wasFilled : false
+                     });
+                     $.each(obj.data, function(i,o) {
+                         $.extend(o, {
+                             row : this.i.split(":")[0],
+                             col : this.i.split(":")[1]
+                         });
+                     });
+                     return obj;
+                 }
             })
+        },
+
+        // КОНВЕРТИРУЕТ РЕЗУЛЬТАТ команды data_command в стандартный объект БАТЧА
+        asDataBatch : function(obj){
+            $.extend(obj,{
+                // первый индекс ячейки батча
+                getFirstIdx : function(){return this.si;},
+                // последний индекс ячейки батча
+                getLastIdx : function(){return this.ei;},
+                // статус закачки finished_state,error_state, inprocess_state
+                getState : function(){return this.state;},
+                // признак наличия ошибки в процессе загрузки
+                getIsError : function(){return this.getState()==options.error_state;},
+                // текст ошибки в процессе загрузки
+                getError : function(){return this.e;},
+                // признак завершения процесса загрузки ( по окончанию данных или ошибке)
+                getIsLast : function(){return this.getState()!=options.inprocess_state;},
+                // признак наличия реальных данных в батче
+                getWasData : function(){
+                    var data  = this.getData();
+                    if(!data)return false;
+                    if(0==data.length)return false;
+                    return true;
+                },
+                // индекс для стартового индекса следующей прокачки
+                getNextIdx : function(){
+                    if(this.getWasData()){
+                        return this.getLastIdx()+1;
+                    }
+                    return this.getFirstIdx();
+                },
+                // массив ячеек в батче (собственно данные)
+                getData : function(){ return this.data || {};} ,
+                // признак применения батча к таблице
+                wasFilled : false
+            });
+            var data = obj.getData();
+            for (var i in data) {
+                // приводим элементы данных к стандартному виду
+                options.asDataItem(data[i]);
+            }
+            return obj;
+        },
+        // КОНВЕРТИРУЕТ элемент РЕЗУЛЬТАТА команды data_command в стандартный источник для ячейки
+        asDataItem : function(obj){
+            obj.v = obj.v || null,
+                $.extend(obj,{
+                    // признак того, что ячейка является прямым отображением ячейки в БД
+                    getIsCell : function(){return this.getCellId()!=0;},
+                    // идентификатор ячейки в БД (или 0)
+                    getCellId :  function(){return this.c || 0;},
+                    // идентификатор ячейки в таблице В ВИДЕ "ROWIDX:COLIDX"
+                    getId : function() {return this.i;},
+                    // RealID строки для ключа ячейки
+                    getRealId : function(){return this.ri || "";},
+                    // признак наличия данных
+                    hasValue : function(){return null!=this.v;},
+                    // собственно значение
+                    getValue : function(){return this.v;}
+                });
+            // нормализуем ID ячейки в индексы строки и колонки
+            var rc = obj.getId().split(":");
+            // индекс строки
+            obj.row = rc[0];
+            // индекс колонки
+            obj.col = rc[1];
+            return obj;
         },
 
         commands : {
@@ -549,72 +628,7 @@ $.extend(specification,(function(){
 			return obj;
 		},
 		
-		// КОНВЕРТИРУЕТ РЕЗУЛЬТАТ команды data_command в стандартный объект БАТЧА
-		asDataBatch : function(obj){
-			$.extend(obj,{
-				// первый индекс ячейки батча
-				getFirstIdx : function(){return this.si;},
-				// последний индекс ячейки батча
-				getLastIdx : function(){return this.ei;},
-				// статус закачки finished_state,error_state, inprocess_state
-				getState : function(){return this.state;},
-				// признак наличия ошибки в процессе загрузки
-				getIsError : function(){return this.getState()==options.error_state;},
-				// текст ошибки в процессе загрузки
-				getError : function(){return this.e;},
-				// признак завершения процесса загрузки ( по окончанию данных или ошибке)
-				getIsLast : function(){return this.getState()!=options.inprocess_state;},
-				// признак наличия реальных данных в батче
-                getWasData : function(){
-                  var data  = this.getData();
-                    if(!data)return false;
-                    if(0==data.length)return false;
-                    return true;
-                },
-				// индекс для стартового индекса следующей прокачки
-                getNextIdx : function(){
-                    if(this.getWasData()){
-                        return this.getLastIdx()+1;
-                    }
-                    return this.getFirstIdx();
-                },
-				// массив ячеек в батче (собственно данные)
-				getData : function(){ return this.data || {};} ,
-				// признак применения батча к таблице
-                wasFilled : false
-				});
-			var data = obj.getData();
-			for (var i in data) {
-				// приводим элементы данных к стандартному виду
-				options.asDataItem(data[i]);
-			}
-			return obj;
-		},
-		// КОНВЕРТИРУЕТ элемент РЕЗУЛЬТАТА команды data_command в стандартный источник для ячейки
-		asDataItem : function(obj){
-			obj.v = obj.v || null,
-			$.extend(obj,{
-				// признак того, что ячейка является прямым отображением ячейки в БД
-				getIsCell : function(){return this.getCellId()!=0;},
-				// идентификатор ячейки в БД (или 0)
-				getCellId :  function(){return this.c || 0;},
-				// идентификатор ячейки в таблице В ВИДЕ "ROWIDX:COLIDX"
-				getId : function() {return this.i;},
-                // RealID строки для ключа ячейки
-                getRealId : function(){return this.ri || "";},
-				// признак наличия данных
-				hasValue : function(){return null!=this.v;},
-				// собственно значение
-				getValue : function(){return this.v;}
-			});
-			// нормализуем ID ячейки в индексы строки и колонки
-			var rc = obj.getId().split(":");
-			// индекс строки
-			obj.row = rc[0];
-			// индекс колонки
-			obj.col = rc[1];
-			return obj;
-		},
+
 		//возвращает нормализованный список дивизионов и объектов, вызывая на них соответственно asDiv, asObject
 		asObjectList : function (obj ){
 			// в ходе выполнения формирует двустороннюю

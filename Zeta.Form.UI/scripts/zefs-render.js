@@ -42,10 +42,10 @@ $.extend(root,{
 				thead.find("thead").append($('<th class="measure"/>').text("Ед. изм."));
 			}
 			$.each(session.structure.rows, function(rowidx,row) {
-				var tr = $("<tr/>").attr("level",row.getLevel());
+				var tr = $("<tr/>").attr("level",row.level);
 				tr.append($('<td class="number"/>').attr("title", row.code).text(row.number || ""));
 				if (session.structure.rows.length > rowidx + 1) {
-                    if (row.getLevel() < session.structure.rows[rowidx + 1].getLevel()) {
+                    if (row.level < session.structure.rows[rowidx + 1].level) {
                         tr.addClass("haschild");
                     }
                 }
@@ -55,7 +55,7 @@ $.extend(root,{
 				} else {
 					tr.append(td);
 					if (session.NeedMeasure) {
-						tr.append($('<td class="measure"/>').text(row.getMeasure()));
+						tr.append($('<td class="measure"/>').text(row.measure));
 					}
                     $.each(session.structure.cols, function(i,col) {
                         var td = $('<td class="data notloaded"/>').attr({
