@@ -394,7 +394,7 @@ root.init = root.init ||
         GetLockHistory();
         GetAttachList();
         $(root).trigger(root.handlers.on_sessionload);
-        window.setTimeout(function(){spec.session.data.execute(result,0)},options.datadelay); //первый запрос на данные
+        window.setTimeout(function(){spec.session.data.execute({session: result.Uid,startidx: 0})},options.datadelay); //первый запрос на данные
     });
 
     spec.session.structure.onSuccess(function(e, result) {
@@ -405,7 +405,16 @@ root.init = root.init ||
         $('table.data').zefs();
     });
 
-
+    spec.session.data.onSuccess(function(e, result) {
+        root.myform.currentSession.data.push(result);
+        Fill(root.myform.currentSession);
+        if(result.state != "w"){
+            FinishForm(root.myform.currentSession,result);
+        } else {
+            var idx = $.isEmptyObject(result.data) ? result.ei+1 : result.si;
+            window.setTimeout(function(){spec.session.data.execute({session: root.myform.sessionId,startidx: idx})},options.datadelay);
+        }
+    });
 
 
     $.extend(root, {

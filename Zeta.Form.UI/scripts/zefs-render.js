@@ -78,15 +78,15 @@ $.extend(root,{
 		updateCells : function(session,batch){
 			var tbody = $(session.table).find("tbody").first();
             var div = $('<div/>'); // Это контейнер для форматирования чисел :)
-			$.each(batch.getData(), function(i,b) {
+			$.each(batch.data, function(i,b) {
                 var $cell = $("td[id='" + b.i +  "']");
-                var val = b.getValue() || "";
+                var val = b.v || "";
                 $cell.number($cell.text(),0,'','');
                 if ($cell.text() != val && !$.isEmptyObject($cell.data())) {
                     $cell.addClass("recalced");
                 }
                 if (val == "0") {
-                    if (b.getCellId() == 0 || !$cell.hasClass("editable")) val = "";
+                    if (b.c == 0 || !$cell.hasClass("editable")) val = "";
                     $cell.text(val);
                 } else {
                     $cell.number(val,0,'.',' ');
@@ -94,7 +94,7 @@ $.extend(root,{
                 $cell.removeClass("notloaded");
                 $cell.data("history", val);
                 $cell.data("previous", val);
-                $cell.attr("ri", b.getRealId());
+                $cell.attr("ri", b.ri);
                 if (val.search(/\./) != -1 && val.search("error") == -1) {
                     $cell.addClass("rounded");
                     $cell.tooltip({title: val, placement: 'top', container: $('body')});
