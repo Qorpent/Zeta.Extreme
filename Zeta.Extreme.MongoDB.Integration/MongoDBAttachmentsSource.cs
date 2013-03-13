@@ -23,30 +23,55 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private MongoGridFS _gridFS;
         private MongoCollection _collection;
 
-        private IDictionary<string, BsonDocument> _attachments = new Dictionary<string, BsonDocument>();
+        // local storage to attachments information
+        private IDictionary<string, InternalDocument> _attachments;
+
+        /// <summary>
+        /// Class represents the attachment data in internal order
+        /// </summary>
+        private class InternalDocument : BsonDocument {
+            public InternalDocument(Attachment attachment) {
+                // first all, we have to add the metadata 
+                this.AddRange(attachment.Metadata);
+
+                this["_id"] = attachment.Uid;
+
+                this["Extension"] = attachment.Extension ?? "";
+                this["MimeType"] = attachment.MimeType ?? "";
+                this["Filename"] = attachment.Name ?? "";
+
+                this["Deleted"] = false;
+                this["Owner"] = attachment.User ?? "";
+                this["Comment"] = attachment.Comment ?? "";
+                this["Revision"] = attachment.Revision;
+            }
+        }
 
         public MongoDBAttachmentsSource() {
             MongoDBConnect();
+            _attachments = new Dictionary<string, InternalDocument>();
         }
 
         public IEnumerable<Attachment> Find(Attachment query) {
-            BsonDocument document = HandleVariables(query);
+            BsonDocument document = new InternalDocument(query);
             IMongoQuery clause = new QueryDocument(document);
 
             return _collection.FindAs<IEnumerable<Attachment>>(
                 Query.And(
-                    clause 
+                    clause
                 )
             ) as IEnumerable<Attachment>;
         }
 
+        /// <summary>
+        /// Saving attachment information and preparing for writing to a stream
+        /// </summary>
+        /// <param name="attachment"></param>
         public void Save(Attachment attachment) {
-            // Add the KeyValuePair <string, BsonDocument> to the local storage _attachments
-            _attachments.Add(
-                AttachmentViewSave(
-                    HandleVariables(attachment)
-                )
-            );
+            InternalDocument document = new InternalDocument(attachment);
+
+            AttachmentViewSave(document);
+            _attachments.Add(document["_id"].ToString(), document);
         }
 
         /// <summary>
@@ -54,7 +79,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="attachment">attachment description</param>
         public void Delete(Attachment attachment) {
-            BsonDocument document = HandleVariables(attachment);
+            BsonDocument document = new InternalDocument(attachment);
             IMongoQuery clause = new QueryDocument(document);
 
             _collection.Update(
@@ -88,31 +113,12 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         /// <summary>
-        /// Delete the attachment represents by Attachment class
-        /// </summary>
-        /// <param name="attachment"></param>
-        private void DeleteAttachmentBinReal(Attachment attachment) {
-            _gridFS.Delete(attachment.Uid);
-        }
-
-        private void DeleteAttachmentViewReal(Attachment attachment) {
-            BsonDocument document = HandleVariables(attachment);
-
-            _collection.Remove(
-                Query.EQ(
-                    "_id",
-                    document["_id"]
-                )
-            );
-        }
-
-        /// <summary>
         /// Creates a stream to the file identified by _id in _currentDocument["_id"].ToString()
         /// </summary>
         /// <param name="mode">Acces mode to the stream</param>
         /// <param name="id">mongoDB internal document/file identifier</param>
         /// <returns></returns>
-        private Stream CreateStreamToFile(FileAccess mode, string id) {
+        protected Stream CreateStreamToFile(FileAccess mode, string id) {
             return new MongoGridFSStream(
                 new MongoGridFSFileInfo(
                     _gridFS,
@@ -126,46 +132,42 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <summary>
         /// Create a connection to database and select the collection in mongoDBCurrentCollection
         /// </summary>
-        private void MongoDBConnect() {
-            MongoServer     server  = new MongoClient().GetServer();
-            MongoDatabase   db      = server.GetDatabase(DB_NAME);
+        protected void MongoDBConnect() {
+            MongoServer server = new MongoClient().GetServer();
+            MongoDatabase db = server.GetDatabase(DB_NAME);
 
             _gridFS = new MongoGridFS(db);
             _collection = db.GetCollection(COLLECTION_NAME);
         }
 
         /// <summary>
-        /// Save the attachment view information to database
+        /// Delete the attachment binary data
         /// </summary>
-        private KeyValuePair<string, BsonDocument> AttachmentViewSave(BsonDocument document) {
-            // save the document
-            _collection.Save(document);
+        /// <param name="attachment"></param>
+        private void DeleteAttachmentBinReal(Attachment attachment) {
+            _gridFS.Delete(attachment.Uid);
+        }
 
-            // and return back the pair as _id:Document
-            return new KeyValuePair<string, BsonDocument>(
-                document["_id"].ToString(),
-                document
+        /// <summary>
+        /// Real deletion an attachment information from the database
+        /// </summary>
+        /// <param name="attachment"></param>
+        private void DeleteAttachmentViewReal(Attachment attachment) {
+            InternalDocument document = new InternalDocument(attachment);
+
+            _collection.Remove(
+                Query.EQ(
+                    "_id",
+                    document["_id"]
+                )
             );
         }
 
-        private BsonDocument HandleVariables(Attachment attachment) {
-            BsonDocument document = new BsonDocument();
-
-            // first all, we have to add the metadata 
-            document.AddRange(attachment.Metadata);
-
-            document["_id"] = attachment.Uid;
-
-            document["Extension"] = attachment.Extension ?? "";
-            document["MimeType"] = attachment.MimeType ?? "";
-            document["Filename"] = attachment.Name ?? "";
-
-            document["Deleted"] = false;
-            document["Owner"] = attachment.User ?? "";
-            document["Comment"] = attachment.Comment ?? "";
-            document["Revision"] = attachment.Revision;
-
-            return document;
+        /// <summary>
+        /// Save the attachment view information to database
+        /// </summary>
+        private void AttachmentViewSave(InternalDocument document) {
+            _collection.Save(document);
         }
     }
 }
