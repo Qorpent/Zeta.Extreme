@@ -27,30 +27,30 @@ $.extend(root,{
 				$(thead.find("tr").first()).append($('<th class="measure"/>').text("Ед. изм."));
 			}
 			$.each(session.structure.cols, function(i,col) {
-				colgroup.append($('<col class="data"/>').attr("idx",col.getIdx()));
-				var th = $('<th class="data"/>').attr("idx",col.getIdx()).text(col.getName());
-                if (col.getIsPrimary()) {
+				colgroup.append($('<col class="data"/>').attr("idx",col.idx));
+				var th = $('<th class="data"/>').attr("idx",col.idx).text(col.name);
+                if (col.isprimary) {
                     th.addClass("primary");
                 }
 				thead.find("tr").append(th);
 			});
 			table.append(colgroup);
 			table.append(thead);
-		    //table.find("thead tr").first().append($("<th/>").text(col.getName()).data("src_column",col))
+		    //table.find("thead tr").first().append($("<th/>").text(col.name).data("src_column",col))
 				var body = $("<tbody/>");
 			if (session.NeedMeasure) {
 				thead.find("thead").append($('<th class="measure"/>').text("Ед. изм."));
 			}
 			$.each(session.structure.rows, function(rowidx,row) {
 				var tr = $("<tr/>").attr("level",row.getLevel());
-				tr.append($('<td class="number"/>').attr("title", row.code).text(row.getNumber()));
+				tr.append($('<td class="number"/>').attr("title", row.code).text(row.number || ""));
 				if (session.structure.rows.length > rowidx + 1) {
                     if (row.getLevel() < session.structure.rows[rowidx + 1].getLevel()) {
                         tr.addClass("haschild");
                     }
                 }
-                var td = $('<td class="name"/>').text(row.getName());
-				if (row.getIsTitle()) {
+                var td = $('<td class="name"/>').text(row.name);
+				if (row.iscaption) {
 					tr.append(td.attr("colspan", "100"));
 				} else {
 					tr.append(td);
@@ -59,12 +59,12 @@ $.extend(root,{
 					}
                     $.each(session.structure.cols, function(i,col) {
                         var td = $('<td class="data notloaded"/>').attr({
-                            "id": row.getIdx() + ":" + col.getIdx(),
-                            "idx": col.getIdx(),
+                            "id": row.idx + ":" + col.idx,
+                            "idx": col.idx,
                             "visible": "visible"
                         });
-                        if (col.getIsPrimary() && row.getIsPrimary()) td.addClass("editable");
-                        if (col.getIsControlPoint() && row.getIsControlPoint()) td.addClass("control");
+                        if (col.isprimary && row.isprimary) td.addClass("editable");
+                        if (col.controlpoint && row.controlpoint) td.addClass("control");
                         tr.append(td);
                     });
                 }

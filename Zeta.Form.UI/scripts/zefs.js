@@ -389,7 +389,7 @@ root.init = root.init ||
         root.myform.currentSession = result;
         root.myform.sessionId = result.Uid;
         document.title = result.FormInfo.Name;
-        spec.session.structure.execute({session: root.myform.sessionId});
+        spec.session.structure.execute({session: result.Uid});
         GetLock();
         GetLockHistory();
         GetAttachList();
@@ -398,8 +398,9 @@ root.init = root.init ||
     });
 
     spec.session.structure.onSuccess(function(e, result) {
-        Render(result);
-        Fill(result);
+        root.myform.currentSession.structure = result;
+        Render(root.myform.currentSession);
+        Fill(root.myform.currentSession);
         $(root).trigger(root.handlers.on_structureload);
         $('table.data').zefs();
     });

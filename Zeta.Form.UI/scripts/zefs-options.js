@@ -70,9 +70,9 @@ $.extend(specification,(function(){
                                     this.cols.push(item);
                                 }
                                 if (item.type=="r") {
-                                    this.rows.push($.extend(item,{
-                                        getMeasure : function(){return this.measure || "тыс. руб."}
-                                    }));
+                                    this.measure = this.measure || "тыс. руб.";
+                                    this.level = this.level || 0;
+                                    this.rows.push(item);
                                 }
                             }
                         }
