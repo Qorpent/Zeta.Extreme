@@ -121,6 +121,9 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                     },
                     {
                         "test", "ok"
+                    },
+                    {
+                        "InternalDocument", "InternalDocument"
                     }
                 }
             };

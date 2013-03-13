@@ -23,6 +23,27 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private MongoGridFS _gridFS;
         private MongoCollection _collection;
 
+        /// <summary>
+        /// Class represents the attachment data in internal order
+        /// </summary>
+        private class InternalDocument : BsonDocument {
+            public InternalDocument(Attachment attachment) {
+                // first all, we have to add the metadata 
+                this.AddRange(attachment.Metadata);
+
+                this["_id"] = attachment.Uid;
+
+                this["Extension"] = attachment.Extension ?? "";
+                this["MimeType"] = attachment.MimeType ?? "";
+                this["Filename"] = attachment.Name ?? "";
+
+                this["Deleted"] = false;
+                this["Owner"] = attachment.User ?? "";
+                this["Comment"] = attachment.Comment ?? "";
+                this["Revision"] = attachment.Revision;
+            }
+        }
+
         private IDictionary<string, BsonDocument> _attachments = new Dictionary<string, BsonDocument>();
 
         public MongoDBAttachmentsSource() {
@@ -96,7 +117,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         private void DeleteAttachmentViewReal(Attachment attachment) {
-            BsonDocument document = HandleVariables(attachment);
+            InternalDocument document = HandleVariables(attachment);
 
             _collection.Remove(
                 Query.EQ(
@@ -138,34 +159,16 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// Save the attachment view information to database
         /// </summary>
         private KeyValuePair<string, BsonDocument> AttachmentViewSave(BsonDocument document) {
-            // save the document
             _collection.Save(document);
 
-            // and return back the pair as _id:Document
             return new KeyValuePair<string, BsonDocument>(
                 document["_id"].ToString(),
                 document
             );
         }
 
-        private BsonDocument HandleVariables(Attachment attachment) {
-            BsonDocument document = new BsonDocument();
-
-            // first all, we have to add the metadata 
-            document.AddRange(attachment.Metadata);
-
-            document["_id"] = attachment.Uid;
-
-            document["Extension"] = attachment.Extension ?? "";
-            document["MimeType"] = attachment.MimeType ?? "";
-            document["Filename"] = attachment.Name ?? "";
-
-            document["Deleted"] = false;
-            document["Owner"] = attachment.User ?? "";
-            document["Comment"] = attachment.Comment ?? "";
-            document["Revision"] = attachment.Revision;
-
-            return document;
+        private InternalDocument HandleVariables(Attachment attachment) {
+            return new InternalDocument(attachment);
         }
     }
 }
