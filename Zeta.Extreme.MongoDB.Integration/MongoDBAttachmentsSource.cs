@@ -1,24 +1,12 @@
 ﻿using System;
 using System.IO;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Builders;
 
-using MongoDB.Bson.IO;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.Conventions;
-using MongoDB.Bson.Serialization.IdGenerators;
-using MongoDB.Bson.Serialization.Options;
-using MongoDB.Bson.Serialization.Serializers;
-using MongoDB.Driver.Wrappers;
 
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -30,8 +18,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
         // Connection information
         private MongoGridFS _gridFS;
         private MongoDatabase _db;
-        private MongoCollection _collection;
-
 
         // local storage to attachments information
         private IDictionary<string, InternalDocument> _attachments;
@@ -41,10 +27,14 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         private class InternalDocument : BsonDocument {
             public InternalDocument(Attachment attachment) {
-                // first all, we have to add the metadata 
-                this.AddRange(attachment.Metadata);
 
-                this["_id"] = attachment.Uid;
+                if (attachment.Metadata != null) {
+                    this.AddRange(attachment.Metadata);
+                }
+
+                if (attachment.Uid != null) {
+                    this["_id"] = attachment.Uid;
+                }
 
                 if (attachment.Extension != null) {
                     this["Extension"] = attachment.Extension;
@@ -62,15 +52,19 @@ namespace Zeta.Extreme.MongoDB.Integration {
                     this["Owner"] = attachment.User;
                 }
 
-        
+
                     this["Revision"] = attachment.Revision;
-                
 
                 if (attachment.Comment != null) {
                     this["Comment"] = attachment.Comment;
                 }
 
+                if (attachment.Version != null) {
+                    this["Version"] = attachment.Version;
+                }
+
             }
+
         }
 
         public MongoDBAttachmentsSource() {
@@ -79,16 +73,36 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         public IEnumerable<Attachment> Find(Attachment query) {
-            BsonDocument document = new InternalDocument(query);
-            MongoCollection AttachmentView = _db.GetCollection("AttachmentView");
+            List<Attachment> endList = new List<Attachment>();
 
-            var result = AttachmentView.FindOneAs<IEnumerable<Attachment>>(
+            MongoCursor<BsonDocument> result = _db.GetCollection("AttachmentView").FindAs<BsonDocument>(
                 Query.And(
-                    new QueryDocument(document)
+                    new QueryDocument(
+                         new InternalDocument(query)
+                     )
                 )
             );
 
-            return null;
+            if (result != null) {
+                foreach (BsonDocument el in result) {
+                    endList.Add(
+                        new Attachment() {
+                            Uid = el["_id"].ToString(),
+                            Name = el["Filename"].ToString(),
+                            Comment = el["Comment"].ToString(),
+                            User = el["Owner"].ToString(),
+                            Version = el["Version"].ToLocalTime(),
+                            MimeType = el["MimeType"].ToString(),
+                            Revision = el["Revision"].ToInt32(),
+                            Extension = el["Extension"].ToString()
+                        }
+                    );
+                }
+
+                return endList;
+            } else {
+                return null;
+            }
         }
 
         /// <summary>
@@ -106,8 +120,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// Delete an attachment
         /// </summary>
         /// <param name="attachment">attachment description</param>
-        public void Delete(Attachment attachment) {            
-            _collection.Update(
+        public void Delete(Attachment attachment) {
+            _db.GetCollection("AttachmentView").Update(
                 Query.And(
                     new QueryDocument(
                         new InternalDocument(attachment)    
@@ -152,43 +166,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         protected void MongoDBConnect() {
             MongoServer server = new MongoClient().GetServer();
+            
             _db = server.GetDatabase(DB_NAME);
-
             _gridFS = new MongoGridFS(_db);
-            _collection = _db.GetCollection("AttachmentView");
-          
-        }
-
-        /// <summary>
-        /// Real deleting an attachment from the database
-        /// </summary>
-        /// <param name="attachment">attachment description</param>
-        private void DeleteReal(Attachment attachment) {
-            DeleteAttachmentBinReal(attachment);    // deleting from the gridfs
-            DeleteAttachmentViewReal(attachment);   // and delete the view description
-        }
-
-        /// <summary>
-        /// Delete the attachment binary data
-        /// </summary>
-        /// <param name="attachment"></param>
-        private void DeleteAttachmentBinReal(Attachment attachment) {
-            _gridFS.Delete(attachment.Uid);
-        }
-
-        /// <summary>
-        /// Real deletion an attachment information from the database
-        /// </summary>
-        /// <param name="attachment"></param>
-        private void DeleteAttachmentViewReal(Attachment attachment) {
-            InternalDocument document = new InternalDocument(attachment);
-
-            _collection.Remove(
-                Query.EQ(
-                    "_id",
-                    document["_id"]
-                )
-            );
         }
 
         /// <summary>
@@ -196,7 +176,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         private void AttachmentViewSave(InternalDocument document) {
             document["Deleted"] = false;
-            _collection.Save(document);
+            _db.GetCollection("AttachmentView").Save(document);
         }
     }
 }
