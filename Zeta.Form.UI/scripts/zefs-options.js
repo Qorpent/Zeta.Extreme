@@ -53,6 +53,7 @@ $.extend(specification,(function(){
         },
 
         data : {
+            // Комадна получения данных
             start : $.extend(new Command({domain: "zefs", name: "data"}), {
                  wrap : function(obj) {
                      $.extend(obj, {
@@ -68,12 +69,33 @@ $.extend(specification,(function(){
                      return obj;
                  }
             }),
-
+            // Команда, сообщающая серверу о завешении получения данных
             loaded : new Command({domain: "zefs", name: "dataloaded"}),
+            // Команда повторной закачки данных
             reset : new Command({domain: "zefs", name: "resetdata"}),
+            // Команда сохранения измененных данных
+            // на вход ждет объект вида: {id: (id ячейки), value: (новое значение) , ri: (id в базе)}
             save : new Command({domain: "zefs", name: "save"}),
+            // Команда инициализации сессии сохранения
             saveready : new Command({domain: "zefs", name: "saveready"}),
+            // Команда проверки состояния сохранения
             savestate : new Command({domain: "zefs", name: "savestate"})
+        },
+
+        lock : {
+            // Команда блокировки формы
+            start : new Command({domain: "zefs", name: "lockform"}),
+            // Команда получения статуса блокировки
+            state : new Command({domain: "zefs", name: "currentlockstate"}),
+            // Команда получения статуса возможности блокировки
+            ispossible : new Command({domain: "zefs", name: "canlockstate"}),
+            // Команда получения списка блокировок
+            history : $.extend(new Command({domain: "zefs", name: "locklist"}), {
+                wrap: function(obj) {
+                    // Пишем сюда нормальную преобразованную дату
+                    obj.Date = eval(obj.Version.substring(2));
+                }
+            })
         },
 
         commands : {
