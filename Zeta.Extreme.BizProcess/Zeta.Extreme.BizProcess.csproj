@@ -65,8 +65,20 @@
     <Compile Include="Themas\TypedParameter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Qorpent.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Qorpent.Core.Debug\Qorpent.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Qorpent.Utils, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Qorpent.Utils.Debug\Qorpent.Utils.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Zeta.Extreme.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Model.Debug\Zeta.Extreme.Model.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />
