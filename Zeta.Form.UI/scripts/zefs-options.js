@@ -99,7 +99,13 @@ $.extend(specification,(function(){
         },
 
         files : {
-            list : new Command({domain: "zefs", name: "attachlist"}),
+            // команда получения списка прикрепленных к форме файлов
+            list : $.extend(new Command({domain: "zefs", name: "attachlist"}), {
+                wrap : function(obj) {
+                    obj.Date = eval(this.Version.substring(2));
+                }
+            }),
+            // команда прекрепления или обновления файла к форме
             add : $.extend(new Command({domain: "zefs", name: "attachfile"}), {
                 call : function(params) {
                     params = params || {};
@@ -132,7 +138,15 @@ $.extend(specification,(function(){
                         .success(function(r){onsuccess(r)})
                         .error(onerror||function(error){console.log(error)});
                 }
-            })
+            }),
+            // команда скрытия/удаления файла
+            delete : new Command({domain: "zefs", name: "deletefile"}),
+            // команда загрузки файла
+            download : $.extend(new Command({domain: "zefs", name: "downloadfile"}), {
+                datatype: "filedesc"
+            }),
+            // команда получения возможных типов файлов
+            gettypes : new Command({domain: "zefs", name: "getfiletypes"})
         },
 
         commands : {

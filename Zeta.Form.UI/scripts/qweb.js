@@ -26,7 +26,7 @@
         datatype : "json",
         getParameters : function() { return null },
         getUrl:function(datatype){
-            datatype = datatype || self.dataType || "json";
+            datatype = datatype || this.datatype;
                        return siteroot+this.url.replace('{DATATYPE}',datatype);
         },
         triggerOnSuccess : function(result){
