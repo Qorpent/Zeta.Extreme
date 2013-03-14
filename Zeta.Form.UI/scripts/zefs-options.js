@@ -94,6 +94,7 @@ $.extend(specification,(function(){
                 wrap: function(obj) {
                     // Пишем сюда нормальную преобразованную дату
                     obj.Date = eval(obj.Version.substring(2));
+                    return obj;
                 }
             })
         },
@@ -103,6 +104,7 @@ $.extend(specification,(function(){
             list : $.extend(new Command({domain: "zefs", name: "attachlist"}), {
                 wrap : function(obj) {
                     obj.Date = eval(this.Version.substring(2));
+                    return obj;
                 }
             }),
             // команда прекрепления или обновления файла к форме
@@ -151,7 +153,12 @@ $.extend(specification,(function(){
 
         metadata : {
             //команда, возвращающая каталог периодов
-            getperiods : new Command({domain: "zeta", name: "getperiods"}),
+            getperiods : $.extend(new Command({domain: "zeta", name: "getperiods"}), {
+                // Ждем задачу ZC-404, которая изменит структуру результата команды
+                wrap : function(obj) {
+                    return obj;
+                }
+            }),
             //команда, возвращающая список доступных предприятий
             getobjects : new Command({domain: "zeta", name: "getobjects"})
         },

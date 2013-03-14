@@ -15,16 +15,16 @@
     $(window.zefs).on(window.zefs.handlers.on_objectsload, function(e) {
         $.each(window.zefs.divs, function(i,div) {
             menu.append($('<li class="dropdown-submenu"/>')
-                .append($('<a/>').text(div.getName()), $('<ul class="dropdown-menu"/>').attr("code", div.getCode())));
+                .append($('<a/>').text(div.name), $('<ul class="dropdown-menu"/>').attr("code", div.code)));
         });
         $.each(window.zefs.objects, function(i,obj) {
-            var ul = menu.find('ul[code=' + obj.getDivCode() + ']');
+            var ul = menu.find('ul[code=' + obj.div + ']');
             if (ul.length != 0) {
-                var a = $('<a/>').attr("value", obj.getId());
+                var a = $('<a/>').attr("value", obj.id);
                 a.click(function(e) {
                     ChangeObject(e);
                 });
-                a.text(obj.getName());
+                a.text(obj.name);
                 ul.append($('<li/>').append(a));
             }
         });

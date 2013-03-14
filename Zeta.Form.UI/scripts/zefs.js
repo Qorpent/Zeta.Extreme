@@ -52,46 +52,6 @@ root.init = root.init ||
 	var params = options.getParameters();
     var render = root.getRender();
 
-    var Structure = $.proxy(function(session) {
-        var params = GetSessionParams(session);
-        $.ajax({
-            url: siteroot+options.struct_command,
-            context: this,
-            type: "POST",
-            dataType: "json",
-            data: params
-        }).success($.proxy(function(d) {
-            session.structure = options.asStruct(d);
-            Render(session);
-            Fill(session);
-            $(root).trigger(root.handlers.on_structureload);
-			$('table.data').zefs(); //нам сразу нужна живость!!!
-        }));
-    }, this);
-
-    var Data = $.proxy(function(session,startIdx) {
-        var params = GetSessionParams(session,startIdx);
-        $.ajax({
-            url: siteroot+options.data_command,
-            context: this,
-            type: "POST",
-            dataType: "json",
-            data: params
-        }).success($.proxy(function(d) {
-            var batch =  options.asDataBatch(d);
-            session.data.push(batch);
-            Fill(session);
-            if(batch.getIsLast()){
-                FinishForm(session,batch);
-//              DataLoaded();
-            } else {
-                var s = session;
-                var idx = batch.getNextIdx();
-                window.setTimeout(function(){Data(s,idx)},options.datadelay);
-            }
-        }));
-    }, this);
-
     var Fill = function(session) {
         if(!session.wasRendered) { //вот тут чо за хрень была? он в итоге дважды рендировал
             return;
@@ -107,22 +67,6 @@ root.init = root.init ||
 
 	var Render = render.renderStructure; //вынес в рендер - отдельный скрипт
 	var FillBatch = render.updateCells; //вынес в рендер - zefs-render.js
-
-	var GetSessionParams = options.getSessionParameters; //перенес в спецификацию
-
-	var FinishForm = function(session,batch){
-        $(window).trigger("resize");
-    };
-
-    var DataLoaded = function() {
-        $.ajax({
-            url: siteroot+options.dataloaded_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: {session: root.myform.sessionId}
-        })
-    };
 
     var AttachFile = function(form) {
         var fd = new FormData();
@@ -306,57 +250,6 @@ root.init = root.init ||
         });
     };
 
-    var ResetData = function() {
-        $.ajax({
-            url: siteroot+"zefs/resetdata.json.qweb",
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: {session: root.myform.sessionId}
-        }).success(function(d) {
-             root.myform.currentSession.data = [];
-             spec.session.data.execute({session: root.myform.currentSession, startidx: 0});
-        });
-    };
-
-    var SortObjectsByIdx = function(a, b) {
-        return ((a.idx < b.idx) ? -1 : ((a.idx > b.idx) ? 1 : 0));
-    };
-
-    var GetObjects = function() {
-        $.ajax({
-            url: siteroot+options.getobject_command,
-            context: this,
-            dataType: "json"
-        }).success(function(d) {
-            $.each(d.divs, function(i,div) {
-                root.divs.push(options.asDiv(div));
-            });
-            root.divs.sort(SortObjectsByIdx);
-            $.each(d.objs, function(i,obj) {
-                root.objects.push(options.asObject(obj));
-            });
-            $(root).trigger(root.handlers.on_objectsload);
-        });
-    };
-
-    var GetPeriods = function() {
-        $.ajax({
-            url: siteroot+options.getperiods_command,
-            context: this,
-            dataType: "json"
-        }).success(function(d) {
-            $.each(d, function(i,p) {
-                var period = options.asPeriod(p);
-                if (!root.periods.hasOwnProperty(period.getType())) {
-                    root.periods[period.getType()] = [];
-                }
-                root.periods[period.getType()].push(period);
-            });
-            $(root).trigger(root.handlers.on_periodsload);
-        });
-    };
-
     var Message = function(obj) {
         $(root).trigger(root.handlers.on_message, obj);
     }
@@ -365,8 +258,8 @@ root.init = root.init ||
         var name = "";
         $.each(root.periods, function(periodname, periodtype) {
             $.each(periodtype, function(i,p) {
-                if (p.getId() == id) {
-                    name = p.getName();
+                if (p.name == id) {
+                    name = p.name;
                     return false;
                 }
             });
@@ -381,8 +274,19 @@ root.init = root.init ||
         if (!!result) {
             spec.session.start.execute();
         }
-        GetObjects();
-        GetPeriods();
+        spec.metadata.getobjects.execute();
+        spec.metadata.getperiods.execute();
+    });
+
+    spec.metadata.getobjects.onSuccess(function(e, result) {
+        root.divs = result.divs;
+        root.objects = result.objs;
+        $(root).trigger(root.handlers.on_objectsload);
+    });
+
+    spec.metadata.getperiods.onSuccess(function(e, result) {
+        root.periods = result;
+        $(root).trigger(root.handlers.on_periodsload);
     });
 
     spec.session.start.onSuccess(function(e, result) {
@@ -394,7 +298,7 @@ root.init = root.init ||
         GetLockHistory();
         GetAttachList();
         $(root).trigger(root.handlers.on_sessionload);
-        window.setTimeout(function(){spec.session.data.execute({session: result.Uid,startidx: 0})},options.datadelay); //первый запрос на данные
+        window.setTimeout(function(){spec.data.start.execute({session: result.Uid,startidx: 0})},options.datadelay); //первый запрос на данные
     });
 
     spec.session.structure.onSuccess(function(e, result) {
@@ -409,10 +313,11 @@ root.init = root.init ||
         root.myform.currentSession.data.push(result);
         Fill(root.myform.currentSession);
         if(result.state != "w"){
-            FinishForm(root.myform.currentSession,result);
+            // Это штука для перерисовки шапки
+            $(window).trigger("resize");
         } else {
             var idx = $.isEmptyObject(result.data) ? result.ei+1 : result.si;
-            window.setTimeout(function(){spec.session.data.execute({session: root.myform.sessionId,startidx: idx})},options.datadelay);
+            window.setTimeout(function(){spec.data.start.execute({session: root.myform.sessionId,startidx: idx})},options.datadelay);
         }
     });
 
