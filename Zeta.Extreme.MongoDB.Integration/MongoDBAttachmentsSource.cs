@@ -29,20 +29,22 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         public const string DEFAULT_DB_NAME = "zetaAttachments";
 
-        private MongoClientSettings _cliSettings;
-        private string _connectionString;
-        private string _databaseName;
+        // database connection settings
         private MongoDatabase _db;
         private MongoDatabaseSettings _dbSettings;
-        private bool _initialized;
+        private MongoClientSettings _cliSettings;
 
+        // database connection information
+        private string _connectionString;
+        private string _databaseName;
+        
+        private bool _connected;
 
         /// <summary>
         ///     Строка подключения
         /// </summary>
         public string ConnectionString {
             get { return _connectionString ?? (_connectionString = DEFAULT_CONNECTION_STRING); }
-
             set { _connectionString = value; }
         }
 
@@ -51,7 +53,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         public string DatabaseName {
             get { return _databaseName ?? (_databaseName = DEFAULT_DB_NAME); }
-
             set { _databaseName = value; }
         }
 
@@ -61,7 +62,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="query"></param>
         /// <returns></returns>
         public IEnumerable<Attachment> Find(Attachment query) {
-            InitializeConnection();
+            SetupConnection();
             var endList = new List<Attachment>();
 
             var result = _db.GetCollection(DEFAULT_COLLECTION).FindAs<BsonDocument>(
@@ -101,7 +102,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="attachment"></param>
         public void Save(Attachment attachment) {
-            InitializeConnection();
+            SetupConnection();
             AttachmentViewSave(new InternalDocument(attachment));
         }
 
@@ -110,18 +111,19 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="attachment">attachment description</param>
         public void Delete(Attachment attachment) {
-            InitializeConnection();
+            SetupConnection();
+
             _db.GetCollection(DEFAULT_COLLECTION).Update(
                 Query.And(
                     new QueryDocument(
                         new InternalDocument(attachment)
-                        )
-                    ),
+                    )
+                ),
                 Update.Set(
                     "Deleted",
                     true
-                    )
-                );
+                )
+            );
         }
 
         /// <summary>
@@ -131,25 +133,31 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="mode"></param>
         /// <returns></returns>
         public Stream Open(Attachment attachment, FileAccess mode) {
-            InitializeConnection();
+            SetupConnection();
 
             return new MongoGridFS(_db).Open(
                 attachment.Uid,
                 FileMode.OpenOrCreate,
                 mode
-                );
+            );
         }
 
-        private void InitializeConnection() {
-            if (!_initialized) {
+        private void SetupConnection() {
+            if (!_connected) {
                 _cliSettings = new MongoClientSettings {
                     Server = new MongoServerAddress(ConnectionString)
                 };
 
                 _dbSettings = new MongoDatabaseSettings();
-                var server = new MongoClient(_cliSettings).GetServer();
-                _db = server.GetDatabase(DatabaseName, _dbSettings);
-                _initialized = true;
+                
+                // connect to the database
+                _db = new MongoClient(_cliSettings).GetServer().GetDatabase(
+                    DatabaseName,
+                    _dbSettings
+                );
+
+                // and set the connected mark
+                _connected = true;
             }
         }
 
@@ -157,7 +165,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
         ///     Save the attachment view information to database
         /// </summary>
         private void AttachmentViewSave(InternalDocument document) {
-            document["Deleted"] = false;
             _db.GetCollection(DEFAULT_COLLECTION).Save(document);
         }
 
@@ -197,7 +204,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 this["Revision"] = attachment.Revision;
                 this["Version"] = attachment.Version;
 
-                this["Version"] = attachment.Version; // handle it later
+                this["Deleted"] = false;
             }
         }
     }
