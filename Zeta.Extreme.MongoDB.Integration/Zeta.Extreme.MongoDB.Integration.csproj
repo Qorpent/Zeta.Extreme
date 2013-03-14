@@ -13,6 +13,7 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MongoBsonExtensions.cs" />
     <Compile Include="MongoDBAttachmentsSource.cs" />
   </ItemGroup>
   <ItemGroup>

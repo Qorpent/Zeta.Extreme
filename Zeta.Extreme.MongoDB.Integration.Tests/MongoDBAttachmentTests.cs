@@ -41,13 +41,6 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         private IEnumerable<Attachment> Find(Attachment attachment) {
             var t = _mdb.Find(attachment);
 
-
-            foreach (var item in t) {
-                Console.WriteLine("Uid : {0}", item.Uid);
-            }
-
-            Console.WriteLine("---");
-
             var result = t.ToArray();
             return result;
         }
@@ -62,7 +55,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                 User = "remalloc",
                 Comment = "test",
                 Revision = 123456789,
-                Name = "Test OK File",
+                Name = "Test OK FileHH",
                 Type = "mdb-test",
                 Metadata = {
                     {
@@ -105,14 +98,25 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
         [Test]
         public void CanFindByUid() {
-            var attachment1 = new Attachment { Uid = "simpleuid", Name = "tuponame" };
-            var attachment2 = new Attachment {Uid = "simpleuid2", Name = "tuponame"};
+            var attachment1 = new Attachment {Uid = "simpleuid", Name = "tuponame" };
+            var attachment2 = new Attachment { Uid = "simpleuid2", Name = "tuponame"};
+            var query = new Attachment { Uid = "simpleuid"};
+
+
             Save(attachment1);
             Save(attachment2);
-            var query = new Attachment {Uid = "simpleuid"};
+
+
             var result = Find(query);
-            Assert.AreEqual(1,result.Count());
+            Assert.NotNull(result);
+
             var found = result.First();
+
+
+            
+            
+            Assert.AreEqual(1,result.Count());
+            
             Assert.NotNull(found);
             Assert.AreEqual("simpleuid",found.Uid);
             Assert.AreEqual("tuponame",found.Name);

@@ -33,13 +33,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public const string DEFAULT_DB_NAME  = "zetaAttachments";
 
         /// <summary>
-        /// </summary>
-        public MongoDbAttachmentsSource() {
-            MongoDBConnect();
-            
-        }
-
-        /// <summary>
         /// Осуществляет поиск аттачментов с указанной маской поиска
         /// </summary>
         /// <param name="query"></param>
@@ -56,28 +49,30 @@ namespace Zeta.Extreme.MongoDB.Integration {
                     )
                 );
 
+     
             if (result != null) {
                 foreach (var el in result) {
                     endList.Add(
                         new Attachment {
-                            Uid = el["_id"].ToString(),
-                            Name = el["Filename"].ToString(),
-                            Comment = el["Comment"].ToString(),
-                            User = el["Owner"].ToString(),
-                            Version = el["Version"].ToLocalTime(),
-                            MimeType = el["MimeType"].ToString(),
-                            Revision = el["Revision"].ToInt32(),
-                            Extension = el["Extension"].ToString()
+                            Uid = el.SafeGet("_id").AsString,
+                            Name = el.SafeGet("Filename").AsString,
+                            User = el.SafeGet("Owner").AsString,
+                            Comment = el.SafeGet("Comment").AsString,
+                            Version = el.SafeGet("Version").ToLocalTime(),
+                            MimeType = el.SafeGet("MimeType").AsString,
+                            Revision = el.SafeGet("Revision").AsInt32,
+                            Extension = el.SafeGet("Extension").AsString
                         }
-                        );
+                    );
                 }
 
                 return endList;
             }
-            else {
-                return null;
-            }
+            
+            return null;
         }
+
+        
 
         /// <summary>
         ///     Saving attachment information and preparing for writing to a stream
@@ -85,10 +80,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="attachment"></param>
         public void Save(Attachment attachment) {
             InitializeConnection();
-            InternalDocument document = new InternalDocument(attachment);
-
-            AttachmentViewSave(document);
-         
+            AttachmentViewSave(new InternalDocument(attachment));
         }
 
         /// <summary>
@@ -118,17 +110,17 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <returns></returns>
         public Stream Open(Attachment attachment, FileAccess mode) {
             InitializeConnection();
-            return new MongoGridFSStream(
-                new MongoGridFSFileInfo(_gridFs, attachment.Uid), 
-                FileMode.Append,mode
-                );
+            var fs = new MongoGridFS(_db);
+            return fs.Open(attachment.Uid, FileMode.OpenOrCreate, mode);
         }
 
-        private bool _initialized = false;
+        private bool _initialized;
         private void InitializeConnection() {
             if (!_initialized) {
-                _cliSettings = new MongoClientSettings();
-                _cliSettings.Server = new MongoServerAddress(ConnectionString);
+                _cliSettings = new MongoClientSettings {
+                        Server = new MongoServerAddress(ConnectionString)
+                };
+
                 _dbSettings = new MongoDatabaseSettings();
                 var server = new MongoClient(_cliSettings).GetServer();
                 _db = server.GetDatabase(DatabaseName, _dbSettings);
@@ -164,7 +156,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <summary>
         ///     Class represents the attachment data in internal order
         /// </summary>
-        private class InternalDocument : BsonDocument {
+        private sealed class InternalDocument : BsonDocument {
             public InternalDocument(Attachment attachment) {
                 if (attachment.Metadata != null) {
                     AddRange(attachment.Metadata);
@@ -197,9 +189,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                     this["Comment"] = attachment.Comment;
                 }
 
-                if (attachment.Version != null) {
-                    this["Version"] = attachment.Version;
-                }
+                this["Version"] = attachment.Version;
             }
         }
     }
