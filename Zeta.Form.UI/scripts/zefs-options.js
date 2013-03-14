@@ -98,37 +98,49 @@ $.extend(specification,(function(){
             })
         },
 
+        files : {
+            list : new Command({domain: "zefs", name: "attachlist"}),
+            add : $.extend(new Command({domain: "zefs", name: "attachfile"}), {
+                call : function(params) {
+                    params = params || {};
+                    $.extend(params, {
+                        formdata : new FormData(),
+                        onsuccess : function() {},
+                        onerror : function() {},
+                        onprogress : function() {}
+                    });
+                    this.nativeCall(params.formdata, params.onsuccess, params.onerror, params.onprogress);
+                },
+                nativeCall: function(formdata, onsuccess, onerror, onprogress) {
+                    $.ajax({
+                        url: this.getUrl(),
+                        type: "POST",
+                        context: this,
+                        dataType: "json",
+                        xhr: function() {
+                            var x = $.ajaxSettings.xhr();
+                            if(x.upload) {
+                                x.upload.addEventListener('progress', function(e) {onprogress(e)}, false);
+                            }
+                            return x;
+                        },
+                        data: formdata,
+                        cache: false,
+                        contentType: false,
+                        processData: false
+                    })
+                        .success(function(r){onsuccess(r)})
+                        .error(onerror||function(error){console.log(error)});
+                }
+            })
+        },
+
         commands : {
             //команда, возвращающая каталог периодов [] ( []->each ( asPeriod() ) ) упорядоченный по типам и индексам
             getperiods_command : "zeta/getperiods.json.qweb",
             //команда, возвращающая список доступных предприятий ( применить asObjectList())
             getobject_command : "zeta/getobjects.json.qweb",
-            // команда вызова сессии формы (как  asSession() )
-            start_command : "zefs/start.json.qweb",
-            // команда получения данных о сессии [от SESSIONID] (как asSession() )
-            session_command : "zefs/session.json.qweb",
-            // команда получения отладочной таблицы [от SESSIONID] (прямой JSON)
-            debug_command : "zefs/debuginfo.json.qweb",
-            // команда получения структуры таблицы [от SESSIONID] (как asStruct() )
-            struct_command : "zefs/struct.json.qweb",
-            // команда получения батча данных [от SESSIONID ] (как asDataBatch() )
-            data_command : "zefs/data.json.qweb",
-            // команда уведомления сервера о завершении загрузки данных [от SESSIONID ]
-            dataloaded_command : "zefs/dataloaded.json.qweb",
-            // команда инициализации сессии сохранения [от SESSIONID ] (true|false )
-            saveready_command : "zefs/saveready.json.qweb",
-            // команда инициализации сохранения [от SESSIONID ] (true|false )
-            save_command : "zefs/save.json.qweb",
-            // команда проверки состояния сохранения [от SESSIONID ] (как asSaveState() ) должна быть еще и в DEBUG-меню
-            savestate_command : "zefs/savestate.json.qweb",
-            // команда получения текущего статуса блокировки [от SESSIONID] (как asLockState() )
-            currentlock_command : "zefs/currentlockstate.json.qweb",
-            // команда получения статуса возможности блокировки [от SESSIONID] (как asLockState() )
-            canlock_command : "zefs/canlockstate.json.qweb",
-            // команда получения истории блокировок [от SESSIONID]
-            locklist_command : "zefs/locklist.json.qweb",
-            // команда блокировки формы [от SESSIONID]
-            lockform_command : "zefs/lockform.json.qweb",
+
             // команда получения списка прикрепленных к форме файлов [от SESSIONID]
             attachlist_command : "zefs/attachlist.json.qweb",
             // команда прекрепления или обновления файла к форме

@@ -53,7 +53,7 @@
 					onsuccess = this._getUsualCallFunciton();
 				}
 			}
-            this.nativeCall(params,onsuccess, onerror);
+            this.nativeCall(params,onsuccess,onerror);
         },
 		_getUsualCallFunciton : function(){
 			var self = this;
