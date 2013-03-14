@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,7 +15,19 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 		protected MongoDbAttachmentsSource _mdb;
 		private int _uid = 0;
 		protected MongoDatabase _db;
-		protected MongoCollection<BsonDocument> _collection;
+		/// <summary>
+		/// После P13-58 - коллекция для дескрипторов
+		/// </summary>
+		protected MongoCollection<BsonDocument> _filecollection;
+		/// <summary>
+		/// После P13-58 - коллекция для чанков
+		/// </summary>
+		protected MongoCollection<BsonDocument> _blobcollection;
+		/// <summary>
+		/// После P13-58 - коллекция для индекса
+		/// </summary>
+		
+		protected MongoCollection<BsonDocument> _indexcollection;
 
 		public MongoDbAttachmentTestsBase() {
 			_mdb = new MongoDbAttachmentsSource {
@@ -22,12 +35,37 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 			};
 		}
 
+		/// <summary>
+		/// Вспомогательный метод - создать и сохранить с uid и возможно настройками
+		/// </summary>
+		/// <param name="uid">UID создававемого атача или Null</param>
+		/// <param name="setup">опциональная процедура дополнительно настройки атача</param>
+		/// <param name="data">опциональный массив данных в качестве блоба</param>
+		protected Attachment Create(string uid=null, Action<Attachment> setup = null, byte[] data = null) {
+			var attachment = GetNewAttach(uid);
+			if(null!=setup) {
+				setup(attachment);
+			}
+			Save(attachment,data);
+			return attachment;
+		}
+
 		[SetUp]
-		public void Setup() {
+		public virtual void Setup() {
 			_db = new MongoClient().GetServer().GetDatabase(_mdb.DatabaseName);
-			_collection = _db.GetCollection<BsonDocument>(_mdb.CollectionName);
-			_collection.Drop();
-			_collection = _db.GetCollection<BsonDocument>(_mdb.CollectionName);
+			// По идее MondoDbAS должна использовать имя коллекции как базис для GridFS
+			_filecollection = _db.GetCollection<BsonDocument>(_mdb.CollectionName + ".files");
+			_blobcollection = _db.GetCollection<BsonDocument>(_mdb.CollectionName + ".chunks");
+			_indexcollection = _db.GetCollection<BsonDocument>("system.indexes");
+			_filecollection.Drop();
+			_blobcollection.Drop();
+			//NOTICE: we haven't drop SYSTEM.INDEXES - MongoDB prevent it!!!!
+
+			// Это выражает простую мысль - при работе компоненты должны существовать только эти коллекции
+			_filecollection = _db.GetCollection<BsonDocument>(_mdb.CollectionName + ".files");
+			_blobcollection = _db.GetCollection<BsonDocument>(_mdb.CollectionName + ".chunks");
+			_indexcollection = _db.GetCollection<BsonDocument>("system.indexes");
+
 		}
 
 		public IEnumerable<Attachment> Find(Attachment attachment) {
