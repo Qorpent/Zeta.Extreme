@@ -1,47 +1,46 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests {
-    public class MongoDBAttachmentTests {
-        private MongoDBAttachmentsSource mdb;
+    [TestFixture]
+    public class MongoDbAttachmentTests {
+        private readonly MongoDBAttachmentsSource _mdb;
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
-        public MongoDBAttachmentTests() {
-            this.mdb = new MongoDBAttachmentsSource();
+        public MongoDbAttachmentTests() {
+            _mdb = new MongoDBAttachmentsSource();
         }
 
         private void Save(byte[] source, FormAttachment attachment) {
-            this.mdb.Save(attachment);
-            using (var stream = this.mdb.Open(attachment, FileAccess.Write)) {
+            _mdb.Save(attachment);
+            using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
                 stream.Write(source, 0, source.Length);
                 stream.Flush();
             }
         }
 
         private void Delete(FormAttachment attachment) {
-            this.mdb.Delete(attachment);
+            _mdb.Delete(attachment);
         }
 
-        private void find(Attachment attachment) {
-           var t = this.mdb.Find(attachment);
+        private void Find(Attachment attachment) {
+            var t = _mdb.Find(attachment);
 
 
-            foreach(Attachment item in t) {
+            foreach (var item in t) {
                 Console.WriteLine("Uid : {0}", item.Uid);
             }
 
             Console.WriteLine("---");
         }
 
+        [Test]
         public void CanSave() {
-            var source = new byte[] { 84, 101, 115, 116, 32, 79, 75, 33 };
+            var source = new byte[] {84, 101, 115, 116, 32, 79, 75, 33};
             var attachment = new FormAttachment {
                 Uid = "Test_OK2",
                 Extension = "sda",
@@ -54,18 +53,18 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                 Metadata = {
                     {
                         "s", "sdffsdf"
-                    },
-                    {
+                    }, {
                         "test", "ok"
                     }
                 }
             };
 
-            this.Save(source, attachment);
+            Save(source, attachment);
         }
 
+        [Test]
         public void CanDoubleSave() {
-            var source = new byte[] { 84, 101, 115, 116, 32, 79, 75, 33 };
+            var source = new byte[] {84, 101, 115, 116, 32, 79, 75, 33};
             var attachment = new FormAttachment {
                 Uid = "Test_OK2",
                 Name = "Test OK File",
@@ -78,21 +77,22 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                 Type = "mdb-test"
             };
 
-            this.Save(source, attachment);
-            this.Save(source, attachment2);
+            Save(source, attachment);
+            Save(source, attachment2);
         }
 
+        [Test]
         public void CanFind() {
             var attachment = new FormAttachment {
                 User = "remalloc",
                 Revision = 123456789
             };
 
-            this.find(attachment);
+            Find(attachment);
         }
 
         public void CanSaveIntoSave() {
-            var source = new byte[] { 84, 101, 115, 116, 32, 79, 75, 33 };
+            var source = new byte[] {84, 101, 115, 116, 32, 79, 75, 33};
             var attachment = new FormAttachment {
                 Uid = "Test_OK2",
                 Extension = "sda",
@@ -105,8 +105,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                 Metadata = {
                     {
                         "s", "sdffsdf"
-                    },
-                    {
+                    }, {
                         "test", "ok"
                     }
                 }
@@ -124,21 +123,18 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                 Metadata = {
                     {
                         "Owner", "FUCKKKKKKK!"
-                    },
-                    {
+                    }, {
                         "test", "ok"
-                    },
-                    {
+                    }, {
                         "InternalDocument", "InternalDocument"
                     }
                 }
             };
 
-            this.mdb.Save(attachment);
-            using (var stream = this.mdb.Open(attachment, FileAccess.Write)) {
-                
-                this.mdb.Save(attachment2);
-                using (var stream2 = this.mdb.Open(attachment2, FileAccess.Write)) {
+            _mdb.Save(attachment);
+            using (Stream stream = _mdb.Open(attachment, FileAccess.Write)) {
+                _mdb.Save(attachment2);
+                using (Stream stream2 = _mdb.Open(attachment2, FileAccess.Write)) {
                     stream2.Write(source, 0, source.Length);
                     stream2.Flush();
                 }
@@ -149,6 +145,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             }
         }
 
+        [Test]
         public void CanDelete() {
             var attachment = new FormAttachment {
                 Uid = "Test_OK2",
@@ -157,7 +154,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                 Revision = 123456789
             };
 
-            this.Delete(attachment);
+            Delete(attachment);
         }
     }
 }

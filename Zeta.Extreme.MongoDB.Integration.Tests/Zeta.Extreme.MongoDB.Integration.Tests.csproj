@@ -15,12 +15,6 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MongoDB.Bson">
-      <HintPath>..\..\mongo-csharp-driver\MongoDB.Driver\bin\Debug\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver">
-      <HintPath>..\..\mongo-csharp-driver\MongoDB.Driver\bin\Debug\MongoDB.Driver.dll</HintPath>
-    </Reference>
     <Reference Include="Zeta.Extreme.BizProcess">
       <HintPath>..\..\.build\bin\Zeta.Extreme.BizProcess.Debug\Zeta.Extreme.BizProcess.dll</HintPath>
     </Reference>
@@ -31,6 +25,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MongoDBAttachmentTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\mongo-csharp-driver\MongoDB.Bson\MongoDB.Bson.csproj">
+      <Project>{0e9a3a2a-49cd-4f6c-847c-dc79b4b65ce6}</Project>
+      <Name>MongoDB.Bson</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\mongo-csharp-driver\MongoDB.Driver\MongoDB.Driver.csproj">
+      <Project>{ae5166cd-76b0-4911-bd80-ced9521f37a1}</Project>
+      <Name>MongoDB.Driver</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>
