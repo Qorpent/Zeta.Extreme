@@ -39,8 +39,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private string _databaseName;
         
         private bool _connected;
+	    private string _collectionName;
 
-        /// <summary>
+	    /// <summary>
         ///     Строка подключения
         /// </summary>
         public string ConnectionString {
@@ -56,7 +57,15 @@ namespace Zeta.Extreme.MongoDB.Integration {
             set { _databaseName = value; }
         }
 
-        /// <summary>
+	    /// <summary>
+	    ///     Имя базы данных
+	    /// </summary>
+	    public string CollectionName {
+		    get { return _collectionName ??(_collectionName = DEFAULT_COLLECTION); }
+		    set { _collectionName = value; }
+	    }
+
+	    /// <summary>
         ///     Осуществляет поиск аттачментов с указанной маской поиска
         /// </summary>
         /// <param name="query"></param>
@@ -66,11 +75,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
             var endList = new List<Attachment>();
 
             var result = _db.GetCollection(DEFAULT_COLLECTION).FindAs<BsonDocument>(
-                Query.And(
-                    new QueryDocument(
-                        new InternalDocument(query)
-                        )
-                    )
+               // Query.And(
+                    new QueryDocument(new InternalDocument(query))
+                 //   )
                 );
 
 

@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MongoDBAttachmentTests.cs" />
+    <Compile Include="MongoDbAttachmentTestsBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\mongo-csharp-driver\MongoDB.Bson\MongoDB.Bson.csproj">
