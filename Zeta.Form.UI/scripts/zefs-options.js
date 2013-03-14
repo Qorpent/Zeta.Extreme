@@ -149,23 +149,13 @@ $.extend(specification,(function(){
             gettypes : new Command({domain: "zefs", name: "getfiletypes"})
         },
 
-        commands : {
-            //команда, возвращающая каталог периодов [] ( []->each ( asPeriod() ) ) упорядоченный по типам и индексам
-            getperiods_command : "zeta/getperiods.json.qweb",
-            //команда, возвращающая список доступных предприятий ( применить asObjectList())
-            getobject_command : "zeta/getobjects.json.qweb",
-
-            // команда получения списка прикрепленных к форме файлов [от SESSIONID]
-            attachlist_command : "zefs/attachlist.json.qweb",
-            // команда прекрепления или обновления файла к форме
-            attachfile_command : "zefs/attachfile.json.qweb",
-            // команда скрытия/удаления файла [от SESSIONID и UID]
-            deletefile_command : "zefs/deletefile.json.qweb",
-            // команда загрузки файла [от SESSIONID и UID]
-            downloadfile_command : "zefs/downloadfile.filedesc.qweb",
-            // команда получения возможных типов файлов [от SESSIONID]
-            getfiletypes_command : "zefs/getfiletypes.json.qweb"
+        metadata : {
+            //команда, возвращающая каталог периодов
+            getperiods : new Command({domain: "zeta", name: "getperiods"}),
+            //команда, возвращающая список доступных предприятий
+            getobjects : new Command({domain: "zeta", name: "getobjects"})
         },
+
 		/* ПАРАМЕТРЫ ДЛЯ ОБРАБОТКИ ИЗ ХЭША (зарезервированные) */
 			//параметр кода формы в хэше вызова HTML, может но не обязан включать в себя .in
 			form_hash_param : "form",
