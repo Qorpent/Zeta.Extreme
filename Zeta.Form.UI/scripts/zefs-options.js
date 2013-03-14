@@ -156,6 +156,16 @@ $.extend(specification,(function(){
             getperiods : $.extend(new Command({domain: "zeta", name: "getperiods"}), {
                 // Ждем задачу ZC-404, которая изменит структуру результата команды
                 wrap : function(obj) {
+                    var years = {
+                        100 : {
+                            type : "Year",
+                            periods : {}
+                        }
+                    }
+                    $.each([2013,2012,2011,2010], function(i,y) {
+                        years[100].periods[i] = { id: y, name: y, type: "Year"}
+                    });
+                    $.extend(obj, years);
                     return obj;
                 }
             }),
