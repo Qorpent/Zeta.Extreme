@@ -1,7 +1,7 @@
 ﻿(function(){
 var root = window.zefs = window.zefs || {};
-var specification = root.specification = root.specification || {};
-var options = root.options = root.specification;
+var specification = root.api = root.api || {};
+var options = root.options = root.api;
 var Command = window.qweb.Command;
 
 $.extend(specification,(function(){

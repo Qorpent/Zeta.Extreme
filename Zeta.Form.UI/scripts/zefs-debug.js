@@ -2,7 +2,7 @@
  * Виджет инструментов для отладки
  */
 !function($) {
-    var spec = window.zefs.specification;
+    var spec = window.zefs.api;
     var zefsdebug = new root.security.Widget("zefsdebug", root.console.layout.position.layoutHeader, "right", { authonly: true, priority: 90, adminonly: true });
     var sid = "";
     var session = $('<a id="sessionInfo"/>')

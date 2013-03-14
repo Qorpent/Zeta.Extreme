@@ -1,7 +1,7 @@
 (function(){
 var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 var root = window.zefs = window.zefs || {};
-var spec = root.specification;
+var api = root.api;
 root.handlers = $.extend(root.handlers, {
     // Zefs handlers:
     on_zefsready : "zefsready",
@@ -148,7 +148,7 @@ root.init = root.init ||
     var Lock = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
             if (root.myform.lock.getCanLock()) {
-                spec.lock.start.execute({session: root.myform.sessionId});
+                api.lock.start.execute({session: root.myform.sessionId});
             }
         }
     };
@@ -209,7 +209,7 @@ root.init = root.init ||
             }
             $(root).trigger(root.handlers.on_message, { text: "Сохранение успешно завершено", autohide: 5000, type: "alert-success" });
             $(root).trigger(root.handlers.on_savefinished);
-            spec.session.reset.execute({session: root.myform.currentSession});
+            api.session.reset.execute({session: root.myform.currentSession});
         });
     };
 
@@ -233,41 +233,40 @@ root.init = root.init ||
 
 
     // Обработчики событий
-    spec.server.ready.onSuccess(function(e, result) {
+    api.server.ready.onSuccess(function(e, result) {
         if (!!result) {
-            spec.session.start.execute();
+            api.session.start.execute();
         }
-        spec.metadata.getobjects.execute();
-        spec.metadata.getperiods.execute();
+        api.metadata.getobjects.execute();
+        api.metadata.getperiods.execute();
     });
 
-    spec.metadata.getobjects.onSuccess(function(e, result) {
+    api.metadata.getobjects.onSuccess(function(e, result) {
         root.divs = result.divs;
         root.objects = result.objs;
         $(root).trigger(root.handlers.on_objectsload);
     });
 
-    spec.metadata.getperiods.onSuccess(function(e, result) {
+    api.metadata.getperiods.onSuccess(function(e, result) {
         root.periods = result;
-        $(root).trigger(root.handlers.on_periodsload);
     });
 
-    spec.session.start.onSuccess(function(e, result) {
+    api.session.start.onSuccess(function(e, result) {
         root.myform.currentSession = result;
         root.myform.sessionId = result.Uid;
         var sessiondata = {session: root.myform.sessionId};
         document.title = result.FormInfo.Name;
-        spec.session.structure.execute(sessiondata);
-        spec.lock.state.execute(sessiondata);
-        spec.lock.history.execute(sessiondata);
-        spec.files.list.execute(sessiondata);
+        api.session.structure.execute(sessiondata);
+        api.lock.state.execute(sessiondata);
+        api.lock.history.execute(sessiondata);
+        api.files.list.execute(sessiondata);
         window.setTimeout(function(){
-            spec.data.start.execute($.extend(sessiondata, {startidx: 0}))}
+            api.data.start.execute($.extend(sessiondata, {startidx: 0}))}
         ,options.datadelay); //первый запрос на данные
         $(root).trigger(root.handlers.on_sessionload);
     });
 
-    spec.session.structure.onSuccess(function(e, result) {
+    api.session.structure.onSuccess(function(e, result) {
         root.myform.currentSession.structure = result;
         Render(root.myform.currentSession);
         Fill(root.myform.currentSession);
@@ -275,7 +274,7 @@ root.init = root.init ||
         $('table.data').zefs();
     });
 
-    spec.data.start.onSuccess(function(e, result) {
+    api.data.start.onSuccess(function(e, result) {
         root.myform.currentSession.data.push(result);
         Fill(root.myform.currentSession);
         if(result.state != "w"){
@@ -283,30 +282,30 @@ root.init = root.init ||
             $(window).trigger("resize");
         } else {
             var idx = $.isEmptyObject(result.data) ? result.ei+1 : result.si;
-            window.setTimeout(function(){spec.data.start.execute({session: root.myform.sessionId,startidx: idx})},options.datadelay);
+            window.setTimeout(function(){api.data.start.execute({session: root.myform.sessionId,startidx: idx})},options.datadelay);
         }
     });
 
-    spec.data.reset.onSuccess(function() {
+    api.data.reset.onSuccess(function() {
         root.myform.currentSession.data = [];
-        spec.session.data.execute({session: root.myform.currentSession, startidx: 0});
+        api.session.data.execute({session: root.myform.currentSession, startidx: 0});
     });
 
-    spec.data.save.onSuccess(function() {
+    api.data.save.onSuccess(function() {
         $(root).trigger(root.handlers.on_savefinished);
-        spec.data.savestate.execute({session: root.myform.currentSession});
+        api.data.savestate.execute({session: root.myform.currentSession});
     });
 
-    spec.lock.start.onSuccess(function() {
-        spec.lock.start.execute({session: root.myform.sessionId});
+    api.lock.start.onSuccess(function() {
+        api.lock.start.execute({session: root.myform.sessionId});
     });
 
-    spec.lock.state.onSuccess(function(e, result) {
+    api.lock.state.onSuccess(function(e, result) {
         root.myform.lock = result;
         $(root).trigger(root.handlers.on_getlockload);
     });
 
-    spec.lock.history.onSuccess(function(e, result) {
+    api.lock.history.onSuccess(function(e, result) {
         root.myform.lockhistory = result;
         $(root).trigger(root.handlers.on_getlockhistoryload);
     });
@@ -316,7 +315,7 @@ root.init = root.init ||
     });
 
     $.extend(root.myform, {
-        execute : function(){spec.server.start()},
+        execute : function(){api.server.start()},
         save : ReadySave,
         message: Message,
         lockform: Lock,
