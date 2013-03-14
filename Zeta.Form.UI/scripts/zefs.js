@@ -98,7 +98,7 @@ root.init = root.init ||
             $(root).trigger(root.handlers.on_fileloaderror, JSON.parse(error.responseText));
         }).success(function() {
             $(root).trigger(root.handlers.on_fileloadfinish);
-            GetAttachList();
+            api.file.list.execute({session: root.myform.sessionId});
         });
     };
 
@@ -113,7 +113,7 @@ root.init = root.init ||
                 uid: uid
             }
         }).success(function() {
-             GetAttachList();
+            api.file.list.execute({session: root.myform.sessionId});
         });
     };
 
@@ -130,19 +130,6 @@ root.init = root.init ||
                  uid: uid
              }
         })*/
-    };
-
-    var GetAttachList = function() {
-        $.ajax({
-            url: siteroot+options.attachlist_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: {session: root.myform.sessionId}
-        }).success(function(d) {
-            root.myform.attachment = options.asAttachment(d);
-            $(root).trigger(root.handlers.on_attachmentload);
-        });
     };
 
     var Lock = function() {
