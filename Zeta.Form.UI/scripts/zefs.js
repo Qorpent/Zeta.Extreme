@@ -145,47 +145,10 @@ root.init = root.init ||
         });
     };
 
-    var GetLock = function(){
-        $.ajax({
-            url: siteroot+options.currentlock_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: {session: root.myform.sessionId}
-        }).error(function(d) {
-                $(root).trigger(root.handlers.on_getlockfailed);
-        }).success(function(d) {
-            root.myform.lock = options.asLockState(d);
-            $(root).trigger(root.handlers.on_getlockload);
-        });
-    };
-
-    var GetLockHistory = function() {
-        $.ajax({
-            url: siteroot+options.locklist_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: {session: root.myform.sessionId}
-        }).success(function(d) {
-            root.myform.lockhistory = options.asLockHistory(d);
-            $(root).trigger(root.handlers.on_getlockhistoryload);
-        })
-    };
-
     var Lock = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
             if (root.myform.lock.getCanLock()) {
-                $.ajax({
-                    url: siteroot+options.lockform_command,
-                    type: "POST",
-                    context: this,
-                    dataType: "json",
-                    data: { session: root.myform.sessionId }
-                }).success(function(d) {
-                    $(root).trigger(root.handlers.on_lockform);
-                    GetLock();
-                });
+                spec.lock.start.execute({session: root.myform.sessionId});
             }
         }
     };
@@ -292,13 +255,16 @@ root.init = root.init ||
     spec.session.start.onSuccess(function(e, result) {
         root.myform.currentSession = result;
         root.myform.sessionId = result.Uid;
+        var sessiondata = {session: root.myform.sessionId};
         document.title = result.FormInfo.Name;
-        spec.session.structure.execute({session: result.Uid});
-        GetLock();
-        GetLockHistory();
-        GetAttachList();
+        spec.session.structure.execute(sessiondata);
+        spec.lock.state.execute(sessiondata);
+        spec.lock.history.execute(sessiondata);
+        spec.files.list.execute(sessiondata);
+        window.setTimeout(function(){
+            spec.data.start.execute($.extend(sessiondata, {startidx: 0}))}
+        ,options.datadelay); //первый запрос на данные
         $(root).trigger(root.handlers.on_sessionload);
-        window.setTimeout(function(){spec.data.start.execute({session: result.Uid,startidx: 0})},options.datadelay); //первый запрос на данные
     });
 
     spec.session.structure.onSuccess(function(e, result) {
@@ -331,6 +297,19 @@ root.init = root.init ||
         spec.data.savestate.execute({session: root.myform.currentSession});
     });
 
+    spec.lock.start.onSuccess(function() {
+        spec.lock.start.execute({session: root.myform.sessionId});
+    });
+
+    spec.lock.state.onSuccess(function(e, result) {
+        root.myform.lock = result;
+        $(root).trigger(root.handlers.on_getlockload);
+    });
+
+    spec.lock.history.onSuccess(function(e, result) {
+        root.myform.lockhistory = result;
+        $(root).trigger(root.handlers.on_getlockhistoryload);
+    });
 
     $.extend(root, {
         getperiodbyid : GetPeriodName
