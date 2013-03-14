@@ -1,25 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using MongoDB.Driver;
 using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests {
     [TestFixture]
     public class MongoDbAttachmentTests {
-        private readonly MongoDBAttachmentsSource _mdb;
+        private readonly MongoDbAttachmentsSource _mdb;
 
         /// <summary>
         ///     Constructor
         /// </summary>
         public MongoDbAttachmentTests() {
-            _mdb = new MongoDBAttachmentsSource();
+           
+            _mdb = new MongoDbAttachmentsSource {DatabaseName = "MongoDbAttachmentTests"};
+        }
+        [SetUp]
+        public void Setup() {
+            var db = new MongoClient().GetServer().GetDatabase("MongoDbAttachmentTests");
+            db.Drop();
         }
 
-        private void Save(byte[] source, FormAttachment attachment) {
+        private void Save(Attachment attachment, byte[] source = null) {
             _mdb.Save(attachment);
-            using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
-                stream.Write(source, 0, source.Length);
-                stream.Flush();
+            if (null != source) {
+                using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
+                    stream.Write(source, 0, source.Length);
+                    stream.Flush();
+                }
             }
         }
 
@@ -27,7 +38,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             _mdb.Delete(attachment);
         }
 
-        private void Find(Attachment attachment) {
+        private IEnumerable<Attachment> Find(Attachment attachment) {
             var t = _mdb.Find(attachment);
 
 
@@ -36,6 +47,9 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             }
 
             Console.WriteLine("---");
+
+            var result = t.ToArray();
+            return result;
         }
 
         [Test]
@@ -59,8 +73,85 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                 }
             };
 
-            Save(source, attachment);
+            Save(attachment, source);
         }
+
+        [Test]
+        public void CanRewriteProperties()
+        {
+            var attachment = new Attachment
+            {
+                Uid = "Test_OK2",
+                Extension = "sda",
+                MimeType = "dada",
+                User = "remalloc",
+                Comment = "test",
+                Revision = 123456789,
+                Type = "mdb-test",
+                Metadata = {
+                    {
+                        "s", "sdffsdf"
+                    }, {
+                        "test", "ok"
+                    }
+                }
+            };
+            TestFileValidlySaved(attachment, "First Name");
+            TestFileValidlySaved(attachment, "Second Name");
+            TestFileValidlySaved(attachment, "Third Name");
+            
+
+        }
+
+        [Test]
+        public void CanFindByUid() {
+            var attachment1 = new Attachment { Uid = "simpleuid", Name = "tuponame" };
+            var attachment2 = new Attachment {Uid = "simpleuid2", Name = "tuponame"};
+            Save(attachment1);
+            Save(attachment2);
+            var query = new Attachment {Uid = "simpleuid"};
+            var result = Find(query);
+            Assert.AreEqual(1,result.Count());
+            var found = result.First();
+            Assert.NotNull(found);
+            Assert.AreEqual("simpleuid",found.Uid);
+            Assert.AreEqual("tuponame",found.Name);
+        }
+
+        private void TestFileValidlySaved(Attachment attachment, string name) {
+            attachment.Name = name;
+            Save(attachment);
+            var attachtoFind = new Attachment {Uid = attachment.Uid};
+            var testAttach = Find(attachtoFind).FirstOrDefault();
+            Assert.NotNull(testAttach);
+            Assert.AreEqual(name, testAttach.Name);
+        }
+
+        [Test]
+        public void CanSaveEmptyFile()
+        {
+            var attachment = new FormAttachment
+            {
+                Uid = "Test_OK2",
+                Extension = "sda",
+                MimeType = "dada",
+                User = "remalloc",
+                Comment = "test",
+                Revision = 123456789,
+                Name = "Test OK File",
+                Type = "mdb-test",
+                Metadata = {
+                    {
+                        "s", "sdffsdf"
+                    }, {
+                        "test", "ok"
+                    }
+                }
+            };
+
+            Save(attachment);
+        }
+
 
         [Test]
         public void CanDoubleSave() {
@@ -77,8 +168,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                 Type = "mdb-test"
             };
 
-            Save(source, attachment);
-            Save(source, attachment2);
+            Save(attachment, source);
+            Save(attachment2, source);
         }
 
         [Test]
