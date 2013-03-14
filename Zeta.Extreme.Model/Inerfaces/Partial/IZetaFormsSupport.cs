@@ -10,9 +10,10 @@
 
 using Qorpent.Model;
 
-namespace Zeta.Extreme.Model.Inerfaces.Partial {
+namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IZetaFormsSupport :
 		IWithIdx,
-		IWithOuterCode,
-		IWithGroup {}
+		IWithOuterCode {
+		string Group { get; set; }
+		}
 }

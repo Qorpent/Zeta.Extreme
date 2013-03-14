@@ -11,14 +11,13 @@
 using System;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.Inerfaces.Bases;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Описание условия на объект
 	/// </summary>
-	public sealed class ObjHandler : CachedItemHandlerBase<IZoneElement>, IObjHandler {
+	public sealed class ObjHandler : CachedItemHandlerBase<IZetaObject>, IObjHandler {
 		/// <summary>
 		/// 	Тип зоны
 		/// </summary>
@@ -100,12 +99,12 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Применяет свойства от сущности без установки ее Native
 		/// </summary>
-		public override void Apply(IZoneElement item) {
+		public override void Apply(IZetaObject item) {
 			_type = GetNativeType(item);
 			base.Apply(item);
 		}
 
-		private ObjType GetNativeType(IZoneElement native) {
+		private ObjType GetNativeType(IZetaObject native) {
 			if (null != (native as IZetaMainObject)) {
 				return ObjType.Obj;
 			}

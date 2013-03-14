@@ -9,9 +9,8 @@
 #endregion
 
 using System.Collections.Generic;
-using Zeta.Extreme.Model.Inerfaces.Bases;
 
-namespace Zeta.Extreme.Model.Inerfaces.Partial {
+namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IWithDetailObjects {
 		IList<IZetaDetailObject> DetailObjects { get; set; }
 	}

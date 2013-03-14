@@ -15,13 +15,13 @@ using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
 	public partial class region : IZetaRegion {
-		[Ref(ClassName = typeof (zone))] public virtual IZetaZone Country { get; set; }
+		[Ref(ClassName = typeof (Zone))] public virtual IZetaZone Country { get; set; }
 
 		[Map] public virtual Guid Uid { get; set; }
 
 		public virtual string Tag { get; set; }
 
-		[Many(ClassName = typeof (point))] public virtual IList<IZetaPoint> Points { get; set; }
+		[Many(ClassName = typeof (Point))] public virtual IList<IZetaPoint> Points { get; set; }
 
 		public virtual IZetaZone Zone {
 			get { return Country; }

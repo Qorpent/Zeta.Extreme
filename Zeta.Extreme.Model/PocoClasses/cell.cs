@@ -13,15 +13,18 @@ using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
-	public partial class cell : IZetaCell {
+	/// <summary>
+	/// 
+	/// </summary>
+	public partial class Cell : IZetaCell {
 		[Ref(ClassName = typeof (IZetaRow))] public virtual IZetaRow MainDataTree { get; set; }
 
 
-		[Ref(ClassName = typeof (col))] public virtual IZetaColumn ValueType { get; set; }
+		[Ref(ClassName = typeof (Column))] public virtual IZetaColumn ValueType { get; set; }
 
-		[Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
+		[Ref(ClassName = typeof (Obj))] public virtual IZetaMainObject Org { get; set; }
 
-		[Ref(ClassName = typeof (detail))] public virtual IZetaDetailObject Subpart { get; set; }
+		[Ref(ClassName = typeof (Detail))] public virtual IZetaDetailObject Subpart { get; set; }
 
 		public virtual string Path { get; set; }
 		[Map] public virtual Guid Uid { get; set; }
@@ -52,15 +55,6 @@ namespace Zeta.Extreme.Model.PocoClasses {
 
 		[Map] public virtual DateTime Version { get; set; }
 
-		[Nest] public virtual StandardRowData RowData {
-			get { return rowData ?? (rowData = new StandardRowData()); }
-			set { rowData = value; }
-		}
-
-		public virtual object Value {
-			get { return RowData.GetValue(Column); }
-			set { RowData.SetValue(Column, value); }
-		}
 
 		public virtual IZetaRow Row {
 			get { return MainDataTree; }
@@ -83,6 +77,11 @@ namespace Zeta.Extreme.Model.PocoClasses {
 			set { Org = value; }
 		}
 
+
+		public long IntValue { get; set; }
+		public decimal DecimalValue { get; set; }
+		public string StringValue { get; set; }
+
 		public virtual IZetaMainObject AltObj { get; set; }
 		public virtual int AltObjId { get; set; }
 		public virtual int RowId { get; set; }
@@ -101,7 +100,13 @@ namespace Zeta.Extreme.Model.PocoClasses {
 
 		[Map] public virtual bool IsAuto { get; set; }
 		[Map] public virtual string Usr { get; set; }
-		private StandardRowData rowData;
+
+		/// <summary>
+		/// Простой акцессор до значения
+		/// </summary>
+		public string Value {
+			get { return DecimalValue.ToString(); }
+		}
 
 		public override string ToString() {
 			return string.Format("cell:{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}",

@@ -11,18 +11,14 @@
 using System;
 using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
-using Zeta.Extreme.Model.Inerfaces.Bases;
-using Zeta.Extreme.Model.Inerfaces.Partial;
 using Zeta.Extreme.Model.PocoClasses;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	[ForSearch("Младший объект, подразделение, связь")]
-	public interface IZetaDetailObject : IZoneElement,
+	public interface IZetaDetailObject : IZetaObject,
 		ICanResolveTag,
 		IWithDetailObjectType,
-		IWithAlternateMainObject,
-		IWithOwn,
-		IWithDetailObjects, IWithOuterCode, IWithMainObject, IEntity, IWithId, IWithCode, IWithName, IWithTag {
+		IWithDetailObjects, IWithOuterCode, IEntity, IWithId, IWithCode, IWithName, IWithTag {
 		string Verb { get; set; }
 		IZetaDetailObject Parent { get; set; }
 		IZetaPoint Location { get; set; }
@@ -42,6 +38,8 @@ namespace Zeta.Extreme.Model.Inerfaces {
 
 		[Map] DateTime Date1 { get; set; }
 		[Map] DateTime Date2 { get; set; }
+		[Classic("Org")] IZetaMainObject Object { get; set; }
+		int IntOwn { get; set; }
 
 		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
 		}

@@ -10,13 +10,11 @@
 
 using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
-using Zeta.Extreme.Model.Inerfaces.Bases;
-using Zeta.Extreme.Model.Inerfaces.Partial;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	[ForSearch("Роль, тип, отрасль объекта")]
 	public interface IMainObjectRole :
-		IZoneElement,
+		IZetaObject,
 		IWithMainObjects, IEntity, IWithId, IWithCode, IWithName, IWithTag {
 		bool ShowOnStartPage { get; set; }
 		}

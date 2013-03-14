@@ -17,8 +17,8 @@ using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
-	public partial class detail : IZetaDetailObject {
-		public detail() {
+	public partial class Detail : IZetaDetailObject {
+		public Detail() {
 			
 			Start = QorpentConst.Date.Begin;
 			Finish = QorpentConst.Date.Begin;
@@ -26,9 +26,9 @@ namespace Zeta.Extreme.Model.PocoClasses {
 			Date2 = QorpentConst.Date.Begin;
 		}
 
-		[Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
+		[Ref(ClassName = typeof (Obj))] public virtual IZetaMainObject Org { get; set; }
 
-		[Ref(ClassName = typeof (obj))] public virtual IZetaMainObject AltParent { get; set; }
+		[Ref(ClassName = typeof (Obj))] public virtual IZetaMainObject AltParent { get; set; }
 		[Map] [IgnoreSerialize] public virtual Guid Uid { get; set; }
 		
 		[Map(ReadOnly = true)] public virtual string Path { get; set; }
@@ -67,26 +67,12 @@ namespace Zeta.Extreme.Model.PocoClasses {
 		[Map] public virtual DateTime Version { get; set; }
 
 
-		[Serialize] public virtual IDetailObjectType Type { get; set; }
+		[Serialize] public virtual IObjectType Type { get; set; }
 
 		[Serialize] public virtual IZetaMainObject AltObject {
 			get { return AltParent; }
 			set { AltParent = value; }
 		}
-
-		
-
-
-		[Map] public virtual int IntOwn { get; set; }
-
-		public virtual SubpartRelation Own {
-			get { return (SubpartRelation) IntOwn; }
-			set { IntOwn = (int) value; }
-		}
-
-		
-
-		
 
 		public virtual string Verb { get; set; }
 

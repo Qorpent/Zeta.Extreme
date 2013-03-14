@@ -8,7 +8,7 @@
 
 #endregion
 
-using Zeta.Extreme.Model.Inerfaces.Partial;
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.Extensions {
 	public static class WithMarksExtension {

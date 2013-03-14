@@ -14,12 +14,12 @@ using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
-	public partial class objdiv : IMainObjectGroup {
+	public partial class ObjDiv : IMainObjectGroup {
 		[Map] public virtual Guid Uid { get; set; }
 
 		public virtual string Tag { get; set; }
 
-		[Many(ClassName = typeof (obj))] public virtual IList<IZetaMainObject> MainObjects { get; set; }
+		[Many(ClassName = typeof (Obj))] public virtual IList<IZetaMainObject> MainObjects { get; set; }
 
 		[Map] public virtual int Id { get; set; }
 

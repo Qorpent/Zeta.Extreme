@@ -74,7 +74,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="condition"> </param>
 		/// <returns> </returns>
-		public IEnumerable<usr> ReadUsers(string condition = "") {
+		public IEnumerable<User> ReadUsers(string condition = "") {
 			return Read(condition, Usrquerybase, ReaderToUsr);
 		}
 
@@ -94,7 +94,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="condition"> </param>
 		/// <returns> </returns>
-		public IEnumerable<form> ReadForms(string condition = "") {
+		public IEnumerable<Form> ReadForms(string condition = "") {
 			return Read(condition, Formquerybase, ReaderToForm);
 		}
 
@@ -104,7 +104,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="condition"> </param>
 		/// <returns> </returns>
-		public IEnumerable<formstate> ReadFormStates(string condition = "") {
+		public IEnumerable<FormState> ReadFormStates(string condition = "") {
 			return Read(condition, Formstatequerybase, ReaderToFormstate);
 		}
 
@@ -115,7 +115,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="condition"> </param>
 		/// <returns> </returns>
-		public IEnumerable<objdiv> ReadDivisions(string condition = "") {
+		public IEnumerable<ObjDiv> ReadDivisions(string condition = "") {
 			return Read(condition, Divquerybase, ReaderToDiv);
 		}
 
@@ -125,7 +125,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="condition"> </param>
 		/// <returns> </returns>
-		public IEnumerable<obj> ReadObjects(string condition = "") {
+		public IEnumerable<Obj> ReadObjects(string condition = "") {
 			return Read(condition, Objquerybase, ReaderToObj);
 		}
 
@@ -135,7 +135,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="condition"> </param>
 		/// <returns> </returns>
-		public IEnumerable<col> ReadColumns(string condition = "") {
+		public IEnumerable<Column> ReadColumns(string condition = "") {
 			return Read(condition, Colquerybase, ReaderToCol);
 		}
 
@@ -145,7 +145,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="condition"> </param>
 		/// <returns> </returns>
-		public IEnumerable<row> ReadRows(string condition = "") {
+		public IEnumerable<Row> ReadRows(string condition = "") {
 			return Read(condition, Rowquerybase, ReaderToRow);
 		}
 	}

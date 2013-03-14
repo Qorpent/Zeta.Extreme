@@ -8,10 +8,3 @@
 
 #endregion
 
-namespace Zeta.Extreme.Model.PocoClasses {
-	public enum SubpartRelation {
-		Undef = 0,
-		Own = 1,
-		Ul = 2
-	}
-}

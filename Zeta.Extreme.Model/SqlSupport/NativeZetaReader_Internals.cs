@@ -39,8 +39,8 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public static row ReaderToRow(IDataRecord r) {
-			var x = new row
+		public static Row ReaderToRow(IDataRecord r) {
+			var x = new Row
 				{
 					Id = r.GetInt32(0),
 					Version = r.GetDateTime(1),
@@ -86,8 +86,8 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public static col ReaderToCol(IDataRecord r) {
-			var x = new col
+		public static Column ReaderToCol(IDataRecord r) {
+			var x = new Column
 				{
 					Id = r.GetInt32(0),
 					Version = r.GetDateTime(1),
@@ -113,8 +113,8 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public static objdiv ReaderToDiv(IDataRecord r) {
-			var x = new objdiv
+		public static ObjDiv ReaderToDiv(IDataRecord r) {
+			var x = new ObjDiv
 				{
 					Id = r.GetInt32(0),
 					Code = r.GetString(1),
@@ -132,8 +132,8 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public static obj ReaderToObj(IDataRecord r) {
-			var x = new obj
+		public static Obj ReaderToObj(IDataRecord r) {
+			var x = new Obj
 				{
 					Id = r.GetInt32(0),
 					Code = r.GetString(1),
@@ -202,8 +202,8 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public static formstate ReaderToFormstate(IDataRecord r) {
-			var x = new formstate
+		public static FormState ReaderToFormstate(IDataRecord r) {
+			var x = new FormState
 				{
 					Id = r.GetInt32(0),
 					Version = r.GetDateTime(1),
@@ -225,8 +225,8 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public static form ReaderToForm(IDataRecord r) {
-			var x = new form
+		public static Form ReaderToForm(IDataRecord r) {
+			var x = new Form
 				{
 					Id = r.GetInt32(0),
 					Version = r.GetDateTime(1),
@@ -246,8 +246,8 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public static usr ReaderToUsr(IDataRecord r) {
-			var x = new usr
+		public static User ReaderToUsr(IDataRecord r) {
+			var x = new User
 				{
 					Id = r.GetInt32(0),
 					Version = r.GetDateTime(1),

@@ -14,7 +14,7 @@ using System.Linq;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
-	public class form : IForm {
+	public class Form : IForm {
 		public virtual string TemplateCode { get; set; }
 
 		/// <summary>
@@ -47,7 +47,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 		public virtual IFormState GetLastState() {
 			var result = States != null ? States.OrderBy(x => x.Version).LastOrDefault() : null;
 			if (null == result) {
-				result = new formstate();
+				result = new FormState();
 				result.Form = this;
 				result.State = "0ISOPEN";
 				result.Usr = "система";
@@ -58,7 +58,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 		public virtual IFormState GetLastBlock() {
 			var result = States != null ? States.Where(x => x.State == "0ISBLOCK").OrderBy(x => x.Version).LastOrDefault() : null;
 			if (null == result) {
-				result = new formstate();
+				result = new FormState();
 				result.Form = this;
 				result.State = "0ISOPEN";
 				result.Usr = "система";

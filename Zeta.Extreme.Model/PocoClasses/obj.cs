@@ -16,23 +16,22 @@ using Qorpent;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.Inerfaces.Partial;
 
 namespace Zeta.Extreme.Model.PocoClasses {
-	public partial class obj : IZetaMainObject {
-		public obj() {
+	public partial class Obj : IZetaMainObject {
+		public Obj() {
 
 			Start = QorpentConst.Date.Begin;
 			Finish = QorpentConst.Date.End;
 			// Properties = new Dictionary<string, object>();
 		}
 
-		[Ref(ClassName = typeof (objdiv))] public virtual IMainObjectGroup Holding { get; set; }
+		[Ref(ClassName = typeof (ObjDiv))] public virtual IMainObjectGroup Holding { get; set; }
 
 
-		[Ref(ClassName = typeof (objrole))] public virtual IMainObjectRole Otrasl { get; set; }
+		[Ref(ClassName = typeof (ObjRole))] public virtual IMainObjectRole Otrasl { get; set; }
 
-		[Ref(ClassName = typeof (point))] public virtual IZetaPoint Municipal { get; set; }
+		[Ref(ClassName = typeof (Point))] public virtual IZetaPoint Municipal { get; set; }
 
 		[Map] public virtual Guid Uid { get; set; }
 
@@ -80,7 +79,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 		[Map] public virtual bool ShowOnStartPage { get; set; }
 
 
-		[Many(ClassName = typeof (detail))] public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
+		[Many(ClassName = typeof (Detail))] public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
 
 
 		[Map] public virtual int Id { get; set; }
@@ -153,7 +152,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 			return UsrThemaMaps.Where(x => x.Usr.Id == usr.Id && x.IsPlan == plan).Select(x => x.ThemaCode).Distinct().ToArray();
 		}
 
-		[Many(ClassName = typeof (usr))] public virtual IList<IZetaUnderwriter> Underwriters { get; set; }
+		[Many(ClassName = typeof (User))] public virtual IList<IZetaUnderwriter> Underwriters { get; set; }
 
 
 
@@ -166,9 +165,9 @@ namespace Zeta.Extreme.Model.PocoClasses {
 		[Map] public virtual DateTime Start { get; set; }
 		[Map] public virtual DateTime Finish { get; set; }
 
-		public virtual IDetailObjectType ObjType { get; set; }
+		public virtual IObjectType ObjType { get; set; }
 
-		IDetailObjectType IWithDetailObjectType.Type {
+		IObjectType IWithDetailObjectType.Type {
 			get { return ObjType; }
 			set { ObjType = value; }
 		}
@@ -230,7 +229,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 		private IDictionary<string, object> localProperties;
 		private IDictionary<string, object> properties;
 
-		public virtual bool Equals(obj org) {
+		public virtual bool Equals(Obj org) {
 			if (org == null) {
 				return false;
 			}
@@ -281,7 +280,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 			if (ReferenceEquals(this, obj)) {
 				return true;
 			}
-			return Equals(obj as obj);
+			return Equals(obj as Obj);
 		}
 
 		public override int GetHashCode() {
@@ -292,8 +291,8 @@ namespace Zeta.Extreme.Model.PocoClasses {
 			return result;
 		}
 
-		public virtual detail[] FindOwnSubparts() {
-			return DetailObjects.Cast<detail>().ToArray();
+		public virtual Detail[] FindOwnSubparts() {
+			return DetailObjects.Cast<Detail>().ToArray();
 		}
 
 	

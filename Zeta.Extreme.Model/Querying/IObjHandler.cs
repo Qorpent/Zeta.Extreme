@@ -9,13 +9,12 @@
 #endregion
 
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.Inerfaces.Bases;
 
 namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// 	Стандартный интерфейс измерения запроса Obj
 	/// </summary>
-	public interface IObjHandler : IQueryDimension<IZoneElement> {
+	public interface IObjHandler : IQueryDimension<IZetaObject> {
 		/// <summary>
 		/// 	Тип зоны
 		/// </summary>

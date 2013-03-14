@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 using Qorpent.Model;
-using Zeta.Extreme.Model.Inerfaces.Partial;
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Reports{
 	/// <summary>

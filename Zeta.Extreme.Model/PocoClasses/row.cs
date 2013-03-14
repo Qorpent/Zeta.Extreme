@@ -18,10 +18,13 @@ using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
-	public partial class row : IZetaRow {
+	/// <summary>
+	/// 
+	/// </summary>
+	public partial class Row : IZetaRow {
 		[Map] public virtual string Grp { get; set; }
 
-		[Ref(ClassName = typeof (obj))] public virtual IZetaMainObject Org { get; set; }
+		[Ref(ClassName = typeof (Obj))] public virtual IZetaMainObject Org { get; set; }
 
 		/// <summary>
 		/// 	Режим использования формулы с Extreme
@@ -292,7 +295,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 				lock (this) {
 					if (null == _allchildren) {
 						var result = new List<IZetaRow>();
-						foreach (var row in Children.OrderBy(x => ((row) x).GetSortKey())) {
+						foreach (var row in Children.OrderBy(x => ((Row) x).GetSortKey())) {
 							_register(row, result);
 						}
 						_allchildren = result.ToArray();
@@ -372,7 +375,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 
 		public virtual IZetaRow Copy(bool withchildren) {
 			lock (this) {
-				var result = (row) MemberwiseClone();
+				var result = (Row) MemberwiseClone();
 				result._children = new List<IZetaRow>();
 				result._allchildren = null;
 				result.LocalProperties = new Dictionary<string, object>(LocalProperties);
@@ -415,8 +418,8 @@ namespace Zeta.Extreme.Model.PocoClasses {
 
 		private void _register(IZetaRow row, List<IZetaRow> result) {
 			result.Add(row);
-			if (((row) row)._children != null) {
-				foreach (var zetaRow in row.Children.OrderBy(x => ((row) x).GetSortKey())) {
+			if (((Row) row)._children != null) {
+				foreach (var zetaRow in row.Children.OrderBy(x => ((Row) x).GetSortKey())) {
 					_register(zetaRow, result);
 				}
 			}
@@ -425,7 +428,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 		public virtual string GetParentedName() {
 			var result = Name;
 			if (null != Parent) {
-				result = ((row) Parent).GetParentedName() + " / " + result;
+				result = ((Row) Parent).GetParentedName() + " / " + result;
 			}
 			return result;
 		}

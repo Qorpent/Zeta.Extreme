@@ -13,10 +13,10 @@ using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
-	public partial class biztran : IBizTran {
+	public partial class BizTran : IBizTran {
 		private const string nodef = "Не определено";
 
-		public biztran() {
+		public BizTran() {
 			Name = nodef;
 			FirstType = nodef;
 			FirstRole = nodef;

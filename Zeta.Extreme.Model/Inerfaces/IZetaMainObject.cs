@@ -12,8 +12,6 @@ using System;
 using System.Collections.Generic;
 using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
-using Zeta.Extreme.Model.Inerfaces.Bases;
-using Zeta.Extreme.Model.Inerfaces.Partial;
 using Zeta.Extreme.Model.PocoClasses;
 
 
@@ -21,11 +19,8 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	[ForSearch("Старший объект (предприятие)")]
 	public interface IZetaMainObject : IZetaQueryDimension,
 		ICanResolveTag,
-		IWithAddress,
 		IWithDetailObjectType,
-		IWithUnderwriters,
-		IWithAlternateDetailObjects,
-		IWithProperties, IWithDetailObjects, IZoneElement, IEntity, IWithFormula {
+		IWithProperties, IWithDetailObjects, IZetaObject {
 		[Map] string GroupCache { get; set; }
 		[Map] string FullName { get; set; }
 		[Map] string Formula { get; set; }
@@ -38,7 +33,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 
 		IList<IZetaMainObject> Children { get; set; }
 		IZetaMainObject Parent { get; set; }
-		IDetailObjectType ObjType { get; set; }
+		IObjectType ObjType { get; set; }
 		IList<IUsrThemaMap> UsrThemaMaps { get; set; }
 
 		[Map(ReadOnly = true)] string Path { get; set; }
@@ -48,6 +43,8 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		[Classic("Holding")] IMainObjectGroup Group { get; set; }
 		[Classic("Otrasl")] IMainObjectRole Role { get; set; }
 		[Classic("Municipal")] IZetaPoint Location { get; set; }
+		string Address { get; set; }
+		IList<IZetaUnderwriter> Underwriters { get; set; }
 
 		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
 		string[] GetConfiguredThemaCodes();

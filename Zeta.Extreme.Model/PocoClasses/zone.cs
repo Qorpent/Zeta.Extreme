@@ -14,7 +14,10 @@ using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
-	public partial class zone : IZetaZone {
+	/// <summary>
+	/// 
+	/// </summary>
+	public partial class Zone : IZetaZone {
 		[Map] public virtual Guid Uid { get; set; }
 
 		public virtual string Tag { get; set; }

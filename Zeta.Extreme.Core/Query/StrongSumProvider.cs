@@ -16,8 +16,6 @@ using Qorpent.Model;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.Inerfaces.Bases;
-using Zeta.Extreme.Model.Inerfaces.Partial;
 using Zeta.Extreme.Model.MetaCaches;
 
 namespace Zeta.Extreme {

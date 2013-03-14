@@ -12,9 +12,9 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta {
 		/// </summary>
 		/// <returns></returns>
 		protected override IEnumerable<Query> BuildModel() {
-			var exrefrow = new row {Code = "e", ExRefTo = new row {Code = "t"}};
-			var exrefcol = new col {Code = "e", MarkCache = "/DOEXREF/"};
-			var nexrefcol = new col {Code = "ne"};
+			var exrefrow = new Row {Code = "e", ExRefTo = new Row {Code = "t"}};
+			var exrefcol = new Column {Code = "e", MarkCache = "/DOEXREF/"};
+			var nexrefcol = new Column {Code = "ne"};
 			var q1 = new Query //тут должен произойти exref
 				{
 					Row = {Native = exrefrow},

@@ -14,7 +14,7 @@ using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
 	[Serialize]
-	public class formstate : IFormState {
+	public class FormState : IFormState {
 		[Serialize] public virtual string ReadableState {
 			get { return GetReadableState(); }
 		}

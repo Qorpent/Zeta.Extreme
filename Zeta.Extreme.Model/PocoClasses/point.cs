@@ -14,12 +14,15 @@ using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
-	public partial class point : IZetaPoint {
+	/// <summary>
+	/// 
+	/// </summary>
+	public partial class Point : IZetaPoint {
 		[Map] public virtual Guid Uid { get; set; }
 
 		public virtual string Tag { get; set; }
 
-		[Many(ClassName = typeof (obj))] public virtual IList<IZetaMainObject> MainObjects { get; set; }
+		[Many(ClassName = typeof (Obj))] public virtual IList<IZetaMainObject> MainObjects { get; set; }
 
 		[Ref(ClassName = typeof (region))] public virtual IZetaRegion Region { get; set; }
 

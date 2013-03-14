@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Zeta.Extreme.Model.Inerfaces.Partial {
+namespace Zeta.Extreme.Model.Inerfaces {
 	public interface ICanResolveTag {
 		string ResolveTag(string name);
 	}

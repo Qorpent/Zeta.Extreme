@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace Zeta.Extreme.Model.Inerfaces.Partial {
+namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IWithMainObjects {
 		IList<IZetaMainObject> MainObjects { get; set; }
 	}

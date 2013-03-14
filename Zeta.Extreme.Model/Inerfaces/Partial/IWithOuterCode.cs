@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Zeta.Extreme.Model.Inerfaces.Partial {
+namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IWithOuterCode {
 		string OuterCode { get; set; }
 	}

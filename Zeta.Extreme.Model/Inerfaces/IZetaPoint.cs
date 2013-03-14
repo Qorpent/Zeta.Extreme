@@ -10,15 +10,13 @@
 
 using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
-using Zeta.Extreme.Model.Inerfaces.Bases;
-using Zeta.Extreme.Model.Inerfaces.Partial;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	[ForSearch("Точка, город")]
 	public interface IZetaPoint :
-		IZoneElement,
+		IZetaObject,
 		IWithMainObjects,
-		IWithDetailObjects,
-		IWithRegion,
-		IEntity, IWithId, IWithCode, IWithName, IWithTag {}
+		IEntity {
+		IZetaRegion Region { get; set; }
+		}
 }

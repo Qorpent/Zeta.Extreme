@@ -13,8 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Qorpent.Model;
-
-using Zeta.Extreme.Model.Inerfaces.Bases;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
 
 

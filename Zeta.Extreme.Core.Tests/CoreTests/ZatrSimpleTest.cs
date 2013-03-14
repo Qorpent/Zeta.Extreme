@@ -28,9 +28,9 @@ using Zeta.Extreme.Primary;
 namespace Zeta.Extreme.Core.Tests.CoreTests {
 	[TestFixture(Description = "Ќачинаем работать с простыми формами")]
 	public class ZatrSimpleTest : SessionTestBase {
-		public row[] rows;
-		public row[] rows1;
-		public row[] rows2;
+		public Row[] rows;
+		public Row[] rows1;
+		public Row[] rows2;
 		public IZetaColumn col;
 		public int[] periods;
 		public IZetaMainObject obj;
@@ -50,11 +50,11 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		[TestFixtureSetUp]
 		public override void FixtureSetup() {
 			base.FixtureSetup();
-			rows = RowCache.get("m260").AllChildren.OfType<row>().ToArray();
+			rows = RowCache.get("m260").AllChildren.OfType<Row>().ToArray();
 			;
-			rows1 = RowCache.get("m111").AllChildren.OfType<row>().ToArray();
+			rows1 = RowCache.get("m111").AllChildren.OfType<Row>().ToArray();
 			;
-			rows2 = RowCache.get("m112").AllChildren.OfType<row>().ToArray();
+			rows2 = RowCache.get("m112").AllChildren.OfType<Row>().ToArray();
 			;
 			colset = new[]
 				{

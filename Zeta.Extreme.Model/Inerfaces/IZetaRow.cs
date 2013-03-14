@@ -10,10 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
-using Zeta.Extreme.Model.Inerfaces.Bases;
-using Zeta.Extreme.Model.Inerfaces.Partial;
 using Zeta.Extreme.Model.PocoClasses;
 
 
@@ -21,8 +18,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	[ForSearch("Строка, признак")]
 	public interface IZetaRow : IZetaQueryDimension,
 		IZetaFormsSupport,
-		IWithMarkCache,
-		IWithMainObject, ITree<IZetaRow>, IWthRefTo<IZetaRow>, IEntity, IWithFormula, IWithMeasure {
+		IWithMarkCache,  IWithMeasure {
 		IDictionary<string, object> LocalProperties { get; }
 		[Map] string ObjectGroups { get; set; }
 		[Map] string FormElementType { get; set; }
@@ -31,6 +27,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		[Map] string FullName { get; set; }
 		[Map] string Role { get; set; }
 		[Map] string Valuta { get; set; }
+		IZetaRow RefTo { get; set; }
 		int? ParentId { get; set; }
 		int? RefId { get; set; }
 		int? ObjectId { get; set; }
@@ -44,6 +41,10 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		int? ExRefToId { get; set; }
 		[Map] bool Active { get; set; }
 		IZetaRow TemporalParent { get; set; }
+		IZetaRow Parent { get; set; }
+		IList<IZetaRow> Children { get; set; }
+		[Classic("Org")] IZetaMainObject Object { get; set; }
+		string Path { get; set; }
 		string ResolveColumnCode(string incode);
 		IZetaRow Copy(bool withchildren);
 		void ResetAllChildren();

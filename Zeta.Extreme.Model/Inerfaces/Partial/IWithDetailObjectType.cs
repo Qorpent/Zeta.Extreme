@@ -8,8 +8,8 @@
 
 #endregion
 
-namespace Zeta.Extreme.Model.Inerfaces.Partial {
+namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IWithDetailObjectType {
-		IDetailObjectType Type { get; set; }
+		IObjectType Type { get; set; }
 	}
 }

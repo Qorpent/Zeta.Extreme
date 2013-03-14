@@ -11,13 +11,10 @@
 using System.Collections.Generic;
 using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
-using Zeta.Extreme.Model.Inerfaces.Partial;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IZetaUnderwriter :
-		IEntity,
-		IWithMainObject,
-		IWithContactHuman {
+		IEntity {
 		string Login2 { get; set; }
 		string SlotList { get; set; }
 		IList<string> Slots { get; }
@@ -27,6 +24,8 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// 	Free list of documents,where basis for security provided
 		/// </summary>
 		[Map] string Documents { get; set; }
+
+		[Classic("Org")] IZetaMainObject Object { get; set; }
 
 		bool IsFor(string slot);
 		}

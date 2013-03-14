@@ -8,18 +8,17 @@
 
 #endregion
 
+using System.Collections.Generic;
 using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
-using Zeta.Extreme.Model.Inerfaces.Bases;
-using Zeta.Extreme.Model.Inerfaces.Partial;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	[ForSearch("Регион")]
 	public interface IZetaRegion :
-		IZoneElement,
+		IZetaObject,
 		IWithMainObjects,
-		IWithDetailObjects,
-		IWithPoints,
-		IWithZone,
-		IEntity, IWithId, IWithCode, IWithName, IWithTag {}
+		IEntity{
+		IList<IZetaPoint> Points { get; set; }
+		IZetaZone Zone { get; set; }
+		}
 }

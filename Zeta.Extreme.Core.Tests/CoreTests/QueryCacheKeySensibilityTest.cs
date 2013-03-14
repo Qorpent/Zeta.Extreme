@@ -18,6 +18,7 @@ using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.PocoClasses;
 using Zeta.Extreme.Model.Querying;
+using ObjType = Zeta.Extreme.Model.Querying.ObjType;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
 	[TestFixture(Description = "Проверка корректности и уникальности кэш строк")]
@@ -70,9 +71,9 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		[Test]
 		public void HardLinkAndSingleRowTest() {
 			var target = RowCache.get("m260113");
-			var r = new row {Code = "x1", RefTo = target};
+			var r = new Row {Code = "x1", RefTo = target};
 			RowCache.Bycode["X1"]=r;
-			var r2 = new row {Code = "x2", Formula = " $x1? ", IsFormula = true, FormulaType = "boo"};
+			var r2 = new Row {Code = "x2", Formula = " $x1? ", IsFormula = true, FormulaType = "boo"};
 			RowCache.Bycode["X2"] =r2;
 
 			var q1 = new Query {Row = {Code = "x1"}};

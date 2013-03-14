@@ -603,7 +603,7 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 			var src = columnDesc._;
 			DataSession.GetMetaCache().Set(
-				new col
+				new Column
 					{
 						Code = src.CustomCode,
 						ForeignCode = src.InitialCode,
@@ -775,7 +775,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Возвращает историю блокировок
 		/// </summary>
 		/// <returns> </returns>
-		public formstate[] GetLockHistory() {
+		public FormState[] GetLockHistory() {
 			var states =
 				new NativeZetaReader().ReadFormStates(
 					string.Format("Year = {0} and Period = {1} and LockCode='{2}' and Object = {3} order by Version"

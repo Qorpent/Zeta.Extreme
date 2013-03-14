@@ -28,13 +28,13 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta {
 				{
 					Row =
 						{
-							Native = new row
+							Native = new Row
 								{
 									Code = "y",
-									RefTo = new row
+									RefTo = new Row
 										{
 											Code = "z",
-											RefTo = new row {Code = "x"}
+											RefTo = new Row {Code = "x"}
 										}
 								}
 						}

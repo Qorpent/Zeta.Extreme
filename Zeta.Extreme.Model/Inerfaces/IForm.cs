@@ -10,17 +10,16 @@
 
 using System.Collections.Generic;
 using Qorpent.Model;
-using Zeta.Extreme.Model.Inerfaces.Partial;
+using Zeta.Extreme.Model.Deprecated;
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IForm : IWithId, IWithCode, IWithVersion,
-	                         // IWithCells<IZetaCell, IZetaRow, IZetaColumn, IZetaMainObject, IZetaDetailObject>,
-	                         IWithMainObject {
+	public interface IForm : IWithId, IWithCode, IWithVersion {
 		int Year { get; set; }
 		int Period { get; set; }
 		string Template { get; set; }
 		IList<IFormState> States { get; set; }
 		string CurrentState { get; set; }
+		[Classic("Org")] IZetaMainObject Object { get; set; }
 		IFormState GetLastState();
 		IFormState GetLastBlock();
 	                         }

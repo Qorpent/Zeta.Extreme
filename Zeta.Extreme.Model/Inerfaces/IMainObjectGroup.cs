@@ -10,13 +10,11 @@
 
 using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
-using Zeta.Extreme.Model.Inerfaces.Bases;
-using Zeta.Extreme.Model.Inerfaces.Partial;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	[Classic("Holding")]
 	[ForSearch("Группа, дивизион, холдинг")]
 	public interface IMainObjectGroup :
-		IZoneElement,
+		IZetaObject,
 		IWithMainObjects, IEntity, IWithId, IWithCode, IWithName, IWithTag {}
 }

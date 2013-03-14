@@ -1,7 +1,7 @@
 #region LICENSE
 
 // Copyright 2012-2013 Media Technology LTD 
-// Original file : IObjectGroup.cs
+// Original file : IZoneElement.cs
 // Project: Zeta.Extreme.Poco
 // This code cannot be used without agreement from 
 // Media Technology LTD 
@@ -11,8 +11,8 @@
 using Qorpent.Model;
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IObjectGroup :
-		IZetaObject,
-		IWithMainObjects,
-		IEntity {}
+	/// <summary>
+	/// Рамочный интерфейс объектов, служащих объектами в терминах запроса Zeta
+	/// </summary>
+	public interface IZetaObject : IWithId, IWithCode, IWithName, IWithTag {}
 }

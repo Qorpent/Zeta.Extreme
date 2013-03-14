@@ -15,7 +15,7 @@ using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
-	public partial class objtype : IDetailObjectType {
+	public partial class ObjType : IObjectType {
 		[Map] public virtual Guid Uid { get; set; }
 
 
@@ -39,7 +39,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 
 		[Map] public virtual string Tag { get; set; }
 
-		[Many(ClassName = typeof (detail))] public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
+		[Many(ClassName = typeof (Detail))] public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
 
 
 		public virtual IDetailObjectClass Class { get; set; }

@@ -13,7 +13,7 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta {
 		/// <returns> </returns>
 		protected override IEnumerable<Query> BuildModel() {
 			//описываем некую CustomCols
-			_session.MetaCache.Set(new col {Code = "CUSTOM", ForeignCode = "x", Year = 2013, Period = 13});
+			_session.MetaCache.Set(new Column {Code = "CUSTOM", ForeignCode = "x", Year = 2013, Period = 13});
 			//описыаваем реальные данные
 			Add(new Query { Row = { Code = "x" } , Col={Code="x"},Time={Year=2013,Period = 13}}, 5);	
 					

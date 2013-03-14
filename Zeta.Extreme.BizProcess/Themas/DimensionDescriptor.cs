@@ -21,7 +21,6 @@ using Qorpent.Model;
 using Qorpent.Serialization;
 using Zeta.Extreme.Model.Extensions;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model.Inerfaces.Bases;
 
 
 #if NEWMODEL

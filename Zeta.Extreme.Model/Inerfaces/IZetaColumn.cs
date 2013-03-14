@@ -9,35 +9,32 @@
 #endregion
 
 using System.Collections.Generic;
-using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
-using Zeta.Extreme.Model.Inerfaces.Bases;
-using Zeta.Extreme.Model.Inerfaces.Partial;
+using Zeta.Extreme.Model.PocoClasses;
 
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	[Classic("ValueType")]
 	[ForSearch("Колонка, показатель")]
 	public interface IZetaColumn : IZetaQueryDimension,
-		IWithMarkCache, IEntity, IWithFormula, IWithDataType, IWithMeasure {
+		IWithMarkCache, IWithMeasure {
 		string Valuta { get; set; }
 		IDictionary<string, object> LocalProperties { get; set; }
-
 		/// <summary>
 		/// 	Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
 		int Year { get; set; }
-
 		/// <summary>
 		/// 	Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
 		int Period { get; set; }
-
 		/// <summary>
 		/// 	Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
 		[NoMap] string ForeignCode { get; set; }
 
+		ValueDataType DataType { get; set; }
+		string DataTypeDetail { get; set; }
 		string GetStaticMeasure(string format);
 		string GetDynamicMeasure(IZetaRow source, string format);
 		}

@@ -9,7 +9,6 @@
 #endregion
 
 using Qorpent.Model;
-using Zeta.Extreme.Model.Inerfaces.Partial;
 
 #if NEWMODEL
 using Comdiv.Extensions;

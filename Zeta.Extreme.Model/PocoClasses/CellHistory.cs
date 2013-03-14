@@ -12,7 +12,10 @@ using System;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
-	public class cellhistory : ICellHistory {
+	/// <summary>
+	/// 
+	/// </summary>
+	public class CellHistory : ICellHistory {
 		public virtual int Type { get; set; }
 		public virtual string PseudoCode { get; set; }
 		public virtual int RowId { get; set; }
