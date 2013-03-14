@@ -16,55 +16,55 @@ $.extend(root,{
 				$("<col/>").addClass("number"),
 				$("<col/>").addClass("name")
 			);
-			if (session.getNeedMeasure()) {
+			if (session.NeedMeasure) {
 				colgroup.append($("<col/>").addClass("measure"));
 			}
 			var thead = $('<thead/>').append($("<tr/>").append(
 				$('<th class="number"/>').text("№"),
 				$('<th class="name"/>').text("Наименование")
 			));
-			if (session.getNeedMeasure()) {
+			if (session.NeedMeasure) {
 				$(thead.find("tr").first()).append($('<th class="measure"/>').text("Ед. изм."));
 			}
 			$.each(session.structure.cols, function(i,col) {
-				colgroup.append($('<col class="data"/>').attr("idx",col.getIdx()));
-				var th = $('<th class="data"/>').attr("idx",col.getIdx()).text(col.getName());
-                if (col.getIsPrimary()) {
+				colgroup.append($('<col class="data"/>').attr("idx",col.idx));
+				var th = $('<th class="data"/>').attr("idx",col.idx).text(col.name);
+                if (col.isprimary) {
                     th.addClass("primary");
                 }
 				thead.find("tr").append(th);
 			});
 			table.append(colgroup);
 			table.append(thead);
-		    //table.find("thead tr").first().append($("<th/>").text(col.getName()).data("src_column",col))
+		    //table.find("thead tr").first().append($("<th/>").text(col.name).data("src_column",col))
 				var body = $("<tbody/>");
-			if (session.getNeedMeasure()) {
+			if (session.NeedMeasure) {
 				thead.find("thead").append($('<th class="measure"/>').text("Ед. изм."));
 			}
 			$.each(session.structure.rows, function(rowidx,row) {
-				var tr = $("<tr/>").attr("level",row.getLevel());
-				tr.append($('<td class="number"/>').attr("title", row.code).text(row.getNumber()));
+				var tr = $("<tr/>").attr("level",row.level);
+				tr.append($('<td class="number"/>').attr("title", row.code).text(row.number || ""));
 				if (session.structure.rows.length > rowidx + 1) {
-                    if (row.getLevel() < session.structure.rows[rowidx + 1].getLevel()) {
+                    if (row.level < session.structure.rows[rowidx + 1].level) {
                         tr.addClass("haschild");
                     }
                 }
-                var td = $('<td class="name"/>').text(row.getName());
-				if (row.getIsTitle()) {
+                var td = $('<td class="name"/>').text(row.name);
+				if (row.iscaption) {
 					tr.append(td.attr("colspan", "100"));
 				} else {
 					tr.append(td);
-					if (session.getNeedMeasure()) {
-						tr.append($('<td class="measure"/>').text(row.getMeasure()));
+					if (session.NeedMeasure) {
+						tr.append($('<td class="measure"/>').text(row.measure));
 					}
                     $.each(session.structure.cols, function(i,col) {
                         var td = $('<td class="data notloaded"/>').attr({
-                            "id": row.getIdx() + ":" + col.getIdx(),
-                            "idx": col.getIdx(),
+                            "id": row.idx + ":" + col.idx,
+                            "idx": col.idx,
                             "visible": "visible"
                         });
-                        if (col.getIsPrimary() && row.getIsPrimary()) td.addClass("editable");
-                        if (col.getIsControlPoint() && row.getIsControlPoint()) td.addClass("control");
+                        if (col.isprimary && row.isprimary) td.addClass("editable");
+                        if (col.controlpoint && row.controlpoint) td.addClass("control");
                         tr.append(td);
                     });
                 }
@@ -78,15 +78,15 @@ $.extend(root,{
 		updateCells : function(session,batch){
 			var tbody = $(session.table).find("tbody").first();
             var div = $('<div/>'); // Это контейнер для форматирования чисел :)
-			$.each(batch.getData(), function(i,b) {
+			$.each(batch.data, function(i,b) {
                 var $cell = $("td[id='" + b.i +  "']");
-                var val = b.getValue() || "";
+                var val = b.v || "";
                 $cell.number($cell.text(),0,'','');
                 if ($cell.text() != val && !$.isEmptyObject($cell.data())) {
                     $cell.addClass("recalced");
                 }
                 if (val == "0") {
-                    if (b.getCellId() == 0 || !$cell.hasClass("editable")) val = "";
+                    if (b.c == 0 || !$cell.hasClass("editable")) val = "";
                     $cell.text(val);
                 } else {
                     $cell.number(val,0,'.',' ');
@@ -94,7 +94,7 @@ $.extend(root,{
                 $cell.removeClass("notloaded");
                 $cell.data("history", val);
                 $cell.data("previous", val);
-                $cell.attr("ri", b.getRealId());
+                $cell.attr("ri", b.ri);
                 if (val.search(/\./) != -1 && val.search("error") == -1) {
                     $cell.addClass("rounded");
                     $cell.tooltip({title: val, placement: 'top', container: $('body')});

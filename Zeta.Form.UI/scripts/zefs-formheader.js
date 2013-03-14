@@ -10,10 +10,10 @@
     }
     $(window.zefs).on(window.zefs.handlers.on_sessionload, function() {
         h.html(
-            zefs.myform.currentSession.getFormInfo().getName() + " " +
-                zefs.myform.currentSession.getObjInfo().getName() + " за <span></span>, " +
+            zefs.myform.currentSession.FormInfo.Name + " " +
+                zefs.myform.currentSession.ObjInfo.Name + " за <span></span>, " +
                 // zefs.myform.currentSession.getPeriod() + ", " +
-                zefs.myform.currentSession.getYear() + " год"
+                zefs.myform.currentSession.Year + " год"
         );
         if (window.zefs._periods_loaded){
             InsertPeriod();

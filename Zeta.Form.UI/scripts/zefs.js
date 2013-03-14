@@ -1,6 +1,7 @@
 (function(){
 var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 var root = window.zefs = window.zefs || {};
+var api = root.api;
 root.handlers = $.extend(root.handlers, {
     // Zefs handlers:
     on_zefsready : "zefsready",
@@ -50,93 +51,6 @@ root.init = root.init ||
     var options = window.zefs.options;
 	var params = options.getParameters();
     var render = root.getRender();
-    var StartForm = function() {
-        $.ajax({
-            url: siteroot+options.ready_command,
-            context: this,
-            dataType: 'json'
-        }).success($.proxy(function(d) {
-            //дожидаемся готовности сервера
-            if (!d) {
-                options.timeout -= options.readydelay;
-                if(options.timeout<=0){
-                    FailStartServer();
-                    return;
-                }
-                window.setTimeout(StartForm, options.readydelay);
-                return;
-            }
-            options.timeout = options.default_timeout;
-            $(root).trigger(root.handlers.on_zefsready);
-            if (!!params) {
-                ExecuteSession();
-            }
-            GetPeriods();
-            GetObjects();
-        }));
-    };
-
-    var FailStartServer = function(){};
-    var ExecuteSession = $.proxy(function() {
-        $.ajax({
-            url: siteroot+options.start_command,
-            context: this,
-            type: "POST",
-            dataType: "json",
-            data: params
-        }).success($.proxy(function(d) {
-            var session = options.asSession(d);
-            root.myform.currentSession = session;
-            root.myform.sessionId = session.getUid();
-            document.title = session.getFormInfo().getName();
-            Structure(session);
-            GetLock();
-            GetLockHistory();
-            GetAttachList();
-            $(root).trigger(root.handlers.on_sessionload);
-            window.setTimeout(function(){Data(session,0)},options.datadelay); //первый запрос на данные
-        }));
-    }, this);
-
-    var Structure = $.proxy(function(session) {
-        var params = GetSessionParams(session);
-        $.ajax({
-            url: siteroot+options.struct_command,
-            context: this,
-            type: "POST",
-            dataType: "json",
-            data: params
-        }).success($.proxy(function(d) {
-            session.structure = options.asStruct(d);
-            Render(session);
-            Fill(session);
-            $(root).trigger(root.handlers.on_structureload);
-			$('table.data').zefs(); //нам сразу нужна живость!!!
-        }));
-    }, this);
-
-    var Data = $.proxy(function(session,startIdx) {
-        var params = GetSessionParams(session,startIdx);
-        $.ajax({
-            url: siteroot+options.data_command,
-            context: this,
-            type: "POST",
-            dataType: "json",
-            data: params
-        }).success($.proxy(function(d) {
-            var batch =  options.asDataBatch(d);
-            session.data.push(batch);
-            Fill(session);
-            if(batch.getIsLast()){
-                FinishForm(session,batch);
-//              DataLoaded();
-            } else {
-                var s = session;
-                var idx = batch.getNextIdx();
-                window.setTimeout(function(){Data(s,idx)},options.datadelay);
-            }
-        }));
-    }, this);
 
     var Fill = function(session) {
         if(!session.wasRendered) { //вот тут чо за хрень была? он в итоге дважды рендировал
@@ -153,22 +67,6 @@ root.init = root.init ||
 
 	var Render = render.renderStructure; //вынес в рендер - отдельный скрипт
 	var FillBatch = render.updateCells; //вынес в рендер - zefs-render.js
-
-	var GetSessionParams = options.getSessionParameters; //перенес в спецификацию
-
-	var FinishForm = function(session,batch){
-        $(window).trigger("resize");
-    };
-
-    var DataLoaded = function() {
-        $.ajax({
-            url: siteroot+options.dataloaded_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: {session: root.myform.sessionId}
-        })
-    };
 
     var AttachFile = function(form) {
         var fd = new FormData();
@@ -200,7 +98,7 @@ root.init = root.init ||
             $(root).trigger(root.handlers.on_fileloaderror, JSON.parse(error.responseText));
         }).success(function() {
             $(root).trigger(root.handlers.on_fileloadfinish);
-            GetAttachList();
+            api.file.list.execute({session: root.myform.sessionId});
         });
     };
 
@@ -215,7 +113,7 @@ root.init = root.init ||
                 uid: uid
             }
         }).success(function() {
-             GetAttachList();
+            api.file.list.execute({session: root.myform.sessionId});
         });
     };
 
@@ -234,60 +132,10 @@ root.init = root.init ||
         })*/
     };
 
-    var GetAttachList = function() {
-        $.ajax({
-            url: siteroot+options.attachlist_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: {session: root.myform.sessionId}
-        }).success(function(d) {
-            root.myform.attachment = options.asAttachment(d);
-            $(root).trigger(root.handlers.on_attachmentload);
-        });
-    };
-
-    var GetLock = function(){
-        $.ajax({
-            url: siteroot+options.currentlock_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: {session: root.myform.sessionId}
-        }).error(function(d) {
-                $(root).trigger(root.handlers.on_getlockfailed);
-        }).success(function(d) {
-            root.myform.lock = options.asLockState(d);
-            $(root).trigger(root.handlers.on_getlockload);
-        });
-    };
-
-    var GetLockHistory = function() {
-        $.ajax({
-            url: siteroot+options.locklist_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: {session: root.myform.sessionId}
-        }).success(function(d) {
-            root.myform.lockhistory = options.asLockHistory(d);
-            $(root).trigger(root.handlers.on_getlockhistoryload);
-        })
-    };
-
     var Lock = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
             if (root.myform.lock.getCanLock()) {
-                $.ajax({
-                    url: siteroot+options.lockform_command,
-                    type: "POST",
-                    context: this,
-                    dataType: "json",
-                    data: { session: root.myform.sessionId }
-                }).success(function(d) {
-                    $(root).trigger(root.handlers.on_lockform);
-                    GetLock();
-                });
+                api.lock.start.execute({session: root.myform.sessionId});
             }
         }
     };
@@ -322,8 +170,8 @@ root.init = root.init ||
             data: params
         }).success(function(d) {
             d = options.asSession(d);
-            if(d.getUid() != root.myform.sessionId) {
-                root.myform.sessionId = d.getUid();
+            if(d.Uid != root.myform.sessionId) {
+                root.myform.sessionId = d.Uid;
                 root.myform.currentSession = d;
             }
             Save(obj);
@@ -348,58 +196,7 @@ root.init = root.init ||
             }
             $(root).trigger(root.handlers.on_message, { text: "Сохранение успешно завершено", autohide: 5000, type: "alert-success" });
             $(root).trigger(root.handlers.on_savefinished);
-            ResetData();
-        });
-    };
-
-    var ResetData = function() {
-        $.ajax({
-            url: siteroot+"zefs/resetdata.json.qweb",
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: {session: root.myform.sessionId}
-        }).success(function(d) {
-             root.myform.currentSession.data = [];
-             Data(root.myform.currentSession,0);
-        });
-    };
-
-    var SortObjectsByIdx = function(a, b) {
-        return ((a.idx < b.idx) ? -1 : ((a.idx > b.idx) ? 1 : 0));
-    }
-
-    var GetObjects = function() {
-        $.ajax({
-            url: siteroot+options.getobject_command,
-            context: this,
-            dataType: "json"
-        }).success(function(d) {
-            $.each(d.divs, function(i,div) {
-                root.divs.push(options.asDiv(div));
-            });
-            root.divs.sort(SortObjectsByIdx);
-            $.each(d.objs, function(i,obj) {
-                root.objects.push(options.asObject(obj));
-            });
-            $(root).trigger(root.handlers.on_objectsload);
-        });
-    };
-
-    var GetPeriods = function() {
-        $.ajax({
-            url: siteroot+options.getperiods_command,
-            context: this,
-            dataType: "json"
-        }).success(function(d) {
-            $.each(d, function(i,p) {
-                var period = options.asPeriod(p);
-                if (!root.periods.hasOwnProperty(period.getType())) {
-                    root.periods[period.getType()] = [];
-                }
-                root.periods[period.getType()].push(period);
-            });
-            $(root).trigger(root.handlers.on_periodsload);
+            api.session.reset.execute({session: root.myform.currentSession});
         });
     };
 
@@ -411,8 +208,8 @@ root.init = root.init ||
         var name = "";
         $.each(root.periods, function(periodname, periodtype) {
             $.each(periodtype, function(i,p) {
-                if (p.getId() == id) {
-                    name = p.getName();
+                if (p.name == id) {
+                    name = p.name;
                     return false;
                 }
             });
@@ -421,12 +218,91 @@ root.init = root.init ||
         return name;
     };
 
+
+    // Обработчики событий
+    api.server.ready.onSuccess(function(e, result) {
+        if (!!result) {
+            api.session.start.execute();
+        }
+        api.metadata.getobjects.execute();
+        api.metadata.getperiods.execute();
+    });
+
+    api.metadata.getobjects.onSuccess(function(e, result) {
+        root.divs = result.divs;
+        root.objects = result.objs;
+        $(root).trigger(root.handlers.on_objectsload);
+    });
+
+    api.metadata.getperiods.onSuccess(function(e, result) {
+        root.periods = result;
+    });
+
+    api.session.start.onSuccess(function(e, result) {
+        root.myform.currentSession = result;
+        root.myform.sessionId = result.Uid;
+        var sessiondata = {session: root.myform.sessionId};
+        document.title = result.FormInfo.Name;
+        api.session.structure.execute(sessiondata);
+        api.lock.state.execute(sessiondata);
+        api.lock.history.execute(sessiondata);
+        api.files.list.execute(sessiondata);
+        window.setTimeout(function(){
+            api.data.start.execute($.extend(sessiondata, {startidx: 0}))}
+        ,options.datadelay); //первый запрос на данные
+        $(root).trigger(root.handlers.on_sessionload);
+    });
+
+    api.session.structure.onSuccess(function(e, result) {
+        root.myform.currentSession.structure = result;
+        Render(root.myform.currentSession);
+        Fill(root.myform.currentSession);
+        $(root).trigger(root.handlers.on_structureload);
+        $('table.data').zefs();
+    });
+
+    api.data.start.onSuccess(function(e, result) {
+        root.myform.currentSession.data.push(result);
+        Fill(root.myform.currentSession);
+        if(result.state != "w"){
+            // Это штука для перерисовки шапки
+            $(window).trigger("resize");
+        } else {
+            var idx = $.isEmptyObject(result.data) ? result.ei+1 : result.si;
+            window.setTimeout(function(){api.data.start.execute({session: root.myform.sessionId,startidx: idx})},options.datadelay);
+        }
+    });
+
+    api.data.reset.onSuccess(function() {
+        root.myform.currentSession.data = [];
+        api.session.data.execute({session: root.myform.currentSession, startidx: 0});
+    });
+
+    api.data.save.onSuccess(function() {
+        $(root).trigger(root.handlers.on_savefinished);
+        api.data.savestate.execute({session: root.myform.currentSession});
+    });
+
+    api.lock.start.onSuccess(function() {
+        api.lock.start.execute({session: root.myform.sessionId});
+    });
+
+    api.lock.state.onSuccess(function(e, result) {
+        root.myform.lock = result;
+        $(root).trigger(root.handlers.on_getlockload);
+    });
+
+    api.lock.history.onSuccess(function(e, result) {
+        root.myform.lockhistory = result;
+        $(root).trigger(root.handlers.on_getlockhistoryload);
+    });
+
     $.extend(root, {
         getperiodbyid : GetPeriodName
     });
 
     $.extend(root.myform, {
-        run : StartForm,
+        execute : function(){api.server.start()},
         save : ReadySave,
         message: Message,
         lockform: Lock,
