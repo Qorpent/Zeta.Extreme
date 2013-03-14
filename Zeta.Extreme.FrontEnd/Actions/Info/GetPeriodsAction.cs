@@ -18,13 +18,12 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 	[Action("zeta.getperiods")]
 	public class GetPeriodsAction : FormServerActionBase {
 		/// <summary>
-		/// 	processing of execution - main method of action
+		/// processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
 			MyFormServer.MetaCacheLoad.Wait();
-
-			return new PeriodCatalogHelper().GetAllPeriods();
+			return new PeriodCatalogHelper().GetPeriodGroups();
 		}
 	}
 }

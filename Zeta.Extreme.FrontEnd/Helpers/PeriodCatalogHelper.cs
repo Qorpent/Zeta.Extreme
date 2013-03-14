@@ -33,6 +33,17 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 		}
 
 		/// <summary>
+		/// Возвращает сгруппированный каталог периодов
+		/// </summary>
+		/// <returns></returns>
+		public PeriodTypeGroup[] GetPeriodGroups() {
+			return GetAllPeriods().GroupBy(_ => _.type, _ => _)
+				.Select(_ => new PeriodTypeGroup {type = _.Key, periods = _.ToArray()})
+				.ToArray();
+		}
+		
+
+		/// <summary>
 		/// 	Возвращает тип периода по записи о нем
 		/// </summary>
 		/// <param name="p"> </param>
