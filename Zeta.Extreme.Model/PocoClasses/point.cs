@@ -26,6 +26,8 @@ namespace Zeta.Extreme.Model.PocoClasses {
 
 		[Ref(ClassName = typeof (region))] public virtual IZetaRegion Region { get; set; }
 
+		
+
 		[Map] public virtual int Id { get; set; }
 
 		[Map] public virtual string Name { get; set; }

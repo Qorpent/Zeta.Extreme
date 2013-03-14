@@ -8,6 +8,7 @@
 
 #endregion
 
+using System.Collections.Generic;
 using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
 
@@ -18,5 +19,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		IWithMainObjects,
 		IEntity {
 		IZetaRegion Region { get; set; }
+		IList<IZetaDetailObject> DetailObjects { get; set; }
 		}
 }

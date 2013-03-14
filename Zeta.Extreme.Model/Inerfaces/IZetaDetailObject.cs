@@ -18,7 +18,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IZetaDetailObject : IZetaObject,
 		ICanResolveTag,
 		IWithDetailObjectType,
-		IWithDetailObjects, IWithOuterCode, IEntity, IWithId, IWithCode, IWithName, IWithTag {
+		IWithDetailObjects, IWithOuterCode, IEntity {
 		string Verb { get; set; }
 		IZetaDetailObject Parent { get; set; }
 		IZetaPoint Location { get; set; }
@@ -39,8 +39,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		[Map] DateTime Date1 { get; set; }
 		[Map] DateTime Date2 { get; set; }
 		[Classic("Org")] IZetaMainObject Object { get; set; }
-		int IntOwn { get; set; }
-
 		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
 		}
 }
