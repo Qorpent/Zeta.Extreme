@@ -11,9 +11,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="e"></param>
         /// <param name="name"></param>
-        /// <param name="def"></param>
         /// <returns></returns>
-        public static BsonValue SafeGet(this BsonDocument e, string name, string def = "") {
+        public static BsonValue SafeGet(this BsonDocument e, string name) {
             BsonValue value;
 
             if (
@@ -23,7 +22,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 ||
                 (null == value)
                 ) {
-                return def;
+                return "";
             }
 
             return value;

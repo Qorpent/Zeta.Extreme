@@ -89,6 +89,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                     }
                 }
             };
+
+
             TestFileValidlySaved(attachment, "First Name");
             TestFileValidlySaved(attachment, "Second Name");
             TestFileValidlySaved(attachment, "Third Name");
@@ -125,10 +127,17 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         private void TestFileValidlySaved(Attachment attachment, string name) {
             attachment.Name = name;
             Save(attachment);
-            var attachtoFind = new Attachment {Uid = attachment.Uid};
+
+            var attachtoFind = new Attachment {
+                    Uid = attachment.Uid,
+                    Revision = 123456789
+            };
+
             var testAttach = Find(attachtoFind).FirstOrDefault();
-            Assert.NotNull(testAttach);
-            Assert.AreEqual(name, testAttach.Name);
+            
+            
+            Assert.NotNull(testAttach);             // Проверим, не NULL ли результат поиска
+            Assert.AreEqual(name, testAttach.Name); // Проверим, соответствует ли имя найденного указанному
         }
 
         [Test]
