@@ -22,7 +22,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 
 		public virtual string Tag { get; set; }
 
-		[Many(ClassName = typeof (Obj))] public virtual IList<IZetaMainObject> MainObjects { get; set; }
+		 public virtual IList<IZetaMainObject> MainObjects { get; set; }
 
 		[Map] public virtual int Id { get; set; }
 

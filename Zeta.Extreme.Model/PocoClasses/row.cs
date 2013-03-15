@@ -126,7 +126,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 			get { return _children; }
 		}
 
-		[Many(ClassName = typeof (IZetaRow))] public virtual IList<IZetaRow> Children {
+		 public virtual IList<IZetaRow> Children {
 			get { return _children; }
 			set { _children = value; }
 		}

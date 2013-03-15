@@ -39,7 +39,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 
 		[Map] public virtual string Tag { get; set; }
 
-		[Many(ClassName = typeof (Detail))] public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
+		 public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
 
 
 		public virtual IDetailObjectClass Class { get; set; }

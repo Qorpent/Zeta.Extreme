@@ -21,7 +21,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 
 		[Map] public virtual string Tag { get; set; }
 
-		// [Many(ClassName = typeof (ObjectGroupLink))]
+		// 
 
 		[Map] public virtual int Id { get; set; }
 
