@@ -45,20 +45,21 @@
         onError: function(func) {
             $(this).on(this.errorEventName, func);
         },
-		execute : function(params) {
+		execute : function(params,options) {
             params = params || this.getParameters() || {};
-            params.options = params.options || {};
-            this.call(params);
+
+            this.call(params,options);
         },
-		call : function (params) {
-			if(!params.options.onsuccess){
+		call : function (params,options) {
+            options = options || {};
+			if(!options.onsuccess){
                 if(this.repeatWait){
-                    params.options.onsuccess = this._getRepeatWaitCallFunciton();
+                    options.onsuccess = this._getRepeatWaitCallFunciton();
                 } else {
-                    params.options.onsuccess = this._getUsualCallFunciton();
+                    options.onsuccess = this._getUsualCallFunciton();
                 }
             }
-            this.nativeCall(params);
+            this.nativeCall(params,options);
         },
 		_getUsualCallFunciton : function(){
 			var self = this;
@@ -87,20 +88,20 @@
 				self.triggerOnSuccess(result);
 			});
 		},
-        nativeCall : function(params){
-            var options = params.options;
-            $.extend(options, {
+        nativeCall : function(params, options){
+            var myoptions = options || {};
+            $.extend(myoptions, {
                 datatype : this.datatype,
                 url : this.getUrl(this.datatype)
             });
             $.ajax({
-                url: options.url,
+                url: myoptions.url,
                 type : !params ? "GET" : "POST",
-                dataType: options.datatype,
+                dataType: myoptions.datatype,
                 data : params || {}
             })
-                .success(function(r){options.onsuccess(r,params)})
-                .error(options.onerror||function(error){console.log(error)});
+                .success(function(r){myoptions.onsuccess(r,params)})
+                .error(myoptions.onerror||function(error){console.log(error)});
         }
     });
 
