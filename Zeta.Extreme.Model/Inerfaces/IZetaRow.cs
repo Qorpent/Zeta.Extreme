@@ -36,7 +36,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		string FullRole { get; }
 		int Level { get; }
 
-		[Ref(ClassName = typeof (IZetaRow))] IZetaRow ExRefTo { get; set; }
+		IZetaRow ExRefTo { get; set; }
 
 		int? ExRefToId { get; set; }
 		[Map] bool Active { get; set; }
