@@ -25,7 +25,7 @@ namespace Zeta.Extreme.Form.Tests
 				Application.Current.DatabaseConnections.Register(
 					new ConnectionDescriptor
 						{
-							ConnectionString = "Data Source=(local);Initial Catalog=dbfs;Integrated Security=True;Min Pool Size=5;Application Name=local-debug",
+							ConnectionString = "Data Source=assoibdx;Initial Catalog=dbfs;Persist Security Info=True;User ID=sfo_home;Password=rhfcysq$0;Min Pool Size=5;Application Name=local-debug",
 							Name = "_dbfs_test"
 						},
 					false
@@ -43,9 +43,9 @@ namespace Zeta.Extreme.Form.Tests
 		public void CanReadAttachments() {
 			var attachments =
 				_dbfs.Find(
-					new FormAttachment { TemplateCode = "balansA.in", Year = 2010, Period = 16, ObjId = 538 })
+					new FormAttachment { TemplateCode = "balans2011A.in", Year = 2012, Period = 13, ObjId = 352 })
 					.ToArray();
-			Assert.AreEqual(3, attachments.Length);
+			Assert.AreEqual(2, attachments.Length);
 
 		}
 
