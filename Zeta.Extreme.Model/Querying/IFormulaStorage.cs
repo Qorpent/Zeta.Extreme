@@ -81,13 +81,6 @@ namespace Zeta.Extreme.Model.Querying {
 		/// <returns> </returns>
 		bool Exists(string key);
 
-
-		/// <summary>
-		/// 	Строит кэш из указанной директории
-		/// </summary>
-		/// <param name="root"> </param>
-		void BuildCache(string root);
-
 		/// <summary>
 		/// Загружает формулы по умолчанию из кжша, с использованием указанной папки готовых DLL
 		/// </summary>
