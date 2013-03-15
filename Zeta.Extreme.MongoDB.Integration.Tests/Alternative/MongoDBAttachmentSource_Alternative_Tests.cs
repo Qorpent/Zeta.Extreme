@@ -97,6 +97,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
                 stream.Flush();
             }
 
+            Assert.AreNotEqual(source, buffer);
 
             using (var stream = _mdb.Open(attachment, FileAccess.Read))
             {
