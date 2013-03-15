@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 using Zeta.Extreme.BizProcess.Forms;
 
 
@@ -20,6 +21,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private string _databaseName;
 
         private MongoDatabase _db;
+        private MongoGridFS _gridFs;
         private MongoDatabaseSettings _dbSettings;
 
         private bool _connected;
@@ -70,7 +72,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             var document = MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(attachment);
             SetupConnection();
 
-            _collection.Save(document);
+            _gridFs.Upload()
         }
 
         /// <summary>
@@ -90,7 +92,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public Stream Open(Attachment attachment, FileAccess mode) {
             SetupConnection();
 
-            return null;
+            return _gridFs.Open(
+                attachment.Uid,
+                FileMode.OpenOrCreate,
+                mode
+            );
         }
 
         private void SetupConnection() {
@@ -105,6 +111,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
                 _db = server.GetDatabase(Database);
                 _collection = _db.GetCollection<BsonDocument>(Collection);
+                _gridFs = new MongoGridFS(_db);
 
                 _connected = true;
             }
