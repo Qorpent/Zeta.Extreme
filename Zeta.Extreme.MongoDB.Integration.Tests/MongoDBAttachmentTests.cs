@@ -40,7 +40,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
 			Save(attachment);                                   // save an attachment 
 			Delete(attachment);
-			var stillExists = _collection.FindOneById(attachment.Uid);
+			var stillExists = _filecollection.FindOneById(attachment.Uid);
 			Assert.NotNull(stillExists);
 			Assert.True(stillExists["Deleted"].AsBoolean);
 			// compare with null

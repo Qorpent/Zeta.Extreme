@@ -27,6 +27,7 @@
     <Compile Include="Alternative\MongoDBAttachmentSource_Alternative_Tests.cs" />
     <Compile Include="MongoDBAttachmentTests.cs" />
     <Compile Include="MongoDbAttachmentTestsBase.cs" />
+    <Compile Include="P1358Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\mongo-csharp-driver\MongoDB.Bson\MongoDB.Bson.csproj">
