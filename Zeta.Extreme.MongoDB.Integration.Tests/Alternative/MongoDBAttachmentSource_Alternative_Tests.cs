@@ -1,16 +1,13 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.IO;
+using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Forms;
-using System;
-using MongoDB.Bson;
-using System.Collections;
-using System.Collections.Generic;
-using Zeta.Extreme.MongoDB.Integration;
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
     [TestFixture]
     internal class MongoDBAttachmentSource_Alternative_Tests {
-        private int _uid = 0;
-        private MongoDbAttachmentSourceAlternate _mdb = new MongoDbAttachmentSourceAlternate();
+        private int _uid;
+        private readonly MongoDbAttachmentSourceAlternate _mdb = new MongoDbAttachmentSourceAlternate();
 
 
         public Attachment GetNewAttach(string uid = null) {
@@ -37,10 +34,6 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
 
 
         [Test]
-        public void CanFind() {}
-
-
-        [Test]
         public void CanAttachmentToBsonAndBack() {
             var attachment = GetNewAttach();
             var reformed = MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment);
@@ -48,14 +41,14 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
 
 
             Assert.AreSame(attachment.Uid, attachmentReformed.Uid);
-            Assert.AreSame(attachment.Name, attachmentReformed.Name);           // Name
-            Assert.AreSame(attachment.Comment, attachmentReformed.Comment);     // Comment
-            Assert.AreSame(attachment.User, attachmentReformed.User);           // User
-            Assert.AreNotEqual(attachment.Version, attachmentReformed.Version);    // Version
-            Assert.AreSame(attachment.MimeType, attachmentReformed.MimeType);   // MimeType
-            Assert.AreEqual(attachment.Revision, attachmentReformed.Revision);  // Revision
+            Assert.AreSame(attachment.Name, attachmentReformed.Name); // Name
+            Assert.AreSame(attachment.Comment, attachmentReformed.Comment); // Comment
+            Assert.AreSame(attachment.User, attachmentReformed.User); // User
+            Assert.AreNotEqual(attachment.Version, attachmentReformed.Version); // Version
+            Assert.AreSame(attachment.MimeType, attachmentReformed.MimeType); // MimeType
+            Assert.AreEqual(attachment.Revision, attachmentReformed.Revision); // Revision
 
-           // CollectionAssert.AreEquivalent(attachmentReformed.Metadata, attachment.Metadata);
+            // CollectionAssert.AreEquivalent(attachmentReformed.Metadata, attachment.Metadata);
         }
 
         [Test]
@@ -63,15 +56,26 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
             var attachment = GetNewAttach();
 
             var inBson = MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(attachment);
-            
-            Assert.AreSame(attachment.Uid, inBson["_id"].ToString());
-            Assert.AreSame(attachment.Name, inBson["Filename"].ToString());           // Name
-            Assert.AreSame(attachment.Comment, inBson["Comment"].ToString());     // Comment
-            Assert.AreSame(attachment.User, inBson["Owner"].ToString());           // User
-            Assert.AreNotEqual(attachment.Version, inBson["Version"].ToLocalTime());    // Version
-            Assert.AreSame(attachment.MimeType, inBson["MimeType"].ToString());   // MimeType
-            Assert.AreEqual(attachment.Revision, inBson["Revision"].ToInt32());  // Revision
 
+            Assert.AreSame(attachment.Uid, inBson["_id"].ToString());
+            Assert.AreSame(attachment.Name, inBson["Filename"].ToString()); // Name
+            Assert.AreSame(attachment.Comment, inBson["Comment"].ToString()); // Comment
+            Assert.AreSame(attachment.User, inBson["Owner"].ToString()); // User
+            Assert.AreNotEqual(attachment.Version, inBson["Version"].ToLocalTime()); // Version
+            Assert.AreSame(attachment.MimeType, inBson["MimeType"].ToString()); // MimeType
+            Assert.AreEqual(attachment.Revision, inBson["Revision"].ToInt32()); // Revision
+        }
+
+        [Test]
+        public void CanFind() {}
+
+        [Test]
+        public void CanOpenStream() {
+            Attachment attachment = GetNewAttach();
+
+            using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
+                Assert.IsNotNull(stream);
+            }
         }
 
         [Test]
@@ -79,8 +83,30 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
             var attachment = GetNewAttach();
 
             _mdb.Save(attachment);
-
         }
 
+        [Test]
+        public void CanWriteBinary() {
+            var source = new byte[] {0, 1, 2, 3, 4, 5};
+            var buffer = new byte[source.Length];
+            Attachment attachment = GetNewAttach();
+
+            using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
+                Assert.IsNotNull(stream);
+                stream.Write(source, 0, source.Length);
+                stream.Flush();
+            }
+
+
+            using (var stream = _mdb.Open(attachment, FileAccess.Read))
+            {
+                Assert.IsNotNull(stream);
+                stream.Read(buffer, 0, buffer.Length);
+                stream.Flush();
+            }
+
+
+            Assert.AreEqual(source, buffer);
+        }
     }
 }

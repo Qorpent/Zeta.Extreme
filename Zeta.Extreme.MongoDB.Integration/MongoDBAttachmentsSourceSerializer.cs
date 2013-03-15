@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MongoDB.Bson;
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -85,7 +86,14 @@ namespace Zeta.Extreme.MongoDB.Integration {
             }
 
             if (attachment.Metadata.Count != 0) {
+
+                foreach (var el in attachment.Metadata) {
+                //    string t = string.Format("Metadata.{0}", el.Key);
+                  //  KeyValuePair<>
+                   // document.AddRange(el);
+                }
                // document["Metadata"] = new BsonDocument(attachment.Metadata);
+                
             }
 
             return document;

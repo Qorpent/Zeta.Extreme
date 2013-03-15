@@ -23,6 +23,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private MongoDatabase _db;
         private MongoGridFS _gridFs;
         private MongoDatabaseSettings _dbSettings;
+        private MongoGridFSSettings _gridFsSettings;
 
         private bool _connected;
 
@@ -72,7 +73,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             var document = MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(attachment);
             SetupConnection();
 
-            _gridFs.Upload()
+            
         }
 
         /// <summary>
@@ -92,7 +93,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public Stream Open(Attachment attachment, FileAccess mode) {
             SetupConnection();
 
-            return _gridFs.Open(
+            return new MongoGridFS(_db, _gridFsSettings).Open(
                 attachment.Uid,
                 FileMode.OpenOrCreate,
                 mode
@@ -103,6 +104,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if(!_connected) {
                 // Определимся с конфигурацией
                 _dbSettings = new MongoDatabaseSettings();
+                _gridFsSettings = new MongoGridFSSettings();
                 _cliSettings = new MongoClientSettings {
                     Server = new MongoServerAddress(ConnectionString)
                 };
@@ -111,7 +113,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
                 _db = server.GetDatabase(Database);
                 _collection = _db.GetCollection<BsonDocument>(Collection);
-                _gridFs = new MongoGridFS(_db);
+                _gridFs = new MongoGridFS(_db, _gridFsSettings);
 
                 _connected = true;
             }
