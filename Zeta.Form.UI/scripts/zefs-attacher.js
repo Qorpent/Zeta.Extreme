@@ -24,7 +24,7 @@
     var ConfigureAttachList = function() {
         var f = window.zefs.myform.attachment;
         var body = $(attachlist.find('tbody'));
-        if (f != null && f.length > 0) {
+        if (f != null && !$.isEmptyObject(f)) {
             body.empty();
             b.addClass("btn-info");
             b.find("i").addClass("icon-white");
@@ -32,18 +32,19 @@
                 var tr = $('<tr/>');
                 var u = $('<span class="label label-inverse"/>');
                 body.append(tr.append(
-                    $('<td class="type"/>').addClass(file.getExtension().substring(1)),
-                    $('<td/>').text(file.getDate().format("dd.mm.yyyy")),
-                    $('<td class="filename"/>').html('<a href="' + window.zefs.myform.downloadfile(file.getUid()) + '" target="_blank">' + file.getName() + '</a>'),
-                    $('<td class="username"/>').append(u.text(file.getUser()))
+                    $('<td class="type"/>').addClass(file.Extension.substring(1)),
+                    $('<td/>').text(file.Date.format("dd.mm.yyyy")),
+                    $('<td class="filename"/>').html('<a href="' + window.zefs.myform.downloadfile(file.Uid) + '" target="_blank">' + file.Name + '</a>'),
+                    $('<td class="username"/>').append(u.text(file.User))
                 ));
                 if (window.zeta.security.user != null) {
                     if (window.zeta.security.user.getIsAdmin()) {
-                        tr.append($('<td class="delete"/>').html($('<span class="icon icon-remove"/>').click(function(e) {
+                        tr.append($('<td class="delete"/>').html($('<span class="icon icon-remove"/>').click(
+                            function(e) {
                                 $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                                     title: "Удаление файла",
-                                    content: $('<p/>').html("Файл <strong>" + file.getName() + "</strong> будет удален. Продолжить?"),
-                                    ok: function() { window.zefs.myform.deletefile(file.getUid()) }
+                                    content: $('<p/>').html("Файл <strong>" + file.Name + "</strong> будет удален. Продолжить?"),
+                                    ok: function() { window.zefs.myform.deletefile(file.Uid) }
                                 });
                             }
                         )));

@@ -301,6 +301,13 @@ root.init = root.init ||
         }
     });
 
+    api.files.list.onSuccess(function(e, result) {
+        if($.isEmptyObject(root.myform.attachment)) {
+            root.myform.attachment = result;
+        }
+        $(root).trigger(root.handlers.on_attachmentload);
+    });
+
     $.extend(root, {
         getperiodbyid : GetPeriodName
     });
