@@ -1,7 +1,6 @@
 ﻿(function(){
 var root = window.zefs = window.zefs || {};
 var specification = root.api = root.api || {};
-var options = root.options = root.api;
 var Command = window.qweb.Command;
 
 $.extend(specification,(function(){
@@ -78,7 +77,9 @@ $.extend(specification,(function(){
             // на вход ждет объект вида: {id: (id ячейки), value: (новое значение) , ri: (id в базе)}
             save : new Command({domain: "zefs", name: "save"}),
             // Команда инициализации сессии сохранения
-            saveready : new Command({domain: "zefs", name: "saveready"}),
+            saveready : $.extend(new Command({domain: "zefs", name: "saveready"}), {
+                getParameters : function() { return specification.getParameters() }
+            }),
             // Команда проверки состояния сохранения
             savestate : new Command({domain: "zefs", name: "savestate"})
         },
@@ -93,6 +94,7 @@ $.extend(specification,(function(){
             // Команда получения списка блокировок
             history : $.extend(new Command({domain: "zefs", name: "locklist"}), {
                 wrap: function(obj) {
+                    if ($.isEmptyObject(obj)) return obj;
                     // Пишем сюда нормальную преобразованную дату
                     $.each(obj, function(i,o) {
                         o.Date = eval(o.Version.substring(2));
@@ -106,6 +108,7 @@ $.extend(specification,(function(){
             // команда получения списка прикрепленных к форме файлов
             list : $.extend(new Command({domain: "zefs", name: "attachlist"}), {
                 wrap : function(obj) {
+                    if ($.isEmptyObject(obj)) return obj;
                     $.each(obj, function(i,o) {
                         o.Date = eval(o.Version.substring(2));
                     });
@@ -192,150 +195,6 @@ $.extend(specification,(function(){
             result["year"] = p["year"];
             return result;
         },
-        // команда инициализации сессии сохранения [от SESSIONID ] (true|false )
-        saveready_command : "zefs/saveready.json.qweb",
-		// команда инициализации сохранения [от SESSIONID ] (true|false )
-		save_command : "zefs/save.json.qweb",
-			savedata_param : "data",
-
-
-		// команда проверки состояния сохранения [от SESSIONID ] (как asSaveState() ) должна быть еще и в DEBUG-меню
-		savestate_command : "zefs/savestate.json.qweb",
-			// 	Изначальное состояние
-			savestage_none : "None",
-			// 	Загрузка задачи сохранения
-			savestage_load : "Load",
-			// 	Проверка возможности сохранения по аспектам безопасности
-			savestage_auth : "Authorize",
-			// 	Подготовка входных данных - переработка справочников
-			savestage_prepare : "Prepare",
-			// 	Проверка целостности запрошенного сохранения
-			savestage_validate : "Validate",
-			// 	Проверка доступности соединений, хранимых процедур и проч
-			savestage_test : "Test",
-			// 	Собственно сохранение ячеек
-			savestage_save : "Save",
-			// 	Выполнение специальных процедур после выполнения сохранения, бизнес-тригеры
-			savestage_aftersave : "AfterSave",
-			// 	Успешное завершение
-			savestage_finished : "Finished",
-					
-							
-						
-			/* УПРАВЛЕНИЕ БЛОКИРОВКАМИ И СТАТУСОМ ПО СОХРАНЕНИЮ*/
-					// КОНСТАНТЫ ИМЕН СТАТУСОВ */
-						// форма открыта
-						open_lock_state : "0ISOPEN",
-						// форма закрыта
-						block_lock_state : "0ISBLOCK",
-						// форма утверждена
-						check_lock_state : "0ISCHECKED",
-						// не определено (при сбоях)
-						undef_lock_state : "UNDEFINED",
-					// команда получения текущего статуса блокировки [от SESSIONID] (как asLockState() )
-					currentlock_command : "zefs/currentlockstate.json.qweb",
-					
-					// команда получения статуса возможности блокировки [от SESSIONID] (как asLockState() )
-					canlock_command : "zefs/canlockstate.json.qweb",
-					// команда получения истории блокировок [от SESSIONID]
-					locklist_command : "zefs/locklist.json.qweb",
-					// команда блокировки формы [от SESSIONID]
-					lockform_command : "zefs/lockform.json.qweb",
-
-
-		    /* РАБОТА С ПРИСОЕДИНЕННЫМИ ФАЙЛАМИ */
-					// команда получения списка прикрепленных к форме файлов [от SESSIONID]
-					attachlist_command : "zefs/attachlist.json.qweb",
-					// команда прекрепления или обновления файла к форме
-					attachfile_command : "zefs/attachfile.json.qweb",
-					// команда скрытия/удаления файла [от SESSIONID и UID]
-                    deletefile_command : "zefs/deletefile.json.qweb",
-					// команда загрузки файла [от SESSIONID и UID]
-					downloadfile_command : "zefs/downloadfile.filedesc.qweb",
-					// команда получения возможных типов файлов [от SESSIONID]
-					getfiletypes_command : "zefs/getfiletypes.json.qweb",
-		
-		//КОНВЕРТИРУЕТ РЕЗУЛЬТАТЫ КОМАНД start_command, session_command в СТАНДАРТНЫЙ ОБЪЕКТ СЕССИИ
-		asSession : function ( obj ) {
-			$.extend(obj,{
-				// SESSIONID
-				getUid :	function(){return this.Uid;},
-				// признак успешной инициализации сессии
-				getIsStarted :	function(){return this.IsStarted;},
-				// признак завершения процесса загрузки данных
-				getIsFinished :	function(){return this.IsFinished;},
-				// время создания сессии
-				getCreateTime : function(){return this.Created;},
-				// год шаблона сессии (может не совпадать с входным параметром)
-				getYear : function(){return this.Year;},
-				// период шаблона сессии (может не совпадать с входным параметром)
-				getPeriod : function(){return this.Period;},
-				// пользователь- владелец сессии
-				getUsr : function(){return this.Usr;},
-				// информация об объекте сессии
-				getObjInfo : function(){return this.ObjInfo;},
-				// дополнительная информация о шаблоне сессии
-				getFormInfo : function(){return this.FormInfo;},
-				// время, затраченное на подготовку
-				getTimeToPrepare : function(){return this.TimeToPrepare;},
-				// время, затраченное на структуру
-				getTimeToStructure : function(){return this.TimeToStructure;},
-				// время, затраченное на загрузку первичных данных
-				getTimeToPrimary : function(){return this.TimeToPrimary;},
-				// время, затраченное на загрузку всех данных
-				getTimeToGetData : function(){return this.TimeToGetData;},
-				// количество обслуженных запросов
-				getQueryCount: function(){return this.QueriesCount;},
-				// количество обслуженных первичных запросов
-				getPrimaryCount: function(){return this.PrimaryCount},
-				// количество полученных ячеек
-				getDataCount: function(){return this.DataCount;},
-				// признак необходимости вывода единицы измерения
-                getNeedMeasure:function(){return !!this.NeedMeasure;},
-				// признак завершения отрисовки сессии
-                wasRendered : false,
-				// контейнер для структуры
-                structure : {},
-				// контейнер для ячеек с данными
-                data : []
-			});
-			$.extend(obj.getObjInfo(),{
-				// идентификатор объекта
-				getId : function(){return this.Id;},
-				// код объекта
-				getCode : function(){return this.Code;},
-				// название объекта
-				getName : function(){return this.Name;}
-			});
-			$.extend(obj.getFormInfo(),{
-				// код/ид формы
-				getId : function(){return this.Code;},
-				// код/ид формы
-				getCode : function(){return this.Code;},
-				// имя формы формы
-				getName : function(){return this.Name;}
-
-			});
-			return obj;
-		},
-
-
-		// КОНВЕРТИРУЕТ РЕЗУЛЬТАТ КОМАНДЫ savestate_command В СТАНДАРТНЫЙ ОБЪЕКТ СТАТУСА СОХРАНЕНИЯ
-		asSaveState : function(obj){
-			$.extend(obj,{
-				// возвращает один из статусов стадии сохранения savestage_*
-				getStage :  function(){return this.stage;},
-				// текст ошибки
-				getError :  function(){return this.error;},
-				// признак наличия ошибки
-				getIsError : function(){return !!this.getError();},
-                // признак завершения комманды сохранения
-                getIsFinished : function() { return ((this.getStage() == options.savestage_finished) || this.getIsError() ); },
-                // признак завершения сохранения ячеек
-                getCellsSaved : function() { return this.getStage() == options.savestage_finished || this.getStage()==options.savestage_aftersave; }
-			});
-			return obj;
-		},
 
         dataType : "json"
 	}
