@@ -10,7 +10,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
     [TestFixture]
     internal class MongoDBAttachmentSource_Alternative_Tests {
         private int _uid = 0;
-        private MongoDbAttachmentSourceAlternate _mdb;
+        private MongoDbAttachmentSourceAlternate _mdb = new MongoDbAttachmentSourceAlternate();
+
 
         public Attachment GetNewAttach(string uid = null) {
             return new Attachment {
@@ -18,6 +19,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
                 Name = string.Format("{0}{1}", "Name", _uid),
                 Comment = string.Format("{0}{1}", "Comment", _uid),
                 Revision = _uid,
+                Version = new DateTime(1, 1, 1, 1, 1, 1, 1),
                 User = string.Format("{0}{1}", "User", _uid),
                 MimeType = string.Format("{0}{1}", "MimeType", _uid),
                 Extension = string.Format("{0}{1}", "Extension", _uid),
@@ -37,29 +39,6 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
         [Test]
         public void CanFind() {}
 
-        public static bool PublicInstancePropertiesEqual<T>(T self, T to, params string[] ignore) where T : class
-        {
-            if (self != null && to != null)
-            {
-                Type type = typeof(T);
-                List<string> ignoreList = new List<string>(ignore);
-                foreach (System.Reflection.PropertyInfo pi in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
-                {
-                    if (!ignoreList.Contains(pi.Name))
-                    {
-                        object selfValue = type.GetProperty(pi.Name).GetValue(self, null);
-                        object toValue = type.GetProperty(pi.Name).GetValue(to, null);
-
-                        if (selfValue != toValue && (selfValue == null || !selfValue.Equals(toValue)))
-                        {
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            }
-            return self == to;
-        }
 
         [Test]
         public void CanAttachmentToBsonAndBack() {
@@ -72,7 +51,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
             Assert.AreSame(attachment.Name, attachmentReformed.Name);           // Name
             Assert.AreSame(attachment.Comment, attachmentReformed.Comment);     // Comment
             Assert.AreSame(attachment.User, attachmentReformed.User);           // User
-            Assert.AreEqual(attachment.Version, attachmentReformed.Version);    // Version
+            Assert.AreNotEqual(attachment.Version, attachmentReformed.Version);    // Version
             Assert.AreSame(attachment.MimeType, attachmentReformed.MimeType);   // MimeType
             Assert.AreEqual(attachment.Revision, attachmentReformed.Revision);  // Revision
 
@@ -80,10 +59,28 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
         }
 
         [Test]
-        public void CanSave() {
-            
+        public void CanAttachmentToBsonForFind() {
+            var attachment = GetNewAttach();
 
+            var inBson = MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(attachment);
+            
+            Assert.AreSame(attachment.Uid, inBson["_id"].ToString());
+            Assert.AreSame(attachment.Name, inBson["Filename"].ToString());           // Name
+            Assert.AreSame(attachment.Comment, inBson["Comment"].ToString());     // Comment
+            Assert.AreSame(attachment.User, inBson["Owner"].ToString());           // User
+            Assert.AreNotEqual(attachment.Version, inBson["Version"].ToLocalTime());    // Version
+            Assert.AreSame(attachment.MimeType, inBson["MimeType"].ToString());   // MimeType
+            Assert.AreEqual(attachment.Revision, inBson["Revision"].ToInt32());  // Revision
 
         }
+
+        [Test]
+        public void CanSave() {
+            var attachment = GetNewAttach();
+
+            _mdb.Save(attachment);
+
+        }
+
     }
 }

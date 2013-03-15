@@ -9,65 +9,9 @@ using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration {
     /// <summary>
-    ///     The representation of the Attachemnt format
-    /// </summary>
-    public static class MongoDbAttachmentSourceSerializer {
-
-
-        /// <summary>
-        /// Переформировывает attachment в BsonDocument
-        /// </summary>
-        /// <param name="attachment">Описание аттача типа Attachment</param>
-        public static BsonDocument AttachmentToBson(Attachment attachment) {
-            return new BsonDocument {
-                {"_id", new ObjectId(attachment.Uid)},
-                {"Filename", attachment.Name},
-                {"Comment", attachment.Comment},
-                {"Owner", attachment.User},
-                {"Version", attachment.Version},
-                {"MimeType", attachment.MimeType},
-                {"Revision", attachment.Revision},
-                {"Extension", attachment.Extension},
-                {"MetaData", new BsonDocument(attachment.Metadata)},
-                {"Deleted", false}
-            };
-        }
-
-        /// <summary>
-        /// Переформирование BsonDocument в Attachment
-        /// </summary>
-        /// <param name="document"></param>
-        /// <returns></returns>
-        public static Attachment BsonToAttachment(BsonDocument document) {
-            return new Attachment {
-                Uid = document["_id"].ToString(),
-                Name = document["Filename"].ToString(),
-                Comment = document["Comment"].ToString(),
-                User = document["Owner"].ToString(),
-                Version = document["Version"].ToLocalTime(),
-                MimeType = document["MimeType"].ToString(),
-                Revision = document["Revision"].ToInt32(),
-                Extension = document["Extension"].ToString()
-
-            };
-        }
-    }
-
-    /// <summary>
     ///     альтернативный класс MongoDbAttachmentSource с перереработанной структурой
     /// </summary>
     public class MongoDbAttachmentSourceAlternate : IAttachmentStorage {
-        /// <summary>
-        ///     The defenition of the default database name
-        /// </summary>
-        private const string DEFAULT_DB = "MongoDbAttachments";
-
-        /// <summary>
-        ///     The defenition of the default collection name
-        /// </summary>
-        private const string DEFAULT_COLLECTION = "AttachmentsDescription";
-
-        private const string DEFAULT_CONNECTION_STRING = "mongodb://localhost";
         private MongoClientSettings _cliSettings;
         private MongoCollection _collection;
 
@@ -84,7 +28,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         ///     The database name you want to use to store the attachements
         /// </summary>
         public string Database {
-            get { return _databaseName ?? (_databaseName = DEFAULT_DB); }
+            get { return _databaseName ?? (_databaseName = MongoLayoutSpecification.DEFAULT_ATTACHMENTS_DB); }
             set { _databaseName = value; }
         }
 
@@ -92,7 +36,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         ///     The name of collection which you wanna using
         /// </summary>
         public string Collection {
-            get { return _collectionName ?? (_collectionName = DEFAULT_COLLECTION); }
+            get { return _collectionName ?? (_collectionName = MongoLayoutSpecification.DEFAULT_ATTACHMENT_COLLECTION); }
             set { _collectionName = value; }
         }
 
@@ -100,7 +44,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         ///     connection string
         /// </summary>
         public string ConnectionString {
-            get { return _connectionString ?? (_connectionString = DEFAULT_CONNECTION_STRING); }
+            get { return _connectionString ?? (_connectionString = MongoLayoutSpecification.DEFAULT_CONNECTION_STRING); }
             set { _connectionString = value; }
         }
 
@@ -110,7 +54,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="query">Запрос в виде частично или полностью заполенных полей класса Attachment</param>
         /// <returns>Перечисление полученных документов</returns>
         public IEnumerable<Attachment> Find(Attachment query) {
+            var clause = MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(query);
             SetupConnection();
+
+            _collection.FindAs<BsonDocument>(new QueryDocument(clause));
 
             return null;
         }
@@ -120,7 +67,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="attachment">Описание аттача</param>
         public void Save(Attachment attachment) {
+            var document = MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(attachment);
             SetupConnection();
+
+            _collection.Save(document);
         }
 
         /// <summary>
@@ -129,8 +79,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="attachment"></param>
         public void Delete(Attachment attachment) {
             SetupConnection();
-
-            var document = Find(attachment).First();
         }
 
         /// <summary>
@@ -155,8 +103,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
                 var server = new MongoClient(_cliSettings).GetServer();
 
-                _db = server.GetDatabase(_databaseName);
-                _collection = _db.GetCollection<BsonDocument>(_collectionName);
+                _db = server.GetDatabase(Database);
+                _collection = _db.GetCollection<BsonDocument>(Collection);
 
                 _connected = true;
             }

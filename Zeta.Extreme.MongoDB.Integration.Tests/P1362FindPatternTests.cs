@@ -37,13 +37,12 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 			var searchobject = ConvertToSearchDocument(attachment);
 			Assert.AreEqual(names.Length, searchobject.ElementCount);
 			foreach (var name in names) {
-				Assert.NotNull(searchobject.Elements.FirstOrDefault(_=>_.Name=="metadata."+name && _.Value==name+"_value"));
+				Assert.NotNull(searchobject.Elements.FirstOrDefault(_=>_.Name=="Metadata."+name && _.Value==name+"_value"));
 			}
 		}
 
 		private BsonDocument ConvertToSearchDocument(Attachment attachment) {
-			//TODO: вставить корректный вызов адаптера
-			throw new System.NotImplementedException();
+            return MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(attachment);
 		}
 	}
 }
