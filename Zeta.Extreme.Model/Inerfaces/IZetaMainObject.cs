@@ -11,38 +11,37 @@
 using System;
 using System.Collections.Generic;
 using Qorpent.Model;
-using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.PocoClasses;
 
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	[ForSearch("Старший объект (предприятие)")]
+	
 	public interface IZetaMainObject : IZetaQueryDimension,
 		ICanResolveTag,
 		IWithDetailObjectType,
 		IWithProperties, IWithDetailObjects, IZetaObject {
-		[Map] string GroupCache { get; set; }
-		[Map] string FullName { get; set; }
-		[Map] string Formula { get; set; }
-		[Map] string ShortName { get; set; }
-		[Map] DateTime Start { get; set; }
-		[Map] DateTime Finish { get; set; }
-		[Map] string Valuta { get; set; }
+		 string GroupCache { get; set; }
+		 string FullName { get; set; }
+		 string Formula { get; set; }
+		 string ShortName { get; set; }
+		 DateTime Start { get; set; }
+		 DateTime Finish { get; set; }
+		 string Valuta { get; set; }
 
-		[Map] bool ShowOnStartPage { get; set; }
+		 bool ShowOnStartPage { get; set; }
 
 		IList<IZetaMainObject> Children { get; set; }
 		IZetaMainObject Parent { get; set; }
 		IObjectType ObjType { get; set; }
 		IList<IUsrThemaMap> UsrThemaMaps { get; set; }
 
-		[Map(ReadOnly = true)] string Path { get; set; }
+		 string Path { get; set; }
 
 		int Level { get; }
 		int? DivId { get; set; }
-		[Classic("Holding")] IMainObjectGroup Group { get; set; }
-		[Classic("Otrasl")] IMainObjectRole Role { get; set; }
-		[Classic("Municipal")] IZetaPoint Location { get; set; }
+		 IMainObjectGroup Group { get; set; }
+		 IMainObjectRole Role { get; set; }
+		 IZetaPoint Location { get; set; }
 		string Address { get; set; }
 		IList<IZetaUnderwriter> Underwriters { get; set; }
 

@@ -10,10 +10,9 @@
 
 using System.Collections.Generic;
 using Qorpent.Model;
-using Zeta.Extreme.Model.Deprecated;
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	[ForSearch("Точка, город")]
+	
 	public interface IZetaPoint :
 		IZetaObject,
 		IWithMainObjects,

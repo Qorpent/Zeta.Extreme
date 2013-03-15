@@ -14,7 +14,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
@@ -26,14 +25,14 @@ namespace Zeta.Extreme.Model.PocoClasses {
 			// Properties = new Dictionary<string, object>();
 		}
 
-		[Ref(ClassName = typeof (ObjDiv))] public virtual IMainObjectGroup Holding { get; set; }
+		 public virtual IMainObjectGroup Holding { get; set; }
 
 
-		[Ref(ClassName = typeof (ObjRole))] public virtual IMainObjectRole Otrasl { get; set; }
+		 public virtual IMainObjectRole Otrasl { get; set; }
 
-		[Ref(ClassName = typeof (Point))] public virtual IZetaPoint Municipal { get; set; }
+		 public virtual IZetaPoint Municipal { get; set; }
 
-		[Map] public virtual Guid Uid { get; set; }
+		 public virtual Guid Uid { get; set; }
 
 		public virtual IList<IZetaDetailObject> links {
 			get { return DetailObjects; }
@@ -54,50 +53,50 @@ namespace Zeta.Extreme.Model.PocoClasses {
 		}
 
 		public virtual int? DivId { get; set; }
-		[Map(ReadOnly = true)] public virtual string Path { get; set; }
+		 public virtual string Path { get; set; }
 
-		[Map] public virtual string Tag { get; set; }
-		[Map] public virtual string Valuta { get; set; }
+		 public virtual string Tag { get; set; }
+		 public virtual string Valuta { get; set; }
 
-		[Map] public virtual string FullName { get; set; }
-		[Map] public virtual string ShortName { get; set; }
+		 public virtual string FullName { get; set; }
+		 public virtual string ShortName { get; set; }
 
 		/// <summary>
 		/// 	Тип формулы
 		/// </summary>
 		public string FormulaType { get; set; }
 
-		[NoMap] public virtual bool IsFormula {
+		public virtual bool IsFormula {
 			get { return !string.IsNullOrWhiteSpace(Formula); }
 			set { _isFormula = value; }
 		}
 
-		[Map] public virtual string Formula { get; set; }
+		 public virtual string Formula { get; set; }
 
 		
 
-		[Map] public virtual bool ShowOnStartPage { get; set; }
+		 public virtual bool ShowOnStartPage { get; set; }
 
 
-		[Many(ClassName = typeof (Detail))] public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
+		 public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
 
 
-		[Map] public virtual int Id { get; set; }
+		 public virtual int Id { get; set; }
 
-		[Map] public virtual string Name { get; set; }
+		 public virtual string Name { get; set; }
 
 
-		[Map(ReadOnly = true)] public virtual string GroupCache { get; set; }
+		 public virtual string GroupCache { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		 public virtual string Code { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		 public virtual string Comment { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		 public virtual DateTime Version { get; set; }
 
 		
 
-		[Map] public virtual string Address { get; set; }
+		 public virtual string Address { get; set; }
 
 		public virtual IMainObjectGroup Group {
 			get { return Holding; }
@@ -152,7 +151,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 			return UsrThemaMaps.Where(x => x.Usr.Id == usr.Id && x.IsPlan == plan).Select(x => x.ThemaCode).Distinct().ToArray();
 		}
 
-		[Many(ClassName = typeof (User))] public virtual IList<IZetaUnderwriter> Underwriters { get; set; }
+		 public virtual IList<IZetaUnderwriter> Underwriters { get; set; }
 
 
 
@@ -161,9 +160,9 @@ namespace Zeta.Extreme.Model.PocoClasses {
 		//public virtual IList<IDocumentOfCorrections> Documents { get; set; }
 
 		
-		[Map] public virtual int Idx { get; set; }
-		[Map] public virtual DateTime Start { get; set; }
-		[Map] public virtual DateTime Finish { get; set; }
+		 public virtual int Idx { get; set; }
+		 public virtual DateTime Start { get; set; }
+		 public virtual DateTime Finish { get; set; }
 
 		public virtual IObjectType ObjType { get; set; }
 

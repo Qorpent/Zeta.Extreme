@@ -58,10 +58,10 @@ namespace Zeta.Extreme.Model.MetaCaches {
 		/// <param name="classicId"> </param>
 		/// <returns> </returns>
 		public static IPeriod Get(int classicId) {
-			var result = All.FirstOrDefault(x => x.ClassicId == classicId);
+			var result = All.FirstOrDefault(x => x.BizId == classicId);
 			if (null == result) {
-				result = new period();
-				result.ClassicId = classicId;
+				result = new Period();
+				result.BizId = classicId;
 				result.StartDate = QorpentConst.Date.Begin;
 				result.EndDate = QorpentConst.Date.End;
 				if (classicId < 0) {
@@ -100,7 +100,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 		/// <param name="otherperiodId"> </param>
 		/// <returns> </returns>
 		public static PeriodDefinition Evaluate(this IPeriod period, int year, DateTime date, int otherperiodId) {
-			var result = new PeriodDefinition(year, period.ClassicId);
+			var result = new PeriodDefinition(year, period.BizId);
 			if (period.IsFormula) {
 				result.Periods = new[] {otherperiodId};
 				EvaluateFormula(result, period.Formula);

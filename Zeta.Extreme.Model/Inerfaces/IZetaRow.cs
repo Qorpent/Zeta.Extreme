@@ -10,23 +10,22 @@
 
 using System;
 using System.Collections.Generic;
-using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.PocoClasses;
 
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	[ForSearch("Строка, признак")]
+	
 	public interface IZetaRow : IZetaQueryDimension,
 		IZetaFormsSupport,
 		IWithMarkCache,  IWithMeasure {
 		IDictionary<string, object> LocalProperties { get; }
-		[Map] string ObjectGroups { get; set; }
-		[Map] string FormElementType { get; set; }
-		[Map] string Validator { get; set; }
-		[Map] string ColumnSubstitution { get; set; }
-		[Map] string FullName { get; set; }
-		[Map] string Role { get; set; }
-		[Map] string Valuta { get; set; }
+		 string ObjectGroups { get; set; }
+		 string FormElementType { get; set; }
+		 string Validator { get; set; }
+		 string ColumnSubstitution { get; set; }
+		 string FullName { get; set; }
+		 string Role { get; set; }
+		 string Valuta { get; set; }
 		IZetaRow RefTo { get; set; }
 		int? ParentId { get; set; }
 		int? RefId { get; set; }
@@ -39,11 +38,11 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		IZetaRow ExRefTo { get; set; }
 
 		int? ExRefToId { get; set; }
-		[Map] bool Active { get; set; }
+		 bool Active { get; set; }
 		IZetaRow TemporalParent { get; set; }
 		IZetaRow Parent { get; set; }
 		IList<IZetaRow> Children { get; set; }
-		[Classic("Org")] IZetaMainObject Object { get; set; }
+		 IZetaMainObject Object { get; set; }
 		string Path { get; set; }
 		string ResolveColumnCode(string incode);
 		IZetaRow Copy(bool withchildren);

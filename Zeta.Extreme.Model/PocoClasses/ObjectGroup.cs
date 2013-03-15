@@ -11,27 +11,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Model.PocoClasses {
 	public partial class ObjectGroup : IZetaObjectGroup {
-		[Map] public virtual Guid Uid { get; set; }
+		 public virtual Guid Uid { get; set; }
 
-		[Map] public virtual string Tag { get; set; }
+		 public virtual string Tag { get; set; }
 
 		// 
 
-		[Map] public virtual int Id { get; set; }
+		 public virtual int Id { get; set; }
 
-		[Map] public virtual string Name { get; set; }
+		 public virtual string Name { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		 public virtual string Code { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		 public virtual string Comment { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		 public virtual DateTime Version { get; set; }
 
 		public virtual IList<IZetaMainObject> MainObjects {
 			get {

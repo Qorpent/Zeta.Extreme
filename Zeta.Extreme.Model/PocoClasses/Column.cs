@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
@@ -20,7 +19,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 	/// 
 	/// </summary>
 	public partial class Column : IZetaColumn {
-		[Map] public virtual Guid Uid { get; set; }
+		 public virtual Guid Uid { get; set; }
 
 		public virtual string DataTypeString {
 			get { return DataType.ToString(); }
@@ -36,56 +35,56 @@ namespace Zeta.Extreme.Model.PocoClasses {
 		/// <summary>
 		/// 	Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
-		[NoMap] public virtual int Year { get; set; }
+		public virtual int Year { get; set; }
 
 		/// <summary>
 		/// 	Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
-		[NoMap] public virtual int Period { get; set; }
+		public virtual int Period { get; set; }
 
 		/// <summary>
 		/// 	Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
-		[NoMap] public virtual string ForeignCode { get; set; }
+		public virtual string ForeignCode { get; set; }
 
-		[Map] public virtual string Tag { get; set; }
+		 public virtual string Tag { get; set; }
 
-		[Map] public virtual string Lookup { get; set; }
+		 public virtual string Lookup { get; set; }
 
-		[Map] public virtual string Valuta { get; set; }
+		 public virtual string Valuta { get; set; }
 
-		[Map("IsDinamycLookUp")] public virtual bool IsDynamicLookup { get; set; }
+		 public virtual bool IsDynamicLookup { get; set; }
 
-		[Map] public virtual int Id { get; set; }
+		 public virtual int Id { get; set; }
 
-		[Map] public virtual string Name { get; set; }
+		 public virtual string Name { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		 public virtual string Code { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		 public virtual string Comment { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		 public virtual DateTime Version { get; set; }
 
 		/// <summary>
 		/// 	Тип формулы
 		/// </summary>
 		public string FormulaType { get; set; }
 
-		[Map] public virtual bool IsFormula { get; set; }
+		 public virtual bool IsFormula { get; set; }
 
-		[Map] public virtual string Formula { get; set; }
+		 public virtual string Formula { get; set; }
 
 		
 
-		[Map] public virtual string Measure { get; set; }
+		 public virtual string Measure { get; set; }
 
-		[Map] public virtual bool IsDynamicMeasure { get; set; }
-		[Map] public virtual string MarkCache { get; set; }
+		 public virtual bool IsDynamicMeasure { get; set; }
+		 public virtual string MarkCache { get; set; }
 
 		public virtual ValueDataType DataType { get; set; }
 
 
-		[Map] public virtual string DataTypeDetail { get; set; }
+		 public virtual string DataTypeDetail { get; set; }
 
 
 		

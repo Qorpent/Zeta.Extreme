@@ -9,29 +9,28 @@
 #endregion
 
 using Qorpent.Model;
-using Zeta.Extreme.Model.Deprecated;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IBizTranFilter : IWithId {
-		[Map] int Action { get; set; }
+		 int Action { get; set; }
 
-		[Map] int MainId { get; set; }
+		 int MainId { get; set; }
 
-		[Map] int ContrId { get; set; }
+		 int ContrId { get; set; }
 
-		[Map] string TranCode { get; set; }
+		 string TranCode { get; set; }
 
-		[Map] string Role { get; set; }
+		 string Role { get; set; }
 
-		[Map] string Raw { get; set; }
+		 string Raw { get; set; }
 
-		[Map] string FirstForm { get; set; }
+		 string FirstForm { get; set; }
 
-		[Map] string FirstType { get; set; }
+		 string FirstType { get; set; }
 
-		[Map] string SecondType { get; set; }
+		 string SecondType { get; set; }
 
 
-		[Map] string SecondForm { get; set; }
+		 string SecondForm { get; set; }
 	}
 }

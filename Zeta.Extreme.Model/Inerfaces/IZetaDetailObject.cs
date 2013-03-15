@@ -10,11 +10,10 @@
 
 using System;
 using Qorpent.Model;
-using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.PocoClasses;
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	[ForSearch("Младший объект, подразделение, связь")]
+	
 	public interface IZetaDetailObject : IZetaObject,
 		ICanResolveTag,
 		IWithDetailObjectType,
@@ -26,19 +25,19 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		bool InverseControl { get; set; }
 		string Valuta { get; set; }
 
-		[Map] decimal Number1 { get; set; }
+		 decimal Number1 { get; set; }
 
-		[Map] decimal Number2 { get; set; }
+		 decimal Number2 { get; set; }
 
-		[Map] DateTime Start { get; set; }
+		 DateTime Start { get; set; }
 
-		[Map] DateTime Finish { get; set; }
+		 DateTime Finish { get; set; }
 
-		[Map(ReadOnly = true)] string Path { get; set; }
+		 string Path { get; set; }
 
-		[Map] DateTime Date1 { get; set; }
-		[Map] DateTime Date2 { get; set; }
-		[Classic("Org")] IZetaMainObject Object { get; set; }
+		 DateTime Date1 { get; set; }
+		 DateTime Date2 { get; set; }
+		 IZetaMainObject Object { get; set; }
 		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
 		}
 }

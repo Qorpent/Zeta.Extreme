@@ -9,24 +9,23 @@
 #endregion
 
 using System;
-using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
 	public partial class Mark : IMark {
-		[Map] public virtual Guid Uid { get; set; }
-		[Map] public virtual int Idx { get; set; }
+		 public virtual Guid Uid { get; set; }
+		 public virtual int Idx { get; set; }
 
-		[Map] public virtual string Tag { get; set; }
+		 public virtual string Tag { get; set; }
 
-		[Map] public virtual int Id { get; set; }
+		 public virtual int Id { get; set; }
 
-		[Map] public virtual string Name { get; set; }
+		 public virtual string Name { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		 public virtual string Code { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		 public virtual string Comment { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		 public virtual DateTime Version { get; set; }
 	}
 }

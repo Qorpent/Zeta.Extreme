@@ -9,13 +9,12 @@
 #endregion
 
 using System.Collections.Generic;
-using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.PocoClasses;
 
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	[Classic("ValueType")]
-	[ForSearch("Колонка, показатель")]
+	
+	
 	public interface IZetaColumn : IZetaQueryDimension,
 		IWithMarkCache, IWithMeasure {
 		string Valuta { get; set; }
@@ -31,7 +30,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <summary>
 		/// 	Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
-		[NoMap] string ForeignCode { get; set; }
+		string ForeignCode { get; set; }
 
 		ValueDataType DataType { get; set; }
 		string DataTypeDetail { get; set; }

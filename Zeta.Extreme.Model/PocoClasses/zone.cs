@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
@@ -18,21 +17,21 @@ namespace Zeta.Extreme.Model.PocoClasses {
 	/// 
 	/// </summary>
 	public partial class Zone : IZetaZone {
-		[Map] public virtual Guid Uid { get; set; }
+		 public virtual Guid Uid { get; set; }
 
 		public virtual string Tag { get; set; }
 
 		 public virtual IList<IZetaRegion> Regions { get; set; }
 
-		[Map] public virtual int Id { get; set; }
+		 public virtual int Id { get; set; }
 
-		[Map] public virtual string Name { get; set; }
+		 public virtual string Name { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		 public virtual string Code { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		 public virtual string Comment { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		 public virtual DateTime Version { get; set; }
 
 		/// <summary>
 		/// 	An index of object

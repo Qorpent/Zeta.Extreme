@@ -9,10 +9,9 @@
 #endregion
 
 using Qorpent.Model;
-using Zeta.Extreme.Model.Deprecated;
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	[ForSearch("Роль, тип, отрасль объекта")]
+	
 	public interface IMainObjectRole :
 		IZetaObject,
 		IWithMainObjects, IEntity, IWithId, IWithCode, IWithName, IWithTag {

@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
@@ -26,29 +25,29 @@ namespace Zeta.Extreme.Model.PocoClasses {
 			SecondForm = nodef;
 		}
 
-		[Map] public virtual int Id { get; set; }
+		 public virtual int Id { get; set; }
 
-		[Map] public virtual string Tag { get; set; }
+		 public virtual string Tag { get; set; }
 
-		[Map] public virtual string Name { get; set; }
+		 public virtual string Name { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		 public virtual string Code { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		 public virtual string Comment { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		 public virtual DateTime Version { get; set; }
 
-		[Map] public virtual string FirstType { get; set; }
+		 public virtual string FirstType { get; set; }
 
-		[Map] public virtual string FirstRole { get; set; }
+		 public virtual string FirstRole { get; set; }
 
-		[Map] public virtual string FirstForm { get; set; }
+		 public virtual string FirstForm { get; set; }
 
-		[Map] public virtual string SecondType { get; set; }
+		 public virtual string SecondType { get; set; }
 
-		[Map] public virtual string SecondRole { get; set; }
+		 public virtual string SecondRole { get; set; }
 
-		[Map] public virtual string SecondForm { get; set; }
+		 public virtual string SecondForm { get; set; }
 
 		/// <summary>
 		/// 	An index of object

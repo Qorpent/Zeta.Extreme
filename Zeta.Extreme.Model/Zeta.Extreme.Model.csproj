@@ -44,15 +44,6 @@
     <Compile Include="PocoClasses\Column.cs" />
     <Compile Include="PocoClasses\ObjCls.cs" />
     <Compile Include="PocoClasses\ObjType.cs" />
-    <Compile Include="Deprecated\ClassicAttribute.cs" />
-    <Compile Include="Deprecated\ForSearchAttribute.cs" />
-    <Compile Include="Deprecated\ManyAttribute.cs" />
-    <Compile Include="Deprecated\MapAttribute.cs" />
-    <Compile Include="Deprecated\MappingAttribute.cs" />
-    <Compile Include="Deprecated\NestAttribute.cs" />
-    <Compile Include="Deprecated\NoMapAttribute.cs" />
-    <Compile Include="Deprecated\RefAttribute.cs" />
-    <Compile Include="Deprecated\SchemaAttribute.cs" />
     <Compile Include="Inerfaces\IDetailObjectClass.cs" />
     <Compile Include="Inerfaces\IObjectType.cs" />
     <Compile Include="Inerfaces\IMainObjectGroup.cs" />

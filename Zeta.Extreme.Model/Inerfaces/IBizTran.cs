@@ -9,20 +9,19 @@
 #endregion
 
 using Qorpent.Model;
-using Zeta.Extreme.Model.Deprecated;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IBizTran : IEntity {
-		[Map] string FirstType { get; set; }
+		 string FirstType { get; set; }
 
-		[Map] string FirstRole { get; set; }
+		 string FirstRole { get; set; }
 
-		[Map] string FirstForm { get; set; }
+		 string FirstForm { get; set; }
 
-		[Map] string SecondType { get; set; }
+		 string SecondType { get; set; }
 
-		[Map] string SecondRole { get; set; }
+		 string SecondRole { get; set; }
 
-		[Map] string SecondForm { get; set; }
+		 string SecondForm { get; set; }
 	}
 }

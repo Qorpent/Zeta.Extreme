@@ -11,52 +11,51 @@
 using System;
 using System.Collections.Generic;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
 	public partial class User : IZetaUnderwriter {
-		[Ref(ClassName = typeof (Obj))] public virtual IZetaMainObject Org { get; set; }
+		 public virtual IZetaMainObject Org { get; set; }
 
-		[Map] public virtual Guid Uid { get; set; }
-		[Map] public virtual string Login { get; set; }
-		[Map] public virtual bool Active { get; set; }
+		 public virtual Guid Uid { get; set; }
+		 public virtual string Login { get; set; }
+		 public virtual bool Active { get; set; }
 
-		[Map] public virtual string Tag { get; set; }
+		 public virtual string Tag { get; set; }
 
-		[Map] public virtual int Id { get; set; }
+		 public virtual int Id { get; set; }
 
-		[Map] public virtual string Name { get; set; }
+		 public virtual string Name { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		 public virtual string Code { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		 public virtual string Comment { get; set; }
 
 		/// <summary>
 		/// 	Free list of documents,where basis for security provided
 		/// </summary>
-		[Map] public virtual string Documents { get; set; }
+		 public virtual string Documents { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		 public virtual DateTime Version { get; set; }
 
 		public virtual IZetaMainObject Object {
 			get { return Org; }
 			set { Org = value; }
 		}
 
-		[Map] public virtual bool Boss { get; set; }
+		 public virtual bool Boss { get; set; }
 
-		[Map] public virtual bool Worker { get; set; }
+		 public virtual bool Worker { get; set; }
 
-		[Map] public virtual string Dolzh { get; set; }
+		 public virtual string Dolzh { get; set; }
 
-		[Map] public virtual string Contact { get; set; }
+		 public virtual string Contact { get; set; }
 
-		[Map] public virtual string Roles { get; set; }
+		 public virtual string Roles { get; set; }
 
-		[Map] public virtual string Login2 { get; set; }
+		 public virtual string Login2 { get; set; }
 
-		[Map] public virtual string SlotList {
+		 public virtual string SlotList {
 			get { return _slotList; }
 			set {
 				_slotList = value;

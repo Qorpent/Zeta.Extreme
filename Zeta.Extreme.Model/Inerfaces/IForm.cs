@@ -10,7 +10,6 @@
 
 using System.Collections.Generic;
 using Qorpent.Model;
-using Zeta.Extreme.Model.Deprecated;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IForm : IWithId, IWithCode, IWithVersion {
@@ -19,7 +18,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		string Template { get; set; }
 		IList<IFormState> States { get; set; }
 		string CurrentState { get; set; }
-		[Classic("Org")] IZetaMainObject Object { get; set; }
+		 IZetaMainObject Object { get; set; }
 		IFormState GetLastState();
 		IFormState GetLastBlock();
 	                         }

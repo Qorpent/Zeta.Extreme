@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using Qorpent;
 using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.PocoClasses {
@@ -26,27 +25,27 @@ namespace Zeta.Extreme.Model.PocoClasses {
 			Date2 = QorpentConst.Date.Begin;
 		}
 
-		[Ref(ClassName = typeof (Obj))] public virtual IZetaMainObject Org { get; set; }
+		 public virtual IZetaMainObject Org { get; set; }
 
-		[Ref(ClassName = typeof (Obj))] public virtual IZetaMainObject AltParent { get; set; }
-		[Map] [IgnoreSerialize] public virtual Guid Uid { get; set; }
+		 public virtual IZetaMainObject AltParent { get; set; }
+		 [IgnoreSerialize] public virtual Guid Uid { get; set; }
 		
-		[Map(ReadOnly = true)] public virtual string Path { get; set; }
-		[Map] public virtual string Valuta { get; set; }
+		 public virtual string Path { get; set; }
+		 public virtual string Valuta { get; set; }
 
-		[Map] public virtual DateTime Start { get; set; }
+		 public virtual DateTime Start { get; set; }
 
-		[Map] public virtual DateTime Finish { get; set; }
+		 public virtual DateTime Finish { get; set; }
 
-		[Map] public virtual decimal Number1 { get; set; }
-		[Map] public virtual decimal Number2 { get; set; }
+		 public virtual decimal Number1 { get; set; }
+		 public virtual decimal Number2 { get; set; }
 
 
-		[Map] public virtual DateTime Date1 { get; set; }
+		 public virtual DateTime Date1 { get; set; }
 
-		[Map] public virtual DateTime Date2 { get; set; }
+		 public virtual DateTime Date2 { get; set; }
 
-		[Map] public virtual string Tag { get; set; }
+		 public virtual string Tag { get; set; }
 		public virtual int Idx { get; set; }
 
 		[Serialize] public virtual IZetaMainObject Object {
@@ -54,17 +53,17 @@ namespace Zeta.Extreme.Model.PocoClasses {
 			set { Org = value; }
 		}
 
-		[Map] public virtual string OuterCode { get; set; }
+		 public virtual string OuterCode { get; set; }
 
-		[Map] public virtual int Id { get; set; }
+		 public virtual int Id { get; set; }
 
-		[Map] public virtual string Name { get; set; }
+		 public virtual string Name { get; set; }
 
-		[Map] public virtual string Code { get; set; }
+		 public virtual string Code { get; set; }
 
-		[Map] public virtual string Comment { get; set; }
+		 public virtual string Comment { get; set; }
 
-		[Map] public virtual DateTime Version { get; set; }
+		 public virtual DateTime Version { get; set; }
 
 
 		[Serialize] public virtual IObjectType Type { get; set; }
@@ -101,7 +100,7 @@ namespace Zeta.Extreme.Model.PocoClasses {
 			get { return (AltObject == null ? Comment : AltObject.Comment) ?? ""; }
 		}
 
-		[Map] public virtual bool InverseControl { get; set; }
+		 public virtual bool InverseControl { get; set; }
 		public virtual string FullName { get; set; }
 
 		public virtual MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null,

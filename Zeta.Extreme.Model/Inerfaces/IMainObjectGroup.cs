@@ -9,11 +9,10 @@
 #endregion
 
 using Qorpent.Model;
-using Zeta.Extreme.Model.Deprecated;
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	[Classic("Holding")]
-	[ForSearch("Группа, дивизион, холдинг")]
+	
+	
 	public interface IMainObjectGroup :
 		IZetaObject,
 		IWithMainObjects, IEntity, IWithId, IWithCode, IWithName, IWithTag {}

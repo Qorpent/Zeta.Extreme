@@ -2,7 +2,7 @@
 
 // Copyright 2012-2013 Media Technology LTD 
 // Original file : IZetaZone.cs
-// Project: Zeta.Extreme.Poco
+// Project: Zeta.Extreme.Model
 // This code cannot be used without agreement from 
 // Media Technology LTD 
 
@@ -10,12 +10,10 @@
 
 using System.Collections.Generic;
 using Qorpent.Model;
-using Zeta.Extreme.Model.Deprecated;
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	[ForSearch("Зона, страна")]
 	public interface IZetaZone :
-		IZetaObject, IEntity, IWithId, IWithCode, IWithName, IWithTag {
+		IZetaObject, IEntity {
 		IList<IZetaRegion> Regions { get; set; }
 		}
 }

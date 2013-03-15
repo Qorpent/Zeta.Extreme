@@ -84,7 +84,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="condition"> </param>
 		/// <returns> </returns>
-		public IEnumerable<period> ReadPeriods(string condition = "") {
+		public IEnumerable<Period> ReadPeriods(string condition = "") {
 			return Read(condition, Peiodquerybase, ReaderToPeriod);
 		}
 

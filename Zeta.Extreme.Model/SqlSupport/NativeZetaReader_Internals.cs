@@ -181,10 +181,10 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public static period ReaderToPeriod(IDataRecord r) {
-			var x = new period
+		public static Period ReaderToPeriod(IDataRecord r) {
+			var x = new Period
 				{
-					ClassicId = r.GetInt32(0),
+					BizId = r.GetInt32(0),
 					Name = r.GetString(1),
 					Idx = r.GetInt32(2),
 					MonthCount = r.GetInt32(3),
