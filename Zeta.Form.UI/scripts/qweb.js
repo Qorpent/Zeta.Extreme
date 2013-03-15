@@ -64,7 +64,7 @@
 		_getUsualCallFunciton : function(){
 			var self = this;
 			return (function(result){
-                if (!result) {
+                if ($.isEmptyObject(result)) {
                    self.triggerOnError(result);
                    return;
                 }
