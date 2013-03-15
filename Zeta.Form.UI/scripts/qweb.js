@@ -64,7 +64,7 @@
 		_getUsualCallFunciton : function(){
 			var self = this;
 			return (function(result){
-                if ($.isEmptyObject(result)) {
+                if (!result) {
                    self.triggerOnError(result);
                    return;
                 }
@@ -100,7 +100,9 @@
                 dataType: myoptions.datatype,
                 data : params || {}
             })
-                .success(function(r){myoptions.onsuccess(r,params)})
+                .success(function(r){
+                    myoptions.onsuccess(r,params);
+                })
                 .error(myoptions.onerror||function(error){console.log(error)});
         }
     });

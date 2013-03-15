@@ -6,7 +6,7 @@
     var h = $('<h3/>');
     zefsformheader.body = $('<div/>').append(h);
     var InsertPeriod = function() {
-        $(h.find('span').first()).text(zefs.getperiodbyid(window.zefs.options.getParameters().period));
+        $(h.find('span').first()).text(zefs.getperiodbyid(window.zefs.myform.currentSession.Period));
     }
     $(window.zefs).on(window.zefs.handlers.on_sessionload, function() {
         h.html(

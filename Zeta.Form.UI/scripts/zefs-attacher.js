@@ -39,7 +39,8 @@
                 ));
                 if (window.zeta.security.user != null) {
                     if (window.zeta.security.user.getIsAdmin()) {
-                        tr.append($('<td class="delete"/>').html($('<span class="icon icon-remove"/>').click(function(e) {
+                        tr.append($('<td class="delete"/>').html($('<span class="icon icon-remove"/>').click(
+                            function(e) {
                                 $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                                     title: "Удаление файла",
                                     content: $('<p/>').html("Файл <strong>" + file.Name + "</strong> будет удален. Продолжить?"),

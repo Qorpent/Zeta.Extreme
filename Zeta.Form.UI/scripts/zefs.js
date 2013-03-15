@@ -49,7 +49,6 @@ root.init = root.init ||
         attachment : null
     };
     var options = window.zefs.options;
-	var params = options.getParameters();
     var render = root.getRender();
 
     var Fill = function(session) {
@@ -103,33 +102,15 @@ root.init = root.init ||
     };
 
     var DeleteFile = function(uid) {
-        $.ajax({
-            url: siteroot+options.deletefile_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: {
-                session: root.myform.sessionId,
-                uid: uid
-            }
-        }).success(function() {
-            api.file.list.execute({session: root.myform.sessionId});
+        api.files.delete.execute({
+            session: root.myform.sessionId,
+            uid: uid
         });
     };
 
     var DownloadFile = function(uid) {
         return siteroot+options.downloadfile_command + "?session=" +
             root.myform.sessionId + "&uid=" + uid;
-        /* $.ajax({
-             url: siteroot+options.downloadfile_command,
-             type: "POST",
-             context: this,
-             dataType: "json",
-             data: {
-                 session: root.myform.sessionId,
-                 uid: uid
-             }
-        })*/
     };
 
     var Lock = function() {
@@ -141,63 +122,10 @@ root.init = root.init ||
     };
 
     var Save = function(obj) {
-        $.each($('td.recalced'), function(i,e) {
-            $(e).removeClass("recalced");
-        });
-        $.ajax({
-            url: siteroot+options.save_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: {
-                session: root.myform.sessionId,
-                data: JSON.stringify(obj)
-            }
-        }).success(function(d) {
-            $(root).trigger(root.handlers.on_savefinished);
-            SaveState();
-        });
-    };
-
-    var ReadySave = function(obj) {
-        if ($.isEmptyObject(obj) || !root.myform.lock) return;
+        if (!$.isEmptyObject(obj) && !root.myform.lock) return;
+        root.myform.datatosave = obj;
         $(root).trigger(root.handlers.on_savestart);
-        $.ajax({
-            url: siteroot+options.saveready_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: params
-        }).success(function(d) {
-            d = options.asSession(d);
-            if(d.Uid != root.myform.sessionId) {
-                root.myform.sessionId = d.Uid;
-                root.myform.currentSession = d;
-            }
-            Save(obj);
-        });
-    };
-
-    var SaveState = function() {
-        $.ajax({
-            url: siteroot+options.savestate_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            data: {session: root.myform.sessionId}
-        }).success(function(d) {
-            var state = options.asSaveState(d);
-            if(!state.getIsFinished()) {
-                window.setTimeout(SaveState, 1000);
-                return;
-            }
-            if (state.getIsError()) {
-                $(root).trigger(root.handlers.on_message, { text: state.getError(), autohide: 5000, type: "alert-error" });
-            }
-            $(root).trigger(root.handlers.on_message, { text: "Сохранение успешно завершено", autohide: 5000, type: "alert-success" });
-            $(root).trigger(root.handlers.on_savefinished);
-            api.session.reset.execute({session: root.myform.currentSession});
-        });
+        api.data.saveready.execute();
     };
 
     var Message = function(obj) {
@@ -217,7 +145,6 @@ root.init = root.init ||
         });
         return name;
     };
-
 
     // Обработчики событий
     api.server.ready.onSuccess(function(e, result) {
@@ -278,12 +205,41 @@ root.init = root.init ||
 
     api.data.reset.onSuccess(function() {
         root.myform.currentSession.data = [];
-        api.session.data.execute({session: root.myform.currentSession, startidx: 0});
+        api.data.start.execute({session: root.myform.sessionId, startidx: 0});
+    });
+
+    api.data.saveready.onSuccess(function(e, result) {
+        if(result.Uid != root.myform.sessionId) {
+            root.myform.sessionId = result.Uid;
+            root.myform.currentSession = result;
+        }
+        if ($.isEmptyObject(root.myform.datatosave)) return;
+        $.each($('td.recalced'), function(i,e) {
+            $(e).removeClass("recalced");
+        });
+        api.data.save.execute({
+            session: root.myform.sessionId,
+            data: JSON.stringify(root.myform.datatosave)
+        });
     });
 
     api.data.save.onSuccess(function() {
+        root.myform.datatosave = {};
         $(root).trigger(root.handlers.on_savefinished);
-        api.data.savestate.execute({session: root.myform.currentSession});
+        api.data.savestate.execute({session: root.myform.sessionId});
+    });
+
+    api.data.savestate.onSuccess(function(e, result) {
+        if(result.stage != "Finished") {
+            window.setTimeout(api.data.savestate.execute({session: root.myform.sessionId}), 1000);
+            return;
+        }
+        if (null != result.error) {
+            $(root).trigger(root.handlers.on_message, { text: result.error, autohide: 5000, type: "alert-error" });
+        }
+        $(root).trigger(root.handlers.on_message, { text: "Сохранение успешно завершено", autohide: 5000, type: "alert-success" });
+        $(root).trigger(root.handlers.on_savefinished);
+        api.data.reset.execute({session: root.myform.sessionId});
     });
 
     api.lock.start.onSuccess(function() {
@@ -308,13 +264,17 @@ root.init = root.init ||
         $(root).trigger(root.handlers.on_attachmentload);
     });
 
+    api.files.delete.onSuccess(function() {
+        api.file.list.execute({session: root.myform.sessionId});
+    });
+
     $.extend(root, {
         getperiodbyid : GetPeriodName
     });
 
     $.extend(root.myform, {
         execute : function(){api.server.start()},
-        save : ReadySave,
+        save : Save,
         message: Message,
         lockform: Lock,
         attachfile: AttachFile,
