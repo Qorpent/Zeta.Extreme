@@ -73,7 +73,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             var document = MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(attachment);
             SetupConnection();
 
-            
+            _collection.Save(document);
         }
 
         /// <summary>

@@ -9,6 +9,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
         private int _uid;
         private readonly MongoDbAttachmentSourceAlternate _mdb = new MongoDbAttachmentSourceAlternate();
 
+        byte[] _source = new byte[] { 0, 1, 2, 3, 4, 5 };
+        private const string DEFAULT_FILENAME_TO_TESTS = "testFile";
 
         public Attachment GetNewAttach(string uid = null) {
             return new Attachment {
@@ -32,6 +34,11 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
             };
         }
 
+        [SetUp]
+        public void setup() {
+            
+
+        }
 
         [Test]
         public void CanAttachmentToBsonAndBack() {
@@ -87,17 +94,18 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
 
         [Test]
         public void CanWriteBinary() {
-            var source = new byte[] {0, 1, 2, 3, 4, 5};
-            var buffer = new byte[source.Length];
+            var buffer = new byte[_source.Length];
             Attachment attachment = GetNewAttach();
+
+            attachment.Uid = DEFAULT_FILENAME_TO_TESTS;
 
             using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
                 Assert.IsNotNull(stream);
-                stream.Write(source, 0, source.Length);
+                stream.Write(_source, 0, _source.Length);
                 stream.Flush();
             }
 
-            Assert.AreNotEqual(source, buffer);
+            Assert.AreNotEqual(_source, buffer);
 
             using (var stream = _mdb.Open(attachment, FileAccess.Read))
             {
@@ -107,7 +115,44 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
             }
 
 
-            Assert.AreEqual(source, buffer);
+            Assert.AreEqual(_source, buffer);
+        }
+
+        [Test]
+        public void CanReadBinary() {
+            var buffer = new byte[_source.Length];
+            Attachment attachment = GetNewAttach();
+
+            attachment.Uid = DEFAULT_FILENAME_TO_TESTS;
+
+            Assert.AreNotEqual(_source, buffer);
+
+            WriteSomethingInTestFile();
+
+            using (var stream = _mdb.Open(attachment, FileAccess.Read))
+            {
+                Assert.IsNotNull(stream);
+                stream.Read(buffer, 0, buffer.Length);
+                stream.Flush();
+            }
+
+
+            Assert.AreEqual(_source, buffer);
+        }
+
+        private void WriteSomethingInTestFile() {
+            var buffer = new byte[_source.Length];
+            Attachment attachment = GetNewAttach();
+
+            attachment.Uid = DEFAULT_FILENAME_TO_TESTS;
+
+            using (var stream = _mdb.Open(attachment, FileAccess.Write))
+            {
+                Assert.IsNotNull(stream);
+                stream.Write(_source, 0, _source.Length);
+                stream.Flush();
+            }
+
         }
     }
 }
