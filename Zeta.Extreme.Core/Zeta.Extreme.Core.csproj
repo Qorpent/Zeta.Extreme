@@ -29,6 +29,7 @@
     <Compile Include="Formulas\CompileErrorFormulaStub.cs" />
     <Compile Include="Formulas\DefaultDeltaPreprocessor.cs" />
     <Compile Include="Formulas\DeltaFormulaBase.cs" />
+    <Compile Include="Formulas\FormulaAssemblyCache.cs" />
     <Compile Include="Formulas\FormulaAttribute.cs" />
     <Compile Include="Formulas\FormulaBase.cs" />
     <Compile Include="Formulas\FormulaCompiler.cs" />
