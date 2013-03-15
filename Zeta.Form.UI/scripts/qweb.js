@@ -11,6 +11,7 @@
             var domain = this.domain || "_sys";
             this.url = domain+"/"+this.name+".{DATATYPE}.qweb";
         }
+        if(!this.startEventName)this.startEventName=this.url+":start";
         if(!this.successEventName)this.successEventName=this.url+":success";
         if(!this.errorEventName)this.errorEventName=this.url+":error";
 		this.repeatWait = false;
@@ -25,9 +26,9 @@
     $.extend(root.Command.prototype,{
         datatype : "json",
         getParameters : function() { return null },
-        getUrl:function(datatype){
+        getUrl:function(datatype) {
             datatype = datatype || this.datatype;
-                       return siteroot+this.url.replace('{DATATYPE}',datatype);
+            return siteroot + this.url.replace('{DATATYPE}',datatype);
         },
         triggerOnSuccess : function(result){
             $(this).trigger(this.successEventName,result);
@@ -35,32 +36,36 @@
         triggerOnError : function(result){
             $(this).trigger(this.errorEventName,result);
         },
-        onSuccess: function( func ){
+        onStart: function(func) {
+          $(this).on(this.startEventName, func);
+        },
+        onSuccess: function(func) {
           $(this).on(this.successEventName, func);
         },
-        onError: function( func ){
+        onError: function(func) {
             $(this).on(this.errorEventName, func);
         },
 		execute : function(params) {
-            params = params || this.getParameters();
+            params = params || this.getParameters() || {};
+            params.options = params.options || {};
             this.call(params);
         },
-		call : function (params,onsuccess,onerror) {
-			if(!onsuccess){
-				if(this.repeatWait){
-					onsuccess = this._getRepeatWaitCallFunciton();
-				}else{
-					onsuccess = this._getUsualCallFunciton();
-				}
-			}
-            this.nativeCall(params,onsuccess,onerror);
+		call : function (params) {
+			if(!params.options.onsuccess){
+                if(this.repeatWait){
+                    params.options.onsuccess = this._getRepeatWaitCallFunciton();
+                } else {
+                    params.options.onsuccess = this._getUsualCallFunciton();
+                }
+            }
+            this.nativeCall(params);
         },
 		_getUsualCallFunciton : function(){
 			var self = this;
 			return (function(result){
                 if (!result) {
                    self.triggerOnError(result);
-                    return;
+                   return;
                 }
                 if (!!self.wrap) result = self.wrap(result);
                 self.triggerOnSuccess(result);
@@ -82,17 +87,20 @@
 				self.triggerOnSuccess(result);
 			});
 		},
-        nativeCall : function(params,onsuccess,onerror,url,datatype){
-            datatype = datatype || this.datatype;
-            url = url || this.getUrl(this.datatype);
+        nativeCall : function(params){
+            var options = params.options;
+            $.extend(options, {
+                datatype : this.datatype,
+                url : this.getUrl(this.datatype)
+            });
             $.ajax({
-                url: url,
+                url: options.url,
                 type : !params ? "GET" : "POST",
-                dataType: datatype,
+                dataType: options.datatype,
                 data : params || {}
             })
-                .success(function(r){onsuccess(r,params)})
-                .error(onerror||function(error){console.log(error)});
+                .success(function(r){options.onsuccess(r,params)})
+                .error(options.onerror||function(error){console.log(error)});
         }
     });
 
