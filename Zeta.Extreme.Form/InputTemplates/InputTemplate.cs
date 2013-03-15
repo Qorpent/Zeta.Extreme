@@ -1227,10 +1227,14 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		/// <returns> </returns>
 		public IInputTemplate Clone() {
-			var result = new InputTemplate {ForPeriods = ForPeriods.Select(x => x).ToArray()};
+			var result = new InputTemplate();
+
+
+			
 
 			result.BindFrom(this, true);
 
+			if(null!=this.ForPeriods)result.ForPeriods = ForPeriods.Select(x => x).ToArray();
 			result.Thema = Thema;
 
 	

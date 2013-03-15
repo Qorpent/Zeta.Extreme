@@ -10,7 +10,7 @@
     b.tooltip({placement: 'bottom'});
 
     var ChangePeriod = function(e) {
-        var type = $($(e.target).parents()[2]).attr("type");
+        var type = $($(e.target).parents()[1]).attr("type");
         if (type.search("Plan") != -1) location.hash = location.hash.replace(/[ABC].in/gi,'B.in');
         else if (type == "Corrective") location.hash = location.hash.replace(/[ABC].in/gi,'C.in');
         else location.hash = location.hash.replace(/[ABC].in/gi,'A.in');
@@ -41,15 +41,14 @@
         $.each(result, function(i,group) {
             if (group.type == "InYear") return;
             var li = $('<li class="dropdown-submenu"/>');
-            var ul = $('<ul class="dropdown-menu"/>');
+            var ul = $('<ul class="dropdown-menu"/>').attr("type", group.type);
             li.append($('<a/>').text(GetPeriodGroupName(group.type)), ul);
             $.each(group.periods, function(i,period) {
                 var a = $('<a/>').attr("value", period.id);
                 a.click(function(e) {
                     period.type != "Year" ? ChangePeriod(e) : ChangeYear(e);
                 });
-                ul.append($('<li/>').append(a).text(period.name));
-                a = null;
+                ul.append($('<li/>').append(a.text(period.name)));
             });
             menu.append(li);
         });

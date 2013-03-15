@@ -12,12 +12,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 
@@ -41,14 +38,10 @@ namespace Zeta.Extreme {
 			AddPreprocessor(new DefaultDeltaPreprocessor());
 			AddPreprocessor(new BooConverter());
 			AutoBatchCompile = true;
+			_cache = new FormulaAssemblyCache();
 		}
 
-		/// <summary>
-		/// 	Кэш бибилиотек для автоматической привязки формул
-		/// </summary>
-		public IList<Assembly> FormulaAssemblyCache {
-			get { return _formulaAssemblyCache ?? (_formulaAssemblyCache = new List<Assembly>()); }
-		}
+		
 
 		/// <summary>
 		/// 	Статическое хранилище формул по умолчанию
@@ -114,24 +107,7 @@ namespace Zeta.Extreme {
 				}
 		}
 
-		/// <summary>
-		/// 	Строит кэш из указанной директории
-		/// </summary>
-		/// <param name="root"> </param>
-		public void BuildCache(string root) {
-			FormulaAssemblyCache.Clear();
-
-			Directory.CreateDirectory(root);
-			var paths = Directory.GetFiles(root, "*.dll").OrderBy(File.GetLastWriteTime).ToArray();
-			foreach (var path in paths) {
-				try {
-					var bin = File.ReadAllBytes(path);
-					FormulaAssemblyCache.Add(Assembly.Load(bin));
-				}
-				catch {}
-			}
-			BuildCacheIndex();
-		}
+	
 
 		/// <summary>
 		/// 	Регистрирует препроцессор в хранилище
@@ -244,35 +220,12 @@ namespace Zeta.Extreme {
 			get { return _registry.Count; }
 		}
 
-		/// <summary>
-		/// 	Строит индекс по кэшированным типам
-		/// </summary>
-		public void BuildCacheIndex() {
-			_cachedTypes.Clear();
-			foreach (var formula in GetCachedFormulas()) {
-				var attr = ((FormulaAttribute) formula.GetCustomAttribute(typeof (FormulaAttribute), true));
-				if (null == attr) {
-					continue;
-				}
-				_cachedTypes[attr.Key] = new CachedFormula {Version = attr.Version, Formula = formula};
-			}
-		}
-
-		/// <summary>
-		/// 	Возвращает список типов
-		/// </summary>
-		/// <returns> </returns>
-		public IEnumerable<Type> GetCachedFormulas() {
-			return FormulaAssemblyCache.SelectMany(_ => _.GetTypes());
-		}
-
 		private void TryResolveFromCache(FormulaRequest request) {
-			if (!_cachedTypes.ContainsKey(request.Key)) {
-				return;
-			}
-			var _cached = _cachedTypes[request.Key];
-			if (_cached.Version == request.Version) {
-				request.PreparedType = _cached.Formula;
+			var key = request.Key;
+			if(_cache.ContainsKey(key)) {
+				if(_cache.GetVersion(key)==request.Version) {
+					request.PreparedType = _cache.GetFormulaType(key);
+				}
 			}
 		}
 
@@ -315,21 +268,6 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		#region Nested type: CachedFormula
-
-		private class CachedFormula {
-			/// <summary>
-			/// </summary>
-			public Type Formula;
-
-			/// <summary>
-			/// </summary>
-			public string Version;
-		}
-
-		#endregion
-
-		private readonly IDictionary<string, CachedFormula> _cachedTypes = new Dictionary<string, CachedFormula>();
 
 		private readonly object _compile_lock = new object(); //синхронизатор компилятора
 		private readonly object _get_lock = new object(); //синхронизатор получения формулы
@@ -346,7 +284,8 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public int BatchSize = 5;
 
-		private IList<Assembly> _formulaAssemblyCache;
+
+		private FormulaAssemblyCache _cache;
 
 		/// <summary>
 		/// Загружает формулы по умолчанию из кжша, с использованием указанной папки готовых DLL
@@ -354,7 +293,7 @@ namespace Zeta.Extreme {
 		/// <param name="rootDirectory"></param>
 		public  void LoadDefaultFormulas(string rootDirectory) {
 			if(rootDirectory.IsNotEmpty()) {
-				BuildCache(rootDirectory);
+				_cache.Rebuild(rootDirectory);
 			}
 			var oldrowformulas = RowCache.Formulas.Where(
 				_ => _.Version < DateTime.Today

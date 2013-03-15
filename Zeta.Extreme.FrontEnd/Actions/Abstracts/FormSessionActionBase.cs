@@ -21,11 +21,15 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		/// 	First phase of execution - override if need special input parameter's processing
 		/// </summary>
 		protected override void Initialize() {
-			FormServer.Default.ReadyToServeForms.Wait();
-			if (!FormServer.Default.IsOk) {
-				throw new Exception("Application not loaded properly!");
+			if(null!=FormServer.Default) {
+				FormServer.Default.ReadyToServeForms.Wait();
+
+				if (!FormServer.Default.IsOk) {
+					throw new Exception("Application not loaded properly!");
+				}
 			}
-			MySession = FormServer.Default.Sessions.First(_ => _.Uid == Session);
+			//up testblility
+			MySession = MySession??  FormServer.Default.Sessions.First(_ => _.Uid == Session);
 		}
 
 		/// <summary>
@@ -42,7 +46,7 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		/// <summary>
 		/// 	—сылка на текущую сессию
 		/// </summary>
-		protected FormSession MySession;
+		public FormSession MySession { get; set; }
 
 		/// <summary>
 		/// 	ѕараметр кода сессии

@@ -56,6 +56,7 @@ $.extend(specification,(function(){
             // Комадна получения данных
             start : $.extend(new Command({domain: "zefs", name: "data"}), {
                  wrap : function(obj) {
+                     obj.data = obj.data || [];
                      $.extend(obj, {
                          // признак применения батча к таблице
                          wasFilled : false
@@ -93,7 +94,9 @@ $.extend(specification,(function(){
             history : $.extend(new Command({domain: "zefs", name: "locklist"}), {
                 wrap: function(obj) {
                     // Пишем сюда нормальную преобразованную дату
-                    obj.Date = eval(obj.Version.substring(2));
+                    $.each(obj, function(i,o) {
+                        o.Date = eval(o.Version.substring(2));
+                    });
                     return obj;
                 }
             })
@@ -103,7 +106,9 @@ $.extend(specification,(function(){
             // команда получения списка прикрепленных к форме файлов
             list : $.extend(new Command({domain: "zefs", name: "attachlist"}), {
                 wrap : function(obj) {
-                    obj.Date = eval(this.Version.substring(2));
+                    $.each(obj, function(i,o) {
+                        o.Date = eval(o.Version.substring(2));
+                    });
                     return obj;
                 }
             }),

@@ -15,16 +15,16 @@
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
         var lock =  window.zefs.myform.lock;
         if (lock != null) {
-            if (lock.getIsOpen()){
+            if (lock.state == "0ISOPEN"){
                 b.addClass("btn-danger");
                 unlockbtn.removeClass("btn-danger").attr("disabled","disabled");
                 checkbtn.removeClass("btn-success").attr("disabled","disabled");
             }
-            else if (lock.getIsBlock()) {
+            else if (lock.state == "0ISBLOCK") {
                 b.addClass("btn-warning");
                 lockbtn.removeClass("btn-warning").attr("disabled","disabled");
             }
-            else if (lock.getIsChecked()) {
+            else if (lock.state == "0ISCHECKED") {
                 b.addClass("btn-success");
                 lockbtn.removeClass("btn-warning").attr("disabled","disabled");
                 checkbtn.removeClass("btn-success").attr("disabled","disabled");
@@ -42,22 +42,26 @@
     $(document).on('click.dropdown.data-api', '.zefsblockmanager li', function (e) {
         e.stopPropagation();
     });
-    $(window.zefs).on(window.zefs.handlers.on_getlockhistoryload, function() {
+    window.zefs.api.lock.history.onSuccess(function(e, result) {
+        if($.isEmptyObject(window.zefs.lockhistory)) {
+            window.zefs.lockhistory = result;
+        }
         var body = $(h.find('tbody'));
-        var hist = window.zefs.myform.lockhistory;
+        var hist = window.zefs.lockhistory;
         if (hist) {
-            if (hist.length > 0){
+            if (!$.isEmptyObject(hist)){
                 body.empty();
-                $.each(hist.sort(function(a,b) { return a.getDate() < b.getDate() }), function(i,h) {
-                    var lockstate = $('<span/>').text(h.getState());
-                    if (h.getIsOpen()) lockstate.addClass("state-open");
-                    else if (h.getIsBlock()) lockstate.addClass("state-block");
-                    else if (h.getIsChecked()) lockstate.addClass("state-check");
+                //.sort(function(a,b) { return a.Date < b.Date })
+                $.each(hist, function(i,h) {
+                    var lockstate = $('<span/>').text(h.ReadableState);
+                    if (h.State == "0ISOPEN") lockstate.addClass("state-open");
+                    else if (h.State == "0ISBLOCK") lockstate.addClass("state-block");
+                    else if (h.State == "0ISCHECKED") lockstate.addClass("state-check");
                     var u = $('<span class="label label-inverse"/>');
                     body.append($('<tr/>').append(
-                        $('<td/>').text(h.getDate().format("dd.mm.yyyy HH:MM:ss")),
+                        $('<td/>').text(h.Date.format("dd.mm.yyyy HH:MM:ss")),
                         $('<td/>').html(lockstate),
-                        $('<td/>').append(u.text(h.getUser()))
+                        $('<td/>').append(u.text(h.Usr))
 //                      $('<td/>').append($('<span class="label label-inverse"/>').text(h.getUser())),
                     ));
                     u.zetauser();

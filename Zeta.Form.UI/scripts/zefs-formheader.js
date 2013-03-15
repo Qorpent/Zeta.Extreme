@@ -19,7 +19,10 @@
             InsertPeriod();
         }
     });
-    $(window.zefs).on(window.zefs.handlers.on_periodsload, function() {
+    window.zefs.api.metadata.getperiods.onSuccess(function(e, result) {
+        if($.isEmptyObject(window.zefs.periods)) {
+            window.zefs.periods = result;
+        }
         window.zefs._periods_loaded = true;
         InsertPeriod();
     });

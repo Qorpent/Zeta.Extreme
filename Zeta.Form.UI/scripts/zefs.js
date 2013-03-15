@@ -206,9 +206,9 @@ root.init = root.init ||
 
     var GetPeriodName = function(id) {
         var name = "";
-        $.each(root.periods, function(periodname, periodtype) {
-            $.each(periodtype, function(i,p) {
-                if (p.name == id) {
+        $.each(root.periods, function(i, periodtype) {
+            $.each(periodtype.periods, function(i,p) {
+                if (p.id == id) {
                     name = p.name;
                     return false;
                 }
@@ -235,7 +235,9 @@ root.init = root.init ||
     });
 
     api.metadata.getperiods.onSuccess(function(e, result) {
-        root.periods = result;
+        if($.isEmptyObject(root.periods)) {
+            root.periods = result;
+        }
     });
 
     api.session.start.onSuccess(function(e, result) {
@@ -248,8 +250,9 @@ root.init = root.init ||
         api.lock.history.execute(sessiondata);
         api.files.list.execute(sessiondata);
         window.setTimeout(function(){
-            api.data.start.execute($.extend(sessiondata, {startidx: 0}))}
-        ,options.datadelay); //первый запрос на данные
+                root.myform.currentSession.data = [];
+                api.data.start.execute($.extend(sessiondata, {startidx: 0}))}
+        ,1000); //первый запрос на данные
         $(root).trigger(root.handlers.on_sessionload);
     });
 
@@ -269,7 +272,7 @@ root.init = root.init ||
             $(window).trigger("resize");
         } else {
             var idx = $.isEmptyObject(result.data) ? result.ei+1 : result.si;
-            window.setTimeout(function(){api.data.start.execute({session: root.myform.sessionId,startidx: idx})},options.datadelay);
+            window.setTimeout(function(){api.data.start.execute({session: root.myform.sessionId,startidx: idx})},500);
         }
     });
 
@@ -293,8 +296,16 @@ root.init = root.init ||
     });
 
     api.lock.history.onSuccess(function(e, result) {
-        root.myform.lockhistory = result;
-        $(root).trigger(root.handlers.on_getlockhistoryload);
+        if($.isEmptyObject(root.lockhistory)) {
+            root.lockhistory = result;
+        }
+    });
+
+    api.files.list.onSuccess(function(e, result) {
+        if($.isEmptyObject(root.myform.attachment)) {
+            root.myform.attachment = result;
+        }
+        $(root).trigger(root.handlers.on_attachmentload);
     });
 
     $.extend(root, {
