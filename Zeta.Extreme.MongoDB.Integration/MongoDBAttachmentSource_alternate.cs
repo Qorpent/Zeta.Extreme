@@ -104,7 +104,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if(!_connected) {
                 // Определимся с конфигурацией
                 _dbSettings = new MongoDatabaseSettings();
-                _gridFsSettings = new MongoGridFSSettings();
+                _gridFsSettings = new MongoGridFSSettings {
+                    Root = Collection
+                };
                 _cliSettings = new MongoClientSettings {
                     Server = new MongoServerAddress(ConnectionString)
                 };
