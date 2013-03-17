@@ -34,7 +34,6 @@ using System.Threading.Tasks;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.PocoClasses;
 using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Model.MetaCaches {

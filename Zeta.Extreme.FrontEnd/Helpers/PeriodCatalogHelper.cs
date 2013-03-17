@@ -11,7 +11,6 @@
 using System.Linq;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.MetaCaches;
-using Zeta.Extreme.Model.PocoClasses;
 
 namespace Zeta.Extreme.FrontEnd.Helpers {
 	/// <summary>

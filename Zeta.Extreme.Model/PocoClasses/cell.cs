@@ -12,7 +12,7 @@ using System;
 using System.Globalization;
 using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model.PocoClasses {
+namespace Zeta.Extreme.Model {
 	/// <summary>
 	/// 
 	/// </summary>

@@ -11,7 +11,7 @@
 using System;
 using Qorpent;
 
-namespace Zeta.Extreme.Model.PocoClasses {
+namespace Zeta.Extreme.Model {
 	public class MetalinkRecord {
 		public MetalinkRecord() {
 			Active = true;

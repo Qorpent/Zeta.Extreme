@@ -5,7 +5,7 @@ using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.Core.Tests.CoreTests;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.FrontEnd.Actions.Attachments;
-using Zeta.Extreme.Model.PocoClasses;
+using Zeta.Extreme.Model;
 
 namespace Zeta.Extreme.FrontEnd.Tests {
 	[TestFixture]

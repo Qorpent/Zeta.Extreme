@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Zeta.Extreme.Model.PocoClasses {
+namespace Zeta.Extreme.Model {
 	[Flags]
 	public enum ValueDataType {
 		Decimal = 0,

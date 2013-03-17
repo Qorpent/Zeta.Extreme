@@ -9,7 +9,6 @@
 #endregion
 
 using System.Collections.Generic;
-using Zeta.Extreme.Model.PocoClasses;
 
 
 namespace Zeta.Extreme.Model.Inerfaces {

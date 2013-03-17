@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model.PocoClasses {
+namespace Zeta.Extreme.Model {
 	public partial class ObjCls : IDetailObjectClass {
 		 public virtual Guid Uid { get; set; }
 

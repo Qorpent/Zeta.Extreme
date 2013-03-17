@@ -15,7 +15,7 @@ using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model.PocoClasses {
+namespace Zeta.Extreme.Model {
 	public partial class Detail : IZetaDetailObject {
 		public Detail() {
 			

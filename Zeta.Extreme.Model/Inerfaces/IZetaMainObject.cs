@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using Qorpent.Model;
-using Zeta.Extreme.Model.PocoClasses;
 
 
 namespace Zeta.Extreme.Model.Inerfaces {

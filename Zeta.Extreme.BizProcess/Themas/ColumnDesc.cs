@@ -27,12 +27,12 @@ using Qorpent;
 using Qorpent.Applications;
 using Qorpent.Log;
 using Qorpent.Serialization;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 
 	#endregion
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model.PocoClasses;
 
 namespace Zeta.Extreme.BizProcess.Themas{
 

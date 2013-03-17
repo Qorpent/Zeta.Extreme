@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Data;
 using Qorpent.Applications;
 using Zeta.Extreme.Model.MetaCaches;
-using Zeta.Extreme.Model.PocoClasses;
 
 namespace Zeta.Extreme.Model.SqlSupport {
 	/// <summary>

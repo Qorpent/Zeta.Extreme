@@ -9,7 +9,6 @@
 #endregion
 
 using Qorpent.Model;
-using Zeta.Extreme.Model.PocoClasses;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IObjectType :

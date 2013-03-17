@@ -11,7 +11,7 @@
 using System;
 using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model.PocoClasses {
+namespace Zeta.Extreme.Model {
 	public class UserThemaMap : IUsrThemaMap {
 		public virtual int Id { get; set; }
 		public virtual IZetaUnderwriter Usr { get; set; }

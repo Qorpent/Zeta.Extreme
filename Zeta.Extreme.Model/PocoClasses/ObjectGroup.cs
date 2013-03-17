@@ -14,7 +14,7 @@ using System.Linq;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.SqlSupport;
 
-namespace Zeta.Extreme.Model.PocoClasses {
+namespace Zeta.Extreme.Model {
 	public partial class ObjectGroup : IZetaObjectGroup {
 		 public virtual Guid Uid { get; set; }
 

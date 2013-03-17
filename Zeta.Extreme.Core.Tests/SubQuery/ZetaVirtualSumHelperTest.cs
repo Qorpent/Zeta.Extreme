@@ -11,7 +11,6 @@
 
 using NUnit.Framework;
 using Zeta.Extreme.Model;
-using Zeta.Extreme.Model.PocoClasses;
 
 namespace Zeta.Extreme.Core.Tests.SubQuery {
 	[TestFixture]

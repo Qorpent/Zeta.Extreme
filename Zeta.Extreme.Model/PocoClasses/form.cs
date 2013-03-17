@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model.PocoClasses {
+namespace Zeta.Extreme.Model {
 	public class Form : IForm {
 		public virtual string TemplateCode { get; set; }
 
