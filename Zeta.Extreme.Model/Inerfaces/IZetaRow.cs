@@ -24,7 +24,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	
 	public interface IZetaRow : IZetaQueryDimension,
 		IZetaFormsSupport,
-		IWithMarkCache,  IWithMeasure {
+		IWithMarkCache,  IWithMeasure,IWithCurrency {
 		IDictionary<string, object> LocalProperties { get; }
 		 string ObjectGroups { get; set; }
 		 string FormElementType { get; set; }
@@ -32,7 +32,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		 string ColumnSubstitution { get; set; }
 		 string FullName { get; set; }
 		 string Role { get; set; }
-		 string Valuta { get; set; }
 		IZetaRow RefTo { get; set; }
 		int? ParentId { get; set; }
 		int? RefId { get; set; }

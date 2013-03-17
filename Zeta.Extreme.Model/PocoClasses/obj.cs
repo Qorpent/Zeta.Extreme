@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,7 +16,9 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/Obj.cs
+
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,104 +28,171 @@ using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
-	public partial class Obj : IZetaMainObject {
+	/// <summary>
+	/// Default implementation or ZetaObject entity of Zeta model
+	/// </summary>
+	public sealed partial class Obj : IZetaMainObject {
+		/// <summary>
+		/// </summary>
 		public Obj() {
-
 			Start = QorpentConst.Date.Begin;
 			Finish = QorpentConst.Date.End;
 			// Properties = new Dictionary<string, object>();
 		}
 
-		 public virtual IMainObjectGroup Holding { get; set; }
+		/// <summary>
+		/// Division of current ZetaObject
+		/// </summary>
+		public IMainObjectGroup Division { get; set; }
 
 
-		 public virtual IMainObjectRole Otrasl { get; set; }
+		/// <summary>
+		/// Point of ZetaObject's location
+		/// </summary>
+		public IZetaPoint Point { get; set; }
 
-		 public virtual IZetaPoint Municipal { get; set; }
 
-		 public virtual Guid Uid { get; set; }
+		/// <summary>
+		/// Helper code that maps any foreign coding system
+		/// </summary>
+		public string OuterCode { get; set; }
 
-		public virtual IList<IZetaDetailObject> links {
-			get { return DetailObjects; }
+		/// <summary>
+		/// ID (FK) of parent <see cref="Obj"/>
+		/// </summary>
+		/// <remarks>Intended to use with ORM/SQL scenario</remarks>
+		/// <exception cref="Exception">cannot setup ParentId when Parent is attached</exception>
+		public int? ParentId {
+			get {
+				if (null != Parent) return Parent.Id;
+				return _parentId;
+			}
+			set {
+				if (null != Parent) {
+					throw new Exception("cannot setup ParentId when Parent is attached");
+				}
+				_parentId = value;
+			}
+		}
+		/// <summary>
+		/// ID (FK) of <see cref="Point"/> that current is attached to
+		/// </summary>
+		/// <remarks>Intended to use with ORM/SQL scenario</remarks>
+		/// <exception cref="Exception">cannot setup PointId when Point is attached</exception>
+		public int? PointId {
+			get {
+				if (null != Point) return Point.Id;
+				return _pointId;
+			}
+			set {
+				if (null != Parent){
+					throw new Exception("cannot setup PointId when Point is attached");
+				}
+				_pointId = value;
+			}
 		}
 
-		public virtual string OuterCode { get; set; }
-		public virtual int? ParentId { get; set; }
+		/// <summary>
+		/// ID (FK) of <see cref="Department"/> that current is attached to
+		/// </summary>
+		/// <remarks>Intended to use with ORM/SQL scenario</remarks>
+		/// <exception cref="Exception">cannot setup DepartmentId when Department is attached</exception>
+		public int? DepartmentId
+		{
+			get
+			{
+				if (null != Department) return Department.Id;
+				return _departmentId;
+			}
+			set
+			{
+				if (null != Department)
+				{
+					throw new Exception("cannot setup DepartmentId when Department is attached");
+				}
+				_departmentId = value;
+			}
+		}
 
-		public virtual int? ZoneId { get; set; }
+		/// <summary>
+		/// ID (FK) of <see cref="ObjType"/> that current is attached to
+		/// </summary>
+		/// <remarks>Intended to use with ORM/SQL scenario</remarks>
+		public int? ObjTypeId
+		{
+			get
+			{
+				if (null != ObjType) return ObjType.Id;
+				return _objtypeId;
+			}
+			set
+			{
+				if (null != ObjType)
+				{
+					throw new Exception("cannot setup ObjTypeId when ObjType is attached");
+				}
+				_objtypeId = value;
+			}
+		}
 
-		public virtual int? RoleId { get; set; }
 
-		public virtual int? TypeId { get; set; }
+		
+		/// <summary>
+		/// Department of current ZetaObject (<c>ru</c>: <c>отрасль</c>)
+		/// </summary>
+		public IMainObjectRole Department { get; set; }
 
-		public virtual IDictionary<string, object> LocalProperties {
+		/// <summary>
+		/// Словарь локальных (временных) свойств
+		/// </summary>
+		public IDictionary<string, object> LocalProperties {
 			get { return localProperties ?? (localProperties = new Dictionary<string, object>()); }
 			set { localProperties = value; }
 		}
 
-		public virtual int? DivId { get; set; }
-		 public virtual string Path { get; set; }
+		public int? DivisionId { get; set; }
+		public string Path { get; set; }
 
-		 public virtual string Tag { get; set; }
-		 public virtual string Valuta { get; set; }
+		public string Tag { get; set; }
+		public string Currency { get; set; }
 
-		 public virtual string FullName { get; set; }
-		 public virtual string ShortName { get; set; }
+		public string FullName { get; set; }
+		public string ShortName { get; set; }
 
 		/// <summary>
-		/// 	Тип формулы
+		///     Тип формулы
 		/// </summary>
 		public string FormulaType { get; set; }
 
-		public virtual bool IsFormula {
+		public bool IsFormula {
 			get { return !string.IsNullOrWhiteSpace(Formula); }
 			set { _isFormula = value; }
 		}
 
-		 public virtual string Formula { get; set; }
-
-		
-
-		 public virtual bool ShowOnStartPage { get; set; }
+		public string Formula { get; set; }
 
 
-		 public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
+		public bool ShowOnStartPage { get; set; }
 
 
-		 public virtual int Id { get; set; }
-
-		 public virtual string Name { get; set; }
+		public IList<IZetaDetailObject> DetailObjects { get; set; }
 
 
-		 public virtual string GroupCache { get; set; }
+		public int Id { get; set; }
 
-		 public virtual string Code { get; set; }
-
-		 public virtual string Comment { get; set; }
-
-		 public virtual DateTime Version { get; set; }
-
-		
-
-		 public virtual string Address { get; set; }
-
-		public virtual IMainObjectGroup Group {
-			get { return Holding; }
-			set { Holding = value; }
-		}
-
-		public virtual IMainObjectRole Role {
-			get { return Otrasl; }
-			set { Otrasl = value; }
-		}
-
-		public virtual IZetaPoint Location {
-			get { return Municipal; }
-			set { Municipal = value; }
-		}
+		public string Name { get; set; }
 
 
-		public virtual IEnumerable<IZetaMainObject> AllChildren(int level, string typefiler) {
+		public string GroupCache { get; set; }
+
+		public string Code { get; set; }
+
+		public string Comment { get; set; }
+
+		public DateTime Version { get; set; }
+
+
+		public IEnumerable<IZetaMainObject> AllChildren(int level, string typefiler) {
 			if (0 == level) {
 				yield break;
 			}
@@ -137,79 +207,57 @@ namespace Zeta.Extreme.Model {
 		}
 
 
-		public virtual int Level {
-			get { return Path.Count(x => x == '/') - 2; }
+		public IList<IUsrThemaMap> UserBizCaseMaps { get; set; }
+
+		public string[] GetConfiguredBizCaseCodes() {
+			return UserBizCaseMaps.Select(x => x.ThemaCode).Distinct().ToArray();
 		}
 
-		public virtual IList<IUsrThemaMap> UsrThemaMaps { get; set; }
-
-		public virtual string[] GetConfiguredThemaCodes() {
-			return UsrThemaMaps.Select(x => x.ThemaCode).Distinct().ToArray();
+		public IZetaUser[] GetConfiguredUsers() {
+			return UserBizCaseMaps.Select(x => x.Usr).Distinct().ToArray();
 		}
 
-		public virtual IZetaUnderwriter[] GetConfiguredUsers() {
-			return UsrThemaMaps.Select(x => x.Usr).Distinct().ToArray();
+		public IUsrThemaMap GetUserMap(string themacode, bool plan) {
+			return UserBizCaseMaps.FirstOrDefault(x => x.ThemaCode == themacode && x.IsPlan == plan);
 		}
 
-		public virtual IUsrThemaMap GetUserMap(string themacode, bool plan) {
-			return UsrThemaMaps.FirstOrDefault(x => x.ThemaCode == themacode && x.IsPlan == plan);
+		public string[] GetConfiguredThemas(IZetaUser usr, bool plan) {
+			return
+				UserBizCaseMaps.Where(x => x.Usr.Id == usr.Id && x.IsPlan == plan).Select(x => x.ThemaCode).Distinct().ToArray();
 		}
 
-		public virtual string[] GetConfiguredThemas(IZetaUnderwriter usr, bool plan) {
-			return UsrThemaMaps.Where(x => x.Usr.Id == usr.Id && x.IsPlan == plan).Select(x => x.ThemaCode).Distinct().ToArray();
-		}
+		public IList<IZetaUser> Users { get; set; }
 
-		 public virtual IList<IZetaUnderwriter> Underwriters { get; set; }
-
-
-
-		public virtual IList<IZetaDetailObject> AlternateDetailObjects { get; set; }
 
 		//public virtual IList<IDocumentOfCorrections> Documents { get; set; }
 
-		
-		 public virtual int Idx { get; set; }
-		 public virtual DateTime Start { get; set; }
-		 public virtual DateTime Finish { get; set; }
 
-		public virtual IObjectType ObjType { get; set; }
+		public int Idx { get; set; }
+		public DateTime Start { get; set; }
+		public DateTime Finish { get; set; }
+
+		public IObjectType ObjType { get; set; }
 
 		IObjectType IWithDetailObjectType.Type {
 			get { return ObjType; }
 			set { ObjType = value; }
 		}
 
-		public virtual IZetaMainObject Parent { get; set; }
-		public virtual IList<IZetaMainObject> Children { get; set; }
+		public IZetaMainObject Parent { get; set; }
+		public IList<IZetaMainObject> Children { get; set; }
 
-		public virtual IEnumerable<IZetaMainObject> AllChildren() {
-			return AllChildren(10, null);
-		}
-
-		public virtual IDictionary<string, object> Properties {
+		public IDictionary<string, object> Properties {
 			get { return properties ?? (properties = new Dictionary<string, object>()); }
 			protected set { properties = value; }
 		}
 
-		public virtual IMainObjectRole Type {
-			get { return Otrasl; }
-		}
-
-		public virtual IList<IZetaDetailObject> InLinks {
-			get { return AlternateDetailObjects; }
-		}
-
-		public virtual IList<IZetaDetailObject> OutLinks {
-			get { return DetailObjects; }
-		}
-
-		public virtual MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null,
+		public MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null,
 		                                         string system = "Default") {
 			//TODO: implement!!! 
 			throw new NotImplementedException();
 		}
 
-		public virtual string ResolveTag(string name) {
+		public string ResolveTag(string name) {
 			var tag = TagHelper.Value(Tag, name);
 			if (tag.IsEmpty() && null != ObjType) {
 				tag = ObjType.ResolveTag(name);
@@ -220,40 +268,7 @@ namespace Zeta.Extreme.Model {
 			return tag ?? "";
 		}
 
-		private bool matchTypeFilter(IZetaMainObject child, string typefiler) {
-			if (typefiler.IsEmpty()) {
-				return true;
-			}
-			if (null == child.ObjType) {
-				return false;
-			}
-			var s = "/" + child.ObjType.Class.Code + "/" + child.ObjType.Code + "/";
-			return Regex.IsMatch(s, typefiler);
-		}
-
-		private IList<IZetaObjectGroup> _groups;
-		private bool _isFormula;
-		private IDictionary<string, object> localProperties;
-		private IDictionary<string, object> properties;
-
-		public virtual bool Equals(Obj org) {
-			if (org == null) {
-				return false;
-			}
-			if (Id != org.Id) {
-				return false;
-			}
-			if (!Equals(Name, org.Name)) {
-				return false;
-			}
-			if (!Equals(Code, org.Code)) {
-				return false;
-			}
-
-			return true;
-		}
-
-		public virtual bool IsMatchZoneAcronim(string s) {
+		public bool IsMatchZoneAcronym(string s) {
 			s = s.ToUpper();
 			if (!s.Contains("_")) {
 				if (Regex.IsMatch(s, @"^\d+$")) {
@@ -269,18 +284,50 @@ namespace Zeta.Extreme.Model {
 				return GroupCache.ToUpper().Contains("/" + grp + "/");
 			}
 			if (s.StartsWith("DIV_")) {
-				if (null == Group) {
+				if (null == Division) {
 					return false;
 				}
-				return Group.Code.ToUpper() == s.Substring(4);
+				return Division.Code.ToUpper() == s.Substring(4);
 			}
 			if (s.StartsWith("OTR_")) {
-				if (null == Role) {
+				if (null == Department) {
 					return false;
 				}
-				return Role.Code.ToUpper() == s.Substring(4);
+				return Department.Code.ToUpper() == s.Substring(4);
 			}
 			return GroupCache.ToUpper().Contains("/" + s + "/");
+		}
+
+		public IEnumerable<IZetaMainObject> AllChildren() {
+			return AllChildren(10, null);
+		}
+
+		private bool matchTypeFilter(IZetaMainObject child, string typefiler) {
+			if (typefiler.IsEmpty()) {
+				return true;
+			}
+			if (null == child.ObjType) {
+				return false;
+			}
+			var s = "/" + child.ObjType.Class.Code + "/" + child.ObjType.Code + "/";
+			return Regex.IsMatch(s, typefiler);
+		}
+
+		public bool Equals(Obj org) {
+			if (org == null) {
+				return false;
+			}
+			if (Id != org.Id) {
+				return false;
+			}
+			if (!Equals(Name, org.Name)) {
+				return false;
+			}
+			if (!Equals(Code, org.Code)) {
+				return false;
+			}
+
+			return true;
 		}
 
 		public override bool Equals(object obj) {
@@ -298,14 +345,22 @@ namespace Zeta.Extreme.Model {
 			return result;
 		}
 
-		public virtual Detail[] FindOwnSubparts() {
+		public Detail[] FindOwnSubparts() {
 			return DetailObjects.Cast<Detail>().ToArray();
 		}
 
-	
 
-		public virtual int CountOwnSubparts() {
+		public int CountOwnSubparts() {
 			return DetailObjects.Count;
 		}
+
+		private IList<IZetaObjectGroup> _groups;
+		private bool _isFormula;
+		private IDictionary<string, object> localProperties;
+		private IDictionary<string, object> properties;
+		private int? _parentId;
+		private int? _pointId;
+		private int? _departmentId;
+		private int? _objtypeId;
 	}
 }

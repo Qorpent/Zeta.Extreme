@@ -96,7 +96,10 @@ namespace Zeta.Extreme.Model {
 			}
 		}
 
-		 public virtual string Valuta { get; set; }
+		/// <summary>
+		///Currency of entity
+		/// </summary>
+		public virtual string Currency { get; set; }
 
 		 public virtual bool IsDynamicLookup { get; set; }
 
@@ -338,13 +341,13 @@ namespace Zeta.Extreme.Model {
 			var ins = intag.ToUpper().SmartSplit();
 			var exs = extag.ToUpper().SmartSplit();
 			foreach (var ex in exs) {
-				if (obj.IsMatchZoneAcronim(ex)) {
+				if (obj.IsMatchZoneAcronym(ex)) {
 					return false;
 				}
 			}
 			if (ins.Count > 0) {
 				foreach (var i in ins) {
-					if (obj.IsMatchZoneAcronim(i)) {
+					if (obj.IsMatchZoneAcronym(i)) {
 						return true;
 					}
 				}

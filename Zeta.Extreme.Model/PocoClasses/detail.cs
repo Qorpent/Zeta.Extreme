@@ -39,7 +39,11 @@ namespace Zeta.Extreme.Model {
 		 [IgnoreSerialize] public virtual Guid Uid { get; set; }
 		
 		 public virtual string Path { get; set; }
-		 public virtual string Valuta { get; set; }
+
+		/// <summary>
+		///Currency of entity
+		/// </summary>
+		public virtual string Currency { get; set; }
 
 		 public virtual DateTime Start { get; set; }
 

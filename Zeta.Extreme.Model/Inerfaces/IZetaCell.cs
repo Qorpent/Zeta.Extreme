@@ -24,7 +24,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	/// 	Интерефейс ячейки куба
 	/// </summary>
 	public interface IZetaCell :
-		IWithUsr, IWithId, IWithVersion {
+		IWithUsr, IWithId, IWithVersion, IWithCurrency {
 		/// <summary>
 		/// Строка
 		/// </summary>
@@ -58,11 +58,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// Прямая дата
 		/// </summary>
 		DateTime DirectDate { get; set; }
-
-		/// <summary>
-		/// Валюта ячейки
-		/// </summary>
-		string Valuta { get; set; }
 		
 		/// <summary>
 		/// Ид контрагента

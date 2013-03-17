@@ -59,7 +59,10 @@ namespace Zeta.Extreme.Model {
 
 		 public virtual string Lookup { get; set; }
 
-		 public virtual string Valuta { get; set; }
+		/// <summary>
+		///Currency of entity
+		/// </summary>
+		public virtual string Currency { get; set; }
 
 		 public virtual bool IsDynamicLookup { get; set; }
 

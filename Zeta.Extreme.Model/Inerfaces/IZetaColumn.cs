@@ -23,9 +23,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	
 	
 	public interface IZetaColumn : IZetaQueryDimension,
-		IWithMarkCache, IWithMeasure {
-		string Valuta { get; set; }
-		IDictionary<string, object> LocalProperties { get; set; }
+		IWithMarkCache, IWithMeasure,IWithCurrency {
 		/// <summary>
 		/// 	Поддержка режима "колонка как заместитель колсета"
 		/// </summary>

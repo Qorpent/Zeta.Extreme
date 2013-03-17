@@ -24,13 +24,12 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IZetaDetailObject : IZetaObject,
 		ICanResolveTag,
 		IWithDetailObjectType,
-		IWithDetailObjects, IWithOuterCode, IEntity {
+		IWithDetailObjects, IWithOuterCode, IEntity,IWithCurrency {
 		string Verb { get; set; }
 		IZetaDetailObject Parent { get; set; }
 		IZetaPoint Location { get; set; }
 		string FullName { get; set; }
 		bool InverseControl { get; set; }
-		string Valuta { get; set; }
 
 		 decimal Number1 { get; set; }
 

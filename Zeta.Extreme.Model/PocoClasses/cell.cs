@@ -45,10 +45,11 @@ namespace Zeta.Extreme.Model {
 		/// </summary>
 		public virtual IZetaDetailObject Detail { get; set; }
 
+
 		/// <summary>
-		/// Валюта ячейки
+		///Currency of entity
 		/// </summary>
-		public virtual string Valuta { get; set; }
+		public virtual string Currency { get; set; }
 		/// <summary>
 		/// Признак неизменяемой ячейки
 		/// </summary>
