@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Forms;
@@ -74,7 +76,26 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
         }
 
         [Test]
-        public void CanFind() {}
+        public void CanFind()
+        {
+            Attachment attachment = GetNewAttach();
+            Attachment found;
+
+
+            _mdb.Save(attachment);
+            using (var s = _mdb.Open(attachment, FileAccess.Write))
+            {
+                s.Write(_source, 0, _source.Length);
+                s.Flush();
+            }
+
+            found = _mdb.Find(attachment).FirstOrDefault();
+
+            Assert.NotNull(found);
+            Assert.AreEqual(attachment.Comment, found.Comment);
+            Assert.AreEqual(attachment.Uid, found.Uid);
+
+        }
 
         [Test]
         public void CanOpenStream() {
