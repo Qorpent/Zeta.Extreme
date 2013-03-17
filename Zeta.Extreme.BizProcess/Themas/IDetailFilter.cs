@@ -35,6 +35,6 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// </summary>
 		/// <param name="allObjects"> </param>
 		/// <returns> </returns>
-		IList<IZetaDetailObject> GetDetails(IEnumerable<IZetaDetailObject> allObjects);
+		IList<IZetaObj> GetDetails(IEnumerable<IZetaObj> allObjects);
 	}
 }

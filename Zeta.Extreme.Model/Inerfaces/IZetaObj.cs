@@ -21,12 +21,12 @@ using Qorpent.Model;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	
-	public interface IZetaDetailObject : IZetaObject,
+	public interface IZetaObj : IZetaObject,
 		ICanResolveTag,
-		IWithDetailObjectType,
+		IWithObjType,
 		IWithDetailObjects, IWithOuterCode, IEntity,IWithCurrency {
 		string Verb { get; set; }
-		IZetaDetailObject Parent { get; set; }
+		IZetaObj Parent { get; set; }
 		IZetaPoint Location { get; set; }
 		string FullName { get; set; }
 		bool InverseControl { get; set; }

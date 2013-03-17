@@ -29,7 +29,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	/// </summary>
 	public interface IZetaMainObject : IZetaQueryDimension,
 	                                   ICanResolveTag,
-	                                   IWithDetailObjectType,
+	                                   IWithObjType,
 	                                   IWithProperties, IWithDetailObjects, IZetaObject,IWithOuterCode,IWithCurrency {
 		/// <summary>
 		/// Slash-delimited list of groups that ZetaObject is attached to
@@ -173,7 +173,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// Retrieves all children in  hierarchy down
 		/// </summary>
 		/// <returns></returns>
-		IEnumerable<IZetaMainObject> AllChildren(int level =0, string typefilter = null);
+		IEnumerable<IZetaMainObject> AllChildren(int level =100, string typefilter = null);
 
 		/// <summary>
 		/// Checkout if current ZetaObject is match acronym of zone

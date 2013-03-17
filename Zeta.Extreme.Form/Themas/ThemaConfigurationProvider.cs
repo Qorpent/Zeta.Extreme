@@ -469,7 +469,7 @@ namespace Zeta.Extreme.Form.Themas {
 						AutoImport = thema.Attr("autoimport").ToBool(),
 						Layout = thema.Attr("layout", "default"),
 						Abstract = thema.Attr("abst").ToBool(),
-						Idx = thema.Attr("idx").ToInt(),
+						Index = thema.Attr("idx").ToInt(),
 						SrcXml = thema,
 					};
 				thema.Apply(desc, "id", "name", "code", "active", "autoimport", "layout", "abst", "idx");

@@ -38,6 +38,6 @@ namespace Zeta.Extreme.Model {
 
 		 public virtual DateTime Version { get; set; }
 
-		public virtual int Idx { get; set; }
+		public virtual int Index { get; set; }
 	}
 }

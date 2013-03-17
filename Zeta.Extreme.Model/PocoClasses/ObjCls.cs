@@ -14,26 +14,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.Model/Point.cs
+// PROJECT ORIGIN: Zeta.Extreme.Model/ObjCls.cs
 #endregion
 using System;
 using System.Collections.Generic;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
-	/// <summary>
-	/// 
-	/// </summary>
-	public partial class Point : IZetaPoint {
+	public partial class ObjCls : IDetailObjectClass {
 		 public virtual Guid Uid { get; set; }
 
-		public virtual string Tag { get; set; }
 
-		 public virtual IList<IZetaMainObject> MainObjects { get; set; }
+		public virtual MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null,
+		                                         string system = "Default") {
+			//TODO: implement!!! 
+			throw new NotImplementedException();
+			/*
+			var query = new MetalinkRecord
+			{
+				Src = this.Code,
+				SrcType = "zeta.objcls",
+				TrgType = nodetype,
+				Type = linktype,
+				SubType = subtype,
+				Active = true,
+			};
+			return new MetalinkRepository().Search(query, system);
+			 */
+		}
 
-		 public virtual IZetaRegion Region { get; set; }
+		 public virtual string Tag { get; set; }
 
-		
+		 public virtual IList<IObjectType> Types { get; set; }
 
 		 public virtual int Id { get; set; }
 
@@ -45,8 +58,10 @@ namespace Zeta.Extreme.Model {
 
 		 public virtual DateTime Version { get; set; }
 
-		public virtual int Idx { get; set; }
+		public virtual int Index { get; set; }
 
-		public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
+		public virtual string ResolveTag(string name) {
+			return TagHelper.Value(Tag, name);
+		}
 	}
 }

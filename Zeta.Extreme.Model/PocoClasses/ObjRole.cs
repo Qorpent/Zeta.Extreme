@@ -14,28 +14,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.Model/BizTran.cs
+// PROJECT ORIGIN: Zeta.Extreme.Model/ObjRole.cs
 #endregion
 using System;
+using System.Collections.Generic;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
-	public partial class BizTran : IBizTran {
-		private const string nodef = "Не определено";
+	/// <summary>
+	/// 
+	/// </summary>
+	public partial class ObjRole : IMainObjectRole {
+		 public virtual Guid Uid { get; set; }
 
-		public BizTran() {
-			Name = nodef;
-			FirstType = nodef;
-			FirstRole = nodef;
-			FirstForm = nodef;
-			SecondType = nodef;
-			SecondRole = nodef;
-			SecondForm = nodef;
-		}
+		public virtual string Tag { get; set; }
+
+		 public virtual IList<IZetaMainObject> MainObjects { get; set; }
 
 		 public virtual int Id { get; set; }
-
-		 public virtual string Tag { get; set; }
 
 		 public virtual string Name { get; set; }
 
@@ -45,21 +41,8 @@ namespace Zeta.Extreme.Model {
 
 		 public virtual DateTime Version { get; set; }
 
-		 public virtual string FirstType { get; set; }
+		public virtual int Index { get; set; }
 
-		 public virtual string FirstRole { get; set; }
-
-		 public virtual string FirstForm { get; set; }
-
-		 public virtual string SecondType { get; set; }
-
-		 public virtual string SecondRole { get; set; }
-
-		 public virtual string SecondForm { get; set; }
-
-		/// <summary>
-		/// 	An index of object
-		/// </summary>
-		public virtual int Idx { get; set; }
+		public virtual bool ShowOnStartPage { get; set; }
 	}
 }

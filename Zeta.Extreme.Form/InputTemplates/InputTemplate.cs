@@ -808,7 +808,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <param name="obj"> The obj. </param>
 		/// <param name="detail"> </param>
 		/// <returns> </returns>
-		public string GetState(IZetaMainObject obj, IZetaDetailObject detail) {
+		public string GetState(IZetaMainObject obj, IZetaObj detail) {
 			return GetState(obj, detail, null);
 		}
 
@@ -819,7 +819,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <param name="detail"> </param>
 		/// <param name="statecache"> </param>
 		/// <returns> </returns>
-		public string GetState(IZetaMainObject obj, IZetaDetailObject detail, IDictionary<string, object> statecache) {
+		public string GetState(IZetaMainObject obj, IZetaObj detail, IDictionary<string, object> statecache) {
 			if (!IsActualOnYear) {
 				return "0ISBLOCK";
 			}
@@ -871,7 +871,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <param name="detail"> </param>
 		/// <param name="state"> </param>
 		/// <returns> </returns>
-		public string CanSetState(IZetaMainObject obj, IZetaDetailObject detail, string state) {
+		public string CanSetState(IZetaMainObject obj, IZetaObj detail, string state) {
 			if (CanSetTask != null) {
 				CanSetTask.Wait();
 			}
@@ -935,7 +935,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <param name="detail"> </param>
 		/// <param name="state"> </param>
 		/// <returns> </returns>
-		public int SetState(IZetaMainObject obj, IZetaDetailObject detail, string state) {
+		public int SetState(IZetaMainObject obj, IZetaObj detail, string state) {
 			return SetState(obj, detail, state, false, 0);
 		}
 
@@ -970,7 +970,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <param name="parent"> </param>
 		/// <returns> </returns>
 		/// <exception cref="Exception"></exception>
-		public int SetState(IZetaMainObject obj, IZetaDetailObject detail, string state, bool skipcheck = false,
+		public int SetState(IZetaMainObject obj, IZetaObj detail, string state, bool skipcheck = false,
 		                    int parent = 0) {
 			if (GetState(obj, detail) == state) {
 				return parent;
@@ -1312,7 +1312,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			return GroupFilterHelper.IsMatch(obj, ForGroup);
 		}
 
-		private string DirectCanSetState(IZetaMainObject obj, IZetaDetailObject detail, string state) {
+		private string DirectCanSetState(IZetaMainObject obj, IZetaObj detail, string state) {
 			obj = FixedObject ?? obj;
 			return _cansetstateCache.CachedGet(state, () =>
 				{
@@ -1322,7 +1322,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				});
 		}
 
-		private string internalGetState(IZetaMainObject obj, IZetaDetailObject detail, IDictionary<string, object> statecache) {
+		private string internalGetState(IZetaMainObject obj, IZetaObj detail, IDictionary<string, object> statecache) {
 			obj = FixedObject ?? obj;
 			if (UnderwriteCode.IsEmpty()) {
 				return "0ISOPEN";
@@ -1382,7 +1382,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		}
 
 
-		private int processStateRow(IZetaDetailObject detail, IZetaMainObject obj, int period, string state,
+		private int processStateRow(IZetaObj detail, IZetaMainObject obj, int period, string state,
 		                            string comment, int parent) {
 			var result = StateManager.DoSet(obj.Id, Year, period, UnderwriteCode, Code, Application.Current.Principal.CurrentUser.Identity.Name, state, comment, parent);
 #if OLDSTATES

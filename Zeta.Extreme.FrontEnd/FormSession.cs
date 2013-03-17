@@ -857,7 +857,7 @@ namespace Zeta.Extreme.FrontEnd {
 				       from filetypedesc in filetypes
 				       from formcode in TagHelper.Value(filetypedesc.Tag, "form").Split(',')
 				       where "any" == formcode || Template.Thema.Code == formcode
-				       orderby filetypedesc.Idx
+				       orderby filetypedesc.Index
 				       select new FileTypeRecord {code = filetypedesc.OuterCode, name = filetypedesc.Name}
 			       ).ToArray();
 		}

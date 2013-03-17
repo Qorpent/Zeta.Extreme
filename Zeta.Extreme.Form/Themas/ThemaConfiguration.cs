@@ -133,7 +133,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <summary>
 		/// 	Порядковый номер темы
 		/// </summary>
-		public int Idx { get; set; }
+		public int Index { get; set; }
 
 		/// <summary>
 		/// 	Происхождение темы
@@ -201,7 +201,7 @@ namespace Zeta.Extreme.Form.Themas {
 			result.Code = Code;
 			result.Name = Name;
 			result.Role = Role;
-			result.Idx = Idx;
+			result.Idx = Index;
 			if (ConfigurationProvider.Options.LoadIerarchy) {
 				result.IsGroup = IsGroup;
 				result.Group = Group;

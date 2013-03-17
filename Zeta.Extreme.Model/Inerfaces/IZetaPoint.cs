@@ -26,6 +26,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		IWithMainObjects,
 		IEntity {
 		IZetaRegion Region { get; set; }
-		IList<IZetaDetailObject> DetailObjects { get; set; }
+		IList<IZetaObj> DetailObjects { get; set; }
 		}
 }

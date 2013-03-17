@@ -43,7 +43,7 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		/// Младший объект
 		/// </summary>
-		public virtual IZetaDetailObject Detail { get; set; }
+		public virtual IZetaObj Detail { get; set; }
 
 
 		/// <summary>

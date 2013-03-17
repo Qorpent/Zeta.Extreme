@@ -110,9 +110,9 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// 	An index of object
 		/// </summary>
-		public int Idx {
-			get { return _idx; }
-			set { _idx = value; }
+		public int Index {
+			get { return _index; }
+			set { _index = value; }
 		}
 
 		/// <summary>
@@ -315,6 +315,6 @@ namespace Zeta.Extreme.FrontEnd {
 
 		private readonly bool _doNotRun;
 		private TimeSpan _formulaRegisterTime;
-		private int _idx = -100;
+		private int _index = -100;
 	}
 }

@@ -1,4 +1,4 @@
-﻿#region LICENSE
+#region LICENSE
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.Model/ObjRole.cs
+// PROJECT ORIGIN: Zeta.Extreme.Model/Zone.cs
 #endregion
 using System;
 using System.Collections.Generic;
@@ -24,12 +24,12 @@ namespace Zeta.Extreme.Model {
 	/// <summary>
 	/// 
 	/// </summary>
-	public partial class ObjRole : IMainObjectRole {
+	public partial class Zone : IZetaZone {
 		 public virtual Guid Uid { get; set; }
 
 		public virtual string Tag { get; set; }
 
-		 public virtual IList<IZetaMainObject> MainObjects { get; set; }
+		 public virtual IList<IZetaRegion> Regions { get; set; }
 
 		 public virtual int Id { get; set; }
 
@@ -41,8 +41,9 @@ namespace Zeta.Extreme.Model {
 
 		 public virtual DateTime Version { get; set; }
 
-		public virtual int Idx { get; set; }
-
-		public virtual bool ShowOnStartPage { get; set; }
+		/// <summary>
+		/// 	An index of object
+		/// </summary>
+		public int Index { get; set; }
 	}
 }

@@ -82,7 +82,7 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		/// 	An index of object
 		/// </summary>
-		public int Idx { get; set; }
+		public int Index { get; set; }
 
 		public virtual bool IsInRole(string role) {
 			return Roles.SmartSplit().Contains(role);

@@ -33,7 +33,7 @@ namespace Zeta.Extreme.Core.Tests {
 				{
 					Row = { Code = "m260113" },
 					Col = { Code = "Á1" },
-					Obj = { Id = 352, Type = ObjType.Obj },
+					Obj = { Id = 352, Type = ZoneType.Obj },
 					Time = { Year = 2012, Period = 1 }
 				}
 				;
@@ -43,7 +43,7 @@ namespace Zeta.Extreme.Core.Tests {
 				{
 					Row = {Code = "m260113"},
 					Col = {Code = "Á1"},
-					Obj = {Id = 352, Type = ObjType.Obj},
+					Obj = {Id = 352, Type = ZoneType.Obj},
 					Time = {Year = 2012, Period = 1},
 					Valuta = "USD",
 				};

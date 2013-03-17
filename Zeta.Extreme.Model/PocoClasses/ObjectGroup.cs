@@ -55,7 +55,7 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		/// 	An index of object
 		/// </summary>
-		public int Idx { get; set; }
+		public int Index { get; set; }
 
 		private IList<IZetaMainObject> _objcache;
 	}

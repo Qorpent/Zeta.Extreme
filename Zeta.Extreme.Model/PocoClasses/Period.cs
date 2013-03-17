@@ -98,7 +98,7 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		/// 	An index of object
 		/// </summary>
-		public virtual int Idx { get; set; }
+		public virtual int Index { get; set; }
 
 		/// <summary>
 		/// 	Название/имя

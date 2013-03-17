@@ -24,7 +24,7 @@ namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Интерфейс конфигурации темы
 	/// </summary>
-	public interface IThemaConfiguration : IWithCode, IWithName, IWithIdx {
+	public interface IThemaConfiguration : IWithCode, IWithName, IWithIndex {
 		/// <summary>
 		/// 	Признак активности конфигурации
 		/// </summary>

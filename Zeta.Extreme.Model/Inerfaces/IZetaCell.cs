@@ -40,7 +40,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <summary>
 		/// Младший объект
 		/// </summary>
-		IZetaDetailObject Detail { get; set; }
+		IZetaObj Detail { get; set; }
 		/// <summary>
 		/// Контрагент
 		/// </summary>

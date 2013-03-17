@@ -24,7 +24,7 @@ using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
-	public partial class Detail : IZetaDetailObject {
+	public partial class Detail : IZetaObj {
 		public Detail() {
 			
 			Start = QorpentConst.Date.Begin;
@@ -58,7 +58,7 @@ namespace Zeta.Extreme.Model {
 		 public virtual DateTime Date2 { get; set; }
 
 		 public virtual string Tag { get; set; }
-		public virtual int Idx { get; set; }
+		public virtual int Index { get; set; }
 
 		[Serialize] public virtual IZetaMainObject Object {
 			get { return Org; }
@@ -78,7 +78,7 @@ namespace Zeta.Extreme.Model {
 		 public virtual DateTime Version { get; set; }
 
 
-		[Serialize] public virtual IObjectType Type { get; set; }
+		[Serialize] public virtual IObjectType ObjType { get; set; }
 
 		[Serialize] public virtual IZetaMainObject AltObject {
 			get { return AltParent; }
@@ -87,10 +87,10 @@ namespace Zeta.Extreme.Model {
 
 		public virtual string Verb { get; set; }
 
-		public virtual IZetaDetailObject Parent { get; set; }
+		public virtual IZetaObj Parent { get; set; }
 		public virtual IZetaPoint Location { get; set; }
 
-		public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
+		public virtual IList<IZetaObj> Details { get; set; }
 
 		public virtual string aCode {
 			get { return (Object == null ? "NONE" : Object.Code) ?? "NONE"; }
@@ -136,7 +136,7 @@ namespace Zeta.Extreme.Model {
 		public virtual string ResolveTag(string name) {
 			var tag = TagHelper.Value(Tag, name);
 			if (tag.IsEmpty()) {
-				tag = Type.ResolveTag(name);
+				tag = ObjType.ResolveTag(name);
 			}
 			if (tag.IsEmpty() && null != Parent) {
 				tag = Parent.ResolveTag(name);
@@ -151,7 +151,7 @@ namespace Zeta.Extreme.Model {
 			return false;
 		}
 
-		public virtual bool Equals(IZetaDetailObject detail) {
+		public virtual bool Equals(IZetaObj detail) {
 			if (detail == null) {
 				return false;
 			}
@@ -172,7 +172,7 @@ namespace Zeta.Extreme.Model {
 			if (ReferenceEquals(this, obj)) {
 				return true;
 			}
-			return Equals(obj as IZetaDetailObject);
+			return Equals(obj as IZetaObj);
 		}
 
 		public override int GetHashCode() {

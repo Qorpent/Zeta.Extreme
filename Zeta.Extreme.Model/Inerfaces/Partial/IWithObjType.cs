@@ -17,7 +17,13 @@
 // PROJECT ORIGIN: Zeta.Extreme.Model/IWithDetailObjectType.cs
 #endregion
 namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IWithDetailObjectType {
-		IObjectType Type { get; set; }
+	/// <summary>
+	/// Aspect of Zeta entity to be attached to certain <see cref="IObjectType" /> instance
+	/// </summary>
+	public interface IWithObjType {
+		/// <summary>
+		/// ObjType to which instance is attached
+		/// </summary>
+		IObjectType ObjType { get; set; }
 	}
 }

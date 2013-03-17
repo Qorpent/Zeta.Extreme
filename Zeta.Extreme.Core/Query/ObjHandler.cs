@@ -29,7 +29,8 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Тип зоны
 		/// </summary>
-		public ObjType Type {
+		/// <exception cref="Exception">cannot set type on natived zones</exception>
+		public ZoneType Type {
 			get {
 				if (null != Native) {
 					return GetNativeType(Native);
@@ -57,14 +58,14 @@ namespace Zeta.Extreme {
 		/// 	Шоткат для быстрой проверки что речь идет о предприятии
 		/// </summary>
 		public bool IsForObj {
-			get { return Type == ObjType.Obj; }
+			get { return Type == ZoneType.Obj; }
 		}
 
 		/// <summary>
 		/// 	Шоткат для быстрой проверки что речь идет не о предприятии
 		/// </summary>
 		public bool IsNotForObj {
-			get { return Type != ObjType.Obj; }
+			get { return Type != ZoneType.Obj; }
 		}
 
 		/// <summary>
@@ -91,13 +92,13 @@ namespace Zeta.Extreme {
 			if (IsStandaloneSingletonDefinition()) {
 				var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 				switch (Type) {
-					case ObjType.Obj:
+					case ZoneType.Obj:
 						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
 						break;
-					case ObjType.Div:
+					case ZoneType.Div:
 						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
 						break;
-					case ObjType.Grp:
+					case ZoneType.Grp:
 						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
 						break;
 				}
@@ -112,20 +113,21 @@ namespace Zeta.Extreme {
 			base.Apply(item);
 		}
 
-		private ObjType GetNativeType(IZetaObject native) {
+		private ZoneType GetNativeType(IZetaObject native)
+		{
 			if (null != (native as IZetaMainObject)) {
-				return ObjType.Obj;
+				return ZoneType.Obj;
 			}
-			if (null != (native as IZetaDetailObject)) {
-				return ObjType.Detail;
+			if (null != (native as IZetaObj)) {
+				return ZoneType.Detail;
 			}
 			if (null != (native as IZetaObjectGroup)) {
-				return ObjType.Grp;
+				return ZoneType.Grp;
 			}
 			if (null != (native as IMainObjectGroup)) {
-				return ObjType.Div;
+				return ZoneType.Div;
 			}
-			return ObjType.Unknown;
+			return ZoneType.Unknown;
 		}
 
 		/// <summary>
@@ -134,7 +136,8 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		protected override string EvalCacheKey() {
 			var prefix = (int) Type + "::";
-			if (Type != ObjType.Detail && DetailMode != DetailMode.None) {
+			if (Type != ZoneType.Detail && DetailMode != DetailMode.None)
+			{
 				prefix += "d:" + (int) DetailMode + "/";
 			}
 			return prefix + base.EvalCacheKey();
@@ -148,10 +151,12 @@ namespace Zeta.Extreme {
 		public override bool IsStandaloneSingletonDefinition(bool nativefalse = true) {
 			var result = base.IsStandaloneSingletonDefinition(nativefalse);
 			if (result) {
-				if (Type == ObjType.None) {
+				if (Type == ZoneType.None)
+				{
 					return false;
 				}
-				if (Type == ObjType.Unknown) {
+				if (Type == ZoneType.Unknown)
+				{
 					return false;
 				}
 			}
@@ -159,6 +164,6 @@ namespace Zeta.Extreme {
 		}
 
 
-		private ObjType _type;
+		private ZoneType _type;
 	}
 }

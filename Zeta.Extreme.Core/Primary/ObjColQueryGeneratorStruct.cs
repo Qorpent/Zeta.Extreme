@@ -42,6 +42,6 @@ namespace Zeta.Extreme.Primary {
 		/// <summary>
 		/// 	Тип объекта
 		/// </summary>
-		public ObjType t;
+		public ZoneType t;
 	}
 }

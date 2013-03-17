@@ -24,7 +24,6 @@ using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
-using ObjType = Zeta.Extreme.Model.Querying.ObjType;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
 	[TestFixture(Description = "Проверка корректности и уникальности кэш строк")]
@@ -57,14 +56,14 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 					Time = {Year = fstyear, BaseYear = fstbaseyear, Period = fstperiod, BasePeriod = fstbaseperiod},
 					Row = {Code = "m260113"},
 					Col = {Code = "Б1"},
-					Obj = {Id = 352, Type = ObjType.Obj}
+					Obj = {Id = 352, Type = ZoneType.Obj}
 				};
 			var q2 = new Query
 				{
 					Time = {Year = secondyear, BaseYear = secondbaseyear, Period = secondperiod, BasePeriod = secondbaseperiod},
 					Row = {Code = "m260113"},
 					Col = {Code = "Б1"},
-					Obj = {Id = 352, Type = ObjType.Obj}
+					Obj = {Id = 352, Type = ZoneType.Obj}
 				};
 			q1.Normalize();
 			q2.Normalize();

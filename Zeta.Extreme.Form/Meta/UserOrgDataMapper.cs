@@ -63,7 +63,7 @@ namespace Zeta.Extreme.Form.Meta{
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static IZetaDetailObject Authorized(this IZetaDetailObject obj){
+        public static IZetaObj Authorized(this IZetaObj obj){
             lock (sync){
                 obj.Object.Authorize(true);
                 return obj;
@@ -241,7 +241,9 @@ namespace Zeta.Extreme.Form.Meta{
                 if (HasAll(principal)){
 					return (
 						from o in  ObjCache.ObjById.Values // myapp.storage.AsQueryable<IZetaMainObject>()
+#pragma warning disable 612,618
 						where (!start || o.ShowOnStartPage) && (like==""||o.Name.Contains(like))
+#pragma warning restore 612,618
 						select o
 					).ToArray();
                 }

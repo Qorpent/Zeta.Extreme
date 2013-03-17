@@ -19,17 +19,33 @@
 using Qorpent.Model;
 
 namespace Zeta.Extreme.Model.Inerfaces {
+	/// <summary>
+	/// Biz transaction definition
+	/// </summary>
 	public interface IBizTran : IEntity {
+		/// <summary>
+		/// Account type of first contragent
+		/// </summary>
 		 string FirstType { get; set; }
-
+		 /// <summary>
+		 /// Role of first contragent to second
+		 /// </summary>
 		 string FirstRole { get; set; }
-
+		 /// <summary>
+		 /// Input form code of first contragent
+		 /// </summary>
 		 string FirstForm { get; set; }
-
+		 /// <summary>
+		 /// Account type of second contragent
+		 /// </summary>
 		 string SecondType { get; set; }
-
+		 /// <summary>
+		 /// Role of second contragent to first
+		 /// </summary>
 		 string SecondRole { get; set; }
-
+		 /// <summary>
+		 /// Input form code of second contragent (inverse)
+		 /// </summary>
 		 string SecondForm { get; set; }
 	}
 }

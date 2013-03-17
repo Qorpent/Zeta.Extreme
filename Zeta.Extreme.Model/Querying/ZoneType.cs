@@ -23,7 +23,7 @@ namespace Zeta.Extreme.Model.Querying {
 	/// 	Перечисление типов зон
 	/// </summary>
 	[Flags]
-	public enum ObjType {
+	public enum ZoneType {
 		/// <summary>
 		/// 	Не определено
 		/// </summary>

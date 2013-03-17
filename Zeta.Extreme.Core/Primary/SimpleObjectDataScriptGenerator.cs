@@ -62,7 +62,7 @@ namespace Zeta.Extreme.Primary {
 		private string GenerateQuery(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj, string rowids,
 		                             PrimaryQueryPrototype prototype) {
 			if (!prototype.UseSum &&
-			    (cobj.t == ObjType.Obj || cobj.t == ObjType.Detail || cobj.t == ObjType.None /* obj by default */)) {
+			    (cobj.t == ZoneType.Obj || cobj.t == ZoneType.Detail || cobj.t == ZoneType.None /* obj by default */)) {
 				return ConvertToSimpleQueryOfObject(time, cobj, rowids, prototype);
 			}
 			throw new NotSupportedException(prototype.ToString());
@@ -70,9 +70,9 @@ namespace Zeta.Extreme.Primary {
 
 		private static string ConvertToSimpleQueryOfObject(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj,
 		                                                   string rowids, PrimaryQueryPrototype prototype) {
-			var objfld = cobj.t == ObjType.Detail ? "detail" : "obj";
+			var objfld = cobj.t == ZoneType.Detail ? "detail" : "obj";
 			var detcond = "";
-			if (cobj.t == ObjType.Obj) {
+			if (cobj.t == ZoneType.Obj) {
 				if (prototype.PreserveDetails) {
 					detcond = " and detail is null ";
 				}

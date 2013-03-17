@@ -20,7 +20,7 @@ using Qorpent.Model;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IZetaFormsSupport :
-		IWithIdx,
+		IWithIndex,
 		IWithOuterCode {
 		string Group { get; set; }
 		}

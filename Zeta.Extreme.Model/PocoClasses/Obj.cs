@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent;
+using Qorpent.Model;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
@@ -31,7 +32,7 @@ namespace Zeta.Extreme.Model {
 	/// <summary>
 	/// Default implementation or ZetaObject entity of Zeta model
 	/// </summary>
-	public sealed partial class Obj : IZetaMainObject {
+	public sealed partial class Obj : Entity, IZetaMainObject {
 		/// <summary>
 		/// </summary>
 		public Obj() {
@@ -142,21 +143,31 @@ namespace Zeta.Extreme.Model {
 		/// </summary>
 		public IMainObjectRole Department { get; set; }
 
-		/// <summary>
-		/// —ловарь локальных (временных) свойств
-		/// </summary>
-		public IDictionary<string, object> LocalProperties {
-			get { return localProperties ?? (localProperties = new Dictionary<string, object>()); }
-			set { localProperties = value; }
-		}
 
+		/// <summary>
+		/// ID (FK) of <see cref="IZetaMainObject.Division"/> that current is attached to
+		/// </summary>
+		/// <remarks>Intended to use with ORM/SQL scenario</remarks>
 		public int? DivisionId { get; set; }
+
+		/// <summary>
+		/// Full hierarchy path of ZetaObject (see <see cref="IZetaMainObject.Parent"/> and Code)
+		/// </summary>
 		public string Path { get; set; }
 
-		public string Tag { get; set; }
+		/// <summary>
+		///Currency of entity
+		/// </summary>
 		public string Currency { get; set; }
 
+		/// <summary>
+		/// Full name of ZetaObject
+		/// </summary>
 		public string FullName { get; set; }
+
+		/// <summary>
+		/// Short display name of ZetaObject
+		/// </summary>
 		public string ShortName { get; set; }
 
 		/// <summary>
@@ -164,39 +175,46 @@ namespace Zeta.Extreme.Model {
 		/// </summary>
 		public string FormulaType { get; set; }
 
+		/// <summary>
+		/// Formula's activity flag
+		/// </summary>
 		public bool IsFormula {
 			get { return !string.IsNullOrWhiteSpace(Formula); }
 			set { _isFormula = value; }
 		}
 
+		/// <summary>
+		/// Formula's definition
+		/// </summary>
 		public string Formula { get; set; }
 
 
+		/// <summary>
+		/// Flag that  ZetaObject must be shown on start page of application
+		/// </summary>
 		public bool ShowOnStartPage { get; set; }
 
 
-		public IList<IZetaDetailObject> DetailObjects { get; set; }
+		/// <summary>
+		/// list of attached details
+		/// </summary>
+		public IList<IZetaObj> Details { get; set; }
 
 
-		public int Id { get; set; }
-
-		public string Name { get; set; }
-
-
+		/// <summary>
+		/// Slash-delimited list of groups that ZetaObject is attached to
+		/// </summary>
 		public string GroupCache { get; set; }
 
-		public string Code { get; set; }
-
-		public string Comment { get; set; }
-
-		public DateTime Version { get; set; }
-
-
-		public IEnumerable<IZetaMainObject> AllChildren(int level, string typefiler) {
+		/// <summary>
+		/// Retrieves all children in  hierarchy down
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<IZetaMainObject> AllChildren(int level=10, string typefiler=null) {
 			if (0 == level) {
 				yield break;
 			}
-			foreach (var child in Children.OrderBy(x => x.Idx*100000 + x.Id)) {
+			foreach (var child in Children.OrderBy(x => x.Index*100000 + x.Id)) {
 				if (matchTypeFilter(child, typefiler)) {
 					yield return child;
 				}
@@ -207,56 +225,103 @@ namespace Zeta.Extreme.Model {
 		}
 
 
+		/// <summary>
+		/// <c>List</c> of mappings ZetaObject's users to themas
+		/// </summary>
 		public IList<IUsrThemaMap> UserBizCaseMaps { get; set; }
 
+		/// <summary>
+		/// NEED INVESTIGATION!
+		/// </summary>
+		/// <returns></returns>
 		public string[] GetConfiguredBizCaseCodes() {
 			return UserBizCaseMaps.Select(x => x.ThemaCode).Distinct().ToArray();
 		}
 
+		/// <summary>
+		/// NEED INVESTIGATION!
+		/// </summary>
+		/// <returns></returns>
 		public IZetaUser[] GetConfiguredUsers() {
 			return UserBizCaseMaps.Select(x => x.Usr).Distinct().ToArray();
 		}
 
+		/// <summary>
+		/// NEED INVESTIGATION!
+		/// </summary>
+		/// <returns></returns>
 		public IUsrThemaMap GetUserMap(string themacode, bool plan) {
 			return UserBizCaseMaps.FirstOrDefault(x => x.ThemaCode == themacode && x.IsPlan == plan);
 		}
 
+		/// <summary>
+		/// NEED INVESTIGATION!
+		/// </summary>
+		/// <returns></returns>
 		public string[] GetConfiguredThemas(IZetaUser usr, bool plan) {
 			return
 				UserBizCaseMaps.Where(x => x.Usr.Id == usr.Id && x.IsPlan == plan).Select(x => x.ThemaCode).Distinct().ToArray();
 		}
 
+		/// <summary>
+		/// Registry of ZetaObject-attached users of application
+		/// </summary>
 		public IList<IZetaUser> Users { get; set; }
 
 
-		//public virtual IList<IDocumentOfCorrections> Documents { get; set; }
-
-
-		public int Idx { get; set; }
+		/// <summary>
+		/// Start date of ZetaObject's activity
+		/// </summary>
 		public DateTime Start { get; set; }
+
+		/// <summary>
+		/// End date of ZetaObject's activity
+		/// </summary>
 		public DateTime Finish { get; set; }
 
+		/// <summary>
+		/// References definition of ZetaObject's type (in zeta terms)
+		/// </summary>
 		public IObjectType ObjType { get; set; }
 
-		IObjectType IWithDetailObjectType.Type {
-			get { return ObjType; }
-			set { ObjType = value; }
-		}
-
+		/// <summary>
+		/// Parent <see cref="IZetaObject"/>, can be null, this one will be appeared in <see cref="IZetaMainObject.Children"/> collection
+		/// </summary>
 		public IZetaMainObject Parent { get; set; }
+
+		/// <summary>
+		/// Sub-IZetaObjects, for which <c>this</c> one is a
+		/// <see cref="Zeta.Extreme.Model.Inerfaces.IZetaMainObject.Parent" />
+		/// </summary>
 		public IList<IZetaMainObject> Children { get; set; }
 
-		public IDictionary<string, object> Properties {
-			get { return properties ?? (properties = new Dictionary<string, object>()); }
-			protected set { properties = value; }
+		/// <summary>
+		/// Temporary (local) properties collection
+		/// </summary>
+		public IDictionary<string, object> LocalProperties {
+			get { return _localProperties ?? (_localProperties = new Dictionary<string, object>()); }
+		
 		}
 
+		/// <summary>
+		/// Access to <c>metalink</c>-subsystem to get <c>metalinks</c> attached to current ZetaObject
+		/// </summary>
+		/// <param name="nodetype">type of other node type</param>
+		/// <param name="linktype">type of link</param>
+		/// <param name="subtype"><c>subtype</c> of link</param>
+		/// <param name="system"><c>system</c> selector (reserved)</param>
+		/// <returns>array of <c>metalinks</c> that matches query</returns>
 		public MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null,
 		                                         string system = "Default") {
 			//TODO: implement!!! 
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		/// Resolves tag value by it's name
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
 		public string ResolveTag(string name) {
 			var tag = TagHelper.Value(Tag, name);
 			if (tag.IsEmpty() && null != ObjType) {
@@ -268,6 +333,11 @@ namespace Zeta.Extreme.Model {
 			return tag ?? "";
 		}
 
+		/// <summary>
+		/// Checkout if current ZetaObject is match acronym of zone
+		/// </summary>
+		/// <param name="s"></param>
+		/// <returns></returns>
 		public bool IsMatchZoneAcronym(string s) {
 			s = s.ToUpper();
 			if (!s.Contains("_")) {
@@ -298,10 +368,11 @@ namespace Zeta.Extreme.Model {
 			return GroupCache.ToUpper().Contains("/" + s + "/");
 		}
 
-		public IEnumerable<IZetaMainObject> AllChildren() {
-			return AllChildren(10, null);
-		}
-
+		/// <summary>
+		/// </summary>
+		/// <param name="child"></param>
+		/// <param name="typefiler"></param>
+		/// <returns></returns>
 		private bool matchTypeFilter(IZetaMainObject child, string typefiler) {
 			if (typefiler.IsEmpty()) {
 				return true;
@@ -313,7 +384,12 @@ namespace Zeta.Extreme.Model {
 			return Regex.IsMatch(s, typefiler);
 		}
 
-		public bool Equals(Obj org) {
+		/// <summary>
+		/// Checks equality with another obj
+		/// </summary>
+		/// <param name="org"></param>
+		/// <returns></returns>
+		private bool Equals(Obj org) {
 			if (org == null) {
 				return false;
 			}
@@ -330,6 +406,13 @@ namespace Zeta.Extreme.Model {
 			return true;
 		}
 
+		/// <summary>
+		/// ќпредел€ет, равен ли заданный объект <see cref="T:System.Object"/> текущему объекту <see cref="T:System.Object"/>.
+		/// </summary>
+		/// <returns>
+		/// true, если заданный объект равен текущему объекту; в противном случае†Ч false.
+		/// </returns>
+		/// <param name="obj">ќбъект, который требуетс€ сравнить с текущим объектом.</param><filterpriority>2</filterpriority>
 		public override bool Equals(object obj) {
 			if (ReferenceEquals(this, obj)) {
 				return true;
@@ -337,6 +420,13 @@ namespace Zeta.Extreme.Model {
 			return Equals(obj as Obj);
 		}
 
+		/// <summary>
+		/// »грает роль хэш-функции дл€ определенного типа.
+		/// </summary>
+		/// <returns>
+		/// ’эш-код дл€ текущего объекта <see cref="T:System.Object"/>.
+		/// </returns>
+		/// <filterpriority>2</filterpriority>
 		public override int GetHashCode() {
 			var result = Id;
 			result = 29*result + (Code != null ? Code.GetHashCode() : 0);
@@ -345,19 +435,9 @@ namespace Zeta.Extreme.Model {
 			return result;
 		}
 
-		public Detail[] FindOwnSubparts() {
-			return DetailObjects.Cast<Detail>().ToArray();
-		}
 
-
-		public int CountOwnSubparts() {
-			return DetailObjects.Count;
-		}
-
-		private IList<IZetaObjectGroup> _groups;
 		private bool _isFormula;
-		private IDictionary<string, object> localProperties;
-		private IDictionary<string, object> properties;
+		private IDictionary<string, object> _localProperties;
 		private int? _parentId;
 		private int? _pointId;
 		private int? _departmentId;

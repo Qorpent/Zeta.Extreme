@@ -20,16 +20,16 @@ using System.Collections.Generic;
 using Qorpent.Model;
 
 namespace Zeta.Extreme.Model.Extensions {
-	public class ByIdxComparer<T> : IComparer<T> where T : IWithCode, IWithIdx {
+	public class ByIdxComparer<T> : IComparer<T> where T : IWithCode, IWithIndex {
 		public int Compare(T x, T y) {
-			if (x.Idx != y.Idx) {
-				if (0 == x.Idx) {
+			if (x.Index != y.Index) {
+				if (0 == x.Index) {
 					return 1;
 				}
-				if (0 == y.Idx) {
+				if (0 == y.Index) {
 					return -1;
 				}
-				return x.Idx.CompareTo(x.Idx);
+				return x.Index.CompareTo(x.Index);
 			}
 			return x.Code.CompareTo(y.Code);
 		}

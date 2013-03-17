@@ -49,7 +49,7 @@
     <Compile Include="Inerfaces\IObjectType.cs" />
     <Compile Include="Inerfaces\IMainObjectGroup.cs" />
     <Compile Include="Inerfaces\IMainObjectRole.cs" />
-    <Compile Include="Inerfaces\Partial\IWithDetailObjectType.cs" />
+    <Compile Include="Inerfaces\Partial\IWithObjType.cs" />
     <Compile Include="Inerfaces\Partial\IWithMainObjects.cs" />
     <Compile Include="Inerfaces\IZetaPoint.cs" />
     <Compile Include="Inerfaces\IZetaRegion.cs" />
@@ -62,7 +62,7 @@
     <Compile Include="Inerfaces\Partial\IWithUsr.cs" />
     <Compile Include="Inerfaces\IZetaCell.cs" />
     <Compile Include="Inerfaces\IZetaColumn.cs" />
-    <Compile Include="Inerfaces\IZetaDetailObject.cs" />
+    <Compile Include="Inerfaces\IZetaObj.cs" />
     <Compile Include="Inerfaces\Partial\IZetaFormsSupport.cs" />
     <Compile Include="Inerfaces\IZetaMainObject.cs" />
     <Compile Include="Inerfaces\IZetaRow.cs" />
@@ -90,7 +90,7 @@
     <Compile Include="Querying\ITimeHandler.cs" />
     <Compile Include="Querying\IWithCacheKey.cs" />
     <Compile Include="Querying\IWithQueryRegistry.cs" />
-    <Compile Include="Querying\ObjType.cs" />
+    <Compile Include="Querying\ZoneType.cs" />
     <Compile Include="Querying\QueryResult.cs" />
     <Compile Include="Querying\QuerySetupInfo.cs" />
     <Compile Include="Querying\SessionExtensions.cs" />

@@ -19,5 +19,5 @@
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.Extensions {
-	public class DetailComparer : ByIdxComparer<IZetaDetailObject> {}
+	public class DetailComparer : ByIdxComparer<IZetaObj> {}
 }

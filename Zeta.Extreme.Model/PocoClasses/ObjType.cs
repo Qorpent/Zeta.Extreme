@@ -46,7 +46,7 @@ namespace Zeta.Extreme.Model {
 
 		 public virtual string Tag { get; set; }
 
-		 public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
+		 public virtual IList<IZetaObj> Details { get; set; }
 
 
 		public virtual IDetailObjectClass Class { get; set; }
@@ -62,7 +62,7 @@ namespace Zeta.Extreme.Model {
 
 		 public virtual DateTime Version { get; set; }
 
-		public virtual int Idx { get; set; }
+		public virtual int Index { get; set; }
 
 		public virtual string ResolveTag(string name) {
 			var tag = TagHelper.Value(Tag, name);

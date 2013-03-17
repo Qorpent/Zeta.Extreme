@@ -19,7 +19,13 @@
 using System.Collections.Generic;
 
 namespace Zeta.Extreme.Model.Inerfaces {
+	/// <summary>
+	/// Something with sub-details
+	/// </summary>
 	public interface IWithDetailObjects {
-		IList<IZetaDetailObject> DetailObjects { get; set; }
+		/// <summary>
+		/// list of attached details
+		/// </summary>
+		IList<IZetaObj> Details { get; set; }
 	}
 }

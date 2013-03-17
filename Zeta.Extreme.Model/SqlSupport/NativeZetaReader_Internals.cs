@@ -54,7 +54,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					IsFormula = r.GetBoolean(2),
 					Name = r.GetString(5),
 					Code = r.GetString(6),
-					Idx = r.GetInt32(12),
+					Index = r.GetInt32(12),
 					Path = r.GetString(14),
 					Formula = r.GetString(3),
 					FormulaType = r.GetString(4),
@@ -129,7 +129,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Comment = r.GetString(3),
 					Version = r.GetDateTime(4),
 					Tag = r.GetString(5),
-					Idx = r.GetInt32(6)
+					Index = r.GetInt32(6)
 				};
 			return x;
 		}
@@ -193,7 +193,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				{
 					BizId = r.GetInt32(0),
 					Name = r.GetString(1),
-					Idx = r.GetInt32(2),
+					Index = r.GetInt32(2),
 					MonthCount = r.GetInt32(3),
 					IsFormula = r.GetBoolean(4),
 					Formula = r.GetString(5),

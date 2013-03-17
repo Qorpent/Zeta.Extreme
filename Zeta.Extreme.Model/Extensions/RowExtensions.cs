@@ -82,7 +82,7 @@ namespace Zeta.Extreme.Model.Extensions {
 		/// <param name="row"> </param>
 		/// <returns> </returns>
 		public static string GetSortKey(this IZetaRow row) {
-			return string.Format("{0:00000}_{1}_{2}", row.Idx, row.OuterCode ?? "", row.Code);
+			return string.Format("{0:00000}_{1}_{2}", row.Index, row.OuterCode ?? "", row.Code);
 		}
 	}
 }

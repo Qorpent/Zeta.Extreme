@@ -162,7 +162,7 @@ namespace Zeta.Extreme.Model {
 
 		 public virtual IZetaRow ExRefTo { get; set; }
 
-		 public virtual int Idx { get; set; }
+		 public virtual int Index { get; set; }
 
 		 public virtual string OuterCode { get; set; }
 
@@ -297,7 +297,7 @@ namespace Zeta.Extreme.Model {
 		 public virtual string Role { get; set; }
 
 		public virtual string SortKey {
-			get { return string.Format("{0:00000}_{1}_{2}", Idx == 0 ? 10000 : Idx, OuterCode ?? "", Code); }
+			get { return string.Format("{0:00000}_{1}_{2}", Index == 0 ? 10000 : Index, OuterCode ?? "", Code); }
 		}
 
 		public virtual IZetaRow[] AllChildren {
@@ -423,7 +423,7 @@ namespace Zeta.Extreme.Model {
 		}
 
 		private string GetSortKey() {
-			return string.Format("{0:00000}_{1}_{2}", Idx, OuterCode ?? "", Code);
+			return string.Format("{0:00000}_{1}_{2}", Index, OuterCode ?? "", Code);
 		}
 
 		private void _register(IZetaRow row, List<IZetaRow> result) {

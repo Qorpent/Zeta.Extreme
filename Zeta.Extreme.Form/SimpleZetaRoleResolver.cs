@@ -30,7 +30,7 @@ namespace Zeta.Extreme.Form {
 		/// <summary>
 		/// 	An index of object
 		/// </summary>
-		public int Idx { get; set; }
+		public int Index { get; set; }
 
 		/// <param name="principal"> </param>
 		/// <param name="role"> </param>

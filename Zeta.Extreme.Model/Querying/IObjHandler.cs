@@ -26,7 +26,7 @@ namespace Zeta.Extreme.Model.Querying {
 		/// <summary>
 		/// 	“ип зоны
 		/// </summary>
-		ObjType Type { get; set; }
+		ZoneType Type { get; set; }
 
 		/// <summary>
 		/// 	–ежим работы с детал€ми на уровне первичных запросов, по умолчанию NONE - выбор остаетс€ за системой

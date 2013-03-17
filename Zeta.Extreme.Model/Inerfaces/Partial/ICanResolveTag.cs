@@ -17,7 +17,15 @@
 // PROJECT ORIGIN: Zeta.Extreme.Model/ICanResolveTag.cs
 #endregion
 namespace Zeta.Extreme.Model.Inerfaces {
+	/// <summary>
+	/// Describes ability to resolve Tag on self-known way
+	/// </summary>
 	public interface ICanResolveTag {
+		/// <summary>
+		/// Resolves tag value by it's name
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
 		string ResolveTag(string name);
 	}
 }
