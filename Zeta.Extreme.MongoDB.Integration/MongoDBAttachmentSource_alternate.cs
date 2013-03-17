@@ -57,12 +57,20 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="query">Запрос в виде частично или полностью заполенных полей класса Attachment</param>
         /// <returns>Перечисление полученных документов</returns>
         public IEnumerable<Attachment> Find(Attachment query) {
-            var clause = MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(query);
+            var list = new List<Attachment>();
             SetupConnection();
 
-            _collection.FindAs<BsonDocument>(new QueryDocument(clause));
+            list.AddRange(
+                _collection.FindAs<BsonDocument>(
+                    new QueryDocument(
+                        MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(query)
+                    )
+                ).Select(
+                    MongoDbAttachmentSourceSerializer.BsonToAttachment
+                )
+            );
 
-            return null;
+            return list;
         }
 
         /// <summary>
@@ -74,6 +82,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             SetupConnection();
 
             _collection.Save(document);
+           
         }
 
         /// <summary>
