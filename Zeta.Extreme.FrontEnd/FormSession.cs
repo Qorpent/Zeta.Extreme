@@ -669,10 +669,14 @@ namespace Zeta.Extreme.FrontEnd {
 			if (null == row) {
 				return false;
 			}
+#pragma warning disable 612,618
 			if (row.IsObsolete(Year)) {
+#pragma warning restore 612,618
 				return false;
 			}
+#pragma warning disable 612,618
 			if (null != row.Object && row.Object.Id != Object.Id) {
+#pragma warning restore 612,618
 				return false;
 			}
 			if (row.IsMarkSeted("0NOINPUT")) {

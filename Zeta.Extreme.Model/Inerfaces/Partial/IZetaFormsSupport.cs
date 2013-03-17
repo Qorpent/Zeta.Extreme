@@ -22,6 +22,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IZetaFormsSupport :
 		IWithIndex,
 		IWithOuterCode {
-		string Group { get; set; }
+		string GroupCache { get; set; }
 		}
 }

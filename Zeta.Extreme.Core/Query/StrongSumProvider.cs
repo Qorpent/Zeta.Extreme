@@ -128,7 +128,7 @@ namespace Zeta.Extreme {
 			if (item is IZetaRow) {
 				var row = item as IZetaRow;
 				if (row.IsMarkSeted("0SA")) {
-					if (string.IsNullOrWhiteSpace(row.Group)) {
+					if (string.IsNullOrWhiteSpace(((IZetaFormsSupport) row).GroupCache)) {
 						foreach (var i in GetNativeSumDelta(row)) {
 							yield return i;
 						}
@@ -159,7 +159,7 @@ namespace Zeta.Extreme {
 		}
 
 		private IEnumerable<QueryDelta> GetGroupSumDelta(IZetaRow row) {
-			var groups = row.Group.SmartSplit(false, true, '/', ';').Distinct().ToArray();
+			var groups = ((IZetaFormsSupport) row).GroupCache.SmartSplit(false, true, '/', ';').Distinct().ToArray();
 			var pluses = groups.Where(_ => !_.StartsWith("-")).ToArray();
 			var minuses = groups.Where(_ => _.StartsWith("-")).Select(_ => _.Substring(1)).ToArray();
 			foreach (var p in pluses) {

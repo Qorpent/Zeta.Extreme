@@ -253,9 +253,9 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			byid[row.Id] = row;
 			row.Tag = row.Tag;
 			row.Children = new List<IZetaRow>();
-			if (!string.IsNullOrWhiteSpace(row.Group)) {
+			if (!string.IsNullOrWhiteSpace(((IZetaFormsSupport) row).GroupCache)) {
 				if (!row.IsMarkSeted("0SA")) {
-					var groups = row.Group.SmartSplit(false, true, ';', '/').Distinct();
+					var groups = ((IZetaFormsSupport) row).GroupCache.SmartSplit(false, true, ';', '/').Distinct();
 					foreach (var g in groups) {
 						if (!bygroup.ContainsKey(g)) {
 							bygroup[g] = new List<IZetaRow>();

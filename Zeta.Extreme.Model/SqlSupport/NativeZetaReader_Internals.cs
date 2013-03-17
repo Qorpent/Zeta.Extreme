@@ -61,7 +61,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Comment = r.GetString(7),
 					OuterCode = r.GetString(11),
 					Measure = r.GetString(13),
-					Grp = r.GetString(15),
+					GroupCache = r.GetString(15),
 					MarkCache = r.GetString(16),
 					Currency = r.GetString(17),
 					Tag = r.GetString(18),

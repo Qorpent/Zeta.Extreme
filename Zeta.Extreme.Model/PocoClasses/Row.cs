@@ -23,38 +23,71 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Qorpent.Model;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
 	/// <summary>
+	///     <see cref="Row" /> - is main tree-like part of attribute zeta dimension
 	/// </summary>
-	public partial class Row : IZetaRow {
-		public virtual string Grp { get; set; }
-
-		public virtual IZetaMainObject Org { get; set; }
-
+	public partial class Row : Entity, IZetaRow {
 		/// <summary>
 		///     Режим использования формулы с Extreme
 		/// </summary>
 		public virtual int ExtremeFormulaMode { get; set; }
 
-		public virtual Guid Uid { get; set; }
-		public virtual string Lookup { get; set; }
-		public virtual bool IsDynamicLookup { get; set; }
-
+		/// <summary>
+		///     Helper property to simplify ordering
+		/// </summary>
 		public virtual string SortKey {
 			get { return string.Format("{0:00000}_{1}_{2}", Index == 0 ? 10000 : Index, OuterCode ?? "", Code); }
 		}
 
+		/// <summary>
+		///     Special pseudo hiearatchy to provide tag resolution in merged trees (in
+		///     presentation for example)
+		/// </summary>
+		public IZetaRow TemporalParent { get; set; }
 
+		/// <summary>
+		///     s-list of groups
+		/// </summary>
+		public virtual string GroupCache { get; set; }
+
+		/// <summary>
+		///     Container object
+		/// </summary>
+		public virtual IZetaMainObject Object { get; set; }
+
+
+		/// <summary>
+		///     True - объект активен
+		/// </summary>
 		public virtual bool Active { get; set; }
 
+		/// <summary>
+		///     ID (FK) of parent row
+		/// </summary>
 		public virtual int? ParentId { get; set; }
+
+		/// <summary>
+		///     ID (FK) of referenced row
+		/// </summary>
 		public virtual int? RefId { get; set; }
+
+		/// <summary>
+		///     ID (FK) of contrainer obj
+		/// </summary>
 		public virtual int? ObjectId { get; set; }
 
+		/// <summary>
+		///     Applys local <paramref name="property" /> to it and descendants (???)
+		/// </summary>
+		/// <param name="property"></param>
+		/// <param name="value"></param>
+		/// <param name="cascade"></param>
 		public virtual void ApplyProperty(string property, object value, bool cascade = true) {
 			LocalProperties[property] = value;
 			if (cascade && null != NativeChildren) {
@@ -64,6 +97,12 @@ namespace Zeta.Extreme.Model {
 			}
 		}
 
+		/// <summary>
+		///     Resolves local proprty over hierarchy
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns>
+		/// </returns>
 		public virtual object GetLocal(string name) {
 			if (!LocalProperties.ContainsKey(name)) {
 				return "";
@@ -71,6 +110,10 @@ namespace Zeta.Extreme.Model {
 			return LocalProperties[name] ?? "";
 		}
 
+		/// <summary>
+		///     <see cref="Zeta.Extreme.Model.Inerfaces.IZetaRow.Level" /> of row in
+		///     hierarchy
+		/// </summary>
 		public virtual int Level {
 			get {
 				if (null == Path) {
@@ -85,11 +128,10 @@ namespace Zeta.Extreme.Model {
 			}
 		}
 
-		public virtual string Tag { get; set; }
 
-		public virtual IZetaRow TemporalParent { get; set; }
-
-
+		/// <summary>
+		///     resolves role over hierarchy
+		/// </summary>
 		public virtual string FullRole {
 			get {
 				if (Role.IsNotEmpty()) {
@@ -103,47 +145,63 @@ namespace Zeta.Extreme.Model {
 		}
 
 		/// <summary>
-		///     <see cref="Currency" /> of entity
+		///     <see cref="Zeta.Extreme.Model.Row.Currency" /> of entity
 		/// </summary>
 		public virtual string Currency { get; set; }
-
-		public virtual int Id { get; set; }
-
-		public virtual string Name { get; set; }
-
-		public virtual string Code { get; set; }
-
-		public virtual string Comment { get; set; }
-
-		public virtual DateTime Version { get; set; }
 
 		/// <summary>
 		///     Тип формулы
 		/// </summary>
 		public string FormulaType { get; set; }
 
+		/// <summary>
+		///     Formula's activity flag
+		/// </summary>
 		public virtual bool IsFormula { get; set; }
 
+		/// <summary>
+		///     Formula's definition
+		/// </summary>
 		public virtual string Formula { get; set; }
 
 
+		/// <summary>
+		///     Type of measure <c>(ru : единица измерения)</c>
+		/// </summary>
 		public virtual string Measure { get; set; }
 
+		/// <summary>
+		///     Flag that measure must be setted up dynamically
+		/// </summary>
 		public virtual bool IsDynamicMeasure { get; set; }
 
 
+		/// <summary>
+		///     Reference to parent row
+		/// </summary>
 		public virtual IZetaRow Parent { get; set; }
 
 
+		/// <summary>
+		///     Collection for ORM of children to load
+		/// </summary>
 		public virtual IList<IZetaRow> NativeChildren {
 			get { return _children; }
 		}
 
+		/// <summary>
+		///     <see cref="Zeta.Extreme.Model.Inerfaces.IZetaRow.Children" /> rows
+		/// </summary>
 		public virtual IList<IZetaRow> Children {
 			get { return _children; }
 			set { _children = value; }
 		}
 
+		/// <summary>
+		///     Resolves meausure with checking of dynamics
+		/// </summary>
+		/// <returns>
+		/// </returns>
 		public virtual string ResolveMeasure() {
 			var mes = Measure;
 			if (mes.IsEmpty() && null != RefTo) {
@@ -156,43 +214,69 @@ namespace Zeta.Extreme.Model {
 			return mes;
 		}
 
+		/// <summary>
+		///     <see cref="Zeta.Extreme.Model.Inerfaces.IZetaRow.Path" /> to row over
+		///     hierarchy
+		/// </summary>
 		public virtual string Path { get; set; }
 
+		/// <summary>
+		///     Referenced row
+		/// </summary>
 		public virtual IZetaRow RefTo { get; set; }
 
 
+		/// <summary>
+		///     ID (FK) of extended referenced row
+		/// </summary>
 		public virtual int? ExRefToId { get; set; }
 
+		/// <summary>
+		///     Extended reference to row
+		/// </summary>
 		public virtual IZetaRow ExRefTo { get; set; }
 
-		public virtual int Index { get; set; }
 
+		/// <summary>
+		///     Helper code that maps any foreign coding system
+		/// </summary>
 		public virtual string OuterCode { get; set; }
 
-		public virtual string Group {
-			get { return Grp; }
-			set { Grp = value; }
-		}
 
-
-		public virtual IZetaMainObject Object {
-			get { return Org; }
-			set { Org = value; }
-		}
-
+		/// <summary>
+		///     Slash-delimited list of mark codes
+		/// </summary>
 		public virtual string MarkCache { get; set; }
 
+		/// <summary>
+		///     Temporary (local) properties collection
+		/// </summary>
 		public virtual IDictionary<string, object> LocalProperties {
 			get { return localProperties ?? (localProperties = new Dictionary<string, object>()); }
 			set { localProperties = value; }
 		}
 
+		/// <summary>
+		///     s-list of ZetaObject group codes, that is actual for row
+		/// </summary>
 		public virtual string ObjectGroups { get; set; }
-		public virtual string FormElementType { get; set; }
+
+		/// <summary>
+		///     Ui level validation code
+		/// </summary>
 		public virtual string Validator { get; set; }
 
+		/// <summary>
+		///     NEED INVESTIGATION
+		/// </summary>
 		public virtual string ColumnSubstitution { get; set; }
 
+		/// <summary>
+		///     NEED INVESTIGATION
+		/// </summary>
+		/// <param name="incode"></param>
+		/// <returns>
+		/// </returns>
 		public virtual string ResolveColumnCode(string incode) {
 			prepareColumnMap();
 			if (columnmap.ContainsKey(incode)) {
@@ -201,7 +285,12 @@ namespace Zeta.Extreme.Model {
 			return incode;
 		}
 
-
+		/// <summary>
+		///     Resolves tag with parents and refs
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns>
+		/// </returns>
 		public virtual string ResolveTag(string name) {
 			if (TagHelper.Has(Tag, name)) {
 				return TagHelper.Value(Tag, name) ?? "";
@@ -216,12 +305,28 @@ namespace Zeta.Extreme.Model {
 		}
 
 
+		/// <summary>
+		///     propagetes group definition as local property
+		/// </summary>
+		/// <param name="groupname"></param>
+		/// <param name="applyUp"></param>
+		/// <param name="propname"></param>
 		public virtual void PropagateGroupAsProperty(string groupname, bool applyUp = true, string propname = null) {
 			propname = propname ?? groupname;
-			Func<IZetaRow, bool> test = r => r.Group.SmartSplit(false, true, '/', ';').Any(x => x == groupname);
+			Func<IZetaRow, bool> test =
+				r => ((IZetaFormsSupport) r).GroupCache.SmartSplit(false, true, '/', ';').Any(x => x == groupname);
 			ApplyPropertyByCondition(propname, true, applyUp, false, test);
 		}
 
+		/// <summary>
+		///     Apply local property to it and other properties with up and down visitor
+		///     patter
+		/// </summary>
+		/// <param name="prop"></param>
+		/// <param name="value"></param>
+		/// <param name="applyUp"></param>
+		/// <param name="applyDown"></param>
+		/// <param name="test"></param>
 		public virtual void ApplyPropertyByCondition(string prop, object value, bool applyUp, bool applyDown,
 		                                             Func<IZetaRow, bool> test) {
 			foreach (var r in AllChildren) {
@@ -245,6 +350,10 @@ namespace Zeta.Extreme.Model {
 			}
 		}
 
+		/// <summary>
+		///     Old style visitor accessor to cleanup by code filter
+		/// </summary>
+		/// <param name="codes"></param>
 		public virtual void CleanupByChildren(IEnumerable<string> codes) {
 			if (LocalProperties.ContainsKey("cleaned")) {
 				return;
@@ -255,12 +364,13 @@ namespace Zeta.Extreme.Model {
 			var result = false;
 
 			if (grpcodes.Length != 0) {
-				var groups = Group.SmartSplit(false, true, '/', ';');
+				var groups = GroupCache.SmartSplit(false, true, '/', ';');
 				if (grpcodes.Any(x => groups.Contains(x))) {
 					result = true;
 				}
 				else if (null !=
-				         AllChildren.FirstOrDefault(x => x.Group.SmartSplit(false, true, ';', '/').Intersect(grpcodes).Count() != 0)) {
+				         AllChildren.FirstOrDefault(
+					         x => ((IZetaFormsSupport) x).GroupCache.SmartSplit(false, true, ';', '/').Intersect(grpcodes).Count() != 0)) {
 					result = true;
 				}
 			}
@@ -285,6 +395,13 @@ namespace Zeta.Extreme.Model {
 		}
 
 
+		/// <summary>
+		///     Apply local <paramref name="property" /> to it and descendants if not yet
+		///     setted (???)
+		/// </summary>
+		/// <param name="property"></param>
+		/// <param name="value"></param>
+		/// <param name="children"></param>
 		public virtual void ApplyPropertyIfNew(string property, object value, bool children = false) {
 			if (!LocalProperties.ContainsKey(property)) {
 				LocalProperties[property] = value;
@@ -296,9 +413,19 @@ namespace Zeta.Extreme.Model {
 			}
 		}
 
+		/// <summary>
+		///     Full name of row
+		/// </summary>
 		public virtual string FullName { get; set; }
+
+		/// <summary>
+		///     <see cref="Zeta.Extreme.Model.Inerfaces.IZetaRow.Role" /> to access row
+		/// </summary>
 		public virtual string Role { get; set; }
 
+		/// <summary>
+		///     Full collection of all children down
+		/// </summary>
 		public virtual IZetaRow[] AllChildren {
 			get {
 				lock (this) {
@@ -314,23 +441,12 @@ namespace Zeta.Extreme.Model {
 			}
 		}
 
-		public virtual MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null,
-		                                         string system = "Default") {
-			//TODO: implement!!! 
-			throw new NotImplementedException();
-			/*
-            var query = new MetalinkRecord
-                            {
-                                Src = Code,
-                                SrcType = "zeta.row",
-                                TrgType = nodetype,
-                                Type = linktype,
-                                SubType = subtype
-                            };
-            return new MetalinkRepository().Search(query, system);
-			 */
-		}
-
+		/// <summary>
+		///     Helper method to identify activity for object
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <returns>
+		/// </returns>
 		public virtual bool IsActiveFor(IZetaMainObject obj) {
 			var intag = ResolveTag("pr_stobj");
 			if (intag.IsEmpty()) {
@@ -362,7 +478,7 @@ namespace Zeta.Extreme.Model {
 
 
 		/// <summary>
-		///     Проверяет, что строка не устарела
+		///     Helper method to identify activity on period
 		/// </summary>
 		/// <param name="year"></param>
 		/// <returns>
@@ -378,6 +494,12 @@ namespace Zeta.Extreme.Model {
 			return true;
 		}
 
+		/// <summary>
+		///     Clone method to get full copy of row with descendants
+		/// </summary>
+		/// <param name="withchildren"></param>
+		/// <returns>
+		/// </returns>
 		public virtual IZetaRow Copy(bool withchildren) {
 			lock (this) {
 				var result = (Row) MemberwiseClone();
@@ -401,6 +523,10 @@ namespace Zeta.Extreme.Model {
 			}
 		}
 
+		/// <summary>
+		///     Method for cleanup and rewind collection of
+		///     <see cref="Zeta.Extreme.Model.Inerfaces.IZetaRow.AllChildren" />
+		/// </summary>
 		public virtual void ResetAllChildren() {
 			_allchildren = null;
 			if (_children != null) {
@@ -410,6 +536,22 @@ namespace Zeta.Extreme.Model {
 			}
 		}
 
+		/// <summary>
+		///     Дата начала
+		/// </summary>
+		public DateTime Start { get; set; }
+
+		/// <summary>
+		///     Дата окончания
+		/// </summary>
+		public DateTime Finish { get; set; }
+
+		/// <summary>
+		///     <see cref="Uri.Check" /> that old-style mark is seted
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns>
+		/// </returns>
 		public virtual bool IsMarkSeted(string code) {
 			if (code.ToUpper() == "ISFORMULA") {
 				return IsFormula;
@@ -430,14 +572,6 @@ namespace Zeta.Extreme.Model {
 			}
 		}
 
-		public virtual string GetParentedName() {
-			var result = Name;
-			if (null != Parent) {
-				result = ((Row) Parent).GetParentedName() + " / " + result;
-			}
-			return result;
-		}
-
 		private void prepareColumnMap() {
 			if (columnmap == null) {
 				columnmap = new Dictionary<string, string>();
@@ -455,15 +589,5 @@ namespace Zeta.Extreme.Model {
 		private IList<IZetaRow> _children;
 		private IDictionary<string, string> columnmap;
 		private IDictionary<string, object> localProperties;
-
-		/// <summary>
-		/// 	Дата начала
-		/// </summary>
-		public DateTime Start { get; set; }
-
-		/// <summary>
-		/// 	Дата окончания
-		/// </summary>
-		public DateTime Finish { get; set; }
 	}
 }

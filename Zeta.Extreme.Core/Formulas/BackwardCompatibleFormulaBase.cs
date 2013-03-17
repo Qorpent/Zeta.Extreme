@@ -330,7 +330,7 @@ namespace Zeta.Extreme {
 			if (null == q.Row.Native) {
 				return false;
 			}
-			var grps = q.Row.Native.Group.SmartSplit(false, true, '/', ';');
+			var grps = ((IZetaFormsSupport) q.Row.Native).GroupCache.SmartSplit(false, true, '/', ';');
 			if (0 == grps.Count) {
 				return false;
 			}
@@ -349,7 +349,7 @@ namespace Zeta.Extreme {
 			}
 
 			while (null != current) {
-				var grps = current.Group.SmartSplit(false, true, '/', ';');
+				var grps = ((IZetaFormsSupport) current).GroupCache.SmartSplit(false, true, '/', ';');
 				if (groups.Any(g => grps.Any(x => x == g))) {
 					return true;
 				}
