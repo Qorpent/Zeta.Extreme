@@ -65,7 +65,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <c>List</c> of mappings ZetaObject's users to themas
 		/// </summary>
 		[Obsolete("Due to ZC-408 must be moved to special extension")]
-		IList<IUsrThemaMap> UserBizCaseMaps { get; set; }
+		IList<IUserBizCaseMap> UserBizCaseMaps { get; set; }
 
 		/// <summary>
 		/// Full hierarchy path of ZetaObject (see <see cref="Parent"/> and Code)
@@ -133,7 +133,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// </summary>
 		/// <returns></returns>
 		[Obsolete("Due to ZC-408 must be moved to special extension")]
-		IUsrThemaMap GetUserMap(string themacode, bool plan);
+		IUserBizCaseMap GetUserMap(string themacode, bool plan);
 		/// <summary>
 		/// NEED INVESTIGATION!
 		/// </summary>

@@ -22,21 +22,54 @@
 using System;
 using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model {
-	public class UserThemaMap : IUsrThemaMap {
+namespace Zeta.Extreme.Model.Deprecated {
+	/// <summary>
+	/// Implements IUserBizCaseMap
+	/// </summary>
+	[Obsolete]
+	public class UserBizCaseMap : IUserBizCaseMap {
+		/// <summary>
+		/// PK ID in database terms
+		/// </summary>
 		public virtual int Id { get; set; }
-		public virtual IZetaUser Usr { get; set; }
+
+		/// <summary>
+		/// Referenced user
+		/// </summary>
+		public virtual IZetaUser User { get; set; }
+
+		/// <summary>
+		/// Referenced obj
+		/// </summary>
 		public virtual IZetaMainObject Object { get; set; }
+
+		/// <summary>
+		/// Target system (if multiple)
+		/// </summary>
 		public virtual string System { get; set; }
-		public virtual string Thema { get; set; }
+
+		/// <summary>
+		/// Code if biz case (thema)
+		/// </summary>
+		public virtual string BizCaseCode { get; set; }
+
+		/// <summary>
+		/// User's or system's time stamp
+		/// </summary>
 		public virtual DateTime Version { get; set; }
 
+		/// <summary>
+		/// Flag that this maping is about plan biz
+		/// </summary>
 		public virtual bool IsPlan {
-			get { return Thema.EndsWith("_2"); }
+			get { return BizCaseCode.EndsWith("_2"); }
 		}
 
+		/// <summary>
+		/// Converts biz code (???) to thema code
+		/// </summary>
 		public virtual string ThemaCode {
-			get { return Thema.Replace("_2", ""); }
+			get { return BizCaseCode.Replace("_2", ""); }
 		}
 	}
 }

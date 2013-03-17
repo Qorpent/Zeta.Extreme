@@ -28,7 +28,7 @@
     <Compile Include="PocoClasses\FormState.cs" />
     <Compile Include="Inerfaces\IBizTran.cs" />
     <Compile Include="Inerfaces\IBizTranFilter.cs" />
-    <Compile Include="PocoClasses\UserThemaMap.cs" />
+    <Compile Include="Deprecated\UserThemaMap.cs" />
     <Compile Include="Deprecated\Zone.cs" />
     <Compile Include="PocoClasses\Division.cs" />
     <Compile Include="PocoClasses\Cell.cs" />
@@ -102,7 +102,7 @@
     <Compile Include="Extensions\RowComparer.cs" />
     <Compile Include="Querying\SessionStatistics.cs" />
     <Compile Include="MetaCaches\StubMetaCache.cs" />
-    <Compile Include="Inerfaces\IUsrThemaMap.cs" />
+    <Compile Include="Deprecated\IUsrThemaMap.cs" />
     <Compile Include="Inerfaces\Partial\IWithDetailObjects.cs" />
     <Compile Include="Inerfaces\Partial\IWithMeasure.cs" />
     <Compile Include="Inerfaces\Partial\IWithOuterCode.cs" />

@@ -16,24 +16,57 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/IZetaUnderwriter.cs
 #endregion
+
+using System;
 using System.Collections.Generic;
 using Qorpent.Model;
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IZetaUser :
-		IEntity {
+	/// <summary>
+	/// Zeta user definition
+	/// </summary>
+	public interface IZetaUser : IContextEntity {
+		/// <summary>
+		/// Main login
+		/// </summary>
+		string Login { get; set; }
+		/// <summary>
+		/// Alt login
+		/// </summary>
 		string Login2 { get; set; }
+		/// <summary>
+		/// s-list of slots of underwrite docxs
+		/// </summary>
 		string SlotList { get; set; }
+		/// <summary>
+		/// Normalized lost of slots
+		/// </summary>
 		IList<string> Slots { get; }
+		/// <summary>
+		/// s-list of roles given to user
+		/// </summary>
 		string Roles { get; set; }
 
 		/// <summary>
 		/// 	Free list of documents,where basis for security provided
 		/// </summary>
 		 string Documents { get; set; }
-
+		 /// <summary>
+		 /// reference to container object
+		 /// </summary>
 		 IZetaMainObject Object { get; set; }
-
-		bool IsFor(string slot);
-		}
+		 /// <summary>
+		 /// marks that user is local admin
+		 /// </summary>
+		 [Obsolete("need be replaced with special role")]
+		 bool IsLocalAdmin { get; set; }
+		 /// <summary>
+		 /// Occupation of user
+		 /// </summary>
+		string Occupation { get; set; }
+		/// <summary>
+		/// Contact info
+		/// </summary>
+		string Contact { get; set; }
+	}
 }

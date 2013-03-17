@@ -21,50 +21,65 @@
 
 using System;
 using System.Collections.Generic;
+using Qorpent.Model;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
-	public partial class User : IZetaUser {
-		public virtual IZetaMainObject Org { get; set; }
+	/// <summary>
+	/// Zeta user implementation
+	/// </summary>
+	public partial class User : Entity, IZetaUser {
+		/// <summary>
+		/// reference to container object
+		/// </summary>
+		public virtual IZetaMainObject Object { get; set; }
 
-		public virtual Guid Uid { get; set; }
+		/// <summary>
+		/// Main login
+		/// </summary>
 		public virtual string Login { get; set; }
+
+		/// <summary>
+		/// 	True - объект активен
+		/// </summary>
 		public virtual bool Active { get; set; }
-		public virtual bool Boss { get; set; }
 
-		public virtual bool Worker { get; set; }
+		/// <summary>
+		/// marks that user is local admin
+		/// </summary>
+		public virtual bool IsLocalAdmin { get; set; }
 
-		public virtual string Dolzh { get; set; }
 
+		/// <summary>
+		/// Occupation of user
+		/// </summary>
+		public virtual string Occupation { get; set; }
+		/// <summary>
+		/// Contact info
+		/// </summary>
 		public virtual string Contact { get; set; }
 
-		public virtual string Tag { get; set; }
-
-		public virtual int Id { get; set; }
-
-		public virtual string Name { get; set; }
-
-		public virtual string Code { get; set; }
-
-		public virtual string Comment { get; set; }
 
 		/// <summary>
 		///     Free list of documents,where basis for security provided
 		/// </summary>
 		public virtual string Documents { get; set; }
 
-		public virtual DateTime Version { get; set; }
 
-		public virtual IZetaMainObject Object {
-			get { return Org; }
-			set { Org = value; }
-		}
-
+		/// <summary>
+		/// s-list of roles given to user
+		/// </summary>
 		public virtual string Roles { get; set; }
 
+		/// <summary>
+		/// Alt login
+		/// </summary>
 		public virtual string Login2 { get; set; }
 
+		/// <summary>
+		/// s-list of slots of underwrite docxs
+		/// </summary>
 		public virtual string SlotList {
 			get { return _slotList; }
 			set {
@@ -73,24 +88,24 @@ namespace Zeta.Extreme.Model {
 			}
 		}
 
+		/// <summary>
+		/// Normalized lost of slots
+		/// </summary>
 		public virtual IList<string> Slots {
 			get { return _slots ?? (_slots = SlotList.SmartSplit()); }
 		}
 
-		public virtual bool IsFor(string slot) {
-			return Slots.Contains(slot);
-		}
-
-		/// <summary>
-		///     An index of object
-		/// </summary>
-		public int Index { get; set; }
-
-		public virtual bool IsInRole(string role) {
-			return Roles.SmartSplit().Contains(role);
-		}
-
 		private string _slotList;
 		private IList<string> _slots;
+
+		/// <summary>
+		/// 	Дата начала
+		/// </summary>
+		public DateTime Start { get; set; }
+
+		/// <summary>
+		/// 	Дата окончания
+		/// </summary>
+		public DateTime Finish { get; set; }
 	}
 }

@@ -16,13 +16,17 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.BizProcess/IUsrThemaMapRepository.cs
 #endregion
+
+using System;
+using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
 	/// 	Интерфейс получения ответственных
 	/// </summary>
-	public interface IUsrThemaMapRepository {
+	[Obsolete("must be replaced with roles")]
+	public interface IUsrThemaMapRepository { 
 		/// <summary>
 		/// 	Первый ответственный
 		/// </summary>
@@ -30,7 +34,7 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// <param name="system"> </param>
 		/// <param name="obj"> </param>
 		/// <returns> </returns>
-		IUsrThemaMap GetResponsibility(string thema, string system, IZetaMainObject obj);
+		IUserBizCaseMap GetResponsibility(string thema, string system, IZetaMainObject obj);
 
 		/// <summary>
 		/// 	Второй ответственный
@@ -39,7 +43,7 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// <param name="system"> </param>
 		/// <param name="obj"> </param>
 		/// <returns> </returns>
-		IUsrThemaMap GetResponsibility2(string thema, string system, IZetaMainObject obj);
+		IUserBizCaseMap GetResponsibility2(string thema, string system, IZetaMainObject obj);
 
 		/// <summary>
 		/// 	Установить ответсвенноо

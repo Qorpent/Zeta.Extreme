@@ -43,9 +43,9 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 				{
 					Active = usr.Active,
 					Contact = usr.Contact,
-					Dolzh = usr.Dolzh,
+					Dolzh = usr.Occupation,
 					Email = usr.Comment,
-					IsObjAdmin = usr.Boss,
+					IsObjAdmin = usr.IsLocalAdmin,
 					Login = usr.Login,
 					Name = usr.Name
 				};

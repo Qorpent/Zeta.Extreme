@@ -22,16 +22,46 @@
 using System;
 
 namespace Zeta.Extreme.Model {
+	/// <summary>
+	/// Available column data type
+	/// </summary>
 	[Flags]
 	public enum ValueDataType {
+		/// <summary>
+		/// 
+		/// </summary>
 		Decimal = 0,
+		/// <summary>
+		/// 
+		/// </summary>
 		Int = 1,
+		/// <summary>
+		/// 
+		/// </summary>
 		Bool = 2,
+		/// <summary>
+		/// 
+		/// </summary>
 		Date = 3,
+		/// <summary>
+		/// 
+		/// </summary>
 		String = 4,
+		/// <summary>
+		/// 
+		/// </summary>
 		Dictionary = 5,
+		/// <summary>
+		/// type name
+		/// </summary>
 		Class = 6,
+		/// <summary>
+		/// lookup reference
+		/// </summary>
 		Lookup = 7,
+		/// <summary>
+		/// 
+		/// </summary>
 		Undefined = 8,
 	}
 }

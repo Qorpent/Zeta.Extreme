@@ -269,7 +269,9 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				objects.Add(FixedObject);
 				return objects;
 			}
+#pragma warning disable 612,618
 			var th = Thema as EcoThema;
+#pragma warning restore 612,618
 			if (null != th) {
 				var splitobj = th.GetParameter("splittoobj", "");
 				if (splitobj.IsNotEmpty()) {

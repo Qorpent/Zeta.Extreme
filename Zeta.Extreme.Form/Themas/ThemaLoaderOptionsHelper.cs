@@ -39,7 +39,9 @@ namespace Zeta.Extreme.Form.Themas {
 			result.ElementTypes = ElementType.Form;
 			result.LoadIerarchy = false;
 			result.FilterParameters = "extreme";
+#pragma warning disable 612,618
 			result.ClassRedirectMap["Comdiv.Zeta.Web.Themas.EcoThema, Comdiv.Zeta.Web"] = typeof(EcoThema).AssemblyQualifiedName;
+#pragma warning restore 612,618
 			return result;
 		}
 	}

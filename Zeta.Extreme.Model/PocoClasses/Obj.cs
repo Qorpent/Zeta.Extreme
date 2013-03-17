@@ -263,7 +263,7 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		///     <c>List</c> of mappings ZetaObject's users to themas
 		/// </summary>
-		public IList<IUsrThemaMap> UserBizCaseMaps { get; set; }
+		public IList<IUserBizCaseMap> UserBizCaseMaps { get; set; }
 
 		/// <summary>
 		///     NEED INVESTIGATION!
@@ -280,7 +280,7 @@ namespace Zeta.Extreme.Model {
 		/// <returns>
 		/// </returns>
 		public IZetaUser[] GetConfiguredUsers() {
-			return UserBizCaseMaps.Select(x => x.Usr).Distinct().ToArray();
+			return UserBizCaseMaps.Select(x => x.User).Distinct().ToArray();
 		}
 
 		/// <summary>
@@ -288,7 +288,7 @@ namespace Zeta.Extreme.Model {
 		/// </summary>
 		/// <returns>
 		/// </returns>
-		public IUsrThemaMap GetUserMap(string themacode, bool plan) {
+		public IUserBizCaseMap GetUserMap(string themacode, bool plan) {
 			return UserBizCaseMaps.FirstOrDefault(x => x.ThemaCode == themacode && x.IsPlan == plan);
 		}
 
@@ -299,7 +299,7 @@ namespace Zeta.Extreme.Model {
 		/// </returns>
 		public string[] GetConfiguredThemas(IZetaUser usr, bool plan) {
 			return
-				UserBizCaseMaps.Where(x => x.Usr.Id == usr.Id && x.IsPlan == plan).Select(x => x.ThemaCode).Distinct().ToArray();
+				UserBizCaseMaps.Where(x => x.User.Id == usr.Id && x.IsPlan == plan).Select(x => x.ThemaCode).Distinct().ToArray();
 		}
 
 		/// <summary>

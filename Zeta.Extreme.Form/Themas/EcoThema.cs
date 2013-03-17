@@ -24,12 +24,14 @@ using Qorpent.Applications;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
 	/// 	Стандартная ЭКО -тема
 	/// </summary>
+	[Obsolete("very bad wrapper")]
 	public class EcoThema : Thema {
 		/// <summary>
 		/// 	Подписанты
@@ -57,24 +59,25 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <summary>
 		/// 	Ответственность основная
 		/// </summary>
-		public IUsrThemaMap Responsibility {
-			get { return Parameters.SafeGet<IUsrThemaMap>("responsibility"); }
+
+		public IUserBizCaseMap Responsibility {
+			get { return Parameters.SafeGet<IUserBizCaseMap>("responsibility"); }
 			set { Parameters["responsibility"] = value; }
 		}
 
 		/// <summary>
 		/// 	Ответственность дополнительная
 		/// </summary>
-		public IUsrThemaMap Responsibility2 {
-			get { return Parameters.SafeGet<IUsrThemaMap>("responsibility2"); }
+		public IUserBizCaseMap Responsibility2 {
+			get { return Parameters.SafeGet<IUserBizCaseMap>("responsibility2"); }
 			set { Parameters["responsibility2"] = value; }
 		}
 
 		/// <summary>
 		/// 	Отвественность холдинга
 		/// </summary>
-		public IUsrThemaMap HoldResponsibility {
-			get { return Parameters.SafeGet<IUsrThemaMap>("holdresponsibility"); }
+		public IUserBizCaseMap HoldResponsibility {
+			get { return Parameters.SafeGet<IUserBizCaseMap>("holdresponsibility"); }
 			set { Parameters["holdresponsibility"] = value; }
 		}
 

@@ -120,7 +120,7 @@ namespace Zeta.Extreme.Core.Tests {
 			query.WaitPrepare();
 
 			_serial.Eval(query);
-			Assert.AreEqual(-124472m, query.Result.NumericResult);
+			Assert.AreEqual(-124473m, query.Result.NumericResult);
 		}
 
 		

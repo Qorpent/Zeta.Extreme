@@ -687,7 +687,9 @@ namespace Zeta.Extreme.Form.StateManagement {
 		private static bool checkByControlPoints(IInputTemplate template, IZetaMainObject obj, IZetaDetailObject detail,
 		                                         RowDescriptor root, out string cp) {
 			cp = "";
+#pragma warning disable 612,618
 			var th = template.Thema as EcoThema;
+#pragma warning restore 612,618
 			if (null == th) {
 				return true;
 			}

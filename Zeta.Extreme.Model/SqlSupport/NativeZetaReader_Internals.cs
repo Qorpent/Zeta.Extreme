@@ -258,8 +258,8 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				{
 					Id = r.GetInt32(0),
 					Version = r.GetDateTime(1),
-					Boss = r.GetBoolean(2),
-					Dolzh = r.GetString(3),
+					IsLocalAdmin = r.GetBoolean(2),
+					Occupation = r.GetString(3),
 					Contact = r.GetString(4),
 					Name = r.GetString(5),
 					Comment = r.GetString(6),

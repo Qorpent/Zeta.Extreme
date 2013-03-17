@@ -16,15 +16,41 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/IUsrThemaMap.cs
 #endregion
-using Qorpent.Model;
 
-namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IUsrThemaMap : IWithId, IWithVersion {
+using System;
+using Qorpent.Model;
+using Zeta.Extreme.Model.Inerfaces;
+
+namespace Zeta.Extreme.Model.Deprecated {
+	/// <summary>
+	/// Maps user to biz case in obj
+	/// </summary>
+	[Obsolete("must be replaced with roles")]
+	public interface IUserBizCaseMap : IWithId, IWithVersion {
+		/// <summary>
+		/// Referenced obj
+		/// </summary>
 		IZetaMainObject Object { get; set; }
-		IZetaUser Usr { get; set; }
+		/// <summary>
+		/// Referenced user
+		/// </summary>
+		IZetaUser User { get; set; }
+		/// <summary>
+		/// Target system (if multiple)
+		/// </summary>
 		string System { get; set; }
-		string Thema { get; set; }
+		/// <summary>
+		/// Code if biz case (thema)
+		/// </summary>
+		string BizCaseCode { get; set; }
+		/// <summary>
+		/// Flag that this maping is about plan biz
+		/// </summary>
 		bool IsPlan { get; }
+
+		/// <summary>
+		/// Converts biz code (???) to thema code
+		/// </summary>
 		string ThemaCode { get; }
 	}
 }
