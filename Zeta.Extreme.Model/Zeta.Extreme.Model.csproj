@@ -33,7 +33,6 @@
     <Compile Include="PocoClasses\ObjDiv.cs" />
     <Compile Include="PocoClasses\Cell.cs" />
     <Compile Include="PocoClasses\Row.cs" />
-    <Compile Include="PocoClasses\Mark.cs" />
     <Compile Include="PocoClasses\Point.cs" />
     <Compile Include="PocoClasses\ObjectGroup.cs" />
     <Compile Include="PocoClasses\Obj.cs" />
@@ -68,7 +67,6 @@
     <Compile Include="Inerfaces\IZetaRow.cs" />
     <Compile Include="Extensions\DetailComparer.cs" />
     <Compile Include="Extensions\WithMarksExtension.cs" />
-    <Compile Include="Inerfaces\IMark.cs" />
     <Compile Include="Inerfaces\IObjectGroup.cs" />
     <Compile Include="Inerfaces\Partial\IWithMarkCache.cs" />
     <Compile Include="Inerfaces\IZetaObjectGroup.cs" />
