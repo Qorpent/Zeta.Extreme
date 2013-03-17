@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,18 +15,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.Model/IZetaRegion.cs
+// PROJECT ORIGIN: Zeta.Extreme.Model/IZetaObjectClass.cs
+
 #endregion
+
+using System;
 using System.Collections.Generic;
 using Qorpent.Model;
+using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model.Inerfaces {
-	
-	public interface IZetaRegion :
+namespace Zeta.Extreme.Model.Deprecated {
+	/// <summary>
+	///     Implementation of first level in Zeta obj type system
+	/// </summary>
+	[Obsolete("ZC-416 must be replaced")]
+	public interface IZetaObjectClass :
 		IZetaObject,
-		IWithMainObjects,
-		IEntity{
-		IList<IZetaPoint> Points { get; set; }
-		IZetaZone Zone { get; set; }
-		}
+		ICanResolveTag,
+		IEntity {
+		/// <summary>
+		///     Children types collection
+		/// </summary>
+		IList<IObjectType> Types { get; set; }
+	}
 }

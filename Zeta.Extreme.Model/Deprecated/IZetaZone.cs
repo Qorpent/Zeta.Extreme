@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,17 +15,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.Model/IDetailObjectClass.cs
+// PROJECT ORIGIN: Zeta.Extreme.Model/IZetaZone.cs
+
 #endregion
+
+using System;
 using System.Collections.Generic;
 using Qorpent.Model;
+using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IDetailObjectClass :
-		IZetaObject,
-		ICanResolveTag,
-		IEntity, IWithId, IWithCode, IWithName, IWithTag {
-		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
-		IList<IObjectType> Types { get; set; }
-		}
+namespace Zeta.Extreme.Model.Deprecated {
+	/// <summary>
+	///     High level of old style geo
+	/// </summary>
+	[Obsolete("ZC-417")]
+	public interface IZetaZone :
+		IZetaObject, IEntity {
+		/// <summary>
+		///     Collection of nested regions
+		/// </summary>
+		IList<IZetaRegion> Regions { get; set; }
+	}
 }

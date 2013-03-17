@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,14 +15,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.Model/IZetaZone.cs
+// PROJECT ORIGIN: Zeta.Extreme.Model/IZetaPoint.cs
+
 #endregion
+
+using System;
 using System.Collections.Generic;
 using Qorpent.Model;
+using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IZetaZone :
-		IZetaObject, IEntity {
-		IList<IZetaRegion> Regions { get; set; }
-		}
+namespace Zeta.Extreme.Model.Deprecated {
+	/// <summary>
+	///     Lowest level of geolocation
+	/// </summary>
+	[Obsolete("ZC-417")]
+	public interface IZetaPoint :
+		IZetaObject,
+		IWithMainObjects,
+		IEntity {
+		/// <summary>
+		///     Reference to container <see cref="Region" />
+		/// </summary>
+		IZetaRegion Region { get; set; }
+
+		/// <summary>
+		///     Nested detail objects of point
+		/// </summary>
+		IList<IZetaDetailObject> DetailObjects { get; set; }
+	}
 }
