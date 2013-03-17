@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,7 +16,9 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/ObjectGroup.cs
+
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +56,7 @@ namespace Zeta.Extreme.Model {
 		}
 
 		/// <summary>
-		/// 	An index of object
+		///     An index of object
 		/// </summary>
 		public int Index { get; set; }
 

@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,98 +16,100 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/Period.cs
+
 #endregion
+
 using System;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
 	/// <summary>
-	/// Имплементация временного периода
+	///     Имплементация временного периода
 	/// </summary>
 	public class Period : IPeriod {
 		/// <summary>
-		/// 	Строка тегов
+		///     Строка тегов
 		/// </summary>
 		public virtual string Tag { get; set; }
 
 		/// <summary>
-		/// Бизнес ИД, используемый в приложении
+		///     Бизнес ИД, используемый в приложении
 		/// </summary>
 		public virtual int BizId { get; set; }
 
 		/// <summary>
-		/// Категория периода
+		///     Категория периода
 		/// </summary>
 		public virtual string Category { get; set; }
 
 		/// <summary>
-		/// Сокращенное имя
+		///     Сокращенное имя
 		/// </summary>
 		public virtual string ShortName { get; set; }
 
 		/// <summary>
-		/// Признак периода ВНУТРИ дня
+		///     Признак периода ВНУТРИ дня
 		/// </summary>
 		public virtual bool IsDayPeriod { get; set; }
 
 		/// <summary>
-		/// Начальная дата периода (приведенная, 1899-01-01 как условный 0)
+		///     Начальная дата периода (приведенная, 1899-01-01 как условный 0)
 		/// </summary>
 		public virtual DateTime StartDate { get; set; }
 
 		/// <summary>
-		/// Конечная дата периода (приведенная, 1899-01-01 как условный 0)
+		///     Конечная дата периода (приведенная, 1899-01-01 как условный 0)
 		/// </summary>
 		public virtual DateTime EndDate { get; set; }
 
 		/// <summary>
-		/// Количество месяцев в периоде
+		///     Количество месяцев в периоде
 		/// </summary>
 		public virtual int MonthCount { get; set; }
 
 		/// <summary>
-		/// 	Тип формулы
+		///     Тип формулы
 		/// </summary>
 		public string FormulaType { get; set; }
 
 		/// <summary>
-		/// 	Признак активности формулы
+		///     Признак активности формулы
 		/// </summary>
 		public virtual bool IsFormula { get; set; }
 
 		/// <summary>
-		/// 	Строка формулы
+		///     Строка формулы
 		/// </summary>
 		public virtual string Formula { get; set; }
 
 
 		/// <summary>
-		/// 	Строковый уникальный идентификатор
+		///     Строковый уникальный идентификатор
 		/// </summary>
 		public virtual string Code { get; set; }
 
 		/// <summary>
-		/// 	Комментарий
+		///     Комментарий
 		/// </summary>
 		public virtual string Comment { get; set; }
 
 		/// <summary>
-		/// 	Целочисленный уникальный идентификатор
+		///     Целочисленный уникальный идентификатор
 		/// </summary>
 		public virtual int Id { get; set; }
 
 		/// <summary>
-		/// 	An index of object
+		///     An index of object
 		/// </summary>
 		public virtual int Index { get; set; }
 
 		/// <summary>
-		/// 	Название/имя
+		///     Название/имя
 		/// </summary>
 		public virtual string Name { get; set; }
 
 		/// <summary>
-		/// 	Название
+		///     Название
 		/// </summary>
 		public virtual DateTime Version { get; set; }
 	}

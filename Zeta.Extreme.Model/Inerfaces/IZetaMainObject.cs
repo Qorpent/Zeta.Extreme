@@ -131,17 +131,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <remarks>Intended to use with ORM/SQL scenario</remarks>
 		int? DivisionId { get; set; }
 
-		/// <summary>
-		/// Access to <c>metalink</c>-subsystem to get <c>metalinks</c> attached to current ZetaObject
-		/// </summary>
-		/// <param name="nodetype">type of other node type</param>
-		/// <param name="linktype">type of link</param>
-		/// <param name="subtype"><c>subtype</c> of link</param>
-		/// <param name="system"><c>system</c> selector (reserved)</param>
-		/// <returns>array of <c>metalinks</c> that matches query</returns>
-		[Obsolete("Due to ZC-409 must be moved to another concern")]
-		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
-
 
 		/// <summary>
 		/// NEED INVESTIGATION!

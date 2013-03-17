@@ -17,7 +17,13 @@
 // PROJECT ORIGIN: Zeta.Extreme.Model/IWithMarkCache.cs
 #endregion
 namespace Zeta.Extreme.Model.Inerfaces {
+	/// <summary>
+	/// Describes old-style zeta concern of attribute's marks
+	/// </summary>
 	public interface IWithMarkCache {
+		/// <summary>
+		/// Slash-delimited list of mark codes
+		/// </summary>
 		string MarkCache { get; set; }
 	}
 }

@@ -1,4 +1,5 @@
 ﻿#region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,7 +16,9 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/User.cs
+
 #endregion
+
 using System;
 using System.Collections.Generic;
 using Qorpent.Utils.Extensions;
@@ -23,47 +26,46 @@ using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
 	public partial class User : IZetaUser {
-		 public virtual IZetaMainObject Org { get; set; }
+		public virtual IZetaMainObject Org { get; set; }
 
-		 public virtual Guid Uid { get; set; }
-		 public virtual string Login { get; set; }
-		 public virtual bool Active { get; set; }
+		public virtual Guid Uid { get; set; }
+		public virtual string Login { get; set; }
+		public virtual bool Active { get; set; }
+		public virtual bool Boss { get; set; }
 
-		 public virtual string Tag { get; set; }
+		public virtual bool Worker { get; set; }
 
-		 public virtual int Id { get; set; }
+		public virtual string Dolzh { get; set; }
 
-		 public virtual string Name { get; set; }
+		public virtual string Contact { get; set; }
 
-		 public virtual string Code { get; set; }
+		public virtual string Tag { get; set; }
 
-		 public virtual string Comment { get; set; }
+		public virtual int Id { get; set; }
+
+		public virtual string Name { get; set; }
+
+		public virtual string Code { get; set; }
+
+		public virtual string Comment { get; set; }
 
 		/// <summary>
-		/// 	Free list of documents,where basis for security provided
+		///     Free list of documents,where basis for security provided
 		/// </summary>
-		 public virtual string Documents { get; set; }
+		public virtual string Documents { get; set; }
 
-		 public virtual DateTime Version { get; set; }
+		public virtual DateTime Version { get; set; }
 
 		public virtual IZetaMainObject Object {
 			get { return Org; }
 			set { Org = value; }
 		}
 
-		 public virtual bool Boss { get; set; }
+		public virtual string Roles { get; set; }
 
-		 public virtual bool Worker { get; set; }
+		public virtual string Login2 { get; set; }
 
-		 public virtual string Dolzh { get; set; }
-
-		 public virtual string Contact { get; set; }
-
-		 public virtual string Roles { get; set; }
-
-		 public virtual string Login2 { get; set; }
-
-		 public virtual string SlotList {
+		public virtual string SlotList {
 			get { return _slotList; }
 			set {
 				_slotList = value;
@@ -80,7 +82,7 @@ namespace Zeta.Extreme.Model {
 		}
 
 		/// <summary>
-		/// 	An index of object
+		///     An index of object
 		/// </summary>
 		public int Index { get; set; }
 

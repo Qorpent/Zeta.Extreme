@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,35 +16,53 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/Region.cs
+
 #endregion
+
 using System;
 using System.Collections.Generic;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
 	public partial class region : IZetaRegion {
-		 public virtual IZetaZone Country { get; set; }
+		public virtual IZetaZone Country { get; set; }
 
-		 public virtual Guid Uid { get; set; }
+		public virtual Guid Uid { get; set; }
+
+		public virtual IList<IZetaDetailObject> DetailObjects {
+			get {
+				if (null == _detailobjects) {
+					var result = new List<IZetaDetailObject>();
+					foreach (var town in Points) {
+						foreach (var mainObject in town.DetailObjects) {
+							result.Add(mainObject);
+						}
+					}
+					_detailobjects = result;
+				}
+				return _detailobjects;
+			}
+			set { _detailobjects = value; }
+		}
 
 		public virtual string Tag { get; set; }
 
-		 public virtual IList<IZetaPoint> Points { get; set; }
+		public virtual IList<IZetaPoint> Points { get; set; }
 
 		public virtual IZetaZone Zone {
 			get { return Country; }
 			set { Country = value; }
 		}
 
-		 public virtual int Id { get; set; }
+		public virtual int Id { get; set; }
 
-		 public virtual string Name { get; set; }
+		public virtual string Name { get; set; }
 
-		 public virtual string Code { get; set; }
+		public virtual string Code { get; set; }
 
-		 public virtual string Comment { get; set; }
+		public virtual string Comment { get; set; }
 
-		 public virtual DateTime Version { get; set; }
+		public virtual DateTime Version { get; set; }
 
 		public virtual int Index { get; set; }
 
@@ -63,23 +82,7 @@ namespace Zeta.Extreme.Model {
 			set { _mainobjects = value; }
 		}
 
-		public virtual IList<IZetaObj> DetailObjects {
-			get {
-				if (null == _detailobjects) {
-					var result = new List<IZetaObj>();
-					foreach (var town in Points) {
-						foreach (var mainObject in town.DetailObjects) {
-							result.Add(mainObject);
-						}
-					}
-					_detailobjects = result;
-				}
-				return _detailobjects;
-			}
-			set { _detailobjects = value; }
-		}
-
-		private IList<IZetaObj> _detailobjects;
+		private IList<IZetaDetailObject> _detailobjects;
 		private IList<IZetaMainObject> _mainobjects;
 	}
 }

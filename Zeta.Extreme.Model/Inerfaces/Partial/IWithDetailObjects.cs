@@ -26,6 +26,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <summary>
 		/// list of attached details
 		/// </summary>
-		IList<IZetaObj> Details { get; set; }
+		IList<IZetaDetailObject> Details { get; set; }
 	}
 }

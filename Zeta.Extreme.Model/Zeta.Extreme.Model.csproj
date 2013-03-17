@@ -59,10 +59,10 @@
     <Compile Include="Inerfaces\IForm.cs" />
     <Compile Include="Inerfaces\IFormState.cs" />
     <Compile Include="Inerfaces\IPeriod.cs" />
-    <Compile Include="Inerfaces\Partial\IWithUsr.cs" />
+    <Compile Include="Inerfaces\Partial\IWithUser.cs" />
     <Compile Include="Inerfaces\IZetaCell.cs" />
     <Compile Include="Inerfaces\IZetaColumn.cs" />
-    <Compile Include="Inerfaces\IZetaObj.cs" />
+    <Compile Include="Inerfaces\IZetaDetailObject.cs" />
     <Compile Include="Inerfaces\Partial\IZetaFormsSupport.cs" />
     <Compile Include="Inerfaces\IZetaMainObject.cs" />
     <Compile Include="Inerfaces\IZetaRow.cs" />
@@ -112,7 +112,6 @@
     <Compile Include="Inerfaces\Partial\IZetaQueryDimension.cs" />
     <Compile Include="Inerfaces\IZetaUser.cs" />
     <Compile Include="Inerfaces\Partial\IZetaObject.cs" />
-    <Compile Include="PocoClasses\SubpartRelation.cs" />
     <Compile Include="PocoClasses\ValueDataType.cs" />
     <Compile Include="MetaCache.cs" />
     <Compile Include="PocoClasses\MetalinkRecord.cs" />

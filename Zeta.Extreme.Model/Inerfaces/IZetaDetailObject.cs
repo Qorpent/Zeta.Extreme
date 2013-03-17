@@ -21,29 +21,46 @@ using Qorpent.Model;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	
-	public interface IZetaObj : IZetaObject,
+	/// <summary>
+	/// Detail Zeta object
+	/// </summary>
+	public interface IZetaDetailObject : IZetaObject,
 		ICanResolveTag,
 		IWithObjType,
 		IWithDetailObjects, IWithOuterCode, IEntity,IWithCurrency {
-		string Verb { get; set; }
-		IZetaObj Parent { get; set; }
-		IZetaPoint Location { get; set; }
+		/// <summary>
+		/// Parent <see cref="IZetaDetailObject"/>
+		/// </summary>
+		IZetaDetailObject Parent { get; set; }
+		/// <summary>
+		/// Geo location of detail
+		/// </summary>
+		IZetaPoint Point { get; set; }
+		/// <summary>
+		/// Full name of detail
+		/// </summary>
 		string FullName { get; set; }
-		bool InverseControl { get; set; }
-
-		 decimal Number1 { get; set; }
-
-		 decimal Number2 { get; set; }
-
+		
+		/// <summary>
+		/// Start date of detail existence
+		/// </summary>
 		 DateTime Start { get; set; }
-
+		 /// <summary>
+		 /// Finish date of detail existence
+		 /// </summary>
 		 DateTime Finish { get; set; }
-
+		 /// <summary>
+		 /// Path in hierarhy
+		 /// </summary>
 		 string Path { get; set; }
-
-		 DateTime Date1 { get; set; }
-		 DateTime Date2 { get; set; }
+		 /// <summary>
+		 /// Main obj of detail
+		 /// </summary>
 		 IZetaMainObject Object { get; set; }
-		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
+		 /// <summary>
+		 /// Second obj of detail
+		 /// </summary>
+		 IZetaMainObject AltObject { get; set; }
+		
 		}
 }

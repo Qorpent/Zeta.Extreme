@@ -1,4 +1,5 @@
 ﻿#region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,7 +16,9 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/Row.cs
+
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,22 +29,27 @@ using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
 	/// <summary>
-	/// 
 	/// </summary>
 	public partial class Row : IZetaRow {
-		 public virtual string Grp { get; set; }
+		public virtual string Grp { get; set; }
 
-		 public virtual IZetaMainObject Org { get; set; }
+		public virtual IZetaMainObject Org { get; set; }
 
 		/// <summary>
-		/// 	Режим использования формулы с Extreme
+		///     Режим использования формулы с Extreme
 		/// </summary>
 		public virtual int ExtremeFormulaMode { get; set; }
 
-		 public virtual Guid Uid { get; set; }
+		public virtual Guid Uid { get; set; }
+		public virtual string Lookup { get; set; }
+		public virtual bool IsDynamicLookup { get; set; }
+
+		public virtual string SortKey {
+			get { return string.Format("{0:00000}_{1}_{2}", Index == 0 ? 10000 : Index, OuterCode ?? "", Code); }
+		}
 
 
-		 public virtual bool Active { get; set; }
+		public virtual bool Active { get; set; }
 
 		public virtual int? ParentId { get; set; }
 		public virtual int? RefId { get; set; }
@@ -79,8 +87,6 @@ namespace Zeta.Extreme.Model {
 
 		public virtual string Tag { get; set; }
 
-		 public virtual string Lookup { get; set; }
-
 		public virtual IZetaRow TemporalParent { get; set; }
 
 
@@ -97,46 +103,43 @@ namespace Zeta.Extreme.Model {
 		}
 
 		/// <summary>
-		///Currency of entity
+		///     <see cref="Currency" /> of entity
 		/// </summary>
 		public virtual string Currency { get; set; }
 
-		 public virtual bool IsDynamicLookup { get; set; }
+		public virtual int Id { get; set; }
 
-		 public virtual int Id { get; set; }
+		public virtual string Name { get; set; }
 
-		 public virtual string Name { get; set; }
+		public virtual string Code { get; set; }
 
-		 public virtual string Code { get; set; }
+		public virtual string Comment { get; set; }
 
-		 public virtual string Comment { get; set; }
-
-		 public virtual DateTime Version { get; set; }
+		public virtual DateTime Version { get; set; }
 
 		/// <summary>
-		/// 	Тип формулы
+		///     Тип формулы
 		/// </summary>
 		public string FormulaType { get; set; }
 
-		 public virtual bool IsFormula { get; set; }
+		public virtual bool IsFormula { get; set; }
 
-		 public virtual string Formula { get; set; }
-
-
-
-		 public virtual string Measure { get; set; }
-
-		 public virtual bool IsDynamicMeasure { get; set; }
+		public virtual string Formula { get; set; }
 
 
-		 public virtual IZetaRow Parent { get; set; }
+		public virtual string Measure { get; set; }
+
+		public virtual bool IsDynamicMeasure { get; set; }
+
+
+		public virtual IZetaRow Parent { get; set; }
 
 
 		public virtual IList<IZetaRow> NativeChildren {
 			get { return _children; }
 		}
 
-		 public virtual IList<IZetaRow> Children {
+		public virtual IList<IZetaRow> Children {
 			get { return _children; }
 			set { _children = value; }
 		}
@@ -153,42 +156,42 @@ namespace Zeta.Extreme.Model {
 			return mes;
 		}
 
-		 public virtual string Path { get; set; }
+		public virtual string Path { get; set; }
 
-		 public virtual IZetaRow RefTo { get; set; }
+		public virtual IZetaRow RefTo { get; set; }
 
 
 		public virtual int? ExRefToId { get; set; }
 
-		 public virtual IZetaRow ExRefTo { get; set; }
+		public virtual IZetaRow ExRefTo { get; set; }
 
-		 public virtual int Index { get; set; }
+		public virtual int Index { get; set; }
 
-		 public virtual string OuterCode { get; set; }
+		public virtual string OuterCode { get; set; }
 
 		public virtual string Group {
 			get { return Grp; }
 			set { Grp = value; }
 		}
 
-		
+
 		public virtual IZetaMainObject Object {
 			get { return Org; }
 			set { Org = value; }
 		}
 
-		 public virtual string MarkCache { get; set; }
+		public virtual string MarkCache { get; set; }
 
 		public virtual IDictionary<string, object> LocalProperties {
 			get { return localProperties ?? (localProperties = new Dictionary<string, object>()); }
 			set { localProperties = value; }
 		}
 
-		 public virtual string ObjectGroups { get; set; }
-		 public virtual string FormElementType { get; set; }
-		 public virtual string Validator { get; set; }
+		public virtual string ObjectGroups { get; set; }
+		public virtual string FormElementType { get; set; }
+		public virtual string Validator { get; set; }
 
-		 public virtual string ColumnSubstitution { get; set; }
+		public virtual string ColumnSubstitution { get; set; }
 
 		public virtual string ResolveColumnCode(string incode) {
 			prepareColumnMap();
@@ -293,12 +296,8 @@ namespace Zeta.Extreme.Model {
 			}
 		}
 
-		 public virtual string FullName { get; set; }
-		 public virtual string Role { get; set; }
-
-		public virtual string SortKey {
-			get { return string.Format("{0:00000}_{1}_{2}", Index == 0 ? 10000 : Index, OuterCode ?? "", Code); }
-		}
+		public virtual string FullName { get; set; }
+		public virtual string Role { get; set; }
 
 		public virtual IZetaRow[] AllChildren {
 			get {
@@ -361,17 +360,13 @@ namespace Zeta.Extreme.Model {
 			return true;
 		}
 
-		private IList<IZetaRow> _children;
-		private IDictionary<string, string> columnmap;
-		private IDictionary<string, object> localProperties;
-		private IZetaRow[] _allchildren;
-		
 
 		/// <summary>
-		/// 	Проверяет, что строка не устарела
+		///     Проверяет, что строка не устарела
 		/// </summary>
-		/// <param name="year"> </param>
-		/// <returns> </returns>
+		/// <param name="year"></param>
+		/// <returns>
+		/// </returns>
 		public virtual bool IsObsolete(int year) {
 			var obs = ResolveTag("obsolete").ToInt();
 			if (0 == obs) {
@@ -455,5 +450,10 @@ namespace Zeta.Extreme.Model {
 				}
 			}
 		}
+
+		private IZetaRow[] _allchildren;
+		private IList<IZetaRow> _children;
+		private IDictionary<string, string> columnmap;
+		private IDictionary<string, object> localProperties;
 	}
 }

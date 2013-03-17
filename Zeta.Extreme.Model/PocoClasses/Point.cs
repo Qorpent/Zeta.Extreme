@@ -1,4 +1,5 @@
 ﻿#region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,38 +16,38 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/Point.cs
+
 #endregion
+
 using System;
 using System.Collections.Generic;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
 	/// <summary>
-	/// 
 	/// </summary>
 	public partial class Point : IZetaPoint {
-		 public virtual Guid Uid { get; set; }
+		public virtual Guid Uid { get; set; }
 
 		public virtual string Tag { get; set; }
 
-		 public virtual IList<IZetaMainObject> MainObjects { get; set; }
+		public virtual IList<IZetaMainObject> MainObjects { get; set; }
 
-		 public virtual IZetaRegion Region { get; set; }
+		public virtual IZetaRegion Region { get; set; }
 
-		
 
-		 public virtual int Id { get; set; }
+		public virtual int Id { get; set; }
 
-		 public virtual string Name { get; set; }
+		public virtual string Name { get; set; }
 
-		 public virtual string Code { get; set; }
+		public virtual string Code { get; set; }
 
-		 public virtual string Comment { get; set; }
+		public virtual string Comment { get; set; }
 
-		 public virtual DateTime Version { get; set; }
+		public virtual DateTime Version { get; set; }
 
 		public virtual int Index { get; set; }
 
-		public virtual IList<IZetaObj> DetailObjects { get; set; }
+		public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
 	}
 }

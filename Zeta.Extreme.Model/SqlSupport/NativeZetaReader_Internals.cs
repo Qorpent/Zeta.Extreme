@@ -216,7 +216,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Version = r.GetDateTime(1),
 					Comment = r.GetString(2),
 					State = r.GetString(3),
-					Usr = r.GetString(4),
+					User = r.GetString(4),
 				};
 			if (!r.IsDBNull(5)) {
 				x.FormId = r.GetInt32(5);
@@ -240,7 +240,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Code = r.GetString(2),
 					Year = r.GetInt32(3),
 					Period = r.GetInt32(4),
-					Template = r.GetString(5),
+					BizCaseCode = r.GetString(5),
 				};
 			if (!r.IsDBNull(6)) {
 				x.ObjectId = r.GetInt32(6);

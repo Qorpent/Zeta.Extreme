@@ -1,4 +1,5 @@
 ﻿#region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,7 +16,9 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/ObjType.cs
+
 #endregion
+
 using System;
 using System.Collections.Generic;
 using Qorpent.Utils.Extensions;
@@ -23,7 +26,7 @@ using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
 	public partial class ObjType : IObjectType {
-		 public virtual Guid Uid { get; set; }
+		public virtual Guid Uid { get; set; }
 
 
 		public virtual MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null,
@@ -44,23 +47,23 @@ namespace Zeta.Extreme.Model {
 			 */
 		}
 
-		 public virtual string Tag { get; set; }
+		public virtual string Tag { get; set; }
 
-		 public virtual IList<IZetaObj> Details { get; set; }
+		public virtual IList<IZetaDetailObject> Details { get; set; }
 
 
 		public virtual IDetailObjectClass Class { get; set; }
 
 
-		 public virtual int Id { get; set; }
+		public virtual int Id { get; set; }
 
-		 public virtual string Name { get; set; }
+		public virtual string Name { get; set; }
 
-		 public virtual string Code { get; set; }
+		public virtual string Code { get; set; }
 
-		 public virtual string Comment { get; set; }
+		public virtual string Comment { get; set; }
 
-		 public virtual DateTime Version { get; set; }
+		public virtual DateTime Version { get; set; }
 
 		public virtual int Index { get; set; }
 

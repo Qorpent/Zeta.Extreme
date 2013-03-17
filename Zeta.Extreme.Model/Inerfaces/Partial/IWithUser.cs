@@ -17,7 +17,10 @@
 // PROJECT ORIGIN: Zeta.Extreme.Model/IWithUsr.cs
 #endregion
 namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IWithUsr {
-		string Usr { get; set; }
+	/// <summary>
+	/// Describes entities with attached user name
+	/// </summary>
+	public interface IWithUser {
+		string User { get; set; }
 	}
 }

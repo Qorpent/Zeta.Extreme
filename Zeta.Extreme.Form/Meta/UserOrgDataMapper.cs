@@ -61,12 +61,12 @@ namespace Zeta.Extreme.Form.Meta{
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="detailObject"></param>
         /// <returns></returns>
-        public static IZetaObj Authorized(this IZetaObj obj){
+        public static IZetaDetailObject Authorized(this IZetaDetailObject detailObject){
             lock (sync){
-                obj.Object.Authorize(true);
-                return obj;
+                detailObject.Object.Authorize(true);
+                return detailObject;
             }
         }
 

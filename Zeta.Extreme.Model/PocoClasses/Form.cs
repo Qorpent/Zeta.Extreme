@@ -1,4 +1,5 @@
 ﻿#region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,63 +16,69 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/Form.cs
+
 #endregion
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
+	/// <summary>
+	///     Input form session record
+	/// </summary>
 	public class Form : IForm {
-		public virtual string TemplateCode { get; set; }
-
 		/// <summary>
-		/// 	Идентификатор объекта
+		///     Идентификатор объекта
 		/// </summary>
 		public virtual int ObjectId { get; set; }
 
+		/// <summary>
+		///     <see cref="Zeta.Extreme.Model.Inerfaces.IForm.Year" /> of input form
+		/// </summary>
 		public virtual int Year { get; set; }
 
+		/// <summary>
+		///     Period of input form
+		/// </summary>
 		public virtual int Period { get; set; }
 
-		public virtual string Template { get; set; }
+		/// <summary>
+		///     Template code or input form
+		/// </summary>
+		public virtual string BizCaseCode { get; set; }
 
+		/// <summary>
+		///     History of states
+		/// </summary>
 		public virtual IList<IFormState> States { get; set; }
 
+		/// <summary>
+		///     Current state value
+		/// </summary>
 		public virtual string CurrentState { get; set; }
 
+		/// <summary>
+		///     PK ID in database terms
+		/// </summary>
 		public virtual int Id { get; set; }
 
 
+		/// <summary>
+		///     Unique memo-code
+		/// </summary>
 		public virtual string Code { get; set; }
 
 
+		/// <summary>
+		///     User's or system's time stamp
+		/// </summary>
 		public virtual DateTime Version { get; set; }
 
 
+		/// <summary>
+		///     Target object (ZetaObject) of form
+		/// </summary>
 		public virtual IZetaMainObject Object { get; set; }
-
-
-		public virtual IFormState GetLastState() {
-			var result = States != null ? States.OrderBy(x => x.Version).LastOrDefault() : null;
-			if (null == result) {
-				result = new FormState();
-				result.Form = this;
-				result.State = "0ISOPEN";
-				result.Usr = "система";
-			}
-			return result;
-		}
-
-		public virtual IFormState GetLastBlock() {
-			var result = States != null ? States.Where(x => x.State == "0ISBLOCK").OrderBy(x => x.Version).LastOrDefault() : null;
-			if (null == result) {
-				result = new FormState();
-				result.Form = this;
-				result.State = "0ISOPEN";
-				result.Usr = "система";
-			}
-			return result;
-		}
 	}
 }

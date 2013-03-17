@@ -19,12 +19,33 @@
 using System;
 
 namespace Zeta.Extreme.Model.Inerfaces {
+	/// <summary>
+	/// <see cref="Cell"/> history in cube
+	/// </summary>
 	public interface ICellHistory {
+		/// <summary>
+		/// Merged code of source <see cref="Cell"/>
+		/// </summary>
 		string PseudoCode { get; set; }
-		int RowId { get; set; }
-		string Usr { get; set; }
+		/// <summary>
+		/// ID of target <see cref="Cell"/>
+		/// </summary>
+		int CellId { get; set; }
+		/// <summary>
+		/// user of change
+		/// </summary>
+		string User { get; set; }
+		/// <summary>
+		/// Timestamp of change
+		/// </summary>
 		DateTime Time { get; set; }
+		/// <summary>
+		/// New value
+		/// </summary>
 		string Value { get; set; }
+		/// <summary>
+		/// Type of action
+		/// </summary>
 		int Type { get; set; }
 	}
 }

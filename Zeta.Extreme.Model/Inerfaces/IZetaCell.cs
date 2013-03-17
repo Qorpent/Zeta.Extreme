@@ -24,7 +24,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	/// 	Интерефейс ячейки куба
 	/// </summary>
 	public interface IZetaCell :
-		IWithUsr, IWithId, IWithVersion, IWithCurrency {
+		IWithUser, IWithId, IWithVersion, IWithCurrency {
 		/// <summary>
 		/// Строка
 		/// </summary>
@@ -40,7 +40,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <summary>
 		/// Младший объект
 		/// </summary>
-		IZetaObj Detail { get; set; }
+		IZetaDetailObject Detail { get; set; }
 		/// <summary>
 		/// Контрагент
 		/// </summary>

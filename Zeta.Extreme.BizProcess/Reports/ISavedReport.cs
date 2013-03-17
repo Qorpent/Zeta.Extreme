@@ -25,7 +25,7 @@ namespace Zeta.Extreme.BizProcess.Reports{
 	/// <summary>
 	/// Интерфейс сохраненного отчета
 	/// </summary>
-    public interface ISavedReport : IEntity, IWithUsr{
+    public interface ISavedReport : IEntity, IWithUser{
 		/// <summary>
 		/// Признак общего отчета
 		/// </summary>

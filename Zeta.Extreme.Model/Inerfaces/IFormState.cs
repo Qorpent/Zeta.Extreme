@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,15 +16,29 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/IFormState.cs
+
 #endregion
+
 using Qorpent.Model;
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IFormState : IWithId, IWithVersion, IWithComment {
+	/// <summary>
+	///     History item of form state
+	/// </summary>
+	public interface IFormState : IWithId, IWithVersion, IWithComment, IWithUser {
+		/// <summary>
+		///     Form reference
+		/// </summary>
 		IForm Form { get; set; }
+
+		/// <summary>
+		///     Code of state
+		/// </summary>
 		string State { get; set; }
-		string Usr { get; set; }
+
+		/// <summary>
+		///     <see cref="Parent" /> form state (for cascaded states)
+		/// </summary>
 		IFormState Parent { get; set; }
-		string GetReadableState();
 	}
 }

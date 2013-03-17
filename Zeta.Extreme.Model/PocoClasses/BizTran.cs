@@ -1,4 +1,5 @@
 ﻿#region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,17 +16,18 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/BizTran.cs
+
 #endregion
-using System;
+
 using Qorpent;
 using Qorpent.Model;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
 	/// <summary>
-	/// Biz transaction definition implementation
+	///     Biz transaction definition implementation
 	/// </summary>
-	public sealed partial class BizTran :Entity, IBizTran {
+	public sealed partial class BizTran : Entity, IBizTran {
 		/// <summary>
 		/// </summary>
 		public BizTran() {
@@ -39,34 +41,33 @@ namespace Zeta.Extreme.Model {
 		}
 
 		/// <summary>
-		/// Account type of first contragent
+		///     Account type of first contragent
 		/// </summary>
 		public string FirstType { get; set; }
 
 		/// <summary>
-		/// Role of first contragent to second
+		///     Role of first contragent to second
 		/// </summary>
 		public string FirstRole { get; set; }
 
 		/// <summary>
-		/// Input form code of first contragent
+		///     Input form code of first contragent
 		/// </summary>
 		public string FirstForm { get; set; }
 
 		/// <summary>
-		/// Account type of second contragent
+		///     Account type of second contragent
 		/// </summary>
 		public string SecondType { get; set; }
 
 		/// <summary>
-		/// Role of second contragent to first
+		///     Role of second contragent to first
 		/// </summary>
 		public string SecondRole { get; set; }
 
 		/// <summary>
-		/// Input form code of second contragent (inverse)
+		///     Input form code of second contragent (inverse)
 		/// </summary>
 		public string SecondForm { get; set; }
-
 	}
 }

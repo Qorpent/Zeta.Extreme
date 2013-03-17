@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,20 +16,45 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/CellHistory.cs
+
 #endregion
+
 using System;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
 	/// <summary>
-	/// 
+	///     Implements <see cref="ICellHistory" /> as poco
 	/// </summary>
 	public class CellHistory : ICellHistory {
-		public virtual int Type { get; set; }
-		public virtual string PseudoCode { get; set; }
-		public virtual int RowId { get; set; }
-		public virtual string Usr { get; set; }
-		public virtual DateTime Time { get; set; }
-		public virtual string Value { get; set; }
+		/// <summary>
+		///     Type of action
+		/// </summary>
+		public int Type { get; set; }
+
+		/// <summary>
+		///     Merged code of source <see cref="Cell" />
+		/// </summary>
+		public string PseudoCode { get; set; }
+
+		/// <summary>
+		///     ID of target <see cref="Cell" />
+		/// </summary>
+		public int CellId { get; set; }
+
+		/// <summary>
+		///     user of change
+		/// </summary>
+		public string User { get; set; }
+
+		/// <summary>
+		///     Timestamp of change
+		/// </summary>
+		public DateTime Time { get; set; }
+
+		/// <summary>
+		///     New value
+		/// </summary>
+		public string Value { get; set; }
 	}
 }
