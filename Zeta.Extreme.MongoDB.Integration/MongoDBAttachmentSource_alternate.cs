@@ -13,17 +13,19 @@ namespace Zeta.Extreme.MongoDB.Integration {
     ///     альтернативный класс MongoDbAttachmentSource с перереработанной структурой
     /// </summary>
     public class MongoDbAttachmentSourceAlternate : IAttachmentStorage {
-        private MongoClientSettings _cliSettings;
-        private MongoCollection _collection;
-
         private string _collectionName;
         private string _connectionString;
         private string _databaseName;
 
+        // connection links: current db, GridFS and collection 
         private MongoDatabase _db;
         private MongoGridFS _gridFs;
+        private MongoCollection _collection;
+
+        // MongoDB settings: db, client and GridFS
         private MongoDatabaseSettings _dbSettings;
         private MongoGridFSSettings _gridFsSettings;
+        private MongoClientSettings _cliSettings;
 
         private bool _connected;
 
@@ -91,6 +93,17 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="attachment"></param>
         public void Delete(Attachment attachment) {
             SetupConnection();
+
+            var found = Find(attachment);
+
+            foreach (
+                var document in found.Select(
+                    MongoDbAttachmentSourceSerializer.AttachmentToBson
+                )
+            ) {
+                document["Deleted"] = true;
+                _collection.Save(document);
+            }
         }
 
         /// <summary>
@@ -116,6 +129,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 _gridFsSettings = new MongoGridFSSettings {
                     Root = Collection
                 };
+                
                 _cliSettings = new MongoClientSettings {
                     Server = new MongoServerAddress(ConnectionString)
                 };

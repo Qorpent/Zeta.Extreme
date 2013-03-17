@@ -96,6 +96,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 
             }
 
+            // do not find deleted attachments
+            document["Deleted"] = false;
+
             return document;
         }
     }
