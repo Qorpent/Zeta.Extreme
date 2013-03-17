@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using Qorpent.Model;
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IZetaUnderwriter :
+	public interface IZetaUser :
 		IEntity {
 		string Login2 { get; set; }
 		string SlotList { get; set; }

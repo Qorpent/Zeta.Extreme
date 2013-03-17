@@ -60,13 +60,13 @@ namespace Zeta.Extreme.BizProcess.Themas
 		public static bool IsMatchRule(IZetaMainObject obj, string rule) {
 			bool ismatch = false;
 			if (rule.StartsWith("div_")) {
-				ismatch = obj.Group.Code == rule.Substring(4);
+				ismatch = obj.Division.Code == rule.Substring(4);
 			}
 			else if (rule.StartsWith("obj_")) {
 				ismatch = obj.Id == rule.Substring(4).ToInt();
 			}
 			else if (rule.StartsWith("otr_")) {
-				ismatch = obj.Role.Code == rule.Substring(4);
+				ismatch = obj.Department.Code == rule.Substring(4);
 			}
 			else {
 				ismatch = obj.GroupCache.Contains("/" + rule + "/");

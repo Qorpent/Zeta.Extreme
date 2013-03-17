@@ -17,7 +17,13 @@
 // PROJECT ORIGIN: Zeta.Extreme.Model/IWithOuterCode.cs
 #endregion
 namespace Zeta.Extreme.Model.Inerfaces {
+	/// <summary>
+	/// Describes ability to map an foreign dictionary of coding system
+	/// </summary>
 	public interface IWithOuterCode {
+		/// <summary>
+		/// Helper code that maps any foreign coding system
+		/// </summary>
 		string OuterCode { get; set; }
 	}
 }

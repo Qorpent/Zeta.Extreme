@@ -21,14 +21,13 @@ using Qorpent.Model;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
-	/// Интерфейс для обработчиков формул
+	///Zeta formula host
 	/// </summary>
 	public interface IZetaQueryDimension : IEntity,
 		IWithFormula
-	{
-		
+	{		
 		/// <summary>
-		/// Словарь локальных (временных) свойств
+		/// Temporary (local) properties collection
 		/// </summary>
 		IDictionary<string, object> LocalProperties { get; }
 	}

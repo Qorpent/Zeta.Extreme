@@ -577,7 +577,7 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		protected bool divin(params string[] codes) {
 			//#ZC-131
-			return null != codes && q.Obj.IsForObj && codes.Any(x => q.Obj.ObjRef.Group.Code == x);
+			return null != codes && q.Obj.IsForObj && codes.Any(x => q.Obj.ObjRef.Division.Code == x);
 		}
 
 		/// <summary>

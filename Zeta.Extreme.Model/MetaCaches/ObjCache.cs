@@ -199,10 +199,10 @@ namespace Zeta.Extreme.Model.MetaCaches {
 		private static void RegisterObject(IZetaMainObject obj) {
 			_objById[obj.Id] = obj;
 			_objByCode[obj.Code] = obj;
-			if (obj.DivId.HasValue && 0 != obj.DivId.Value) {
-				if (_divById.ContainsKey(obj.DivId.Value)) {
-					obj.Group = _divById[obj.DivId.Value];
-					_divById[obj.DivId.Value].MainObjects.Add(obj);
+			if (obj.DivisionId.HasValue && 0 != obj.DivisionId.Value) {
+				if (_divById.ContainsKey(obj.DivisionId.Value)) {
+					obj.Division = _divById[obj.DivisionId.Value];
+					_divById[obj.DivisionId.Value].MainObjects.Add(obj);
 				}
 			}
 		}

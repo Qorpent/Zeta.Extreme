@@ -33,15 +33,15 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 		/// <returns> </returns>
 		public AccessibleObjects GetAccessibleObjects(IPrincipal principal = null) {
 			principal = principal ?? Application.Current.Principal.CurrentUser;
-			var objects = UserOrgDataMapper.GetAvailOrgs(principal, null, true).Where(_ => null != _.Group).ToArray();
+			var objects = UserOrgDataMapper.GetAvailOrgs(principal, null, true).Where(_ => null != _.Division).ToArray();
 			var divs =
-				objects.Select(_ => _.Group).Distinct().Select(_ => new DivisionRecord {code = _.Code, name = _.Name, idx = _.Idx}).
+				objects.Select(_ => _.Division).Distinct().Select(_ => new DivisionRecord {code = _.Code, name = _.Name, idx = _.Idx}).
 					ToArray();
 			var objs =
 				objects.Select(
 					_ =>
 					new ObjectRecord
-						{id = _.Id, name = _.Name, shortname = _.ShortName, div = _.Group.Code, idx = _.Idx})
+						{id = _.Id, name = _.Name, shortname = _.ShortName, div = _.Division.Code, idx = _.Idx})
 					.ToArray();
 			return new AccessibleObjects {divs = divs, objs = objs};
 		}

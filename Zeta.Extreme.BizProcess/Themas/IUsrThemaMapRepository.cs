@@ -48,7 +48,7 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// <param name="system"> </param>
 		/// <param name="obj"> </param>
 		/// <param name="usr"> </param>
-		void SetResponsibility(string thema, string system, IZetaMainObject obj, IZetaUnderwriter usr);
+		void SetResponsibility(string thema, string system, IZetaMainObject obj, IZetaUser usr);
 
 		/// <summary>
 		/// 	Установить второго ответственного
@@ -57,6 +57,6 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// <param name="system"> </param>
 		/// <param name="obj"> </param>
 		/// <param name="usr"> </param>
-		void SetResponsibility2(string thema, string system, IZetaMainObject obj, IZetaUnderwriter usr);
+		void SetResponsibility2(string thema, string system, IZetaMainObject obj, IZetaUser usr);
 	}
 }

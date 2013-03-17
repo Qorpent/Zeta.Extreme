@@ -21,7 +21,7 @@ using Qorpent.Model;
 namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IUsrThemaMap : IWithId, IWithVersion {
 		IZetaMainObject Object { get; set; }
-		IZetaUnderwriter Usr { get; set; }
+		IZetaUser Usr { get; set; }
 		string System { get; set; }
 		string Thema { get; set; }
 		bool IsPlan { get; }

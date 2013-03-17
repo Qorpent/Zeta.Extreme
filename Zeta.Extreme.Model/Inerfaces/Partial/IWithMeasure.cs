@@ -18,10 +18,16 @@
 #endregion
 namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
-	/// 
+	/// Measured entity concern
 	/// </summary>
 	public interface IWithMeasure {
+		/// <summary>
+		/// Type of measure <c>(ru : единица измерения)</c>
+		/// </summary>
 		string Measure { get; set; }
+		/// <summary>
+		/// Flag that measure must be setted up dynamically
+		/// </summary>
 		bool IsDynamicMeasure { get; set; }
 	}
 }

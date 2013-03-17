@@ -63,7 +63,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Measure = r.GetString(13),
 					Grp = r.GetString(15),
 					MarkCache = r.GetString(16),
-					Valuta = r.GetString(17),
+					Currency = r.GetString(17),
 					Tag = r.GetString(18),
 					ExtremeFormulaMode = r.GetInt32(21)
 				};
@@ -107,7 +107,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Comment = r.GetString(8),
 					Measure = r.GetString(9),
 					MarkCache = r.GetString(12),
-					Valuta = r.GetString(10),
+					Currency = r.GetString(10),
 					Tag = r.GetString(11),
 				};
 
@@ -156,7 +156,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					FormulaType = r.GetString(16),
 					Tag = r.GetString(17),
 					GroupCache = r.GetString(18),
-					Valuta = r.GetString(19),
+					Currency = r.GetString(19),
 
 					//TODO: Role as access
 					//TODO: Active
@@ -166,19 +166,19 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				};
 
 			if (!r.IsDBNull(7)) {
-				x.ZoneId = r.GetInt32(7);
+				x.PointId = r.GetInt32(7);
 			}
 			if (!r.IsDBNull(8)) {
-				x.RoleId = r.GetInt32(8);
+				x.DepartmentId = r.GetInt32(8);
 			}
 			if (!r.IsDBNull(9)) {
-				x.DivId = r.GetInt32(9);
+				x.DivisionId = r.GetInt32(9);
 			}
 			if (!r.IsDBNull(11)) {
 				x.ParentId = r.GetInt32(11);
 			}
 			if (!r.IsDBNull(13)) {
-				x.TypeId = r.GetInt32(13);
+				x.ObjTypeId = r.GetInt32(13);
 			}
 			return x;
 		}

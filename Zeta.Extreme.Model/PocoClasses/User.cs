@@ -22,7 +22,7 @@ using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
-	public partial class User : IZetaUnderwriter {
+	public partial class User : IZetaUser {
 		 public virtual IZetaMainObject Org { get; set; }
 
 		 public virtual Guid Uid { get; set; }

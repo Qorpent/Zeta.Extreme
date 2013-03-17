@@ -34,17 +34,17 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <summary>
 		/// 	Подписанты
 		/// </summary>
-		public IZetaUnderwriter[] Underwriters { get; set; }
+		public IZetaUser[] Users { get; set; }
 
 		/// <summary>
 		/// 	Операторы
 		/// </summary>
-		public IZetaUnderwriter[] Operators { get; set; }
+		public IZetaUser[] Operators { get; set; }
 
 		/// <summary>
 		/// 	Читатели темы
 		/// </summary>
-		public IZetaUnderwriter[] Readers { get; set; }
+		public IZetaUser[] Readers { get; set; }
 
 		/// <summary>
 		/// 	Префикс роли
@@ -206,20 +206,20 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Подготовка деталей (ролей??)
 		/// </summary>
 		public void SetupDetails() {
-			IList<IZetaUnderwriter> unds = new List<IZetaUnderwriter>();
-			IList<IZetaUnderwriter> ops = new List<IZetaUnderwriter>();
-			IList<IZetaUnderwriter> reads = new List<IZetaUnderwriter>();
+			IList<IZetaUser> unds = new List<IZetaUser>();
+			IList<IZetaUser> ops = new List<IZetaUser>();
+			IList<IZetaUser> reads = new List<IZetaUser>();
 			var ur = Roleprefix + "_UNDERWRITER";
 			var wr = Roleprefix + "_OPERATOR";
 			var rr = Roleprefix + "_ANALYTIC";
-			Func<IZetaUnderwriter, string, bool> inrole = (x, s) =>
+			Func<IZetaUser, string, bool> inrole = (x, s) =>
 				{
 					if (x.Roles.IsEmpty()) {
 						return false;
 					}
 					return x.Roles.Contains(s);
 				};
-			foreach (var o in Object.Underwriters) {
+			foreach (var o in Object.Users) {
 				if (inrole(o, ur)) {
 					unds.Add(o);
 					continue;
@@ -233,7 +233,7 @@ namespace Zeta.Extreme.Form.Themas {
 					continue;
 				}
 			}
-			Underwriters = unds.OrderBy(x => x.Name).ToArray();
+			Users = unds.OrderBy(x => x.Name).ToArray();
 			Operators = ops.OrderBy(x => x.Name).ToArray();
 			Readers = reads.OrderBy(x => x.Name).ToArray();
 		}
