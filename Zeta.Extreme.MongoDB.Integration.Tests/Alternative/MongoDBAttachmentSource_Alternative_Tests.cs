@@ -140,6 +140,17 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Alternative {
         }
 
         [Test]
+        public void CanDelete() {
+            Attachment attachment = GetNewAttach();
+
+            _mdb.Save(attachment);
+            _mdb.Delete(attachment);
+
+            var found = _mdb.Find(attachment);
+            Assert.AreEqual(0, found.Count());
+        }
+
+        [Test]
         public void CanReadBinary() {
             var buffer = new byte[_source.Length];
             Attachment attachment = GetNewAttach();
