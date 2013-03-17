@@ -19,26 +19,60 @@
 using Qorpent.Model;
 
 namespace Zeta.Extreme.Model.Inerfaces {
+	/// <summary>
+	/// Filter for <see cref="BizTran"/> at implementation level
+	/// </summary>
 	public interface IBizTranFilter : IWithId {
+		 /// <summary>
+		 /// Action for filter
+		 /// </summary>
+		 /// <remarks>0 - disbled filter, 1 - allow filter, -1 - deny filter</remarks>
 		 int Action { get; set; }
 
+		 /// <summary>
+		 /// ID of main contragent
+		 /// </summary>
 		 int MainId { get; set; }
 
-		 int ContrId { get; set; }
+		 /// <summary>
+		 ///ID of second contragent 
+		 /// </summary>
+		 int ContragentId { get; set; }
 
+		 /// <summary>
+		 ///CODE of <see cref="BizTran"/>
+		 /// </summary>
 		 string TranCode { get; set; }
 
+		 /// <summary>
+		 /// Role of second contragent
+		 /// </summary>
 		 string Role { get; set; }
 
-		 string Raw { get; set; }
+		 /// <summary>
+		 /// CODE of target row in link
+		 /// </summary>
+		 string RowCode { get; set; }
 
+		 /// <summary>
+		 /// CODE of form of first contragent
+		 /// </summary>
 		 string FirstForm { get; set; }
 
+		 /// <summary>
+		 /// CODE of bill of first contragent
+		 /// </summary>
 		 string FirstType { get; set; }
 
+		 /// <summary>
+		 /// CODE of bill of second contragent
+		 /// </summary>
 		 string SecondType { get; set; }
 
 
+		 /// <summary>
+		 /// CODE of form of second contragent
+		 /// </summary>
 		 string SecondForm { get; set; }
 	}
 }

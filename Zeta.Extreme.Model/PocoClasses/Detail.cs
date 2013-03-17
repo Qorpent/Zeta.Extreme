@@ -19,121 +19,95 @@
 using System;
 using System.Collections.Generic;
 using Qorpent;
+using Qorpent.Model;
 using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
-	public partial class Detail : IZetaObj {
+	/// <summary>
+	/// Detail object implementation
+	/// </summary>
+	public sealed partial class Detail : Entity, IZetaDetailObject {
+		/// <summary>
+		/// </summary>
 		public Detail() {
 			
 			Start = QorpentConst.Date.Begin;
-			Finish = QorpentConst.Date.Begin;
-			Date1 = QorpentConst.Date.Begin;
-			Date2 = QorpentConst.Date.Begin;
+			Finish = QorpentConst.Date.End;
+		
 		}
 
-		 public virtual IZetaMainObject Org { get; set; }
+		/// <summary>
+		/// Main obj of detail
+		/// </summary>
+		public IZetaMainObject Object { get; set; }
 
-		 public virtual IZetaMainObject AltParent { get; set; }
-		 [IgnoreSerialize] public virtual Guid Uid { get; set; }
-		
-		 public virtual string Path { get; set; }
+		/// <summary>
+		/// Second obj of detail
+		/// </summary>
+		public IZetaMainObject AltObject { get; set; }
+
+
+		/// <summary>
+		/// Path in hierarhy
+		/// </summary>
+		public string Path { get; set; }
 
 		/// <summary>
 		///Currency of entity
 		/// </summary>
-		public virtual string Currency { get; set; }
+		public string Currency { get; set; }
 
-		 public virtual DateTime Start { get; set; }
+		/// <summary>
+		/// Start date of detail existence
+		/// </summary>
+		public DateTime Start { get; set; }
 
-		 public virtual DateTime Finish { get; set; }
-
-		 public virtual decimal Number1 { get; set; }
-		 public virtual decimal Number2 { get; set; }
-
-
-		 public virtual DateTime Date1 { get; set; }
-
-		 public virtual DateTime Date2 { get; set; }
-
-		 public virtual string Tag { get; set; }
-		public virtual int Index { get; set; }
-
-		[Serialize] public virtual IZetaMainObject Object {
-			get { return Org; }
-			set { Org = value; }
-		}
-
-		 public virtual string OuterCode { get; set; }
-
-		 public virtual int Id { get; set; }
-
-		 public virtual string Name { get; set; }
-
-		 public virtual string Code { get; set; }
-
-		 public virtual string Comment { get; set; }
-
-		 public virtual DateTime Version { get; set; }
+		/// <summary>
+		/// Finish date of detail existence
+		/// </summary>
+		public DateTime Finish { get; set; }
 
 
-		[Serialize] public virtual IObjectType ObjType { get; set; }
+		/// <summary>
+		/// Helper code that maps any foreign coding system
+		/// </summary>
+		public string OuterCode { get; set; }
 
-		[Serialize] public virtual IZetaMainObject AltObject {
-			get { return AltParent; }
-			set { AltParent = value; }
-		}
 
-		public virtual string Verb { get; set; }
+		/// <summary>
+		/// ObjType to which instance is attached
+		/// </summary>
+		[Serialize] public IObjectType ObjType { get; set; }
 
-		public virtual IZetaObj Parent { get; set; }
-		public virtual IZetaPoint Location { get; set; }
 
-		public virtual IList<IZetaObj> Details { get; set; }
+		/// <summary>
+		/// Parent <see cref="IZetaDetailObject"/>
+		/// </summary>
+		public IZetaDetailObject Parent { get; set; }
 
-		public virtual string aCode {
-			get { return (Object == null ? "NONE" : Object.Code) ?? "NONE"; }
-		}
+		/// <summary>
+		/// Geo location of detail
+		/// </summary>
+		public IZetaPoint Point { get; set; }
 
-		public virtual string aName {
-			get { return (Object == null ? "NONE" : Object.Name) ?? "NONE"; }
-		}
+		/// <summary>
+		/// list of attached details
+		/// </summary>
+		public IList<IZetaDetailObject> Details { get; set; }
 
-		public virtual string bCode {
-			get { return (AltObject == null ? Code : AltObject.Code) ?? "NONE"; }
-		}
+		/// <summary>
+		/// Full name of detail
+		/// </summary>
+		public string FullName { get; set; }
 
-		public virtual string bName {
-			get { return (AltObject == null ? Name : AltObject.Name) ?? "NONE"; }
-		}
-
-		public virtual string bComment {
-			get { return (AltObject == null ? Comment : AltObject.Comment) ?? ""; }
-		}
-
-		 public virtual bool InverseControl { get; set; }
-		public virtual string FullName { get; set; }
-
-		public virtual MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null,
-		                                         string system = "Default") {
-			//TODO: implement!!! 
-			throw new NotImplementedException();
-			/*
-            var query = new MetalinkRecord
-            {
-                Src = this.Id.ToString(),
-                SrcType = "zeta.detail",
-                TrgType = nodetype,
-                Type = linktype,
-                SubType = subtype,
-                Active = true,
-            };
-            return new MetalinkRepository().Search(query, system);
-			 */
-		}
-
-		public virtual string ResolveTag(string name) {
+		/// <summary>
+		/// Resolves tag value by it's <c>name</c>
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		public string ResolveTag(string name) {
 			var tag = TagHelper.Value(Tag, name);
 			if (tag.IsEmpty()) {
 				tag = ObjType.ResolveTag(name);
@@ -147,11 +121,12 @@ namespace Zeta.Extreme.Model {
 			return tag ?? "";
 		}
 
-		public virtual bool IsMarkSeted(string code) {
-			return false;
-		}
 
-		public virtual bool Equals(IZetaObj detail) {
+		/// <summary>
+		/// </summary>
+		/// <param name="detail"></param>
+		/// <returns></returns>
+		private bool Equals(IZetaDetailObject detail) {
 			if (detail == null) {
 				return false;
 			}
@@ -168,13 +143,27 @@ namespace Zeta.Extreme.Model {
 			return true;
 		}
 
+		/// <summary>
+		/// Определяет, равен ли заданный объект <see cref="T:System.Object"/> текущему объекту <see cref="T:System.Object"/>.
+		/// </summary>
+		/// <returns>
+		/// true, если заданный объект равен текущему объекту; в противном случае — false.
+		/// </returns>
+		/// <param name="obj">Объект, который требуется сравнить с текущим объектом.</param><filterpriority>2</filterpriority>
 		public override bool Equals(object obj) {
 			if (ReferenceEquals(this, obj)) {
 				return true;
 			}
-			return Equals(obj as IZetaObj);
+			return Equals(obj as IZetaDetailObject);
 		}
 
+		/// <summary>
+		/// Играет роль хэш-функции для определенного типа.
+		/// </summary>
+		/// <returns>
+		/// Хэш-код для текущего объекта <see cref="T:System.Object"/>.
+		/// </returns>
+		/// <filterpriority>2</filterpriority>
 		public override int GetHashCode() {
 			var result = Id;
 			result = 29*result + (Code != null ? Code.GetHashCode() : 0);

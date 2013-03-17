@@ -340,7 +340,7 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// <param name="obj"> The obj. </param>
 		/// <param name="detail"> </param>
 		/// <returns> </returns>
-		string GetState(IZetaMainObject obj, IZetaObj detail);
+		string GetState(IZetaMainObject obj, IZetaDetailObject detail);
 
 		/// <summary>
 		/// 	Установить статус
@@ -349,7 +349,7 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// <param name="detail"> </param>
 		/// <param name="state"> </param>
 		/// <returns> </returns>
-		int SetState(IZetaMainObject obj, IZetaObj detail, string state);
+		int SetState(IZetaMainObject obj, IZetaDetailObject detail, string state);
 
 		/// <summary>
 		/// 	Обновить статус
@@ -379,7 +379,7 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// <param name="detail"> </param>
 		/// <param name="state"> </param>
 		/// <returns> </returns>
-		string CanSetState(IZetaMainObject obj, IZetaObj detail, string state);
+		string CanSetState(IZetaMainObject obj, IZetaDetailObject detail, string state);
 
 		/// <summary>
 		/// 	SQL кэш
@@ -409,7 +409,7 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// <param name="detail"> </param>
 		/// <param name="statecache"> </param>
 		/// <returns> </returns>
-		string GetState(IZetaMainObject zetaMainObject, IZetaObj detail, IDictionary<string, object> statecache);
+		string GetState(IZetaMainObject zetaMainObject, IZetaDetailObject detail, IDictionary<string, object> statecache);
 
 		/// <summary>
 		/// 	Проверить соответствие объекта форме
@@ -427,7 +427,7 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// <param name="skipcheck"> </param>
 		/// <param name="parent"> </param>
 		/// <returns> </returns>
-		int SetState(IZetaMainObject obj, IZetaObj detail, string state, bool skipcheck = false, int parent = 0);
+		int SetState(IZetaMainObject obj, IZetaDetailObject detail, string state, bool skipcheck = false, int parent = 0);
 		/*
 		/// <summary>
 		/// 	Получить проверки строк

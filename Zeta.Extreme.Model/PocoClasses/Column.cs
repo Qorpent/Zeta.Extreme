@@ -1,4 +1,5 @@
 ﻿#region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,128 +16,83 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/Column.cs
+
 #endregion
-using System;
+
 using System.Collections.Generic;
-using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model.Extensions;
+using Qorpent.Model;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
 	/// <summary>
-	/// 
 	/// </summary>
-	public partial class Column : IZetaColumn {
-		 public virtual Guid Uid { get; set; }
-
-		public virtual string DataTypeString {
-			get { return DataType.ToString(); }
-			set { DataType = (ValueDataType) Enum.Parse(typeof (ValueDataType), value, true); }
-		}
-
-
+	public partial class Column : Entity, IZetaColumn {
+		/// <summary>
+		///     Temporary (local) properties collection
+		/// </summary>
 		public virtual IDictionary<string, object> LocalProperties {
-			get { return localProperties ?? (localProperties = new Dictionary<string, object>()); }
-			set { localProperties = value; }
+			get { return _localProperties ?? (_localProperties = new Dictionary<string, object>()); }
+			set { _localProperties = value; }
 		}
 
 		/// <summary>
-		/// 	Поддержка режима "колонка как заместитель колсета"
+		///     Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
 		public virtual int Year { get; set; }
 
 		/// <summary>
-		/// 	Поддержка режима "колонка как заместитель колсета"
+		///     Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
 		public virtual int Period { get; set; }
 
 		/// <summary>
-		/// 	Поддержка режима "колонка как заместитель колсета"
+		///     Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
 		public virtual string ForeignCode { get; set; }
 
-		 public virtual string Tag { get; set; }
-
-		 public virtual string Lookup { get; set; }
-
 		/// <summary>
-		///Currency of entity
+		///     <see cref="Currency" /> of entity
 		/// </summary>
 		public virtual string Currency { get; set; }
 
-		 public virtual bool IsDynamicLookup { get; set; }
-
-		 public virtual int Id { get; set; }
-
-		 public virtual string Name { get; set; }
-
-		 public virtual string Code { get; set; }
-
-		 public virtual string Comment { get; set; }
-
-		 public virtual DateTime Version { get; set; }
 
 		/// <summary>
-		/// 	Тип формулы
+		///     Тип формулы
 		/// </summary>
 		public string FormulaType { get; set; }
 
-		 public virtual bool IsFormula { get; set; }
+		/// <summary>
+		///     Formula's activity flag
+		/// </summary>
+		public virtual bool IsFormula { get; set; }
 
-		 public virtual string Formula { get; set; }
+		/// <summary>
+		///     Formula's definition
+		/// </summary>
+		public virtual string Formula { get; set; }
 
-		
 
-		 public virtual string Measure { get; set; }
+		/// <summary>
+		///     Type of measure <c>(ru : единица измерения)</c>
+		/// </summary>
+		public virtual string Measure { get; set; }
 
-		 public virtual bool IsDynamicMeasure { get; set; }
-		 public virtual string MarkCache { get; set; }
+		/// <summary>
+		///     Flag that measure must be setted up dynamically
+		/// </summary>
+		public virtual bool IsDynamicMeasure { get; set; }
 
+		/// <summary>
+		///     Slash-delimited list of mark codes
+		/// </summary>
+		public virtual string MarkCache { get; set; }
+
+		/// <summary>
+		///     Type of native data under column
+		/// </summary>
 		public virtual ValueDataType DataType { get; set; }
 
 
-		 public virtual string DataTypeDetail { get; set; }
-
-
-		
-
-		
-
-		/// <summary>
-		/// 	An index of object
-		/// </summary>
-		public int Index { get; set; }
-
-		private IDictionary<string, object> localProperties;
-
-		public virtual string GetStaticMeasure(string format) {
-			if (IsDynamicMeasure) {
-				return "";
-			}
-			if (Measure.IsNotEmpty()) {
-				if (format.IsNotEmpty()) {
-					return string.Format(format, Measure);
-				}
-				return Measure;
-			}
-			return "";
-		}
-
-		public virtual string GetDynamicMeasure(IZetaRow source, string format) {
-			if (!IsDynamicMeasure) {
-				return "";
-			}
-			if (source.Measure.IsNotEmpty()) {
-				if (format.IsNotEmpty()) {
-					return string.Format(format, source.Measure);
-				}
-				return source.Measure;
-			}
-			return GetStaticMeasure(format);
-		}
-
-		public virtual bool IsMarkSeted(string code) {
-			return WithMarksExtension.IsMarkSeted(this, code);
-		}
+		private IDictionary<string, object> _localProperties;
 	}
 }

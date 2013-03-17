@@ -46,7 +46,7 @@ namespace Zeta.Extreme.Model {
 
 		 public virtual string Tag { get; set; }
 
-		 public virtual IList<IZetaObj> Details { get; set; }
+		 public virtual IList<IZetaDetailObject> Details { get; set; }
 
 
 		public virtual IDetailObjectClass Class { get; set; }

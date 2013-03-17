@@ -118,7 +118,7 @@ namespace Zeta.Extreme {
 			if (null != (native as IZetaMainObject)) {
 				return ZoneType.Obj;
 			}
-			if (null != (native as IZetaObj)) {
+			if (null != (native as IZetaDetailObject)) {
 				return ZoneType.Detail;
 			}
 			if (null != (native as IZetaObjectGroup)) {

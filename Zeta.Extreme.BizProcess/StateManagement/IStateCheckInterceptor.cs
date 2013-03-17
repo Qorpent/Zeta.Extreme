@@ -31,6 +31,6 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <param name="obj"> </param>
 		/// <param name="detail"> </param>
 		/// <returns> </returns>
-		string GetState(IInputTemplate template, IZetaMainObject obj, IZetaObj detail);
+		string GetState(IInputTemplate template, IZetaMainObject obj, IZetaDetailObject detail);
 	}
 }

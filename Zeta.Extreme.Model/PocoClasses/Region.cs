@@ -63,10 +63,10 @@ namespace Zeta.Extreme.Model {
 			set { _mainobjects = value; }
 		}
 
-		public virtual IList<IZetaObj> DetailObjects {
+		public virtual IList<IZetaDetailObject> DetailObjects {
 			get {
 				if (null == _detailobjects) {
-					var result = new List<IZetaObj>();
+					var result = new List<IZetaDetailObject>();
 					foreach (var town in Points) {
 						foreach (var mainObject in town.DetailObjects) {
 							result.Add(mainObject);
@@ -79,7 +79,7 @@ namespace Zeta.Extreme.Model {
 			set { _detailobjects = value; }
 		}
 
-		private IList<IZetaObj> _detailobjects;
+		private IList<IZetaDetailObject> _detailobjects;
 		private IList<IZetaMainObject> _mainobjects;
 	}
 }

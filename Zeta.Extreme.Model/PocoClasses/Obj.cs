@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent;
@@ -119,6 +120,7 @@ namespace Zeta.Extreme.Model {
 		/// ID (FK) of <see cref="ObjType"/> that current is attached to
 		/// </summary>
 		/// <remarks>Intended to use with ORM/SQL scenario</remarks>
+		/// <exception cref="Exception">cannot setup ObjTypeId when ObjType is attached</exception>
 		public int? ObjTypeId
 		{
 			get
@@ -198,7 +200,7 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		/// list of attached details
 		/// </summary>
-		public IList<IZetaObj> Details { get; set; }
+		public IList<IZetaDetailObject> Details { get; set; }
 
 
 		/// <summary>
@@ -304,21 +306,7 @@ namespace Zeta.Extreme.Model {
 		}
 
 		/// <summary>
-		/// Access to <c>metalink</c>-subsystem to get <c>metalinks</c> attached to current ZetaObject
-		/// </summary>
-		/// <param name="nodetype">type of other node type</param>
-		/// <param name="linktype">type of link</param>
-		/// <param name="subtype"><c>subtype</c> of link</param>
-		/// <param name="system"><c>system</c> selector (reserved)</param>
-		/// <returns>array of <c>metalinks</c> that matches query</returns>
-		public MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null,
-		                                         string system = "Default") {
-			//TODO: implement!!! 
-			throw new NotImplementedException();
-		}
-
-		/// <summary>
-		/// Resolves tag value by it's name
+		/// Resolves tag value by it's <c>name</c>
 		/// </summary>
 		/// <param name="name"></param>
 		/// <returns></returns>
@@ -342,12 +330,12 @@ namespace Zeta.Extreme.Model {
 			s = s.ToUpper();
 			if (!s.Contains("_")) {
 				if (Regex.IsMatch(s, @"^\d+$")) {
-					return s == Id.ToString();
+					return s == Id.ToString(CultureInfo.InvariantCulture);
 				}
 				return GroupCache.ToUpper().Contains("/" + s + "/");
 			}
 			if (s.StartsWith("OBJ_")) {
-				return s.Substring(4) == Id.ToString();
+				return s.Substring(4) == Id.ToString(CultureInfo.InvariantCulture);
 			}
 			if (s.StartsWith("GRP_") || s.StartsWith("OG_")) {
 				var grp = s.Split('_')[1];

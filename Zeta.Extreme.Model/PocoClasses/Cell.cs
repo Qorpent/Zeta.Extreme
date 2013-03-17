@@ -43,7 +43,7 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		/// Младший объект
 		/// </summary>
-		public virtual IZetaObj Detail { get; set; }
+		public virtual IZetaDetailObject Detail { get; set; }
 
 
 		/// <summary>
@@ -135,6 +135,13 @@ namespace Zeta.Extreme.Model {
 			get { return NumericValue.ToString(CultureInfo.InvariantCulture); }
 		}
 
+		/// <summary>
+		/// Возвращает строку, которая представляет текущий объект.
+		/// </summary>
+		/// <returns>
+		/// Строка, представляющая текущий объект.
+		/// </returns>
+		/// <filterpriority>2</filterpriority>
 		public override string ToString() {
 			return string.Format("cell:{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}",
 			                     Row.Code, Column.Code, Object.Code, null == DetailId ? (object) "" : DetailId.Value, Year, Period,

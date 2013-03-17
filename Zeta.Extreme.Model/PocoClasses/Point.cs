@@ -47,6 +47,6 @@ namespace Zeta.Extreme.Model {
 
 		public virtual int Index { get; set; }
 
-		public virtual IList<IZetaObj> DetailObjects { get; set; }
+		public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
 	}
 }
