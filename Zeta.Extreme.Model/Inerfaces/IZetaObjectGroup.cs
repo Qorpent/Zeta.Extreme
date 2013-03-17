@@ -16,6 +16,12 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/IZetaObjectGroup.cs
 #endregion
+
+using Qorpent.Model;
+
 namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IZetaObjectGroup : IObjectGroup {}
+	/// <summary>
+	/// Describes group of zeta objects
+	/// </summary>
+	public interface IZetaObjectGroup : IZetaObject, IWithMainObjects, IEntity {}
 }

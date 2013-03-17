@@ -22,15 +22,15 @@
 using System;
 using System.Collections.Generic;
 using Qorpent.Model;
+using Zeta.Extreme.Model.Deprecated;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// Zeta Main <c>Object</c> <c>interface</c>
 	/// </summary>
-	public interface IZetaMainObject : IZetaQueryDimension,
-	                                   ICanResolveTag,
+	public interface IZetaMainObject : ICanResolveTag,
 	                                   IWithObjType,
-	                                   IWithProperties, IWithDetailObjects, IZetaObject,IWithOuterCode,IWithCurrency {
+	                                   IZetaQueryDimension, IWithDetailObjects, IZetaObject,IWithOuterCode,IWithCurrency,IContextEntity {
 		/// <summary>
 		/// Slash-delimited list of groups that ZetaObject is attached to
 		/// </summary>
@@ -44,14 +44,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// Short display name of ZetaObject
 		/// </summary>
 		string ShortName { get; set; }
-		/// <summary>
-		/// Start date of ZetaObject's activity
-		/// </summary>
-		DateTime Start { get; set; }
-		/// <summary>
-		/// End date of ZetaObject's activity
-		/// </summary>
-		DateTime Finish { get; set; }
 
 
 		/// <summary>
@@ -68,10 +60,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// Parent <see cref="IZetaObject"/>, can be null, this one will be appeared in <see cref="Children"/> collection
 		/// </summary>
 		IZetaMainObject Parent { get; set; }
-		/// <summary>
-		/// References definition of ZetaObject's type (in zeta terms)
-		/// </summary>
-		IObjectType ObjType { get; set; }
+
 		/// <summary>
 		/// <c>List</c> of mappings ZetaObject's users to themas
 		/// </summary>
@@ -85,14 +74,15 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <summary>
 		/// Division of current ZetaObject
 		/// </summary>
-		IMainObjectGroup Division { get; set; }
+		IObjectDivision Division { get; set; }
 		/// <summary>
 		/// Department of current ZetaObject (<c>ru</c>: <c>отрасль</c>)
 		/// </summary>
-		IMainObjectRole Department { get; set; }
+		IObjectDepartment Department { get; set; }
 		/// <summary>
 		/// Point of ZetaObject's location
 		/// </summary>
+		[Obsolete("ZC-417")]
 		IZetaPoint Point { get; set; }
 		/// <summary>
 		/// Registry of ZetaObject-attached users of application
@@ -121,7 +111,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		int? DepartmentId { get; set; }
 
 		/// <summary>
-		/// ID (FK) of <see cref="ObjType"/> that current is attached to
+		/// ID (FK) of <see cref="ObjectType"/> that current is attached to
 		/// </summary>
 		/// <remarks>Intended to use with ORM/SQL scenario</remarks>
 		int? ObjTypeId { get; set; }

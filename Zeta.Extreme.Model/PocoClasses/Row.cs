@@ -455,5 +455,15 @@ namespace Zeta.Extreme.Model {
 		private IList<IZetaRow> _children;
 		private IDictionary<string, string> columnmap;
 		private IDictionary<string, object> localProperties;
+
+		/// <summary>
+		/// 	Дата начала
+		/// </summary>
+		public DateTime Start { get; set; }
+
+		/// <summary>
+		/// 	Дата окончания
+		/// </summary>
+		public DateTime Finish { get; set; }
 	}
 }

@@ -21,52 +21,34 @@
 
 using System;
 using System.Collections.Generic;
+using Qorpent.Model;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
-	public partial class ObjType : IObjectType {
-		public virtual Guid Uid { get; set; }
-
-
-		public virtual MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null,
-		                                         string system = "Default") {
-			//TODO: implement!!! 
-			throw new NotImplementedException();
-			/*
-			var query = new MetalinkRecord
-			{
-				Src = this.Code,
-				SrcType = "zeta.objtype",
-				TrgType = nodetype,
-				Type = linktype,
-				SubType = subtype,
-				Active = true,
-			};
-			return new MetalinkRepository().Search(query, system);
-			 */
-		}
-
-		public virtual string Tag { get; set; }
-
+	/// <summary>
+	/// Implementation of zeta obj type
+	/// </summary>
+	public partial class ObjectType : Entity,IObjectType {
+		/// <summary>
+		/// list of attached details
+		/// </summary>
 		public virtual IList<IZetaDetailObject> Details { get; set; }
 
 
-		public virtual IDetailObjectClass Class { get; set; }
+		/// <summary>
+		///     Reference to container obj class
+		/// </summary>
+		[Obsolete("ZC-416 must be replaced")] 
+		public virtual IZetaObjectClass Class { get; set; }
 
 
-		public virtual int Id { get; set; }
-
-		public virtual string Name { get; set; }
-
-		public virtual string Code { get; set; }
-
-		public virtual string Comment { get; set; }
-
-		public virtual DateTime Version { get; set; }
-
-		public virtual int Index { get; set; }
-
+		/// <summary>
+		/// Resolves tag value by it's name
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
 		public virtual string ResolveTag(string name) {
 			var tag = TagHelper.Value(Tag, name);
 			if (tag.IsEmpty()) {

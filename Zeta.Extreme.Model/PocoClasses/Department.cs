@@ -1,4 +1,4 @@
-#region LICENSE
+﻿#region LICENSE
 
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
@@ -15,37 +15,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.Model/Zone.cs
+// PROJECT ORIGIN: Zeta.Extreme.Model/ObjDepartment.cs
 
 #endregion
 
 using System;
 using System.Collections.Generic;
+using Qorpent.Model;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
 	/// <summary>
+	///     Department of main object (in industry mean)
 	/// </summary>
-	public partial class Zone : IZetaZone {
-		public virtual Guid Uid { get; set; }
-
-		public virtual string Tag { get; set; }
-
-		public virtual IList<IZetaRegion> Regions { get; set; }
-
-		public virtual int Id { get; set; }
-
-		public virtual string Name { get; set; }
-
-		public virtual string Code { get; set; }
-
-		public virtual string Comment { get; set; }
-
-		public virtual DateTime Version { get; set; }
+	public partial class Department : Entity, IObjectDepartment {
+		/// <summary>
+		///     Collection of subordinated main objects
+		/// </summary>
+		public virtual IList<IZetaMainObject> MainObjects { get; set; }
 
 		/// <summary>
-		///     An index of object
+		///     Flag that department must be shown on start page of application
 		/// </summary>
-		public int Index { get; set; }
+		[Obsolete("breaking flag that is non logical and merge UI and core concerns")] public virtual bool ShowOnStartPage { get; set; }
 	}
 }

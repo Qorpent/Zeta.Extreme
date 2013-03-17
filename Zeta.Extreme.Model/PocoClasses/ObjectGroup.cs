@@ -19,26 +19,20 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Qorpent.Model;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Model {
-	public partial class ObjectGroup : IZetaObjectGroup {
-		public virtual string Tag { get; set; }
-
-		public virtual int Id { get; set; }
-
-		public virtual string Name { get; set; }
-
-		public virtual string Code { get; set; }
-
-		public virtual string Comment { get; set; }
-
-		public virtual DateTime Version { get; set; }
-
+	/// <summary>
+	///     Semi-normlized group of objects - helper
+	/// </summary>
+	public partial class ObjectGroup : Entity, IZetaObjectGroup {
+		/// <summary>
+		///     Collection of subordinated main objects
+		/// </summary>
 		public virtual IList<IZetaMainObject> MainObjects {
 			get {
 				return _objcache ??
@@ -54,11 +48,6 @@ namespace Zeta.Extreme.Model {
 				}
 			}
 		}
-
-		/// <summary>
-		///     An index of object
-		/// </summary>
-		public int Index { get; set; }
 
 		private IList<IZetaMainObject> _objcache;
 	}

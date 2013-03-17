@@ -124,7 +124,7 @@ namespace Zeta.Extreme {
 			if (null != (native as IZetaObjectGroup)) {
 				return ZoneType.Grp;
 			}
-			if (null != (native as IMainObjectGroup)) {
+			if (null != (native as IObjectDivision)) {
 				return ZoneType.Div;
 			}
 			return ZoneType.Unknown;

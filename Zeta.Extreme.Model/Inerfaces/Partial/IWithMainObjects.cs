@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,11 +16,19 @@
 // limitations under the License.
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/IWithMainObjects.cs
+
 #endregion
+
 using System.Collections.Generic;
 
 namespace Zeta.Extreme.Model.Inerfaces {
+	/// <summary>
+	///     Describes aggregated objects
+	/// </summary>
 	public interface IWithMainObjects {
+		/// <summary>
+		///     Collection of subordinated main objects
+		/// </summary>
 		IList<IZetaMainObject> MainObjects { get; set; }
 	}
 }

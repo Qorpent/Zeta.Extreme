@@ -117,7 +117,7 @@ namespace Zeta.Extreme.Model {
 				if (typeof (IZetaMainObject).IsAssignableFrom(typeof (T))) {
 					return (T) ObjCache.Get(id);
 				}
-				if (typeof (IMainObjectGroup).IsAssignableFrom(typeof (T))) {
+				if (typeof (IObjectDivision).IsAssignableFrom(typeof (T))) {
 					return (T) ObjCache.GetDiv(id);
 				}
 				return null;

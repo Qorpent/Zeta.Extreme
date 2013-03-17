@@ -281,7 +281,9 @@ namespace Zeta.Extreme.Form.InputTemplates {
 						}
 						else {
 							foreach (var o in obj.AllChildren()) {
+#pragma warning disable 612,618
 								if (o.ObjType.Code == subobjtype || o.ObjType.Class.Code == subobjtype) {
+#pragma warning restore 612,618
 									objects.Add(o);
 								}
 							}

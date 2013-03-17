@@ -25,6 +25,7 @@ using Qorpent;
 using Qorpent.Model;
 using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
@@ -51,22 +52,22 @@ namespace Zeta.Extreme.Model {
 
 
 		/// <summary>
-		///     <see cref="Path" /> in hierarhy
+		///     <see cref="Zeta.Extreme.Model.Detail.Path" /> in hierarhy
 		/// </summary>
 		public string Path { get; set; }
 
 		/// <summary>
-		///     <see cref="Currency" /> of entity
+		///     <see cref="Zeta.Extreme.Model.Detail.Currency" /> of entity
 		/// </summary>
 		public string Currency { get; set; }
 
 		/// <summary>
-		///     <see cref="Start" /> date of detail existence
+		///     <see cref="Zeta.Extreme.Model.Detail.Start" /> date of detail existence
 		/// </summary>
 		public DateTime Start { get; set; }
 
 		/// <summary>
-		///     <see cref="Finish" /> date of detail existence
+		///     <see cref="Zeta.Extreme.Model.Detail.Finish" /> date of detail existence
 		/// </summary>
 		public DateTime Finish { get; set; }
 
@@ -84,13 +85,15 @@ namespace Zeta.Extreme.Model {
 
 
 		/// <summary>
-		///     <see cref="Parent" /> <see cref="IZetaDetailObject" />
+		///     <see cref="Zeta.Extreme.Model.Detail.Parent" />
+		///     <see cref="IZetaDetailObject" />
 		/// </summary>
 		public IZetaDetailObject Parent { get; set; }
 
 		/// <summary>
 		///     Geo location of detail
 		/// </summary>
+		[Obsolete("ZC-417")]
 		public IZetaPoint Point { get; set; }
 
 		/// <summary>
@@ -123,6 +126,11 @@ namespace Zeta.Extreme.Model {
 			return tag ?? "";
 		}
 
+		/// <summary>
+		///     True - объект активен
+		/// </summary>
+		public bool Active { get; set; }
+
 
 		/// <summary>
 		/// </summary>
@@ -147,8 +155,9 @@ namespace Zeta.Extreme.Model {
 		}
 
 		/// <summary>
-		///     Определяет, равен ли заданный объект <see cref="Object" /> текущему
-		///     объекту <see cref="Object" /> .
+		///     Определяет, равен ли заданный объект
+		///     <see cref="Zeta.Extreme.Model.Detail.Object" /> текущему объекту
+		///     <see cref="Zeta.Extreme.Model.Detail.Object" /> .
 		/// </summary>
 		/// <param name="obj">
 		///     Объект, который требуется сравнить с текущим объектом.
@@ -171,7 +180,8 @@ namespace Zeta.Extreme.Model {
 		///     Играет роль хэш-функции для определенного типа.
 		/// </summary>
 		/// <returns>
-		///     Хэш-код для текущего объекта <see cref="Object" /> .
+		///     Хэш-код для текущего объекта
+		///     <see cref="Zeta.Extreme.Model.Detail.Object" /> .
 		/// </returns>
 		/// <filterpriority>
 		///     2

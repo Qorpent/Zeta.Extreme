@@ -1,5 +1,4 @@
-﻿#region LICENSE
-
+#region LICENSE
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -15,32 +14,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.Model/ObjDiv.cs
-
+// PROJECT ORIGIN: Zeta.Extreme.Model/IMainObjectRole.cs
 #endregion
+using Qorpent.Model;
 
-using System;
-using System.Collections.Generic;
-using Zeta.Extreme.Model.Inerfaces;
-
-namespace Zeta.Extreme.Model {
-	public partial class ObjDiv : IMainObjectGroup {
-		public virtual Guid Uid { get; set; }
-
-		public virtual string Tag { get; set; }
-
-		public virtual IList<IZetaMainObject> MainObjects { get; set; }
-
-		public virtual int Id { get; set; }
-
-		public virtual string Name { get; set; }
-
-		public virtual string Code { get; set; }
-
-		public virtual string Comment { get; set; }
-
-		public virtual DateTime Version { get; set; }
-
-		public virtual int Index { get; set; }
-	}
+namespace Zeta.Extreme.Model.Inerfaces {
+	
+	public interface IObjectDepartment :
+		IZetaObject,
+		IWithMainObjects, IEntity, IWithId, IWithCode, IWithName, IWithTag {
+		bool ShowOnStartPage { get; set; }
+		}
 }

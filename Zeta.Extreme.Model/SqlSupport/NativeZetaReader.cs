@@ -122,7 +122,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="condition"> </param>
 		/// <returns> </returns>
-		public IEnumerable<ObjDiv> ReadDivisions(string condition = "") {
+		public IEnumerable<Division> ReadDivisions(string condition = "") {
 			return Read(condition, Divquerybase, ReaderToDiv);
 		}
 

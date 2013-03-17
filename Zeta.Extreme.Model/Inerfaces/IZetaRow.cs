@@ -18,13 +18,14 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using Qorpent.Model;
 
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	
 	public interface IZetaRow : IZetaQueryDimension,
 		IZetaFormsSupport,
-		IWithMarkCache,  IWithMeasure,IWithCurrency {
+		IWithMarkCache,  IWithMeasure,IWithCurrency,IContextEntity {
 		IDictionary<string, object> LocalProperties { get; }
 		 string ObjectGroups { get; set; }
 		 string FormElementType { get; set; }

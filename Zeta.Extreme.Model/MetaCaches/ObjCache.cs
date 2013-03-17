@@ -28,8 +28,8 @@ namespace Zeta.Extreme.Model.MetaCaches {
 	public static class ObjCache {
 		private static readonly IDictionary<int, IZetaMainObject> _objById = new Dictionary<int, IZetaMainObject>();
 		private static readonly IDictionary<string, IZetaMainObject> _objByCode = new Dictionary<string, IZetaMainObject>();
-		private static readonly IDictionary<int, IMainObjectGroup> _divById = new Dictionary<int, IMainObjectGroup>();
-		private static readonly IDictionary<string, IMainObjectGroup> _divByCode = new Dictionary<string, IMainObjectGroup>();
+		private static readonly IDictionary<int, IObjectDivision> _divById = new Dictionary<int, IObjectDivision>();
+		private static readonly IDictionary<string, IObjectDivision> _divByCode = new Dictionary<string, IObjectDivision>();
 		private static readonly object startsync = new object();
 		private static bool _instart;
 
@@ -50,14 +50,14 @@ namespace Zeta.Extreme.Model.MetaCaches {
 		/// <summary>
 		/// 	Словарь Id->Div
 		/// </summary>
-		public static IDictionary<int, IMainObjectGroup> DivById {
+		public static IDictionary<int, IObjectDivision> DivById {
 			get { return _divById; }
 		}
 
 		/// <summary>
 		/// 	Словарь Code->Div
 		/// </summary>
-		public static IDictionary<string, IMainObjectGroup> DivByCode {
+		public static IDictionary<string, IObjectDivision> DivByCode {
 			get { return _divByCode; }
 		}
 
@@ -86,7 +86,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 		/// </summary>
 		/// <param name="key"> </param>
 		/// <returns> </returns>
-		public static IMainObjectGroup GetDiv(object key) {
+		public static IObjectDivision GetDiv(object key) {
 			if (_instart) {
 				lock (startsync) {}
 			}
@@ -101,7 +101,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			return null;
 		}
 
-		private static IMainObjectGroup ResolveDivByCode(string code) {
+		private static IObjectDivision ResolveDivByCode(string code) {
 			if (string.IsNullOrWhiteSpace(code)) {
 				return null;
 			}
@@ -131,7 +131,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			return null;
 		}
 
-		private static IMainObjectGroup ResolveDivById(int id) {
+		private static IObjectDivision ResolveDivById(int id) {
 			if (0 == id) {
 				return null;
 			}
@@ -167,7 +167,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 		/// </summary>
 		/// <param name="divs"> </param>
 		/// <param name="objs"> </param>
-		public static void Start(IMainObjectGroup[] divs = null, IZetaMainObject[] objs = null) {
+		public static void Start(IObjectDivision[] divs = null, IZetaMainObject[] objs = null) {
 			lock (startsync) {
 				_instart = true;
 				try {
@@ -190,7 +190,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			}
 		}
 
-		private static void RegisterDiv(IMainObjectGroup div) {
+		private static void RegisterDiv(IObjectDivision div) {
 			_divById[div.Id] = div;
 			_divByCode[div.Code] = div;
 			div.MainObjects = new List<IZetaMainObject>();
@@ -211,8 +211,8 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			return new NativeZetaReader().ReadObjects("Main = 1").OfType<IZetaMainObject>().ToArray();
 		}
 
-		private static IMainObjectGroup[] GetAllDivs() {
-			return new NativeZetaReader().ReadDivisions().OfType<IMainObjectGroup>().ToArray();
+		private static IObjectDivision[] GetAllDivs() {
+			return new NativeZetaReader().ReadDivisions().OfType<IObjectDivision>().ToArray();
 		}
 	}
 }

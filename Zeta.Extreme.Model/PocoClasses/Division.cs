@@ -1,4 +1,5 @@
-#region LICENSE
+﻿#region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,13 +15,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.Model/IObjectGroup.cs
-#endregion
-using Qorpent.Model;
+// PROJECT ORIGIN: Zeta.Extreme.Model/Division.cs
 
-namespace Zeta.Extreme.Model.Inerfaces {
-	public interface IObjectGroup :
-		IZetaObject,
-		IWithMainObjects,
-		IEntity {}
+#endregion
+
+using System.Collections.Generic;
+using Qorpent.Model;
+using Zeta.Extreme.Model.Inerfaces;
+
+namespace Zeta.Extreme.Model {
+	/// <summary>
+	///     <see cref="Division" /> of main objects in biz mean
+	/// </summary>
+	public partial class Division : Entity, IObjectDivision {
+		/// <summary>
+		///     Collection of subordinated main objects
+		/// </summary>
+		public virtual IList<IZetaMainObject> MainObjects { get; set; }
+	}
 }

@@ -27,6 +27,7 @@ using System.Text.RegularExpressions;
 using Qorpent;
 using Qorpent.Model;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model {
@@ -43,14 +44,15 @@ namespace Zeta.Extreme.Model {
 		}
 
 		/// <summary>
-		///     <see cref="Division" /> of current ZetaObject
+		///     <see cref="Zeta.Extreme.Model.Obj.Division" /> of current ZetaObject
 		/// </summary>
-		public IMainObjectGroup Division { get; set; }
+		public IObjectDivision Division { get; set; }
 
 
 		/// <summary>
 		///     Point of ZetaObject's location
 		/// </summary>
+		[Obsolete("ZC-417")]
 		public IZetaPoint Point { get; set; }
 
 
@@ -66,7 +68,8 @@ namespace Zeta.Extreme.Model {
 		///     Intended to use with ORM/SQL scenario
 		/// </remarks>
 		/// <exception cref="Exception">
-		///     cannot setup <see cref="ParentId" /> when <see cref="Parent" /> is attached
+		///     cannot setup <see cref="Zeta.Extreme.Model.Obj.ParentId" /> when
+		///     <see cref="Zeta.Extreme.Model.Obj.Parent" /> is attached
 		/// </exception>
 		public int? ParentId {
 			get {
@@ -91,7 +94,8 @@ namespace Zeta.Extreme.Model {
 		///     Intended to use with ORM/SQL scenario
 		/// </remarks>
 		/// <exception cref="Exception">
-		///     cannot setup <see cref="PointId" /> when Point is attached
+		///     cannot setup <see cref="Zeta.Extreme.Model.Obj.PointId" /> when Point is
+		///     attached
 		/// </exception>
 		public int? PointId {
 			get {
@@ -116,8 +120,8 @@ namespace Zeta.Extreme.Model {
 		///     Intended to use with ORM/SQL scenario
 		/// </remarks>
 		/// <exception cref="Exception">
-		///     cannot setup <see cref="DepartmentId" /> when <see cref="Department" /> is
-		///     attached
+		///     cannot setup <see cref="Zeta.Extreme.Model.Obj.DepartmentId" /> when
+		///     <see cref="Zeta.Extreme.Model.Obj.Department" /> is attached
 		/// </exception>
 		public int? DepartmentId {
 			get {
@@ -142,7 +146,8 @@ namespace Zeta.Extreme.Model {
 		///     Intended to use with ORM/SQL scenario
 		/// </remarks>
 		/// <exception cref="Exception">
-		///     cannot setup <see cref="ObjTypeId" /> when ObjType is attached
+		///     cannot setup <see cref="Zeta.Extreme.Model.Obj.ObjTypeId" /> when ObjType
+		///     is attached
 		/// </exception>
 		public int? ObjTypeId {
 			get {
@@ -161,10 +166,10 @@ namespace Zeta.Extreme.Model {
 
 
 		/// <summary>
-		///     <see cref="Department" /> of current ZetaObject ( <c>ru</c> :
-		///     <c>отрасль</c> )
+		///     <see cref="Zeta.Extreme.Model.Obj.Department" /> of current ZetaObject (
+		///     <c>ru</c> : <c>отрасль</c> )
 		/// </summary>
-		public IMainObjectRole Department { get; set; }
+		public IObjectDepartment Department { get; set; }
 
 
 		/// <summary>
@@ -185,7 +190,7 @@ namespace Zeta.Extreme.Model {
 		public string Path { get; set; }
 
 		/// <summary>
-		///     <see cref="Currency" /> of entity
+		///     <see cref="Zeta.Extreme.Model.Obj.Currency" /> of entity
 		/// </summary>
 		public string Currency { get; set; }
 
@@ -304,7 +309,7 @@ namespace Zeta.Extreme.Model {
 
 
 		/// <summary>
-		///     <see cref="Start" /> date of ZetaObject's activity
+		///     <see cref="Zeta.Extreme.Model.Obj.Start" /> date of ZetaObject's activity
 		/// </summary>
 		public DateTime Start { get; set; }
 
@@ -319,10 +324,12 @@ namespace Zeta.Extreme.Model {
 		public IObjectType ObjType { get; set; }
 
 		/// <summary>
-		///     <see cref="Parent" /> <see cref="IZetaObject" /> , can be null, this one
-		///     will be appeared in
-		///     <see cref="Zeta.Extreme.Model.Inerfaces.IZetaMainObject.Children" />
-		///     collection
+		///     <para>
+		///         <see cref="Zeta.Extreme.Model.Obj.Parent" /> <see cref="IZetaObject" /> ,
+		///         can be null, this one will be appeared in
+		///         <see cref="Zeta.Extreme.Model.Inerfaces.IZetaMainObject.Children" />
+		///     </para>
+		///     <para>collection</para>
 		/// </summary>
 		public IZetaMainObject Parent { get; set; }
 
@@ -391,6 +398,11 @@ namespace Zeta.Extreme.Model {
 			}
 			return GroupCache.ToUpper().Contains("/" + s + "/");
 		}
+
+		/// <summary>
+		///     True - объект активен
+		/// </summary>
+		public bool Active { get; set; }
 
 		/// <summary>
 		/// </summary>

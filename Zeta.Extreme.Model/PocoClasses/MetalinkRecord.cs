@@ -21,26 +21,79 @@
 
 using System;
 using Qorpent;
+using Qorpent.Model;
 
 namespace Zeta.Extreme.Model {
-	public class MetalinkRecord {
+	/// <summary>
+	///     Metalink implementation
+	/// </summary>
+	public class MetalinkRecord : IWithId, IWithCode, IWithActive, IWithDateRange, IWithTag {
+		/// <summary>
+		/// </summary>
 		public MetalinkRecord() {
 			Active = true;
 			Start = QorpentConst.Date.Begin;
 			Finish = QorpentConst.Date.End;
 		}
 
-		public int Id { get; set; }
-		public string Code { get; set; }
-		public string SrcType { get; set; }
-		public string TrgType { get; set; }
-		public string Src { get; set; }
-		public string Trg { get; set; }
+		/// <summary>
+		///     <see cref="Zeta.Extreme.Model.MetalinkRecord.Source" /> object type
+		/// </summary>
+		public string SourceType { get; set; }
+
+		/// <summary>
+		///     <see cref="Zeta.Extreme.Model.MetalinkRecord.Target" /> object type
+		/// </summary>
+		public string TargetType { get; set; }
+
+		/// <summary>
+		///     <see cref="Source" /> <c>object</c>
+		/// </summary>
+		public string Source { get; set; }
+
+		/// <summary>
+		///     <see cref="Target" /> <c>object</c>
+		/// </summary>
+		public string Target { get; set; }
+
+		/// <summary>
+		///     Link type
+		/// </summary>
 		public string Type { get; set; }
+
+		/// <summary>
+		///     Link sub-type
+		/// </summary>
 		public string SubType { get; set; }
-		public string Tag { get; set; }
+
+		/// <summary>
+		///     True - объект активен
+		/// </summary>
 		public bool Active { get; set; }
+
+		/// <summary>
+		///     Unique memo-code
+		/// </summary>
+		public string Code { get; set; }
+
+		/// <summary>
+		///     Дата начала
+		/// </summary>
 		public DateTime Start { get; set; }
+
+		/// <summary>
+		///     Дата окончания
+		/// </summary>
 		public DateTime Finish { get; set; }
+
+		/// <summary>
+		///     PK ID in database terms
+		/// </summary>
+		public int Id { get; set; }
+
+		/// <summary>
+		///     The TAG string
+		/// </summary>
+		public string Tag { get; set; }
 	}
 }

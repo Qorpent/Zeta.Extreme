@@ -18,6 +18,7 @@
 #endregion
 using System;
 using Qorpent.Model;
+using Zeta.Extreme.Model.Deprecated;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	
@@ -27,7 +28,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IZetaDetailObject : IZetaObject,
 		ICanResolveTag,
 		IWithObjType,
-		IWithDetailObjects, IWithOuterCode, IEntity,IWithCurrency {
+		IWithDetailObjects, IWithOuterCode, IEntity,IWithCurrency,IContextEntity {
 		/// <summary>
 		/// Parent <see cref="IZetaDetailObject"/>
 		/// </summary>
@@ -35,20 +36,12 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <summary>
 		/// Geo location of detail
 		/// </summary>
+		[Obsolete("ZC-417")]
 		IZetaPoint Point { get; set; }
 		/// <summary>
 		/// Full name of detail
 		/// </summary>
 		string FullName { get; set; }
-		
-		/// <summary>
-		/// Start date of detail existence
-		/// </summary>
-		 DateTime Start { get; set; }
-		 /// <summary>
-		 /// Finish date of detail existence
-		 /// </summary>
-		 DateTime Finish { get; set; }
 		 /// <summary>
 		 /// Path in hierarhy
 		 /// </summary>

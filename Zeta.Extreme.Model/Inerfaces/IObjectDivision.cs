@@ -21,7 +21,7 @@ using Qorpent.Model;
 namespace Zeta.Extreme.Model.Inerfaces {
 	
 	
-	public interface IMainObjectGroup :
+	public interface IObjectDivision :
 		IZetaObject,
 		IWithMainObjects, IEntity, IWithId, IWithCode, IWithName, IWithTag {}
 }

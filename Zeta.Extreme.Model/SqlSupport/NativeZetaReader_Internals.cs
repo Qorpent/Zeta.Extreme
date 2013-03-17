@@ -120,8 +120,8 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public static ObjDiv ReaderToDiv(IDataRecord r) {
-			var x = new ObjDiv
+		public static Division ReaderToDiv(IDataRecord r) {
+			var x = new Division
 				{
 					Id = r.GetInt32(0),
 					Code = r.GetString(1),
