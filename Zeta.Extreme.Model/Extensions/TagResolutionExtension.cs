@@ -19,37 +19,10 @@
 
 #endregion
 
-using System.Collections.Generic;
-using Qorpent.Model;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.Extensions {
-	/// <summary>
-	///     Extensions for working with hierarchy
-	/// </summary>
-	public static class HierarchyExtensions {
-		/// <summary>
-		///     Normalizes <see cref="IWithHierarchy{TEntity}.Parent" /> of children items of given root
-		/// </summary>
-		/// <param name="root">root item of hierarchy</param>
-		/// <typeparam name="T"></typeparam>
-		public static void BuildHierarchy<T>(this IWithHierarchy<T> root) {
-			foreach (var c in root.Children) {
-				
-			}
-		}
-
-		/// <summary>
-		///     Normalizes <see cref="IWithHierarchy{TEntity}.Parent" /> and <see cref="IWithHierarchy{TEntity}.Children" />  in set
-		/// </summary>
-		/// <param name="items">set of elements that must be joined into hierarchy</param>
-		/// <typeparam name="T"></typeparam>
-		public static void BuildHierarchy<T>(this IEnumerable<IWithHierarchy<T>> items) {
-			
-		}
-	}
-
 	/// <summary>
 	///     Extension, that provides Tag support for entities without implementation at
 	///     POCO level
@@ -71,7 +44,7 @@ namespace Zeta.Extreme.Model.Extensions {
 			if (string.IsNullOrWhiteSpace(name)) {
 				return string.Empty;
 			}
-			return null == row.TemporalParent
+			return !HasTemporal(row)
 				       ? ResolveTagPersistently(row, name)
 				       : // usual mode - value will be cached
 				       InternalResolveTag(row, name); // "presentation" mode with TemporalParent - value will not cached
@@ -106,13 +79,21 @@ namespace Zeta.Extreme.Model.Extensions {
 			if (TagHelper.Has(row.Tag, name)) {
 				return TagHelper.Value(row.Tag, name) ?? "";
 			}
-			if (null != row.TemporalParent) {
+			if (null!=row.TemporalParent) {
 				return row.TemporalParent.ResolveTag(name);
 			}
 			if (null == row.Parent) {
 				return "";
 			}
 			return row.Parent.ResolveTag(name);
+		}
+
+		private static bool HasTemporal(IZetaRow row) {
+			if (null != row.TemporalParent) {
+				return true;
+			}
+			if (!row.HasParent()) return false;
+			return HasTemporal(row.Parent);
 		}
 	}
 }

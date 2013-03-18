@@ -32,7 +32,7 @@ namespace Zeta.Extreme.Model {
 	/// <summary>
 	///     <see cref="Row" /> - is main tree-like part of attribute zeta dimension
 	/// </summary>
-	public partial class Row : Hierarchy<IZetaRow>, IZetaRow {
+	public partial class Row : Hierarchy<IZetaRow>, IZetaRow{
 		/// <summary>
 		///     Режим использования формулы с Extreme
 		/// </summary>
