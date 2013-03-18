@@ -1,9 +1,9 @@
 ﻿(function(){
 var root = window.zefs = window.zefs || {};
-var specification = root.api = root.api || {};
+var api = root.api = root.api || {};
 var Command = window.qweb.Command;
 
-$.extend(specification,(function(){
+$.extend(api,(function(){
 	return {
 		server : {
             start : function(){ this.ready.execute() },
@@ -14,7 +14,7 @@ $.extend(specification,(function(){
 
         session : {
             start : $.extend (new Command({domain:"zefs", name:"start"}), {
-                getParameters : function() { return specification.getParameters() },
+                getParameters : function() { return api.getParameters() },
                 wrap : function(obj) {
                     $.extend(obj,{
                         // признак завершения отрисовки сессии
@@ -78,7 +78,7 @@ $.extend(specification,(function(){
             save : new Command({domain: "zefs", name: "save"}),
             // Команда инициализации сессии сохранения
             saveready : $.extend(new Command({domain: "zefs", name: "saveready"}), {
-                getParameters : function() { return specification.getParameters() }
+                getParameters : function() { return api.getParameters() }
             }),
             // Команда проверки состояния сохранения
             savestate : new Command({domain: "zefs", name: "savestate"})
@@ -86,11 +86,22 @@ $.extend(specification,(function(){
 
         lock : {
             // Команда блокировки формы
-            start : new Command({domain: "zefs", name: "lockform"}),
-            // Команда получения статуса блокировки
+            set : $.extend(new Command({domain: "zefs", name: "lockform"}), {
+                getUrl: function() {
+                    if (location.host.search('admin|corp|133|49') != -1 || location.port == '448' || location.port == '449') return '/ecot/form/setstate.rails';
+                    return '/eco/form/setstate.rails';
+                },
+                getParameters: function() {
+                    return $.extend(api.getParameters(), {
+                        detail: 0,
+                        tcode: location.hash.match(/form=([^|]+)/)[1] || ""
+                    });
+                }
+            }),
+            // Команда получения текущего статуса блокировки
             state : new Command({domain: "zefs", name: "currentlockstate"}),
             // Команда получения статуса возможности блокировки
-            ispossible : new Command({domain: "zefs", name: "canlockstate"}),
+            info : new Command({domain: "zefs", name: "canlockstate"}),
             // Команда получения списка блокировок
             history : $.extend(new Command({domain: "zefs", name: "locklist"}), {
                 wrap: function(obj) {
@@ -104,7 +115,7 @@ $.extend(specification,(function(){
             })
         },
 
-        files : {
+        file : {
             // команда получения списка прикрепленных к форме файлов
             list : $.extend(new Command({domain: "zefs", name: "attachlist"}), {
                 wrap : function(obj) {
@@ -116,44 +127,15 @@ $.extend(specification,(function(){
                 }
             }),
             // команда прекрепления или обновления файла к форме
-            add : $.extend(new Command({domain: "zefs", name: "attachfile"}), {
-                call : function(params) {
-                    params = params || {};
-                    $.extend(params, {
-                        formdata : new FormData(),
-                        onsuccess : function() {},
-                        onerror : function() {},
-                        onprogress : function() {}
-                    });
-                    this.nativeCall(params.formdata, params.onsuccess, params.onerror, params.onprogress);
-                },
-                nativeCall: function(formdata, onsuccess, onerror, onprogress) {
-                    $.ajax({
-                        url: this.getUrl(),
-                        type: "POST",
-                        context: this,
-                        dataType: "json",
-                        xhr: function() {
-                            var x = $.ajaxSettings.xhr();
-                            if(x.upload) {
-                                x.upload.addEventListener('progress', function(e) {onprogress(e)}, false);
-                            }
-                            return x;
-                        },
-                        data: formdata,
-                        cache: false,
-                        contentType: false,
-                        processData: false
-                    })
-                        .success(function(r){onsuccess(r)})
-                        .error(onerror||function(error){console.log(error)});
-                }
-            }),
+            add : new Command({domain: "zefs", name: "attachfile", useProgress:true}),
             // команда скрытия/удаления файла
             delete : new Command({domain: "zefs", name: "deletefile"}),
             // команда загрузки файла
             download : $.extend(new Command({domain: "zefs", name: "downloadfile"}), {
-                datatype: "filedesc"
+                datatype: "filedesc",
+                getUrl:function(uid) {
+                    return siteroot + this.url.replace('{DATATYPE}',this.datatype) + "?session=" + window.zefs.myform.sessionId + "&uid=" + uid;
+                }
             }),
             // команда получения возможных типов файлов
             gettypes : new Command({domain: "zefs", name: "getfiletypes"})
@@ -179,21 +161,6 @@ $.extend(specification,(function(){
             }),
             //команда, возвращающая список доступных предприятий
             getobjects : new Command({domain: "zeta", name: "getobjects"})
-        },
-
-        getParameters : function(){
-            // Парсим параметры из хэша
-            var p = {};
-            var result = {};
-            if (location.hash == "") return null;
-            $.each(location.hash.substring(1).split("|"), function(i,e) {
-                p[e.split("=")[0]] = e.split("=")[1];
-            });
-            result["form"] = p["form"];
-            result["obj"] = p["obj"];
-            result["period"] = p["period"];
-            result["year"] = p["year"];
-            return result;
         },
 
         dataType : "json"

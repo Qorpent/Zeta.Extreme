@@ -5,7 +5,10 @@
     var zefsblockmanager = new root.security.Widget("zefsblockmanager", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 40 });
     var list = $('<div class="btn-group"/>');
     var checkbtn = $('<button class="btn btn-success btn-mini"/>').text("Утв.");
-    var lockbtn = $('<button class="btn btn-warning btn-mini"/>').text("Заблок.").click(/*function() { window.zefs.myform.lockform } */);
+    var lockbtn = $('<button class="btn btn-warning btn-mini"/>').text("Заблок.");
+    lockbtn.click(function() {
+        window.zefs.myform.lockform();
+    } );
     var unlockbtn = $('<button class="btn btn-danger btn-mini"/>').text("Разблок.");
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление блокировками"/>')
         .html('<i class="icon-lock"></i><span class="caret"/>');
@@ -57,11 +60,11 @@
                     if (h.State == "0ISOPEN") lockstate.addClass("state-open");
                     else if (h.State == "0ISBLOCK") lockstate.addClass("state-block");
                     else if (h.State == "0ISCHECKED") lockstate.addClass("state-check");
-                    var u = $('<span class="label label-inverse"/>');
+                    var u = $('<span class="label label-inverse"/>').text(h.User);
                     body.append($('<tr/>').append(
                         $('<td/>').text(h.Date.format("dd.mm.yyyy HH:MM:ss")),
                         $('<td/>').html(lockstate),
-                        $('<td/>').append(u.text(h.Usr))
+                        $('<td/>').append(u)
 //                      $('<td/>').append($('<span class="label label-inverse"/>').text(h.getUser())),
                     ));
                     u.zetauser();

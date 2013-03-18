@@ -2,6 +2,9 @@
  * Виджет окна с сообщениями
  */
 !function($) {
+    window.zeta.handlers = $.extend(window.zeta.handlers, {
+        on_modal : "modal"
+    });
     var zetamodal = new root.security.Widget("zetamodal", root.console.layout.position.layoutBodyMain, null);
     var container = $('<div/>');
     var ShowModal = function(p) {

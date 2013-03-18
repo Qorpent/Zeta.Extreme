@@ -10,9 +10,7 @@ root.handlers = $.extend(root.handlers, {
     on_logout : "logount",
     on_impersonate : "impersonate",
     on_deimpersonate : "deimpersonate",
-    on_getuserinfo : "getuserinfo",
-
-    on_modal : "modal"
+    on_getuserinfo : "getuserinfo"
 });
 
 root.security = root.security || $.extend(root.security, {

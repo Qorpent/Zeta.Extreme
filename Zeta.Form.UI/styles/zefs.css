@@ -20,7 +20,7 @@ div.open>.tooltip {
 .zefsformheader {
     position: fixed;
     top: 37px;
-    z-index: 998;
+    z-index: 995;
     background-color: white;
     width: 100%;
 }

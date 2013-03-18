@@ -48,9 +48,26 @@ root.init = root.init ||
         lockhistory : null,
         attachment : null
     };
-    var options = window.zefs.options;
     var render = root.getRender();
-
+    api.getParameters = function(){
+        // Парсим параметры из хэша
+        var p = {};
+        var result = {};
+        if (location.hash == "") return null;
+        $.each(location.hash.substring(1).split("|"), function(i,e) {
+            p[e.split("=")[0]] = e.split("=")[1];
+        });
+        result["form"] = p["form"];
+        result["obj"] = p["obj"];
+        result["period"] = p["period"];
+        result["year"] = p["year"];
+        return result;
+    };
+    api.siterootold = function(){
+        if (location.host.search('admin|corp|133|49') || location.port == '448' || location.port == '449') return '/ecot/';
+//      else if (location.host.search('assoi') == 0 || location.port == '447') return '/eco/';
+        return /eco/;
+    };
     var Fill = function(session) {
         if(!session.wasRendered) { //вот тут чо за хрень была? он в итоге дважды рендировал
             return;
@@ -75,48 +92,32 @@ root.init = root.init ||
         fd.append("uid", form.find('input[name="uid"]').val());
         fd.append("session", root.myform.sessionId);
         $(root).trigger(root.handlers.on_fileloadstart);
-        $.ajax({
-            url: siteroot+options.attachfile_command,
-            type: "POST",
-            context: this,
-            dataType: "json",
-            xhr: function() {
-                var x = $.ajaxSettings.xhr();
-                if(x.upload) {
-                    x.upload.addEventListener('progress', function(e) {
-                        $(root).trigger(root.handlers.on_fileloadprocess, e);
-                    }, false);
-                }
-                return x;
-            },
-            data: fd,
-            cache: false,
-            contentType: false,
-            processData: false
-        }).fail(function(error){
-            $(root).trigger(root.handlers.on_fileloaderror, JSON.parse(error.responseText));
-        }).success(function() {
-            $(root).trigger(root.handlers.on_fileloadfinish);
-            api.file.list.execute({session: root.myform.sessionId});
-        });
+        api.file.add.execute(fd);
     };
 
     var DeleteFile = function(uid) {
-        api.files.delete.execute({
+        api.file.delete.execute({
             session: root.myform.sessionId,
             uid: uid
         });
     };
 
     var DownloadFile = function(uid) {
-        return siteroot+options.downloadfile_command + "?session=" +
-            root.myform.sessionId + "&uid=" + uid;
+        api.file.download.getUrl(uid);
     };
 
     var Lock = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
-            if (root.myform.lock.getCanLock()) {
-                api.lock.start.execute({session: root.myform.sessionId});
+            if (root.myform.lockinfo.canblock) {
+                api.lock.set.execute({state: "0ISBLOCK"});
+            }
+        }
+    };
+
+    var Unlock = function() {
+        if (root.myform.sessionId != null && root.myform.lock != null) {
+            if (!root.myform.lockinfo.isopen) {
+                api.lock.set.execute({state: "0ISOPEN"});
             }
         }
     };
@@ -174,8 +175,9 @@ root.init = root.init ||
         document.title = result.FormInfo.Name;
         api.session.structure.execute(sessiondata);
         api.lock.state.execute(sessiondata);
+        api.lock.info.execute(sessiondata);
         api.lock.history.execute(sessiondata);
-        api.files.list.execute(sessiondata);
+        api.file.list.execute(sessiondata);
         window.setTimeout(function(){
                 root.myform.currentSession.data = [];
                 api.data.start.execute($.extend(sessiondata, {startidx: 0}))}
@@ -242,13 +244,24 @@ root.init = root.init ||
         api.data.reset.execute({session: root.myform.sessionId});
     });
 
-    api.lock.start.onSuccess(function() {
-        api.lock.start.execute({session: root.myform.sessionId});
+    api.lock.set.onSuccess(function() {
+        api.lock.state.execute({session: root.myform.sessionId});
+    });
+
+    api.lock.set.onError(function(e, error) {
+        $(root).trigger(root.handlers.on_modal, {
+            title: "", // заголовок ошибки
+            text: "" // текст ошибки
+        });
     });
 
     api.lock.state.onSuccess(function(e, result) {
         root.myform.lock = result;
         $(root).trigger(root.handlers.on_getlockload);
+    });
+
+    api.lock.info.onSuccess(function(e, result) {
+        root.myform.lockinfo = result;
     });
 
     api.lock.history.onSuccess(function(e, result) {
@@ -257,15 +270,26 @@ root.init = root.init ||
         }
     });
 
-    api.files.list.onSuccess(function(e, result) {
-        if($.isEmptyObject(root.myform.attachment)) {
-            root.myform.attachment = result;
-        }
+    api.file.list.onSuccess(function(e, result) {
+        root.myform.attachment = result;
         $(root).trigger(root.handlers.on_attachmentload);
     });
 
-    api.files.delete.onSuccess(function() {
+    api.file.delete.onSuccess(function() {
         api.file.list.execute({session: root.myform.sessionId});
+    });
+
+    api.file.add.onSuccess(function() {
+        $(root).trigger(root.handlers.on_fileloadfinish);
+        api.file.list.execute({session: root.myform.sessionId});
+    });
+
+    api.file.add.onError(function(e, error) {
+        $(root).trigger(root.handlers.on_fileloaderror, JSON.parse(error.responseText));
+    });
+
+    api.file.add.onProgress(function(e, result) {
+        $(root).trigger(root.handlers.on_fileloadprocess, result);
     });
 
     $.extend(root, {
@@ -277,6 +301,7 @@ root.init = root.init ||
         save : Save,
         message: Message,
         lockform: Lock,
+        unlockform: Unlock,
         attachfile: AttachFile,
         deletefile: DeleteFile,
         downloadfile: DownloadFile

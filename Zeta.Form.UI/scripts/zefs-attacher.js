@@ -34,7 +34,7 @@
                 body.append(tr.append(
                     $('<td class="type"/>').addClass(file.Extension.substring(1)),
                     $('<td/>').text(file.Date.format("dd.mm.yyyy")),
-                    $('<td class="filename"/>').html('<a href="' + window.zefs.myform.downloadfile(file.Uid) + '" target="_blank">' + file.Name + '</a>'),
+                    $('<td class="filename"/>').html('<a href="' + window.zefs.api.file.download.getUrl(file.Uid) + '" target="_blank">' + file.Name + '</a>'),
                     $('<td class="username"/>').append(u.text(file.User))
                 ));
                 if (window.zeta.security.user != null) {
@@ -77,7 +77,9 @@
     );
     var filename = $('<input type="text" name="filename" placeholder="Изменить имя..." class="input-small"/>');
     var uid = $('<input type="hidden" name="uid"/>');
-    file.change(function() { filename.attr("placeholder", this.files[0].name) });
+    file.change(function() {
+        filename.attr("placeholder", this.files[0].name);
+    });
     selectbtn.click(function() { file.trigger("click") });
     uploadform.append(
         $('<table/>').append(
