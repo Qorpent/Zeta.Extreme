@@ -32,7 +32,7 @@ namespace Zeta.Extreme.Model {
 	/// <summary>
 	///     <see cref="Row" /> - is main tree-like part of attribute zeta dimension
 	/// </summary>
-	public partial class Row : Entity, IZetaRow {
+	public partial class Row : Hierarchy<IZetaRow>, IZetaRow {
 		/// <summary>
 		///     Режим использования формулы с Extreme
 		/// </summary>
@@ -68,11 +68,6 @@ namespace Zeta.Extreme.Model {
 		public virtual bool Active { get; set; }
 
 		/// <summary>
-		///     ID (FK) of parent row
-		/// </summary>
-		public virtual int? ParentId { get; set; }
-
-		/// <summary>
 		///     ID (FK) of referenced row
 		/// </summary>
 		public virtual int? RefId { get; set; }
@@ -90,8 +85,8 @@ namespace Zeta.Extreme.Model {
 		/// <param name="cascade"></param>
 		public virtual void ApplyProperty(string property, object value, bool cascade = true) {
 			LocalProperties[property] = value;
-			if (cascade && null != NativeChildren) {
-				foreach (var c in NativeChildren) {
+			if (cascade && HasChildren()) {
+				foreach (var c in Children) {
 					c.ApplyProperty(property, value, cascade);
 				}
 			}
@@ -176,26 +171,7 @@ namespace Zeta.Extreme.Model {
 		public virtual bool IsDynamicMeasure { get; set; }
 
 
-		/// <summary>
-		///     Reference to parent row
-		/// </summary>
-		public virtual IZetaRow Parent { get; set; }
 
-
-		/// <summary>
-		///     Collection for ORM of children to load
-		/// </summary>
-		public virtual IList<IZetaRow> NativeChildren {
-			get { return _children; }
-		}
-
-		/// <summary>
-		///     <see cref="Zeta.Extreme.Model.Inerfaces.IZetaRow.Children" /> rows
-		/// </summary>
-		public virtual IList<IZetaRow> Children {
-			get { return _children; }
-			set { _children = value; }
-		}
 
 		/// <summary>
 		///     Resolves meausure with checking of dynamics
@@ -214,11 +190,6 @@ namespace Zeta.Extreme.Model {
 			return mes;
 		}
 
-		/// <summary>
-		///     <see cref="Zeta.Extreme.Model.Inerfaces.IZetaRow.Path" /> to row over
-		///     hierarchy
-		/// </summary>
-		public virtual string Path { get; set; }
 
 		/// <summary>
 		///     Referenced row
@@ -284,27 +255,6 @@ namespace Zeta.Extreme.Model {
 			}
 			return incode;
 		}
-
-		/// <summary>
-		///     Resolves tag with parents and refs
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns>
-		/// </returns>
-		public virtual string ResolveTag(string name) {
-			if (TagHelper.Has(Tag, name)) {
-				return TagHelper.Value(Tag, name) ?? "";
-			}
-			if (null != TemporalParent) {
-				return TemporalParent.ResolveTag(name);
-			}
-			if (null == Parent) {
-				return "";
-			}
-			return Parent.ResolveTag(name);
-		}
-
-
 		/// <summary>
 		///     propagetes group definition as local property
 		/// </summary>
@@ -389,7 +339,7 @@ namespace Zeta.Extreme.Model {
 
 			ApplyPropertyIfNew("cleaned", result);
 
-			foreach (var c in NativeChildren) {
+			foreach (var c in Children) {
 				c.CleanupByChildren(codes);
 			}
 		}
@@ -407,7 +357,7 @@ namespace Zeta.Extreme.Model {
 				LocalProperties[property] = value;
 			}
 			if (children) {
-				foreach (var nativeChild in NativeChildren) {
+				foreach (var nativeChild in Children) {
 					nativeChild.ApplyPropertyIfNew(property, value, children);
 				}
 			}
@@ -448,11 +398,11 @@ namespace Zeta.Extreme.Model {
 		/// <returns>
 		/// </returns>
 		public virtual bool IsActiveFor(IZetaMainObject obj) {
-			var intag = ResolveTag("pr_stobj");
+			var intag = this.ResolveTag("pr_stobj");
 			if (intag.IsEmpty()) {
-				intag = ResolveTag("viewforgroup");
+				intag = this.ResolveTag("viewforgroup");
 			}
-			var extag = ResolveTag("pr_exobj");
+			var extag = this.ResolveTag("pr_exobj");
 			var ins = intag.ToUpper().SmartSplit();
 			var exs = extag.ToUpper().SmartSplit();
 			foreach (var ex in exs) {
@@ -484,7 +434,7 @@ namespace Zeta.Extreme.Model {
 		/// <returns>
 		/// </returns>
 		public virtual bool IsObsolete(int year) {
-			var obs = ResolveTag("obsolete").ToInt();
+			var obs = this.ResolveTag("obsolete").ToInt();
 			if (0 == obs) {
 				return false;
 			}
@@ -586,7 +536,7 @@ namespace Zeta.Extreme.Model {
 		}
 
 		private IZetaRow[] _allchildren;
-		private IList<IZetaRow> _children;
+		private ICollection<IZetaRow> _children;
 		private IDictionary<string, string> columnmap;
 		private IDictionary<string, object> localProperties;
 	}

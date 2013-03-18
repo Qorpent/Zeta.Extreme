@@ -28,11 +28,9 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	public interface IZetaDetailObject : IZetaObject,
 		ICanResolveTag,
 		IWithObjType,
-		IWithDetailObjects, IWithOuterCode, IEntity,IWithCurrency,IContextEntity {
-		/// <summary>
-		/// Parent <see cref="IZetaDetailObject"/>
-		/// </summary>
-		IZetaDetailObject Parent { get; set; }
+		IWithDetailObjects, IWithOuterCode,IWithCurrency,IContextEntity,
+		IWithHierarchy<IZetaDetailObject> {
+
 		/// <summary>
 		/// Geo location of detail
 		/// </summary>
@@ -42,10 +40,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// Full name of detail
 		/// </summary>
 		string FullName { get; set; }
-		 /// <summary>
-		 /// Path in hierarhy
-		 /// </summary>
-		 string Path { get; set; }
 		 /// <summary>
 		 /// Main obj of detail
 		 /// </summary>

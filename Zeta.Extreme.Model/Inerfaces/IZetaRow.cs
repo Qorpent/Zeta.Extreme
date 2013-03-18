@@ -30,7 +30,8 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	/// </summary>
 	public interface IZetaRow : IZetaQueryDimension,
 	                            IZetaFormsSupport,
-	                            IWithMarkCache, IWithMeasure, IWithCurrency, IContextEntity {
+	                            IWithMarkCache, IWithMeasure, IWithCurrency, IContextEntity,
+								IWithHierarchy<IZetaRow> {
 		/// <summary>
 		///     s-list of ZetaObject group codes, that is actual for row
 		/// </summary>
@@ -61,10 +62,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// </summary>
 		IZetaRow RefTo { get; set; }
 
-		/// <summary>
-		///     ID (FK) of parent row
-		/// </summary>
-		int? ParentId { get; set; }
+	
 
 		/// <summary>
 		///     ID (FK) of referenced row
@@ -76,10 +74,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// </summary>
 		[Obsolete("ZC-419")] int? ObjectId { get; set; }
 
-		/// <summary>
-		///     Collection for ORM of children to load
-		/// </summary>
-		[Obsolete("ZC-420 NH - ancestor")] IList<IZetaRow> NativeChildren { get; }
 
 		/// <summary>
 		///     Full collection of all children down
@@ -101,25 +95,13 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// </summary>
 		int? ExRefToId { get; set; }
 
-		/// <summary>
-		///     Reference to parent row
-		/// </summary>
-		IZetaRow Parent { get; set; }
 
-		/// <summary>
-		///     <see cref="Children" /> rows
-		/// </summary>
-		IList<IZetaRow> Children { get; set; }
 
 		/// <summary>
 		///     Container object
 		/// </summary>
 		[Obsolete("ZC-419")] IZetaMainObject Object { get; set; }
 
-		/// <summary>
-		///     <see cref="Path" /> to row over hierarchy
-		/// </summary>
-		string Path { get; set; }
 		/// <summary>
 		/// s-list of groups
 		/// </summary>
@@ -128,6 +110,12 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// resolves role over hierarchy
 		/// </summary>
 		string FullRole { get; }
+
+		/// <summary>
+		///     Special pseudo hiearatchy to provide tag resolution in merged trees (in
+		///     presentation for example)
+		/// </summary>
+		IZetaRow TemporalParent { get; set; }
 
 		/// <summary>
 		///     NEED INVESTIGATION
@@ -210,13 +198,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		[Obsolete("ZC-421")]
 		object GetLocal(string name);
 
-		/// <summary>
-		///     Resolves tag with parents and refs
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns>
-		/// </returns>
-		string ResolveTag(string name);
+	
 
 		/// <summary>
 		///     Resolves meausure with checking of dynamics

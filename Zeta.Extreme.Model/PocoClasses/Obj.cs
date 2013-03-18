@@ -34,13 +34,12 @@ namespace Zeta.Extreme.Model {
 	/// <summary>
 	///     Default implementation or ZetaObject entity of Zeta model
 	/// </summary>
-	public sealed partial class Obj : Entity, IZetaMainObject {
+	public sealed partial class Obj : Hierarchy<IZetaMainObject>, IZetaMainObject {
 		/// <summary>
 		/// </summary>
 		public Obj() {
 			Start = QorpentConst.Date.Begin;
 			Finish = QorpentConst.Date.End;
-			// Properties = new Dictionary<string, object>();
 		}
 
 		/// <summary>
@@ -61,30 +60,7 @@ namespace Zeta.Extreme.Model {
 		/// </summary>
 		public string OuterCode { get; set; }
 
-		/// <summary>
-		///     ID (FK) of parent <see cref="Obj" />
-		/// </summary>
-		/// <remarks>
-		///     Intended to use with ORM/SQL scenario
-		/// </remarks>
-		/// <exception cref="Exception">
-		///     cannot setup <see cref="Zeta.Extreme.Model.Obj.ParentId" /> when
-		///     <see cref="Zeta.Extreme.Model.Obj.Parent" /> is attached
-		/// </exception>
-		public int? ParentId {
-			get {
-				if (null != Parent) {
-					return Parent.Id;
-				}
-				return _parentId;
-			}
-			set {
-				if (null != Parent) {
-					throw new Exception("cannot setup ParentId when Parent is attached");
-				}
-				_parentId = value;
-			}
-		}
+		
 
 		/// <summary>
 		///     ID (FK) of <see cref="Zeta.Extreme.Model.Obj.Point" /> that current is
@@ -182,13 +158,7 @@ namespace Zeta.Extreme.Model {
 		/// </remarks>
 		public int? DivisionId { get; set; }
 
-		/// <summary>
-		///     Full hierarchy path of ZetaObject (see
-		///     <see cref="Zeta.Extreme.Model.Inerfaces.IZetaMainObject.Parent" /> and
-		///     Code)
-		/// </summary>
-		public string Path { get; set; }
-
+		
 		/// <summary>
 		///     <see cref="Zeta.Extreme.Model.Obj.Currency" /> of entity
 		/// </summary>
@@ -323,21 +293,7 @@ namespace Zeta.Extreme.Model {
 		/// </summary>
 		public IObjectType ObjType { get; set; }
 
-		/// <summary>
-		///     <para>
-		///         <see cref="Zeta.Extreme.Model.Obj.Parent" /> <see cref="IZetaObject" /> ,
-		///         can be null, this one will be appeared in
-		///         <see cref="Zeta.Extreme.Model.Inerfaces.IZetaMainObject.Children" />
-		///     </para>
-		///     <para>collection</para>
-		/// </summary>
-		public IZetaMainObject Parent { get; set; }
-
-		/// <summary>
-		///     Sub-IZetaObjects, for which <c>this</c> one is a
-		///     <see cref="Zeta.Extreme.Model.Inerfaces.IZetaMainObject.Parent" />
-		/// </summary>
-		public IList<IZetaMainObject> Children { get; set; }
+	
 
 		/// <summary>
 		///     Temporary (local) properties collection
@@ -488,7 +444,6 @@ namespace Zeta.Extreme.Model {
 		private bool _isFormula;
 		private IDictionary<string, object> _localProperties;
 		private int? _objtypeId;
-		private int? _parentId;
 		private int? _pointId;
 	}
 }

@@ -32,7 +32,7 @@ namespace Zeta.Extreme.Model {
 	/// <summary>
 	///     <see cref="Detail" /> object implementation
 	/// </summary>
-	public sealed partial class Detail : Entity, IZetaDetailObject {
+	public sealed partial class Detail : Hierarchy<IZetaDetailObject>, IZetaDetailObject {
 		/// <summary>
 		/// </summary>
 		public Detail() {
@@ -51,10 +51,8 @@ namespace Zeta.Extreme.Model {
 		public IZetaMainObject AltObject { get; set; }
 
 
-		/// <summary>
-		///     <see cref="Zeta.Extreme.Model.Detail.Path" /> in hierarhy
-		/// </summary>
-		public string Path { get; set; }
+	
+
 
 		/// <summary>
 		///     <see cref="Zeta.Extreme.Model.Detail.Currency" /> of entity
@@ -84,11 +82,6 @@ namespace Zeta.Extreme.Model {
 		[Serialize] public IObjectType ObjType { get; set; }
 
 
-		/// <summary>
-		///     <see cref="Zeta.Extreme.Model.Detail.Parent" />
-		///     <see cref="IZetaDetailObject" />
-		/// </summary>
-		public IZetaDetailObject Parent { get; set; }
 
 		/// <summary>
 		///     Geo location of detail
