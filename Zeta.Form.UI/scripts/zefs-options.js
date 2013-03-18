@@ -92,10 +92,15 @@ $.extend(api,(function(){
                     return '/eco/form/setstate.rails';
                 },
                 getParameters: function() {
-                    return $.extend(api.getParameters(), {
+                    var s = root.myform.currentSession;
+                    if ($.isEmptyObject(s)) return;
+                    return {
+                        object: s.ObjInfo.Id,
+                        period: s.Period,
                         detail: 0,
-                        tcode: location.hash.match(/form=([^|]+)/)[1] || ""
-                    });
+                        year: s.Year,
+                        tcode: s.FormInfo.Code
+                    };
                 }
             }),
             // Команда получения текущего статуса блокировки

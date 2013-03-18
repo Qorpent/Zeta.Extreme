@@ -15,6 +15,7 @@
         if(!this.successEventName)this.successEventName=this.url+":success";
         if(!this.errorEventName)this.errorEventName=this.url+":error";
         if(!this.progressEventName)this.progressEventName=this.url+":progress";
+        if(!this.completeEventName)this.completeEventName=this.url+":complete";
 		this.repeatWait = false;
         this.useProgress = !!options.useProgress;
 
@@ -42,6 +43,9 @@
         triggerOnProgress : function(result){
             $(this).trigger(this.progressEventName,result);
         },
+        triggerOnComplete : function(result){
+            $(this).trigger(this.completeEventName,result);
+        },
         onStart: function(func) {
           $(this).on(this.startEventName, func);
         },
@@ -53,6 +57,9 @@
         },
         onProgress: function(func) {
             $(this).on(this.progressEventName, func);
+        },
+        onComplete: function(func) {
+            $(this).on(this.completeEventName, func);
         },
 		execute : function(params,options) {
             params = params || {};
@@ -98,6 +105,7 @@
 			});
 		},
         nativeCall : function(params, options){
+            var self = this;
             var myoptions = options || {};
             $.extend(myoptions, {
                 datatype : this.datatype,
@@ -110,7 +118,6 @@
                 data : params || {}
             };
             if(this.useProgress){
-                var self = this;
                 $.extend(ajaxinfo,{
                     xhr: function() {
                         var x = $.ajaxSettings.xhr();
@@ -128,8 +135,10 @@
                 .success(function(r){
                     myoptions.onsuccess(r,params);
                 })
-                .error(myoptions.onerror||function(error){console.log(error)});
-
+                .error(myoptions.onerror||function(error){console.log(error)})
+                .complete(function(r) {
+                    self.triggerOnComplete(r)
+                });
 
         }
     });

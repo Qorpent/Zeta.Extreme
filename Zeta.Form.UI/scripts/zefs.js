@@ -244,15 +244,16 @@ root.init = root.init ||
         api.data.reset.execute({session: root.myform.sessionId});
     });
 
-    api.lock.set.onSuccess(function() {
-        api.lock.state.execute({session: root.myform.sessionId});
-    });
-
-    api.lock.set.onError(function(e, error) {
-        $(root).trigger(root.handlers.on_modal, {
-            title: "", // заголовок ошибки
-            text: "" // текст ошибки
-        });
+    api.lock.set.onComplete(function(e, result) {
+        if (result.status == 200) {
+            api.lock.state.execute({session: root.myform.sessionId});
+            api.lock.history.execute({session: root.myform.sessionId});
+        } else {
+            $(root).trigger(root.handlers.on_modal, {
+                title: "", // заголовок ошибки
+                text: "" // текст ошибки
+            });
+        }
     });
 
     api.lock.state.onSuccess(function(e, result) {

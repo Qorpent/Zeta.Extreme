@@ -6,10 +6,9 @@
     var list = $('<div class="btn-group"/>');
     var checkbtn = $('<button class="btn btn-success btn-mini"/>').text("Утв.");
     var lockbtn = $('<button class="btn btn-warning btn-mini"/>').text("Заблок.");
-    lockbtn.click(function() {
-        window.zefs.myform.lockform();
-    } );
+    lockbtn.click(function() { window.zefs.myform.lockform() });
     var unlockbtn = $('<button class="btn btn-danger btn-mini"/>').text("Разблок.");
+    unlockbtn.click(function() { window.zefs.myform.unlockform() });
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление блокировками"/>')
         .html('<i class="icon-lock"></i><span class="caret"/>');
     var menu = $('<ul class="dropdown-menu"/>');
@@ -18,6 +17,13 @@
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
         var lock =  window.zefs.myform.lock;
         if (lock != null) {
+            b.get(0).className = "btn btn-small dropdown-toggle";
+            lockbtn.get(0).className = "btn-warning btn btn-mini";
+            unlockbtn.get(0).className = "btn-danger btn btn-mini";
+            checkbtn.get(0).className = "btn-success btn btn-mini";
+            lockbtn.removeAttr("disabled","disabled");
+            unlockbtn.removeAttr("disabled","disabled");
+            checkbtn.removeAttr("disabled","disabled");
             if (lock.state == "0ISOPEN"){
                 b.addClass("btn-danger");
                 unlockbtn.removeClass("btn-danger").attr("disabled","disabled");
