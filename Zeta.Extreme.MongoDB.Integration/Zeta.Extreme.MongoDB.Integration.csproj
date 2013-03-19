@@ -13,8 +13,9 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MongoBsonExtensions.cs" />
-    <Compile Include="MongoDBAttachmentsSource.cs" />
+    <Compile Include="MongoDBAttachmentSource.cs" />
+    <Compile Include="MongoDBAttachmentsSourceSerializer.cs" />
+    <Compile Include="MongoLayoutSpecification.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Zeta.Extreme.BizProcess">

@@ -1,0 +1,162 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
+using MongoDB.Driver.GridFS;
+using Zeta.Extreme.BizProcess.Forms;
+
+
+namespace Zeta.Extreme.MongoDB.Integration {
+    /// <summary>
+    ///     альтернативный класс MongoDbAttachmentSource с перереработанной структурой
+    /// </summary>
+    public class MongoDbAttachmentSource : IAttachmentStorage {
+        // Internal variables to determine names of collection, db and connection string
+        private string _collectionName;
+        private string _connectionString;
+        private string _databaseName;
+
+        // connection links: current db, GridFS and collection 
+        private MongoDatabase _db;
+        private MongoGridFS _gridFs;
+        private MongoCollection _collection;
+
+        // MongoDB settings: db, client and GridFS
+        private MongoDatabaseSettings _dbSettings;
+        private MongoGridFSSettings _gridFsSettings;
+        private MongoClientSettings _cliSettings;
+
+        /// <summary>
+        ///  Connection marker
+        /// </summary>
+        private bool _connected;
+
+        /// <summary>
+        ///     The database name you want to use to store attachements
+        /// </summary>
+        public string Database {
+            get { return _databaseName ?? (_databaseName = MongoLayoutSpecification.DEFAULT_ATTACHMENTS_DB); }
+            set { _databaseName = value; }
+        }
+
+        /// <summary>
+        ///     The name of collection which you wanna using
+        /// </summary>
+        public string Collection {
+            get { return _collectionName ?? (_collectionName = MongoLayoutSpecification.DEFAULT_ATTACHMENT_COLLECTION); }
+            set { _collectionName = value; }
+        }
+
+        /// <summary>
+        ///     connection string
+        /// </summary>
+        public string ConnectionString {
+            get { return _connectionString ?? (_connectionString = MongoLayoutSpecification.DEFAULT_CONNECTION_STRING); }
+            set { _connectionString = value; }
+        }
+
+        /// <summary>
+        ///     Search mechanism to find an attachment(s)
+        /// </summary>
+        /// <param name="query">Запрос в виде частично или полностью заполенных полей класса Attachment</param>
+        /// <returns>Перечисление полученных документов</returns>
+        public IEnumerable<Attachment> Find(Attachment query) {
+            var list = new List<Attachment>();
+            SetupConnection();
+
+            list.AddRange(
+                _collection.FindAs<BsonDocument>(
+                    new QueryDocument(
+                        MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(query)
+                    )
+                ).Select(
+                    MongoDbAttachmentSourceSerializer.BsonToAttachment
+                )
+            );
+
+            return list;
+        }
+
+        /// <summary>
+        ///     Сохранение информации об аттаче в БД
+        /// </summary>
+        /// <param name="attachment">Описание аттача</param>
+        public void Save(Attachment attachment) {
+            SetupConnection();
+
+            _collection.Update(
+                new QueryDocument(
+                    MongoDbAttachmentSourceSerializer.AttachmentToBsonForFindById(
+                        attachment
+                    )    
+                ), 
+                new UpdateDocument(
+                    MongoDbAttachmentSourceSerializer.AttachmentToBsonForSave(attachment) 
+                )
+            );
+        }
+
+        /// <summary>
+        ///     (псевдо)Удаление аттача из базы
+        /// </summary>
+        /// <param name="attachment"></param>
+        public void Delete(Attachment attachment) {
+            SetupConnection();
+
+            var found = Find(attachment);
+
+            foreach (
+                var document in found.Select(
+                    MongoDbAttachmentSourceSerializer.AttachmentToBson
+                )
+            ) {
+                MongoDbAttachmentSourceSerializer.AttachmentSetDeleted(document);
+                _collection.Save(document);
+            }
+        }
+
+        /// <summary>
+        ///     Открытие потока на чтение или запись аттача
+        /// </summary>
+        /// <param name="attachment">Информация об аттаче</param>
+        /// <param name="mode">Режим: чтение или запись</param>
+        /// <returns>Дескриптов потока</returns>
+        public Stream Open(Attachment attachment, FileAccess mode) {
+            SetupConnection();
+
+            if (mode == FileAccess.Write) {
+                return _gridFs.Create(
+                    attachment.Name,
+                    new MongoGridFSCreateOptions {
+                        Id = (attachment.Uid = ObjectId.GenerateNewId().ToString())
+                    }
+                );
+            } else {
+                return _gridFs.FindOneById(attachment.Uid).Open(FileMode.OpenOrCreate, mode);
+            }
+        }
+
+        private void SetupConnection() {
+            if(!_connected) {
+                _dbSettings = new MongoDatabaseSettings();
+                _gridFsSettings = new MongoGridFSSettings {
+                    Root = Collection   // set the collection prefix
+                };
+                
+                _cliSettings = new MongoClientSettings {
+                    Server = new MongoServerAddress(ConnectionString)
+                };
+
+                _db = new MongoClient(_cliSettings).GetServer().GetDatabase(Database, _dbSettings);
+                _collection = _db.GetCollection<BsonDocument>(Collection + ".files"); // because we have to work with files collection
+                _gridFs = new MongoGridFS(_db, _gridFsSettings);
+
+                _connected = true;
+            }
+        }
+    }
+}
