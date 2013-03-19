@@ -37,11 +37,13 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 			var divs =
 				objects.Select(_ => _.Division).Distinct().Select(_ => new DivisionRecord {code = _.Code, name = _.Name, idx = _.Index}).
 					ToArray();
+			
+			var mygroupname = "/mo_"+principal.Identity.Name.Split('\\', '/')[1].ToLower()+"/";
 			var objs =
 				objects.Select(
 					_ =>
 					new ObjectRecord
-						{id = _.Id, name = _.Name, shortname = _.ShortName, div = _.Division.Code, idx = _.Index})
+						{id = _.Id, name = _.Name, shortname = _.ShortName, div = _.Division.Code, idx = _.Index, ismyobj=_.GroupCache.Contains(mygroupname)})
 					.ToArray();
 			return new AccessibleObjects {divs = divs, objs = objs};
 		}
