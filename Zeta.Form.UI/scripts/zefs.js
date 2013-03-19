@@ -106,7 +106,7 @@ root.init = root.init ||
         api.file.download.getUrl(uid);
     };
 
-    var Lock = function() {
+    var LockForm = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
             if (root.myform.lockinfo.canblock) {
                 api.lock.set.execute({state: "0ISBLOCK"});
@@ -114,10 +114,18 @@ root.init = root.init ||
         }
     };
 
-    var Unlock = function() {
+    var UnlockForm = function() {
+        if (root.myform.sessionId != null && root.myform.lock != null) {
+            if (!root.myform.lockinfo.isopen && root.myform.lockinfo.state != "0ISCHECKED") {
+                api.lock.set.execute({state: "0ISOPEN"});
+            }
+        }
+    };
+
+    var CheckForm = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
             if (!root.myform.lockinfo.isopen) {
-                api.lock.set.execute({state: "0ISOPEN"});
+                api.lock.set.execute({state: "0ISCHECKED"});
             }
         }
     };
@@ -301,8 +309,9 @@ root.init = root.init ||
         execute : function(){api.server.start()},
         save : Save,
         message: Message,
-        lockform: Lock,
-        unlockform: Unlock,
+        lockform: LockForm,
+        unlockform: UnlockForm,
+        checkform: CheckForm,
         attachfile: AttachFile,
         deletefile: DeleteFile,
         downloadfile: DownloadFile

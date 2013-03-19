@@ -5,6 +5,7 @@
     var zefsblockmanager = new root.security.Widget("zefsblockmanager", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 40 });
     var list = $('<div class="btn-group"/>');
     var checkbtn = $('<button class="btn btn-success btn-mini"/>').text("Утв.");
+    checkbtn.click(function() { window.zefs.myform.checkform() });
     var lockbtn = $('<button class="btn btn-warning btn-mini"/>').text("Заблок.");
     lockbtn.click(function() { window.zefs.myform.lockform() });
     var unlockbtn = $('<button class="btn btn-danger btn-mini"/>').text("Разблок.");
