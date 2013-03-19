@@ -31,6 +31,14 @@
       <Project>{ae5166cd-76b0-4911-bd80-ced9521f37a1}</Project>
       <Name>MongoDB.Driver</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
+      <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
+      <Name>Qorpent.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
+      <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
+      <Name>Qorpent.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

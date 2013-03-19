@@ -11,42 +11,10 @@ using MongoDB.Bson;
 namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
     [TestFixture]
-    public class MongoDBAttachmentSourceTests {
-        private readonly MongoDbAttachmentSource _mdb = new MongoDbAttachmentSource();
-
-        protected MongoDatabase _db;
-        /// <summary>
-        /// После P13-58 - коллекция для дескрипторов
-        /// </summary>
-        protected MongoCollection<BsonDocument> _filecollection;
-        /// <summary>
-        /// После P13-58 - коллекция для чанков
-        /// </summary>
-        protected MongoCollection<BsonDocument> _blobcollection;
-        /// <summary>
-        /// После P13-58 - коллекция для индекса
-        /// </summary>
-
-        protected MongoCollection<BsonDocument> _indexcollection;
-        /*
-        [SetUp]
-        public virtual void Setup()
-        {
-            _db = new MongoClient().GetServer().GetDatabase(_mdb.Database);
-            // По идее MondoDbAS должна использовать имя коллекции как базис для GridFS
-            _filecollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".files");
-            _blobcollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".chunks");
-            _indexcollection = _db.GetCollection<BsonDocument>("system.indexes");
-            _filecollection.Drop();
-            _blobcollection.Drop();
-            //NOTICE: we haven't drop SYSTEM.INDEXES - MongoDB prevent it!!!!
-
-            // Это выражает простую мысль - при работе компоненты должны существовать только эти коллекции
-            _filecollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".files");
-            _blobcollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".chunks");
-            _indexcollection = _db.GetCollection<BsonDocument>("system.indexes");
-
-        }*/
+	public class MongoDBAttachmentSourceTests : MongoDbAttachmentTestsBase
+	{
+       
+       
 
         [Test]
         public void CanAttachmentToBsonAndBack()
@@ -87,10 +55,6 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         [Test]
         public void CanFind() {
             var attachment = GetNewAttach();
-
-            using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
-                stream.Flush();
-            }
             _mdb.Save(attachment);
 
             var found = _mdb.Find(attachment).FirstOrDefault();
@@ -126,12 +90,13 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             var attachment = GetNewAttach();
             byte[] someData = {1, 2, 3, 4, 5};
             byte[] someBuffer = {0, 0, 0, 0, 0};
+			_mdb.Save(attachment);
             using(var stream = _mdb.Open(attachment, FileAccess.Write))
             {
                 stream.Write(someData, 0, someData.Length);
                 stream.Flush();
             }
-            _mdb.Save(attachment);
+            
 
             var found = _mdb.Find(attachment).FirstOrDefault();
 
@@ -172,22 +137,19 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         [Test]
         public void CanCreateBinFileAndGetUid() {
             var attachment = new Attachment();
-
-            using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
-                stream.Flush();
-            }
-
+			_mdb.Save(attachment);
             Assert.IsNotNull(attachment.Uid);
         }
 
         [Test]
         public void CanSaveAnAttachment() {
-            var attachment = GetNewAttach();
-
-            using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
-                stream.Flush();
-            }
+            var attachment = GetNewAttach();				
             _mdb.Save(attachment);
+			//тест должен проверять, что целевая БД ПОЛУЧИЛА наш контент при Save, а не то что у 
+			//нас исключений не возникло
+	        var existed =_filecollection.FindOneById(attachment.Uid);
+			//ну хотя бы так сверяем...
+	        Assert.NotNull(existed);
         }
 
 

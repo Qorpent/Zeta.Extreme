@@ -1,5 +1,6 @@
 using System.Linq;
 using MongoDB.Bson;
+using MongoDB.Driver;
 using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -8,10 +9,10 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 	/// Фикстура проверяет насколько верно формируется паттерн поиска для атачей по образцу
 	/// </summary>
 	[TestFixture]
-	public class P1362FindPatternTests {
+	public class P1362FindPatternTests:MongoDbAttachmentTestsBase {
 
-		[TestCase("Comment",null,null)]
-		[TestCase("Name", "Filename",null)]
+		[TestCase("Comment","comment",null)]
+		[TestCase("Name", "filename",null)]
 		[TestCase("Uid","_id",null)]
 		public void OneElementPatternNoMetadata(string propetyname, string elementname, string value) {
 			if(string.IsNullOrWhiteSpace(elementname)) elementname = propetyname;
@@ -20,7 +21,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 			var property = attachment.GetType().GetProperty(propetyname);
 			property.SetValue(attachment,value);
 			var searchobject = ConvertToSearchDocument(attachment);
-			Assert.AreEqual(1,searchobject.ElementCount);
+			Assert.AreEqual(false,searchobject["deleted"].AsBoolean);
+			Assert.AreEqual(2,searchobject.ElementCount);
 			Assert.AreEqual(elementname,searchobject.Elements.First().Name);
 			Assert.AreEqual(value, searchobject.Elements.First().Value.AsString);
 		}
@@ -45,6 +47,35 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
 		private BsonDocument ConvertToSearchDocument(Attachment attachment) {
             return MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(attachment);
+		}
+
+		[Test]
+		public void CanFindByMetadata() {
+			var attachment1 = new Attachment{Uid="1"};
+			var attachment2 = new Attachment{Uid ="2"};
+			var attachment3 = new Attachment{Uid="3"};
+			attachment1.Metadata["x"] = 1;
+			attachment2.Metadata["x"] = 2;
+			attachment3.Metadata["x"] = 3;
+			attachment1.Metadata["y"] = 1;
+			attachment2.Metadata["y"] = 1;
+			attachment3.Metadata["y"] = 3;
+			Save(attachment1);
+			Save(attachment2);
+			Save(attachment3);
+			//search 1
+			var search = new Attachment();
+			search.Metadata["x"] = 2;
+			var result = _mdb.Find(search).ToArray();
+			Assert.AreEqual(1,result.Length);
+			Assert.AreEqual("2",result.First().Uid);
+			//search 2
+			search = new Attachment();
+			search.Metadata["y"] = 1;
+			result = _mdb.Find(search).ToArray();
+			Assert.AreEqual(2, result.Length);
+			Assert.NotNull(result.FirstOrDefault(_=>_.Uid=="1"));
+			Assert.NotNull(result.FirstOrDefault(_ => _.Uid == "2"));
 		}
 	}
 }

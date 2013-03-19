@@ -36,6 +36,9 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 			};
 		}
 
+		
+	
+
 		/// <summary>
 		/// ¬спомогательный метод - создать и сохранить с uid и возможно настройками
 		/// </summary>
