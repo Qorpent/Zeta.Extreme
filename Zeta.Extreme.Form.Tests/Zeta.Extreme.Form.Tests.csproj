@@ -17,6 +17,7 @@
   <ItemGroup>
     <Compile Include="DbfsStorageTest.cs" />
     <Compile Include="ExtremeFormProviderTests.cs" />
+    <Compile Include="ThemaLoader\AF400CanApplyRowsToThemaTest.cs" />
     <Compile Include="ZC371TestBench\BenchMarkTools.cs" />
     <Compile Include="ZC371TestBench\ConditionMatcherBase.cs" />
     <Compile Include="ZC371TestBench\ConditionSetGenerator.cs" />
@@ -28,6 +29,9 @@
   <ItemGroup>
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ThemaLoader\balans2011.xml" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

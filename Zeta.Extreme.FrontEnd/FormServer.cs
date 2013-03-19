@@ -125,7 +125,7 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 			var container = Application.Container;
 			Debug.Assert(null!=container.Get<IExtremeFactory>());
-			LoadThemas = new TaskWrapper(GetLoadThemasTask(),MetaCacheLoad);
+			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
 			ReadyToServeForms = new TaskWrapper(Task.FromResult(true), LoadThemas, MetaCacheLoad,

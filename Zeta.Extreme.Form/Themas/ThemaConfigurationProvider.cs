@@ -145,9 +145,21 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		/// <returns> </returns>
 		public IEnumerable<XElement> LoadCompiled() {
-			var filters = LoadCompileFilters.SmartSplit();
-			_cfgVersion = new DateTime();
+			if (Options.DirectThemaConfigurations != null && 0 != Options.DirectThemaConfigurations.Length) {
+				foreach (var xElement in LoadDirectSources()) yield return xElement;
+			}
+			else {
+				var files = GetFileList();
+				var filters = LoadCompileFilters.SmartSplit();
+				foreach (var file in LoadFiles(files, filters)) yield return file;
+			}
+			
+		}
+
+		private string[] GetFileList() {
 			string[] files = null;
+			_cfgVersion = new DateTime();
+
 			if (!Options.RootDirectory.Contains("~") && Path.IsPathRooted(Options.RootDirectory)) {
 				files = Directory.GetFiles(Options.RootDirectory, "*.xml");
 			}
@@ -162,7 +174,11 @@ namespace Zeta.Extreme.Form.Themas {
 							PathType = FileSearchResultType.FullPath
 						}).ToArray();
 			}
-			files = files.OrderBy(x => Path.GetFileNameWithoutExtension(x)).ToArray();
+			files = files.OrderBy(Path.GetFileNameWithoutExtension).ToArray();
+			return files;
+		}
+
+		private IEnumerable<XElement> LoadFiles(string[] files, IList<string> filters) {
 			foreach (var f in files) {
 				if (File.GetLastWriteTime(f) > _cfgVersion) {
 					_cfgVersion = File.GetLastWriteTime(f);
@@ -205,6 +221,13 @@ namespace Zeta.Extreme.Form.Themas {
 					}
 				}
 			}
+		}
+
+		private IEnumerable<XElement> LoadDirectSources() {
+			foreach (var directThemaConfiguration in Options.DirectThemaConfigurations) {
+				yield return directThemaConfiguration;
+			}
+			yield break;
 		}
 
 

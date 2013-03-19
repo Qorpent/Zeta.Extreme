@@ -43,6 +43,7 @@
     <Compile Include="Themas\DimensionDescriptor.cs" />
     <Compile Include="Themas\ElementType.cs" />
     <Compile Include="Themas\GroupFilterHelper.cs" />
+    <Compile Include="Themas\IBizCasePropertySource.cs" />
     <Compile Include="Themas\ICommand.cs" />
     <Compile Include="Themas\IConditionMatcher.cs" />
     <Compile Include="Themas\IConfiguration.cs" />
