@@ -2,7 +2,7 @@
  * Виджет списка периодов
  */
 !function($) {
-    var zefsperiodselector = new root.security.Widget("objselector", root.console.layout.position.layoutHeader, "left", { authonly: true });
+    var zefsperiodselector = new root.security.Widget("periodselector", root.console.layout.position.layoutHeader, "left", { authonly: true });
     var list = $('<div class="btn-group"/>');
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Период"/>').html('<i class="icon-calendar"></i><span class="caret"/>');
     var menu = $('<ul class="dropdown-menu"/>');

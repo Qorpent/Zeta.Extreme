@@ -167,6 +167,7 @@ root.init = root.init ||
     api.metadata.getobjects.onSuccess(function(e, result) {
         root.divs = result.divs;
         root.objects = result.objs;
+        root.myobjs = result.my || {};
         $(root).trigger(root.handlers.on_objectsload);
     });
 
@@ -198,7 +199,10 @@ root.init = root.init ||
         Render(root.myform.currentSession);
         Fill(root.myform.currentSession);
         $(root).trigger(root.handlers.on_structureload);
-        $('table.data').zefs();
+        if (!!root.objects) {
+            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 97 });
+            else $('table.data').zefs();
+        }
     });
 
     api.data.start.onSuccess(function(e, result) {
@@ -208,7 +212,7 @@ root.init = root.init ||
             // Это штука для перерисовки шапки
             $(window).trigger("resize");
         } else {
-            var idx = $.isEmptyObject(result.data) ? result.ei+1 : result.si;
+            var idx = !$.isEmptyObject(result.data) ? result.ei+1 : result.si;
             window.setTimeout(function(){api.data.start.execute({session: root.myform.sessionId,startidx: idx})},500);
         }
     });

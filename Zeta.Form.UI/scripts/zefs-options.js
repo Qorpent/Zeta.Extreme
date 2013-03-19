@@ -165,7 +165,16 @@ $.extend(api,(function(){
                 }
             }),
             //команда, возвращающая список доступных предприятий
-            getobjects : new Command({domain: "zeta", name: "getobjects"})
+            getobjects : $.extend(new Command({domain: "zeta", name: "getobjects"}), {
+                wrap : function(obj) {
+                    var myobjs = [];
+                    $.each(obj.objs, function(i, o) {
+                        if (o.ismyobj) myobjs.push(o);
+                    });
+                    $.extend(obj, { my: myobjs});
+                    return obj;
+                }
+            })
         },
 
         dataType : "json"

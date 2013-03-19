@@ -11,9 +11,9 @@
     $(window.zefs).on(window.zefs.handlers.on_sessionload, function() {
         h.html(
             zefs.myform.currentSession.FormInfo.Name + " " +
-                zefs.myform.currentSession.ObjInfo.Name + " за <span></span>, " +
-                // zefs.myform.currentSession.getPeriod() + ", " +
-                zefs.myform.currentSession.Year + " год"
+            zefs.myform.currentSession.ObjInfo.Name + " за <span></span>, " +
+            // zefs.myform.currentSession.getPeriod() + ", " +
+            zefs.myform.currentSession.Year + " год"
         );
         if (window.zefs._periods_loaded){
             InsertPeriod();
@@ -24,7 +24,6 @@
             window.zefs.periods = result;
         }
         window.zefs._periods_loaded = true;
-        InsertPeriod();
     });
     root.console.RegisterWidget(zefsformheader);
 }(window.jQuery);

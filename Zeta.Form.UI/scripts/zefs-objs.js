@@ -19,13 +19,16 @@
         });
         $.each(window.zefs.objects, function(i,obj) {
             var ul = menu.find('ul[code=' + obj.div + ']');
+            var li = $('<li/>');
             if (ul.length != 0) {
+                if (obj.ismyobj) li.addClass("primary");
                 var a = $('<a/>').attr("value", obj.id);
                 a.click(function(e) {
                     ChangeObject(e);
                 });
                 a.text(obj.name);
-                ul.append($('<li/>').append(a));
+                ul.append(li.append(a));
+                li = ul = null;
             }
         });
     });
