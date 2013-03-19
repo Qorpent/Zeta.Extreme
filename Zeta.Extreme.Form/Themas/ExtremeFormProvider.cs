@@ -17,11 +17,13 @@
 // PROJECT ORIGIN: Zeta.Extreme.Form/ExtremeFormProvider.cs
 #endregion
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Qorpent;
 using Qorpent.IoC;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Form.InputTemplates;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -35,12 +37,25 @@ namespace Zeta.Extreme.Form.Themas {
 		public ExtremeFormProvider() {}
 
 		/// <summary>
-		/// 	Провайдер с указанной папкой для загрузки
+		/// 	Провайдер с указанной папкой для загрузки, загрузка начинается асинхронно
 		/// </summary>
 		/// <param name="rootdir"> </param>
 		public ExtremeFormProvider(string rootdir) {
 			_rootdir = rootdir;
 			_loadTask = Task.Run(() => DoLoad());
+		}
+
+		/// <summary>
+		/// 	Провайдер с прямым набором тем, или с директорией, опционально источник расширений, загрузка должна вызываться синхронно (по сути тестовый режим)
+		/// </summary>
+		/// <param name="rootdir"></param>
+		/// <param name="directdefs"></param>
+		/// <param name="propertysoruces"></param>
+		public ExtremeFormProvider(string rootdir=null,IEnumerable<XElement> directdefs=null, IEnumerable<IBizCasePropertySource> propertysoruces =null )
+		{
+			if(null!=directdefs)_directdefs = directdefs.ToArray();
+			_rootdir = rootdir;
+			if(null!=propertysoruces)_propertysoruces = propertysoruces.ToArray();
 		}
 
 		/// <summary>
@@ -97,9 +112,14 @@ namespace Zeta.Extreme.Form.Themas {
 			}
 		}
 
-		private void DoLoad() {
+		/// <summary>
+		/// Direct call to load
+		/// </summary>
+		public void DoLoad() {
 			lock (_loadsync) {
 				var options = ThemaLoaderOptionsHelper.GetExtremeFormOptions(_rootdir);
+				options.DirectThemaConfigurations = _directdefs;
+				options.PropertySources = _propertysoruces;
 				var configurator = new ThemaConfigurationProvider(options);
 				var themaFactoryProvider = new ThemaFactoryProvider {ConfigurationProvider = configurator};
 				_factory = themaFactoryProvider.Get();
@@ -111,5 +131,7 @@ namespace Zeta.Extreme.Form.Themas {
 
 		private IThemaFactory _factory;
 		private Task _loadTask;
+		private XElement[] _directdefs;
+		private IBizCasePropertySource[] _propertysoruces;
 	}
 }

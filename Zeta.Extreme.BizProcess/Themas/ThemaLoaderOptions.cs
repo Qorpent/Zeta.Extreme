@@ -17,6 +17,7 @@
 // PROJECT ORIGIN: Zeta.Extreme.BizProcess/ThemaLoaderOptions.cs
 #endregion
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
@@ -35,7 +36,16 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// </summary>
 		public IDictionary<string, string> ClassRedirectMap { get; private set; }
 
-		
+		/// <summary>
+		/// Прямое указание массива определений тем
+		/// </summary>
+		public XElement[] DirectThemaConfigurations { get; set; }
+
+		/// <summary>
+		/// Дополнительный источник свойств
+		/// </summary>
+		public IBizCasePropertySource[] PropertySources { get; set; }
+
 
 		/// <summary>
 		/// 	Флаги элементов, которые загружаются в процессе обработки

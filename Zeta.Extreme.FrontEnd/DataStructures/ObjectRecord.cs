@@ -48,5 +48,9 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Короткое имя
 		/// </summary>
 		public string shortname;
+		/// <summary>
+		///  Признак специального своего предприятия
+		/// </summary>
+		public bool ismyobj;
 	}
 }
