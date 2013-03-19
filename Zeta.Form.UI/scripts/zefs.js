@@ -168,7 +168,7 @@ root.init = root.init ||
         root.myobjs = result.my || {};
         $(root).trigger(root.handlers.on_objectsload);
         if (!$.isEmptyObject(root.objects) && !!root.myobjs)  {
-            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 102 });
+            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 100 });
             else $('table.data').zefs();
         }
     });
@@ -205,7 +205,7 @@ root.init = root.init ||
         Fill(root.myform.currentSession);
         $(root).trigger(root.handlers.on_structureload);
         if (!$.isEmptyObject(root.objects) && !!root.myobjs)  {
-            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 102 });
+            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 100 });
             else $('table.data').zefs();
         }
     });
@@ -266,9 +266,9 @@ root.init = root.init ||
             api.lock.state.execute({session: root.myform.sessionId});
             api.lock.history.execute({session: root.myform.sessionId});
         } else {
-            $(root).trigger(root.handlers.on_modal, {
-                title: "", // заголовок ошибки
-                text: "" // текст ошибки
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: result.responseText.match(/\<H1>([^<]+)/)[1].trim(),
+                text: result.responseText.match(/\<i>([^<]+)/)[1].trim()
             });
         }
     });

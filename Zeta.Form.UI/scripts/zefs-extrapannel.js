@@ -13,7 +13,7 @@
     };
     $(window.zefs).on(window.zefs.handlers.on_objectsload, function() {
         if (!$.isEmptyObject(window.zefs.myobjs)) {
-            $('.zefsformheader').first().css("top", 62);
+            $('.zefsformheader').first().css("top", 60);
             $.each(window.zefs.myobjs, function(i, obj) {
                 var name = obj.shortname || obj.name || "";
                 var l = $('<span class="label"/>');

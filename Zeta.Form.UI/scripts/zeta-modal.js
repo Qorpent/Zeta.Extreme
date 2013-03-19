@@ -46,6 +46,7 @@
         $(modal).draggable();
     };
     $(window.zeta).on(window.zeta.handlers.on_modal, function(e,params) {
+        $(document).trigger('click.dropdown.data-api');
         ShowModal(params);
     });
 //    $(document).on('click.dropdown.data-api', function(e) {
