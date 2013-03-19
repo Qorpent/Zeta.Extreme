@@ -8,22 +8,20 @@
     var InsertPeriod = function() {
         $(h.find('span').first()).text(zefs.getperiodbyid(window.zefs.myform.currentSession.Period));
     }
-    $(window.zefs).on(window.zefs.handlers.on_sessionload, function() {
+    $(window.zefs).on(window.zefs.handlers.on_periodsload, function() {
         h.html(
             zefs.myform.currentSession.FormInfo.Name + " " +
             zefs.myform.currentSession.ObjInfo.Name + " за <span></span>, " +
             // zefs.myform.currentSession.getPeriod() + ", " +
             zefs.myform.currentSession.Year + " год"
         );
-        if (window.zefs._periods_loaded){
-            InsertPeriod();
-        }
+        InsertPeriod();
     });
     window.zefs.api.metadata.getperiods.onSuccess(function(e, result) {
         if($.isEmptyObject(window.zefs.periods)) {
             window.zefs.periods = result;
+            $(window.zefs).trigger(window.zefs.handlers.on_periodsload);
         }
-        window.zefs._periods_loaded = true;
     });
     root.console.RegisterWidget(zefsformheader);
 }(window.jQuery);
