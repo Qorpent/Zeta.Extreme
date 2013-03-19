@@ -37,6 +37,7 @@
     <Compile Include="Formulas\FormulaParserConstants.cs" />
     <Compile Include="Formulas\IllegalSyntaxFormulaStub.cs" />
     <Compile Include="Formulas\NoExtremeFormulaStub.cs" />
+    <Compile Include="Model\RowTagResolutionTest.cs" />
     <Compile Include="Primary\IScriptGenerator.cs" />
     <Compile Include="Primary\ObjColQueryGeneratorStruct.cs" />
     <Compile Include="Primary\SimpleObjectDataScriptGenerator.cs" />
@@ -62,6 +63,10 @@
     <Compile Include="Session.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Core.Tests.Debug\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />

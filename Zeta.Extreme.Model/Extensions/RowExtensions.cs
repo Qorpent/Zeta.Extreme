@@ -74,7 +74,7 @@ namespace Zeta.Extreme.Model.Extensions {
 		/// <param name="row"> </param>
 		/// <returns> </returns>
 		public static bool HasChildren(this IZetaRow row) {
-			return null != row.NativeChildren && 0 != row.NativeChildren.Count;
+			return row.HasChildren() && 0 != row.Children.Count;
 		}
 
 		/// <summary>

@@ -215,7 +215,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			if (row.ParentId.HasValue) {
 				if (byid.ContainsKey(row.ParentId.Value)) {
 					row.Parent = byid[row.ParentId.Value];
-					row.Parent.NativeChildren.Add(row);
+					row.Parent.Children.Add(row);
 				}
 			}
 			else {

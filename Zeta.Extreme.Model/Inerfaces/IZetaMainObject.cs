@@ -30,7 +30,14 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	/// </summary>
 	public interface IZetaMainObject : ICanResolveTag,
 	                                   IWithObjType,
-	                                   IZetaQueryDimension, IWithDetailObjects, IZetaObject,IWithOuterCode,IWithCurrency,IContextEntity {
+	                                   IZetaQueryDimension, 
+									   IWithDetailObjects, 
+									   IZetaObject,
+									   IWithOuterCode,
+									   IWithCurrency,
+									   IContextEntity,
+									   IWithHierarchy<IZetaMainObject> {
+
 		/// <summary>
 		/// Slash-delimited list of groups that ZetaObject is attached to
 		/// </summary>
@@ -51,26 +58,13 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// </summary>
 		[Obsolete("Deprecated due to bad design of usage (merges model and UI concern)")]
 		bool ShowOnStartPage { get; set; }
-		/// <summary>
-		/// Sub-IZetaObjects, for which <c>this</c> one is a
-		/// <see cref="Zeta.Extreme.Model.Inerfaces.IZetaMainObject.Parent" />
-		/// </summary>
-		IList<IZetaMainObject> Children { get; set; }
-		/// <summary>
-		/// Parent <see cref="IZetaObject"/>, can be null, this one will be appeared in <see cref="Children"/> collection
-		/// </summary>
-		IZetaMainObject Parent { get; set; }
+
 
 		/// <summary>
 		/// <c>List</c> of mappings ZetaObject's users to themas
 		/// </summary>
 		[Obsolete("Due to ZC-408 must be moved to special extension")]
 		IList<IUserBizCaseMap> UserBizCaseMaps { get; set; }
-
-		/// <summary>
-		/// Full hierarchy path of ZetaObject (see <see cref="Parent"/> and Code)
-		/// </summary>
-		string Path { get; set; }
 		/// <summary>
 		/// Division of current ZetaObject
 		/// </summary>
