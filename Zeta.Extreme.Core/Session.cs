@@ -303,7 +303,11 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="timeout"> </param>
 		public void WaitPreparation(int timeout = -1) {
-			while (!_preEvalTaskAgenda.IsEmpty) {
+			var finishtime = DateTime.MaxValue;
+			if (timeout > 0) {
+				finishtime = DateTime.Now.AddMilliseconds(timeout);
+			}
+			while (!_preEvalTaskAgenda.IsEmpty && DateTime.Now<finishtime) {
 				SyncPreEval(timeout);
 				Thread.Sleep(20);
 			}
@@ -315,8 +319,8 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="timeout"> </param>
 		public void WaitEvaluation(int timeout = -1) {
-			PrimarySource.Wait();
-			ActiveSet.Values.Cast<IQueryWithProcessing>().AsParallel().Where(_ => null == _.Result).ForAll(_ => _.GetResult());
+			PrimarySource.Wait(timeout);
+			ActiveSet.Values.Cast<IQueryWithProcessing>().AsParallel().Where(_ => null == _.Result).ForAll(_ => _.GetResult(timeout));
 			ActiveSet.Clear();
 		}
 

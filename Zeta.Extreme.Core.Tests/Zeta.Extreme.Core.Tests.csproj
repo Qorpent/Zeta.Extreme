@@ -18,6 +18,7 @@
     <Compile Include="CanCalculateDetails.cs" />
     <Compile Include="CanCalculateValuta.cs" />
     <Compile Include="CheckKnownData.cs" />
+    <Compile Include="ControlpointBug\ControlpointAllTests.cs" />
     <Compile Include="CoreTests\DefaultRegistryHelperTestBase.cs" />
     <Compile Include="CoreTests\DefaultRegistryHelperTestBaseBenchmark.cs" />
     <Compile Include="CoreTests\QueryCacheKeySensibilityTest.cs" />

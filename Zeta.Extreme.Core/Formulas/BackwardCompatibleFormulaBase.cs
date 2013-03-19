@@ -252,7 +252,12 @@ namespace Zeta.Extreme {
 		/// <param name="groups"> </param>
 		/// <returns> </returns>
 		protected bool groupin(params string[] groups) {
+			if (query.Obj.IsForObj) {
+				var objgroups = query.Obj.ObjRef.GroupCache.SmartSplit(false, true, '/');
+				return groups.Intersect(objgroups).Any();
+			}
 			throw new NotSupportedException("на данный момент поддержка этой опции в Zeta.Extreme отсутвует");
+
 			/*
 			foreach (var g in groups)
 			{

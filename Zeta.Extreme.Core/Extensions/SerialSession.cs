@@ -17,6 +17,7 @@
 // PROJECT ORIGIN: Zeta.Extreme.Core/SerialSession.cs
 #endregion
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
@@ -46,21 +47,41 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		public QueryResult Eval(IQuery query, int timeout = -1) {
 			lock (_session.SerialSync) {
-				if (null != _session.SerialTask) {
-					_session.SerialTask.Wait();
+				Thread nativeThread = null;
+				if (0 >= timeout) {
+					return DoEval(query, -1,out nativeThread);
 				}
+				else {
+					
+					var task = Task.Run(()=>DoEval(query, -1,out nativeThread));
+					var complete = task.Wait(timeout);
+					if (!complete) {
 
-				var realquery = (Query) _session.Register(query);
-
-				if (null == realquery) {
-					return new QueryResult();
+						nativeThread.Abort();
+						throw new Exception("timeout");
+						
+					}
+					return task.Result;
 				}
-				if (realquery.Session != _session) {
-					realquery.WaitPrepare(timeout); //it can be from another session
-				}
-				_session.Execute(timeout);
-				return realquery.GetResult(timeout) ?? new QueryResult();
 			}
+		}
+
+		private QueryResult DoEval(IQuery query, int timeout, out Thread currentThread) {
+			currentThread = Thread.CurrentThread;
+			if (null != _session.SerialTask) {
+				_session.SerialTask.Wait();
+			}
+
+			var realquery = (Query) _session.Register(query);
+
+			if (null == realquery) {
+				return new QueryResult();
+			}
+			if (realquery.Session != _session) {
+				realquery.WaitPrepare(timeout); //it can be from another session
+			}
+			_session.Execute(timeout);
+			return realquery.GetResult(timeout) ?? new QueryResult();
 		}
 
 		/// <summary>
