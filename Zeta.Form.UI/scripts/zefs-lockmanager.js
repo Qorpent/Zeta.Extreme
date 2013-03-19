@@ -53,7 +53,7 @@
         e.stopPropagation();
     });
     window.zefs.api.lock.history.onSuccess(function(e, result) {
-        if($.isEmptyObject(window.zefs.lockhistory)) {
+        if(!$.isEmptyObject(result)) {
             window.zefs.lockhistory = result;
         }
         var body = $(h.find('tbody'));
@@ -63,6 +63,13 @@
                 body.empty();
                 //.sort(function(a,b) { return a.Date < b.Date })
                 $.each(hist, function(i,h) {
+                    if (i == 10) {
+                        body.append($('<tr colspan="3"/>')
+                            .css("text-align", "center")
+                            .text("Еще " + ($.map(hist, function(n, i) { return i; }).length - i + 1)));
+                        return;
+                    }
+                    else if (i > 10) return;
                     var lockstate = $('<span/>').text(h.ReadableState);
                     if (h.State == "0ISOPEN") lockstate.addClass("state-open");
                     else if (h.State == "0ISBLOCK") lockstate.addClass("state-block");

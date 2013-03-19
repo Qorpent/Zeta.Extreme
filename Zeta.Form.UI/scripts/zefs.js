@@ -37,7 +37,7 @@ root.handlers = $.extend(root.handlers, {
 });
 root.periods =  root.periods || {};
 root.divs =  root.divs || [];
-root.objects =  root.objects || [];
+root.objects =  root.objects || {};
 root.init = root.init ||
 (function ($) {
     if (root.myform) return root.myform;
@@ -160,8 +160,6 @@ root.init = root.init ||
         if (!!result) {
             api.session.start.execute();
         }
-        api.metadata.getobjects.execute();
-        api.metadata.getperiods.execute();
     });
 
     api.metadata.getobjects.onSuccess(function(e, result) {
@@ -169,11 +167,16 @@ root.init = root.init ||
         root.objects = result.objs;
         root.myobjs = result.my || {};
         $(root).trigger(root.handlers.on_objectsload);
+        if (!$.isEmptyObject(root.objects) && !!root.myobjs)  {
+            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 100 });
+            else $('table.data').zefs();
+        }
     });
 
     api.metadata.getperiods.onSuccess(function(e, result) {
         if($.isEmptyObject(root.periods)) {
             root.periods = result;
+            $(root).trigger(root.handlers.on_periodsload);
         }
     });
 
@@ -183,6 +186,8 @@ root.init = root.init ||
         var sessiondata = {session: root.myform.sessionId};
         document.title = result.FormInfo.Name;
         api.session.structure.execute(sessiondata);
+        api.metadata.getobjects.execute();
+        api.metadata.getperiods.execute();
         api.lock.state.execute(sessiondata);
         api.lock.info.execute(sessiondata);
         api.lock.history.execute(sessiondata);
@@ -199,8 +204,8 @@ root.init = root.init ||
         Render(root.myform.currentSession);
         Fill(root.myform.currentSession);
         $(root).trigger(root.handlers.on_structureload);
-        if (!!root.objects) {
-            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 97 });
+        if (!$.isEmptyObject(root.objects) && !!root.myobjs)  {
+            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 100 });
             else $('table.data').zefs();
         }
     });

@@ -73,6 +73,7 @@
     var type = $('<select name="type" class="input-mini"/>').append(
         $('<option/>').text("default"),
         $('<option/>').text("balans"),
+        $('<option/>').text("stfr"),
         $('<option/>').text("prib")
     );
     var filename = $('<input type="text" name="filename" placeholder="Изменить имя..." class="input-small"/>');
