@@ -126,14 +126,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		[Obsolete("ZC-418")]
 		string ResolveColumnCode(string incode);
 
-		/// <summary>
-		///     Clone method to get full copy of row with descendants
-		/// </summary>
-		/// <param name="withchildren"></param>
-		/// <returns>
-		/// </returns>
-		[Obsolete("ZC-421")]
-		IZetaRow Copy(bool withchildren);
 
 		/// <summary>
 		///     Method for cleanup and rewind collection of

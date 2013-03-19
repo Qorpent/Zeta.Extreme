@@ -444,34 +444,35 @@ namespace Zeta.Extreme.Model {
 			return true;
 		}
 
+
 		/// <summary>
-		///     Clone method to get full copy of row with descendants
+		/// Prepares shallow non hierarchical copy of this node
 		/// </summary>
-		/// <param name="withchildren"></param>
-		/// <returns>
-		/// </returns>
-		public virtual IZetaRow Copy(bool withchildren) {
-			lock (this) {
-				var result = (Row) MemberwiseClone();
-				result._children = new List<IZetaRow>();
-				result._allchildren = null;
-				result.LocalProperties = new Dictionary<string, object>(LocalProperties);
-				if (withchildren) {
-					foreach (var row in _children) {
-						var r_ = row.Copy(withchildren);
-						r_.Parent = result;
-						result._children.Add(r_);
-					}
+		/// <returns></returns>
+		protected override IZetaRow GetHierarchicalCopyBase() {
+			var result = (Row)MemberwiseClone();
+			result._children = new List<IZetaRow>();
+			result._allchildren = null;
+			result.LocalProperties = new Dictionary<string, object>(LocalProperties);
+			
+				foreach (var row in _children)
+				{
+					var r_ = row.GetCopyOfHierarchy();
+					r_.Parent = result;
+					result._children.Add((IZetaRow) r_);
 				}
-				if (null != result.RefTo) {
-					result.RefTo = result.RefTo.Copy(withchildren);
-				}
-				if (null != result.ExRefTo) {
-					result.ExRefTo = result.ExRefTo.Copy(withchildren);
-				}
-				return result;
+			
+			if (null != result.RefTo)
+			{
+				result.RefTo = (IZetaRow) result.RefTo.GetCopyOfHierarchy();
 			}
+			if (null != result.ExRefTo)
+			{
+				result.ExRefTo = (IZetaRow) result.ExRefTo.GetCopyOfHierarchy();
+			}
+			return result;
 		}
+		
 
 		/// <summary>
 		///     Method for cleanup and rewind collection of
