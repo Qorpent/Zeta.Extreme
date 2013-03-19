@@ -277,6 +277,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public LockStateInfo GetCurrentLockInfo() {
 			var isopen = Template.IsOpen;
+			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
 			var cansave = state == "0ISOPEN";
 			return new LockStateInfo
@@ -691,6 +692,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public LockStateInfo GetCanBlockInfo() {
 			var isopen = Template.IsOpen;
+			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
 			var cansave = state == "0ISOPEN";
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
@@ -789,7 +791,7 @@ namespace Zeta.Extreme.FrontEnd {
 		public FormState[] GetLockHistory() {
 			var states =
 				new NativeZetaReader().ReadFormStates(
-					string.Format("Year = {0} and Period = {1} and LockCode='{2}' and Object = {3} order by Version"
+					string.Format("Year = {0} and Period = {1} and LockCode='{2}' and Object = {3} order by Version desc"
 					              , Year, Period, Template.UnderwriteCode, Object.Id)).ToArray();
 			return states;
 		}
