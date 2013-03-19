@@ -241,7 +241,7 @@ root.init = root.init ||
 
     api.data.savestate.onSuccess(function(e, result) {
         if(result.stage != "Finished") {
-            window.setTimeout(api.data.savestate.execute({session: root.myform.sessionId}), 1000);
+            window.setTimeout(function(){api.data.savestate.execute({session: root.myform.sessionId})}, 1000);
             return;
         }
         if (null != result.error) {

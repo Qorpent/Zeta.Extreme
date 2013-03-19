@@ -16,6 +16,7 @@
         if(!this.errorEventName)this.errorEventName=this.url+":error";
         if(!this.progressEventName)this.progressEventName=this.url+":progress";
         if(!this.completeEventName)this.completeEventName=this.url+":complete";
+        if(!this.finishEventName)this.finishEventName=this.url+":finish";
 		this.repeatWait = false;
         this.useProgress = !!options.useProgress;
 
@@ -60,6 +61,9 @@
         },
         onComplete: function(func) {
             $(this).on(this.completeEventName, func);
+        },
+        onFinished: function(func) {
+            $(this).on(this.finishEventName, func);
         },
 		execute : function(params,options) {
             params = params || {};
