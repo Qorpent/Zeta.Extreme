@@ -87,20 +87,40 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="attachment">Описание аттача</param>
         public void Save(Attachment attachment) {
             SetupConnection();
-
-            _collection.Update(
-                new QueryDocument(
-                    MongoDbAttachmentSourceSerializer.AttachmentToBsonForFindById(
-                        attachment
-                    )    
-                ), 
-                new UpdateDocument(
-                    MongoDbAttachmentSourceSerializer.AttachmentToBsonForSave(attachment) 
-                )
-            );
+			if (null == attachment.Uid) {
+				attachment.Uid = ObjectId.GenerateNewId().ToString();
+			}
+	      
+			if (!_gridFs.ExistsById(attachment.Uid)) {
+			
+				
+				var fsopts = new MongoGridFSCreateOptions
+					{
+						Id = attachment.Uid,
+						UploadDate =  DateTime.Now,
+						ChunkSize = 64 * 1024,
+						ContentType = attachment.MimeType,
+						Metadata = attachment.Metadata.ToBsonDocument(),
+					};
+				using (var s = _gridFs.OpenWrite(attachment.Name,fsopts)) {
+					s.Flush();	
+				}
+				
+			}
+			MergedSaveAttachment(attachment);
+	      
         }
 
-        /// <summary>
+	    private void MergedSaveAttachment(Attachment attachment) {
+		    var doctosave = MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment);
+		    var existed = _gridFs.Files.FindOneById(attachment.Uid);
+		    foreach (var e in doctosave.Elements) {
+			    existed[e.Name] = e.Value;
+		    }
+		    _gridFs.Files.Save(existed);
+	    }
+
+	    /// <summary>
         ///     (псевдо)Удаление аттача из базы
         /// </summary>
         /// <param name="attachment"></param>
@@ -127,14 +147,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <returns>Дескриптов потока</returns>
         public Stream Open(Attachment attachment, FileAccess mode) {
             SetupConnection();
-
+			if (null == attachment.Uid || null == _gridFs.FindOneById(attachment.Uid)) {
+				Save(attachment);
+			}
             if (mode == FileAccess.Write) {
-                return _gridFs.Create(
-                    attachment.Name,
-                    new MongoGridFSCreateOptions {
-                        Id = (attachment.Uid = ObjectId.GenerateNewId().ToString())
-                    }
-                );
+                return _gridFs.Open(attachment.Name,FileMode.Create);
             } else {
                 return _gridFs.FindOneById(attachment.Uid).Open(FileMode.OpenOrCreate, mode);
             }
