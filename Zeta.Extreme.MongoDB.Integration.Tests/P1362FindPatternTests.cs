@@ -35,9 +35,11 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 				attachment.Metadata[name] = name+"_value";
 			}
 			var searchobject = ConvertToSearchDocument(attachment);
-			Assert.AreEqual(names.Length, searchobject.ElementCount);
+			Assert.AreEqual(names.Length, searchobject.ElementCount - 1); // because "deleted" auto-added
+
+
 			foreach (var name in names) {
-				Assert.NotNull(searchobject.Elements.FirstOrDefault(_=>_.Name=="Metadata."+name && _.Value==name+"_value"));
+				Assert.NotNull(searchobject.Elements.FirstOrDefault(_=>_.Name=="metadata."+name && _.Value==name+"_value"));
 			}
 		}
 

@@ -24,8 +24,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Alternative\MongoDBAttachmentSource_Alternative_Tests.cs" />
-    <Compile Include="MongoDBAttachmentTests.cs" />
+    <Compile Include="MongoDBAttachmentSourceTests.cs" />
     <Compile Include="MongoDbAttachmentTestsBase.cs" />
     <Compile Include="P1358Tests.cs" />
     <Compile Include="P1362FindPatternTests.cs" />

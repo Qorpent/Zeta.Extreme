@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using MongoDB.Driver.GridFS;
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -12,7 +14,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
     /// <summary>
     ///     альтернативный класс MongoDbAttachmentSource с перереработанной структурой
     /// </summary>
-    public class MongoDbAttachmentSourceAlternate : IAttachmentStorage {
+    public class MongoDbAttachmentSource : IAttachmentStorage {
+        // Internal variables to determine names of collection, db and connection string
         private string _collectionName;
         private string _connectionString;
         private string _databaseName;
@@ -27,10 +30,13 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private MongoGridFSSettings _gridFsSettings;
         private MongoClientSettings _cliSettings;
 
+        /// <summary>
+        ///  Connection marker
+        /// </summary>
         private bool _connected;
 
         /// <summary>
-        ///     The database name you want to use to store the attachements
+        ///     The database name you want to use to store attachements
         /// </summary>
         public string Database {
             get { return _databaseName ?? (_databaseName = MongoLayoutSpecification.DEFAULT_ATTACHMENTS_DB); }
@@ -54,7 +60,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         /// <summary>
-        ///     Поиск
+        ///     Search mechanism to find an attachment(s)
         /// </summary>
         /// <param name="query">Запрос в виде частично или полностью заполенных полей класса Attachment</param>
         /// <returns>Перечисление полученных документов</returns>
@@ -80,11 +86,18 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="attachment">Описание аттача</param>
         public void Save(Attachment attachment) {
-            var document = MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(attachment);
             SetupConnection();
 
-            _collection.Save(document);
-           
+            _collection.Update(
+                new QueryDocument(
+                    MongoDbAttachmentSourceSerializer.AttachmentToBsonForFindById(
+                        attachment
+                    )    
+                ), 
+                new UpdateDocument(
+                    MongoDbAttachmentSourceSerializer.AttachmentToBsonForSave(attachment) 
+                )
+            );
         }
 
         /// <summary>
@@ -101,7 +114,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                     MongoDbAttachmentSourceSerializer.AttachmentToBson
                 )
             ) {
-                document["Deleted"] = true;
+                MongoDbAttachmentSourceSerializer.AttachmentSetDeleted(document);
                 _collection.Save(document);
             }
         }
@@ -115,29 +128,31 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public Stream Open(Attachment attachment, FileAccess mode) {
             SetupConnection();
 
-            return new MongoGridFS(_db, _gridFsSettings).Open(
-                attachment.Uid,
-                FileMode.OpenOrCreate,
-                mode
-            );
+            if (mode == FileAccess.Write) {
+                return _gridFs.Create(
+                    attachment.Name,
+                    new MongoGridFSCreateOptions {
+                        Id = (attachment.Uid = ObjectId.GenerateNewId().ToString())
+                    }
+                );
+            } else {
+                return _gridFs.FindOneById(attachment.Uid).Open(FileMode.OpenOrCreate, mode);
+            }
         }
 
         private void SetupConnection() {
             if(!_connected) {
-                // Определимся с конфигурацией
                 _dbSettings = new MongoDatabaseSettings();
                 _gridFsSettings = new MongoGridFSSettings {
-                    Root = Collection
+                    Root = Collection   // set the collection prefix
                 };
                 
                 _cliSettings = new MongoClientSettings {
                     Server = new MongoServerAddress(ConnectionString)
                 };
 
-                var server = new MongoClient(_cliSettings).GetServer();
-
-                _db = server.GetDatabase(Database);
-                _collection = _db.GetCollection<BsonDocument>(Collection);
+                _db = new MongoClient(_cliSettings).GetServer().GetDatabase(Database, _dbSettings);
+                _collection = _db.GetCollection<BsonDocument>(Collection + ".files"); // because we have to work with files collection
                 _gridFs = new MongoGridFS(_db, _gridFsSettings);
 
                 _connected = true;

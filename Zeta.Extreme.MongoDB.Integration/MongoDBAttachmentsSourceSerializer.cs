@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MongoDB.Driver;
 using MongoDB.Bson;
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -15,15 +16,49 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public static BsonDocument AttachmentToBson(Attachment attachment) {
             return new BsonDocument {
                 {"_id", attachment.Uid},
-                {"Filename", attachment.Name},
-                {"Comment", attachment.Comment},
-                {"Owner", attachment.User},
-                {"Version", attachment.Version},
-                {"MimeType", attachment.MimeType},
-                {"Revision", attachment.Revision},
-                {"Extension", attachment.Extension},
-                {"Metadata", new BsonDocument(attachment.Metadata)},
-                {"Deleted", false}
+                {"filename", attachment.Name},
+                {"comment", attachment.Comment},
+                {"owner", attachment.User},
+                {"uploadDate", attachment.Version},
+                {"contentType", attachment.MimeType},
+                {"revision", attachment.Revision},
+                {"extension", attachment.Extension},
+                {"metadata", attachment.Metadata.ToBson()},
+                {"deleted", false}
+            };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="attachment"></param>
+        /// <returns></returns>
+        public static BsonDocument AttachmentToBsonForSave(Attachment attachment) {
+            return new BsonDocument
+                {
+                    {
+                        "$set",
+                        new BsonDocument {
+                            {"comment", attachment.Comment},
+                            {"owner", attachment.User},
+                            {"contentType", attachment.MimeType},
+                            {"revision", attachment.Revision},
+                            {"extension", attachment.Extension},
+                            {"metadata", new BsonDocument(attachment.Metadata)},
+                            {"deleted", false}
+                        }
+                    }
+                };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="attachment"></param>
+        /// <returns></returns>
+        public static BsonDocument AttachmentToBsonForFindById(Attachment attachment) {
+            return new BsonDocument {
+                {"_id", attachment.Uid}
             };
         }
 
@@ -34,15 +69,31 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <returns></returns>
         public static Attachment BsonToAttachment(BsonDocument document) {
             return new Attachment {
-                Uid = document["_id"].ToString(),
-                Name = document["Filename"].ToString(),
-                Comment = document["Comment"].ToString(),
-                User = document["Owner"].ToString(),
-                Version = document["Version"].ToLocalTime(),
-                MimeType = document["MimeType"].ToString(),
-                Revision = document["Revision"].ToInt32(),
-                Extension = document["Extension"].ToString()
+                Uid = document.GetValue("_id").ToString(),
+                Name = document["filename"].ToString(),
+                Comment = document["comment"].ToString(),
+                User = document["owner"].ToString(),
+                Version = document["uploadDate"].ToLocalTime(),
+                MimeType = document["contentType"].ToString(),
+                Revision = document["revision"].ToInt32(),
+                Extension = document["extension"].ToString()
             };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="attachment"></param>
+        public static void BsonToAttachment(BsonDocument document, Attachment attachment) {
+            if(document.Contains("_id")) attachment.Uid = document["_id"].ToString();
+            if(document.Contains("filename")) attachment.Name = document["filename"].ToString();
+            if(document.Contains("comment")) attachment.Comment = document["comment"].ToString();
+            if(document.Contains("owner")) attachment.User = document["owner"].ToString();
+            if(document.Contains("uploadDate")) attachment.Version = document["uploadDate"].ToLocalTime();
+            if(document.Contains("contentType")) attachment.MimeType = document["contentType"].ToString();
+            if(document.Contains("revision")) attachment.Revision = document["revision"].ToInt32();
+            if(document.Contains("extension")) attachment.Extension = document["extension"].ToString();
         }
 
         /// <summary>
@@ -56,50 +107,51 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (attachment.Uid != null) {
                 document["_id"] = attachment.Uid;
             }
-
+            
             if (attachment.Name != null) {
-                document["Filename"] = attachment.Name;
+                document["filename"] = attachment.Name;
             }
-
+            
             if (attachment.Comment != null) {
-                document["Comment"] = attachment.Comment;
+                document["comment"] = attachment.Comment;
             }
 
             if (attachment.User != null) {
-                document["Owner"] = attachment.User;
+                document["owner"] = attachment.User;
             }
 
             if (attachment.MimeType != null) {
-                document["MimeType"] = attachment.MimeType;
+                document["contentType"] = attachment.MimeType;
             }
-
+            
             if (attachment.Extension != null) {
-                document["Extension"] = attachment.Extension;
+                document["extension"] = attachment.Extension;
             }
 
             if (attachment.Revision > 0) {
-                document["Revision"] = attachment.Revision;
+                document["revision"] = attachment.Revision;
             }
-
+            
             if (DateTime.Compare(attachment.Version, new DateTime()) != 0) {
-                document["Version"] = attachment.Version;
+                document["uploadDate"] = attachment.Version;
             }
-
+            
             if (attachment.Metadata.Count != 0) {
-
-                foreach (var el in attachment.Metadata) {
-                //    string t = string.Format("Metadata.{0}", el.Key);
-                  //  KeyValuePair<>
-                   // document.AddRange(el);
-                }
-               // document["Metadata"] = new BsonDocument(attachment.Metadata);
-                
+                document["metadata"] = new BsonDocument(attachment.Metadata);
             }
-
+            
             // do not find deleted attachments
-            document["Deleted"] = false;
+            document["deleted"] = false;
 
             return document;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="document"></param>
+        public static void AttachmentSetDeleted(BsonDocument document) {
+            document["deleted"] = true;
         }
     }
 }

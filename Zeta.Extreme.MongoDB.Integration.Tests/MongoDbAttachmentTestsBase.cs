@@ -12,7 +12,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 	public abstract class MongoDbAttachmentTestsBase {
 		protected const string TEST_STRING = "Test OK!";
 		protected static readonly byte[] TEST_DATA = Encoding.ASCII.GetBytes(TEST_STRING);
-		protected MongoDbAttachmentsSource _mdb;
+        protected MongoDbAttachmentSource _mdb;
 		private int _uid = 0;
 		protected MongoDatabase _db;
 		/// <summary>
@@ -30,8 +30,9 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 		protected MongoCollection<BsonDocument> _indexcollection;
 
 		public MongoDbAttachmentTestsBase() {
-			_mdb = new MongoDbAttachmentsSource {
-				DatabaseName = "MongoDbAttachmentTests"
+            _mdb = new MongoDbAttachmentSource
+            {
+				Database = "MongoDbAttachments"
 			};
 		}
 
@@ -46,48 +47,39 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 			if(null!=setup) {
 				setup(attachment);
 			}
-			Save(attachment,data);
+
+			Save(attachment, data);
 			return attachment;
 		}
 
 		[SetUp]
 		public virtual void Setup() {
-			_db = new MongoClient().GetServer().GetDatabase(_mdb.DatabaseName);
+			_db = new MongoClient().GetServer().GetDatabase(_mdb.Database);
 			// ѕо идее MondoDbAS должна использовать им€ коллекции как базис дл€ GridFS
-			_filecollection = _db.GetCollection<BsonDocument>(_mdb.CollectionName + ".files");
-			_blobcollection = _db.GetCollection<BsonDocument>(_mdb.CollectionName + ".chunks");
+			_filecollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".files");
+			_blobcollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".chunks");
 			_indexcollection = _db.GetCollection<BsonDocument>("system.indexes");
 			_filecollection.Drop();
 			_blobcollection.Drop();
 			//NOTICE: we haven't drop SYSTEM.INDEXES - MongoDB prevent it!!!!
 
 			// Ёто выражает простую мысль - при работе компоненты должны существовать только эти коллекции
-			_filecollection = _db.GetCollection<BsonDocument>(_mdb.CollectionName + ".files");
-			_blobcollection = _db.GetCollection<BsonDocument>(_mdb.CollectionName + ".chunks");
+			_filecollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".files");
+			_blobcollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".chunks");
 			_indexcollection = _db.GetCollection<BsonDocument>("system.indexes");
 
 		}
 
-		public IEnumerable<Attachment> Find(Attachment attachment) {
-			return _mdb.Find(attachment).ToArray();
-		}
-
 		public void Save(Attachment attachment, byte[] source = null) {
-			_mdb.Save(attachment);
+			
 			if (null != source) {
 				using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
 					stream.Write(source, 0, source.Length);
 					stream.Flush();
 				}
 			}
-		}
 
-		public void Delete(Attachment attachment) {
-			_mdb.Delete(attachment);
-		}
-
-		public Stream Open(Attachment attachment, FileAccess mode) {
-			return _mdb.Open(attachment, mode);
+            _mdb.Save(attachment);
 		}
 
 		public Attachment GetNewAttach(string uid = null) {

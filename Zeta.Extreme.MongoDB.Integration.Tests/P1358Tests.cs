@@ -70,9 +70,10 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 		/// 	Вспомогательный метод проверки того, что все коллекции в базе монго - верные
 		/// </summary>
 		private void TestThatAllCollectionsInDatabaseAreValid() {
-			var wrongCollections =
-				_db.GetCollectionNames().Where(collectionName => !IsValidCollectionName(collectionName)).ToList();
-			Assert.AreEqual(0, wrongCollections, string.Join(",", wrongCollections));
+			var wrongCollections = _db.GetCollectionNames().Where(
+                collectionName => !IsValidCollectionName(collectionName)
+            ).ToList();
+			Assert.AreEqual(0,wrongCollections.Count); // there is no collections except chunks, files and indexes
 		}
 
 		
