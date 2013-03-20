@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
 using MongoDB.Driver.GridFS;
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -65,20 +62,15 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="query">Запрос в виде частично или полностью заполенных полей класса Attachment</param>
         /// <returns>Перечисление полученных документов</returns>
         public IEnumerable<Attachment> Find(Attachment query) {
-            var list = new List<Attachment>();
             SetupConnection();
 
-            list.AddRange(
-                _collection.FindAs<BsonDocument>(
-                    new QueryDocument(
-                        MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(query)
-                    )
-                ).Select(
-                    MongoDbAttachmentSourceSerializer.BsonToAttachment
+            return _collection.FindAs<BsonDocument>(
+                new QueryDocument(
+                    MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(query)
                 )
-            );
-
-            return list;
+            ).Select(
+                MongoDbAttachmentSourceSerializer.BsonToAttachment
+            ).ToList();
         }
 
         /// <summary>
@@ -88,16 +80,19 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public void Save(Attachment attachment) {
             SetupConnection();
 
-            _collection.Update(
-                new QueryDocument(
-                    MongoDbAttachmentSourceSerializer.AttachmentToBsonForFindById(
-                        attachment
-                    )    
-                ), 
-                new UpdateDocument(
-                    MongoDbAttachmentSourceSerializer.AttachmentToBsonForSave(attachment) 
-                )
+            attachment.Uid = attachment.Uid ?? (attachment.Uid = ObjectId.GenerateNewId().ToString());
+
+            _gridFs.Create(
+                attachment.Name,
+                new MongoGridFSCreateOptions {
+                    Id = attachment.Uid
+                }
             );
+
+            var doc = _collection.FindOneByIdAs<BsonDocument>(attachment.Uid);
+            doc.Remove("_id");  // delete "_id"
+            doc.AddRange(MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment));
+            _collection.Save(doc);
         }
 
         /// <summary>
@@ -107,10 +102,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public void Delete(Attachment attachment) {
             SetupConnection();
 
-            var found = Find(attachment);
-
             foreach (
-                var document in found.Select(
+                var document in Find(attachment).Select(
                     MongoDbAttachmentSourceSerializer.AttachmentToBson
                 )
             ) {
@@ -128,16 +121,12 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public Stream Open(Attachment attachment, FileAccess mode) {
             SetupConnection();
 
-            if (mode == FileAccess.Write) {
-                return _gridFs.Create(
-                    attachment.Name,
-                    new MongoGridFSCreateOptions {
-                        Id = (attachment.Uid = ObjectId.GenerateNewId().ToString())
-                    }
-                );
-            } else {
-                return _gridFs.FindOneById(attachment.Uid).Open(FileMode.OpenOrCreate, mode);
-            }
+            return _gridFs.FindOneById(
+                attachment.Uid
+            ).Open(
+                FileMode.OpenOrCreate,
+                mode
+            );
         }
 
         private void SetupConnection() {

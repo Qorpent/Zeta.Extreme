@@ -28,7 +28,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         /// </summary>
 
         protected MongoCollection<BsonDocument> _indexcollection;
-        /*
+        
         [SetUp]
         public virtual void Setup()
         {
@@ -46,7 +46,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             _blobcollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".chunks");
             _indexcollection = _db.GetCollection<BsonDocument>("system.indexes");
 
-        }*/
+        }
 
         [Test]
         public void CanAttachmentToBsonAndBack()
@@ -88,11 +88,11 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         public void CanFind() {
             var attachment = GetNewAttach();
 
+            _mdb.Save(attachment);
             using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
                 stream.Flush();
             }
-            _mdb.Save(attachment);
-
+            
             var found = _mdb.Find(attachment).FirstOrDefault();
             
             Assert.NotNull(found);
@@ -103,11 +103,12 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         public void CanSaveAndThenDelete() {
             var attachment = GetNewAttach();
 
+            _mdb.Save(attachment);
             using(var stream = _mdb.Open(attachment, FileAccess.Write))
             {
                 stream.Flush();
             }
-            _mdb.Save(attachment);
+            
 
             var found = _mdb.Find(attachment).FirstOrDefault();
 
@@ -126,12 +127,14 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             var attachment = GetNewAttach();
             byte[] someData = {1, 2, 3, 4, 5};
             byte[] someBuffer = {0, 0, 0, 0, 0};
+
+            _mdb.Save(attachment);
             using(var stream = _mdb.Open(attachment, FileAccess.Write))
             {
                 stream.Write(someData, 0, someData.Length);
                 stream.Flush();
             }
-            _mdb.Save(attachment);
+           
 
             var found = _mdb.Find(attachment).FirstOrDefault();
 
@@ -173,9 +176,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         public void CanCreateBinFileAndGetUid() {
             var attachment = new Attachment();
 
-            using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
-                stream.Flush();
-            }
+            _mdb.Save(attachment);
 
             Assert.IsNotNull(attachment.Uid);
         }
@@ -184,23 +185,10 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         public void CanSaveAnAttachment() {
             var attachment = GetNewAttach();
 
+            _mdb.Save(attachment);
             using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
                 stream.Flush();
             }
-            _mdb.Save(attachment);
-        }
-
-
-        [Test]
-        public void CanSaveAnAttachment2()
-        {
-            var attachment = GetNewAttach();
-
-            using(var stream = _mdb.Open(attachment, FileAccess.Write))
-            {
-                stream.Flush();
-            }
-            _mdb.Save(attachment);
         }
     }
 }
