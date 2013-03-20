@@ -111,15 +111,15 @@ root.init = root.init ||
 
     var LockForm = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
-            if (root.myform.lockinfo.canblock) {
+//            if (root.myform.lockinfo.canblock) {
                 api.lock.set.execute({state: "0ISBLOCK"});
-            }
+//            }
         }
     };
 
     var UnlockForm = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
-            if (!root.myform.lockinfo.isopen && root.myform.lockinfo.state != "0ISCHECKED") {
+            if (!root.myform.lock.isopen && root.myform.lock.state != "0ISCHECKED") {
                 api.lock.set.execute({state: "0ISOPEN"});
             }
         }

@@ -14,9 +14,9 @@
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление блокировками"/>')
         .html('<i class="icon-lock"></i><span class="caret"/>');
     $(window.zefs).on(window.zefs.handlers.on_getcanlockload, function() {
-        if (window.zefs.myform.canlock.canblock) {
-            menu.prepend($('<li/>').append(lockbtn,checkbtn,unlockbtn));
-        }
+//        if (window.zefs.myform.canlock.canblock) {
+          menu.prepend($('<li/>').append(lockbtn,checkbtn,unlockbtn));
+//        }
     });
     var h = $('<table class="table table-striped"/>');
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
