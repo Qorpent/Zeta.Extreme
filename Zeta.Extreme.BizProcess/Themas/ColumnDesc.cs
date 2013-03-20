@@ -1,20 +1,21 @@
-// // Copyright 2007-2010 Comdiv (F. Sadykov) - http://code.google.com/u/fagim.sadykov/
-// // Supported by Media Technology LTD 
-// //  
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //  
-// //      http://www.apache.org/licenses/LICENSE-2.0
-// //  
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
-// // 
-// // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
-
+#region LICENSE
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.BizProcess/ColumnDesc.cs
+#endregion
 #region
 
 #if NEWMODEL
@@ -27,11 +28,13 @@ using Qorpent;
 using Qorpent.Applications;
 using Qorpent.Log;
 using Qorpent.Serialization;
-using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
 
-#endregion
+	#endregion
 using Qorpent.Utils.Extensions;
+
 namespace Zeta.Extreme.BizProcess.Themas{
 
     #region
@@ -634,7 +637,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
                         Period = getPrevPeriod(mainp, deltp);
                     }
                     else{
-                        var dp = Poco.NativeSqlBind.Periods.Get(deltp);
+                        var dp = Model.MetaCaches.Periods.Get(deltp);
                         
                         if (dp.IsFormula){
                             var x = dp.Evaluate(Year, DirectDate, mainp);
@@ -752,7 +755,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
 					Title = String.Format(srctitle, "", "", "", DirectDate);
 				}
 				else {
-					var p = Poco.NativeSqlBind.Periods.Get(Period);
+					var p = Model.MetaCaches.Periods.Get(Period);
 					DateTime st = QorpentConst.Date.Begin;
 					DateTime et = QorpentConst.Date.End;
 					if (p != null) {
@@ -764,7 +767,7 @@ namespace Zeta.Extreme.BizProcess.Themas{
 					Title = String.Format(srctitle,
 					                      Year,
 					                      Period,
-					                      ResolvedPeriodName.IsNotEmpty() ? ResolvedPeriodName: Poco.NativeSqlBind.Periods.Get(Period).Name,
+					                      ResolvedPeriodName.IsNotEmpty() ? ResolvedPeriodName: Model.MetaCaches.Periods.Get(Period).Name,
 					                      Year - 1,
 					                      st.ToString("dd.MM.yyyy"),
 					                      st.AddDays(-1).ToString("dd.MM.yyyy"),

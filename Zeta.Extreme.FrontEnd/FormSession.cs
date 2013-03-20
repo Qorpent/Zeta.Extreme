@@ -1,13 +1,21 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : FormSession.cs
-// Project: Zeta.Extreme.FrontEnd
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.FrontEnd/FormSession.cs
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,11 +37,12 @@ using Zeta.Extreme.Form;
 using Zeta.Extreme.Form.DbfsAttachmentSource;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.NativeSqlBind;
-using Zeta.Extreme.Poco;
-using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.Querying;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
@@ -268,6 +277,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public LockStateInfo GetCurrentLockInfo() {
 			var isopen = Template.IsOpen;
+			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
 			var cansave = state == "0ISOPEN";
 			return new LockStateInfo
@@ -467,7 +477,7 @@ namespace Zeta.Extreme.FrontEnd {
 						ch.Code = c._.Code;
 						ch.IsFormula = c._.IsFormula;
 						ch.Formula = c._.Formula;
-						ch.FormulaType = c._.FormulaEvaluator;
+						ch.FormulaType = c._.FormulaType;
 					}
 					var q = ExtremeFactory.CreateQuery( new QuerySetupInfo
 						{
@@ -601,14 +611,14 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 			var src = columnDesc._;
 			DataSession.GetMetaCache().Set(
-				new col
+				new Column
 					{
 						Code = src.CustomCode,
 						ForeignCode = src.InitialCode,
 						Year = src.Year,
 						Period = src.Period,
 						Formula = src.Formula,
-						FormulaEvaluator = src.FormulaEvaluator,
+						FormulaType = src.FormulaType,
 						IsFormula = src.IsFormula
 					}
 				);
@@ -660,10 +670,14 @@ namespace Zeta.Extreme.FrontEnd {
 			if (null == row) {
 				return false;
 			}
+#pragma warning disable 612,618
 			if (row.IsObsolete(Year)) {
+#pragma warning restore 612,618
 				return false;
 			}
+#pragma warning disable 612,618
 			if (null != row.Object && row.Object.Id != Object.Id) {
+#pragma warning restore 612,618
 				return false;
 			}
 			if (row.IsMarkSeted("0NOINPUT")) {
@@ -678,6 +692,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public LockStateInfo GetCanBlockInfo() {
 			var isopen = Template.IsOpen;
+			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
 			var cansave = state == "0ISOPEN";
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
@@ -773,10 +788,10 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Возвращает историю блокировок
 		/// </summary>
 		/// <returns> </returns>
-		public formstate[] GetLockHistory() {
+		public FormState[] GetLockHistory() {
 			var states =
 				new NativeZetaReader().ReadFormStates(
-					string.Format("Year = {0} and Period = {1} and LockCode='{2}' and Object = {3} order by Version"
+					string.Format("Year = {0} and Period = {1} and LockCode='{2}' and Object = {3} order by Version desc"
 					              , Year, Period, Template.UnderwriteCode, Object.Id)).ToArray();
 			return states;
 		}
@@ -848,7 +863,7 @@ namespace Zeta.Extreme.FrontEnd {
 				       from filetypedesc in filetypes
 				       from formcode in TagHelper.Value(filetypedesc.Tag, "form").Split(',')
 				       where "any" == formcode || Template.Thema.Code == formcode
-				       orderby filetypedesc.Idx
+				       orderby filetypedesc.Index
 				       select new FileTypeRecord {code = filetypedesc.OuterCode, name = filetypedesc.Name}
 			       ).ToArray();
 		}

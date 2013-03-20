@@ -1,13 +1,21 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : InputTemplate.cs
-// Project: Zeta.Extreme.Form
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Form/InputTemplate.cs
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +30,8 @@ using Zeta.Extreme.BizProcess.StateManagement;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.StateManagement;
 using Zeta.Extreme.Form.Themas;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Inerfaces;
 using ColumnDesc = Zeta.Extreme.BizProcess.Themas.ColumnDesc;
 using IConditionMatcher = Zeta.Extreme.BizProcess.Themas.IConditionMatcher;
 using Qorpent.Utils.Extensions;
@@ -260,7 +269,9 @@ namespace Zeta.Extreme.Form.InputTemplates {
 				objects.Add(FixedObject);
 				return objects;
 			}
+#pragma warning disable 612,618
 			var th = Thema as EcoThema;
+#pragma warning restore 612,618
 			if (null != th) {
 				var splitobj = th.GetParameter("splittoobj", "");
 				if (splitobj.IsNotEmpty()) {
@@ -272,7 +283,9 @@ namespace Zeta.Extreme.Form.InputTemplates {
 						}
 						else {
 							foreach (var o in obj.AllChildren()) {
+#pragma warning disable 612,618
 								if (o.ObjType.Code == subobjtype || o.ObjType.Class.Code == subobjtype) {
+#pragma warning restore 612,618
 									objects.Add(o);
 								}
 							}
@@ -1226,10 +1239,14 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		/// <returns> </returns>
 		public IInputTemplate Clone() {
-			var result = new InputTemplate {ForPeriods = ForPeriods.Select(x => x).ToArray()};
+			var result = new InputTemplate();
+
+
+			
 
 			result.BindFrom(this, true);
 
+			if(null!=this.ForPeriods)result.ForPeriods = ForPeriods.Select(x => x).ToArray();
 			result.Thema = Thema;
 
 	

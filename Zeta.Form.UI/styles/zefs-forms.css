@@ -262,11 +262,12 @@ tr[level="2"] td.name {
 
 tr[level="3"] td.name {
 	padding-left : 90px;
-	font-weight : bold;
+	/*font-weight : bold;*/
 }
 
 table.data tr[level="4"] td.name {
 	padding-left : 120px;
+    font-style: italic;
 }
 
 table.data tr[level="5"] td.name {

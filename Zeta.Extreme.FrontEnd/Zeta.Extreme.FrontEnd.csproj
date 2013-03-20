@@ -45,6 +45,7 @@
     <Compile Include="DataStructures\ObjectRecord.cs" />
     <Compile Include="DataStructures\PeriodRecord.cs" />
     <Compile Include="DataStructures\PeriodType.cs" />
+    <Compile Include="DataStructures\PeriodTypeGroup.cs" />
     <Compile Include="FileTypeRecord.cs" />
     <Compile Include="FormAttachmentFileDescriptor.cs" />
     <Compile Include="FormAttachmentStorageExtensions.cs" />

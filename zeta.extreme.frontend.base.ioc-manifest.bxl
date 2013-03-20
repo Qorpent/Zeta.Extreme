@@ -12,7 +12,7 @@ using Zeta.Extreme.Form
 using Qorpent.Applications
 using Comdiv.Security
 using Qorpent.Security 
-using Zeta.Extreme.Model.Inerfaces
+using Zeta.Extreme.Model.Querying
 
 mvc Zeta.Extreme.FrontEnd
 transient "form.server" FormServer : IApplicationStartup

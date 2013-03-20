@@ -1,21 +1,29 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : CachedItemHandlerBase.cs
-// Project: Zeta.Extreme.Core
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core/CachedItemHandlerBase.cs
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Qorpent.Model;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
-using IWithFormula = Zeta.Extreme.Poco.Inerfaces.IWithFormula;
+using Zeta.Extreme.Model.Querying;
+
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -80,7 +88,7 @@ namespace Zeta.Extreme {
 				if (null != Native) {
 					var isformula = Native as IWithFormula;
 					if (null != isformula) {
-						return isformula.FormulaEvaluator;
+						return isformula.FormulaType;
 					}
 					return string.Empty;
 				}
@@ -198,12 +206,7 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		string IWithFormula.ParsedFormula { get; set; }
-
-		string IWithFormula.FormulaEvaluator {
-			get { return FormulaType; }
-			set { FormulaType = value; }
-		}
+		
 
 
 		/// <summary>
@@ -259,7 +262,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	An index of object
 		/// </summary>
-		public int Idx { get; set; }
+		public int Index { get; set; }
 
 		/// <summary>
 		/// 	Название
@@ -281,7 +284,7 @@ namespace Zeta.Extreme {
 			if (null != isformula) {
 				_isFormula = isformula.IsFormula;
 				_formula = isformula.Formula;
-				_formulaType = isformula.FormulaEvaluator;
+				_formulaType = isformula.FormulaType;
 			}
 			else {
 				_isFormula = false;

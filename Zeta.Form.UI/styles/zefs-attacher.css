@@ -4,29 +4,6 @@
     position: relative;
 }
 
-.floating {
-    position: absolute;
-    z-index: 1000;
-    display: block;
-}
-
-.attacher .floatmode {
-    cursor: pointer;
-    position: absolute;
-    right: -22px;
-    width: 16px;
-    height: 16px;
-    top: -1px;
-    border-radius: 6px;
-    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    background: url("../images/application-small.png") no-repeat center white;
-}
-
-.attacher .floatmode.active {
-    background: url("../images/application-small-blue.png") no-repeat center white;
-}
-
 /*Attacher Table*/
 
 .attacher table {

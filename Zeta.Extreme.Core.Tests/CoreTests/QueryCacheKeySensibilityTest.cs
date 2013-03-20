@@ -1,22 +1,29 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
-// Original file : QueryCacheKeySensibilityTest.cs
-// Project: Zeta.Extreme.Core.Tests
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core.Tests/QueryCacheKeySensibilityTest.cs
 #endregion
-
 using System;
 using System.Linq;
 using NUnit.Framework;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco;
-using Zeta.Extreme.Poco.Inerfaces;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
 	[TestFixture(Description = "Проверка корректности и уникальности кэш строк")]
@@ -49,14 +56,14 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 					Time = {Year = fstyear, BaseYear = fstbaseyear, Period = fstperiod, BasePeriod = fstbaseperiod},
 					Row = {Code = "m260113"},
 					Col = {Code = "Б1"},
-					Obj = {Id = 352, Type = ObjType.Obj}
+					Obj = {Id = 352, Type = ZoneType.Obj}
 				};
 			var q2 = new Query
 				{
 					Time = {Year = secondyear, BaseYear = secondbaseyear, Period = secondperiod, BasePeriod = secondbaseperiod},
 					Row = {Code = "m260113"},
 					Col = {Code = "Б1"},
-					Obj = {Id = 352, Type = ObjType.Obj}
+					Obj = {Id = 352, Type = ZoneType.Obj}
 				};
 			q1.Normalize();
 			q2.Normalize();
@@ -69,9 +76,9 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		[Test]
 		public void HardLinkAndSingleRowTest() {
 			var target = RowCache.get("m260113");
-			var r = new row {Code = "x1", RefTo = target};
+			var r = new Row {Code = "x1", RefTo = target};
 			RowCache.Bycode["X1"]=r;
-			var r2 = new row {Code = "x2", Formula = " $x1? ", IsFormula = true, FormulaEvaluator = "boo"};
+			var r2 = new Row {Code = "x2", Formula = " $x1? ", IsFormula = true, FormulaType = "boo"};
 			RowCache.Bycode["X2"] =r2;
 
 			var q1 = new Query {Row = {Code = "x1"}};

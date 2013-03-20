@@ -1,13 +1,21 @@
 ﻿#region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : AccessibleObjectsHelper.cs
-// Project: Zeta.Extreme.FrontEnd
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.FrontEnd/AccessibleObjectsHelper.cs
 #endregion
-
 using System.Linq;
 using System.Security.Principal;
 using Qorpent.Applications;
@@ -25,15 +33,17 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 		/// <returns> </returns>
 		public AccessibleObjects GetAccessibleObjects(IPrincipal principal = null) {
 			principal = principal ?? Application.Current.Principal.CurrentUser;
-			var objects = UserOrgDataMapper.GetAvailOrgs(principal, null, true).Where(_ => null != _.Group).ToArray();
+			var objects = UserOrgDataMapper.GetAvailOrgs(principal, null, true).Where(_ => null != _.Division).ToArray();
 			var divs =
-				objects.Select(_ => _.Group).Distinct().Select(_ => new DivisionRecord {code = _.Code, name = _.Name, idx = _.Idx}).
+				objects.Select(_ => _.Division).Distinct().Select(_ => new DivisionRecord {code = _.Code, name = _.Name, idx = _.Index}).
 					ToArray();
+			
+			var mygroupname = "/mo_"+principal.Identity.Name.Split('\\', '/')[1].ToLower()+"/";
 			var objs =
 				objects.Select(
 					_ =>
 					new ObjectRecord
-						{id = _.Id, name = _.Name, shortname = _.ShortName, div = _.Group.Code, idx = _.Idx})
+						{id = _.Id, name = _.Name, shortname = _.ShortName, div = _.Division.Code, idx = _.Index, ismyobj=_.GroupCache.Contains(mygroupname)})
 					.ToArray();
 			return new AccessibleObjects {divs = divs, objs = objs};
 		}

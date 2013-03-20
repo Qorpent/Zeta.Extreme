@@ -1,6 +1,24 @@
+#region LICENSE
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core.Tests/DoExRefBaseTest.cs
+#endregion
 using System.Collections.Generic;
 using NUnit.Framework;
-using Zeta.Extreme.Poco;
+using Zeta.Extreme.Model;
 
 namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta {
 	[TestFixture]
@@ -11,9 +29,9 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta {
 		/// </summary>
 		/// <returns></returns>
 		protected override IEnumerable<Query> BuildModel() {
-			var exrefrow = new row {Code = "e", ExRefTo = new row {Code = "t"}};
-			var exrefcol = new col {Code = "e", MarkCache = "/DOEXREF/"};
-			var nexrefcol = new col {Code = "ne"};
+			var exrefrow = new Row {Code = "e", ExRefTo = new Row {Code = "t"}};
+			var exrefcol = new Column {Code = "e", MarkCache = "/DOEXREF/"};
+			var nexrefcol = new Column {Code = "ne"};
 			var q1 = new Query //тут должен произойти exref
 				{
 					Row = {Native = exrefrow},

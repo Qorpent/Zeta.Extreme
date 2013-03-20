@@ -1,0 +1,57 @@
+#region LICENSE
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Model/IObjHandler.cs
+#endregion
+using Zeta.Extreme.Model.Inerfaces;
+
+namespace Zeta.Extreme.Model.Querying {
+	/// <summary>
+	/// 	Стандартный интерфейс измерения запроса Obj
+	/// </summary>
+	public interface IObjHandler : IQueryDimension<IZetaObject> {
+		/// <summary>
+		/// 	Тип зоны
+		/// </summary>
+		ZoneType Type { get; set; }
+
+		/// <summary>
+		/// 	Режим работы с деталями на уровне первичных запросов, по умолчанию NONE - выбор остается за системой
+		/// </summary>
+		DetailMode DetailMode { get; set; }
+
+		/// <summary>
+		/// 	Шоткат для быстрой проверки что речь идет о предприятии
+		/// </summary>
+		bool IsForObj { get; }
+
+		/// <summary>
+		/// 	Шоткат для быстрой проверки что речь идет не о предприятии
+		/// </summary>
+		bool IsNotForObj { get; }
+
+		/// <summary>
+		/// 	Ссылка на реальный экземпляр старшего объекта
+		/// </summary>
+		IZetaMainObject ObjRef { get; }
+
+		/// <summary>
+		/// 	Простая копия зоны
+		/// </summary>
+		/// <returns> </returns>
+		IObjHandler Copy();
+	}
+}

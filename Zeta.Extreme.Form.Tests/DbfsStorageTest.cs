@@ -1,4 +1,22 @@
-﻿using System;
+﻿#region LICENSE
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Form.Tests/DbfsStorageTest.cs
+#endregion
+using System;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
@@ -25,7 +43,7 @@ namespace Zeta.Extreme.Form.Tests
 				Application.Current.DatabaseConnections.Register(
 					new ConnectionDescriptor
 						{
-							ConnectionString = "Data Source=(local);Initial Catalog=dbfs;Integrated Security=True;Min Pool Size=5;Application Name=local-debug",
+							ConnectionString = "Data Source=assoibdx;Initial Catalog=dbfs;Persist Security Info=True;User ID=sfo_home;Password=rhfcysq$0;Min Pool Size=5;Application Name=local-debug",
 							Name = "_dbfs_test"
 						},
 					false
@@ -43,9 +61,9 @@ namespace Zeta.Extreme.Form.Tests
 		public void CanReadAttachments() {
 			var attachments =
 				_dbfs.Find(
-					new FormAttachment { TemplateCode = "balansA.in", Year = 2010, Period = 16, ObjId = 538 })
+					new FormAttachment { TemplateCode = "balans2011A.in", Year = 2012, Period = 13, ObjId = 352 })
 					.ToArray();
-			Assert.AreEqual(3, attachments.Length);
+			Assert.AreEqual(2, attachments.Length);
 
 		}
 
