@@ -18,6 +18,7 @@
     <Compile Include="CanCalculateDetails.cs" />
     <Compile Include="CanCalculateValuta.cs" />
     <Compile Include="CheckKnownData.cs" />
+    <Compile Include="ControlpointBug\ControlpointAllTests.cs" />
     <Compile Include="CoreTests\DefaultRegistryHelperTestBase.cs" />
     <Compile Include="CoreTests\DefaultRegistryHelperTestBaseBenchmark.cs" />
     <Compile Include="CoreTests\QueryCacheKeySensibilityTest.cs" />
@@ -32,6 +33,7 @@
     <Compile Include="DatabaseIgnorancePureZeta\RowColAndObjFormula.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\SimpleFormula.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\SimpleHardLink.cs" />
+    <Compile Include="FormulaStorageTests\DllCacheTests.cs" />
     <Compile Include="MockFormulaTest.cs" />
     <Compile Include="NativeMaping\CanReadFormState.cs" />
     <Compile Include="SerialAcessTest.cs" />
@@ -40,6 +42,5 @@
     <Compile Include="SubQuery\ZetaVirtualSumHelperTest.cs" />
     <Compile Include="SubQuery\QueryDeltaTest.cs" />
   </ItemGroup>
-  
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

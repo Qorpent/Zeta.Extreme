@@ -1,16 +1,24 @@
 ﻿#region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : PeriodCatalogHelper.cs
-// Project: Zeta.Extreme.FrontEnd
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.FrontEnd/PeriodCatalogHelper.cs
 #endregion
-
 using System.Linq;
-using Zeta.Extreme.Poco;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.MetaCaches;
 
 namespace Zeta.Extreme.FrontEnd.Helpers {
 	/// <summary>
@@ -23,8 +31,8 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 		/// <returns> </returns>
 		public PeriodRecord[] GetAllPeriods() {
 			return
-				(Periods.All.OfType<period>().Where(_ => _.ClassicId > 0).ToArray())
-					.Select(_ => new PeriodRecord {id = _.ClassicId, name = _.Name, type = GetPeriodType(_), idx = GetIdx(_)})
+				(Periods.All.OfType<Period>().Where(_ => _.BizId > 0).ToArray())
+					.Select(_ => new PeriodRecord {id = _.BizId, name = _.Name, type = GetPeriodType(_), idx = GetIdx(_)})
 					.Where(_ => PeriodType.None != _.type)
 					.OrderBy(_ => _.type)
 					.ThenBy(_ => _.idx)
@@ -32,12 +40,23 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 		}
 
 		/// <summary>
+		/// Возвращает сгруппированный каталог периодов
+		/// </summary>
+		/// <returns></returns>
+		public PeriodTypeGroup[] GetPeriodGroups() {
+			return GetAllPeriods().GroupBy(_ => _.type, _ => _)
+				.Select(_ => new PeriodTypeGroup {type = _.Key, periods = _.ToArray()})
+				.ToArray();
+		}
+		
+
+		/// <summary>
 		/// 	Возвращает тип периода по записи о нем
 		/// </summary>
 		/// <param name="p"> </param>
 		/// <returns> </returns>
-		public PeriodType GetPeriodType(period p) {
-			var id = p.ClassicId;
+		public PeriodType GetPeriodType(Period p) {
+			var id = p.BizId;
 			if ((id >= 11 && id <= 19) || (id == 110 || id == 111 || id == 112)) {
 				return PeriodType.Month;
 			}
@@ -69,16 +88,16 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 		/// 	Возвращает индекс периода по его типу и записи о нем
 		/// </summary>
 		/// <returns> </returns>
-		public int GetIdx(period p) {
+		public int GetIdx(Period p) {
 			return GetIdx(GetPeriodType(p), p);
 		}
 
-		private int GetIdx(PeriodType type, period period) {
+		private int GetIdx(PeriodType type, Period period) {
 			switch (type) {
 				case PeriodType.None:
 					return 0;
 				case PeriodType.Awaited:
-					switch (period.ClassicId) {
+					switch (period.BizId) {
 						case 403:
 							return 10;
 						case 406:
@@ -88,19 +107,19 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 						case 401:
 							return 40;
 						default:
-							return period.ClassicId;
+							return period.BizId;
 					}
 				case PeriodType.Plan:
-					switch (period.ClassicId) {
+					switch (period.BizId) {
 						case 301:
 							return 10;
 						case 3512:
 							return 20;
 						default:
-							return period.ClassicId;
+							return period.BizId;
 					}
 				default:
-					return period.ClassicId;
+					return period.BizId;
 			}
 		}
 	}

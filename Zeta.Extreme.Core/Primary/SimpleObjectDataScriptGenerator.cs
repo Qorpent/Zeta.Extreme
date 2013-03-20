@@ -1,17 +1,25 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : SimpleObjectDataScriptGenerator.cs
-// Project: Zeta.Extreme.Core
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core/SimpleObjectDataScriptGenerator.cs
 #endregion
-
 using System;
 using System.Linq;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Primary {
 	/// <summary>
@@ -54,7 +62,7 @@ namespace Zeta.Extreme.Primary {
 		private string GenerateQuery(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj, string rowids,
 		                             PrimaryQueryPrototype prototype) {
 			if (!prototype.UseSum &&
-			    (cobj.t == ObjType.Obj || cobj.t == ObjType.Detail || cobj.t == ObjType.None /* obj by default */)) {
+			    (cobj.t == ZoneType.Obj || cobj.t == ZoneType.Detail || cobj.t == ZoneType.None /* obj by default */)) {
 				return ConvertToSimpleQueryOfObject(time, cobj, rowids, prototype);
 			}
 			throw new NotSupportedException(prototype.ToString());
@@ -62,9 +70,9 @@ namespace Zeta.Extreme.Primary {
 
 		private static string ConvertToSimpleQueryOfObject(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj,
 		                                                   string rowids, PrimaryQueryPrototype prototype) {
-			var objfld = cobj.t == ObjType.Detail ? "detail" : "obj";
+			var objfld = cobj.t == ZoneType.Detail ? "detail" : "obj";
 			var detcond = "";
-			if (cobj.t == ObjType.Obj) {
+			if (cobj.t == ZoneType.Obj) {
 				if (prototype.PreserveDetails) {
 					detcond = " and detail is null ";
 				}

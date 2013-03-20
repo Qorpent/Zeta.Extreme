@@ -1,19 +1,28 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : BackwardCompatibleFormulaBase.cs
-// Project: Zeta.Extreme.Core
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core/BackwardCompatibleFormulaBase.cs
 #endregion
-
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -243,7 +252,12 @@ namespace Zeta.Extreme {
 		/// <param name="groups"> </param>
 		/// <returns> </returns>
 		protected bool groupin(params string[] groups) {
+			if (query.Obj.IsForObj) {
+				var objgroups = query.Obj.ObjRef.GroupCache.SmartSplit(false, true, '/');
+				return groups.Intersect(objgroups).Any();
+			}
 			throw new NotSupportedException("на данный момент поддержка этой опции в Zeta.Extreme отсутвует");
+
 			/*
 			foreach (var g in groups)
 			{
@@ -321,7 +335,7 @@ namespace Zeta.Extreme {
 			if (null == q.Row.Native) {
 				return false;
 			}
-			var grps = q.Row.Native.Group.SmartSplit(false, true, '/', ';');
+			var grps = ((IZetaFormsSupport) q.Row.Native).GroupCache.SmartSplit(false, true, '/', ';');
 			if (0 == grps.Count) {
 				return false;
 			}
@@ -340,7 +354,7 @@ namespace Zeta.Extreme {
 			}
 
 			while (null != current) {
-				var grps = current.Group.SmartSplit(false, true, '/', ';');
+				var grps = ((IZetaFormsSupport) current).GroupCache.SmartSplit(false, true, '/', ';');
 				if (groups.Any(g => grps.Any(x => x == g))) {
 					return true;
 				}
@@ -568,7 +582,7 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		protected bool divin(params string[] codes) {
 			//#ZC-131
-			return null != codes && q.Obj.IsForObj && codes.Any(x => q.Obj.ObjRef.Group.Code == x);
+			return null != codes && q.Obj.IsForObj && codes.Any(x => q.Obj.ObjRef.Division.Code == x);
 		}
 
 		/// <summary>

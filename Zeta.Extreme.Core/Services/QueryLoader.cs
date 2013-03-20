@@ -1,17 +1,26 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : QueryLoader.cs
-// Project: Zeta.Extreme.Core
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core/QueryLoader.cs
 #endregion
-
 using System;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Poco.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -50,23 +59,30 @@ namespace Zeta.Extreme {
 		}
 
 		private void PrepareFormulas(IQuery internalquery) {
-			if (internalquery.Row.IsFormula && !_sumh.IsSum(internalquery.Row)) {
-				var key = "row:" + internalquery.Row.Code;
-				if (null == internalquery.Row.Native) {
-					key = "dynrow:" + internalquery.Row.Formula;
+			PrepareFormulaForRows(internalquery);
+			PrepareFormulaForColumn(internalquery);
+			PrepareFormulaForObject(internalquery);
+		}
+
+		private void PrepareFormulaForObject(IQuery internalquery) {
+			if (internalquery.Obj.IsFormula && !_sumh.IsSum(internalquery.Obj)) {
+				var key = "obj:" + internalquery.Row.Code;
+				if (null == internalquery.Obj.Native) {
+					key = "dynobj:" + internalquery.Obj.Formula;
 				}
 				if (!FormulaStorage.Default.Exists(key)) {
 					FormulaStorage.Default.Register(new FormulaRequest
 						{
 							Key = key,
-							Formula = internalquery.Row.Formula,
-							Language = internalquery.Row.FormulaType,
-							Tags = internalquery.Row.Tag,
-							Marks = internalquery.Row.Native == null ? "" : internalquery.Row.Native.MarkCache
+							Formula = internalquery.Obj.Formula,
+							Language = internalquery.Obj.FormulaType,
+							Tags = internalquery.Obj.Tag
 						});
 				}
 			}
+		}
 
+		private void PrepareFormulaForColumn(IQuery internalquery) {
 			if (internalquery.Col.IsFormula && !_sumh.IsSum(internalquery.Col)) {
 				var key = "col:" + internalquery.Col.Code;
 				if (null == internalquery.Col.Native) {
@@ -83,19 +99,22 @@ namespace Zeta.Extreme {
 						});
 				}
 			}
+		}
 
-			if (internalquery.Obj.IsFormula && !_sumh.IsSum(internalquery.Obj)) {
-				var key = "obj:" + internalquery.Row.Code;
-				if (null == internalquery.Obj.Native) {
-					key = "dynobj:" + internalquery.Obj.Formula;
+		private void PrepareFormulaForRows(IQuery internalquery) {
+			if (internalquery.Row.IsFormula && !_sumh.IsSum(internalquery.Row)) {
+				var key = "row:" + internalquery.Row.Code;
+				if (null == internalquery.Row.Native) {
+					key = "dynrow:" + internalquery.Row.Formula;
 				}
 				if (!FormulaStorage.Default.Exists(key)) {
 					FormulaStorage.Default.Register(new FormulaRequest
 						{
 							Key = key,
-							Formula = internalquery.Obj.Formula,
-							Language = internalquery.Obj.FormulaType,
-							Tags = internalquery.Obj.Tag
+							Formula = internalquery.Row.Formula,
+							Language = internalquery.Row.FormulaType,
+							Tags = internalquery.Row.Tag,
+							Marks = internalquery.Row.Native == null ? "" : internalquery.Row.Native.MarkCache
 						});
 				}
 			}

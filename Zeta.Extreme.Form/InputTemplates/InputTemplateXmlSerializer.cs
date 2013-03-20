@@ -1,20 +1,28 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : InputTemplateXmlSerializer.cs
-// Project: Zeta.Extreme.Form
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Form/InputTemplateXmlSerializer.cs
 #endregion
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Poco.NativeSqlBind;
+using Zeta.Extreme.Model.MetaCaches;
 
 
 namespace Zeta.Extreme.Form.InputTemplates {
@@ -137,7 +145,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 						rd.Formula = row.Attr("formula", rd.Formula);
 						if (rd.Formula.IsNotEmpty()) {
 							rd.IsFormula = true;
-							rd.FormulaEvaluator = row.Attr("formulatype", "boo");
+							rd.FormulaType = row.Attr("formulatype", "boo");
 						}
 					}
 					result.Rows.Add(rd);
@@ -158,7 +166,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 					col.Editable = true; //default
 					col.Visible = true;
 					col.MatrixFormulaType = "sum";
-					col.FormulaEvaluator = "boo";
+					col.FormulaType = "boo";
 					foreach (var attribute in x.Attributes().ToArray()) {
 						var n = attribute.Name.LocalName;
 						var v = attribute.Value;
@@ -281,7 +289,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 							case "evaluator":
 								goto case "formulatype";
 							case "formulatype":
-								col.FormulaEvaluator = v;
+								col.FormulaType = v;
 								break;
 							case "calcidx":
 								col.CalcIdx = v.ToInt();

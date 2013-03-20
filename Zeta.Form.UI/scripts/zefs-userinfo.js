@@ -2,7 +2,7 @@
  * Виджет информации о текущем польвателе
  */
 !function($) {
-    var login = $('<span class="login-user label label-inverse" />');
+    var login = $('<span class="login-user label label-info" />');
     var loginas = $('<span class="login-user label label-warning" />');
     var ConfigurePermissions = function() {
         var user = window.zeta.security.user;

@@ -20,9 +20,23 @@ div.open>.tooltip {
 .zefsformheader {
     position: fixed;
     top: 37px;
-    z-index: 998;
+    z-index: 995;
     background-color: white;
     width: 100%;
+}
+
+.zefsextrapannel {
+    position: fixed;
+    top: 37px;
+    z-index: 994;
+    background-color: #F0F0F0;
+    width: 100%;
+    height: 23px;
+    padding-left: 3px;
+}
+
+.zefsextrapannel .label {
+    margin-right: 3px;
 }
 
 .zefsformheader h3 {
@@ -31,6 +45,7 @@ div.open>.tooltip {
     margin: 0;
 }
 
+.zefsreport,
 .impersonator,.information,
 .zefsdebug, .feedback {
     margin-top: 4px;
@@ -60,10 +75,19 @@ div.open>.tooltip {
     margin-right: 3px;
 }
 
+.logininfo .label {
+   display: inline;
+}
+
 .zefsstatus, .zefsformsave,
-.objselector, .zefscolmanager, .zefsblockmanager {
+.periodselector, .objselector,
+.zefscolmanager, .zefsblockmanager {
     margin-top: 4px;
     margin-left: 3px;
+}
+
+.objselector li.primary {
+    background-color: #e6ffe1;
 }
 
 .zefscolmanager label {
