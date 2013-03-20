@@ -2,8 +2,9 @@
  * Виджет менеджера блокировок
  */
 !function($) {
-    var zefsblockmanager = new root.security.Widget("zefsblockmanager", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 40 });
+    var zefsblockmanager = new root.security.Widget("zefsblockmanager", root.console.layout.position.layoutHeader, "left", { authonly: true, adminonly: true, priority: 40 });
     var list = $('<div class="btn-group"/>');
+    var menu = $('<ul class="dropdown-menu"/>');
     var checkbtn = $('<button class="btn btn-success btn-mini"/>').text("Утв.");
     checkbtn.click(function() { window.zefs.myform.checkform() });
     var lockbtn = $('<button class="btn btn-warning btn-mini"/>').text("Заблок.");
@@ -12,7 +13,6 @@
     unlockbtn.click(function() { window.zefs.myform.unlockform() });
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление блокировками"/>')
         .html('<i class="icon-lock"></i><span class="caret"/>');
-    var menu = $('<ul class="dropdown-menu"/>');
     menu.append($('<li/>').append(lockbtn,checkbtn,unlockbtn));
     var h = $('<table class="table table-striped"/>');
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {

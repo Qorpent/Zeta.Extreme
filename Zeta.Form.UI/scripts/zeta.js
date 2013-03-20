@@ -187,6 +187,7 @@ document.write('<script src="scripts/zefs-colmanager.js" type="text/javascript">
 document.write('<script src="scripts/zefs-lockmanager.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-alerter.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zeta-modal.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-report.js" type="text/javascript"></script>');
 
 !function($) {
     $(window).load(function() { window.zeta.console.whoami() });

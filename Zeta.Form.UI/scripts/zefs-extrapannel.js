@@ -18,7 +18,8 @@
                 var name = obj.shortname || obj.name || "";
                 var l = $('<span class="label"/>');
                 l.attr("value", obj.id);
-                l.text(name.match(/"([^"]+)"/)[1]);
+                var r = name.match(/"([^"]+)"/);
+                l.text(r != null ? r[1] : name);
                 l.click(function() { ChangeObject(obj.id) });
                 extrapannel.body.append(l);
                 l = null;

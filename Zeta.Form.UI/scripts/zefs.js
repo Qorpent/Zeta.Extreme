@@ -1,8 +1,6 @@
 (function(){
 var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
-var root = window.zefs = window.zefs || {};
-var api = root.api;
-root.handlers = $.extend(root.handlers, {
+window.zefs.handlers = $.extend(window.zefs.handlers, {
     // Zefs handlers:
     on_zefsready : "zefsready",
     on_zefsstarting : "zefsstarting",
@@ -35,6 +33,8 @@ root.handlers = $.extend(root.handlers, {
     on_fileloaderror: "fileloaderror",
     on_fileloadprocess: "fileloadprocess"
 });
+var root = window.zefs = window.zefs || {};
+var api = root.api;
 root.periods =  root.periods || {};
 root.divs =  root.divs || [];
 root.objects =  root.objects || {};
@@ -63,11 +63,13 @@ root.init = root.init ||
         result["year"] = p["year"];
         return result;
     };
+
     api.siterootold = function(){
-        if (location.host.search('admin|corp|133|49') || location.port == '448' || location.port == '449') return '/ecot/';
+        if (location.host.search('admin|corp|133|49') != -1 || location.port == '448' || location.port == '449') return '/ecot/';
 //      else if (location.host.search('assoi') == 0 || location.port == '447') return '/eco/';
-        return /eco/;
+        return '/eco/';
     };
+
     var Fill = function(session) {
         if(!session.wasRendered) { //вот тут чо за хрень была? он в итоге дважды рендировал
             return;
@@ -139,7 +141,16 @@ root.init = root.init ||
 
     var Message = function(obj) {
         $(root).trigger(root.handlers.on_message, obj);
-    }
+    };
+
+    var ZefsIt = function(table) {
+        if (!$.isEmptyObject(root.objects))  {
+            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 100 });
+            else $('table.data').zefs();
+        } else {
+            window.setTimeout(function(){ ZefsIt(table) },100);
+        }
+    };
 
     var GetPeriodName = function(id) {
         var name = "";
@@ -155,7 +166,21 @@ root.init = root.init ||
         return name;
     };
 
+    var OpenReport = function() {
+        if (!!root.myform.currentSession) {
+            var s = root.myform.currentSession;
+            window.open(api.siterootold() + "report/render.rails?notemplate=1&tcode=" + s.FormInfo.Code.replace('.in','b.out') +
+                "&tp.currentObject=" + s.ObjInfo.Id + "&tp.currentDetail=&tp.year=" + s.Year +
+                "&tp.period=" + s.Period, '_blank');
+            s = null;
+        }
+    };
+
     // Обработчики событий
+    $(window.zefs).on(window.zefs.handlers.on_renderfinished, function(e, table) {
+        ZefsIt(table);
+    });
+
     api.server.ready.onSuccess(function(e, result) {
         if (!!result) {
             api.session.start.execute();
@@ -164,13 +189,9 @@ root.init = root.init ||
 
     api.metadata.getobjects.onSuccess(function(e, result) {
         root.divs = result.divs;
-        root.objects = result.objs;
+        root.objects = result.objs || {};
         root.myobjs = result.my || {};
         $(root).trigger(root.handlers.on_objectsload);
-        if (!$.isEmptyObject(root.objects) && !!root.myobjs)  {
-            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 100 });
-            else $('table.data').zefs();
-        }
     });
 
     api.metadata.getperiods.onSuccess(function(e, result) {
@@ -204,10 +225,6 @@ root.init = root.init ||
         Render(root.myform.currentSession);
         Fill(root.myform.currentSession);
         $(root).trigger(root.handlers.on_structureload);
-        if (!$.isEmptyObject(root.objects) && !!root.myobjs)  {
-            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 100 });
-            else $('table.data').zefs();
-        }
     });
 
     api.data.start.onSuccess(function(e, result) {
@@ -323,7 +340,8 @@ root.init = root.init ||
         checkform: CheckForm,
         attachfile: AttachFile,
         deletefile: DeleteFile,
-        downloadfile: DownloadFile
+        downloadfile: DownloadFile,
+        openreport: OpenReport
     });
 
     return root.myform;
