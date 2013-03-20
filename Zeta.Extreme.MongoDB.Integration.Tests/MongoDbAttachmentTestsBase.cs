@@ -74,15 +74,13 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 		}
 
 		public void Save(Attachment attachment, byte[] source = null) {
-			
-			if (null != source) {
-				using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
-					stream.Write(source, 0, source.Length);
-					stream.Flush();
-				}
-			}
-
             _mdb.Save(attachment);
+		    if (null != source) {
+		        using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
+		            stream.Write(source, 0, source.Length);
+		            stream.Flush();
+		        }
+		    }
 		}
 
 		public Attachment GetNewAttach(string uid = null) {

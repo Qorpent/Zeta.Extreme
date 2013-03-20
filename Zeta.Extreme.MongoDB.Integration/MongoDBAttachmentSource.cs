@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
 using MongoDB.Driver.GridFS;
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -65,20 +62,15 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="query">Запрос в виде частично или полностью заполенных полей класса Attachment</param>
         /// <returns>Перечисление полученных документов</returns>
         public IEnumerable<Attachment> Find(Attachment query) {
-            var list = new List<Attachment>();
             SetupConnection();
 
-            list.AddRange(
-                _collection.FindAs<BsonDocument>(
-                    new QueryDocument(
-                        MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(query)
-                    )
-                ).Select(
-                    MongoDbAttachmentSourceSerializer.BsonToAttachment
+            return _collection.FindAs<BsonDocument>(
+                new QueryDocument(
+                    MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(query)
                 )
-            );
-
-            return list;
+            ).Select(
+                MongoDbAttachmentSourceSerializer.BsonToAttachment
+            ).ToList();
         }
 
         /// <summary>
@@ -87,50 +79,31 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="attachment">Описание аттача</param>
         public void Save(Attachment attachment) {
             SetupConnection();
-			if (null == attachment.Uid) {
-				attachment.Uid = ObjectId.GenerateNewId().ToString();
-			}
-	      
-			if (!_gridFs.ExistsById(attachment.Uid)) {
-			
-				
-				var fsopts = new MongoGridFSCreateOptions
-					{
-						Id = attachment.Uid,
-						UploadDate =  DateTime.Now,
-						ChunkSize = 64 * 1024,
-						ContentType = attachment.MimeType,
-						Metadata = attachment.Metadata.ToBsonDocument(),
-					};
-				using (var s = _gridFs.OpenWrite(attachment.Name,fsopts)) {
-					s.Flush();	
-				}
-				
-			}
-			MergedSaveAttachment(attachment);
-	      
+
+            attachment.Uid = attachment.Uid ?? (attachment.Uid = ObjectId.GenerateNewId().ToString());
+
+            _gridFs.Create(
+                attachment.Name,
+                new MongoGridFSCreateOptions {
+                    Id = attachment.Uid
+                }
+            );
+
+            var doc = _collection.FindOneByIdAs<BsonDocument>(attachment.Uid);
+            doc.Remove("_id");  // delete "_id"
+            doc.AddRange(MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment));
+            _collection.Save(doc);
         }
 
-	    private void MergedSaveAttachment(Attachment attachment) {
-		    var doctosave = MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment);
-		    var existed = _gridFs.Files.FindOneById(attachment.Uid);
-		    foreach (var e in doctosave.Elements) {
-			    existed[e.Name] = e.Value;
-		    }
-		    _gridFs.Files.Save(existed);
-	    }
-
-	    /// <summary>
+        /// <summary>
         ///     (псевдо)Удаление аттача из базы
         /// </summary>
         /// <param name="attachment"></param>
         public void Delete(Attachment attachment) {
             SetupConnection();
 
-            var found = Find(attachment);
-
             foreach (
-                var document in found.Select(
+                var document in Find(attachment).Select(
                     MongoDbAttachmentSourceSerializer.AttachmentToBson
                 )
             ) {
@@ -147,14 +120,13 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <returns>Дескриптов потока</returns>
         public Stream Open(Attachment attachment, FileAccess mode) {
             SetupConnection();
-			if (null == attachment.Uid || null == _gridFs.FindOneById(attachment.Uid)) {
-				Save(attachment);
-			}
-            if (mode == FileAccess.Write) {
-                return _gridFs.Open(attachment.Name,FileMode.Create);
-            } else {
-                return _gridFs.FindOneById(attachment.Uid).Open(FileMode.OpenOrCreate, mode);
-            }
+
+            return _gridFs.FindOneById(
+                attachment.Uid
+            ).Open(
+                FileMode.OpenOrCreate,
+                mode
+            );
         }
 
         private void SetupConnection() {
