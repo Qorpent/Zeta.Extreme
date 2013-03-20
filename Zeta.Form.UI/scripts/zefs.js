@@ -15,6 +15,7 @@ window.zefs.handlers = $.extend(window.zefs.handlers, {
     on_savestart : "savestart",
     on_savefailed : "savefaild",
     on_savefinished : "savefinished",
+    on_getcanlockload : "getcanlockload",
     on_getlockfailed : "getlockfinished",
     on_getlockload : "getlockload",
     on_getlockhistoryload : "getlockhistory",
@@ -210,7 +211,7 @@ root.init = root.init ||
         api.metadata.getobjects.execute();
         api.metadata.getperiods.execute();
         api.lock.state.execute(sessiondata);
-        api.lock.info.execute(sessiondata);
+        api.lock.canlock.execute(sessiondata);
         api.lock.history.execute(sessiondata);
         api.file.list.execute(sessiondata);
         window.setTimeout(function(){
@@ -295,8 +296,9 @@ root.init = root.init ||
         $(root).trigger(root.handlers.on_getlockload);
     });
 
-    api.lock.info.onSuccess(function(e, result) {
-        root.myform.lockinfo = result;
+    api.lock.canlock.onSuccess(function(e, result) {
+        root.myform.canlock = result;
+        $(root).trigger(root.handlers.on_getcanlockload);
     });
 
     api.lock.history.onSuccess(function(e, result) {
