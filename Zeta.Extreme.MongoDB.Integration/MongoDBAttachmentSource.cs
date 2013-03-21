@@ -67,10 +67,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
             return _collection.FindAs<BsonDocument>(
                 new QueryDocument(
                     MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(query)
-                    )
-                ).Select(
+                )
+            ).Select(
                     MongoDbAttachmentSourceSerializer.BsonToAttachment
-                ).ToList();
+            ).ToList();
         }
 
         /// <summary>
@@ -126,10 +126,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
             return _gridFs.FindOneById(
                 attachment.Uid
-                ).Open(
-                    FileMode.OpenOrCreate,
-                    mode
-                );
+            ).Open(
+                FileMode.OpenOrCreate,
+                mode
+            );
         }
 
         private void SetupConnection() {
