@@ -14,6 +14,7 @@ namespace Zeta.Extreme.Form.Tests.ThemaLoader
 	/// Проверяем возможность дозагрузки параметров темы из RowCache
 	/// </summary>
 	[TestFixture]
+	[Ignore("Not still requirements defined")]
 	public class AF400CanApplyRowsToThemaTest
 	{
 		/// <summary>A</summary>
