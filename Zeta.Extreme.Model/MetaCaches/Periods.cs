@@ -38,9 +38,26 @@ namespace Zeta.Extreme.Model.MetaCaches {
 		/// 	Загруженные периоды
 		/// </summary>
 		public static IEnumerable<IPeriod> All {
-			get { return _cached ?? (_cached = new NativeZetaReader().ReadPeriods().OfType<IPeriod>().ToList()); }
+			get {
+				if (null == _cached) {
+					try {
+						_cached = new NativeZetaReader().ReadPeriods().OfType<IPeriod>().ToList();
+
+					}
+					catch {
+						_cached = new List<IPeriod>();
+					}
+				}
+				return _cached;
+			}
 		}
 
+		/// <summary>
+		/// Resets period cache
+		/// </summary>
+		public static void Reset() {
+			_cached = null;
+		}
 		/// <summary>
 		/// 	Вычисление формульного периода
 		/// </summary>
