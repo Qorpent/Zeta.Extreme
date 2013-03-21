@@ -18,7 +18,6 @@
 #endregion
 using System;
 using System.Linq;
-using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Primary {
@@ -48,7 +47,7 @@ namespace Zeta.Extreme.Primary {
 					queries.GroupBy(_ => _.Obj.GetCacheKey() + _.Col.GetCacheKey(), _ => _).Select(
 						_ =>
 						new ObjColQueryGeneratorStruct
-							{o = _.First().Obj.Id, c = _.First().Col.Id, t = _.First().Obj.Type, m = _.First().Obj.DetailMode}).Distinct().
+							{o = _.First().Obj.Id, c = _.First().Col.Id, t = _.First().Obj.Type, m = _.First().Obj.DetailMode, af = _.First().Obj.AltObjFilter}).Distinct().
 						ToArray();
 				var rowids = string.Join(",", queries.Select(_ => _.Row.Id).Distinct());
 				script = times.Aggregate(script,
@@ -81,11 +80,36 @@ namespace Zeta.Extreme.Primary {
 			if (prototype.RequreZetaEval) {
 				valuesel = "[zeta].[eval](id, decimalvalue, valuta, '" + prototype.Valuta + "', year, period, row, col, 0,0)";
 			}
+
+			if (!string.IsNullOrWhiteSpace(cobj.af)) {
+				return GetScriptWithContragent(time, cobj, rowids, objfld, detcond, valuesel);
+			}
+			return GetScriptWithoutContragent(time, cobj, rowids, objfld, detcond, valuesel);
+		}
+
+		private static string GetScriptWithContragent(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj,
+		                                              string rowids, string objfld, string detcond, string valuesel) {
+			var altobjcond = " and altobj in ('" + cobj.af + "')";
+
+			if (string.IsNullOrWhiteSpace(time.ps)) {
+				return string.Format(
+					@"
+select 0,col,row,{5},year,period,sum({7}) , {8}
+from cell where period={0} and year={1} and col={2} and {5}={3} and row in ({4}){6}{9} group by col,row,{5},year,period ",
+					time.p, time.y, cobj.c, cobj.o, rowids, objfld, detcond, valuesel, (int) cobj.t, altobjcond);
+			}
+			return string.Format(
+				"\r\nselect 0,col,row,{6},year,{5},sum({8}), {9} from cell where period in ({0}) and year={1} and col={2} and {6}={3} and row in ({4}) {7}{10} group by col,row,{6},year ",
+				time.ps, time.y, cobj.c, cobj.o, rowids, time.p, objfld, detcond, valuesel, (int) cobj.t, altobjcond);
+		}
+
+		private static string GetScriptWithoutContragent(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj,
+		                                                 string rowids, string objfld, string detcond, string valuesel) {
 			if (string.IsNullOrWhiteSpace(time.ps)) {
 				return string.Format(
 					@"
 select id,col,row,{5},year,period,{7} , {8}
-from cell where period={0} and year={1} and col={2} and {5}={3} and row in ({4}) {6}",
+from cell where period={0} and year={1} and col={2} and {5}={3} and row in ({4}){6}",
 					time.p, time.y, cobj.c, cobj.o, rowids, objfld, detcond, valuesel, (int) cobj.t);
 			}
 			return string.Format(

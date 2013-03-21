@@ -74,6 +74,17 @@ namespace Zeta.Extreme {
 		public IZetaMainObject ObjRef {
 			get { return Native as IZetaMainObject; }
 		}
+		/// <summary>
+		/// Фильтр запроса по контрагентам
+		/// </summary>
+		/// <remarks>ZC-248 АССОИ-совместимая реализация </remarks>
+		public string AltObjFilter {
+			get { return _altObjFilter; }
+			set {
+				_altObjFilter = value;
+				InvalidateCacheKey();
+			}
+		}
 
 		/// <summary>
 		/// 	Простая копия зоны
@@ -140,6 +151,9 @@ namespace Zeta.Extreme {
 			{
 				prefix += "d:" + (int) DetailMode + "/";
 			}
+			if (!string.IsNullOrWhiteSpace(AltObjFilter)) {
+				prefix += AltObjFilter + "/";
+			}
 			return prefix + base.EvalCacheKey();
 		}
 
@@ -165,5 +179,6 @@ namespace Zeta.Extreme {
 
 
 		private ZoneType _type;
+		private string _altObjFilter;
 	}
 }

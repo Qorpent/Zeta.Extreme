@@ -158,5 +158,13 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 			Assert.AreEqual(2014, dq.Time.Year);
 			Assert.AreEqual(1, dq.Time.Period);
 		}
+
+		[Test]
+		public void Zc248AltObjFilterMove() {
+			var q = new Query {Obj = {AltObjFilter = ""}};
+			var d = new QueryDelta {AltObjFilter = "1878"};
+			var dq = d.Apply(q);
+			Assert.AreEqual("1878",dq.Obj.AltObjFilter);
+		}
 	}
 }

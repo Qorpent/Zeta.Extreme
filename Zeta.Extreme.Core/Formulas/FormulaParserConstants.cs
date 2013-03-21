@@ -42,6 +42,11 @@ namespace Zeta.Extreme {
 		public const string ObjPattern = @"((\.toobj\(\s*(?<o>\d+)\s*\))?)"; //сразу настраивается как опицональный
 
 		/// <summary>
+		/// 	Паттерн фильтра по контрагентам
+		/// </summary>
+		public const string AltObjFilterPattern = @"((\.altobjfilter\(""(?<aof>[^""]*)""\))?)"; //сразу настраивается как опицональный
+
+		/// <summary>
 		/// 	Паттерн смещения по году
 		/// </summary>
 		public const string YearPattern = @"((\.Y(?<ys>-)?(?<y>\d+))?)";
@@ -78,6 +83,7 @@ namespace Zeta.Extreme {
 			ColOrRowPattern +
 			ColOrRowOptionalPattern +
 			ObjPattern +
+			AltObjFilterPattern +
 			YearPattern +
 			PeriodOrPeriodsPattern;
 
