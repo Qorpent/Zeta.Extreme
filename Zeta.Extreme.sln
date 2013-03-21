@@ -48,6 +48,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pkg", "Pkg", "{6233C2D9-906
 		build = build
 		install = install
 		manifest = manifest
+		..\deployconfig\temporalrolefix.rolemap.bxl = ..\deployconfig\temporalrolefix.rolemap.bxl
 		testapp.base = testapp.base
 		testapp.debug = testapp.debug
 		testapp.publish = testapp.publish

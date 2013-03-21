@@ -120,7 +120,7 @@ namespace Zeta.Extreme.Core.Tests {
 			query.WaitPrepare();
 
 			_serial.Eval(query);
-			Assert.AreEqual(-124472m, query.Result.NumericResult);
+			Assert.AreEqual(-124473m, query.Result.NumericResult);
 		}
 
 		
@@ -212,6 +212,22 @@ namespace Zeta.Extreme.Core.Tests {
 			var res = _serial.Eval(query);
 			Assert.AreEqual(0, res.NumericResult);
 
+		}
+
+		[Test]
+		public void ZC_427_OZHIDPREDGOD_NODOSUM_ROW() {
+			var query = new Query
+			{
+				Obj = { Id = 473 },
+				Row = { Code = "m260721" },
+				Col = { Code = "OZHIDPREDGOD" },
+				Time = { Year = 2012, Period = 251 },
+				Session = session,
+
+			};
+			query = (Query) session.Register(query);
+			var res = _serial.Eval(query);
+			Assert.AreNotEqual(0, res.NumericResult);
 		}
 	}
 }
