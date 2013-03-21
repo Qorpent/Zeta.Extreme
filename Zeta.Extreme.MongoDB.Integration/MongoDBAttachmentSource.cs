@@ -82,6 +82,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
             attachment.Uid = attachment.Uid ?? (attachment.Uid = ObjectId.GenerateNewId().ToString());
 
+            // creates a file view in the files collection
             _gridFs.Create(
                 attachment.Name,
                 new MongoGridFSCreateOptions {
@@ -89,9 +90,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 }
             );
 
+            // now we gonna get this description from the collection
             var doc = _collection.FindOneByIdAs<BsonDocument>(attachment.Uid);
-            doc.Remove("_id");  // delete "_id"
-            doc.AddRange(MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment));
+            // and add our delta
+            doc.AddRange(MongoDbAttachmentSourceSerializer.AttachmentToBsonForSave(attachment));
+            
             _collection.Save(doc);
         }
 

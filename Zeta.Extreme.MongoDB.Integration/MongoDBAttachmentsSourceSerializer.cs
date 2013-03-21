@@ -33,11 +33,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <returns></returns>
         public static BsonDocument AttachmentToBsonForSave(Attachment attachment) {
             var document = AttachmentToBson(attachment);
-
-            document["chunkSize"] = 0;
-            document["uploadDate"] = new BsonDateTime(DateTime.Now);
-            document["md5"] = "";
-            document["length"] = 0;
+            document.Remove("_id");
 
             return document;
         }
