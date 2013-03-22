@@ -11,14 +11,15 @@ namespace Zeta.Extreme.Core.Tests {
 	[TestFixture]
 	public class FinplanOldNewMatch:SessionTestBase {
 
-
-		[TestCase("f1102322", 0)]
-		[TestCase("f1102312",905000)]
-		public void DoTest(string code, decimal value) {
+		[TestCase("r211140", 4914781, "Pd")]
+		[TestCase("m224614", 4914781, "PLAN")]
+		[TestCase("f1102322", 0,"PLAN")]
+		[TestCase("f1102312",905000,"PLAN")]
+		public void DoTest(string code, decimal value,string col) {
 			var q = new Query
 				{
 					Row = {Code = code},
-					Col = {Code = "PLAN"},
+					Col = {Code = col},
 					Time = {Year = 2013, Period = 251},
 					Obj = {Id = 354},
 				};
@@ -26,6 +27,21 @@ namespace Zeta.Extreme.Core.Tests {
 			var result = _serial.Eval(q);
 			Assert.AreEqual(value, result.NumericResult);
 		}
+
+		[Test]
+		public void M224614_PLAN_REDIRECTS_TO_PD()
+		{
+			var q = new Query
+			{
+				Row = { Code = "m224614" },
+				Col = { Code = "PLAN" },
+				Time = { Year = 2013, Period = 251 },
+				Obj = { Id = 354 },
+			};
+			q.Normalize(session);
+			Assert.AreEqual("Pd", q.Col.Code);
+		}
+
 
 		[Test]
 		public void R510_IS_USEDETAIL() {
@@ -37,6 +53,8 @@ namespace Zeta.Extreme.Core.Tests {
 		{
 			Assert.True(RowCache.Bycode["R510110"].ResolveTag("usedetails") == "1");
 		}
+
+		
 
 		[Test]
 		public void QueryHasCorrectDetailMode() {
@@ -83,6 +101,7 @@ namespace Zeta.Extreme.Core.Tests {
 		}
 
 		[Test]
+		[Explicit("это просто под дебаг времянка")]
 		public void CanEvalInGroupOfOtherSerial() {
 			foreach (var rc in new[] { "f110230", "f110231", "f1102311", "f1102312", "f1102313", "f1102314" })
 			{
