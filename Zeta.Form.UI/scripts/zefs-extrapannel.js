@@ -2,8 +2,8 @@
  * Виджет дополнительной паннели
  */
 !function($) {
-    var extrapannel = new root.security.Widget("zefsextrapannel", root.console.layout.position.layoutBodyMain, null, { authonly: true });
-    extrapannel.body = $('<div/>');
+    var extrapannel = new root.security.Widget("zefsextrapannel", root.console.layout.position.layoutHeader, null, { authonly: true });
+    extrapannel.body = $('<div/>').hide();
     var InsertPeriod = function() {
 
     };
@@ -24,6 +24,7 @@
                 extrapannel.body.append(l);
                 l = null;
             });
+            extrapannel.body.show();
         }
     });
     root.console.RegisterWidget(extrapannel);

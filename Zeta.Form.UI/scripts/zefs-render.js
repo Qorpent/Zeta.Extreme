@@ -46,7 +46,8 @@ $.extend(root,{
 			}
 			$.each(session.structure.rows, function(rowidx,row) {
 				var tr = $("<tr/>").attr("level",row.level);
-				tr.append($('<td class="number"/>').attr("title", row.code).text(row.number || ""));
+				if (row.iscaption) tr.addClass("istitle");
+                tr.append($('<td class="number"/>').attr("title", row.code).text(row.number || ""));
 				if (session.structure.rows.length > rowidx + 1) {
                     if (row.level < session.structure.rows[rowidx + 1].level) {
                         tr.addClass("haschild");
@@ -66,8 +67,8 @@ $.extend(root,{
                             "idx": col.idx,
                             "visible": "visible"
                         });
-                        if (col.isprimary && row.isprimary) td.addClass("editable");
                         if (col.controlpoint && row.controlpoint) td.addClass("control");
+                        if (col.isprimary && row.isprimary && !row.exref) td.addClass("editable");
                         tr.append(td);
                     });
                 }
@@ -88,7 +89,7 @@ $.extend(root,{
                 var $cell = $("td[id='" + b.i +  "']");
                 var val = b.v || "";
                 $cell.number($cell.text(),0,'','');
-                if ($cell.text() != val && !$.isEmptyObject($cell.data())) {
+                if ($cell.text() != Math.round(val) && !$.isEmptyObject($cell.data())) {
                     $cell.addClass("recalced");
                 }
                 if (val == "0") {

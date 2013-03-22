@@ -43,6 +43,7 @@ $.extend(api,(function(){
                         if (o.type=="r") {
                             o.measure = o.measure || "тыс. руб.";
                             o.level = o.level || 0;
+                            o.exref = o.exref || false;
                             result.rows.push(o);
                         }
                     });
