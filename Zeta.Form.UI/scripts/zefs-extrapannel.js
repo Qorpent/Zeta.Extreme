@@ -18,7 +18,7 @@
                 var name = obj.shortname || obj.name || "";
                 var l = $('<span class="label"/>');
                 l.attr("value", obj.id);
-                var r = name.match(/"([^"]+)"/);
+                var r = name.replace(/УГМК-?/, "").match(/"([^"]+)"/);
                 l.text(r != null ? r[1] : name);
                 l.click(function() { ChangeObject(obj.id) });
                 extrapannel.body.append(l);
