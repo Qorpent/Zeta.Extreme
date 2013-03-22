@@ -27,6 +27,16 @@ namespace Zeta.Extreme {
 	/// </summary>
 	public sealed class ObjHandler : CachedItemHandlerBase<IZetaObject>, IObjHandler {
 		/// <summary>
+		/// 
+		/// </summary>
+		public ObjHandler() {
+			DetailMode = DetailMode.None;
+			Type = ZoneType.Obj;
+
+
+		}
+
+		/// <summary>
 		/// 	“ип зоны
 		/// </summary>
 		/// <exception cref="Exception">cannot set type on natived zones</exception>

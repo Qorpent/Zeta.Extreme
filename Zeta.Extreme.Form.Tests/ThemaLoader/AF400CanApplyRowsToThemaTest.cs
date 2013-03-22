@@ -68,6 +68,7 @@ namespace Zeta.Extreme.Form.Tests.ThemaLoader
 			Assert.AreEqual(OLDPARAMVALUE,form.Role);
 		}
 		[Test]
+		[Ignore("пока вообше непонятно будем делать или нет")]
 		public void CanOverridePropertyFromRowCache() {
 			var form = getForm(new testsource(new Dictionary<string, object>{{PARAMNAME,NEWPARAMVALUE}}));
 			Assert.AreEqual(NEWPARAMVALUE, form.Role);

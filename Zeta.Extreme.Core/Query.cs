@@ -252,7 +252,7 @@ namespace Zeta.Extreme {
 		}
 
 		private void AdaptExRefLinkSourceForColumns(ISession session) {
-			if (null != Col.Native && null != Row.Native) {
+			if (null != Col.Native  && null != Row.Native && null!=Col.Tag && null!=Row.Tag) {
 				if (Col.Tag.Contains("/linkcol")) {
 					var resolvedCode = Row.Native.GetRedirectColCode(Col.Native);
 					if (resolvedCode != Col.Code) {

@@ -99,7 +99,9 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 		}
 
 		protected void Add(IQuery q, decimal value) {
-			_key_to_value_pseudosql_storage[q.GetCacheKey()] = value;
+			var subq = q.Copy(true);
+			subq.Normalize(_session);
+			_key_to_value_pseudosql_storage[subq.GetCacheKey()] = value;
 		}
 
 		protected int primarycallscount = 0;
