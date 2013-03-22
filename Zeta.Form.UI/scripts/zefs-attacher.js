@@ -5,9 +5,8 @@
     var attacher = new root.security.Widget("attacher", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 30, ready: function() {
         attacher.body.find('.btn-group').floatmenu();
     } });
-    var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown"/>')
+    var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Прикрепленные файлы"/>')
         .html('<i class="icon-file"></i>');
-    b.tooltip({title: "Прикрепленные файлы", placement: 'bottom',container: $('body')});
     var attachlist = $('<table class="table table-striped"/>');
     attachlist.append(
         $('<colgroup/>').append(
@@ -110,6 +109,7 @@
             filelist.draggable();
         }
     });
+    b.tooltip({placement: 'bottom'});
     filelist.append(floating, progress.hide(), uploadform, attachlist);
     $(document).on('click.dropdown.data-api', '.attacher div', function (e) {
         // e.preventDefault();

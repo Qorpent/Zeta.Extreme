@@ -27,6 +27,16 @@ namespace Zeta.Extreme {
 	/// </summary>
 	public sealed class ObjHandler : CachedItemHandlerBase<IZetaObject>, IObjHandler {
 		/// <summary>
+		/// 
+		/// </summary>
+		public ObjHandler() {
+			DetailMode = DetailMode.None;
+			Type = ZoneType.Obj;
+
+
+		}
+
+		/// <summary>
 		/// 	Тип зоны
 		/// </summary>
 		/// <exception cref="Exception">cannot set type on natived zones</exception>
@@ -74,6 +84,17 @@ namespace Zeta.Extreme {
 		public IZetaMainObject ObjRef {
 			get { return Native as IZetaMainObject; }
 		}
+		/// <summary>
+		/// Фильтр запроса по контрагентам
+		/// </summary>
+		/// <remarks>ZC-248 АССОИ-совместимая реализация </remarks>
+		public string AltObjFilter {
+			get { return _altObjFilter; }
+			set {
+				_altObjFilter = value;
+				InvalidateCacheKey();
+			}
+		}
 
 		/// <summary>
 		/// 	Простая копия зоны
@@ -89,6 +110,9 @@ namespace Zeta.Extreme {
 		/// <param name="session"> </param>
 		/// <exception cref="NotImplementedException"></exception>
 		public override void Normalize(ISession session) {
+			if (Type == ZoneType.None) {
+				Type = ZoneType.Obj;
+			}
 			if (IsStandaloneSingletonDefinition()) {
 				var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 				switch (Type) {
@@ -140,6 +164,9 @@ namespace Zeta.Extreme {
 			{
 				prefix += "d:" + (int) DetailMode + "/";
 			}
+			if (!string.IsNullOrWhiteSpace(AltObjFilter)) {
+				prefix += AltObjFilter + "/";
+			}
 			return prefix + base.EvalCacheKey();
 		}
 
@@ -165,5 +192,6 @@ namespace Zeta.Extreme {
 
 
 		private ZoneType _type;
+		private string _altObjFilter;
 	}
 }

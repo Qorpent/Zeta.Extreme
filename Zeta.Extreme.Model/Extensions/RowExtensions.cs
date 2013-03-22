@@ -18,6 +18,7 @@
 #endregion
 #define NEWMODEL
 
+using System.Collections.Generic;
 using Qorpent.Utils;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
@@ -31,16 +32,36 @@ namespace Zeta.Extreme.Model.Extensions {
 	/// 	Расширения для строк
 	/// </summary>
 	public static class RowExtensions {
-		internal static bool HasColChanger(this IZetaRow row, IZetaColumn col) {
-			var linkcol = TagHelper.Value(col.Tag, "linkcol");
+		public static bool HasColChanger(this IZetaRow row, IZetaColumn col) {
+			string linkcol = "";
+			linkcol= TagHelper.Value(col.Tag, "linkcol");
 			if (linkcol.IsEmpty()) {
 				return false;
 			}
+			var dict = GetSourceLinks(row);
+			return dict.ContainsKey(linkcol);
+		}
+
+		public static string GetRedirectColCode(this IZetaRow row, IZetaColumn col) {
+			string linkcol= "";
+			linkcol= TagHelper.Value(col.Tag, "linkcol");
+			if (linkcol.IsEmpty()) {
+				return col.Code;
+			}
+			var dict = GetSourceLinks(row);
+			if (dict.ContainsKey(linkcol)) {
+				return dict[linkcol];
+			}
+			return col.Code;
+		}
+
+		public static IDictionary<string, string> GetSourceLinks(IZetaRow row) {
 			var sourcelink = row.ResolveTag("sourcelink");
+			if(string.IsNullOrWhiteSpace(sourcelink))return new Dictionary<string, string>();
 			var complexhelper = ComplexStringHelper.CreateComplexStringParser();
 			complexhelper.ValueDelimiter = "=";
 			var dict = complexhelper.Parse(sourcelink);
-			return dict.ContainsKey(linkcol);
+			return dict;
 		}
 
 

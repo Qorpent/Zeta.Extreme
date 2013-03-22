@@ -18,6 +18,7 @@
 #endregion
 using System;
 using System.Threading;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
@@ -76,8 +77,10 @@ namespace Zeta.Extreme {
 				return (query.Obj.ObjRef) ?? (IZetaQueryDimension) query.Obj;
 			}
 			if (query.Row.IsFormula || _sumh.IsSum(query.Row.Native)) {
-				if (query.Col.IsFormula && query.Col.Native != null) {
-					if (query.Col.Native.IsMarkSeted("DOSUM")) {
+				if (query.Col.IsFormula && query.Col.Native != null)
+				{
+					if (query.Col.Native.IsMarkSeted("DOSUM") && TagHelper.Value(query.Row.Tag, "nodosum") != "1")
+					{
 						return query.Row.Native ?? (IZetaQueryDimension) query.Row;
 					}
 				}

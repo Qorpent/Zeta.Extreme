@@ -49,6 +49,12 @@ namespace Zeta.Extreme.Model.Querying {
 		IZetaMainObject ObjRef { get; }
 
 		/// <summary>
+		/// Фильтр запроса по контрагентам
+		/// </summary>
+		/// <remarks>ZC-248 АССОИ-совместимая реализация </remarks>
+		string AltObjFilter { get; set; }
+
+		/// <summary>
 		/// 	Простая копия зоны
 		/// </summary>
 		/// <returns> </returns>

@@ -83,5 +83,10 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Год для колонок
 		/// </summary>
 		[SerializeNotNullOnly] public int year;
+
+		/// <summary>
+		/// Признак расширенного редиректа
+		/// </summary>
+		[SerializeNotNullOnly]public bool exref;
 	}
 }

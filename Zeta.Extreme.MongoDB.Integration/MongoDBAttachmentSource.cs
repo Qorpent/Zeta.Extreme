@@ -6,31 +6,31 @@ using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 using Zeta.Extreme.BizProcess.Forms;
 
-
 namespace Zeta.Extreme.MongoDB.Integration {
     /// <summary>
     ///     альтернативный класс MongoDbAttachmentSource с перереработанной структурой
     /// </summary>
     public class MongoDbAttachmentSource : IAttachmentStorage {
         // Internal variables to determine names of collection, db and connection string
+        private MongoClientSettings _cliSettings;
+        private MongoCollection _collection;
         private string _collectionName;
+
+        /// <summary>
+        ///     Connection marker
+        /// </summary>
+        private bool _connected;
+
         private string _connectionString;
         private string _databaseName;
 
         // connection links: current db, GridFS and collection 
         private MongoDatabase _db;
-        private MongoGridFS _gridFs;
-        private MongoCollection _collection;
 
         // MongoDB settings: db, client and GridFS
         private MongoDatabaseSettings _dbSettings;
+        private MongoGridFS _gridFs;
         private MongoGridFSSettings _gridFsSettings;
-        private MongoClientSettings _cliSettings;
-
-        /// <summary>
-        ///  Connection marker
-        /// </summary>
-        private bool _connected;
 
         /// <summary>
         ///     The database name you want to use to store attachements
@@ -69,7 +69,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                     MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(query)
                 )
             ).Select(
-                MongoDbAttachmentSourceSerializer.BsonToAttachment
+                    MongoDbAttachmentSourceSerializer.BsonToAttachment
             ).ToList();
         }
 
@@ -82,6 +82,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
             attachment.Uid = attachment.Uid ?? (attachment.Uid = ObjectId.GenerateNewId().ToString());
 
+            // creates a file view in the files collection
             _gridFs.Create(
                 attachment.Name,
                 new MongoGridFSCreateOptions {
@@ -89,9 +90,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 }
             );
 
+            // now we gonna get this description from the collection
             var doc = _collection.FindOneByIdAs<BsonDocument>(attachment.Uid);
-            doc.Remove("_id");  // delete "_id"
-            doc.AddRange(MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment));
+            // and add our delta
+            doc.AddRange(MongoDbAttachmentSourceSerializer.AttachmentToBsonForSave(attachment));
+
             _collection.Save(doc);
         }
 
@@ -130,18 +133,19 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         private void SetupConnection() {
-            if(!_connected) {
+            if (!_connected) {
                 _dbSettings = new MongoDatabaseSettings();
                 _gridFsSettings = new MongoGridFSSettings {
-                    Root = Collection   // set the collection prefix
+                    Root = Collection // set the collection prefix
                 };
-                
+
                 _cliSettings = new MongoClientSettings {
                     Server = new MongoServerAddress(ConnectionString)
                 };
 
                 _db = new MongoClient(_cliSettings).GetServer().GetDatabase(Database, _dbSettings);
-                _collection = _db.GetCollection<BsonDocument>(Collection + ".files"); // because we have to work with files collection
+                _collection = _db.GetCollection<BsonDocument>(Collection + ".files");
+                    // because we have to work with files collection
                 _gridFs = new MongoGridFS(_db, _gridFsSettings);
 
                 _connected = true;
