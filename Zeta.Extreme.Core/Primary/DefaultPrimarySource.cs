@@ -193,11 +193,12 @@ namespace Zeta.Extreme.Primary {
 						var period = r.GetInt32(5);
 						var value = r.GetDecimal(6);
 						var otype = r.GetInt32(7);
+						var altobj = r.GetString(8);
 						var target =
 							_grouped[row].FirstOrDefault(
 								_ =>
 								_.Col.Id == col && _.Obj.Id == obj && (int) _.Obj.Type == otype && _.Time.Year == year &&
-								_.Time.Period == period);
+								_.Time.Period == period && (_.Obj.AltObjFilter??"")==altobj);
 						if (null != target) {
 							_session.StatIncPrimaryAffected();
 							target.HavePrimary = true;
@@ -232,6 +233,7 @@ namespace Zeta.Extreme.Primary {
 		}
 
 		private  IEnumerable<PrimaryQueryGroup> ExplodeToGroups(IEnumerable<IQuery> myrequests) {
+			
 			var valutagroups = myrequests.GroupBy(_ => _.Valuta, _ => _);
 			foreach (var valutagroup in valutagroups) {
 				var detailgroup = valutagroup.GroupBy(_ => _.Obj.DetailMode, _ => _);
@@ -247,9 +249,11 @@ namespace Zeta.Extreme.Primary {
 					else if (dgroup.Key == DetailMode.SafeSumObject) {
 						prot.RequireDetails = true;
 					}
-					yield return
-						new PrimaryQueryGroup
-							{Queries = dgroup.ToArray(), ScriptGenerator = new SimpleObjectDataScriptGenerator(), Prototype = prot};
+					var altobjgroups = dgroup.GroupBy(_ => _.Obj.AltObjFilter);
+					foreach (var altobjgroup in altobjgroups) {
+						yield return new PrimaryQueryGroup { Queries = altobjgroup.ToArray(), ScriptGenerator = new SimpleObjectDataScriptGenerator(), Prototype = prot };	
+					}
+					
 				}
 			}
 		}

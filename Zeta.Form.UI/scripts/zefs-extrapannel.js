@@ -2,8 +2,8 @@
  * Виджет дополнительной паннели
  */
 !function($) {
-    var extrapannel = new root.security.Widget("zefsextrapannel", root.console.layout.position.layoutBodyMain, null, { authonly: true });
-    extrapannel.body = $('<div/>');
+    var extrapannel = new root.security.Widget("zefsextrapannel", root.console.layout.position.layoutHeader, null, { authonly: true });
+    extrapannel.body = $('<div/>').hide();
     var InsertPeriod = function() {
 
     };
@@ -18,12 +18,13 @@
                 var name = obj.shortname || obj.name || "";
                 var l = $('<span class="label"/>');
                 l.attr("value", obj.id);
-                var r = name.match(/"([^"]+)"/);
+                var r = name.replace(/УГМК-?/, "").match(/"([^"]+)"/);
                 l.text(r != null ? r[1] : name);
                 l.click(function() { ChangeObject(obj.id) });
                 extrapannel.body.append(l);
                 l = null;
             });
+            extrapannel.body.show();
         }
     });
     root.console.RegisterWidget(extrapannel);

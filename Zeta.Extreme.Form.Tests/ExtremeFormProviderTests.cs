@@ -50,9 +50,10 @@ namespace Zeta.Extreme.Form.Tests
 			}
 		}
 		[Test]
+		[Ignore("Больше не лимиитируем")]
 		public void LimitThemaSet()
 		{
-			Assert.AreEqual(129,_efp.Factory.GetAll().Count());
+			Assert.Greater(125,_efp.Factory.GetAll().Count());
 		}
 
 		[Test]

@@ -6,20 +6,31 @@
     var list = $('<div class="btn-group"/>');
     var menu = $('<ul class="dropdown-menu"/>');
     var checkbtn = $('<button class="btn btn-success btn-mini"/>').text("Утв.");
-    checkbtn.click(function() { window.zefs.myform.checkform() });
     var lockbtn = $('<button class="btn btn-warning btn-mini"/>').text("Заблок.");
-    lockbtn.click(function() { window.zefs.myform.lockform() });
     var unlockbtn = $('<button class="btn btn-danger btn-mini"/>').text("Разблок.");
-    unlockbtn.click(function() { window.zefs.myform.unlockform() });
+    var progress = $('<img src="images/300.gif"/>').css("margin-left", 3).hide();
+    checkbtn.click(function() {
+        window.zefs.myform.checkform();
+        progress.show();
+    });
+    lockbtn.click(function() {
+        window.zefs.myform.lockform();
+        progress.show();
+    });
+    unlockbtn.click(function() {
+        window.zefs.myform.unlockform();
+        progress.show();
+    });
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление блокировками"/>')
         .html('<i class="icon-lock"></i><span class="caret"/>');
     $(window.zefs).on(window.zefs.handlers.on_getcanlockload, function() {
 //        if (window.zefs.myform.canlock.canblock) {
-          menu.prepend($('<li/>').append(lockbtn,checkbtn,unlockbtn));
+          menu.prepend($('<li/>').append(lockbtn,checkbtn,unlockbtn, progress));
 //        }
     });
     var h = $('<table class="table table-striped"/>');
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
+        progress.hide();
         var lock =  window.zefs.myform.lock;
         if (lock != null) {
             b.get(0).className = "btn btn-small dropdown-toggle";

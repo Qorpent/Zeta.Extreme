@@ -14,5 +14,7 @@
 			<Style Include="Zeta.Form.UI\styles\*.css"/>
 			<Image Include="Zeta.Form.UI\images\*.*"/>
 			<RootFile Include="Zeta.Form.UI\*.html"/>
+			<Config Include="..\deployconfig\devel.rolemap.bxl"/>
+			<Config Include="..\deployconfig\temporalrolefix.rolemap.bxl"/>
 	</ItemGroup>
 </Project>

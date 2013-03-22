@@ -23,6 +23,7 @@ namespace Zeta.Extreme.Model.Extensions {
 		public static bool UseMarkCaching = true;
 
 		public static bool IsMarkSeted(this IWithMarkCache obj, string code) {
+			if (null == obj) return false;
 			if (obj.MarkCache == null) {
 				return false;
 			}

@@ -43,5 +43,9 @@ namespace Zeta.Extreme.Primary {
 		/// 	Тип объекта
 		/// </summary>
 		public ZoneType t;
+		/// <summary>
+		///  Фильтр по контрагенту
+		/// </summary>
+		public string af;
 	}
 }

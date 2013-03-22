@@ -36,12 +36,13 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		[Test(Description = "самая базовая проверка - просто поместить запрос сессию")]
 		public void CanRegisterOneQueryAynchronously() {
 			var q = new Query {CustomHashPrefix = "CanRegisterOneQuerySynchronously"};
+			var basekey = q.GetCacheKey();
 			var rqt = session.RegisterAsync(q);
 			session.WaitPreparation();
 			var rq = rqt.Result;
 			///	Assert.AreEqual(q, rq);
-			Assert.AreSame(rq, session.Registry[q.GetCacheKey()]);
-			Assert.AreSame(rq, session.ActiveSet[q.GetCacheKey()]);
+			Assert.AreSame(rq, session.Registry[basekey]);
+			Assert.AreSame(rq, session.ActiveSet[basekey]);
 			Assert.AreEqual(1, session.ActiveSet.Count);
 			Assert.AreEqual(1, session.Registry.Count);
 		}

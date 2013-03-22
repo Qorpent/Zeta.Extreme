@@ -412,6 +412,7 @@ namespace Zeta.Extreme.FrontEnd {
 						 number = r.OuterCode,
 						 measure = NeedMeasure ? r.ResolveMeasure() : "",
 						 controlpoint = r.IsMarkSeted("CONTROLPOINT"),
+						 exref = null!=r.ExRefTo
 					 })
 					.Union(
 						(from ci in cols
@@ -426,6 +427,7 @@ namespace Zeta.Extreme.FrontEnd {
 								 year = c.Year,
 								 period = c.Period,
 								 controlpoint = c.ControlPoint,
+								 exref = null!=c.Target && c.Target.IsMarkSeted("DOEXREF")
 							 })
 					).ToArray();
 			sw.Stop();

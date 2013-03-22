@@ -127,7 +127,7 @@ root.init = root.init ||
 
     var CheckForm = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
-            if (!root.myform.lockinfo.isopen) {
+            if (!root.myform.lock.isopen) {
                 api.lock.set.execute({state: "0ISCHECKED"});
             }
         }

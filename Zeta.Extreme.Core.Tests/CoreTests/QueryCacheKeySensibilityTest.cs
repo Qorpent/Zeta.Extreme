@@ -103,6 +103,14 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		}
 
 		[Test]
+		public void AltObjFilterIsUsedInCache() {
+			var q1 = new Query {Obj = {AltObjFilter = "1"}};
+			var q2 = new Query {Obj = {AltObjFilter = "2"}};
+			Assert.AreNotEqual(q1.GetCacheKey(),q2.GetCacheKey());
+		}
+
+
+		[Test]
 		[Combinatorial]
 		[Description("Тест проверяет валидность формирования и уникальность кэш строк по множественным параметрам запроса")]
 		public void ManyOrderTest(

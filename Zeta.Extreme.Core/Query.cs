@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
 
@@ -242,6 +243,33 @@ namespace Zeta.Extreme {
 			var objt = Task.Run(() => Obj.Normalize(session ?? Session)); //объекты зачастую из БД догружаются
 			Time.Normalize(session ?? Session);
 			Col.Normalize(session ?? Session);
+			ResolveTemporalCustomCodeBasedColumns(session);
+			Row.Normalize(session ?? Session, Col.Native); //тут формулы парсим простые как рефы			
+			objt.Wait();
+			AdaptDetailModeForDetailBasedSubtrees();
+			AdaptExRefLinkSourceForColumns(session);
+			InvalidateCacheKey();
+		}
+
+		private void AdaptExRefLinkSourceForColumns(ISession session) {
+			if (null != Col.Native  && null != Row.Native && null!=Col.Tag && null!=Row.Tag) {
+				if (Col.Tag.Contains("/linkcol")) {
+					var resolvedCode = Row.Native.GetRedirectColCode(Col.Native);
+					if (resolvedCode != Col.Code) {
+						Col.Native = (session ?? Session).GetMetaCache().Get<IZetaColumn>(resolvedCode);
+					}
+				}
+			}
+		}
+
+		private void AdaptDetailModeForDetailBasedSubtrees() {
+//требуем использования сумм для запросов на деталях по сумме
+			if (Obj.IsForObj && Row.Native.ResolveTag("usedetails") == "1") {
+				Obj.DetailMode = DetailMode.SafeSumObject;
+			}
+		}
+
+		private void ResolveTemporalCustomCodeBasedColumns(ISession session) {
 			while (null != Col.Native && !string.IsNullOrWhiteSpace(Col.Native.ForeignCode)) {
 				var _c = Col;
 				Col = new ColumnHandler {Code = _c.Native.ForeignCode};
@@ -250,9 +278,6 @@ namespace Zeta.Extreme {
 				}
 				Col.Normalize(session ?? Session);
 			}
-			Row.Normalize(session ?? Session, Col.Native); //тут формулы парсим простые как рефы			
-			objt.Wait();
-			InvalidateCacheKey();
 		}
 
 		/// <summary>
