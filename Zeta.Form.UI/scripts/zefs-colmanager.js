@@ -22,6 +22,7 @@
     };
     var HideNullRows = function() {
         $.each($(".zefsform tbody tr"), function(i,tr) {
+            if ($(tr).hasClass("istitle")) return;
             var isempty = true;
             $.each($(tr).find("td.data"), function(j,td) {
                 if (isempty && ($(td).data("history") != "" && $(td).data("history") != "0")) {
