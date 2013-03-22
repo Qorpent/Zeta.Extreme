@@ -100,6 +100,9 @@ namespace Zeta.Extreme {
 		/// <param name="session"> </param>
 		/// <exception cref="NotImplementedException"></exception>
 		public override void Normalize(ISession session) {
+			if (Type == ZoneType.None) {
+				Type = ZoneType.Obj;
+			}
 			if (IsStandaloneSingletonDefinition()) {
 				var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 				switch (Type) {

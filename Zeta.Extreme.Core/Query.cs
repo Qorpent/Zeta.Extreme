@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
 
@@ -252,6 +253,12 @@ namespace Zeta.Extreme {
 			}
 			Row.Normalize(session ?? Session, Col.Native); //тут формулы парсим простые как рефы			
 			objt.Wait();
+
+			//требуем использования сумм для запросов на деталях по сумме
+			if (Obj.IsForObj && Row.Native.ResolveTag("usedetails") == "1") {
+				Obj.DetailMode = DetailMode.SafeSumObject;
+			}
+
 			InvalidateCacheKey();
 		}
 

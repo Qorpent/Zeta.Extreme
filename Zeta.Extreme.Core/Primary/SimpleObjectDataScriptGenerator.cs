@@ -81,7 +81,7 @@ namespace Zeta.Extreme.Primary {
 				valuesel = "[zeta].[eval](id, decimalvalue, valuta, '" + prototype.Valuta + "', year, period, row, col, 0,0)";
 			}
 
-			if (!string.IsNullOrWhiteSpace(cobj.af)) {
+			if (!string.IsNullOrWhiteSpace(cobj.af) || prototype.RequireDetails && cobj.t==ZoneType.Obj) {
 				return GetScriptWithContragent(time, cobj, rowids, objfld, detcond, valuesel);
 			}
 			return GetScriptWithoutContragent(time, cobj, rowids, objfld, detcond, valuesel);
@@ -89,18 +89,20 @@ namespace Zeta.Extreme.Primary {
 
 		private static string GetScriptWithContragent(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj,
 		                                              string rowids, string objfld, string detcond, string valuesel) {
-			var altobjcond = " and altobj in ('" + cobj.af + "')";
-
+			var altobjcond = "";
+			if (!string.IsNullOrWhiteSpace(cobj.af)) {
+				altobjcond =" and altobj in (" + cobj.af + ")";
+			}
 			if (string.IsNullOrWhiteSpace(time.ps)) {
 				return string.Format(
 					@"
-select 0,col,row,{5},year,period,sum({7}) , {8}
+select 0,col,row,{5},year,period,sum({7}) , {8}, '{10}'
 from cell where period={0} and year={1} and col={2} and {5}={3} and row in ({4}){6}{9} group by col,row,{5},year,period ",
-					time.p, time.y, cobj.c, cobj.o, rowids, objfld, detcond, valuesel, (int) cobj.t, altobjcond);
+					time.p, time.y, cobj.c, cobj.o, rowids, objfld, detcond, valuesel, (int) cobj.t, altobjcond,cobj.af);
 			}
 			return string.Format(
-				"\r\nselect 0,col,row,{6},year,{5},sum({8}), {9} from cell where period in ({0}) and year={1} and col={2} and {6}={3} and row in ({4}) {7}{10} group by col,row,{6},year ",
-				time.ps, time.y, cobj.c, cobj.o, rowids, time.p, objfld, detcond, valuesel, (int) cobj.t, altobjcond);
+				"\r\nselect 0,col,row,{6},year,{5},sum({8}), {9} ,'{11}' from cell where period in ({0}) and year={1} and col={2} and {6}={3} and row in ({4}) {7}{10} group by col,row,{6},year ",
+				time.ps, time.y, cobj.c, cobj.o, rowids, time.p, objfld, detcond, valuesel, (int) cobj.t, altobjcond,cobj.af);
 		}
 
 		private static string GetScriptWithoutContragent(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj,
@@ -108,12 +110,12 @@ from cell where period={0} and year={1} and col={2} and {5}={3} and row in ({4})
 			if (string.IsNullOrWhiteSpace(time.ps)) {
 				return string.Format(
 					@"
-select id,col,row,{5},year,period,{7} , {8}
+select id,col,row,{5},year,period,{7} , {8}, ''
 from cell where period={0} and year={1} and col={2} and {5}={3} and row in ({4}){6}",
 					time.p, time.y, cobj.c, cobj.o, rowids, objfld, detcond, valuesel, (int) cobj.t);
 			}
 			return string.Format(
-				"\r\nselect 0,col,row,{6},year,{5},sum({8}), {9} from cell where period in ({0}) and year={1} and col={2} and {6}={3} and row in ({4}) {7} group by col,row,{6},year ",
+				"\r\nselect 0,col,row,{6},year,{5},sum({8}), {9},'' from cell where period in ({0}) and year={1} and col={2} and {6}={3} and row in ({4}) {7} group by col,row,{6},year ",
 				time.ps, time.y, cobj.c, cobj.o, rowids, time.p, objfld, detcond, valuesel, (int) cobj.t);
 		}
 	}
