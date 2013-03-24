@@ -40,6 +40,8 @@
     <Compile Include="Model\RowTagResolutionTest.cs" />
     <Compile Include="Primary\IScriptGenerator.cs" />
     <Compile Include="Primary\ObjColQueryGeneratorStruct.cs" />
+    <Compile Include="Primary\PrimaryConstants.cs" />
+    <Compile Include="Primary\QueryPrototypeExtension.cs" />
     <Compile Include="Primary\SimpleObjectDataScriptGenerator.cs" />
     <Compile Include="Primary\TimeQueryGeneratorStruct.cs" />
     <Compile Include="Primary\DefaultPrimarySource.cs" />

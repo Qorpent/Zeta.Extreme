@@ -22,6 +22,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Extensions\TagResolutionExtension.cs" />
     <Compile Include="Inerfaces\Partial\IWithCurrency.cs" />
+    <Compile Include="MetaCaches\MetaExtensions.cs" />
     <Compile Include="PocoClasses\BizTran.cs" />
     <Compile Include="PocoClasses\BizTranFilter.cs" />
     <Compile Include="PocoClasses\CellHistory.cs" />

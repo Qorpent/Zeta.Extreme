@@ -17,8 +17,11 @@
 // PROJECT ORIGIN: Zeta.Extreme.Core/ObjHandler.cs
 #endregion
 using System;
+using System.Linq;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
@@ -113,6 +116,19 @@ namespace Zeta.Extreme {
 			if (Type == ZoneType.None) {
 				Type = ZoneType.Obj;
 			}
+			NormalizeNative(session);
+			NormalizeAltObjFilter(session);
+		}
+
+		private void NormalizeAltObjFilter(ISession session) {
+			if (!string.IsNullOrWhiteSpace(AltObjFilter)) {
+				var cache = session.GetMetaCache();
+				var ids = AltObjFilter.SmartSplit().SelectMany(cache.ResolveZoneAliasToObjectIds).Distinct().OrderBy(_ => _);
+				AltObjFilter = string.Join(",", ids);
+			}
+		}
+
+		private void NormalizeNative(ISession session) {
 			if (IsStandaloneSingletonDefinition()) {
 				var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 				switch (Type) {
