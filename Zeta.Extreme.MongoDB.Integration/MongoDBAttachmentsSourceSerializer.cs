@@ -35,6 +35,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public static BsonDocument FlushBinary(BsonDocument document) {
             document["length"] = 0;
             document["md5"] = 0;
+
+            return document;
         }
 
         /// <summary>
@@ -64,7 +66,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="attachment"></param>
         /// <returns></returns>
