@@ -77,7 +77,7 @@ namespace Zeta.Extreme.Primary {
 				}
 			}
 			var valuesel = "decimalvalue";
-			if (prototype.RequreZetaEval) {
+			if (prototype.UseZetaEval) {
 				valuesel = "[zeta].[eval](id, decimalvalue, valuta, '" + prototype.Valuta + "', year, period, row, col, 0,0)";
 			}
 

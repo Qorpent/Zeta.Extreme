@@ -51,7 +51,7 @@ namespace Zeta.Extreme.Model.Querying {
 		/// <summary>
 		/// 	Выходная валюта
 		/// </summary>
-		string Valuta { get; set; }
+		string Currency { get; set; }
 
 		/// <summary>
 		/// Текущий кэшированный резултат

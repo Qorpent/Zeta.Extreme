@@ -45,7 +45,7 @@ namespace Zeta.Extreme {
 			Col = new ColumnHandler();
 			Obj = new ObjHandler();
 			Reference = new ReferenceHandler();
-			Valuta = "NONE";
+			Currency = "NONE";
 		}
 
 		/// <summary>
@@ -115,7 +115,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Выходная валюта
 		/// </summary>
-		public string Valuta { get; set; }
+		public string Currency { get; set; }
 
 		/// <summary>
 		/// 	Сбрасывает кэш-строку
@@ -208,7 +208,7 @@ namespace Zeta.Extreme {
 			sb.Append('/');
 			sb.Append(null == Time ? "NOTIME" : Time.GetCacheKey());
 			sb.Append('/');
-			sb.Append(string.IsNullOrWhiteSpace(Valuta) ? "NOVAL" : "VAL:" + Valuta);
+			sb.Append(string.IsNullOrWhiteSpace(Currency) ? "NOVAL" : "VAL:" + Currency);
 			sb.Append('/');
 			sb.Append(Reference.GetCacheKey());
 			return sb.ToString();

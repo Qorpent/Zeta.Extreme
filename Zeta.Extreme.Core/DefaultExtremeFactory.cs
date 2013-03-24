@@ -45,7 +45,7 @@ namespace Zeta.Extreme {
 				result.Col = setupInfo.Col;
 				result.Obj = setupInfo.Obj;
 				result.Time = setupInfo.Time;
-				result.Valuta = setupInfo.Valuta;
+				result.Currency = setupInfo.Valuta;
 			}
 			return result;
 		}

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Querying;
 
@@ -20,16 +16,14 @@ namespace Zeta.Extreme.Primary
 		/// <param name="query"></param>
 		/// <returns></returns>
 		public static PrimaryQueryPrototype GetPrototype(this IQuery query) {
-			Contract.Requires<ArgumentNullException>(null!=query,"null query cannot have prototype");
-			Contract.Requires<ArgumentException>(IsPrimary(query),"query must be primary");
 			var result = new PrimaryQueryPrototype();
-			CheckZetaEvalUsage(query, result);
-			CheckAggregateEvalUsage(query, result);
-			CheckDetailModeUsage(query, result);
-			throw new NotImplementedException("пока не готово");
+			CheckZetaEvalUsage(query,ref result);
+			CheckAggregateEvalUsage(query,ref result);
+			CheckDetailModeUsage(query,ref result);
+			return result;
 		}
 
-		private static void CheckDetailModeUsage(IQuery query, PrimaryQueryPrototype result) {
+		private static void CheckDetailModeUsage(IQuery query, ref PrimaryQueryPrototype result) {
 			result.PreserveDetails = true;
 			result.RequireDetails = false;
 
@@ -45,11 +39,12 @@ namespace Zeta.Extreme.Primary
 					result.RequireDetails = true;
 					result.PreserveDetails = false;
 				}
+				
 				return;
 			} 
 		}
 
-		private static void CheckAggregateEvalUsage(IQuery query, PrimaryQueryPrototype result) {
+		private static void CheckAggregateEvalUsage(IQuery query,ref PrimaryQueryPrototype result) {
 			if (IsAggregate(query)) {
 				result.UseSum = true;
 				if (null != query.Time.Periods && 1 < query.Time.Periods.Length) {
@@ -68,6 +63,9 @@ namespace Zeta.Extreme.Primary
 
 		private static bool IsDetailAggregate(IQuery query) {
 			if (query.Obj.IsForObj) {
+				if (query.Obj.DetailMode == DetailMode.SafeSumObject || query.Obj.DetailMode == DetailMode.SumObject) {
+					return true;
+				}
 				if (!string.IsNullOrWhiteSpace(query.Reference.Contragents)) {
 					return true;
 				}
@@ -80,15 +78,12 @@ namespace Zeta.Extreme.Primary
 			return false;
 		}
 
-		private static void CheckZetaEvalUsage(IQuery query, PrimaryQueryPrototype result) {
-			if (query.Valuta != PrimaryConstants.VALUTA_NONE) {
-				result.RequreZetaEval = true;
+		private static void CheckZetaEvalUsage(IQuery query, ref PrimaryQueryPrototype result) {
+			if (query.Currency != PrimaryConstants.VALUTA_NONE) {
+				result.UseZetaEval = true;
 			}
 		}
 
-		private static bool IsPrimary(IQuery query) {
-			Contract.Requires<ArgumentException>(null!=query.Obj && null!=query.Row && null!=query.Col);
-			return query.Obj.IsPrimary() && query.Row.IsPrimary() && query.Col.IsPrimary();
-		}
+		
 	}
 }

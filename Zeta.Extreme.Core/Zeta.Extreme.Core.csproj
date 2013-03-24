@@ -7,6 +7,9 @@
     <RootNamespace>Zeta.Extreme</RootNamespace>
     <AssemblyName>Zeta.Extreme.Core</AssemblyName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="*.import" />
     <None Include="Zeta.Extreme.Core.export" />

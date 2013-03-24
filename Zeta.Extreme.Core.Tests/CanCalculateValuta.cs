@@ -45,7 +45,7 @@ namespace Zeta.Extreme.Core.Tests {
 					Col = {Code = "Á1"},
 					Obj = {Id = 352, Type = ZoneType.Obj},
 					Time = {Year = 2012, Period = 1},
-					Valuta = "USD",
+					Currency = "USD",
 				};
 			result = _serial.Eval(query);
 			const decimal usdrate = 29.32820m;

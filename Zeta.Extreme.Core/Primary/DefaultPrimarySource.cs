@@ -234,13 +234,13 @@ namespace Zeta.Extreme.Primary {
 
 		private  IEnumerable<PrimaryQueryGroup> ExplodeToGroups(IEnumerable<IQuery> myrequests) {
 			
-			var valutagroups = myrequests.GroupBy(_ => _.Valuta, _ => _);
+			var valutagroups = myrequests.GroupBy(_ => _.Currency, _ => _);
 			foreach (var valutagroup in valutagroups) {
 				var detailgroup = valutagroup.GroupBy(_ => _.Obj.DetailMode, _ => _);
 				foreach (var dgroup in detailgroup) {
 					var prot = new PrimaryQueryPrototype();
 					if (valutagroup.Key != "NONE") {
-						prot.RequreZetaEval = true;
+						prot.UseZetaEval = true;
 						prot.Valuta = valutagroup.Key;
 					}
 					if (dgroup.Key == DetailMode.SafeObject) {

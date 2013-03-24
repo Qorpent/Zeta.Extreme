@@ -45,7 +45,7 @@ namespace Zeta.Extreme.Primary {
 		/// <summary>
 		/// 	Использование специального метода доступа к первичным значениям
 		/// </summary>
-		public bool RequreZetaEval { get; set; }
+		public bool UseZetaEval { get; set; }
 
 		/// <summary>
 		/// 	Целевая валюта
