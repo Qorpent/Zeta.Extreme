@@ -93,7 +93,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
             // now we gonna get this description from the collection
             var doc = _collection.FindOneByIdAs<BsonDocument>(attachment.Uid);
             // and add our delta
+<<<<<<< HEAD
+            doc.Merge(MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment));
+=======
             doc.AddRange(MongoDbAttachmentSourceSerializer.AttachmentToBsonForSave(attachment));
+>>>>>>> 0dc0a8fd29921a47f90f096cc30fd6dddc8ea8c6
 
             _collection.Save(doc);
         }
@@ -124,11 +128,27 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public Stream Open(Attachment attachment, FileAccess mode) {
             SetupConnection();
 
+            if (mode == FileAccess.Write) {
+                FlushBinary(attachment);
+            }
+
             return _gridFs.FindOneById(
                 attachment.Uid
             ).Open(
                 FileMode.OpenOrCreate,
                 mode
+            );
+        }
+
+        private void FlushBinary(Attachment attachment) {
+            _collection.Save(
+                MongoDbAttachmentSourceSerializer.FlushBinary(
+                    _collection.FindOneByIdAs<BsonDocument>(attachment.Uid)
+                )    
+            );
+
+            _db.GetCollection<BsonDocument>(Collection + ".chunks").Remove(
+                MongoDbAttachmentSourceSerializer.FlushChunksByUidQuery(attachment)
             );
         }
 

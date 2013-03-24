@@ -1,5 +1,6 @@
 ﻿using System;
 using MongoDB.Bson;
+using MongoDB.Driver;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration {
@@ -27,18 +28,44 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         /// <summary>
+<<<<<<< HEAD
+        /// Prepare document for flush binary data
+=======
+>>>>>>> 0dc0a8fd29921a47f90f096cc30fd6dddc8ea8c6
         /// </summary>
-        /// <param name="attachment"></param>
+        /// <param name="document"></param>
         /// <returns></returns>
+<<<<<<< HEAD
+        public static BsonDocument FlushBinary(BsonDocument document) {
+            document["length"] = 0;
+            document["md5"] = 0;
+=======
         public static BsonDocument AttachmentToBsonForSave(Attachment attachment) {
             var document = AttachmentToBson(attachment);
             document.Remove("_id");
+>>>>>>> 0dc0a8fd29921a47f90f096cc30fd6dddc8ea8c6
 
             return document;
         }
 
 
         /// <summary>
+<<<<<<< HEAD
+        /// Preparing query to remove chunks by Uid
+        /// </summary>
+        /// <param name="attachment"></param>
+        /// <returns></returns>
+        public static QueryDocument FlushChunksByUidQuery(Attachment attachment) {
+            return new QueryDocument(
+                new BsonDocument {
+                        {"files_id", attachment.Uid}
+                }
+            );
+        }
+
+        /// <summary>
+=======
+>>>>>>> 0dc0a8fd29921a47f90f096cc30fd6dddc8ea8c6
         /// </summary>
         /// <param name="attachment"></param>
         /// <returns></returns>
@@ -62,6 +89,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (document.Contains("owner")) attachment.User = document["owner"].ToString();
             if (document.Contains("uploadDate")) attachment.Version = document["uploadDate"].ToLocalTime();
             if (document.Contains("contentType")) attachment.MimeType = document["contentType"].ToString();
+<<<<<<< HEAD
+            if (document.Contains("length")) attachment.Size = document["length"].ToInt64();
+=======
+>>>>>>> 0dc0a8fd29921a47f90f096cc30fd6dddc8ea8c6
             if (document.Contains("revision")) attachment.Revision = document["revision"].ToInt32();
             if (document.Contains("extension")) attachment.Extension = document["extension"].ToString();
 
@@ -79,6 +110,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (document.Contains("owner")) attachment.User = document["owner"].ToString();
             if (document.Contains("uploadDate")) attachment.Version = document["uploadDate"].ToLocalTime();
             if (document.Contains("contentType")) attachment.MimeType = document["contentType"].ToString();
+<<<<<<< HEAD
+            if (document.Contains("length")) attachment.Size = document["length"].ToInt64();
+=======
+>>>>>>> 0dc0a8fd29921a47f90f096cc30fd6dddc8ea8c6
             if (document.Contains("revision")) attachment.Revision = document["revision"].ToInt32();
             if (document.Contains("extension")) attachment.Extension = document["extension"].ToString();
         }
