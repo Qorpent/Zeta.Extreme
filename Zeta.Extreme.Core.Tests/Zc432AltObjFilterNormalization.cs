@@ -50,8 +50,7 @@ namespace Zeta.Extreme.Core.Tests
 		[TestCase("1,2", false)]
 		[TestCase("1",false)]
 		public void OnlyMatchedFormatSupported(string sample, bool throwerror) {
-			var objh = new ObjHandler();
-			objh.AltObjFilter = sample;
+			var objh = new ReferenceHandler {Contragents = sample};
 			if (throwerror) {
 				Assert.Throws<FormatException>(() => objh.Normalize(null));
 			}
@@ -72,9 +71,9 @@ namespace Zeta.Extreme.Core.Tests
 		[TestCase("3,1,2", "1,2,3",Description = "order")]
 		[TestCase("1,2,3","1,2,3",Description = "basis")]
 		public void GeneratesValidAltObjFilter(string sample, string result) {
-			var objh = new ObjHandler {AltObjFilter = sample};
+			var objh = new ReferenceHandler {Contragents = sample};
 			objh.Normalize(_session);
-			Assert.AreEqual(result,objh.AltObjFilter);
+			Assert.AreEqual(result,objh.Contragents);
 		}
 	}
 }

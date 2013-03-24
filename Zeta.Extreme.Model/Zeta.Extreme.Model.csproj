@@ -75,6 +75,7 @@
     <Compile Include="Querying\ExtremeFactory.cs" />
     <Compile Include="Querying\FormulaRequest.cs" />
     <Compile Include="Querying\IColumnHandler.cs" />
+    <Compile Include="Querying\IReferenceHandler.cs" />
     <Compile Include="Querying\IExtremeFactory.cs" />
     <Compile Include="Querying\IFormula.cs" />
     <Compile Include="Querying\IFormulaPreprocessor.cs" />

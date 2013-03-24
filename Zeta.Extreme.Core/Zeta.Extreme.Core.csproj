@@ -45,6 +45,7 @@
     <Compile Include="Primary\SimpleObjectDataScriptGenerator.cs" />
     <Compile Include="Primary\TimeQueryGeneratorStruct.cs" />
     <Compile Include="Primary\DefaultPrimarySource.cs" />
+    <Compile Include="Query\ReferenceHandler.cs" />
     <Compile Include="Query\PrepareState.cs" />
     <Compile Include="Query\QueryEvaluationType.cs" />
     <Compile Include="Query\StrongSumProvider.cs" />

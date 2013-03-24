@@ -198,7 +198,7 @@ namespace Zeta.Extreme.Primary {
 							_grouped[row].FirstOrDefault(
 								_ =>
 								_.Col.Id == col && _.Obj.Id == obj && (int) _.Obj.Type == otype && _.Time.Year == year &&
-								_.Time.Period == period && (_.Obj.AltObjFilter??"")==altobj);
+								_.Time.Period == period && (_.Reference.Contragents??"")==altobj);
 						if (null != target) {
 							_session.StatIncPrimaryAffected();
 							target.HavePrimary = true;
@@ -249,7 +249,7 @@ namespace Zeta.Extreme.Primary {
 					else if (dgroup.Key == DetailMode.SafeSumObject) {
 						prot.RequireDetails = true;
 					}
-					var altobjgroups = dgroup.GroupBy(_ => _.Obj.AltObjFilter);
+					var altobjgroups = dgroup.GroupBy(_ => _.Reference.Contragents);
 					foreach (var altobjgroup in altobjgroups) {
 						yield return new PrimaryQueryGroup { Queries = altobjgroup.ToArray(), ScriptGenerator = new SimpleObjectDataScriptGenerator(), Prototype = prot };	
 					}

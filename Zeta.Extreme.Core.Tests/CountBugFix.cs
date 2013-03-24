@@ -49,7 +49,7 @@ namespace Zeta.Extreme.Core.Tests {
 					Time = { Year = 2013, Period = 251 },
 					Obj = {Id=1067},
 				});
-			Assert.AreEqual(45935313m, result.NumericResult);
+			Assert.AreEqual(46568901m, result.NumericResult);
 		}
 
 		[Test]

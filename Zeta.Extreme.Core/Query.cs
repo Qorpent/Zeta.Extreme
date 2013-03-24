@@ -44,6 +44,7 @@ namespace Zeta.Extreme {
 			Row = new RowHandler();
 			Col = new ColumnHandler();
 			Obj = new ObjHandler();
+			Reference = new ReferenceHandler();
 			Valuta = "NONE";
 		}
 
@@ -95,6 +96,11 @@ namespace Zeta.Extreme {
 		/// 	Условие на строку
 		/// </summary>
 		public IRowHandler Row { get; set; }
+
+		/// <summary>
+		///  Измерение по контрагенту
+		/// </summary>
+		public IReferenceHandler Reference { get; set; }
 
 		/// <summary>
 		/// 	Условие на колонку
@@ -203,7 +209,8 @@ namespace Zeta.Extreme {
 			sb.Append(null == Time ? "NOTIME" : Time.GetCacheKey());
 			sb.Append('/');
 			sb.Append(string.IsNullOrWhiteSpace(Valuta) ? "NOVAL" : "VAL:" + Valuta);
-
+			sb.Append('/');
+			sb.Append(Reference.GetCacheKey());
 			return sb.ToString();
 		}
 
@@ -230,6 +237,7 @@ namespace Zeta.Extreme {
 				result.Row = result.Row.Copy();
 				result.Time = result.Time.Copy();
 				result.Obj = result.Obj.Copy();
+				result.Reference = result.Reference.Copy();
 			}
 
 			return result;
@@ -248,6 +256,7 @@ namespace Zeta.Extreme {
 			objt.Wait();
 			AdaptDetailModeForDetailBasedSubtrees();
 			AdaptExRefLinkSourceForColumns(session);
+			Reference.Normalize(session);
 			InvalidateCacheKey();
 		}
 

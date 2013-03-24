@@ -79,7 +79,7 @@ namespace Zeta.Extreme.Core.Tests {
 				Time = { Year = 2013, Period = 251 },
 				Obj = { Id = 354 },
 			});
-			Assert.AreEqual(2318489	, result.NumericResult);
+			Assert.AreEqual(2319543m, result.NumericResult);
 		}
 
 		/// <summary>
@@ -95,7 +95,8 @@ namespace Zeta.Extreme.Core.Tests {
 				Row = { Code = "r510110" },
 				Col = { Code = "Pd" },
 				Time = { Year = 2013, Period = 251 },
-				Obj = { Id = 354, AltObjFilter = "1788"},
+				Obj = { Id = 354}, 
+				Reference = {Contragents = "1788"},
 			});
 			Assert.AreEqual(905000, result.NumericResult);
 		}

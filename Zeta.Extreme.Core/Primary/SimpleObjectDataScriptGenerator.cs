@@ -44,10 +44,10 @@ namespace Zeta.Extreme.Primary {
 								ps = _.First().Periods == null ? "" : string.Join(",", _.First().Periods)
 							}).ToArray();
 				var colobj =
-					queries.GroupBy(_ => _.Obj.GetCacheKey() + _.Col.GetCacheKey(), _ => _).Select(
+					queries.GroupBy(_ =>_.Reference.GetCacheKey()+ _.Obj.GetCacheKey() + _.Col.GetCacheKey(), _ => _).Select(
 						_ =>
 						new ObjColQueryGeneratorStruct
-							{o = _.First().Obj.Id, c = _.First().Col.Id, t = _.First().Obj.Type, m = _.First().Obj.DetailMode, af = _.First().Obj.AltObjFilter}).Distinct().
+							{o = _.First().Obj.Id, c = _.First().Col.Id, t = _.First().Obj.Type, m = _.First().Obj.DetailMode, af = _.First().Reference.Contragents}).Distinct().
 						ToArray();
 				var rowids = string.Join(",", queries.Select(_ => _.Row.Id).Distinct());
 				script = times.Aggregate(script,

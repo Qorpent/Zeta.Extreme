@@ -52,6 +52,9 @@ namespace Zeta.Extreme.Primary
 		private static void CheckAggregateEvalUsage(IQuery query, PrimaryQueryPrototype result) {
 			if (IsAggregate(query)) {
 				result.UseSum = true;
+				if (null != query.Time.Periods && 1 < query.Time.Periods.Length) {
+					result.AggregatePeriod = true;
+				}
 			}
 		}
 
@@ -65,7 +68,7 @@ namespace Zeta.Extreme.Primary
 
 		private static bool IsDetailAggregate(IQuery query) {
 			if (query.Obj.IsForObj) {
-				if (!string.IsNullOrWhiteSpace(query.Obj.AltObjFilter)) {
+				if (!string.IsNullOrWhiteSpace(query.Reference.Contragents)) {
 					return true;
 				}
 				if (null != query.Row.Native) {

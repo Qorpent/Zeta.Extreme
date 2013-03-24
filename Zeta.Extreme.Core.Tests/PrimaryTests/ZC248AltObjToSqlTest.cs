@@ -10,7 +10,7 @@ namespace Zeta.Extreme.Core.Tests.PrimaryTests
 	{
 		[Test]
 		public void QueryWithAltObjWillBeParsedWell() {
-			var query = new Query{Row={Id=1},Col={Id=1},Time={Year = 2012,Period = 1},Obj={Id=1,AltObjFilter = "1,2,3"}};
+			var query = new Query{Row={Id=1},Col={Id=1},Time={Year = 2012,Period = 1},Obj={Id=1}, Reference = {Contragents = "1,2,3"}};
 			var script = new SimpleObjectDataScriptGenerator().Generate(new IQuery[] {query}, new PrimaryQueryPrototype());
 			Console.WriteLine(script);
 			Assert.AreEqual(@"
@@ -21,7 +21,7 @@ from cell where period=1 and year=2012 and col=1 and obj=1 and row in (1) and al
 		[Test]
 		public void AltAndNotAltQueriesWillBeSplitted()
 		{
-			var query = new Query { Row = { Id = 1 }, Col = { Id = 1 }, Time = { Year = 2012, Period = 1 }, Obj = { Id = 1, AltObjFilter = "1,2,3" } };
+			var query = new Query { Row = { Id = 1 }, Col = { Id = 1 }, Time = { Year = 2012, Period = 1 }, Obj = { Id = 1},Reference = {Contragents = "1,2,3" } };
 			var query2 = new Query { Row = { Id = 1 }, Col = { Id = 1 }, Time = { Year = 2012, Period = 1 }, Obj = { Id = 1 } };
 			var script = new SimpleObjectDataScriptGenerator().Generate(new IQuery[] { query,query2 }, new PrimaryQueryPrototype());
 			Console.WriteLine(script);
