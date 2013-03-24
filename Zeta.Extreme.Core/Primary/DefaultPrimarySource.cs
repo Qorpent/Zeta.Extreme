@@ -232,30 +232,17 @@ namespace Zeta.Extreme.Primary {
 			return string.Join("\r\n", groups.Select(_ => _.GenerateSqlScript()));
 		}
 
-		private  IEnumerable<PrimaryQueryGroup> ExplodeToGroups(IEnumerable<IQuery> myrequests) {
-			
-			var valutagroups = myrequests.GroupBy(_ => _.Currency, _ => _);
-			foreach (var valutagroup in valutagroups) {
-				var detailgroup = valutagroup.GroupBy(_ => _.Obj.DetailMode, _ => _);
-				foreach (var dgroup in detailgroup) {
-					var prot = new PrimaryQueryPrototype();
-					if (valutagroup.Key != "NONE") {
-						prot.UseZetaEval = true;
-						prot.Valuta = valutagroup.Key;
-					}
-					if (dgroup.Key == DetailMode.SafeObject) {
-						prot.PreserveDetails = true;
-					}
-					else if (dgroup.Key == DetailMode.SafeSumObject) {
-						prot.RequireDetails = true;
-					}
-					var altobjgroups = dgroup.GroupBy(_ => _.Reference.Contragents);
-					foreach (var altobjgroup in altobjgroups) {
-						yield return new PrimaryQueryGroup { Queries = altobjgroup.ToArray(), ScriptGenerator = new SimpleObjectDataScriptGenerator(), Prototype = prot };	
-					}
-					
-				}
-			}
+		private  IEnumerable<PrimaryQueryGroup> ExplodeToGroups(IQueryWithProcessing[] myrequests) {
+			return 
+				from prototypegroup in myrequests.GroupBy(_ => _.GetPrototype(), _ => _)
+				from dgroup in prototypegroup.GroupBy(_ => _.Obj.DetailMode, _ => _) 
+				from altobjgroup in dgroup.GroupBy(_ => _.Reference.Contragents)  
+				select new PrimaryQueryGroup
+					{
+						Queries = altobjgroup.ToArray(), 
+						ScriptGenerator = new Zeta2SqlScriptGenerator(), 
+						Prototype = prototypegroup.Key
+					};
 		}
 
 

@@ -17,9 +17,9 @@ namespace Zeta.Extreme.Primary
 		/// <returns></returns>
 		public static PrimaryQueryPrototype GetPrototype(this IQuery query) {
 			var result = new PrimaryQueryPrototype();
-			CheckZetaEvalUsage(query,ref result);
+			CheckZetaEvalUsage(query, ref result);
 			CheckAggregateEvalUsage(query,ref result);
-			CheckDetailModeUsage(query,ref result);
+			CheckDetailModeUsage(query, ref result);
 			return result;
 		}
 
@@ -30,7 +30,6 @@ namespace Zeta.Extreme.Primary
 			if (ZoneType.Detail == query.Obj.Type) {
 				result.RequireDetails = true;
 				result.PreserveDetails = false;
-				result.UseSum = false;
 				return;
 			}
 
@@ -81,6 +80,7 @@ namespace Zeta.Extreme.Primary
 		private static void CheckZetaEvalUsage(IQuery query, ref PrimaryQueryPrototype result) {
 			if (query.Currency != PrimaryConstants.VALUTA_NONE) {
 				result.UseZetaEval = true;
+				result.Currency = query.Currency;
 			}
 		}
 

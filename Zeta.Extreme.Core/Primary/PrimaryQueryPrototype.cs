@@ -50,7 +50,7 @@ namespace Zeta.Extreme.Primary {
 		/// <summary>
 		/// 	Целевая валюта
 		/// </summary>
-		public string Valuta { get; set; }
+		public string Currency { get; set; }
 
 		/// <summary>
 		/// Marks that period is aggregated period

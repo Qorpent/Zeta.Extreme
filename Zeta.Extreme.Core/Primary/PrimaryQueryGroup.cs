@@ -27,7 +27,7 @@ namespace Zeta.Extreme.Primary {
 		/// <summary>
 		/// 	Запросы в группе
 		/// </summary>
-		public IQuery[] Queries { get; set; }
+		public IQueryWithProcessing[] Queries { get; set; }
 
 		/// <summary>
 		/// 	Прототип первичного запроса

@@ -45,7 +45,7 @@
     <Compile Include="Primary\ObjColQueryGeneratorStruct.cs" />
     <Compile Include="Primary\PrimaryConstants.cs" />
     <Compile Include="Primary\QueryPrototypeExtension.cs" />
-    <Compile Include="Primary\SimpleObjectDataScriptGenerator.cs" />
+    <Compile Include="Primary\Zeta2SQLScriptGenerator.cs" />
     <Compile Include="Primary\TimeQueryGeneratorStruct.cs" />
     <Compile Include="Primary\DefaultPrimarySource.cs" />
     <Compile Include="Query\ReferenceHandler.cs" />
