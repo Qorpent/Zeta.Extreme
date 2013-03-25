@@ -27,6 +27,43 @@ using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Core.Tests.NativeMaping
 {
+
+	[TestFixture]
+	public class ZC438NativeCellReading:SessionTestBase
+	{
+		[Test]
+		public void CanReadExistedCell() {
+			var reader = new NativeZetaReader();
+			var cells = reader.GetCells("Id = " + 6204357).ToArray();
+			Assert.AreEqual(1,cells.Length);
+			var cell = cells[0];
+			Assert.AreEqual(6204357,cell.Id);
+			Assert.AreEqual("2013-03-25", cell.Version.ToString("yyyy-MM-dd"));
+			Assert.AreEqual(2013,cell.Year);
+			Assert.AreEqual(11, cell.Period);
+			Assert.AreEqual("z2501712", cell.Row.Code);
+			Assert.AreEqual("SUMMA", cell.Column.Code);
+			Assert.AreEqual(536,cell.Object.Id);
+			Assert.AreEqual("RUB", cell.Currency);
+			Assert.AreEqual(7703m, cell.NumericValue);
+			Assert.AreEqual("7703", cell.StringValue);
+			Assert.AreEqual("ugmk\\intro.elzink24",cell.User);
+		}
+	}
+
+	[TestFixture]
+	public class ZC439NativeCellHistoryReading:SessionTestBase {
+		[Test]
+		public void CanReadHistoryOfCell() {
+			var reader = new NativeZetaReader();
+			var history = reader.GetCellHistory(6204487).ToArray();
+			Assert.Greater(history.Length,2);
+			Assert.True(history.All(_ => _.CellId == 6204487));
+			Assert.True(history.Any(_ => _.Value == "0,464"));
+			
+		}
+	}
+
 	[TestFixture]
 	public class CanReadFormState:SessionTestBase
 	{

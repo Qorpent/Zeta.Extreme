@@ -108,12 +108,12 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		///     Контрагент
 		/// </summary>
-		public virtual IZetaMainObject AltObj { get; set; }
+		public virtual IZetaMainObject Contragent { get; set; }
 
 		/// <summary>
 		///     Ид контрагента
 		/// </summary>
-		public virtual int? AltObjId { get; set; }
+		public virtual int? ContragentId { get; set; }
 
 		/// <summary>
 		///     Ид строки

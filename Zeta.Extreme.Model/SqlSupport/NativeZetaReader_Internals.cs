@@ -275,5 +275,73 @@ namespace Zeta.Extreme.Model.SqlSupport {
 
 			return x;
 		}
+		/// <summary>
+		/// Сериализует строку из БД в объект истории ячейки
+		/// </summary>
+		/// <param name="arg"></param>
+		/// <returns></returns>
+		public static CellHistory ReaderToHistory(IDataRecord r) {
+			// Id,Time,CellId,BizKey,Value,Deleted,Usr
+			var _ = new CellHistory
+				{
+					Id = r.GetInt32(0),
+					Time = r.GetDateTime(1),
+					CellId = r.GetInt32(2),
+					BizKey = r.GetString(3),
+					Value = r.GetDecimal(4).ToString(),
+					User = r.GetString(6)
+				};
+			return _;
+		}
+		/// <summary>
+		/// Сериализует ячейку из ридера
+		/// </summary>
+		/// <param name="arg"></param>
+		/// <returns></returns>
+		private Cell ReaderToCell(IDataRecord r) {
+			//Id, Version, Year, Period, RowId, ColId, ObjId, DetailId, DecimalValue, StringValue, Usr, Currency, ContragentId
+			//0    1		2       3       4     5      6      7            8            9         10     11          12
+			var _= new Cell
+			{
+				Id = r.GetInt32(0),
+				Version = r.GetDateTime(1),
+				Year = r.GetInt32(2),
+				Period = r.GetInt32(3),
+				NumericValue = r.GetDecimal(8),
+				StringValue = r.GetString(9),
+				User = r.GetString(10),
+				Currency = r.GetString(11)
+			};
+			if (!r.IsDBNull(4)) {
+				_.RowId = r.GetInt32(4);
+				_.Row = MetaCache.Default.Get<Row>(_.RowId);
+			}
+
+			if (!r.IsDBNull(5))
+			{
+				_.ColumnId = r.GetInt32(5);
+				_.Column = MetaCache.Default.Get<Column>(_.ColumnId);
+			}
+
+			if (!r.IsDBNull(6))
+			{
+				_.ObjectId = r.GetInt32(6);
+				_.Object = MetaCache.Default.Get<Obj>(_.ObjectId);
+			}
+
+			if (!r.IsDBNull(12))
+			{
+				_.ContragentId = r.GetInt32(6);
+				_.Contragent = MetaCache.Default.Get<Obj>(_.ContragentId);
+			}
+
+			if (!r.IsDBNull(7))
+			{
+				_.DetailId = r.GetInt32(7);
+				///_.Detail = MetaCache.Default.Get<Obj>(_.ObjectId); //TODO : detail load is not supported for now
+			}
+
+			return _;
+		}
 	}
 }

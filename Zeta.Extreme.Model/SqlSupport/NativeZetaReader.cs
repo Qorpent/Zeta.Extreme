@@ -74,6 +74,14 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				Id, Version, ObjAdmin, Dolzh, Contact, Name, Email,  ObjId, ObjName, Login, Active, Roles, SlotList 
 			from [zeta].[normalusr]
 		";
+	
+		private const string Historyquerybase = @"
+			select  Id,Time,CellId,BizKey,Value,Deleted,Usr from zeta.normalhist
+		";
+
+		private const string Cellquerybase = @"
+			select Id, Version, Year, Period, RowId, ColId, ObjId, DetailId, DecimalValue, StringValue, Usr, Currency, ContragentId from zeta.normalcell
+		";
 
 		/// <summary>
 		/// 	Сериализует учетные записи пользователей
@@ -155,5 +163,22 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		public IEnumerable<Row> ReadRows(string condition = "") {
 			return Read(condition, Rowquerybase, ReaderToRow);
 		}
+		/// <summary>
+		/// Сериализует историю по конкретной ячейке (не поддерживается полный поиск!!!)
+		/// </summary>
+		/// <param name="targetCellId"></param>
+		/// <returns></returns>
+		public IEnumerable<CellHistory> GetCellHistory(int targetCellId) {
+			return Read("cellid = " + targetCellId, Historyquerybase, ReaderToHistory);
+		}
+		/// <summary>
+		/// Запрашивет ячейки напрямую
+		/// </summary>
+		/// <param name="condition"></param>
+		/// <returns></returns>
+		public IEnumerable<Cell> GetCells(string condition = "") {
+			return Read(condition, Cellquerybase, ReaderToCell);
+		}
+
 	}
 }

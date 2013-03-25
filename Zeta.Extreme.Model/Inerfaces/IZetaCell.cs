@@ -44,7 +44,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <summary>
 		/// Контрагент
 		/// </summary>
-		IZetaMainObject AltObj { get; set; }
+		IZetaMainObject Contragent { get; set; }
 		
 		/// <summary>
 		/// Период
@@ -62,7 +62,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <summary>
 		/// Ид контрагента
 		/// </summary>
-		int? AltObjId { get; set; }
+		int? ContragentId { get; set; }
 		/// <summary>
 		/// Ид строки
 		/// </summary>
