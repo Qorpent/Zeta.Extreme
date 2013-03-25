@@ -5,28 +5,33 @@
     var spec = window.zefs.api;
     var zefsdebug = new root.security.Widget("zefsdebug", root.console.layout.position.layoutHeader, "right", { authonly: true, priority: 90, adminonly: true });
     var sid = "";
+
     var session = $('<a id="sessionInfo"/>')
         .click(function(e) { Debug("zefs/session.json.qweb?session=" + sid, "Данные о сессии") })
         .html('<i class="icon-globe"></i> Информация о сессии');
+    var setup = $('<a/>')
+        .click(function() { window.zefs.myform.setupform() })
+        .html('<i class="icon-wrench"></i> Настройка формы');
     var debuginfo = $('<a id="debugInfo"/>')
-        .click(function(e) { Debug("zefs/debuginfo.json.qweb?session=" + sid, "Отладочные данные") })
+        .click(function() { Debug("zefs/debuginfo.json.qweb?session=" + sid, "Отладочные данные") })
         .html('<i class="icon-warning-sign"></i> Отладочная информация');
     var restart = $('<a id="restartInfo"/>')
-        .click(function(e) { Debug(spec.server.restart) })
+        .click(function() { Debug(spec.server.restart) })
         .html('<i class="icon-repeat"></i> Рестарт');
     var lock = $('<a id="currentlockInfo"/>')
-        .click(function(e) { Debug("zefs/currentlockstate.json.qweb?session=" + sid, "Статус блокировки") })
+        .click(function() { Debug("zefs/currentlockstate.json.qweb?session=" + sid, "Статус блокировки") })
         .html('<i class="icon-lock"></i> Текущий статус');
     var serverstatus = $('<a id="serverInfo"/>')
-        .click(function(e) { Debug(spec.server.state) })
+        .click(function() { Debug(spec.server.state) })
         .html('<i class="icon-tasks"></i> Статус сервера');
     var canlock = $('<a id="canlockInfo"/>')
-        .click(function(e) { Debug("zefs/canlockstate.json.qweb?session=" + sid, "Возможность блокировки") })
+        .click(function() { Debug("zefs/canlockstate.json.qweb?session=" + sid, "Возможность блокировки") })
         .html('<i class="icon-lock"></i> Возможность блокровки');
     var b = $('<button class="btn btn-small dropdown-toggle" data-original-title="Отладка" data-toggle="dropdown"/>')
         .html('<i class="icon-eye-close"></i><span class="caret"></span>');
     var btngroup = $('<div class="btn-group pull-right"/>').append(
         b, $('<ul class="dropdown-menu"/>').append(
+            $('<li/>').append(setup),$('<li class="divider"/>'),
             $('<li/>').append(lock),$('<li/>').append(canlock),$('<li/>').append(session),$('<li/>').append(debuginfo),$('<li class="divider"/>'),
             $('<li/>').append(serverstatus),$('<li class="divider"/>'), $('<li/>').append(restart)
         ));

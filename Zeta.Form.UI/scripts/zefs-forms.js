@@ -29,7 +29,7 @@
     };
 
     Zefs.prototype.init = function () {
-        $(document).on('click', $.proxy(function(e) {
+        $(document).on('click', $.proxy(function() {
             if (this.getActiveCell().hasClass('editing')) {
                 this.uninputCell();
             }

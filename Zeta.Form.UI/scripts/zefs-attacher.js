@@ -73,7 +73,8 @@
         $('<option/>').text("default"),
         $('<option/>').text("balans"),
         $('<option/>').text("stfr"),
-        $('<option/>').text("prib")
+        $('<option/>').text("prib"),
+        $('<option/>').text("freeact")
     );
     var filename = $('<input type="text" name="filename" placeholder="Изменить имя..." class="input-small"/>');
     var uid = $('<input type="hidden" name="uid"/>');

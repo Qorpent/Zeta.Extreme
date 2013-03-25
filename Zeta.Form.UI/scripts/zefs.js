@@ -119,7 +119,7 @@ root.init = root.init ||
 
     var UnlockForm = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
-            if (!root.myform.lock.isopen && root.myform.lock.state != "0ISCHECKED") {
+            if (!root.myform.lock.isopen) {
                 api.lock.set.execute({state: "0ISOPEN"});
             }
         }
@@ -175,6 +175,12 @@ root.init = root.init ||
                 "&tp.currentObject=" + s.ObjInfo.Id + "&tp.currentDetail=&tp.year=" + s.Year +
                 "&tp.period=" + s.Period, '_blank');
             s = null;
+        }
+    };
+
+    var SetupForm = function() {
+        if (!!root.myform.currentSession) {
+            window.open(api.siterootold() + "row/index.rails?root=" + root.myform.currentSession.structure.rootrow, '_blank');
         }
     };
 
@@ -344,7 +350,8 @@ root.init = root.init ||
         attachfile: AttachFile,
         deletefile: DeleteFile,
         downloadfile: DownloadFile,
-        openreport: OpenReport
+        openreport: OpenReport,
+        setupform: SetupForm
     });
 
     return root.myform;

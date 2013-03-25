@@ -47,6 +47,7 @@ $.extend(api,(function(){
                             result.rows.push(o);
                         }
                     });
+                    result.rootrow = $($.map(result.rows, function(e) { if (e.level == 0) return e.code })).get(0);
                     return result;
                 }
             })
@@ -148,6 +149,15 @@ $.extend(api,(function(){
         },
 
         metadata : {
+            cellhistory : $.extend(new Command({domain: "zefs", name: "cellhistory"}), {
+                wrap : function(obj) {
+                    if ($.isEmptyObject(obj)) return obj;
+                    obj.cell.Date = eval(obj.cell.version.substring(2));
+                    $.each(obj.history, function(i,o) {
+                        o.Date = eval(o.time.substring(2));
+                    });
+                }
+            }),
             //команда, возвращающая каталог периодов
             getperiods : $.extend(new Command({domain: "zeta", name: "getperiods"}), {
                 // Ждем задачу ZC-404, которая изменит структуру результата команды
