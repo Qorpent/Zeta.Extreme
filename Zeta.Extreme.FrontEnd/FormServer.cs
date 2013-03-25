@@ -32,6 +32,7 @@ using Zeta.Extreme.Form.Themas;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
@@ -128,7 +129,7 @@ namespace Zeta.Extreme.FrontEnd {
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
-			ReadyToServeForms = new TaskWrapper(Task.FromResult(true), LoadThemas, MetaCacheLoad,
+			ReadyToServeForms = new TaskWrapper(GetCompleteAllTask(), LoadThemas, MetaCacheLoad,
 			                                    CompileFormulas);
 
 			MetaCacheLoad.Run();
@@ -136,6 +137,19 @@ namespace Zeta.Extreme.FrontEnd {
 			LoadThemas.Run();
 			ReadyToServeForms.Run();
 		}
+
+		private Task<bool> GetCompleteAllTask() {
+			return new Task<bool>(() =>
+				{
+					LastRefreshTime = DateTime.Now;
+					return true;
+				});
+
+		}
+		/// <summary>
+		/// Время  последней глобальной очистки
+		/// </summary>
+		protected DateTime LastRefreshTime { get; set; }
 
 		/// <summary>
 		/// 	Возвращает инстанцию класса для сохранения данных
@@ -180,6 +194,8 @@ namespace Zeta.Extreme.FrontEnd {
 			return new
 				{
 					time = ReadyToServeForms.ExecuteTime,
+					lastrefresh = LastRefreshTime,
+					reloadcount = ReloadCount,
 					meta = new
 						{
 							status = MetaCacheLoad.Status,
@@ -260,7 +276,7 @@ namespace Zeta.Extreme.FrontEnd {
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
-			ReadyToServeForms = new TaskWrapper(Task.FromResult(true),
+			ReadyToServeForms = new TaskWrapper(GetCompleteAllTask(),
 			                                    LoadThemas,
 			                                    MetaCacheLoad,
 			                                    CompileFormulas);
@@ -269,6 +285,30 @@ namespace Zeta.Extreme.FrontEnd {
 			LoadThemas.Run();
 			ReadyToServeForms.Run();
 		}
+
+		/// <summary>
+		/// Проверяет глобальный маркер очистки Zeta и производит перезапуск системы ( в синхронном режиме)
+		/// </summary>
+		public void CheckGlobalReload() {
+			lock (this) {
+				if (null != ReadyToServeForms && !ReadyToServeForms.IsCompleted) {
+					ReadyToServeForms.Wait();
+				}
+				var lastrefresh = new NativeZetaReader().GetLastGlobalRefreshTime();
+				if (lastrefresh > LastRefreshTime) {
+					Sessions.Clear(); //иначе будет устаревшая структура
+					Reload();
+					ReadyToServeForms.Wait();
+					LastRefreshTime = lastrefresh;
+					ReloadCount ++;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Счетчик числа перезагрузок
+		/// </summary>
+		public int ReloadCount { get; set; }
 
 		private Task GetCompileFormulasTask() {
 			return new Task(() =>

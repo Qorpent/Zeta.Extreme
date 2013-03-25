@@ -16,6 +16,8 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/NativeZetaReader.cs
 #endregion
+
+using System;
 using System.Collections.Generic;
 
 namespace Zeta.Extreme.Model.SqlSupport {
@@ -180,5 +182,18 @@ namespace Zeta.Extreme.Model.SqlSupport {
 			return Read(condition, Cellquerybase, ReaderToCell);
 		}
 
+		/// <summary>
+		/// Retrieves global refresh hook from Zeta DB
+		/// </summary>
+		/// <returns></returns>
+		public DateTime GetLastGlobalRefreshTime() {
+			const string commandText = "select comdiv.get_global_refresh_time()";
+			using (var c = getConnection()) {
+				c.Open();
+				var cmd = c.CreateCommand();
+				cmd.CommandText = commandText;
+				return (DateTime) cmd.ExecuteScalar();
+			}
+		}
 	}
 }

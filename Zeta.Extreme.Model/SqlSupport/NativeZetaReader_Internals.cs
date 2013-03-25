@@ -288,7 +288,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Time = r.GetDateTime(1),
 					CellId = r.GetInt32(2),
 					BizKey = r.GetString(3),
-					Value = r.GetDecimal(4).ToString(),
+					Value = r.IsDBNull(4)? "0" : r.GetDecimal(4).ToString(),
 					User = r.GetString(6)
 				};
 			return _;
