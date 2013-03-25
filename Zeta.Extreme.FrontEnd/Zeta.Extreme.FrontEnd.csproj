@@ -20,6 +20,7 @@
     <Compile Include="Actions\Abstracts\SingleAttachmentActionBase.cs" />
     <Compile Include="Actions\Attachments\DownloadFileAction.cs" />
     <Compile Include="Actions\Attachments\GetFileTypesAction.cs" />
+    <Compile Include="Actions\Info\GetCellHistory.cs" />
     <Compile Include="Actions\States\CanLockStateAction.cs" />
     <Compile Include="Actions\SessionProcessing\DataLoadedAction.cs" />
     <Compile Include="Actions\Attachments\DeleteFileAction.cs" />
