@@ -68,7 +68,8 @@ $.extend(root,{
                             "visible": "visible"
                         });
                         if (col.controlpoint && row.controlpoint) td.addClass("control");
-                        if (col.isprimary && row.isprimary && !row.exref) td.addClass("editable");
+                        if (col.isprimary && row.isprimary) td.addClass("editable");
+                        if (col.exref && row.exref) td.removeClass("editable");
                         tr.append(td);
                     });
                 }

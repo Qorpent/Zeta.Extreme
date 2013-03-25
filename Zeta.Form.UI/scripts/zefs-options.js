@@ -38,6 +38,7 @@ $.extend(api,(function(){
                     };
                     $.each(obj, function(i,o) {
                         if (o.type=="c") {
+                            o.exref = o.exref || false;
                             result.cols.push(o);
                         }
                         if (o.type=="r") {
