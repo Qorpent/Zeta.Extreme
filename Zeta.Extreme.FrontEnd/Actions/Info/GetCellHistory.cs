@@ -3,6 +3,7 @@ using System.Security;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.FrontEnd.Actions.Info {
@@ -14,9 +15,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		/// <summary>
 		///	Идентификатор ячейки
 		/// </summary>
-		
-		[Bind]
-		protected int CellId;
+		[Bind]protected int CellId;
 
 		private Cell _cell;
 		private CellHistory[] _history;

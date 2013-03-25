@@ -16,12 +16,13 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Core/IQueryWithProcessing.cs
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Zeta.Extreme.Model.Querying;
+using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model.Inerfaces {
+namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// 	Описатель запроса с поддержкой обработки
 	/// </summary>
