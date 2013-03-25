@@ -133,7 +133,8 @@ root.init = root.init ||
         }
     };
 
-    var Save = function(obj) {
+    var Save = function() {
+        var obj = window.zefs.getChanges();
         if (!$.isEmptyObject(obj) && !root.myform.lock) return;
         root.myform.datatosave = obj;
         $(root).trigger(root.handlers.on_savestart);

@@ -14,9 +14,10 @@
             var cell = this.getActiveCell();
             return cell.parent();
         };
-        $.extend(zefs.myform, {
-            getChanges: this.getChanges,
-            hidechildrows: this.toggleChildRows
+        var self = this;
+        $.extend(zefs, {
+            getChanges: function() { return self.getChanges(); },
+            hidechildrows: function() { return self.toggleChildRows(); }
         });
         $(zefs).on(zefs.handlers.on_savefinished, $.proxy(function() {
             this.applyChanges();
@@ -360,7 +361,7 @@
                     e.preventDefault();
                     if (e.ctrlKey && zefs.myform != null) {
                         this.uninputCell();
-                        zefs.myform.save(this.getChanges());
+                        zefs.myform.save();
                     }
                     break;
                 default :
@@ -373,6 +374,7 @@
     };
 
     Zefs.prototype.getChanges = function() {
+        this.uninputCell();
         var obj = {};
         var div = $('<div/>');
         $.each($('table.data td.changed'), function(i,e) {
