@@ -43,7 +43,13 @@ namespace Zeta.Extreme.Model.Extensions {
 		}
 
 		public static bool GetIsPrimary(this IZetaRow r) {
-			return !r.IsFormula && !r.IsMarkSeted("0SA") && 0 == r.Children.Count && null == r.RefTo && !r.LocalProperties.ContainsKey("readonly");
+			return !r.IsFormula 
+				&& !r.IsMarkSeted("0SA") 
+				&& 0 == r.Children.Count 
+				&& null == r.RefTo 
+				&& !r.LocalProperties.ContainsKey("readonly")
+				&& !r.IsMarkSeted("0NOINPUT")
+				;
 		}
 
 		public static string GetRedirectColCode(this IZetaRow row, IZetaColumn col) {
