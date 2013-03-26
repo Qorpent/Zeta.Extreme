@@ -91,8 +91,8 @@ namespace Zeta.Extreme.Form.SaveSupport {
 				                     cell.linkedcell.c);
 			}
 			return string.Format(@"
-insert usm.insertdata(year,period,obj,row,col,decimalvalue,stringvalue,usr,op)
-values ({0},{1},{2},{3},{4},{5},{5},'{6}','=')
+insert usm.insertdata(year,period,obj,row,col,decimalvalue,stringvalue,valuta,usr,op)
+values ({0},{1},{2},{3},{4},{5},{5},'{6}','{7}','=')
 ",
 			                     cell.linkedcell.query.Time.Year,
 			                     cell.linkedcell.query.Time.Period,
@@ -100,6 +100,7 @@ values ({0},{1},{2},{3},{4},{5},{5},'{6}','=')
 			                     cell.linkedcell.query.Row.Id,
 			                     cell.linkedcell.query.Col.Id,
 			                     cell.v,
+								 cell.linkedcell.query.Obj.ObjRef.Currency,
 								 user.Identity.Name
 				);
 		}
