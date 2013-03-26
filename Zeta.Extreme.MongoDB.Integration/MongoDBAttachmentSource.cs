@@ -93,8 +93,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             // now we gonna get this description from the collection
             var doc = _collection.FindOneByIdAs<BsonDocument>(attachment.Uid);
             // and add our delta
-            doc.Merge(MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment));
-            doc.AddRange(MongoDbAttachmentSourceSerializer.AttachmentToBsonForSave(attachment));
+            MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment, doc);
 
             _collection.Save(doc);
         }

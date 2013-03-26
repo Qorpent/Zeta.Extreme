@@ -28,7 +28,51 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         /// <summary>
-        /// Prepare document for flush binary data
+        /// </summary>
+        /// <param name="attachment"></param>
+        /// <param name="document"></param>
+        public static void AttachmentToBson(Attachment attachment, BsonDocument document) {
+            if (attachment.Uid != null) {
+                document.Set("_id", attachment.Uid);
+            }
+
+            if (attachment.Name != null) {
+                document.Set("filename", attachment.Name);
+            }
+
+            if (attachment.Comment != null) {
+                document.Set("comment", attachment.Comment);
+            }
+
+            if (attachment.User != null) {
+                document.Set("owner", attachment.User);
+            }
+
+            if (attachment.MimeType != null) {
+                document.Set("contentType", attachment.MimeType);
+            }
+
+            if (attachment.Extension != null) {
+                document.Set("extension", attachment.Extension);
+            }
+
+            if (attachment.Revision > 0) {
+                document.Set("revision", attachment.Revision);
+            }
+
+            if (DateTime.Compare(attachment.Version, new DateTime()) != 0) {
+                document.Set("uploadDate", attachment.Version);
+            }
+
+            if (attachment.Metadata.Count != 0) {
+                document.Set("metadata", new BsonDocument(attachment.Metadata));
+            }
+
+            document.Set("deleted", false);
+        }
+
+        /// <summary>
+        ///     Prepare document for flush binary data
         /// </summary>
         /// <param name="document"></param>
         /// <returns></returns>
@@ -40,7 +84,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="attachment"></param>
         /// <returns></returns>
@@ -53,20 +96,19 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
 
         /// <summary>
-        /// Preparing query to remove chunks by Uid
+        ///     Preparing query to remove chunks by Uid
         /// </summary>
         /// <param name="attachment"></param>
         /// <returns></returns>
         public static QueryDocument FlushChunksByUidQuery(Attachment attachment) {
             return new QueryDocument(
                 new BsonDocument {
-                        {"files_id", attachment.Uid}
+                    {"files_id", attachment.Uid}
                 }
-            );
+                );
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="attachment"></param>
         /// <returns></returns>
