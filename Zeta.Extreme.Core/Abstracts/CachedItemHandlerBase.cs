@@ -31,7 +31,7 @@ namespace Zeta.Extreme {
 	/// </summary>
 	/// <typeparam name="TItem"> </typeparam>
 	public abstract class CachedItemHandlerBase<TItem> : CacheKeyGeneratorBase, IQueryDimension<TItem>
-		where TItem : class, IWithCode, IWithId, IWithTag {
+		where TItem : class, IWithCode, IWithId, IWithTag,IWithName {
 		/// <summary>
 		/// 	Набор кодов элемента
 		/// </summary>
@@ -230,7 +230,34 @@ namespace Zeta.Extreme {
 			}
 		}
 
-		string IWithName.Name { get; set; }
+		/// <summary>
+		/// </summary>
+		public string Name
+		{
+			get
+			{
+				if (null != Native)
+				{
+					return Native.Name;
+				}
+				return _name;
+			}
+			set
+			{
+				if (null != Native)
+				{
+					throw new Exception("cannot assign tag on natived condition");
+				}
+				if (value == _name)
+				{
+					return;
+				}
+				_name = value;
+				InvalidateCacheKey();
+			}
+		}
+
+
 
 		string IWithComment.Comment { get; set; }
 
@@ -385,5 +412,6 @@ namespace Zeta.Extreme {
 		private IDictionary<string, object> _localProperties;
 		private TItem _native;
 		private string _tag;
-		}
+		private string _name;
+	}
 }

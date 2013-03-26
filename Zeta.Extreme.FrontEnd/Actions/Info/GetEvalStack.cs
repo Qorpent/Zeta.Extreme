@@ -62,6 +62,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 					colname = myquery.Col.Name,
 					colformula = myquery.Col.IsFormula? myquery.Col.Formula:"",
 					objid = myquery.Obj.Id,
+					objname = myquery.Obj.Name,
 					year = myquery.Time.Year,
 					period = myquery.Time.Period,
 					periods = myquery.Time.Periods==null?"":string.Join(",",myquery.Time.Periods),
