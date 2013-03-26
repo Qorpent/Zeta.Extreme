@@ -454,14 +454,14 @@ namespace Zeta.Extreme.Model {
 			result._children = new List<IZetaRow>();
 			result._allchildren = null;
 			result.LocalProperties = new Dictionary<string, object>(LocalProperties);
-			if (null != _children) {
-				foreach (var row in _children) {
+			
+				foreach (var row in _children)
+				{
 					var r_ = row.GetCopyOfHierarchy();
 					r_.Parent = result;
 					result._children.Add((IZetaRow) r_);
 				}
-			}
-
+			
 			if (null != result.RefTo)
 			{
 				result.RefTo = (IZetaRow) result.RefTo.GetCopyOfHierarchy();
