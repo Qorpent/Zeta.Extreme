@@ -365,8 +365,11 @@
                 // S button
                 case 83 :
                     e.preventDefault();
-                    if (e.ctrlKey && zefs.myform != null) {
-                        this.uninputCell();
+                    this.uninputCell();
+                    if (e.ctrlKey && e.shiftKey) {
+                        zefs.myform.forcesave();
+                    }
+                    else if (e.ctrlKey) {
                         zefs.myform.save();
                     }
                     break;

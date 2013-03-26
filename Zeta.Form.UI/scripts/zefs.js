@@ -148,6 +148,12 @@ root.init = root.init ||
         api.data.saveready.execute();
     };
 
+    var ForceSave = function() {
+        root.myform.datatosave = "FORCE";
+        $(root).trigger(root.handlers.on_savestart);
+        api.data.saveready.execute();
+    };
+
     var Message = function(obj) {
         $(root).trigger(root.handlers.on_message, obj);
     };
@@ -315,9 +321,12 @@ root.init = root.init ||
         $.each($('td.recalced'), function(i,e) {
             $(e).removeClass("recalced");
         });
+        if (typeof root.myform.datatosave == "object") {
+            root.myform.datatosave = JSON.stringify(root.myform.datatosave);
+        }
         api.data.save.execute({
             session: root.myform.sessionId,
-            data: JSON.stringify(root.myform.datatosave)
+            data: root.myform.datatosave
         });
     });
 
@@ -346,8 +355,8 @@ root.init = root.init ||
             api.lock.history.execute({session: root.myform.sessionId});
         } else {
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
-                title: result.responseText.match(/\<H1>([^<]+)/)[1].trim(),
-                text: result.responseText.match(/\<i>([^<]+)/)[1].trim()
+                title: result.responseText.match(/<H1>([^<]+)/)[1].trim(),
+                text: result.responseText.match(/<i>([^<]+)/)[1].trim()
             });
         }
     });
@@ -397,6 +406,7 @@ root.init = root.init ||
     $.extend(root.myform, {
         execute : function(){api.server.start()},
         save : Save,
+        forcesave : ForceSave,
         message: Message,
         lockform: LockForm,
         unlockform: UnlockForm,
