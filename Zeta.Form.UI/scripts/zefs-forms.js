@@ -37,7 +37,6 @@
         this.table.delegate('td.editable','click', $.proxy(function(e) {
             if (e.ctrlKey) {
                 window.zefs.myform.cellhistory(e.target);
-                return;
             }
             e.stopPropagation();
             this.activateCell(e.target);
