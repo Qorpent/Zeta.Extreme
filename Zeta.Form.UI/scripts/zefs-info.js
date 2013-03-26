@@ -17,7 +17,7 @@
     b.tooltip({placement: 'bottom'});
     var WhatTheHellAndWhoAmI = function() {
         var t = $('<table class="table table-bordered zefssessioninfo"/>').append(
-            $('<tr/>').append($('<td/>').text("Сервер"), $('<td/>').text(location.host + location.port)),
+            $('<tr/>').append($('<td/>').text("Сервер"), $('<td/>').text(location.host)),
             $('<tr/>').append($('<td/>').text("Логин"), $('<td/>').text(window.zeta.security.user.getLogonName())),
             $('<tr/>').append($('<td/>').text("Код формы"), $('<td/>').text(zefs.myform.currentSession.FormInfo.Code)),
             $('<tr/>').append($('<td/>').text("Код предприятия"), $('<td/>').text(zefs.myform.currentSession.ObjInfo.Id)),
