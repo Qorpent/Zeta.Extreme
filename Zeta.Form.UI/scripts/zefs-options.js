@@ -157,6 +157,7 @@ $.extend(api,(function(){
                     $.each(obj.history, function(i,o) {
                         o.Date = eval(o.time.substring(2));
                     });
+                    return obj;
                 }
             }),
             //команда, возвращающая каталог периодов

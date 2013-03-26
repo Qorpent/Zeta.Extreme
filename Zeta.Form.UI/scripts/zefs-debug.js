@@ -7,7 +7,7 @@
     var sid = "";
 
     var session = $('<a id="sessionInfo"/>')
-        .click(function(e) { Debug("zefs/session.json.qweb?session=" + sid, "Данные о сессии") })
+        .click(function() { Debug("zefs/session.json.qweb?session=" + sid, "Данные о сессии") })
         .html('<i class="icon-globe"></i> Информация о сессии');
     var setup = $('<a/>')
         .click(function() { window.zefs.myform.setupform() })

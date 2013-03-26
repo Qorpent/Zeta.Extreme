@@ -133,6 +133,13 @@ root.init = root.init ||
         }
     };
 
+    var CellHistory = function(cell) {
+        cell = $(cell);
+        if (!!cell.data("cellid")) {
+            api.metadata.cellhistory.execute({session: root.myform.sessionId, cellid: cell.data("cellid")});
+        }
+    };
+
     var Save = function() {
         var obj = window.zefs.getChanges();
         if (!$.isEmptyObject(obj) && !root.myform.lock) return;
@@ -206,6 +213,50 @@ root.init = root.init ||
         if($.isEmptyObject(root.periods)) {
             root.periods = result;
             $(root).trigger(root.handlers.on_periodsload);
+        }
+    });
+
+    api.metadata.cellhistory.onSuccess(function(e, result) {
+        if(!$.isEmptyObject(result)) {
+
+            var cellinfotoggle = $('<button class="btn-link"/>').text("Показать/Спрятать полную информацию о ячейке");
+            cellinfotoggle.css("padding", "5px 0");
+            var cellinfo = $('<table class="table table-bordered"/>').append(
+                $('<tr/>').append($('<td/>').text("ID"), $('<td/>').text(result.cell.id)),
+                $('<tr/>').append($('<td/>').text("Объект"), $('<td/>').text("(" + result.cell.objid + ") " + result.cell.objname)),
+                $('<tr/>').append($('<td/>').text("Колонка"), $('<td/>').text("(" + result.cell.colcode + ") " + result.cell.colname)),
+                $('<tr/>').append($('<td/>').text("Строка"), $('<td/>').text("(" + result.cell.rowcode + ") " + result.cell.rowname)),
+                $('<tr/>').append($('<td/>').text("Период"), $('<td/>').text("(" + result.cell.period + ") " + window.zefs.getperiodbyid(result.cell.period)))
+            ).hide();
+            cellinfotoggle.click(function() { cellinfo.toggle() });
+            var cellhistory = $('<table class="table table-bordered table-striped"/>');
+            cellhistory.append(
+                $('<thead/>').append(
+                    $('<tr/>').append($('<th/>').text("Время"),$('<th/>').text("Пользователь"),$('<th/>').text("Значение"))
+                ), $('<tbody/>')
+            );
+            var u = $('<span class="label label-inverse"/>').text(result.cell.user);
+            cellhistory.find('tbody').append(
+                $('<tr/>').append(
+                    $('<td/>').text(result.cell.Date.format("dd.mm.yyyy HH:MM:ss")), $('<td/>').append(u), $('<td/>').text(result.cell.value)
+                )
+            );
+            u.zetauser();
+            if (!$.isEmptyObject(result.history)) {
+                $.each(result.history, function(i, e) {
+                    var user = $('<span class="label label-inverse"/>').text(e.user);
+                    cellhistory.find('tbody').append(
+                        $('<tr/>').append(
+                            $('<td/>').text(e.Date.format("dd.mm.yyyy HH:MM:ss")), $('<td/>').append(user), $('<td/>').text(e.value)
+                        )
+                    );
+                    user.zetauser();
+                });
+            }
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "История ячейки",
+                content: $('<div/>').append(cellinfotoggle, cellinfo, cellhistory)
+            });
         }
     });
 
@@ -351,9 +402,10 @@ root.init = root.init ||
         deletefile: DeleteFile,
         downloadfile: DownloadFile,
         openreport: OpenReport,
-        setupform: SetupForm
+        setupform: SetupForm,
+        cellhistory: CellHistory
     });
 
     return root.myform;
 });
-})()
+})();
