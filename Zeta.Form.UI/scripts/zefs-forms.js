@@ -184,6 +184,8 @@
             var $val = $input.val().replace(",",".");
             $input.remove();
             $cell.text($val);
+            // реальное значение (без форматов и т.д.) для сохранения в базу
+            $cell.data("value", $val);
         }
         if (!!e && e == "esc") {
             $cell.text($cell.data("previous"));
@@ -378,10 +380,10 @@
         this.uninputCell();
         var obj = {};
         var div = $('<div/>');
-        $.each($('table.data td.changed'), function(i,e) {
-            e = $(e);
-            div.number(e.text(), 0, '', '');
-            obj[i] = {id:e.attr("id"), value:div.text(), ri:e.attr("ri")};
+        $.each($('table.data td.changed'), function(i,cell) {
+            cell = $(cell);
+            div.number(cell.text(), 0, '', '');
+            obj[i] = {id:cell.attr("id"), value:cell.data("value") || div.text(), ri:cell.attr("ri")};
         });
         return obj;
     };

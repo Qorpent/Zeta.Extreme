@@ -102,6 +102,9 @@ $.extend(root,{
                 $cell.removeClass("notloaded");
                 $cell.data("history", val);
                 $cell.data("previous", val);
+                // реальное число без форматов, которое должно сохраняться в базу
+                $cell.data("value", val);
+                if (!!b.c) $cell.data("cellid", b.c);
                 $cell.attr("ri", b.ri);
                 if (val.search(/\./) != -1 && val.search("error") == -1) {
                     $cell.addClass("rounded");
