@@ -842,8 +842,9 @@ namespace Zeta.Extreme.FrontEnd {
 		private static IFormAttachmentStorage GetFormAttachStorage() {
 			var result = Application.Current.Container.Get<IFormAttachmentStorage>();
 			if (null == result) {
+				var basestorage = Application.Current.Container.Get<IAttachmentStorage>("attachment.source") ?? new DbfsAttachmentStorage();
 				result = new FormAttachmentSource();
-				((FormAttachmentSource) result).SetStorage(new DbfsAttachmentStorage());
+				((FormAttachmentSource) result).SetStorage(basestorage);
 			}
 			return result;
 		}
