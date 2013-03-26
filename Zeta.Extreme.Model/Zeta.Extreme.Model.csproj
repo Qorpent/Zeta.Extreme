@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration>Debug</Configuration>
+    <ProjectGuid>{A4442A74-4590-4BA3-B44C-56C98CE4A088}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Zeta.Extreme.Model</RootNamespace>
+    <AssemblyName>Zeta.Extreme.Model</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Extensions\TagResolutionExtension.cs" />
+    <Compile Include="Inerfaces\Partial\IWithCurrency.cs" />
+    <Compile Include="MetaCaches\MetaExtensions.cs" />
+    <Compile Include="PocoClasses\BizTran.cs" />
+    <Compile Include="PocoClasses\BizTranFilter.cs" />
+    <Compile Include="PocoClasses\CellHistory.cs" />
+    <Compile Include="PocoClasses\Form.cs" />
+    <Compile Include="PocoClasses\FormState.cs" />
+    <Compile Include="Inerfaces\IBizTran.cs" />
+    <Compile Include="Inerfaces\IBizTranFilter.cs" />
+    <Compile Include="Deprecated\UserThemaMap.cs" />
+    <Compile Include="Deprecated\Zone.cs" />
+    <Compile Include="PocoClasses\Division.cs" />
+    <Compile Include="PocoClasses\Cell.cs" />
+    <Compile Include="PocoClasses\Row.cs" />
+    <Compile Include="Deprecated\Point.cs" />
+    <Compile Include="PocoClasses\ObjectGroup.cs" />
+    <Compile Include="PocoClasses\Obj.cs" />
+    <Compile Include="PocoClasses\Department.cs" />
+    <Compile Include="PocoClasses\Period.cs" />
+    <Compile Include="Deprecated\Region.cs" />
+    <Compile Include="PocoClasses\Detail.cs" />
+    <Compile Include="PocoClasses\User.cs" />
+    <Compile Include="PocoClasses\Column.cs" />
+    <Compile Include="Deprecated\ObjectClass.cs" />
+    <Compile Include="PocoClasses\ObjectType.cs" />
+    <Compile Include="Deprecated\IZetaObjectClass.cs" />
+    <Compile Include="Inerfaces\IObjectType.cs" />
+    <Compile Include="Inerfaces\IObjectDivision.cs" />
+    <Compile Include="Inerfaces\IObjectDepartment.cs" />
+    <Compile Include="Inerfaces\Partial\IWithObjType.cs" />
+    <Compile Include="Inerfaces\Partial\IWithMainObjects.cs" />
+    <Compile Include="Deprecated\IZetaPoint.cs" />
+    <Compile Include="Deprecated\IZetaRegion.cs" />
+    <Compile Include="Deprecated\IZetaZone.cs" />
+    <Compile Include="Extensions\ByIdxComparer.cs" />
+    <Compile Include="Inerfaces\ICellHistory.cs" />
+    <Compile Include="Inerfaces\IForm.cs" />
+    <Compile Include="Inerfaces\IFormState.cs" />
+    <Compile Include="Inerfaces\IPeriod.cs" />
+    <Compile Include="Inerfaces\Partial\IWithUser.cs" />
+    <Compile Include="Inerfaces\IZetaCell.cs" />
+    <Compile Include="Inerfaces\IZetaColumn.cs" />
+    <Compile Include="Inerfaces\IZetaDetailObject.cs" />
+    <Compile Include="Inerfaces\Partial\IZetaFormsSupport.cs" />
+    <Compile Include="Inerfaces\IZetaMainObject.cs" />
+    <Compile Include="Inerfaces\IZetaRow.cs" />
+    <Compile Include="Extensions\DetailComparer.cs" />
+    <Compile Include="Extensions\WithMarksExtension.cs" />
+    <Compile Include="Inerfaces\Partial\IWithMarkCache.cs" />
+    <Compile Include="Inerfaces\IZetaObjectGroup.cs" />
+    <Compile Include="Querying\DetailMode.cs" />
+    <Compile Include="Querying\ExtremeFactory.cs" />
+    <Compile Include="Querying\FormulaRequest.cs" />
+    <Compile Include="Querying\IColumnHandler.cs" />
+    <Compile Include="Querying\IQueryWithProcessing.cs" />
+    <Compile Include="Querying\IReferenceHandler.cs" />
+    <Compile Include="Querying\IExtremeFactory.cs" />
+    <Compile Include="Querying\IFormula.cs" />
+    <Compile Include="Querying\IFormulaPreprocessor.cs" />
+    <Compile Include="Querying\IFormulaStorage.cs" />
+    <Compile Include="Querying\IObjHandler.cs" />
+    <Compile Include="Querying\IQuery.cs" />
+    <Compile Include="Querying\IQueryDimension.cs" />
+    <Compile Include="Querying\IRegistryHelper.cs" />
+    <Compile Include="Querying\IRowHandler.cs" />
+    <Compile Include="Querying\ISerialSession.cs" />
+    <Compile Include="Querying\ISession.cs" />
+    <Compile Include="Querying\ITimeHandler.cs" />
+    <Compile Include="Querying\IWithCacheKey.cs" />
+    <Compile Include="Querying\IWithQueryRegistry.cs" />
+    <Compile Include="Querying\PrepareState.cs" />
+    <Compile Include="Querying\QueryEvaluationType.cs" />
+    <Compile Include="Querying\ZoneType.cs" />
+    <Compile Include="Querying\QueryResult.cs" />
+    <Compile Include="Querying\QuerySetupInfo.cs" />
+    <Compile Include="Querying\SessionExtensions.cs" />
+    <Compile Include="Querying\SessionSetupInfo.cs" />
+    <Compile Include="Querying\SessionStatisticsExtensions.cs" />
+    <Compile Include="Querying\StubExtremeFactory.cs" />
+    <Compile Include="Inerfaces\Partial\ICanResolveTag.cs" />
+    <Compile Include="IMetaCache.cs" />
+    <Compile Include="Querying\IWithSessionStatistics.cs" />
+    <Compile Include="Querying\IPrimarySource.cs" />
+    <Compile Include="Querying\IWithDataServices.cs" />
+    <Compile Include="Extensions\RowComparer.cs" />
+    <Compile Include="Querying\SessionStatistics.cs" />
+    <Compile Include="MetaCaches\StubMetaCache.cs" />
+    <Compile Include="Deprecated\IUsrThemaMap.cs" />
+    <Compile Include="Inerfaces\Partial\IWithDetailObjects.cs" />
+    <Compile Include="Inerfaces\Partial\IWithMeasure.cs" />
+    <Compile Include="Inerfaces\Partial\IWithOuterCode.cs" />
+    <Compile Include="Inerfaces\Partial\IZetaQueryDimension.cs" />
+    <Compile Include="Inerfaces\IZetaUser.cs" />
+    <Compile Include="Inerfaces\Partial\IZetaObject.cs" />
+    <Compile Include="PocoClasses\ValueDataType.cs" />
+    <Compile Include="MetaCache.cs" />
+    <Compile Include="PocoClasses\MetalinkRecord.cs" />
+    <Compile Include="MetaCaches\ColumnCache.cs" />
+    <Compile Include="Extensions\IWithFormulaExtensions.cs" />
+    <Compile Include="SqlSupport\NativeZetaReader.cs" />
+    <Compile Include="SqlSupport\NativeZetaReader_Internals.cs" />
+    <Compile Include="MetaCaches\ObjCache.cs" />
+    <Compile Include="MetaCaches\PeriodDefinition.cs" />
+    <Compile Include="MetaCaches\Periods.cs" />
+    <Compile Include="MetaCaches\RowCache.cs" />
+    <Compile Include="Extensions\RowExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="qorpent.sys.base.import" />
+    <None Include="Zeta.Extreme.Model.export" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="..\..\qorpent.kernel\build.targets" />
+  <PropertyGroup>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DefineConstants>TRACE;DEBUG;ADAPTMODEL LIB2</DefineConstants>
+  </PropertyGroup>
+</Project>

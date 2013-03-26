@@ -1,0 +1,37 @@
+@media print {
+    #consoleHeader {
+        display: none;
+    }
+
+    #consoleBody {
+        margin-top: 0;
+    }
+
+    .zefsformheader {
+        position: static !important;
+    }
+
+    .zefsform {
+        margin-top: 0 !important;
+    }
+
+    .fixed {
+        position: static !important;
+    }
+
+    th {
+        background: #333 !important;
+        color: white !important;
+        text-shadow: none;
+    }
+
+    .editable {
+        background-color: none !important;
+    }
+
+    .active {
+        display: table-cell !important;
+        position: static !important;
+        border: none !important;
+    }
+}

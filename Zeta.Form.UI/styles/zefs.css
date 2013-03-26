@@ -1,0 +1,166 @@
+﻿i {
+    margin-right: 2px;
+}
+
+.modal iframe {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/*Это чтобы тултипы не перекрывали открытые dropdown-menu*/
+div.open>.tooltip {
+    display: none !important;
+}
+
+.zefsformheader {
+    position: fixed;
+    top: 37px;
+    z-index: 995;
+    background-color: white;
+    width: 100%;
+}
+
+.zefsextrapannel {
+    position: fixed;
+    top: 37px;
+    z-index: 994;
+    background-color: #F0F0F0;
+    width: 100%;
+    height: 23px;
+    padding-left: 3px;
+}
+
+.zefsextrapannel .label {
+    margin-right: 3px;
+}
+
+.zefsformheader h3 {
+    font-size: 11pt;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.zefsreport,
+.impersonator,.information,
+.zefsdebug, .feedback {
+    margin-top: 4px;
+    margin-right: 3px;
+}
+
+.authorizer {
+    margin-right: 3px;
+}
+
+.authorizer .btn-group {
+    margin-top: 4px;
+    margin-right: 2px;
+}
+
+.authorizer .login-form input,
+.authorizer .login-form button {
+    margin-right: 2px;
+}
+
+.authorizer li {
+    margin: 1px 3px;
+}
+
+.logininfo {
+    margin-top: 6px;
+    margin-right: 3px;
+}
+
+.logininfo .label {
+   display: inline;
+}
+
+.zefsstatus, .zefsformsave,
+.periodselector, .objselector,
+.zefscolmanager, .zefsblockmanager {
+    margin-top: 4px;
+    margin-left: 3px;
+}
+
+.objselector li.primary {
+    background-color: #e6ffe1;
+}
+
+.zefscolmanager label {
+    margin: 0;
+}
+
+.zefscolmanager li.primary {
+    background-color: #e6ffe1;
+}
+
+.zefsblockmanager table {
+    cursor: default;
+    font-size: 90%;
+    margin-bottom: 0;
+}
+
+.zefsblockmanager td {
+    padding: 2px;
+}
+
+.zefsblockmanager button {
+    margin-left: 2px;
+}
+
+.zefsblockmanager li button:first-child {
+    margin-left: 5px;
+}
+
+/*
+.zefsblockmanager span.state-check {
+    color: #006400;
+}
+
+.zefsblockmanager span.state-open {
+    color: #af0000;
+}
+
+.zefsblockmanager span.state-block {
+    color: #FF6600;
+}
+*/
+
+.zefsblockmanager th {
+    padding: 4px 2px;
+}
+
+.zefsblockmanager li>.btn-group {
+    margin: 0 5px;
+}
+
+.zefscolmanager label>input {
+    margin-bottom: 3px !important;
+    margin-right: 3px;
+    cursor: pointer;
+}
+
+.zefsalerter {
+    position: absolute;
+    top: 41px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.zefsalerter .alert {
+    padding: 5px 35px 5px 14px;
+}
+
+.zefsformheader {
+    font-size: 16px;
+    font-weight: bold;
+    color: #002a80;
+}
+
+.zetauserinfo td:first-child {
+    font-weight: bold;
+}

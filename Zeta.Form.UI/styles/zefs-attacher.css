@@ -1,0 +1,103 @@
+.attacher {
+    margin-top: 4px;
+    margin-left: 3px;
+    position: relative;
+}
+
+/*Attacher Table*/
+
+.attacher table {
+    cursor: default;
+    width: 100%;
+    table-layout: fixed;
+    font-size: 90%;
+    margin-bottom: 0;
+}
+
+.attacher .filelist {
+    position: absolute;
+    z-index: 1000;
+}
+
+.attacher th {
+    padding: 4px 2px;
+}
+
+.attacher td {
+    padding: 2px;
+}
+
+.attacher td.username {
+    text-align: right;
+}
+
+.attacher td.filename {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.attacher td.username span {
+    max-width: 95%;
+}
+
+.attacher td.type.PDF,
+.attacher td.type.pdf {
+    background-image: url("../images/document-pdf.png");
+}
+
+.attacher td.type.doc,
+.attacher td.type.DOC {
+    background-image: url("../images/document-word.png");
+}
+
+.attacher td.type.xls,
+.attacher td.type.XLS {
+    background-image: url("../images/document-excel.png");
+}
+
+.attacher td.type.TIF,
+.attacher td.type.JPG,
+.attacher td.type.tif,
+.attacher td.type.png,
+.attacher td.type.PNG,
+.attacher td.type.jpg,
+.attacher td.type.JPEG {
+    background-image: url("../images/document-image.png");
+}
+
+.attacher td.type {
+    background-image: url("../images/document.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+
+.attacher select[name="type"] {
+    margin: 0 0 0 5px;
+    height: 22px;
+    font-size: 12px;
+    padding: 2px;
+}
+
+.attacher input[name="filename"] {
+    width: 100%;
+    font-size: 12px;
+    padding: 2px;
+    margin: 0;
+    height: 16px;
+}
+
+.attacher span.icon {
+    cursor: pointer;
+}
+
+.attacher .progress {
+    margin-bottom: 0;
+    height: 22px;
+}
+
+.attacher select[name="type"] {
+    width: 76px;
+}

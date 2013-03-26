@@ -1,0 +1,65 @@
+﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- BUILD FILE OF Zeta.Extreme QORPENT PACKAGE -->
+	
+	<!--
+	DO NOT CHANGE THIS FILE WITHOUT SERIOUS REASON
+	
+	"build" file describes tasks to build package to binary files.
+	build file call msbuild on other build files in package.
+	"build" file is very similar to solution files by it's role.
+	
+	Default implementation of file is templated and stages 
+	it's compilation items in 3 stage - pre, main and post.
+	It's oriented to common .net/mono project's aligment (one level 
+	in solution folder) and it uses :
+	1. *.pre-build  and pre-build files to be built first
+	(environmen preparation can be here)
+	2. *.csproj, ./*/build, *.build for main phase
+	3. *.post-build and post-build for after main phase 
+	(test tasks can be occured here)
+	
+	NOTE:
+	Tests C# project are alway built after main C# projects
+	
+	If C# projects are maked with Qorpent template, order of 
+	execution is not important. 	
+	
+	.ignore-build file placed in same folder as
+	any build file to prevent it's building
+	
+	NoProjRef option is swithced on to optimize compile time for
+	compilation, but if significant order-issues are caused by this 
+	feature turn it off with changing ProjectProperties parameter
+	-->
+	<PropertyGroup>
+		<IgnoreBuildFileName Condition="'$(IgnoreBuildFileName)'==''">.ignore-build</IgnoreBuildFileName>
+		<CsTestProjectSuffix Condition="'$(CsTestProjectSuffix)'==''">.Tests</CsTestProjectSuffix>
+		<ProjectProperties Condition="'$(ProjectProperties)'==''">NoProjRef=True</ProjectProperties>
+		<WarnProjectIgnorance Condition="'$(WarnProjectIgnorance)'==''">True</WarnProjectIgnorance>
+		<PackageName>Zeta.Extreme</PackageName>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PreProject Include=".\**\*pre-build" />
+		<MainProject Include=".\**\*.build;.\*\**\build;.\**\*.csproj" Exclude=".\**\*$(CsTestProjectSuffix).csproj" />
+		<TestProject Include=".\**\*$(CsTestProjectSuffix).csproj" />
+		<PostProject Include=".\**\*post-build" />
+	</ItemGroup>
+	
+	<Target Name="Build">
+		<MSBuild Projects="@(PreProject)" Properties="$(ProjectProperties)" Condition="!Exists('%(PreProject.RelativeDir)$(IgnoreBuildFileName)')" />
+		<MSBuild Projects="@(MainProject)" Properties="$(ProjectProperties)" Condition="!Exists('%(MainProject.RelativeDir)$(IgnoreBuildFileName)')" />
+		<MSBuild Projects="@(TestProject)" Properties="$(ProjectProperties)" Condition="!Exists('%(TestProject.RelativeDir)$(IgnoreBuildFileName)')" />
+		<MSBuild Projects="@(PostProject)" Properties="$(ProjectProperties)" Condition="!Exists('%(PostProject.RelativeDir)$(IgnoreBuildFileName)')" />		
+		<CallTarget Targets="CheckProjectIgnorance"/>
+	</Target>
+	
+	<Target Name="CheckProjectIgnorance" Condition="$(WarnProjectIgnorance)">
+		<!-- IGNORANCE CONTROL WARNING U CAN CHOOSE WarnProjectIgnorance=False OPTION TO PREVENT CHACKING -->
+		<CreateItem Include="@(PreProject)" Condition="Exists('%(PreProject.RelativeDir)$(IgnoreBuildFileName)')" ><Output TaskParameter="Include" ItemName="IgnoredProject"/></CreateItem>
+		<CreateItem Include="@(MainProject)" Condition="Exists('%(MainProject.RelativeDir)$(IgnoreBuildFileName)')" ><Output TaskParameter="Include" ItemName="IgnoredProject"/></CreateItem>
+		<CreateItem Include="@(TestProject)" Condition="Exists('%(TestProject.RelativeDir)$(IgnoreBuildFileName)')" ><Output TaskParameter="Include" ItemName="IgnoredProject"/></CreateItem>
+		<CreateItem Include="@(PostProject)" Condition="Exists('%(PostProject.RelativeDir)$(IgnoreBuildFileName)')" ><Output TaskParameter="Include" ItemName="IgnoredProject"/></CreateItem>		
+		<Warning Text="PKG: $(PackageName) PROJECT MARKED AS IGNORED: %(IgnoredProject.fullpath)" Condition="'%(IgnoredProject.fullpath)'!=''" />
+	</Target>
+</Project>

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IsTest>True</IsTest>
+    <Configuration>Debug</Configuration>
+    <ProjectGuid>{35C6259A-33A5-4DDD-B6E6-0DEE06DD31EE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Zeta.Extreme.FrontEnd.Tests</RootNamespace>
+    <AssemblyName>Zeta.Extreme.FrontEnd.Tests</AssemblyName>
+    <AssemblyNameBase>Zeta.Extreme.FrontEnd</AssemblyNameBase>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="qorpent.sys.all.import" />
+    <None Include="Zeta.Extreme.Core.import" />
+    <None Include="Zeta.Extreme.Form.import" />
+    <None Include="Zeta.Extreme.Model.import" />
+    <None Include="*.export" />
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessiblleObjectsTest.cs" />
+    <Compile Include="AttachmentBugTests.cs" />
+    <Compile Include="JsonSaveParseTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
+      <Project>{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}</Project>
+      <Name>Zeta.Extreme.BizProcess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.Core.Tests\Zeta.Extreme.Core.Tests.csproj">
+      <Project>{736C7DE4-EB8F-4CC0-9372-07B55D1E1797}</Project>
+      <Name>Zeta.Extreme.Core.Tests</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\..\qorpent.kernel\build.targets" />
+</Project>

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration>Debug</Configuration>
+    <ProjectGuid>{FBD09F91-B185-4207-B05D-6051505CA868}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Zeta.Extreme.Form</RootNamespace>
+    <AssemblyName>Zeta.Extreme.Form</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="qorpent.sys.base.import" />
+    <None Include="Zeta.Extreme.BizProcess.import" />
+    <None Include="Zeta.Extreme.Model.import" />
+    <None Include="Zeta.Extreme.Form.export" />
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstracts\IFormDataSynchronize.cs" />
+    <Compile Include="Abstracts\IFormSessionControlPointSource.cs" />
+    <Compile Include="DbfsAttachmentSource\DbfsAttachmentStorage.cs" />
+    <Compile Include="InputTemplates\InputTemplateRequest.cs" />
+    <Compile Include="Meta\UserOrgDataMapper.cs" />
+    <Compile Include="SaveSupport\DataSaverBase.cs" />
+    <Compile Include="SaveSupport\DefaultSessionDataSaver.cs" />
+    <Compile Include="SaveSupport\IFormSessionDataSaver.cs" />
+    <Compile Include="SaveSupport\SaveResult.cs" />
+    <Compile Include="SaveSupport\SaveStage.cs" />
+    <Compile Include="SimpleZetaRoleResolver.cs" />
+    <Compile Include="StateManagement\StateRule.cs" />
+    <Compile Include="StateManagement\ControlPointResult.cs" />
+    <Compile Include="SaveSupport\IFormDataValidator.cs" />
+    <Compile Include="InputTemplates\InputTemplate.cs" />
+    <Compile Include="InputTemplates\InputTemplateXmlSerializer.cs" />
+    <Compile Include="StateManagement\LockPeriodMapper.cs" />
+    <Compile Include="StateManagement\PeriodStateManager.cs" />
+    <Compile Include="StateManagement\StateManager.cs" />
+    <Compile Include="Themas\Command.cs" />
+    <Compile Include="Themas\CommandConfiguration.cs" />
+    <Compile Include="Themas\Document.cs" />
+    <Compile Include="Themas\DocumentConfiguration.cs" />
+    <Compile Include="Themas\EcoThema.cs" />
+    <Compile Include="Themas\EcoThemaHelper.cs" />
+    <Compile Include="Themas\ExtremeFormProvider.cs" />
+    <Compile Include="Themas\HtmlListDefinition.cs" />
+    <Compile Include="Themas\InputConfiguration.cs" />
+    <Compile Include="Themas\ItemConfigurationBase.cs" />
+    <Compile Include="Themas\OutputConfiguration.cs" />
+    <Compile Include="Themas\Thema.cs" />
+    <Compile Include="Themas\ThemaConfiguration.cs" />
+    <Compile Include="Themas\ThemaConfigurationProvider.cs" />
+    <Compile Include="Themas\ThemaExtensions.cs" />
+    <Compile Include="Themas\ThemaFactory.cs" />
+    <Compile Include="Themas\ThemaFactoryConfiguration.cs" />
+    <Compile Include="Themas\ThemaFactoryProvider.cs" />
+    <Compile Include="Themas\ThemaLoaderOptionsHelper.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="..\..\qorpent.kernel\build.targets" />
+</Project>

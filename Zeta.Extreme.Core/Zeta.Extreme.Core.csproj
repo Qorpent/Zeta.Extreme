@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration>Debug</Configuration>
+    <ProjectGuid>{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Zeta.Extreme</RootNamespace>
+    <AssemblyName>Zeta.Extreme.Core</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="*.import" />
+    <None Include="Zeta.Extreme.Core.export" />
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstracts\CacheKeyGeneratorBase.cs" />
+    <Compile Include="Abstracts\CachedItemHandlerBase.cs" />
+    <Compile Include="Abstracts\IPreloadProcessor.cs" />
+    <Compile Include="Abstracts\IQueryPreparator.cs" />
+    <Compile Include="Abstracts\ISerializableSession.cs" />
+    <Compile Include="Abstracts\ISessionWithExtendedServices.cs" />
+    <Compile Include="Extensions\SerialAccessExtensions.cs" />
+    <Compile Include="Extensions\SerialSession.cs" />
+    <Compile Include="DefaultExtremeFactory.cs" />
+    <Compile Include="Formulas\BackwardCompatibleFormulaBase.cs" />
+    <Compile Include="Formulas\BackwardCompatibleMainFormulaSet.cs" />
+    <Compile Include="Formulas\BooConverter.cs" />
+    <Compile Include="Formulas\CompileErrorFormulaStub.cs" />
+    <Compile Include="Formulas\DefaultDeltaPreprocessor.cs" />
+    <Compile Include="Formulas\DeltaFormulaBase.cs" />
+    <Compile Include="Formulas\FormulaAssemblyCache.cs" />
+    <Compile Include="Formulas\FormulaAttribute.cs" />
+    <Compile Include="Formulas\FormulaBase.cs" />
+    <Compile Include="Formulas\FormulaCompiler.cs" />
+    <Compile Include="Formulas\FormulaStorage.cs" />
+    <Compile Include="Formulas\FormulaParserConstants.cs" />
+    <Compile Include="Formulas\IllegalSyntaxFormulaStub.cs" />
+    <Compile Include="Formulas\NoExtremeFormulaStub.cs" />
+    <Compile Include="Model\RowTagResolutionTest.cs" />
+    <Compile Include="Primary\IScriptGenerator.cs" />
+    <Compile Include="Primary\ObjColQueryGeneratorStruct.cs" />
+    <Compile Include="Primary\PrimaryConstants.cs" />
+    <Compile Include="Primary\QueryPrototypeExtension.cs" />
+    <Compile Include="Primary\Zeta2SQLScriptGenerator.cs" />
+    <Compile Include="Primary\TimeQueryGeneratorStruct.cs" />
+    <Compile Include="Primary\DefaultPrimarySource.cs" />
+    <Compile Include="Query\ReferenceHandler.cs" />
+    <Compile Include="Query\StrongSumProvider.cs" />
+    <Compile Include="Query\QueryDelta.cs" />
+    <Compile Include="Primary\PrimaryQueryGroup.cs" />
+    <Compile Include="Primary\PrimaryQueryPrototype.cs" />
+    <Compile Include="Services\QueryProcessor.cs" />
+    <Compile Include="Query\ColumnHandler.cs" />
+    <Compile Include="Query\DefaultPeriodEvaluator.cs" />
+    <Compile Include="Query\IPeriodEvaluator.cs" />
+    <Compile Include="Query\RowTreeUsage.cs" />
+    <Compile Include="Services\QueryLoader.cs" />
+    <Compile Include="Services\QuerySessionRegistrator.cs" />
+    <Compile Include="Query\RowHandler.cs" />
+    <Compile Include="Query\TimeHandler.cs" />
+    <Compile Include="Query.cs" />
+    <Compile Include="Query\ObjHandler.cs" />
+    <Compile Include="Session.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Core.Tests.Debug\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="..\..\qorpent.kernel\build.targets" />
+</Project>

@@ -1,0 +1,27 @@
+﻿
+ref Qorpent.Core
+ref Zeta.Extreme.Frontend
+ref Zeta.Extreme.Form
+ref Comdiv.Core
+ref Zeta.Extreme.Model
+ref Zeta.Extreme.Core
+
+using Zeta.Extreme
+using Zeta.Extreme.FrontEnd
+using Zeta.Extreme.Form
+using Qorpent.Applications
+using Comdiv.Security
+using Qorpent.Security 
+using Zeta.Extreme.Model.Querying
+
+mvc Zeta.Extreme.FrontEnd
+transient "form.server" FormServer : IApplicationStartup
+	ThemaRootDirectory = "~/themas"
+	ConnectionName = eco
+
+transient "securitymap.roles.extension"  BxlXmlRoleProvider : IRoleResolverExtension
+	Idx = 10
+
+transient "zetaroles.roles.extension" SimpleZetaRoleResolver : IRoleResolverExtension
+
+singleton "extreme.factory" DefaultExtremeFactory : IExtremeFactory

@@ -1,0 +1,13 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<!-- it's informational manifest for Zeta.Extreme package can be used in documentation tools or in custom build/install processes -->
+	<PropertyGroup>
+		<PackageCode>Zeta.Extreme</PackageCode>
+		<PackageInstallCode>Zeta_Extreme</PackageInstallCode>
+		<PackageName>provide title</PackageName>
+		<PackageComment>provide comment</PackageComment>
+		<PackageAuthor>me</PackageAuthor>
+		<PackageLicense>Apache 2.0</PackageLicense>
+		<PackageUrl>http://Zeta.Extreme.me.org</PackageUrl>
+		<PackageAnnotation><![CDATA[provide annotation]]></PackageAnnotation>
+	</PropertyGroup>
+</Project>

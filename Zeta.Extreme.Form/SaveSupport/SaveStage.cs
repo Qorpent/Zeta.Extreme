@@ -1,0 +1,72 @@
+#region LICENSE
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Form/SaveStage.cs
+#endregion
+using System;
+
+namespace Zeta.Extreme.Form.SaveSupport {
+	/// <summary>
+	/// 	Статус сохранения
+	/// </summary>
+	[Flags]
+	public enum SaveStage {
+		/// <summary>
+		/// 	Изначальное состояние
+		/// </summary>
+		None,
+
+		/// <summary>
+		/// 	Загрузка задачи сохранения
+		/// </summary>
+		Load,
+
+		/// <summary>
+		/// 	Проверка возможности сохранения по аспектам безопасности
+		/// </summary>
+		Authorize,
+
+		/// <summary>
+		/// 	Подготовка входных данных - переработка справочников
+		/// </summary>
+		Prepare,
+
+		/// <summary>
+		/// 	Проверка целостности запрошенного сохранения
+		/// </summary>
+		Validate,
+
+		/// <summary>
+		/// 	Проверка доступности соединений, хранимых процедур и проч
+		/// </summary>
+		Test,
+
+		/// <summary>
+		/// 	Собственно сохранение ячеек
+		/// </summary>
+		Save,
+
+		/// <summary>
+		/// 	Выполнение специальных процедур после выполнения сохранения, бизнес-тригеры
+		/// </summary>
+		AfterSave,
+
+		/// <summary>
+		/// 	Успешное завершение
+		/// </summary>
+		Finished,
+	}
+}
