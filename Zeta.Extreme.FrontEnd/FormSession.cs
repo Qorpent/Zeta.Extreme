@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
 using Qorpent.Applications;
+using Qorpent.Log;
 using Qorpent.Mvc;
 using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
@@ -75,7 +76,13 @@ namespace Zeta.Extreme.FrontEnd {
 			FormInfo = new {Template.Code, Template.Name};
 			NeedMeasure = Template.ShowMeasureColumn;
 			Activations = 1;
+			Logger = Application.Current.LogManager.GetLog("form.log", this);
+
 		}
+		/// <summary>
+		/// Журнал
+		/// </summary>
+		public IUserLog Logger { get; set; }
 
 
 		/// <summary>
@@ -466,6 +473,7 @@ namespace Zeta.Extreme.FrontEnd {
 				}
 			}
 			InitSaveMode = false;
+			Logger.Info("data loaded");
 		}
 
 		private void LoadNoPrimary(IDictionary<string, IQuery> queries) {
@@ -729,6 +737,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public bool BeginSaveData(XElement xmldata) {
 			lock (this) {
+				
 				if (null != _currentSaveTask) {
 					if (!_currentSaveTask.IsFaulted) {
 						_currentSaveTask.Wait();
@@ -736,6 +745,7 @@ namespace Zeta.Extreme.FrontEnd {
 				}
 				CurrentSaver = CurrentSaver ?? (null == FormServer ? null : FormServer.GetSaver()) ?? new DefaultSessionDataSaver();
 				_currentSaveTask = CurrentSaver.BeginSave(this, xmldata, Application.Current.Principal.CurrentUser);
+				Logger.Info("save started");
 				return true;
 			}
 		}

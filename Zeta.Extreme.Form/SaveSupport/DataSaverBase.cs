@@ -99,10 +99,12 @@ namespace Zeta.Extreme.Form.SaveSupport {
 			catch (Exception ex) {
 				RollBack(session, savedata, result, ex);
 				Error = ex;
+				session.Logger.Error("save finished",ex);
 				throw;
 			}
 			finally {
 				LastSaveResult = result;
+				session.Logger.Info("save finished");
 			}
 		}
 
