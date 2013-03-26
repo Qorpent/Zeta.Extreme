@@ -218,7 +218,6 @@ root.init = root.init ||
 
     api.metadata.cellhistory.onSuccess(function(e, result) {
         if(!$.isEmptyObject(result)) {
-
             var cellinfotoggle = $('<button class="btn-link"/>').text("Показать/Спрятать полную информацию о ячейке");
             cellinfotoggle.css("padding", "5px 0");
             var cellinfo = $('<table class="table table-bordered"/>').append(

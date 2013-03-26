@@ -94,7 +94,7 @@ $.extend(root,{
                     $cell.addClass("recalced");
                 }
                 if (val == "0") {
-                    if (b.c == 0 || !$cell.hasClass("editable")) val = "";
+                    if (b.c == undefined || !$cell.hasClass("editable")) val = "";
                     $cell.text(val);
                 } else {
                     $cell.number(val,0,'.',' ');
