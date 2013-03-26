@@ -88,7 +88,7 @@ namespace Zeta.Extreme.Form.SaveSupport {
 
 		private string GenerateSaveSql(OutCell cell, IPrincipal user) {
 			if (cell.linkedcell.c != 0) {
-				return string.Format("\r\nupdate cell set decimalvalue= {0}, usr= '{1}' where id= {2}",
+				return string.Format("\r\nupdate cell set version=getdate(), decimalvalue= {0}, usr= '{1}' where id= {2}",
 				                     cell.v,
 				                     user.Identity.Name,
 				                     cell.linkedcell.c);
