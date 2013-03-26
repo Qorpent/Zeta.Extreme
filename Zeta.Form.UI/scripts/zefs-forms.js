@@ -180,7 +180,8 @@
         var $cell = this.getActiveCell();
         var $input = $($cell.find('input').first());
         if ($input.length != 0){
-            var $val = $input.val();
+            // преобразование запятой в точку
+            var $val = $input.val().replace(",",".");
             $input.remove();
             $cell.text($val);
         }
