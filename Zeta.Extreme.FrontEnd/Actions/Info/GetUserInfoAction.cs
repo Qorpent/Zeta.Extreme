@@ -38,6 +38,6 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		/// <summary>
 		/// 	Логин, по которому запрашиваются данные пользователя
 		/// </summary>
-		[Bind(Required = true, ValidatePattern = @"^[\w\d_\.]+\\[\w\d_\.]+$")] protected string login;
+		[Bind(Required = true, ValidatePattern = @"^([\w\d_\.]+\\)?[\w\d_\.]+$")] protected string login;
 	}
 }

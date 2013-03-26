@@ -19,6 +19,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Zeta.Extreme.Model.MetaCaches;
 
 namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>
@@ -39,8 +40,16 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// </summary>
 		/// <returns></returns>
 		public IEnumerable<FormAttachment> GetAttachments(IFormSession session) {
-			var query = new FormAttachment(session, null, AttachedFileType.Default, false);
-			return _storage.Find(query).Select(_ => new FormAttachment(session, _, AttachedFileType.Default));
+			var allperiods = Periods.Eval(session.Year, session.Period, -11).Periods;
+			foreach (var period in allperiods) {
+				var query = new FormAttachment(session, null, AttachedFileType.Default, false);
+				query.Period = period;
+				var subresult = _storage.Find(query).Select(_ => new FormAttachment(session, _, AttachedFileType.Default));
+				foreach (var attachment in subresult) {
+					yield return attachment;
+				}
+			}
+			
 		}
 
 		/// <summary>
