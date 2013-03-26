@@ -38,20 +38,18 @@
             modalfooter.find('.closebtn').removeClass("btn-primary");
         }
         modal.append(modalheader, modalbody, modalfooter);
+        $('body').append(modal);
         modalheader = modalbody = modalfooter = null;
         $(modal).modal({backdrop: false});
 
         // Убиваем окно после его закрытия
         $(modal).on('hidden', function() { $(this).remove() });
-        $(modal).draggable();
+        $(modal).draggable({ handle: ".modal-header", containment: "window"});
     };
     $(window.zeta).on(window.zeta.handlers.on_modal, function(e,params) {
         $(document).trigger('click.dropdown.data-api');
         ShowModal(params);
     });
-//    $(document).on('click.dropdown.data-api', function(e) {
-//        console.log(e);
-//    });
     zetamodal.body = $(container).append();
     root.console.RegisterWidget(zetamodal);
 }(window.jQuery);
