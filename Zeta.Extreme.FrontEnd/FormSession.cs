@@ -407,7 +407,7 @@ namespace Zeta.Extreme.FrontEnd {
 						 name = r.Name,
 						 idx = ri.i,
 						 iscaption = r.IsMarkSeted("0CAPTION"),
-						 isprimary = !r.IsFormula && !r.IsMarkSeted("0SA") && 0 == r.Children.Count,
+						 isprimary = r.GetIsPrimary(),
 						 level = ri.l,
 						 number = r.OuterCode,
 						 measure = NeedMeasure ? r.ResolveMeasure() : "",
@@ -657,13 +657,23 @@ namespace Zeta.Extreme.FrontEnd {
 			rows = result.ToArray();
 		}
 
-		private void AddRow(IList<IdxRow> result, IZetaRow row, int level) {
+		private void AddRow(IList<IdxRow> result, IZetaRow row, int level, bool markreadonly= false) {
 			_ridx++;
-			result.Add(new IdxRow {i = _ridx, l = level, _ = row});
-			var children = row.Children.OrderBy(_ => _.GetSortKey()).ToArray();
+			bool mymarkreadonly = markreadonly;
+			var myrow = row;
+			if (myrow.RefTo != null) {
+				myrow = (IZetaRow) myrow.RefTo.GetCopyOfHierarchy();
+				myrow.Name = row.Name;
+				mymarkreadonly = true;
+			}
+			if (mymarkreadonly) {
+				myrow.LocalProperties["readonly"] = true;
+			}
+			result.Add(new IdxRow {i = _ridx, l = level, _ = myrow});
+			var children = myrow.Children.OrderBy(_ => _.GetSortKey()).ToArray();
 			foreach (var c in children) {
 				if (IsRowMatch(c)) {
-					AddRow(result, c, level + 1);
+					AddRow(result, c, level + 1,mymarkreadonly);
 				}
 			}
 		}
