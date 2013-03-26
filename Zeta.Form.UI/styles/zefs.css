@@ -164,3 +164,7 @@ div.open>.tooltip {
 .zetauserinfo td:first-child {
     font-weight: bold;
 }
+
+.zefssessioninfo td:first-child {
+    font-weight: bold;
+}
