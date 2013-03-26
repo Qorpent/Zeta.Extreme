@@ -29,14 +29,24 @@
     };
 
     Zefs.prototype.init = function () {
-        $(document).on('click', $.proxy(function(e) {
+        $(document).on('click', $.proxy(function() {
             if (this.getActiveCell().hasClass('editing')) {
                 this.uninputCell();
             }
         }, this));
         this.table.delegate('td.editable','click', $.proxy(function(e) {
+            if (e.ctrlKey) {
+                window.zefs.myform.cellhistory(e.target);
+            }
             e.stopPropagation();
             this.activateCell(e.target);
+        }, this));
+        this.table.delegate('td.data','click', $.proxy(function(e) {
+            if (!$(e.target).hasClass("editable")) {
+                if (e.ctrlKey) {
+                    window.zefs.myform.celldebug(e.target);
+                }
+            }
         }, this));
 
         // Фиксируем шапку сразу
@@ -180,9 +190,12 @@
         var $cell = this.getActiveCell();
         var $input = $($cell.find('input').first());
         if ($input.length != 0){
-            var $val = $input.val();
+            // преобразование запятой в точку
+            var $val = $input.val().replace(",",".");
             $input.remove();
             $cell.text($val);
+            // реальное значение (без форматов и т.д.) для сохранения в базу
+            $cell.data("value", $val);
         }
         if (!!e && e == "esc") {
             $cell.text($cell.data("previous"));
@@ -359,8 +372,11 @@
                 // S button
                 case 83 :
                     e.preventDefault();
-                    if (e.ctrlKey && zefs.myform != null) {
-                        this.uninputCell();
+                    this.uninputCell();
+                    if (e.ctrlKey && e.shiftKey) {
+                        zefs.myform.forcesave();
+                    }
+                    else if (e.ctrlKey) {
                         zefs.myform.save();
                     }
                     break;
@@ -377,10 +393,10 @@
         this.uninputCell();
         var obj = {};
         var div = $('<div/>');
-        $.each($('table.data td.changed'), function(i,e) {
-            e = $(e);
-            div.number(e.text(), 0, '', '');
-            obj[i] = {id:e.attr("id"), value:div.text(), ri:e.attr("ri")};
+        $.each($('table.data td.changed'), function(i,cell) {
+            cell = $(cell);
+            div.number(cell.text(), 0, '', '');
+            obj[i] = {id:cell.attr("id"), value:cell.data("value") || div.text(), ri:cell.attr("ri")};
         });
         return obj;
     };

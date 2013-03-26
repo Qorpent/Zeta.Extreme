@@ -119,7 +119,7 @@ root.init = root.init ||
 
     var UnlockForm = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
-            if (!root.myform.lock.isopen && root.myform.lock.state != "0ISCHECKED") {
+            if (!root.myform.lock.isopen) {
                 api.lock.set.execute({state: "0ISOPEN"});
             }
         }
@@ -133,10 +133,30 @@ root.init = root.init ||
         }
     };
 
+    var CellHistory = function(cell) {
+        cell = $(cell);
+        if (!!cell.data("cellid")) {
+            api.metadata.cellhistory.execute({session: root.myform.sessionId, cellid: cell.data("cellid")});
+        }
+    };
+
+    var CellDebug = function(cell) {
+        cell = $(cell);
+        if (!!cell.attr("id")) {
+            api.metadata.celldebug.execute({session: root.myform.sessionId, key: cell.attr("id")});
+        }
+    };
+
     var Save = function() {
         var obj = window.zefs.getChanges();
         if (!$.isEmptyObject(obj) && !root.myform.lock) return;
         root.myform.datatosave = obj;
+        $(root).trigger(root.handlers.on_savestart);
+        api.data.saveready.execute();
+    };
+
+    var ForceSave = function() {
+        root.myform.datatosave = "FORCE";
         $(root).trigger(root.handlers.on_savestart);
         api.data.saveready.execute();
     };
@@ -178,6 +198,16 @@ root.init = root.init ||
         }
     };
 
+    var OpenFormulaDebuger = function() {
+        window.open(api.siterootold() + "zeta/debug/index.rails?asworkspace=1", '_blank');
+    };
+
+    var SetupForm = function() {
+        if (!!root.myform.currentSession) {
+            window.open(api.siterootold() + "row/index.rails?root=" + root.myform.currentSession.structure.rootrow, '_blank');
+        }
+    };
+
     // Обработчики событий
     $(window.zefs).on(window.zefs.handlers.on_renderfinished, function(e, table) {
         ZefsIt(table);
@@ -200,6 +230,56 @@ root.init = root.init ||
         if($.isEmptyObject(root.periods)) {
             root.periods = result;
             $(root).trigger(root.handlers.on_periodsload);
+        }
+    });
+
+    api.metadata.celldebug.onSuccess(function(e, result) {
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            title: "Отладка ячейки",
+            text: JSON.stringify(result)
+        });
+    });
+
+    api.metadata.cellhistory.onSuccess(function(e, result) {
+        if(!$.isEmptyObject(result)) {
+            var cellinfotoggle = $('<button class="btn-link"/>').text("Показать/Спрятать полную информацию о ячейке");
+            cellinfotoggle.css("padding", "5px 0");
+            var cellinfo = $('<table class="table table-bordered"/>').append(
+                $('<tr/>').append($('<td/>').text("ID"), $('<td/>').text(result.cell.id)),
+                $('<tr/>').append($('<td/>').text("Объект"), $('<td/>').text("(" + result.cell.objid + ") " + result.cell.objname)),
+                $('<tr/>').append($('<td/>').text("Колонка"), $('<td/>').text("(" + result.cell.colcode + ") " + result.cell.colname)),
+                $('<tr/>').append($('<td/>').text("Строка"), $('<td/>').text("(" + result.cell.rowcode + ") " + result.cell.rowname)),
+                $('<tr/>').append($('<td/>').text("Период"), $('<td/>').text("(" + result.cell.period + ") " + window.zefs.getperiodbyid(result.cell.period)))
+            ).hide();
+            cellinfotoggle.click(function() { cellinfo.toggle() });
+            var cellhistory = $('<table class="table table-bordered table-striped"/>');
+            cellhistory.append(
+                $('<thead/>').append(
+                    $('<tr/>').append($('<th/>').text("Время"),$('<th/>').text("Пользователь"),$('<th/>').text("Значение"))
+                ), $('<tbody/>')
+            );
+            var u = $('<span class="label label-inverse"/>').text(result.cell.user);
+            cellhistory.find('tbody').append(
+                $('<tr/>').append(
+                    $('<td/>').text(result.cell.Date.format("dd.mm.yyyy HH:MM:ss")), $('<td/>').append(u), $('<td/>').text(result.cell.value)
+                )
+            );
+            u.zetauser();
+            if (!$.isEmptyObject(result.history)) {
+                $.each(result.history, function(i, e) {
+                    var user = $('<span class="label label-inverse"/>').text(e.user);
+                    cellhistory.find('tbody').append(
+                        $('<tr/>').append(
+                            $('<td/>').text(e.Date.format("dd.mm.yyyy HH:MM:ss")), $('<td/>').append(user), $('<td/>').text(e.value)
+                        )
+                    );
+                    user.zetauser();
+                });
+            }
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "История ячейки",
+                content: $('<div/>').append(cellinfotoggle, cellinfo, cellhistory)
+            });
         }
     });
 
@@ -255,9 +335,12 @@ root.init = root.init ||
         $.each($('td.recalced'), function(i,e) {
             $(e).removeClass("recalced");
         });
+        if (typeof root.myform.datatosave == "object") {
+            root.myform.datatosave = JSON.stringify(root.myform.datatosave);
+        }
         api.data.save.execute({
             session: root.myform.sessionId,
-            data: JSON.stringify(root.myform.datatosave)
+            data: root.myform.datatosave
         });
     });
 
@@ -286,8 +369,8 @@ root.init = root.init ||
             api.lock.history.execute({session: root.myform.sessionId});
         } else {
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
-                title: result.responseText.match(/\<H1>([^<]+)/)[1].trim(),
-                text: result.responseText.match(/\<i>([^<]+)/)[1].trim()
+                title: result.responseText.match(/<H1>([^<]+)/)[1].trim(),
+                text: result.responseText.match(/<i>([^<]+)/)[1].trim()
             });
         }
     });
@@ -337,6 +420,7 @@ root.init = root.init ||
     $.extend(root.myform, {
         execute : function(){api.server.start()},
         save : Save,
+        forcesave : ForceSave,
         message: Message,
         lockform: LockForm,
         unlockform: UnlockForm,
@@ -344,9 +428,13 @@ root.init = root.init ||
         attachfile: AttachFile,
         deletefile: DeleteFile,
         downloadfile: DownloadFile,
-        openreport: OpenReport
+        openreport: OpenReport,
+        setupform: SetupForm,
+        cellhistory: CellHistory,
+        celldebug: CellDebug,
+        openformuladebuger: OpenFormulaDebuger
     });
 
     return root.myform;
 });
-})()
+})();

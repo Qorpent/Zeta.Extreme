@@ -68,7 +68,8 @@ $.extend(root,{
                             "visible": "visible"
                         });
                         if (col.controlpoint && row.controlpoint) td.addClass("control");
-                        if (col.isprimary && row.isprimary && !row.exref) td.addClass("editable");
+                        if (col.isprimary && row.isprimary) td.addClass("editable");
+                        if (col.exref && row.exref) td.removeClass("editable");
                         tr.append(td);
                     });
                 }
@@ -93,7 +94,7 @@ $.extend(root,{
                     $cell.addClass("recalced");
                 }
                 if (val == "0") {
-                    if (b.c == 0 || !$cell.hasClass("editable")) val = "";
+                    if (b.c == undefined || !$cell.hasClass("editable")) val = "";
                     $cell.text(val);
                 } else {
                     $cell.number(val,0,'.',' ');
@@ -101,6 +102,9 @@ $.extend(root,{
                 $cell.removeClass("notloaded");
                 $cell.data("history", val);
                 $cell.data("previous", val);
+                // реальное число без форматов, которое должно сохраняться в базу
+                $cell.data("value", val);
+                if (!!b.c) $cell.data("cellid", b.c);
                 $cell.attr("ri", b.ri);
                 if (val.search(/\./) != -1 && val.search("error") == -1) {
                     $cell.addClass("rounded");
