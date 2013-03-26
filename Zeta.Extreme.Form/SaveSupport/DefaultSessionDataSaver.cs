@@ -66,17 +66,20 @@ namespace Zeta.Extreme.Form.SaveSupport {
 		/// <param name="result"> </param>
 		/// <param name="user"> </param>
 		protected override void Save(IFormSession session, XElement savedata, SaveResult result, IPrincipal user) {
+			if (result.SaveCells.Length == 0) return;
 			var script = "";
 			foreach (var cell in result.SaveCells) {
 				script += GenerateSaveSql(cell, user);
 			}
-			result.SaveSqlScript = script;
-			using (var c = GetConnection()) {
-				c.Open();
-				var cmd = c.CreateCommand();
-				cmd.CommandText = script;
-				cmd.ExecuteNonQuery();
-			}
+			
+				result.SaveSqlScript = script;
+				using (var c = GetConnection()) {
+					c.Open();
+					var cmd = c.CreateCommand();
+					cmd.CommandText = script;
+					cmd.ExecuteNonQuery();
+				}
+			
 		}
 
 		private IDbConnection GetConnection() {
