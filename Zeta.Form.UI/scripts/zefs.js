@@ -140,6 +140,13 @@ root.init = root.init ||
         }
     };
 
+    var CellDebug = function(cell) {
+        cell = $(cell);
+        if (!!cell.attr("id")) {
+            api.metadata.celldebug.execute({session: root.myform.sessionId, key: cell.attr("id")});
+        }
+    };
+
     var Save = function() {
         var obj = window.zefs.getChanges();
         if (!$.isEmptyObject(obj) && !root.myform.lock) return;
@@ -192,7 +199,7 @@ root.init = root.init ||
     };
 
     var OpenFormulaDebuger = function() {
-            window.open(api.siterootold() + "zeta/debug/index.rails?asworkspace=1", '_blank');
+        window.open(api.siterootold() + "zeta/debug/index.rails?asworkspace=1", '_blank');
     };
 
     var SetupForm = function() {
@@ -224,6 +231,13 @@ root.init = root.init ||
             root.periods = result;
             $(root).trigger(root.handlers.on_periodsload);
         }
+    });
+
+    api.metadata.celldebug.onSuccess(function(e, result) {
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            title: "Отладка ячейки",
+            text: JSON.stringify(result)
+        });
     });
 
     api.metadata.cellhistory.onSuccess(function(e, result) {
@@ -417,6 +431,7 @@ root.init = root.init ||
         openreport: OpenReport,
         setupform: SetupForm,
         cellhistory: CellHistory,
+        celldebug: CellDebug,
         openformuladebuger: OpenFormulaDebuger
     });
 

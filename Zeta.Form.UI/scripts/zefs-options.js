@@ -150,6 +150,7 @@ $.extend(api,(function(){
         },
 
         metadata : {
+            celldebug : new Command({ domain: "zefs", name: "evalstack" }),
             cellhistory : $.extend(new Command({domain: "zefs", name: "cellhistory"}), {
                 wrap : function(obj) {
                     if ($.isEmptyObject(obj)) return obj;

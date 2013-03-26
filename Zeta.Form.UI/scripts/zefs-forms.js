@@ -41,6 +41,13 @@
             e.stopPropagation();
             this.activateCell(e.target);
         }, this));
+        this.table.delegate('td.data','click', $.proxy(function(e) {
+            if (!$(e.target).hasClass("editable")) {
+                if (e.ctrlKey) {
+                    window.zefs.myform.celldebug(e.target);
+                }
+            }
+        }, this));
 
         // Фиксируем шапку сразу
         this.fixHeader();
