@@ -185,6 +185,10 @@ root.init = root.init ||
         }
     };
 
+    var OpenFormulaDebuger = function() {
+            window.open(api.siterootold() + "zeta/debug/index.rails?asworkspace=1", '_blank');
+    };
+
     var SetupForm = function() {
         if (!!root.myform.currentSession) {
             window.open(api.siterootold() + "row/index.rails?root=" + root.myform.currentSession.structure.rootrow, '_blank');
@@ -402,7 +406,8 @@ root.init = root.init ||
         downloadfile: DownloadFile,
         openreport: OpenReport,
         setupform: SetupForm,
-        cellhistory: CellHistory
+        cellhistory: CellHistory,
+        openformuladebuger: OpenFormulaDebuger
     });
 
     return root.myform;
