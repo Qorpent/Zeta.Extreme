@@ -101,6 +101,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             // get the ObjectId identifier
             var logItemId = document.GetValue("_id").AsObjectId;
 
+<<<<<<< HEAD
             UpdateUsersCollection(logItemId, message.Name);
             UpdateServersCollection(logItemId, message.Server);
         }
@@ -109,6 +110,16 @@ namespace Zeta.Extreme.MongoDB.Integration {
             _mongoUsersCollection.Update(
                 Query.EQ(
                     "user", username
+=======
+            UpdateUsersCollection(logItemId, message);
+            UpdateServersCollection(logItemId, message);
+        }
+
+        private void UpdateUsersCollection(ObjectId sourceObjectId, LogMessage message) {
+            _mongoUsersCollection.Update(
+                Query.EQ(
+                    "user", message.Name
+>>>>>>> c812fd8bd11a41134585a6dac491a036660e6201
                 ),
 
                 Update.Push(
@@ -119,10 +130,17 @@ namespace Zeta.Extreme.MongoDB.Integration {
             );
         }
 
+<<<<<<< HEAD
         private void UpdateServersCollection(ObjectId sourceObjectId, string serverName) {
             _mongoServersCollection.Update(
                 Query.EQ(
                     "server", serverName
+=======
+        private void UpdateServersCollection(ObjectId sourceObjectId, LogMessage message) {
+            _mongoServersCollection.Update(
+                Query.EQ(
+                    "server", message.Server
+>>>>>>> c812fd8bd11a41134585a6dac491a036660e6201
                 ),
 
                 Update.Push(
