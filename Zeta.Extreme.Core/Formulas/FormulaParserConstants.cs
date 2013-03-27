@@ -1,13 +1,21 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : FormulaParserConstants.cs
-// Project: Zeta.Extreme.Core
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core/FormulaParserConstants.cs
 #endregion
-
 namespace Zeta.Extreme {
 	/// <summary>
 	/// 	Содержит различные константы для парсинга формул и псевдо-сумм
@@ -32,6 +40,11 @@ namespace Zeta.Extreme {
 		/// 	Паттерн смещения по объекту
 		/// </summary>
 		public const string ObjPattern = @"((\.toobj\(\s*(?<o>\d+)\s*\))?)"; //сразу настраивается как опицональный
+
+		/// <summary>
+		/// 	Паттерн фильтра по контрагентам
+		/// </summary>
+		public const string AltObjFilterPattern = @"((\.altobjfilter\(""(?<aof>[^""]*)""\))?)"; //сразу настраивается как опицональный
 
 		/// <summary>
 		/// 	Паттерн смещения по году
@@ -70,6 +83,7 @@ namespace Zeta.Extreme {
 			ColOrRowPattern +
 			ColOrRowOptionalPattern +
 			ObjPattern +
+			AltObjFilterPattern +
 			YearPattern +
 			PeriodOrPeriodsPattern;
 

@@ -1,3 +1,21 @@
+#region LICENSE
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core.Tests/CountBugFix.cs
+#endregion
 using System;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
@@ -31,7 +49,7 @@ namespace Zeta.Extreme.Core.Tests {
 					Time = { Year = 2013, Period = 251 },
 					Obj = {Id=1067},
 				});
-			Assert.AreEqual(45935313m, result.NumericResult);
+			Assert.AreEqual(46568901m, result.NumericResult);
 		}
 
 		[Test]
@@ -102,7 +120,7 @@ namespace Zeta.Extreme.Core.Tests {
 			query.WaitPrepare();
 
 			_serial.Eval(query);
-			Assert.AreEqual(-124472m, query.Result.NumericResult);
+			Assert.AreEqual(-124473m, query.Result.NumericResult);
 		}
 
 		
@@ -194,6 +212,22 @@ namespace Zeta.Extreme.Core.Tests {
 			var res = _serial.Eval(query);
 			Assert.AreEqual(0, res.NumericResult);
 
+		}
+
+		[Test]
+		public void ZC_427_OZHIDPREDGOD_NODOSUM_ROW() {
+			var query = new Query
+			{
+				Obj = { Id = 473 },
+				Row = { Code = "m260721" },
+				Col = { Code = "OZHIDPREDGOD" },
+				Time = { Year = 2012, Period = 251 },
+				Session = session,
+
+			};
+			query = (Query) session.Register(query);
+			var res = _serial.Eval(query);
+			Assert.AreNotEqual(0, res.NumericResult);
 		}
 	}
 }

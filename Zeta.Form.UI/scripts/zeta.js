@@ -10,9 +10,7 @@ root.handlers = $.extend(root.handlers, {
     on_logout : "logount",
     on_impersonate : "impersonate",
     on_deimpersonate : "deimpersonate",
-    on_getuserinfo : "getuserinfo",
-
-    on_modal : "modal"
+    on_getuserinfo : "getuserinfo"
 });
 
 root.security = root.security || $.extend(root.security, {
@@ -180,6 +178,7 @@ document.write('<script src="scripts/zefs-formsave.js" type="text/javascript"></
 document.write('<script src="scripts/zefs-feedback.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-info.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-formheader.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-extrapannel.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-table.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-attacher.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-periods.js" type="text/javascript"></script>');
@@ -188,6 +187,7 @@ document.write('<script src="scripts/zefs-colmanager.js" type="text/javascript">
 document.write('<script src="scripts/zefs-lockmanager.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-alerter.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zeta-modal.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-report.js" type="text/javascript"></script>');
 
 !function($) {
     $(window).load(function() { window.zeta.console.whoami() });

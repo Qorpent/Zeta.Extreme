@@ -1,13 +1,21 @@
 ﻿#region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : StrongSumProvider.cs
-// Project: Zeta.Extreme.Core
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core/StrongSumProvider.cs
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -120,7 +128,7 @@ namespace Zeta.Extreme {
 			if (item is IZetaRow) {
 				var row = item as IZetaRow;
 				if (row.IsMarkSeted("0SA")) {
-					if (string.IsNullOrWhiteSpace(row.Group)) {
+					if (string.IsNullOrWhiteSpace(((IZetaFormsSupport) row).GroupCache)) {
 						foreach (var i in GetNativeSumDelta(row)) {
 							yield return i;
 						}
@@ -151,7 +159,7 @@ namespace Zeta.Extreme {
 		}
 
 		private IEnumerable<QueryDelta> GetGroupSumDelta(IZetaRow row) {
-			var groups = row.Group.SmartSplit(false, true, '/', ';').Distinct().ToArray();
+			var groups = ((IZetaFormsSupport) row).GroupCache.SmartSplit(false, true, '/', ';').Distinct().ToArray();
 			var pluses = groups.Where(_ => !_.StartsWith("-")).ToArray();
 			var minuses = groups.Where(_ => _.StartsWith("-")).Select(_ => _.Substring(1)).ToArray();
 			foreach (var p in pluses) {

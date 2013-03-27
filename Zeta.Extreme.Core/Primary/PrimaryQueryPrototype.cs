@@ -1,18 +1,32 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : PrimaryQueryPrototype.cs
-// Project: Zeta.Extreme.Core
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core/PrimaryQueryPrototype.cs
 #endregion
-
 namespace Zeta.Extreme.Primary {
 	/// <summary>
 	/// 	ќписатель прототипа первичного запроса
 	/// </summary>
 	public struct PrimaryQueryPrototype {
+		
+		/// <summary>
+		/// Marks that query requires zeta.data instead of zeta.cell
+		/// </summary>
+		public bool UseViewInsteadOfTable { get; set; }
+
 		/// <summary>
 		/// 	ѕризнак использовани€ агрегации
 		/// </summary>
@@ -31,11 +45,16 @@ namespace Zeta.Extreme.Primary {
 		/// <summary>
 		/// 	»спользование специального метода доступа к первичным значени€м
 		/// </summary>
-		public bool RequreZetaEval { get; set; }
+		public bool UseZetaEval { get; set; }
 
 		/// <summary>
 		/// 	÷елева€ валюта
 		/// </summary>
-		public string Valuta { get; set; }
+		public string Currency { get; set; }
+
+		/// <summary>
+		/// Marks that period is aggregated period
+		/// </summary>
+		public bool AggregatePeriod { get; set; }
 	}
 }

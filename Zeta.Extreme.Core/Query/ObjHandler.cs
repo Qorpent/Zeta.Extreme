@@ -1,16 +1,27 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : ObjHandler.cs
-// Project: Zeta.Extreme.Core
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core/ObjHandler.cs
 #endregion
-
 using System;
+using System.Linq;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
@@ -19,9 +30,20 @@ namespace Zeta.Extreme {
 	/// </summary>
 	public sealed class ObjHandler : CachedItemHandlerBase<IZetaObject>, IObjHandler {
 		/// <summary>
+		/// 
+		/// </summary>
+		public ObjHandler() {
+			DetailMode = DetailMode.None;
+			Type = ZoneType.Obj;
+
+
+		}
+
+		/// <summary>
 		/// 	Тип зоны
 		/// </summary>
-		public ObjType Type {
+		/// <exception cref="Exception">cannot set type on natived zones</exception>
+		public ZoneType Type {
 			get {
 				if (null != Native) {
 					return GetNativeType(Native);
@@ -49,14 +71,14 @@ namespace Zeta.Extreme {
 		/// 	Шоткат для быстрой проверки что речь идет о предприятии
 		/// </summary>
 		public bool IsForObj {
-			get { return Type == ObjType.Obj; }
+			get { return Type == ZoneType.Obj; }
 		}
 
 		/// <summary>
 		/// 	Шоткат для быстрой проверки что речь идет не о предприятии
 		/// </summary>
 		public bool IsNotForObj {
-			get { return Type != ObjType.Obj; }
+			get { return Type != ZoneType.Obj; }
 		}
 
 		/// <summary>
@@ -65,6 +87,7 @@ namespace Zeta.Extreme {
 		public IZetaMainObject ObjRef {
 			get { return Native as IZetaMainObject; }
 		}
+		
 
 		/// <summary>
 		/// 	Простая копия зоны
@@ -80,16 +103,25 @@ namespace Zeta.Extreme {
 		/// <param name="session"> </param>
 		/// <exception cref="NotImplementedException"></exception>
 		public override void Normalize(ISession session) {
+			if (Type == ZoneType.None) {
+				Type = ZoneType.Obj;
+			}
+			NormalizeNative(session);
+		}
+
+	
+
+		private void NormalizeNative(ISession session) {
 			if (IsStandaloneSingletonDefinition()) {
 				var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 				switch (Type) {
-					case ObjType.Obj:
+					case ZoneType.Obj:
 						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
 						break;
-					case ObjType.Div:
+					case ZoneType.Div:
 						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
 						break;
-					case ObjType.Grp:
+					case ZoneType.Grp:
 						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());
 						break;
 				}
@@ -104,20 +136,21 @@ namespace Zeta.Extreme {
 			base.Apply(item);
 		}
 
-		private ObjType GetNativeType(IZetaObject native) {
+		private ZoneType GetNativeType(IZetaObject native)
+		{
 			if (null != (native as IZetaMainObject)) {
-				return ObjType.Obj;
+				return ZoneType.Obj;
 			}
 			if (null != (native as IZetaDetailObject)) {
-				return ObjType.Detail;
+				return ZoneType.Detail;
 			}
 			if (null != (native as IZetaObjectGroup)) {
-				return ObjType.Grp;
+				return ZoneType.Grp;
 			}
-			if (null != (native as IMainObjectGroup)) {
-				return ObjType.Div;
+			if (null != (native as IObjectDivision)) {
+				return ZoneType.Div;
 			}
-			return ObjType.Unknown;
+			return ZoneType.Unknown;
 		}
 
 		/// <summary>
@@ -126,7 +159,8 @@ namespace Zeta.Extreme {
 		/// <returns> </returns>
 		protected override string EvalCacheKey() {
 			var prefix = (int) Type + "::";
-			if (Type != ObjType.Detail && DetailMode != DetailMode.None) {
+			if (Type != ZoneType.Detail && DetailMode != DetailMode.None)
+			{
 				prefix += "d:" + (int) DetailMode + "/";
 			}
 			return prefix + base.EvalCacheKey();
@@ -140,10 +174,12 @@ namespace Zeta.Extreme {
 		public override bool IsStandaloneSingletonDefinition(bool nativefalse = true) {
 			var result = base.IsStandaloneSingletonDefinition(nativefalse);
 			if (result) {
-				if (Type == ObjType.None) {
+				if (Type == ZoneType.None)
+				{
 					return false;
 				}
-				if (Type == ObjType.Unknown) {
+				if (Type == ZoneType.Unknown)
+				{
 					return false;
 				}
 			}
@@ -151,6 +187,6 @@ namespace Zeta.Extreme {
 		}
 
 
-		private ObjType _type;
+		private ZoneType _type;
 	}
 }

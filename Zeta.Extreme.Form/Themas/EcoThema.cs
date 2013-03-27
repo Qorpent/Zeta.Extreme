@@ -1,13 +1,21 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : EcoThema.cs
-// Project: Zeta.Extreme.Form
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Form/EcoThema.cs
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,27 +24,29 @@ using Qorpent.Applications;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
 	/// 	Стандартная ЭКО -тема
 	/// </summary>
+	[Obsolete("very bad wrapper")]
 	public class EcoThema : Thema {
 		/// <summary>
 		/// 	Подписанты
 		/// </summary>
-		public IZetaUnderwriter[] Underwriters { get; set; }
+		public IZetaUser[] Users { get; set; }
 
 		/// <summary>
 		/// 	Операторы
 		/// </summary>
-		public IZetaUnderwriter[] Operators { get; set; }
+		public IZetaUser[] Operators { get; set; }
 
 		/// <summary>
 		/// 	Читатели темы
 		/// </summary>
-		public IZetaUnderwriter[] Readers { get; set; }
+		public IZetaUser[] Readers { get; set; }
 
 		/// <summary>
 		/// 	Префикс роли
@@ -49,24 +59,25 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <summary>
 		/// 	Ответственность основная
 		/// </summary>
-		public IUsrThemaMap Responsibility {
-			get { return Parameters.SafeGet<IUsrThemaMap>("responsibility"); }
+
+		public IUserBizCaseMap Responsibility {
+			get { return Parameters.SafeGet<IUserBizCaseMap>("responsibility"); }
 			set { Parameters["responsibility"] = value; }
 		}
 
 		/// <summary>
 		/// 	Ответственность дополнительная
 		/// </summary>
-		public IUsrThemaMap Responsibility2 {
-			get { return Parameters.SafeGet<IUsrThemaMap>("responsibility2"); }
+		public IUserBizCaseMap Responsibility2 {
+			get { return Parameters.SafeGet<IUserBizCaseMap>("responsibility2"); }
 			set { Parameters["responsibility2"] = value; }
 		}
 
 		/// <summary>
 		/// 	Отвественность холдинга
 		/// </summary>
-		public IUsrThemaMap HoldResponsibility {
-			get { return Parameters.SafeGet<IUsrThemaMap>("holdresponsibility"); }
+		public IUserBizCaseMap HoldResponsibility {
+			get { return Parameters.SafeGet<IUserBizCaseMap>("holdresponsibility"); }
 			set { Parameters["holdresponsibility"] = value; }
 		}
 
@@ -198,20 +209,20 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Подготовка деталей (ролей??)
 		/// </summary>
 		public void SetupDetails() {
-			IList<IZetaUnderwriter> unds = new List<IZetaUnderwriter>();
-			IList<IZetaUnderwriter> ops = new List<IZetaUnderwriter>();
-			IList<IZetaUnderwriter> reads = new List<IZetaUnderwriter>();
+			IList<IZetaUser> unds = new List<IZetaUser>();
+			IList<IZetaUser> ops = new List<IZetaUser>();
+			IList<IZetaUser> reads = new List<IZetaUser>();
 			var ur = Roleprefix + "_UNDERWRITER";
 			var wr = Roleprefix + "_OPERATOR";
 			var rr = Roleprefix + "_ANALYTIC";
-			Func<IZetaUnderwriter, string, bool> inrole = (x, s) =>
+			Func<IZetaUser, string, bool> inrole = (x, s) =>
 				{
 					if (x.Roles.IsEmpty()) {
 						return false;
 					}
 					return x.Roles.Contains(s);
 				};
-			foreach (var o in Object.Underwriters) {
+			foreach (var o in Object.Users) {
 				if (inrole(o, ur)) {
 					unds.Add(o);
 					continue;
@@ -225,7 +236,7 @@ namespace Zeta.Extreme.Form.Themas {
 					continue;
 				}
 			}
-			Underwriters = unds.OrderBy(x => x.Name).ToArray();
+			Users = unds.OrderBy(x => x.Name).ToArray();
 			Operators = ops.OrderBy(x => x.Name).ToArray();
 			Readers = reads.OrderBy(x => x.Name).ToArray();
 		}

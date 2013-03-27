@@ -1,13 +1,21 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : DefaultPrimarySource.cs
-// Project: Zeta.Extreme.Core
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core/DefaultPrimarySource.cs
 #endregion
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -185,11 +193,12 @@ namespace Zeta.Extreme.Primary {
 						var period = r.GetInt32(5);
 						var value = r.GetDecimal(6);
 						var otype = r.GetInt32(7);
+						var altobj = r.GetString(8);
 						var target =
 							_grouped[row].FirstOrDefault(
 								_ =>
 								_.Col.Id == col && _.Obj.Id == obj && (int) _.Obj.Type == otype && _.Time.Year == year &&
-								_.Time.Period == period);
+								_.Time.Period == period && (_.Reference.Contragents??"")==altobj);
 						if (null != target) {
 							_session.StatIncPrimaryAffected();
 							target.HavePrimary = true;
@@ -223,27 +232,17 @@ namespace Zeta.Extreme.Primary {
 			return string.Join("\r\n", groups.Select(_ => _.GenerateSqlScript()));
 		}
 
-		private  IEnumerable<PrimaryQueryGroup> ExplodeToGroups(IEnumerable<IQuery> myrequests) {
-			var valutagroups = myrequests.GroupBy(_ => _.Valuta, _ => _);
-			foreach (var valutagroup in valutagroups) {
-				var detailgroup = valutagroup.GroupBy(_ => _.Obj.DetailMode, _ => _);
-				foreach (var dgroup in detailgroup) {
-					var prot = new PrimaryQueryPrototype();
-					if (valutagroup.Key != "NONE") {
-						prot.RequreZetaEval = true;
-						prot.Valuta = valutagroup.Key;
-					}
-					if (dgroup.Key == DetailMode.SafeObject) {
-						prot.PreserveDetails = true;
-					}
-					else if (dgroup.Key == DetailMode.SafeSumObject) {
-						prot.RequireDetails = true;
-					}
-					yield return
-						new PrimaryQueryGroup
-							{Queries = dgroup.ToArray(), ScriptGenerator = new SimpleObjectDataScriptGenerator(), Prototype = prot};
-				}
-			}
+		private  IEnumerable<PrimaryQueryGroup> ExplodeToGroups(IQueryWithProcessing[] myrequests) {
+			return 
+				from prototypegroup in myrequests.GroupBy(_ => _.GetPrototype(), _ => _)
+				from dgroup in prototypegroup.GroupBy(_ => _.Obj.DetailMode, _ => _) 
+				from altobjgroup in dgroup.GroupBy(_ => _.Reference.Contragents)  
+				select new PrimaryQueryGroup
+					{
+						Queries = altobjgroup.ToArray(), 
+						ScriptGenerator = new Zeta2SqlScriptGenerator(), 
+						Prototype = prototypegroup.Key
+					};
 		}
 
 

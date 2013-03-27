@@ -2,7 +2,7 @@
  * Виджет информации об авторизации польвателя
  */
 !function($) {
-    var login = $('<span class="login-user label label-inverse" id="tt"/>');
+    var login = $('<span class="login-user label label-info"/>');
     var loginas = $('<span class="login-user label label-warning" />');
     var ConfigurePermissions = function() {
         var user = window.zeta.security.user;
@@ -36,8 +36,8 @@
     });
     var logininfo = new root.security.Widget("logininfo", root.console.layout.position.layoutHeader, "right", { authonly: false, priority: 70, ready: function() {
         ConfigurePermissions();
-        login.zetauser();
-    //  loginas.zetauser();
+        if (login.text() != "") {login.zetauser()};
+        if (loginas.text() != "") {loginas.zetauser()};
     }});
     logininfo.body = $('<div/>').append(login, loginas.hide());
     root.console.RegisterWidget(logininfo);

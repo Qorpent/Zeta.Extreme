@@ -15,17 +15,21 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Qorpent.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Qorpent.Core.Debug\Qorpent.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Qorpent.Log">
+      <HintPath>..\..\qorpent.sys\Qorpent.Log\obj\Debug\Qorpent.Log.dll</HintPath>
+    </Reference>
     <Reference Include="Zeta.Extreme.BizProcess">
       <HintPath>..\..\.build\bin\Zeta.Extreme.BizProcess.Debug\Zeta.Extreme.BizProcess.dll</HintPath>
-    </Reference>
-    <Reference Include="Zeta.Extreme.MongoDB.Integration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\.build\bin\Zeta.Extreme.MongoDB.Integration.Debug\Zeta.Extreme.MongoDB.Integration.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MongoDBAttachmentSourceTests.cs" />
     <Compile Include="MongoDbAttachmentTestsBase.cs" />
+    <Compile Include="MongoDbLogsTests.cs" />
     <Compile Include="P1358Tests.cs" />
     <Compile Include="P1362FindPatternTests.cs" />
   </ItemGroup>
@@ -37,6 +41,10 @@
     <ProjectReference Include="..\..\mongo-csharp-driver\MongoDB.Driver\MongoDB.Driver.csproj">
       <Project>{ae5166cd-76b0-4911-bd80-ced9521f37a1}</Project>
       <Name>MongoDB.Driver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.MongoDB.Integration\Zeta.Extreme.MongoDB.Integration.csproj">
+      <Project>{459e4387-484e-42de-8795-a142e83cfcbb}</Project>
+      <Name>Zeta.Extreme.MongoDB.Integration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />

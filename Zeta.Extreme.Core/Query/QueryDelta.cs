@@ -1,13 +1,21 @@
 ﻿#region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : QueryDelta.cs
-// Project: Zeta.Extreme.Core
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core/QueryDelta.cs
 #endregion
-
 using System;
 using System.Linq;
 using System.Text;
@@ -37,8 +45,16 @@ namespace Zeta.Extreme {
 			MoveRow(result);
 			MoveObj(result);
 			MoveTime(result);
+			MoveContragent(result);
 			result.InvalidateCacheKey();
 			return result;
+		}
+
+		private void MoveContragent(IQuery result) {
+			if (!string.IsNullOrWhiteSpace(Contragents)) {
+				result.Reference = result.Reference.Copy();
+				result.Reference.Contragents = Contragents;
+			}
 		}
 
 		/// <summary>
@@ -53,6 +69,7 @@ namespace Zeta.Extreme {
 			var c = match.Groups["c"].Value;
 			var o = match.Groups["o"].Value.ToInt();
 			var y = match.Groups["y"].Value.ToInt();
+			var aof = match.Groups["aof"].Value.ToStr(); //ZC-248 AltObjFilter
 			var ys = match.Groups["ys"].Value != "-";
 			if (!ys) {
 				y = -y;
@@ -91,8 +108,19 @@ namespace Zeta.Extreme {
 			if (0 != p) {
 				delta.Period = p;
 			}
+
+			//ZC-248
+			if (!string.IsNullOrWhiteSpace(aof)) {
+				delta.Contragents = aof;
+			}
 			return delta;
 		}
+
+		/// <summary>
+		/// Фильтр по контрагенту
+		/// </summary>
+		/// <remarks>Совместимая реализация по ZC-248</remarks>
+		public string Contragents { get; set; }
 
 		/// <summary>
 		/// 	Конвертирует дельту в C# - конструктор для генерации формул
@@ -134,6 +162,9 @@ namespace Zeta.Extreme {
 			}
 			if (Period != 0) {
 				s.Append("Period = " + Period + ", ");
+			}
+			if (!string.IsNullOrWhiteSpace(Contragents)) {
+				s.Append("Contragents = \"" + Contragents + "\", ");
 			}
 			s.Append("}");
 			if (!string.IsNullOrWhiteSpace(infunctionName)) {
@@ -199,16 +230,31 @@ namespace Zeta.Extreme {
 		}
 
 		private void MoveObj(IQuery result) {
+			if (HasObjDelta(result)) {
+				if (null != Obj) {
+					if (!Equals(Obj, result.Obj.Native)) {
+						result.Obj = new ObjHandler {Native = Obj};
+					}
+				}
+				else if (0 != ObjId) {
+					if (ObjId != result.Obj.Id) {
+						result.Obj = new ObjHandler { Id =ObjId};
+					}
+				}
+			}
+
+		}
+
+		private bool HasObjDelta(IQuery result) {
 			if (null != Obj) {
-				if (!Equals(Obj, result.Obj.Native)) {
-					result.Obj = new ObjHandler {Native = Obj};
-				}
+				if (null == result.Obj) return true;
+				if (result.Obj.Native != Obj) return true;
 			}
-			else if (0 != ObjId) {
-				if (ObjId != result.Obj.Id) {
-					result.Obj = new ObjHandler {Id = ObjId};
-				}
+			if (0 != ObjId) {
+				if (null == result.Obj) return true;
+				if (ObjId != result.Obj.Id) return true;
 			}
+			return false;
 		}
 
 
@@ -225,18 +271,18 @@ namespace Zeta.Extreme {
 			if (null != Row && Row != target.Row.Native) {
 				return false;
 			}
-			if (null != Obj && !Equals(Obj, target.Obj.Native)) {
-				return false;
-			}
+
+			if (HasObjDelta(target)) return false;
+
+			if (!string.IsNullOrWhiteSpace(Contragents) && target.Reference.Contragents != Contragents) return false;
+			
 			if (!string.IsNullOrWhiteSpace(ColCode) && ColCode != target.Col.Code) {
 				return false;
 			}
 			if (!string.IsNullOrWhiteSpace(RowCode) && RowCode != target.Row.Code) {
 				return false;
 			}
-			if (0 != ObjId && ObjId != target.Obj.Id) {
-				return false;
-			}
+			
 			if (0 != Period && Period != target.Time.Period) {
 				return false;
 			}

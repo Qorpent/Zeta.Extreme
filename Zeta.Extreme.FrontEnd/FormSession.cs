@@ -1,13 +1,21 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : FormSession.cs
-// Project: Zeta.Extreme.FrontEnd
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.FrontEnd/FormSession.cs
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,6 +27,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
 using Qorpent.Applications;
+using Qorpent.Log;
 using Qorpent.Mvc;
 using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
@@ -33,7 +42,6 @@ using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
-using Zeta.Extreme.Model.PocoClasses;
 using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Model.SqlSupport;
 
@@ -68,7 +76,13 @@ namespace Zeta.Extreme.FrontEnd {
 			FormInfo = new {Template.Code, Template.Name};
 			NeedMeasure = Template.ShowMeasureColumn;
 			Activations = 1;
+			Logger = Application.Current.LogManager.GetLog("form.log", this);
+
 		}
+		/// <summary>
+		/// Журнал
+		/// </summary>
+		public IUserLog Logger { get; set; }
 
 
 		/// <summary>
@@ -270,6 +284,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public LockStateInfo GetCurrentLockInfo() {
 			var isopen = Template.IsOpen;
+			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
 			var cansave = state == "0ISOPEN";
 			return new LockStateInfo
@@ -399,11 +414,13 @@ namespace Zeta.Extreme.FrontEnd {
 						 name = r.Name,
 						 idx = ri.i,
 						 iscaption = r.IsMarkSeted("0CAPTION"),
-						 isprimary = !r.IsFormula && !r.IsMarkSeted("0SA") && 0 == r.Children.Count,
+						 isprimary = r.GetIsPrimary(),
 						 level = ri.l,
 						 number = r.OuterCode,
 						 measure = NeedMeasure ? r.ResolveMeasure() : "",
 						 controlpoint = r.IsMarkSeted("CONTROLPOINT"),
+						 exref = null!=r.ExRefTo,
+						 format = r.ResolveTag("numberformat")
 					 })
 					.Union(
 						(from ci in cols
@@ -418,6 +435,8 @@ namespace Zeta.Extreme.FrontEnd {
 								 year = c.Year,
 								 period = c.Period,
 								 controlpoint = c.ControlPoint,
+								 exref = null!=c.Target && c.Target.IsMarkSeted("DOEXREF"),
+								 format = c.NumberFormat
 							 })
 					).ToArray();
 			sw.Stop();
@@ -454,6 +473,7 @@ namespace Zeta.Extreme.FrontEnd {
 				}
 			}
 			InitSaveMode = false;
+			Logger.Info("data loaded");
 		}
 
 		private void LoadNoPrimary(IDictionary<string, IQuery> queries) {
@@ -647,13 +667,23 @@ namespace Zeta.Extreme.FrontEnd {
 			rows = result.ToArray();
 		}
 
-		private void AddRow(IList<IdxRow> result, IZetaRow row, int level) {
+		private void AddRow(IList<IdxRow> result, IZetaRow row, int level, bool markreadonly= false) {
 			_ridx++;
-			result.Add(new IdxRow {i = _ridx, l = level, _ = row});
-			var children = row.Children.OrderBy(_ => _.GetSortKey()).ToArray();
+			bool mymarkreadonly = markreadonly;
+			var myrow = row;
+			if (myrow.RefTo != null) {
+				myrow = (IZetaRow) myrow.RefTo.GetCopyOfHierarchy();
+				myrow.Name = row.Name;
+				mymarkreadonly = true;
+			}
+			if (mymarkreadonly) {
+				myrow.LocalProperties["readonly"] = true;
+			}
+			result.Add(new IdxRow {i = _ridx, l = level, _ = myrow});
+			var children = myrow.Children.OrderBy(_ => _.GetSortKey()).ToArray();
 			foreach (var c in children) {
 				if (IsRowMatch(c)) {
-					AddRow(result, c, level + 1);
+					AddRow(result, c, level + 1,mymarkreadonly);
 				}
 			}
 		}
@@ -662,10 +692,14 @@ namespace Zeta.Extreme.FrontEnd {
 			if (null == row) {
 				return false;
 			}
+#pragma warning disable 612,618
 			if (row.IsObsolete(Year)) {
+#pragma warning restore 612,618
 				return false;
 			}
+#pragma warning disable 612,618
 			if (null != row.Object && row.Object.Id != Object.Id) {
+#pragma warning restore 612,618
 				return false;
 			}
 			if (row.IsMarkSeted("0NOINPUT")) {
@@ -680,6 +714,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public LockStateInfo GetCanBlockInfo() {
 			var isopen = Template.IsOpen;
+			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
 			var cansave = state == "0ISOPEN";
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
@@ -702,6 +737,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public bool BeginSaveData(XElement xmldata) {
 			lock (this) {
+				
 				if (null != _currentSaveTask) {
 					if (!_currentSaveTask.IsFaulted) {
 						_currentSaveTask.Wait();
@@ -709,6 +745,7 @@ namespace Zeta.Extreme.FrontEnd {
 				}
 				CurrentSaver = CurrentSaver ?? (null == FormServer ? null : FormServer.GetSaver()) ?? new DefaultSessionDataSaver();
 				_currentSaveTask = CurrentSaver.BeginSave(this, xmldata, Application.Current.Principal.CurrentUser);
+				Logger.Info("save started");
 				return true;
 			}
 		}
@@ -778,7 +815,7 @@ namespace Zeta.Extreme.FrontEnd {
 		public FormState[] GetLockHistory() {
 			var states =
 				new NativeZetaReader().ReadFormStates(
-					string.Format("Year = {0} and Period = {1} and LockCode='{2}' and Object = {3} order by Version"
+					string.Format("Year = {0} and Period = {1} and LockCode='{2}' and Object = {3} order by Version desc"
 					              , Year, Period, Template.UnderwriteCode, Object.Id)).ToArray();
 			return states;
 		}
@@ -805,8 +842,9 @@ namespace Zeta.Extreme.FrontEnd {
 		private static IFormAttachmentStorage GetFormAttachStorage() {
 			var result = Application.Current.Container.Get<IFormAttachmentStorage>();
 			if (null == result) {
+				var basestorage = Application.Current.Container.Get<IAttachmentStorage>("attachment.source") ?? new DbfsAttachmentStorage();
 				result = new FormAttachmentSource();
-				((FormAttachmentSource) result).SetStorage(new DbfsAttachmentStorage());
+				((FormAttachmentSource) result).SetStorage(basestorage);
 			}
 			return result;
 		}
@@ -850,7 +888,7 @@ namespace Zeta.Extreme.FrontEnd {
 				       from filetypedesc in filetypes
 				       from formcode in TagHelper.Value(filetypedesc.Tag, "form").Split(',')
 				       where "any" == formcode || Template.Thema.Code == formcode
-				       orderby filetypedesc.Idx
+				       orderby filetypedesc.Index
 				       select new FileTypeRecord {code = filetypedesc.OuterCode, name = filetypedesc.Name}
 			       ).ToArray();
 		}

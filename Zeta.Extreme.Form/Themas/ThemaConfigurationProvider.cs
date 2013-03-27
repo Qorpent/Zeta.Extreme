@@ -1,13 +1,21 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : ThemaConfigurationProvider.cs
-// Project: Zeta.Extreme.Form
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Form/ThemaConfigurationProvider.cs
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -137,9 +145,21 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		/// <returns> </returns>
 		public IEnumerable<XElement> LoadCompiled() {
-			var filters = LoadCompileFilters.SmartSplit();
-			_cfgVersion = new DateTime();
+			if (Options.DirectThemaConfigurations != null && 0 != Options.DirectThemaConfigurations.Length) {
+				foreach (var xElement in LoadDirectSources()) yield return xElement;
+			}
+			else {
+				var files = GetFileList();
+				var filters = LoadCompileFilters.SmartSplit();
+				foreach (var file in LoadFiles(files, filters)) yield return file;
+			}
+			
+		}
+
+		private string[] GetFileList() {
 			string[] files = null;
+			_cfgVersion = new DateTime();
+
 			if (!Options.RootDirectory.Contains("~") && Path.IsPathRooted(Options.RootDirectory)) {
 				files = Directory.GetFiles(Options.RootDirectory, "*.xml");
 			}
@@ -154,7 +174,11 @@ namespace Zeta.Extreme.Form.Themas {
 							PathType = FileSearchResultType.FullPath
 						}).ToArray();
 			}
-			files = files.OrderBy(x => Path.GetFileNameWithoutExtension(x)).ToArray();
+			files = files.OrderBy(Path.GetFileNameWithoutExtension).ToArray();
+			return files;
+		}
+
+		private IEnumerable<XElement> LoadFiles(string[] files, IList<string> filters) {
 			foreach (var f in files) {
 				if (File.GetLastWriteTime(f) > _cfgVersion) {
 					_cfgVersion = File.GetLastWriteTime(f);
@@ -197,6 +221,13 @@ namespace Zeta.Extreme.Form.Themas {
 					}
 				}
 			}
+		}
+
+		private IEnumerable<XElement> LoadDirectSources() {
+			foreach (var directThemaConfiguration in Options.DirectThemaConfigurations) {
+				yield return directThemaConfiguration;
+			}
+			yield break;
 		}
 
 
@@ -461,7 +492,7 @@ namespace Zeta.Extreme.Form.Themas {
 						AutoImport = thema.Attr("autoimport").ToBool(),
 						Layout = thema.Attr("layout", "default"),
 						Abstract = thema.Attr("abst").ToBool(),
-						Idx = thema.Attr("idx").ToInt(),
+						Index = thema.Attr("idx").ToInt(),
 						SrcXml = thema,
 					};
 				thema.Apply(desc, "id", "name", "code", "active", "autoimport", "layout", "abst", "idx");

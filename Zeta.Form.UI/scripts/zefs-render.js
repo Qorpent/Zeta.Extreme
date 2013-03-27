@@ -1,5 +1,8 @@
 ﻿(function(){
 var root = window.zefs = window.zefs || {};
+window.zefs.handlers = $.extend(window.zefs.handlers, {
+    on_renderfinished : "renderfinished"
+});
 $.extend(root,{
 	getRender : function(){
 		return {
@@ -43,7 +46,8 @@ $.extend(root,{
 			}
 			$.each(session.structure.rows, function(rowidx,row) {
 				var tr = $("<tr/>").attr("level",row.level);
-				tr.append($('<td class="number"/>').attr("title", row.code).text(row.number || ""));
+				if (row.iscaption) tr.addClass("istitle");
+                tr.append($('<td class="number"/>').attr("title", row.code).text(row.number || ""));
 				if (session.structure.rows.length > rowidx + 1) {
                     if (row.level < session.structure.rows[rowidx + 1].level) {
                         tr.addClass("haschild");
@@ -63,14 +67,18 @@ $.extend(root,{
                             "idx": col.idx,
                             "visible": "visible"
                         });
-                        if (col.isprimary && row.isprimary) td.addClass("editable");
                         if (col.controlpoint && row.controlpoint) td.addClass("control");
+                        if (col.isprimary && row.isprimary) td.addClass("editable");
+                        if (col.exref && row.exref) td.removeClass("editable");
                         tr.append(td);
                     });
                 }
 				body.append(tr);
 			});
 			table.append(body);
+
+            $(root).trigger(window.zefs.handlers.on_renderfinished, table);
+
 			session.wasRendered = true;
 			return session;
 		},
@@ -82,11 +90,11 @@ $.extend(root,{
                 var $cell = $("td[id='" + b.i +  "']");
                 var val = b.v || "";
                 $cell.number($cell.text(),0,'','');
-                if ($cell.text() != val && !$.isEmptyObject($cell.data())) {
+                if ($cell.text() != Math.round(val) && !$.isEmptyObject($cell.data())) {
                     $cell.addClass("recalced");
                 }
                 if (val == "0") {
-                    if (b.c == 0 || !$cell.hasClass("editable")) val = "";
+                    if (b.c == undefined || !$cell.hasClass("editable")) val = "";
                     $cell.text(val);
                 } else {
                     $cell.number(val,0,'.',' ');
@@ -94,6 +102,9 @@ $.extend(root,{
                 $cell.removeClass("notloaded");
                 $cell.data("history", val);
                 $cell.data("previous", val);
+                // реальное число без форматов, которое должно сохраняться в базу
+                $cell.data("value", val);
+                if (!!b.c) $cell.data("cellid", b.c);
                 $cell.attr("ri", b.ri);
                 if (val.search(/\./) != -1 && val.search("error") == -1) {
                     $cell.addClass("rounded");

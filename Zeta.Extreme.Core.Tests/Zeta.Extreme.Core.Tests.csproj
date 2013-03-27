@@ -18,6 +18,7 @@
     <Compile Include="CanCalculateDetails.cs" />
     <Compile Include="CanCalculateValuta.cs" />
     <Compile Include="CheckKnownData.cs" />
+    <Compile Include="ControlpointBug\ControlpointAllTests.cs" />
     <Compile Include="CoreTests\DefaultRegistryHelperTestBase.cs" />
     <Compile Include="CoreTests\DefaultRegistryHelperTestBaseBenchmark.cs" />
     <Compile Include="CoreTests\QueryCacheKeySensibilityTest.cs" />
@@ -32,14 +33,21 @@
     <Compile Include="DatabaseIgnorancePureZeta\RowColAndObjFormula.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\SimpleFormula.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\SimpleHardLink.cs" />
+    <Compile Include="FinplanOldNewMatch.cs" />
+    <Compile Include="FormulaStorageTests\CanParseFormulaWithAltObjFilter.cs" />
     <Compile Include="FormulaStorageTests\DllCacheTests.cs" />
     <Compile Include="MockFormulaTest.cs" />
     <Compile Include="NativeMaping\CanReadFormState.cs" />
+    <Compile Include="NativeMaping\ZC438NativeCellReading.cs" />
+    <Compile Include="NativeMaping\ZC439NativeCellHistoryReading.cs" />
+    <Compile Include="PrimaryTests\ZC248AltObjToSqlTest.cs" />
     <Compile Include="SerialAcessTest.cs" />
     <Compile Include="SubQuery\ExistedFormulasParsingTest.cs" />
     <Compile Include="SubQuery\FormulaCompilerTest.cs" />
     <Compile Include="SubQuery\ZetaVirtualSumHelperTest.cs" />
     <Compile Include="SubQuery\QueryDeltaTest.cs" />
+    <Compile Include="Zc431PrototypeGeneratorTest.cs" />
+    <Compile Include="Zc432AltObjFilterNormalization.cs" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

@@ -1,0 +1,230 @@
+﻿<thema code="balans2011" id="balans2011" name="Баланс (форма № 1 ФО)" idx="100" evidence="eco.real.bal.bxl">
+  <doc _file="sys.eco" _line="43" code="commentA" id="commentA" type="text" value="" active="true" />
+  <doc _file="sys.eco" _line="43" code="commentB" id="commentB" type="text" value="" active="true" />
+  <doc _file="sys.eco" _line="43" code="commentC" id="commentC" type="text" value="" active="false" />
+  <doc _file="sys.assoi.eco" _line="152" code="summary" id="summary" type="text" value="" />
+  <doc _file="sys.eco" _line="43" code="commentA" id="commentA" type="text" value="" active="true" />
+  <out _file="sys.eco" _line="63" code="Aa" id="Aa" name="Бухгалтерский баланс" type="configure" role="FIN_ANALYTIC" useformmatrix="false" active="true">
+    <var _file="sys.eco" _line="68" code="biztran" id="biztran" name="Код формы транзакции" defaultvalue="" />
+    <var _file="sys.eco" _line="67" code="number" id="number" name="Номер формы" defaultvalue="Форма № 1 ФО" />
+    <uselib _file="sys.eco" _line="64" code="assoilibAa" id="assoilibAa" />
+    <uselib _file="sys.eco" _line="65" code="ballibFACTSVOD" id="ballibFACTSVOD" />
+    <row _file="sys.eco" _line="163" code="m111" id="m111" name="Баланс (форма № 1 ФО)" />
+  </out>
+  <out _file="sys.eco" _line="91" code="Ab" id="Ab" name="Бухгалтерский баланс" role="FIN_ANALYTIC" useformmatrix="false" forperiods="1,2,3,4,11,12,13,14,15,16,17,18,19,110,111,112,403,406,409,416,401,42,43,44,442,443,444" periodredirect="PR_KVART:11=1,12=1,13=1,14=2,15=2,16=2,416=406,17=3,18=3,19=3,110=4,111=4,112=4|:251=-99,252=-99,253=-99,254=-99,303=-99,306=-99,309=-99,301=-99" active="true">
+    <param _file="sys.eco" _line="95" code="bindedform" id="bindedform" name="Связаная форма" defaultvalue="balans2011A" />
+    <var _file="sys.eco" _line="97" code="biztran" id="biztran" name="Код формы транзакции" defaultvalue="" />
+    <var _file="sys.eco" _line="96" code="number" id="number" name="Номер формы" defaultvalue="Форма № 1 ФО" />
+    <uselib _file="sys.eco" _line="92" code="assoilibAb" id="assoilibAb" />
+    <uselib _file="sys.eco" _line="93" code="ballibFACTORG" id="ballibFACTORG" />
+    <row _file="sys.eco" _line="163" code="m111" id="m111" name="Баланс (форма № 1 ФО)" />
+  </out>
+  <form _file="sys.eco" _line="116" code="A" id="A" name="Бухгалтерский баланс" active="true" advdocs="&#xA;&#x9;&#x9;1=4,112,3,19,2,16,13;&#xA;&#x9;&#x9;2=4,112,3,19,16,1,13;&#xA;&#x9;&#x9;3=4,112,19,2,16,1,13;&#xA;&#x9;&#x9;4=112,3,19,2,16,1,13;&#xA;&#x9;&#x9;13=4,112,3,19,2,16,1;&#xA;&#x9;&#x9;16=4,112,3,19,2,1,13;&#xA;&#x9;&#x9;19=4,112,3,2,16,1,13;&#xA;&#x9;" useformmatrix="false" ignoreperiodstate="false" matrixexrows="" needfilesperiods="13,1,16,2,19,3,112,4" fixrows="" defaultstate="0ISOPEN" biztran="" needfiles="balans,stfr" scheduleclass="Comdiv.Zeta.Web.InputTemplates.EndtimeScheduleChecker, Comdiv.Zeta.Web" detailfavorite="false" usequickupdate="true" scheduledelta="30" favoriterowsonly="false" sqloptimization="" lock="sm111" role="FIN_OPERATOR" forperiods="1,2,3,4,11,12,13,14,15,16,17,18,19,110,111,112,403,406,409,416,401,42,43,44,442,443,444" autofill="" underwriterole="FIN_UNDERWRITER" periodredirect="PR_KVART:11=1,12=1,13=1,14=2,15=2,16=2,416=406,17=3,18=3,19=3,110=4,111=4,112=4|:251=-99,252=-99,253=-99,254=-99,303=-99,306=-99,309=-99,301=-99" inputfordetail="false" showmeasurecolumn="" tableView="default" fixedobj="">
+    <uselib _file="sys.eco" _line="117" code="ballibFACT" id="ballibFACT" />
+    <row _file="sys.eco" _line="145" code="m111" id="m111" />
+  </form>
+  <doc _file="sys.eco" _line="43" code="commentB" id="commentB" type="text" value="" active="true" />
+  <out _file="sys.eco" _line="63" code="Ba" id="Ba" name="Бухгалтерский баланс" type="configure" role="FIN_PANALYTIC" useformmatrix="false" active="true">
+    <var _file="sys.eco" _line="68" code="biztran" id="biztran" name="Код формы транзакции" defaultvalue="" />
+    <var _file="sys.eco" _line="67" code="number" id="number" name="Номер формы" defaultvalue="Форма № 1 ФО" />
+    <uselib _file="sys.eco" _line="64" code="assoilibAa" id="assoilibAa" />
+    <uselib _file="sys.eco" _line="65" code="ballibPLANSVOD" id="ballibPLANSVOD" />
+    <row _file="sys.eco" _line="165" code="m111" id="m111" name="Баланс (форма № 1 ФО)" />
+  </out>
+  <out _file="sys.eco" _line="91" code="Bb" id="Bb" name="Бухгалтерский баланс" role="FIN_PANALYTIC" useformmatrix="false" forperiods="611,612,613,614,615,616,617,618,619,6110,6111,6112,301,251,252,253,254,303,306,309,342,343,344,346" periodredirect="&#xD;&#xA;&#x9; :11=611,12=612,13=613,14=614,15=615,16=616,416=616,17=617,18=618,19=619,110=6110,111=6111,112=6112,1=303,2=306,3=309,4=301,403=303,406=306,409=309,42=306,43=309,44=301|&#xD;&#xA;&#x9; PR_KVART:11=303,12=303,13=303,14=306,15=306,16=306,416=306,17=309,18=309,19=309,110=254,111=254,112=254,1=303,2=306,3=309,4=301,403=303,406=306,409=309,42=306,43=309,44=301|&#xD;&#xA;&#x9;" active="true">
+    <param _file="sys.eco" _line="95" code="bindedform" id="bindedform" name="Связаная форма" defaultvalue="balans2011B" />
+    <var _file="sys.eco" _line="97" code="biztran" id="biztran" name="Код формы транзакции" defaultvalue="" />
+    <var _file="sys.eco" _line="96" code="number" id="number" name="Номер формы" defaultvalue="Форма № 1 ФО" />
+    <uselib _file="sys.eco" _line="92" code="assoilibAb" id="assoilibAb" />
+    <uselib _file="sys.eco" _line="93" code="ballibPLANORG" id="ballibPLANORG" />
+    <row _file="sys.eco" _line="165" code="m111" id="m111" name="Баланс (форма № 1 ФО)" />
+  </out>
+  <form _file="sys.eco" _line="116" code="B" id="B" name="Бухгалтерский баланс" active="true" advdocs="&#xA;&#x9;&#x9;1=4,112,3,19,2,16,13;&#xA;&#x9;&#x9;2=4,112,3,19,16,1,13;&#xA;&#x9;&#x9;3=4,112,19,2,16,1,13;&#xA;&#x9;&#x9;4=112,3,19,2,16,1,13;&#xA;&#x9;&#x9;13=4,112,3,19,2,16,1;&#xA;&#x9;&#x9;16=4,112,3,19,2,1,13;&#xA;&#x9;&#x9;19=4,112,3,2,16,1,13;&#xA;&#x9;" useformmatrix="false" ignoreperiodstate="false" matrixexrows="" needfilesperiods="13,1,16,2,19,3,112,4" fixrows="" defaultstate="0ISOPEN" biztran="" needfiles="" scheduleclass="Comdiv.Zeta.Web.InputTemplates.EndtimeScheduleChecker, Comdiv.Zeta.Web" detailfavorite="false" usequickupdate="true" scheduledelta="25" favoriterowsonly="false" sqloptimization="" lock="sm111p" role="FIN_POPERATOR" forperiods="611,612,613,614,615,616,617,618,619,6110,6111,6112,301,251,252,253,254,303,306,309,342,343,344,346" autofill="" underwriterole="FIN_PUNDERWRITER" periodredirect="&#xD;&#xA;&#x9; :11=611,12=612,13=613,14=614,15=615,16=616,416=616,17=617,18=618,19=619,110=6110,111=6111,112=6112,1=303,2=306,3=309,4=301,403=303,406=306,409=309,42=306,43=309,44=301|&#xD;&#xA;&#x9; PR_KVART:11=303,12=303,13=303,14=306,15=306,16=306,416=306,17=309,18=309,19=309,110=254,111=254,112=254,1=303,2=306,3=309,4=301,403=303,406=306,409=309,42=306,43=309,44=301|&#xD;&#xA;&#x9;" inputfordetail="false" showmeasurecolumn="" tableView="default" fixedobj="">
+    <uselib _file="sys.eco" _line="117" code="ballibPLAN" id="ballibPLAN" />
+    <row _file="sys.eco" _line="145" code="m111" id="m111" />
+  </form>
+  <doc _file="sys.eco" _line="43" code="commentC" id="commentC" type="text" value="" active="false" />
+  <doc _file="sys.assoi.eco" _line="152" code="summary" id="summary" type="text" value="" />
+  <param id=".classname" value="Comdiv.Zeta.Web.Themas.EcoThema, Comdiv.Zeta.Web" />
+  <param id=".defaultelementrole" value="DEFAULT" />
+  <param id=".group" value="fin_grp" />
+  <param id=".layout" value="eco" />
+  <param id="_file" value="eco.real.bal" />
+  <param id="_line" value="51" />
+  <param _file="sys.eco" _line="7" id="activeA">true</param>
+  <param _file="sys.eco" _line="7" id="activeB">true</param>
+  <param id="activeC" value="false" />
+  <param _file="sys.eco" _line="28" id="advdocsA">
+		1=4,112,3,19,2,16,13;
+		2=4,112,3,19,16,1,13;
+		3=4,112,19,2,16,1,13;
+		4=112,3,19,2,16,1,13;
+		13=4,112,3,19,2,16,1;
+		16=4,112,3,19,2,1,13;
+		19=4,112,3,2,16,1,13;
+	</param>
+  <param _file="sys.eco" _line="28" id="advdocsB">
+		1=4,112,3,19,2,16,13;
+		2=4,112,3,19,16,1,13;
+		3=4,112,19,2,16,1,13;
+		4=112,3,19,2,16,1,13;
+		13=4,112,3,19,2,16,1;
+		16=4,112,3,19,2,1,13;
+		19=4,112,3,2,16,1,13;
+	</param>
+  <param _file="sys.eco" _line="28" id="advdocsC">
+		1=4,112,3,19,2,16,13;
+		2=4,112,3,19,16,1,13;
+		3=4,112,19,2,16,1,13;
+		4=112,3,19,2,16,1,13;
+		13=4,112,3,19,2,16,1;
+		16=4,112,3,19,2,1,13;
+		19=4,112,3,2,16,1,13;
+	</param>
+  <param _file="sys.eco" _line="39" id="bindedformA">balans2011A</param>
+  <param _file="sys.eco" _line="39" id="bindedformB">balans2011B</param>
+  <param _file="sys.eco" _line="39" id="bindedformC">balans2011C</param>
+  <param _file="sys.eco" _line="13" id="defaultstateA">0ISOPEN</param>
+  <param _file="sys.eco" _line="13" id="defaultstateB">0ISOPEN</param>
+  <param _file="sys.eco" _line="13" id="defaultstateC">0ISOPEN</param>
+  <param _file="sys.eco" _line="20" id="detailfavoriteA">false</param>
+  <param _file="sys.eco" _line="20" id="detailfavoriteB">false</param>
+  <param _file="sys.eco" _line="20" id="detailfavoriteC">false</param>
+  <param id="extreme" value="true" />
+  <param id="f_libA" value="ballibFACT" />
+  <param id="f_libB" value="ballibPLAN" />
+  <param id="f_libC" value="ballibKORR" />
+  <param _file="sys.eco" _line="10" id="f_visibleA">true</param>
+  <param _file="sys.eco" _line="10" id="f_visibleB">true</param>
+  <param _file="sys.eco" _line="10" id="f_visibleC">false</param>
+  <param _file="sys.eco" _line="114" id="factiveA">true</param>
+  <param _file="sys.eco" _line="114" id="factiveB">true</param>
+  <param _file="sys.eco" _line="114" id="factiveC">false</param>
+  <param _file="sys.eco" _line="19" id="favoriterowsonlyA">false</param>
+  <param _file="sys.eco" _line="19" id="favoriterowsonlyB">false</param>
+  <param _file="sys.eco" _line="19" id="favoriterowsonlyC">false</param>
+  <param _file="sys.eco" _line="11" id="fl_visibleA">true</param>
+  <param _file="sys.eco" _line="11" id="fl_visibleB">true</param>
+  <param _file="sys.eco" _line="11" id="fl_visibleC">false</param>
+  <param _file="sys.eco" _line="23" id="fordetailA">false</param>
+  <param id="fordetailB" value="false" />
+  <param id="fordetailC" value="false" />
+  <param _file="sys.eco" _line="111" id="form_lockroleA">_UNDERWRITER</param>
+  <param id="form_lockroleB" value="_PUNDERWRITER" />
+  <param id="form_lockroleC" value="_PUNDERWRITER" />
+  <param _file="sys.eco" _line="110" id="form_roleA">_OPERATOR</param>
+  <param id="form_roleB" value="_POPERATOR" />
+  <param id="form_roleC" value="_POPERATOR" />
+  <param id="formnameA" value="Бухгалтерский баланс" />
+  <param id="formnameB" value="Бухгалтерский баланс" />
+  <param id="formnameC" value="Баланс (форма № 1 ФО) (корректив годового ТПФП)" />
+  <param id="forperiodsA" value="1,2,3,4,11,12,13,14,15,16,17,18,19,110,111,112,403,406,409,416,401,42,43,44,442,443,444" />
+  <param id="forperiodsB" value="611,612,613,614,615,616,617,618,619,6110,6111,6112,301,251,252,253,254,303,306,309,342,343,344,346" />
+  <param id="forperiodsC" value="31,32,33,34" />
+  <param _file="sys.eco" _line="115" id="froleA">FIN_OPERATOR</param>
+  <param _file="sys.eco" _line="115" id="froleB">FIN_POPERATOR</param>
+  <param _file="sys.eco" _line="115" id="froleC">FIN_POPERATOR</param>
+  <param _file="sys.eco" _line="25" id="ignoreperiodstateA">false</param>
+  <param _file="sys.eco" _line="25" id="ignoreperiodstateB">false</param>
+  <param _file="sys.eco" _line="25" id="ignoreperiodstateC">false</param>
+  <param id="index" value="C" />
+  <param id="input.template" value="empty" />
+  <param id="isdetail" value="false" />
+  <param id="lockA" value="sm111" />
+  <param id="lockB" value="sm111p" />
+  <param id="lockC" value="sm111pc" />
+  <param _file="sys.eco" _line="12" id="nameA">Баланс (форма № 1 ФО)</param>
+  <param _file="sys.eco" _line="12" id="nameB">Баланс (форма № 1 ФО)</param>
+  <param _file="sys.eco" _line="12" id="nameC">Баланс (форма № 1 ФО)</param>
+  <param id="needfilesA" value="balans,stfr" />
+  <param _file="sys.eco" _line="38" id="needfilesperiodsA">13,1,16,2,19,3,112,4</param>
+  <param _file="sys.eco" _line="38" id="needfilesperiodsB">13,1,16,2,19,3,112,4</param>
+  <param _file="sys.eco" _line="38" id="needfilesperiodsC">13,1,16,2,19,3,112,4</param>
+  <param id="needresponsibility" value="true" />
+  <param id="out.template" value="empty" />
+  <param id="periodredirectA" value="PR_KVART:11=1,12=1,13=1,14=2,15=2,16=2,416=406,17=3,18=3,19=3,110=4,111=4,112=4|:251=-99,252=-99,253=-99,254=-99,303=-99,306=-99,309=-99,301=-99" />
+  <param id="periodredirectB" value="&#xD;&#xA;&#x9; :11=611,12=612,13=613,14=614,15=615,16=616,416=616,17=617,18=618,19=619,110=6110,111=6111,112=6112,1=303,2=306,3=309,4=301,403=303,406=306,409=309,42=306,43=309,44=301|&#xD;&#xA;&#x9; PR_KVART:11=303,12=303,13=303,14=306,15=306,16=306,416=306,17=309,18=309,19=309,110=254,111=254,112=254,1=303,2=306,3=309,4=301,403=303,406=306,409=309,42=306,43=309,44=301|&#xD;&#xA;&#x9;" />
+  <param id="periodredirectC" value="&#xD;&#xA;&#x9; :11=31,12=31,13=31,14=32,15=32,16=32,416=32,17=33,18=33,19=33,110=34,111=34,112=34,1=31,2=32,3=33,4=34,303=31,306=32,309=33|&#xD;&#xA;&#x9; PR_KVART:11=31,12=31,13=31,14=32,15=32,16=32,416=32,17=33,18=33,19=33,110=34,111=34,112=34,1=31,2=32,3=33,4=34,303=31,306=32,309=33|&#xD;&#xA;&#x9;" />
+  <param id="planrow" value="m111" />
+  <param id="ra_lib2A" value="ballibFACTSVOD" />
+  <param id="ra_lib2B" value="ballibPLANSVOD" />
+  <param id="ra_lib2C" value="assoilibDEFAULTKORR" />
+  <param id="ra_libA" value="assoilibAa" />
+  <param id="ra_libB" value="assoilibAa" />
+  <param id="ra_libC" value="assoilibAa" />
+  <param id="ra_numberA" value="Форма № 1 ФО" />
+  <param id="ra_numberB" value="Форма № 1 ФО" />
+  <param _file="sys.eco" _line="48" id="ra_useformmatrixA">false</param>
+  <param _file="sys.eco" _line="48" id="ra_useformmatrixB">false</param>
+  <param _file="sys.eco" _line="48" id="ra_useformmatrixC">false</param>
+  <param _file="sys.eco" _line="8" id="ra_visibleA">true</param>
+  <param _file="sys.eco" _line="8" id="ra_visibleB">true</param>
+  <param _file="sys.eco" _line="8" id="ra_visibleC">false</param>
+  <param id="ranameA" value="Бухгалтерский баланс" />
+  <param id="ranameB" value="Бухгалтерский баланс" />
+  <param _file="sys.eco" _line="59" id="ranameC">Баланс (форма № 1 ФО) (свод)</param>
+  <param _file="sys.eco" _line="62" id="raroleA">FIN_ANALYTIC</param>
+  <param _file="sys.eco" _line="62" id="raroleB">FIN_PANALYTIC</param>
+  <param _file="sys.eco" _line="62" id="raroleC">FIN_PANALYTIC</param>
+  <param id="rb_lib2A" value="ballibFACTORG" />
+  <param id="rb_lib2B" value="ballibPLANORG" />
+  <param id="rb_lib2C" value="assoilibDEFAULTKORR" />
+  <param id="rb_libA" value="assoilibAb" />
+  <param id="rb_libB" value="assoilibAb" />
+  <param id="rb_libC" value="assoilibAb" />
+  <param id="rb_numberA" value="Форма № 1 ФО" />
+  <param id="rb_numberB" value="Форма № 1 ФО" />
+  <param _file="sys.eco" _line="50" id="rb_useformmatrixA">false</param>
+  <param _file="sys.eco" _line="50" id="rb_useformmatrixB">false</param>
+  <param _file="sys.eco" _line="50" id="rb_useformmatrixC">false</param>
+  <param _file="sys.eco" _line="9" id="rb_visibleA">true</param>
+  <param _file="sys.eco" _line="9" id="rb_visibleB">true</param>
+  <param _file="sys.eco" _line="9" id="rb_visibleC">false</param>
+  <param id="rbnameA" value="Бухгалтерский баланс" />
+  <param id="rbnameB" value="Бухгалтерский баланс" />
+  <param _file="sys.eco" _line="88" id="rbnameC">Баланс (форма № 1 ФО) (отчет)</param>
+  <param _file="sys.eco" _line="90" id="rbroleA">FIN_ANALYTIC</param>
+  <param _file="sys.eco" _line="90" id="rbroleB">FIN_PANALYTIC</param>
+  <param _file="sys.eco" _line="90" id="rbroleC">FIN_PANALYTIC</param>
+  <param _file="sys.eco" _line="56" id="report_a_colsetA">balans2011Aa</param>
+  <param _file="sys.eco" _line="56" id="report_a_colsetB">balans2011Ba</param>
+  <param _file="sys.eco" _line="56" id="report_a_colsetC">balans2011Ca</param>
+  <param _file="sys.eco" _line="58" id="report_a_roleA">_ANALYTIC</param>
+  <param id="report_a_roleB" value="_PANALYTIC" />
+  <param id="report_a_roleC" value="_PANALYTIC" />
+  <param _file="sys.eco" _line="55" id="report_a_rowsetA">default_rowA</param>
+  <param _file="sys.eco" _line="55" id="report_a_rowsetB">default_rowB</param>
+  <param _file="sys.eco" _line="55" id="report_a_rowsetC">default_rowC</param>
+  <param _file="sys.eco" _line="85" id="report_b_colsetA">balans2011Ab</param>
+  <param _file="sys.eco" _line="85" id="report_b_colsetB">balans2011Bb</param>
+  <param _file="sys.eco" _line="85" id="report_b_colsetC">balans2011Cb</param>
+  <param _file="sys.eco" _line="87" id="report_b_roleA">_ANALYTIC</param>
+  <param _file="sys.eco" _line="87" id="report_b_roleB">_PANALYTIC</param>
+  <param _file="sys.eco" _line="87" id="report_b_roleC">_PANALYTIC</param>
+  <param _file="sys.eco" _line="84" id="report_b_rowsetA">default_rowA</param>
+  <param _file="sys.eco" _line="84" id="report_b_rowsetB">default_rowB</param>
+  <param _file="sys.eco" _line="84" id="report_b_rowsetC">default_rowC</param>
+  <param id="reportname" value="Бухгалтерский баланс" />
+  <param id="reportnumber" value="Форма № 1 ФО" />
+  <param id="roleprefix" value="FIN" />
+  <param id="rootrow" value="m111" />
+  <param id="rowA" value="m111" />
+  <param id="rowB" value="m111" />
+  <param id="rowC" value="m111" />
+  <param id="scheduleA" value="Comdiv.Zeta.Web.InputTemplates.EndtimeScheduleChecker, Comdiv.Zeta.Web" />
+  <param _file="sys.eco" _line="17" id="scheduleB">Comdiv.Zeta.Web.InputTemplates.EndtimeScheduleChecker, Comdiv.Zeta.Web</param>
+  <param _file="sys.eco" _line="17" id="scheduleC">Comdiv.Zeta.Web.InputTemplates.EndtimeScheduleChecker, Comdiv.Zeta.Web</param>
+  <param id="scheduledeltaA" value="30" />
+  <param _file="sys.eco" _line="18" id="scheduledeltaB">25</param>
+  <param _file="sys.eco" _line="18" id="scheduledeltaC">25</param>
+  <param _file="sys.eco" _line="112" id="tableviewA">default</param>
+  <param _file="sys.eco" _line="112" id="tableviewB">default</param>
+  <param _file="sys.eco" _line="112" id="tableviewC">default</param>
+  <param id="thematype" value="in" />
+  <param _file="sys.eco" _line="45" id="useformmatrixA">false</param>
+  <param _file="sys.eco" _line="45" id="useformmatrixB">false</param>
+  <param _file="sys.eco" _line="45" id="useformmatrixC">false</param>
+  <param _file="sys.eco" _line="6" id="usequickupdateA">true</param>
+  <param _file="sys.eco" _line="6" id="usequickupdateB">true</param>
+  <param _file="sys.eco" _line="6" id="usequickupdateC">true</param>
+</thema>

@@ -9,7 +9,7 @@ $.extend(window.zeta.handlers, {
         this.login = this.element.text();
         this.details = null;
         this.init();
-        this.element.click($.proxy(function(e) {
+        this.element.click($.proxy(function() {
             this.showDetails();
         },this));
     };

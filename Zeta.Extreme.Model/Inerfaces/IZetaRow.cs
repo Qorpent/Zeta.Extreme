@@ -1,64 +1,220 @@
 #region LICENSE
 
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : IZetaRow.cs
-// Project: Zeta.Extreme.Poco
-// This code cannot be used without agreement from 
-// Media Technology LTD 
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Model/IZetaRow.cs
 
 #endregion
 
 using System;
 using System.Collections.Generic;
-using Zeta.Extreme.Model.Deprecated;
-using Zeta.Extreme.Model.PocoClasses;
-
+using Qorpent.Model;
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	[ForSearch("Строка, признак")]
+	/// <summary>
+	///     Over-weighted <see langword="interface" /> of main attribute dimension part
+	///     - ROW
+	/// </summary>
 	public interface IZetaRow : IZetaQueryDimension,
-		IZetaFormsSupport,
-		IWithMarkCache,  IWithMeasure {
-		IDictionary<string, object> LocalProperties { get; }
-		[Map] string ObjectGroups { get; set; }
-		[Map] string FormElementType { get; set; }
-		[Map] string Validator { get; set; }
-		[Map] string ColumnSubstitution { get; set; }
-		[Map] string FullName { get; set; }
-		[Map] string Role { get; set; }
-		[Map] string Valuta { get; set; }
+	                            IZetaFormsSupport,
+	                            IWithMarkCache, IWithMeasure, IWithCurrency, IContextEntity,
+								IWithHierarchy<IZetaRow> {
+		/// <summary>
+		///     s-list of ZetaObject group codes, that is actual for row
+		/// </summary>
+		[Obsolete("ZC-419 metalink must be used")] string ObjectGroups { get; set; }
+
+		/// <summary>
+		///     Ui level validation code
+		/// </summary>
+		[Obsolete("mixin ui")] string Validator { get; set; }
+
+		/// <summary>
+		///     NEED INVESTIGATION
+		/// </summary>
+		[Obsolete("ZC-418")] string ColumnSubstitution { get; set; }
+
+		/// <summary>
+		///     Full name of row
+		/// </summary>
+		string FullName { get; set; }
+
+		/// <summary>
+		///     <see cref="Role" /> to access row
+		/// </summary>
+		string Role { get; set; }
+
+		/// <summary>
+		///     Referenced row
+		/// </summary>
 		IZetaRow RefTo { get; set; }
-		int? ParentId { get; set; }
+
+	
+
+		/// <summary>
+		///     ID (FK) of referenced row
+		/// </summary>
 		int? RefId { get; set; }
-		int? ObjectId { get; set; }
-		IList<IZetaRow> NativeChildren { get; }
+
+		/// <summary>
+		///     ID (FK) of container obj row
+		/// </summary>
+		[Obsolete("ZC-419")] int? ObjectId { get; set; }
+
+
+		/// <summary>
+		///     Full collection of all children down
+		/// </summary>
 		IZetaRow[] AllChildren { get; }
-		string FullRole { get; }
+
+		/// <summary>
+		///     <see cref="Level" /> of row in hierarchy
+		/// </summary>
 		int Level { get; }
 
-		[Ref(ClassName = typeof (IZetaRow))] IZetaRow ExRefTo { get; set; }
+		/// <summary>
+		///     Extended reference to row
+		/// </summary>
+		IZetaRow ExRefTo { get; set; }
 
+		/// <summary>
+		///     ID (FK) of extended referenced row
+		/// </summary>
 		int? ExRefToId { get; set; }
-		[Map] bool Active { get; set; }
-		IZetaRow TemporalParent { get; set; }
-		IZetaRow Parent { get; set; }
-		IList<IZetaRow> Children { get; set; }
-		[Classic("Org")] IZetaMainObject Object { get; set; }
-		string Path { get; set; }
-		string ResolveColumnCode(string incode);
-		IZetaRow Copy(bool withchildren);
-		void ResetAllChildren();
-		void CleanupByChildren(IEnumerable<string> codes);
-		void ApplyProperty(string property, object value, bool cascade = true);
-		void ApplyPropertyIfNew(string property, object value, bool children = false);
-		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
-		void ApplyPropertyByCondition(string prop, object value, bool applyUp, bool applyDown, Func<IZetaRow, bool> test);
-		void PropagateGroupAsProperty(string groupname, bool applyUp = true, string propname = null);
-		object GetLocal(string name);
-		string ResolveTag(string name);
 
+
+
+		/// <summary>
+		///     Container object
+		/// </summary>
+		[Obsolete("ZC-419")] IZetaMainObject Object { get; set; }
+
+		/// <summary>
+		/// s-list of groups
+		/// </summary>
+		string GroupCache { get; set; }
+		/// <summary>
+		/// resolves role over hierarchy
+		/// </summary>
+		string FullRole { get; }
+
+		/// <summary>
+		///     Special pseudo hiearatchy to provide tag resolution in merged trees (in
+		///     presentation for example)
+		/// </summary>
+		IZetaRow TemporalParent { get; set; }
+
+		/// <summary>
+		///     NEED INVESTIGATION
+		/// </summary>
+		/// <param name="incode"></param>
+		/// <returns>
+		/// </returns>
+		[Obsolete("ZC-418")]
+		string ResolveColumnCode(string incode);
+
+
+		/// <summary>
+		///     Method for cleanup and rewind collection of
+		///     <see cref="Zeta.Extreme.Model.Inerfaces.IZetaRow.AllChildren" />
+		/// </summary>
+		[Obsolete("ZC-421")]
+		void ResetAllChildren();
+
+		/// <summary>
+		///     Old style visitor accessor to cleanup by code filter
+		/// </summary>
+		/// <param name="codes"></param>
+		[Obsolete("ZC-421")]
+		void CleanupByChildren(IEnumerable<string> codes);
+
+		/// <summary>
+		///     Applys local <paramref name="property" /> to it and descendants (???)
+		/// </summary>
+		/// <param name="property"></param>
+		/// <param name="value"></param>
+		/// <param name="cascade"></param>
+		[Obsolete("ZC-421")]
+		void ApplyProperty(string property, object value, bool cascade = true);
+
+		/// <summary>
+		///     Apply local <paramref name="property" /> to it and descendants if not yet
+		///     setted (???)
+		/// </summary>
+		/// <param name="property"></param>
+		/// <param name="value"></param>
+		/// <param name="children"></param>
+		[Obsolete("ZC-421")]
+		void ApplyPropertyIfNew(string property, object value, bool children = false);
+
+		/// <summary>
+		///     Apply local property to it and other properties with up and down visitor
+		///     patter
+		/// </summary>
+		/// <param name="prop"></param>
+		/// <param name="value"></param>
+		/// <param name="applyUp"></param>
+		/// <param name="applyDown"></param>
+		/// <param name="test"></param>
+		[Obsolete("ZC-421")]
+		void ApplyPropertyByCondition(string prop, object value, bool applyUp, bool applyDown, Func<IZetaRow, bool> test);
+
+		/// <summary>
+		///     propagetes group definition as local property
+		/// </summary>
+		/// <param name="groupname"></param>
+		/// <param name="applyUp"></param>
+		/// <param name="propname"></param>
+		[Obsolete("ZC-421")]
+		void PropagateGroupAsProperty(string groupname, bool applyUp = true, string propname = null);
+
+		/// <summary>
+		///     Resolves local proprty over hierarchy
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns>
+		/// </returns>
+		[Obsolete("ZC-421")]
+		object GetLocal(string name);
+
+	
+
+		/// <summary>
+		///     Resolves meausure with checking of dynamics
+		/// </summary>
+		/// <returns>
+		/// </returns>
 		string ResolveMeasure();
+
+		/// <summary>
+		///     Helper method to identify activity for object
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <returns>
+		/// </returns>
+		[Obsolete("ZC-419")]
 		bool IsActiveFor(IZetaMainObject obj);
+
+		/// <summary>
+		///     Helper method to identify activity on period
+		/// </summary>
+		/// <param name="year"></param>
+		/// <returns>
+		/// </returns>
+		[Obsolete("ZC-415")]
 		bool IsObsolete(int year);
-		}
+	}
 }

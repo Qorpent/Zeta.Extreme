@@ -5,9 +5,8 @@
     var attacher = new root.security.Widget("attacher", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 30, ready: function() {
         attacher.body.find('.btn-group').floatmenu();
     } });
-    var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown"/>')
+    var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Прикрепленные файлы"/>')
         .html('<i class="icon-file"></i>');
-    b.tooltip({title: "Прикрепленные файлы", placement: 'bottom',container: $('body')});
     var attachlist = $('<table class="table table-striped"/>');
     attachlist.append(
         $('<colgroup/>').append(
@@ -34,7 +33,7 @@
                 body.append(tr.append(
                     $('<td class="type"/>').addClass(file.Extension.substring(1)),
                     $('<td/>').text(file.Date.format("dd.mm.yyyy")),
-                    $('<td class="filename"/>').html('<a href="' + window.zefs.myform.downloadfile(file.Uid) + '" target="_blank">' + file.Name + '</a>'),
+                    $('<td class="filename"/>').html('<a href="' + window.zefs.api.file.download.getUrl(file.Uid) + '" target="_blank">' + file.Name + '</a>'),
                     $('<td class="username"/>').append(u.text(file.User))
                 ));
                 if (window.zeta.security.user != null) {
@@ -73,11 +72,15 @@
     var type = $('<select name="type" class="input-mini"/>').append(
         $('<option/>').text("default"),
         $('<option/>').text("balans"),
-        $('<option/>').text("prib")
+        $('<option/>').text("stfr"),
+        $('<option/>').text("prib"),
+        $('<option/>').text("freeact")
     );
     var filename = $('<input type="text" name="filename" placeholder="Изменить имя..." class="input-small"/>');
     var uid = $('<input type="hidden" name="uid"/>');
-    file.change(function() { filename.attr("placeholder", this.files[0].name) });
+    file.change(function() {
+        filename.attr("placeholder", this.files[0].name);
+    });
     selectbtn.click(function() { file.trigger("click") });
     uploadform.append(
         $('<table/>').append(
@@ -107,6 +110,7 @@
             filelist.draggable();
         }
     });
+    b.tooltip({placement: 'bottom'});
     filelist.append(floating, progress.hide(), uploadform, attachlist);
     $(document).on('click.dropdown.data-api', '.attacher div', function (e) {
         // e.preventDefault();

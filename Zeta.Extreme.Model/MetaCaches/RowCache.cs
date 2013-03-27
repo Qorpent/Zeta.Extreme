@@ -1,13 +1,21 @@
 ﻿#region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : RowCache.cs
-// Project: Zeta.Extreme.Poco
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Model/RowCache.cs
 #endregion
-
 #define USEROWCACHE
 
 // // Copyright 2007-2010 Comdiv (F. Sadykov) - http://code.google.com/u/fagim.sadykov/
@@ -34,7 +42,6 @@ using System.Threading.Tasks;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.PocoClasses;
 using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Model.MetaCaches {
@@ -208,7 +215,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			if (row.ParentId.HasValue) {
 				if (byid.ContainsKey(row.ParentId.Value)) {
 					row.Parent = byid[row.ParentId.Value];
-					row.Parent.NativeChildren.Add(row);
+					row.Parent.Children.Add(row);
 				}
 			}
 			else {
@@ -246,9 +253,9 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			byid[row.Id] = row;
 			row.Tag = row.Tag;
 			row.Children = new List<IZetaRow>();
-			if (!string.IsNullOrWhiteSpace(row.Group)) {
+			if (!string.IsNullOrWhiteSpace(((IZetaFormsSupport) row).GroupCache)) {
 				if (!row.IsMarkSeted("0SA")) {
-					var groups = row.Group.SmartSplit(false, true, ';', '/').Distinct();
+					var groups = ((IZetaFormsSupport) row).GroupCache.SmartSplit(false, true, ';', '/').Distinct();
 					foreach (var g in groups) {
 						if (!bygroup.ContainsKey(g)) {
 							bygroup[g] = new List<IZetaRow>();

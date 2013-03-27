@@ -1,19 +1,26 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : NativeZetaReader_Internals.cs
-// Project: Zeta.Extreme.Poco
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Model/NativeZetaReader_Internals.cs
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Data;
 using Qorpent.Applications;
 using Zeta.Extreme.Model.MetaCaches;
-using Zeta.Extreme.Model.PocoClasses;
 
 namespace Zeta.Extreme.Model.SqlSupport {
 	/// <summary>
@@ -47,16 +54,16 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					IsFormula = r.GetBoolean(2),
 					Name = r.GetString(5),
 					Code = r.GetString(6),
-					Idx = r.GetInt32(12),
+					Index = r.GetInt32(12),
 					Path = r.GetString(14),
 					Formula = r.GetString(3),
 					FormulaType = r.GetString(4),
 					Comment = r.GetString(7),
 					OuterCode = r.GetString(11),
 					Measure = r.GetString(13),
-					Grp = r.GetString(15),
+					GroupCache = r.GetString(15),
 					MarkCache = r.GetString(16),
-					Valuta = r.GetString(17),
+					Currency = r.GetString(17),
 					Tag = r.GetString(18),
 					ExtremeFormulaMode = r.GetInt32(21)
 				};
@@ -100,7 +107,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Comment = r.GetString(8),
 					Measure = r.GetString(9),
 					MarkCache = r.GetString(12),
-					Valuta = r.GetString(10),
+					Currency = r.GetString(10),
 					Tag = r.GetString(11),
 				};
 
@@ -113,8 +120,8 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public static ObjDiv ReaderToDiv(IDataRecord r) {
-			var x = new ObjDiv
+		public static Division ReaderToDiv(IDataRecord r) {
+			var x = new Division
 				{
 					Id = r.GetInt32(0),
 					Code = r.GetString(1),
@@ -122,7 +129,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Comment = r.GetString(3),
 					Version = r.GetDateTime(4),
 					Tag = r.GetString(5),
-					Idx = r.GetInt32(6)
+					Index = r.GetInt32(6)
 				};
 			return x;
 		}
@@ -149,7 +156,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					FormulaType = r.GetString(16),
 					Tag = r.GetString(17),
 					GroupCache = r.GetString(18),
-					Valuta = r.GetString(19),
+					Currency = r.GetString(19),
 
 					//TODO: Role as access
 					//TODO: Active
@@ -159,19 +166,19 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				};
 
 			if (!r.IsDBNull(7)) {
-				x.ZoneId = r.GetInt32(7);
+				x.PointId = r.GetInt32(7);
 			}
 			if (!r.IsDBNull(8)) {
-				x.RoleId = r.GetInt32(8);
+				x.DepartmentId = r.GetInt32(8);
 			}
 			if (!r.IsDBNull(9)) {
-				x.DivId = r.GetInt32(9);
+				x.DivisionId = r.GetInt32(9);
 			}
 			if (!r.IsDBNull(11)) {
 				x.ParentId = r.GetInt32(11);
 			}
 			if (!r.IsDBNull(13)) {
-				x.TypeId = r.GetInt32(13);
+				x.ObjTypeId = r.GetInt32(13);
 			}
 			return x;
 		}
@@ -181,12 +188,12 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
-		public static period ReaderToPeriod(IDataRecord r) {
-			var x = new period
+		public static Period ReaderToPeriod(IDataRecord r) {
+			var x = new Period
 				{
-					ClassicId = r.GetInt32(0),
+					BizId = r.GetInt32(0),
 					Name = r.GetString(1),
-					Idx = r.GetInt32(2),
+					Index = r.GetInt32(2),
 					MonthCount = r.GetInt32(3),
 					IsFormula = r.GetBoolean(4),
 					Formula = r.GetString(5),
@@ -209,7 +216,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Version = r.GetDateTime(1),
 					Comment = r.GetString(2),
 					State = r.GetString(3),
-					Usr = r.GetString(4),
+					User = r.GetString(4),
 				};
 			if (!r.IsDBNull(5)) {
 				x.FormId = r.GetInt32(5);
@@ -233,7 +240,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Code = r.GetString(2),
 					Year = r.GetInt32(3),
 					Period = r.GetInt32(4),
-					Template = r.GetString(5),
+					BizCaseCode = r.GetString(5),
 				};
 			if (!r.IsDBNull(6)) {
 				x.ObjectId = r.GetInt32(6);
@@ -251,8 +258,8 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				{
 					Id = r.GetInt32(0),
 					Version = r.GetDateTime(1),
-					Boss = r.GetBoolean(2),
-					Dolzh = r.GetString(3),
+					IsLocalAdmin = r.GetBoolean(2),
+					Occupation = r.GetString(3),
 					Contact = r.GetString(4),
 					Name = r.GetString(5),
 					Comment = r.GetString(6),
@@ -267,6 +274,74 @@ namespace Zeta.Extreme.Model.SqlSupport {
 			}
 
 			return x;
+		}
+		/// <summary>
+		/// Сериализует строку из БД в объект истории ячейки
+		/// </summary>
+		/// <param name="arg"></param>
+		/// <returns></returns>
+		public static CellHistory ReaderToHistory(IDataRecord r) {
+			// Id,Time,CellId,BizKey,Value,Deleted,Usr
+			var _ = new CellHistory
+				{
+					Id = r.GetInt32(0),
+					Time = r.GetDateTime(1),
+					CellId = r.GetInt32(2),
+					BizKey =  r.IsDBNull(3)?"NOKEY": r.GetString(3),
+					Value = r.IsDBNull(4)? "0" : r.GetDecimal(4).ToString(),
+					User = r.IsDBNull(6)?"NOUSER" :r.GetString(6)
+				};
+			return _;
+		}
+		/// <summary>
+		/// Сериализует ячейку из ридера
+		/// </summary>
+		/// <param name="arg"></param>
+		/// <returns></returns>
+		private Cell ReaderToCell(IDataRecord r) {
+			//Id, Version, Year, Period, RowId, ColId, ObjId, DetailId, DecimalValue, StringValue, Usr, Currency, ContragentId
+			//0    1		2       3       4     5      6      7            8            9         10     11          12
+			var _= new Cell
+			{
+				Id = r.GetInt32(0),
+				Version = r.GetDateTime(1),
+				Year = r.GetInt32(2),
+				Period = r.GetInt32(3),
+				NumericValue = r.GetDecimal(8),
+				StringValue = r.GetString(9),
+				User = r.GetString(10),
+				Currency = r.GetString(11)
+			};
+			if (!r.IsDBNull(4)) {
+				_.RowId = r.GetInt32(4);
+				_.Row = MetaCache.Default.Get<Row>(_.RowId);
+			}
+
+			if (!r.IsDBNull(5))
+			{
+				_.ColumnId = r.GetInt32(5);
+				_.Column = MetaCache.Default.Get<Column>(_.ColumnId);
+			}
+
+			if (!r.IsDBNull(6))
+			{
+				_.ObjectId = r.GetInt32(6);
+				_.Object = MetaCache.Default.Get<Obj>(_.ObjectId);
+			}
+
+			if (!r.IsDBNull(12))
+			{
+				_.ContragentId = r.GetInt32(6);
+				_.Contragent = MetaCache.Default.Get<Obj>(_.ContragentId);
+			}
+
+			if (!r.IsDBNull(7))
+			{
+				_.DetailId = r.GetInt32(7);
+				///_.Detail = MetaCache.Default.Get<Obj>(_.ObjectId); //TODO : detail load is not supported for now
+			}
+
+			return _;
 		}
 	}
 }

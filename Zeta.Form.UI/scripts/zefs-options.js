@@ -1,9 +1,9 @@
 ﻿(function(){
 var root = window.zefs = window.zefs || {};
-var specification = root.api = root.api || {};
+var api = root.api = root.api || {};
 var Command = window.qweb.Command;
 
-$.extend(specification,(function(){
+$.extend(api,(function(){
 	return {
 		server : {
             start : function(){ this.ready.execute() },
@@ -14,7 +14,7 @@ $.extend(specification,(function(){
 
         session : {
             start : $.extend (new Command({domain:"zefs", name:"start"}), {
-                getParameters : function() { return specification.getParameters() },
+                getParameters : function() { return api.getParameters() },
                 wrap : function(obj) {
                     $.extend(obj,{
                         // признак завершения отрисовки сессии
@@ -38,14 +38,17 @@ $.extend(specification,(function(){
                     };
                     $.each(obj, function(i,o) {
                         if (o.type=="c") {
+                            o.exref = o.exref || false;
                             result.cols.push(o);
                         }
                         if (o.type=="r") {
                             o.measure = o.measure || "тыс. руб.";
                             o.level = o.level || 0;
+                            o.exref = o.exref || false;
                             result.rows.push(o);
                         }
                     });
+                    result.rootrow = $($.map(result.rows, function(e) { if (e.level == 0) return e.code })).get(0);
                     return result;
                 }
             })
@@ -78,7 +81,7 @@ $.extend(specification,(function(){
             save : new Command({domain: "zefs", name: "save"}),
             // Команда инициализации сессии сохранения
             saveready : $.extend(new Command({domain: "zefs", name: "saveready"}), {
-                getParameters : function() { return specification.getParameters() }
+                getParameters : function() { return api.getParameters() }
             }),
             // Команда проверки состояния сохранения
             savestate : new Command({domain: "zefs", name: "savestate"})
@@ -86,11 +89,27 @@ $.extend(specification,(function(){
 
         lock : {
             // Команда блокировки формы
-            start : new Command({domain: "zefs", name: "lockform"}),
-            // Команда получения статуса блокировки
+            set : $.extend(new Command({domain: "zefs", name: "lockform"}), {
+                getUrl: function() {
+                    if (location.host.search('admin|corp|133|49') != -1 || location.port == '448' || location.port == '449') return '/ecot/form/setstate.rails';
+                    return '/eco/form/setstate.rails';
+                },
+                getParameters: function() {
+                    var s = root.myform.currentSession;
+                    if ($.isEmptyObject(s)) return;
+                    return {
+                        object: s.ObjInfo.Id,
+                        period: s.Period,
+                        detail: 0,
+                        year: s.Year,
+                        tcode: s.FormInfo.Code
+                    };
+                }
+            }),
+            // Команда получения текущего статуса блокировки
             state : new Command({domain: "zefs", name: "currentlockstate"}),
             // Команда получения статуса возможности блокировки
-            ispossible : new Command({domain: "zefs", name: "canlockstate"}),
+            canlock : new Command({domain: "zefs", name: "canlockstate"}),
             // Команда получения списка блокировок
             history : $.extend(new Command({domain: "zefs", name: "locklist"}), {
                 wrap: function(obj) {
@@ -104,7 +123,7 @@ $.extend(specification,(function(){
             })
         },
 
-        files : {
+        file : {
             // команда получения списка прикрепленных к форме файлов
             list : $.extend(new Command({domain: "zefs", name: "attachlist"}), {
                 wrap : function(obj) {
@@ -116,50 +135,32 @@ $.extend(specification,(function(){
                 }
             }),
             // команда прекрепления или обновления файла к форме
-            add : $.extend(new Command({domain: "zefs", name: "attachfile"}), {
-                call : function(params) {
-                    params = params || {};
-                    $.extend(params, {
-                        formdata : new FormData(),
-                        onsuccess : function() {},
-                        onerror : function() {},
-                        onprogress : function() {}
-                    });
-                    this.nativeCall(params.formdata, params.onsuccess, params.onerror, params.onprogress);
-                },
-                nativeCall: function(formdata, onsuccess, onerror, onprogress) {
-                    $.ajax({
-                        url: this.getUrl(),
-                        type: "POST",
-                        context: this,
-                        dataType: "json",
-                        xhr: function() {
-                            var x = $.ajaxSettings.xhr();
-                            if(x.upload) {
-                                x.upload.addEventListener('progress', function(e) {onprogress(e)}, false);
-                            }
-                            return x;
-                        },
-                        data: formdata,
-                        cache: false,
-                        contentType: false,
-                        processData: false
-                    })
-                        .success(function(r){onsuccess(r)})
-                        .error(onerror||function(error){console.log(error)});
-                }
-            }),
+            add : new Command({domain: "zefs", name: "attachfile", useProgress:true}),
             // команда скрытия/удаления файла
             delete : new Command({domain: "zefs", name: "deletefile"}),
             // команда загрузки файла
             download : $.extend(new Command({domain: "zefs", name: "downloadfile"}), {
-                datatype: "filedesc"
+                datatype: "filedesc",
+                getUrl:function(uid) {
+                    return siteroot + this.url.replace('{DATATYPE}',this.datatype) + "?session=" + window.zefs.myform.sessionId + "&uid=" + uid;
+                }
             }),
             // команда получения возможных типов файлов
             gettypes : new Command({domain: "zefs", name: "getfiletypes"})
         },
 
         metadata : {
+            celldebug : new Command({ domain: "zefs", name: "evalstack" }),
+            cellhistory : $.extend(new Command({domain: "zefs", name: "cellhistory"}), {
+                wrap : function(obj) {
+                    if ($.isEmptyObject(obj)) return obj;
+                    obj.cell.Date = eval(obj.cell.version.substring(2));
+                    $.each(obj.history, function(i,o) {
+                        o.Date = eval(o.time.substring(2));
+                    });
+                    return obj;
+                }
+            }),
             //команда, возвращающая каталог периодов
             getperiods : $.extend(new Command({domain: "zeta", name: "getperiods"}), {
                 // Ждем задачу ZC-404, которая изменит структуру результата команды
@@ -178,22 +179,16 @@ $.extend(specification,(function(){
                 }
             }),
             //команда, возвращающая список доступных предприятий
-            getobjects : new Command({domain: "zeta", name: "getobjects"})
-        },
-
-        getParameters : function(){
-            // Парсим параметры из хэша
-            var p = {};
-            var result = {};
-            if (location.hash == "") return null;
-            $.each(location.hash.substring(1).split("|"), function(i,e) {
-                p[e.split("=")[0]] = e.split("=")[1];
-            });
-            result["form"] = p["form"];
-            result["obj"] = p["obj"];
-            result["period"] = p["period"];
-            result["year"] = p["year"];
-            return result;
+            getobjects : $.extend(new Command({domain: "zeta", name: "getobjects"}), {
+                wrap : function(obj) {
+                    var myobjs = [];
+                    $.each(obj.objs, function(i, o) {
+                        if (o.ismyobj) myobjs.push(o);
+                    });
+                    $.extend(obj, { my: myobjs});
+                    return obj;
+                }
+            })
         },
 
         dataType : "json"

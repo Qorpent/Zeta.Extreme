@@ -1,13 +1,21 @@
 ﻿#region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : FormServer.cs
-// Project: Zeta.Extreme.FrontEnd
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.FrontEnd/FormServer.cs
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,6 +32,7 @@ using Zeta.Extreme.Form.Themas;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
@@ -102,9 +111,9 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// 	An index of object
 		/// </summary>
-		public int Idx {
-			get { return _idx; }
-			set { _idx = value; }
+		public int Index {
+			get { return _index; }
+			set { _index = value; }
 		}
 
 		/// <summary>
@@ -120,7 +129,7 @@ namespace Zeta.Extreme.FrontEnd {
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
-			ReadyToServeForms = new TaskWrapper(Task.FromResult(true), LoadThemas, MetaCacheLoad,
+			ReadyToServeForms = new TaskWrapper(GetCompleteAllTask(), LoadThemas, MetaCacheLoad,
 			                                    CompileFormulas);
 
 			MetaCacheLoad.Run();
@@ -128,6 +137,19 @@ namespace Zeta.Extreme.FrontEnd {
 			LoadThemas.Run();
 			ReadyToServeForms.Run();
 		}
+
+		private Task<bool> GetCompleteAllTask() {
+			return new Task<bool>(() =>
+				{
+					LastRefreshTime = DateTime.Now;
+					return true;
+				});
+
+		}
+		/// <summary>
+		/// Время  последней глобальной очистки
+		/// </summary>
+		protected DateTime LastRefreshTime { get; set; }
 
 		/// <summary>
 		/// 	Возвращает инстанцию класса для сохранения данных
@@ -172,6 +194,8 @@ namespace Zeta.Extreme.FrontEnd {
 			return new
 				{
 					time = ReadyToServeForms.ExecuteTime,
+					lastrefresh = LastRefreshTime,
+					reloadcount = ReloadCount,
 					meta = new
 						{
 							status = MetaCacheLoad.Status,
@@ -252,7 +276,7 @@ namespace Zeta.Extreme.FrontEnd {
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
-			ReadyToServeForms = new TaskWrapper(Task.FromResult(true),
+			ReadyToServeForms = new TaskWrapper(GetCompleteAllTask(),
 			                                    LoadThemas,
 			                                    MetaCacheLoad,
 			                                    CompileFormulas);
@@ -261,6 +285,30 @@ namespace Zeta.Extreme.FrontEnd {
 			LoadThemas.Run();
 			ReadyToServeForms.Run();
 		}
+
+		/// <summary>
+		/// Проверяет глобальный маркер очистки Zeta и производит перезапуск системы ( в синхронном режиме)
+		/// </summary>
+		public void CheckGlobalReload() {
+			lock (this) {
+				if (null != ReadyToServeForms && !ReadyToServeForms.IsCompleted) {
+					ReadyToServeForms.Wait();
+				}
+				var lastrefresh = new NativeZetaReader().GetLastGlobalRefreshTime();
+				if (lastrefresh > LastRefreshTime) {
+					Sessions.Clear(); //иначе будет устаревшая структура
+					Reload();
+					ReadyToServeForms.Wait();
+					LastRefreshTime = lastrefresh;
+					ReloadCount ++;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Счетчик числа перезагрузок
+		/// </summary>
+		public int ReloadCount { get; set; }
 
 		private Task GetCompileFormulasTask() {
 			return new Task(() =>
@@ -307,6 +355,6 @@ namespace Zeta.Extreme.FrontEnd {
 
 		private readonly bool _doNotRun;
 		private TimeSpan _formulaRegisterTime;
-		private int _idx = -100;
+		private int _index = -100;
 	}
 }

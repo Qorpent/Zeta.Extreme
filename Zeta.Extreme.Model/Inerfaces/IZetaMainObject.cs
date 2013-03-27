@@ -1,10 +1,21 @@
 #region LICENSE
 
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : IZetaMainObject.cs
-// Project: Zeta.Extreme.Poco
-// This code cannot be used without agreement from 
-// Media Technology LTD 
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Model/IZetaMainObject.cs
 
 #endregion
 
@@ -12,47 +23,137 @@ using System;
 using System.Collections.Generic;
 using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
-using Zeta.Extreme.Model.PocoClasses;
-
 
 namespace Zeta.Extreme.Model.Inerfaces {
-	[ForSearch("Старший объект (предприятие)")]
-	public interface IZetaMainObject : IZetaQueryDimension,
-		ICanResolveTag,
-		IWithDetailObjectType,
-		IWithProperties, IWithDetailObjects, IZetaObject {
-		[Map] string GroupCache { get; set; }
-		[Map] string FullName { get; set; }
-		[Map] string Formula { get; set; }
-		[Map] string ShortName { get; set; }
-		[Map] DateTime Start { get; set; }
-		[Map] DateTime Finish { get; set; }
-		[Map] string Valuta { get; set; }
+	/// <summary>
+	/// Zeta Main <c>Object</c> <c>interface</c>
+	/// </summary>
+	public interface IZetaMainObject : ICanResolveTag,
+	                                   IWithObjType,
+	                                   IZetaQueryDimension, 
+									   IWithDetailObjects, 
+									   IZetaObject,
+									   IWithOuterCode,
+									   IWithCurrency,
+									   IContextEntity,
+									   IWithHierarchy<IZetaMainObject> {
 
-		[Map] bool ShowOnStartPage { get; set; }
+		/// <summary>
+		/// Slash-delimited list of groups that ZetaObject is attached to
+		/// </summary>
+		string GroupCache { get; set; }
 
-		IList<IZetaMainObject> Children { get; set; }
-		IZetaMainObject Parent { get; set; }
-		IObjectType ObjType { get; set; }
-		IList<IUsrThemaMap> UsrThemaMaps { get; set; }
+		/// <summary>
+		/// Full name of ZetaObject
+		/// </summary>
+		string FullName { get; set; }
+		/// <summary>
+		/// Short display name of ZetaObject
+		/// </summary>
+		string ShortName { get; set; }
 
-		[Map(ReadOnly = true)] string Path { get; set; }
 
-		int Level { get; }
-		int? DivId { get; set; }
-		[Classic("Holding")] IMainObjectGroup Group { get; set; }
-		[Classic("Otrasl")] IMainObjectRole Role { get; set; }
-		[Classic("Municipal")] IZetaPoint Location { get; set; }
-		string Address { get; set; }
-		IList<IZetaUnderwriter> Underwriters { get; set; }
+		/// <summary>
+		/// Flag that  ZetaObject must be shown on start page of application
+		/// </summary>
+		[Obsolete("Deprecated due to bad design of usage (merges model and UI concern)")]
+		bool ShowOnStartPage { get; set; }
 
-		MetalinkRecord[] GetLinks(string nodetype, string linktype, string subtype = null, string system = "Default");
-		string[] GetConfiguredThemaCodes();
-		IUsrThemaMap GetUserMap(string themacode, bool plan);
-		IZetaUnderwriter[] GetConfiguredUsers();
-		string[] GetConfiguredThemas(IZetaUnderwriter usr, bool plan);
-		IEnumerable<IZetaMainObject> AllChildren();
-		IEnumerable<IZetaMainObject> AllChildren(int level, string typefilter);
-		bool IsMatchZoneAcronim(string s);
-		}
+
+		/// <summary>
+		/// <c>List</c> of mappings ZetaObject's users to themas
+		/// </summary>
+		[Obsolete("Due to ZC-408 must be moved to special extension")]
+		IList<IUserBizCaseMap> UserBizCaseMaps { get; set; }
+		/// <summary>
+		/// Division of current ZetaObject
+		/// </summary>
+		IObjectDivision Division { get; set; }
+		/// <summary>
+		/// Department of current ZetaObject (<c>ru</c>: <c>отрасль</c>)
+		/// </summary>
+		IObjectDepartment Department { get; set; }
+		/// <summary>
+		/// Point of ZetaObject's location
+		/// </summary>
+		[Obsolete("ZC-417")]
+		IZetaPoint Point { get; set; }
+		/// <summary>
+		/// Registry of ZetaObject-attached users of application
+		/// </summary>
+		IList<IZetaUser> Users { get; set; }
+
+		/// <summary>
+		/// ID (FK) of parent <see cref="Obj"/>
+		/// </summary>
+		/// <remarks>Intended to use with ORM/SQL scenario</remarks>
+		/// <exception cref="Exception">cannot setup ParentId when Parent is attached</exception>
+		int? ParentId { get; set; }
+
+		/// <summary>
+		/// ID (FK) of <see cref="Point"/> that current is attached to
+		/// </summary>
+		/// <remarks>Intended to use with ORM/SQL scenario</remarks>
+		/// <exception cref="Exception">cannot setup PointId when Point is attached</exception>
+		int? PointId { get; set; }
+
+		/// <summary>
+		/// ID (FK) of <see cref="Department"/> that current is attached to
+		/// </summary>
+		/// <remarks>Intended to use with ORM/SQL scenario</remarks>
+		/// <exception cref="Exception">cannot setup DepartmentId when Department is attached</exception>
+		int? DepartmentId { get; set; }
+
+		/// <summary>
+		/// ID (FK) of <see cref="ObjectType"/> that current is attached to
+		/// </summary>
+		/// <remarks>Intended to use with ORM/SQL scenario</remarks>
+		int? ObjTypeId { get; set; }
+		/// <summary>
+		/// ID (FK) of <see cref="Division"/> that current is attached to
+		/// </summary>
+		/// <remarks>Intended to use with ORM/SQL scenario</remarks>
+		int? DivisionId { get; set; }
+
+
+		/// <summary>
+		/// NEED INVESTIGATION!
+		/// </summary>
+		/// <returns></returns>
+		[Obsolete("Due to ZC-408 must be moved to special extension")]
+		string[] GetConfiguredBizCaseCodes();
+		/// <summary>
+		/// NEED INVESTIGATION!
+		/// </summary>
+		/// <returns></returns>
+		[Obsolete("Due to ZC-408 must be moved to special extension")]
+		IUserBizCaseMap GetUserMap(string themacode, bool plan);
+		/// <summary>
+		/// NEED INVESTIGATION!
+		/// </summary>
+		/// <returns></returns>
+		[Obsolete("Due to ZC-408 must be moved to special extension")]
+		IZetaUser[] GetConfiguredUsers();
+		/// <summary>
+		/// NEED INVESTIGATION!
+		/// </summary>
+		/// <returns></returns>
+		[Obsolete("Due to ZC-408 must be moved to special extension")]
+		string[] GetConfiguredThemas(IZetaUser usr, bool plan);
+
+
+		/// <summary>
+		/// Retrieves all children in  hierarchy down
+		/// </summary>
+		/// <returns></returns>
+		IEnumerable<IZetaMainObject> AllChildren(int level =100, string typefilter = null);
+
+		/// <summary>
+		/// Checkout if current ZetaObject is match acronym of zone
+		/// </summary>
+		/// <param name="s"></param>
+		/// <returns></returns>
+		[Obsolete("Due to ZC-410 must be moved to another implementation")]
+		bool IsMatchZoneAcronym(string s);
+	}
 }

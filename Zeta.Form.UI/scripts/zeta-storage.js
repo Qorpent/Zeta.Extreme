@@ -48,7 +48,7 @@ var root = window.zeta = window.zeta || {};
 
     Storage.prototype.clear = function() {
         if (this.support()) {
-            window.localStorage.clear();
+            window.localStorage.setItem("ZetaUsers", {});
         }
     };
 

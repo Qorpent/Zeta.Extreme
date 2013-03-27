@@ -1,15 +1,24 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : NativeZetaReader.cs
-// Project: Zeta.Extreme.Poco
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Model/NativeZetaReader.cs
 #endregion
 
+using System;
 using System.Collections.Generic;
-using Zeta.Extreme.Model.PocoClasses;
 
 namespace Zeta.Extreme.Model.SqlSupport {
 	public partial class NativeZetaReader {
@@ -67,6 +76,14 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				Id, Version, ObjAdmin, Dolzh, Contact, Name, Email,  ObjId, ObjName, Login, Active, Roles, SlotList 
 			from [zeta].[normalusr]
 		";
+	
+		private const string Historyquerybase = @"
+			select  Id,Time,CellId,BizKey,Value,Deleted,Usr from zeta.normalhist
+		";
+
+		private const string Cellquerybase = @"
+			select Id, Version, Year, Period, RowId, ColId, ObjId, DetailId, DecimalValue, StringValue, Usr, Currency, ContragentId from zeta.normalcell
+		";
 
 		/// <summary>
 		/// 	Сериализует учетные записи пользователей
@@ -84,7 +101,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="condition"> </param>
 		/// <returns> </returns>
-		public IEnumerable<period> ReadPeriods(string condition = "") {
+		public IEnumerable<Period> ReadPeriods(string condition = "") {
 			return Read(condition, Peiodquerybase, ReaderToPeriod);
 		}
 
@@ -115,7 +132,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <param name="condition"> </param>
 		/// <returns> </returns>
-		public IEnumerable<ObjDiv> ReadDivisions(string condition = "") {
+		public IEnumerable<Division> ReadDivisions(string condition = "") {
 			return Read(condition, Divquerybase, ReaderToDiv);
 		}
 
@@ -147,6 +164,36 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// <returns> </returns>
 		public IEnumerable<Row> ReadRows(string condition = "") {
 			return Read(condition, Rowquerybase, ReaderToRow);
+		}
+		/// <summary>
+		/// Сериализует историю по конкретной ячейке (не поддерживается полный поиск!!!)
+		/// </summary>
+		/// <param name="targetCellId"></param>
+		/// <returns></returns>
+		public IEnumerable<CellHistory> GetCellHistory(int targetCellId) {
+			return Read("cellid = " + targetCellId, Historyquerybase, ReaderToHistory);
+		}
+		/// <summary>
+		/// Запрашивет ячейки напрямую
+		/// </summary>
+		/// <param name="condition"></param>
+		/// <returns></returns>
+		public IEnumerable<Cell> GetCells(string condition = "") {
+			return Read(condition, Cellquerybase, ReaderToCell);
+		}
+
+		/// <summary>
+		/// Retrieves global refresh hook from Zeta DB
+		/// </summary>
+		/// <returns></returns>
+		public DateTime GetLastGlobalRefreshTime() {
+			const string commandText = "select comdiv.get_global_refresh_time()";
+			using (var c = getConnection()) {
+				c.Open();
+				var cmd = c.CreateCommand();
+				cmd.CommandText = commandText;
+				return (DateTime) cmd.ExecuteScalar();
+			}
 		}
 	}
 }

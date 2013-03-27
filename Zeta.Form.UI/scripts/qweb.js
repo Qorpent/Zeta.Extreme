@@ -14,7 +14,12 @@
         if(!this.startEventName)this.startEventName=this.url+":start";
         if(!this.successEventName)this.successEventName=this.url+":success";
         if(!this.errorEventName)this.errorEventName=this.url+":error";
+        if(!this.progressEventName)this.progressEventName=this.url+":progress";
+        if(!this.completeEventName)this.completeEventName=this.url+":complete";
+        if(!this.finishEventName)this.finishEventName=this.url+":finish";
 		this.repeatWait = false;
+        this.useProgress = !!options.useProgress;
+
 		if(options.timeout){
 			this.basetimeout = options.timeout;
 			this.currenttimeout = this.basetimeout;
@@ -25,7 +30,7 @@
 
     $.extend(root.Command.prototype,{
         datatype : "json",
-        getParameters : function() { return null },
+        getParameters : function() { return {} },
         getUrl:function(datatype) {
             datatype = datatype || this.datatype;
             return siteroot + this.url.replace('{DATATYPE}',datatype);
@@ -36,6 +41,12 @@
         triggerOnError : function(result){
             $(this).trigger(this.errorEventName,result);
         },
+        triggerOnProgress : function(result){
+            $(this).trigger(this.progressEventName,result);
+        },
+        triggerOnComplete : function(result){
+            $(this).trigger(this.completeEventName,result);
+        },
         onStart: function(func) {
           $(this).on(this.startEventName, func);
         },
@@ -45,9 +56,18 @@
         onError: function(func) {
             $(this).on(this.errorEventName, func);
         },
+        onProgress: function(func) {
+            $(this).on(this.progressEventName, func);
+        },
+        onComplete: function(func) {
+            $(this).on(this.completeEventName, func);
+        },
+        onFinished: function(func) {
+            $(this).on(this.finishEventName, func);
+        },
 		execute : function(params,options) {
-            params = params || this.getParameters() || {};
-
+            params = params || {};
+            $.extend(params, this.getParameters());
             this.call(params,options);
         },
 		call : function (params,options) {
@@ -89,21 +109,41 @@
 			});
 		},
         nativeCall : function(params, options){
+            var self = this;
             var myoptions = options || {};
             $.extend(myoptions, {
                 datatype : this.datatype,
                 url : this.getUrl(this.datatype)
             });
-            $.ajax({
+            var ajaxinfo = {
                 url: myoptions.url,
                 type : !params ? "GET" : "POST",
                 dataType: myoptions.datatype,
                 data : params || {}
-            })
+            };
+            if(this.useProgress){
+                $.extend(ajaxinfo,{
+                    xhr: function() {
+                        var x = $.ajaxSettings.xhr();
+                        if(x.upload) {
+                            x.upload.addEventListener('progress', function(e) {self.triggerOnProgress(e)}, false);
+                        }
+                        return x;
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            $.ajax(ajaxinfo)
                 .success(function(r){
                     myoptions.onsuccess(r,params);
                 })
-                .error(myoptions.onerror||function(error){console.log(error)});
+                .error(myoptions.onerror||function(error){console.log(error)})
+                .complete(function(r) {
+                    self.triggerOnComplete(r)
+                });
+
         }
     });
 

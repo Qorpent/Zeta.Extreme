@@ -1,14 +1,21 @@
 ﻿#region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Solution: Qorpent.TextExpert
-// Original file : DefaultRegistryHelperTestBase.cs
-// Project: Zeta.Extreme.Core.Tests
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core.Tests/DefaultRegistryHelperTestBase.cs
 #endregion
-
 using NUnit.Framework;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
@@ -29,12 +36,13 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 		[Test(Description = "самая базовая проверка - просто поместить запрос сессию")]
 		public void CanRegisterOneQueryAynchronously() {
 			var q = new Query {CustomHashPrefix = "CanRegisterOneQuerySynchronously"};
+			var basekey = q.GetCacheKey();
 			var rqt = session.RegisterAsync(q);
 			session.WaitPreparation();
 			var rq = rqt.Result;
 			///	Assert.AreEqual(q, rq);
-			Assert.AreSame(rq, session.Registry[q.GetCacheKey()]);
-			Assert.AreSame(rq, session.ActiveSet[q.GetCacheKey()]);
+			Assert.AreSame(rq, session.Registry[basekey]);
+			Assert.AreSame(rq, session.ActiveSet[basekey]);
 			Assert.AreEqual(1, session.ActiveSet.Count);
 			Assert.AreEqual(1, session.Registry.Count);
 		}

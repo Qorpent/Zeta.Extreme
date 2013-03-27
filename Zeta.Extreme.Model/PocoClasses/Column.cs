@@ -1,132 +1,98 @@
 ﻿#region LICENSE
 
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : col.cs
-// Project: Zeta.Extreme.Poco
-// This code cannot be used without agreement from 
-// Media Technology LTD 
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Model/Column.cs
 
 #endregion
 
-using System;
 using System.Collections.Generic;
-using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model.Deprecated;
-using Zeta.Extreme.Model.Extensions;
+using Qorpent.Model;
 using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model.PocoClasses {
+namespace Zeta.Extreme.Model {
 	/// <summary>
-	/// 
 	/// </summary>
-	public partial class Column : IZetaColumn {
-		[Map] public virtual Guid Uid { get; set; }
-
-		public virtual string DataTypeString {
-			get { return DataType.ToString(); }
-			set { DataType = (ValueDataType) Enum.Parse(typeof (ValueDataType), value, true); }
-		}
-
-
+	public partial class Column : Entity, IZetaColumn {
+		/// <summary>
+		///     Temporary (local) properties collection
+		/// </summary>
 		public virtual IDictionary<string, object> LocalProperties {
-			get { return localProperties ?? (localProperties = new Dictionary<string, object>()); }
-			set { localProperties = value; }
+			get { return _localProperties ?? (_localProperties = new Dictionary<string, object>()); }
+			set { _localProperties = value; }
 		}
 
 		/// <summary>
-		/// 	Поддержка режима "колонка как заместитель колсета"
+		///     Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
-		[NoMap] public virtual int Year { get; set; }
+		public virtual int Year { get; set; }
 
 		/// <summary>
-		/// 	Поддержка режима "колонка как заместитель колсета"
+		///     Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
-		[NoMap] public virtual int Period { get; set; }
+		public virtual int Period { get; set; }
 
 		/// <summary>
-		/// 	Поддержка режима "колонка как заместитель колсета"
+		///     Поддержка режима "колонка как заместитель колсета"
 		/// </summary>
-		[NoMap] public virtual string ForeignCode { get; set; }
-
-		[Map] public virtual string Tag { get; set; }
-
-		[Map] public virtual string Lookup { get; set; }
-
-		[Map] public virtual string Valuta { get; set; }
-
-		[Map("IsDinamycLookUp")] public virtual bool IsDynamicLookup { get; set; }
-
-		[Map] public virtual int Id { get; set; }
-
-		[Map] public virtual string Name { get; set; }
-
-		[Map] public virtual string Code { get; set; }
-
-		[Map] public virtual string Comment { get; set; }
-
-		[Map] public virtual DateTime Version { get; set; }
+		public virtual string ForeignCode { get; set; }
 
 		/// <summary>
-		/// 	Тип формулы
+		///     <see cref="Zeta.Extreme.Model.Column.Currency" /> of entity
+		/// </summary>
+		public virtual string Currency { get; set; }
+
+
+		/// <summary>
+		///     Тип формулы
 		/// </summary>
 		public string FormulaType { get; set; }
 
-		[Map] public virtual bool IsFormula { get; set; }
+		/// <summary>
+		///     Formula's activity flag
+		/// </summary>
+		public virtual bool IsFormula { get; set; }
 
-		[Map] public virtual string Formula { get; set; }
+		/// <summary>
+		///     Formula's definition
+		/// </summary>
+		public virtual string Formula { get; set; }
 
-		
 
-		[Map] public virtual string Measure { get; set; }
+		/// <summary>
+		///     Type of measure <c>(ru : единица измерения)</c>
+		/// </summary>
+		public virtual string Measure { get; set; }
 
-		[Map] public virtual bool IsDynamicMeasure { get; set; }
-		[Map] public virtual string MarkCache { get; set; }
+		/// <summary>
+		///     Flag that measure must be setted up dynamically
+		/// </summary>
+		public virtual bool IsDynamicMeasure { get; set; }
 
+		/// <summary>
+		///     Slash-delimited list of mark codes
+		/// </summary>
+		public virtual string MarkCache { get; set; }
+
+		/// <summary>
+		///     Type of native data under column
+		/// </summary>
 		public virtual ValueDataType DataType { get; set; }
 
 
-		[Map] public virtual string DataTypeDetail { get; set; }
-
-
-		
-
-		
-
-		/// <summary>
-		/// 	An index of object
-		/// </summary>
-		public int Idx { get; set; }
-
-		private IDictionary<string, object> localProperties;
-
-		public virtual string GetStaticMeasure(string format) {
-			if (IsDynamicMeasure) {
-				return "";
-			}
-			if (Measure.IsNotEmpty()) {
-				if (format.IsNotEmpty()) {
-					return string.Format(format, Measure);
-				}
-				return Measure;
-			}
-			return "";
-		}
-
-		public virtual string GetDynamicMeasure(IZetaRow source, string format) {
-			if (!IsDynamicMeasure) {
-				return "";
-			}
-			if (source.Measure.IsNotEmpty()) {
-				if (format.IsNotEmpty()) {
-					return string.Format(format, source.Measure);
-				}
-				return source.Measure;
-			}
-			return GetStaticMeasure(format);
-		}
-
-		public virtual bool IsMarkSeted(string code) {
-			return WithMarksExtension.IsMarkSeted(this, code);
-		}
+		private IDictionary<string, object> _localProperties;
 	}
 }

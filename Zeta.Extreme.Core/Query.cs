@@ -1,19 +1,28 @@
 #region LICENSE
-
-// Copyright 2012-2013 Media Technology LTD 
-// Original file : Query.cs
-// Project: Zeta.Extreme.Core
-// This code cannot be used without agreement from 
-// Media Technology LTD 
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Core/Query.cs
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
 
@@ -35,7 +44,8 @@ namespace Zeta.Extreme {
 			Row = new RowHandler();
 			Col = new ColumnHandler();
 			Obj = new ObjHandler();
-			Valuta = "NONE";
+			Reference = new ReferenceHandler();
+			Currency = "NONE";
 		}
 
 		/// <summary>
@@ -88,6 +98,11 @@ namespace Zeta.Extreme {
 		public IRowHandler Row { get; set; }
 
 		/// <summary>
+		///  Измерение по контрагенту
+		/// </summary>
+		public IReferenceHandler Reference { get; set; }
+
+		/// <summary>
 		/// 	Условие на колонку
 		/// </summary>
 		public IColumnHandler Col { get; set; }
@@ -100,7 +115,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Выходная валюта
 		/// </summary>
-		public string Valuta { get; set; }
+		public string Currency { get; set; }
 
 		/// <summary>
 		/// 	Сбрасывает кэш-строку
@@ -193,8 +208,9 @@ namespace Zeta.Extreme {
 			sb.Append('/');
 			sb.Append(null == Time ? "NOTIME" : Time.GetCacheKey());
 			sb.Append('/');
-			sb.Append(string.IsNullOrWhiteSpace(Valuta) ? "NOVAL" : "VAL:" + Valuta);
-
+			sb.Append(string.IsNullOrWhiteSpace(Currency) ? "NOVAL" : "VAL:" + Currency);
+			sb.Append('/');
+			sb.Append(Reference.GetCacheKey());
 			return sb.ToString();
 		}
 
@@ -221,6 +237,7 @@ namespace Zeta.Extreme {
 				result.Row = result.Row.Copy();
 				result.Time = result.Time.Copy();
 				result.Obj = result.Obj.Copy();
+				result.Reference = result.Reference.Copy();
 			}
 
 			return result;
@@ -234,6 +251,34 @@ namespace Zeta.Extreme {
 			var objt = Task.Run(() => Obj.Normalize(session ?? Session)); //объекты зачастую из БД догружаются
 			Time.Normalize(session ?? Session);
 			Col.Normalize(session ?? Session);
+			ResolveTemporalCustomCodeBasedColumns(session);
+			Row.Normalize(session ?? Session, Col.Native); //тут формулы парсим простые как рефы			
+			objt.Wait();
+			AdaptDetailModeForDetailBasedSubtrees();
+			AdaptExRefLinkSourceForColumns(session);
+			Reference.Normalize(session);
+			InvalidateCacheKey();
+		}
+
+		private void AdaptExRefLinkSourceForColumns(ISession session) {
+			if (null != Col.Native  && null != Row.Native && null!=Col.Tag && null!=Row.Tag) {
+				if (Col.Tag.Contains("/linkcol")) {
+					var resolvedCode = Row.Native.GetRedirectColCode(Col.Native);
+					if (resolvedCode != Col.Code) {
+						Col.Native = (session ?? Session).GetMetaCache().Get<IZetaColumn>(resolvedCode);
+					}
+				}
+			}
+		}
+
+		private void AdaptDetailModeForDetailBasedSubtrees() {
+//требуем использования сумм для запросов на деталях по сумме
+			if (Obj.IsForObj && Row.Native.ResolveTag("usedetails") == "1") {
+				Obj.DetailMode = DetailMode.SafeSumObject;
+			}
+		}
+
+		private void ResolveTemporalCustomCodeBasedColumns(ISession session) {
 			while (null != Col.Native && !string.IsNullOrWhiteSpace(Col.Native.ForeignCode)) {
 				var _c = Col;
 				Col = new ColumnHandler {Code = _c.Native.ForeignCode};
@@ -242,9 +287,6 @@ namespace Zeta.Extreme {
 				}
 				Col.Normalize(session ?? Session);
 			}
-			Row.Normalize(session ?? Session, Col.Native); //тут формулы парсим простые как рефы			
-			objt.Wait();
-			InvalidateCacheKey();
 		}
 
 		/// <summary>
