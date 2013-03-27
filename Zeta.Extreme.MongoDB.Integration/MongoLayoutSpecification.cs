@@ -17,5 +17,15 @@
         ///     БД для храненения аттачей по умолчанию
         /// </summary>
         public const string DEFAULT_ATTACHMENTS_DB = "MongoDbAttachments";
+
+        /// <summary>
+        ///     The default logs database name
+        /// </summary>
+        public const string DEFAULT_LOGS_DB = "logs";
+
+        /// <summary>
+        ///     The default logs collection name
+        /// </summary>
+        public const string DEFAULT_LOGS_COLLECTION = "unknownLogs";
     }
 }

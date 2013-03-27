@@ -15,6 +15,8 @@
   <ItemGroup>
     <Compile Include="MongoDBAttachmentSource.cs" />
     <Compile Include="MongoDBAttachmentsSourceSerializer.cs" />
+    <Compile Include="MongoDbLogs.cs" />
+    <Compile Include="MongoDbLogsSerializer.cs" />
     <Compile Include="MongoLayoutSpecification.cs" />
   </ItemGroup>
   <ItemGroup>
