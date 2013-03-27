@@ -14,4 +14,33 @@
  </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 
+    <ProjectGuid>{D0DC6DB4-178D-4123-85D9-F2C4A6C9C87D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Zeta.Extreme.DbfsToMongo.Console</RootNamespace>
+    <AssemblyName>Zeta.Extreme.DbfsToMongo.Console</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="*.import" />
+    <None Include="*.export" />
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DbfsToMongo.Console.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Zeta.Extreme.DbfsToMongo.Wrapper\Zeta.Extreme.DbfsToMongo.Wrapper.csproj">
+      <Project>{6afd822e-667e-4473-814a-e291b38771de}</Project>
+      <Name>Zeta.Extreme.DbfsToMongo.Wrapper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Zeta.Extreme.BizProcess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>
