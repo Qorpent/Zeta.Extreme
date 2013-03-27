@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using MongoDB.Bson;
+using MongoDB.Driver.Builders;
 using Qorpent.Log;
 using Qorpent.Bxl;
 
@@ -12,6 +13,12 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private MongoClientSettings _mongoClientSettings;
         private MongoCollection _mongoLogsCollection;
 
+        // collections
+        private MongoCollection _mongoUsersCollection;
+        private MongoCollection _mongoFormsCollection;
+        private MongoCollection _mongoServersCollection;
+        private MongoCollection _mongoCompaniesCollection;
+        private MongoCollection _mongoPeriodsCollection;
 
         private bool _mongoConnected;
 
@@ -78,21 +85,61 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public MongoDbLogs() {
-            ConnectionSetup();
-        }
-
-        /// <summary>
         ///     Writes message synchronously on down level
         /// </summary>
         /// <param name="message">a log message</param>
         public void Write(LogMessage message) {
+            ConnectionSetup();
+
+            if (message.Level < Level) {
+                message.Level = Level;
+            }
+
             var document = MongoDbLogsSerializer.LogMessageToBson(message);
             _mongoLogsCollection.Save(document);
+
+            // get the ObjectId identifier
+            var logItemId = document.GetValue("_id").AsObjectId;
+
+            UpdateUsersCollection(logItemId, message.Name);
+            UpdateServersCollection(logItemId, message.Server);
         }
 
+        private void UpdateUsersCollection(ObjectId sourceObjectId, string username) {
+            _mongoUsersCollection.Update(
+                Query.EQ(
+                    "user", username
+                ),
+
+                Update.Push(
+                   "id", sourceObjectId 
+                ),
+
+                UpdateFlags.Upsert
+            );
+        }
+
+        private void UpdateServersCollection(ObjectId sourceObjectId, string serverName) {
+            _mongoServersCollection.Update(
+                Query.EQ(
+                    "server", serverName
+                ),
+
+                Update.Push(
+                   "id", sourceObjectId
+                ),
+
+                UpdateFlags.Upsert
+            );
+        }
+
+        private void UpdateFormsCollection(ObjectId sourceObjectId) {
+            
+        }
+
+        /// <summary>
+        /// Sets up connection to the database
+        /// </summary>
         private void ConnectionSetup() {
             _mongoDatabaseSettings = new MongoDatabaseSettings();
             _mongoClientSettings = new MongoClientSettings {
@@ -103,13 +150,22 @@ namespace Zeta.Extreme.MongoDB.Integration {
             var mongoServer = mongoClient.GetServer();
             var mongoDatabase = mongoServer.GetDatabase(MongoLogsDatabaseName, _mongoDatabaseSettings);
 
-            CollectionSetup(mongoDatabase);
+            CollectionsSetup(mongoDatabase);
 
             _mongoConnected = true;
         }
 
-        private void CollectionSetup(MongoDatabase mongoDatabase) {
+        /// <summary>
+        /// Setups collections
+        /// </summary>
+        /// <param name="mongoDatabase">Mongo database pointer</param>
+        private void CollectionsSetup(MongoDatabase mongoDatabase) {
             _mongoLogsCollection = mongoDatabase.GetCollection(MongoLogsCollectionName);
+            _mongoUsersCollection = mongoDatabase.GetCollection(MongoLogsCollectionName + ".users");
+            _mongoFormsCollection = mongoDatabase.GetCollection(MongoLogsCollectionName + ".forms");
+            _mongoServersCollection = mongoDatabase.GetCollection(MongoLogsCollectionName + ".servers");
+            _mongoCompaniesCollection = mongoDatabase.GetCollection(MongoLogsCollectionName + ".companies");
+            _mongoPeriodsCollection = mongoDatabase.GetCollection(MongoLogsCollectionName + ".periods");
         }
     }
 }
