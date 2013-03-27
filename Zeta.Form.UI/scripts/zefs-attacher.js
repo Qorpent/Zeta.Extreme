@@ -97,7 +97,7 @@
     );
     uploadform.submit(function(e) {
         e.preventDefault();
-        if (file.files.length == 0) return;
+        if (file.get(0).files.length == 0) return;
         window.zefs.myform.attachfile($(e.target));
     });
     var floating = $('<div class="floatmode"/>').click(function() {

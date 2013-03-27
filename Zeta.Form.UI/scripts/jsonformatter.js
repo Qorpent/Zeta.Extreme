@@ -16,7 +16,7 @@ var jsformat = root.jsformat = root.jsformat || {};
         getSpanBoth : function(innerText,className) {
             var span = this.baseSpan.cloneNode(false);
             span.className = className;
-            span.innerText = innerText;
+            $(span).text(innerText);
             return span;
         },
 
@@ -81,11 +81,11 @@ var jsformat = root.jsformat = root.jsformat || {};
                     if (value[0] === 'h' && value.substring(0, 4) === 'http') {
                         var innerStringA = document.createElement('A');
                         innerStringA.href = value;
-                        innerStringA.innerText = escapedString;
+                        $(innerStringA).text(escapedString);
                         innerStringEl.appendChild(innerStringA);
                     }
                     else {
-                        innerStringEl.innerText = escapedString;
+                        $(innerStringEl).text(escapedString);
                     }
                     valueElement = templates.t_string.cloneNode(false);
                     valueElement.appendChild(templates.t_dblqText.cloneNode(false));
@@ -96,7 +96,7 @@ var jsformat = root.jsformat = root.jsformat || {};
 
                 case this.TYPE_NUMBER:
                     valueElement = templates.t_number.cloneNode(false);
-                    valueElement.innerText = value;
+                    $(valueElement).text(value);
                     kvov.appendChild(valueElement);
                     break;
 
