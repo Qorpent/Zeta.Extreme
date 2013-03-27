@@ -234,9 +234,14 @@ root.init = root.init ||
     });
 
     api.metadata.celldebug.onSuccess(function(e, result) {
+        var htmlresult = window.zeta.jsformat.jsonObjToHTML(result);
         $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            width: 800,
             title: "Отладка ячейки",
-            text: JSON.stringify(result)
+            content: $(htmlresult).children().first()
+        });
+        $('.rootKvov').click(function(e) {
+            window.zeta.jsformat.generalClick(e);
         });
     });
 
