@@ -152,6 +152,43 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
         }
 
+        [Test]
+        public void CanUpdateBinaryAndDescription() {
+            var attachment = GetNewAttach();
+
+            byte[] someData2 = { 1, 2, 3, 4, 5 };
+            byte[] someData = { 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, };
+            
+            _mdb.Save(attachment);
+            using (var stream = _mdb.Open(attachment, FileAccess.Write))
+            {
+                stream.Write(someData, 0, someData.Length);
+                stream.Flush();
+            }
+
+
+            var found = _mdb.Find(attachment).FirstOrDefault();
+
+            Assert.NotNull(found);
+            Assert.AreEqual(attachment.Uid, found.Uid);
+
+
+            using (var stream = _mdb.Open(attachment, FileAccess.Write))
+            {
+                stream.Write(someData2, 0, someData2.Length);
+                stream.Flush();
+            }
+
+            var found2 = _mdb.Find(attachment).FirstOrDefault();
+            Assert.NotNull(found2);
+            Assert.AreEqual(attachment.Uid, found2.Uid);
+
+            Assert.AreEqual(someData2.Length, found2.Size);
+        }
+
+
+
+
         public Attachment GetNewAttach(string uid = null) {
             return new Attachment {
                 Uid = ObjectId.GenerateNewId().ToString(),
