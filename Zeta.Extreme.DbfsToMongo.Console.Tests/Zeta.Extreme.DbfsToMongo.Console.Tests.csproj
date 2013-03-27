@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+	<IsTest>True</IsTest>
+    <Configuration>Debug</Configuration>
+	<ProjectGuid>F14C77A2-07FC-4278-AEF6-917951F25384</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Zeta.Extreme.DbfsToMongo.Console.Tests</RootNamespace>
+    <AssemblyName>Zeta.Extreme.DbfsToMongo.Console.Tests</AssemblyName>
+	<AssemblyNameBase>Zeta.Extreme.DbfsToMongo.Console</AssemblyNameBase>
+  </PropertyGroup>
+   <ItemGroup>
+	<None Include="*.import" />
+	<None Include="*.export" />
+	<EmbeddedResource Include=".\**\*.*resource"/>
+ </ItemGroup>
+  <Import Project="..\..\qorpent.kernel\build.targets" />
+
+</Project>
