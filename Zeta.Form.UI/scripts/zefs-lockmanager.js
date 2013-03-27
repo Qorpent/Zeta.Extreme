@@ -88,10 +88,10 @@
                         return;
                     }
                     else if (i > 10) return;
-                    var lockstate = $('<span/>').text(h.ReadableState);
-                    if (h.State == "0ISOPEN") lockstate.addClass("state-open");
-                    else if (h.State == "0ISBLOCK") lockstate.addClass("state-block");
-                    else if (h.State == "0ISCHECKED") lockstate.addClass("state-check");
+                    var lockstate = $('<span/>');
+                    if (h.State == "0ISOPEN") lockstate.text("Разблок.").addClass("state-open");
+                    else if (h.State == "0ISBLOCK") lockstate.text("Заблок.").addClass("state-block");
+                    else if (h.State == "0ISCHECKED") lockstate.text("Пров.").addClass("state-check");
                     var u = $('<span class="label label-inverse"/>').text(h.User);
                     body.append($('<tr/>').append(
                         $('<td/>').text(h.Date.format("dd.mm.yyyy HH:MM:ss")),
