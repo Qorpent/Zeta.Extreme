@@ -15,9 +15,19 @@
   <ItemGroup>
     <Compile Include="MongoDBAttachmentSource.cs" />
     <Compile Include="MongoDBAttachmentsSourceSerializer.cs" />
+    <Compile Include="MongoDbLogs.cs" />
+    <Compile Include="MongoDbLogsSerializer.cs" />
     <Compile Include="MongoLayoutSpecification.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=0.0.0.0, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\mongo-csharp-driver\MongoDB.Driver\bin\Debug\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=0.0.0.0, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\mongo-csharp-driver\MongoDB.Driver\bin\Debug\MongoDB.Driver.dll</HintPath>
+    </Reference>
     <Reference Include="Zeta.Extreme.BizProcess">
       <HintPath>..\..\.build\bin\Zeta.Extreme.BizProcess.Debug\Zeta.Extreme.BizProcess.dll</HintPath>
     </Reference>
