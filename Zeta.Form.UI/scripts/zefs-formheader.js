@@ -6,7 +6,14 @@
     var h = $('<h3/>');
     zefsformheader.body = $('<div/>').append(h);
     var InsertPeriod = function() {
-        $(h.find('span').first()).text(zefs.getperiodbyid(window.zefs.myform.currentSession.Period));
+        var s = window.zefs.myform.currentSession;
+        $(h.find('span').first()).text(zefs.getperiodbyid(s.Period));
+        if (!!s.FormInfo.HoldResponsibility) {
+            var u = $('<span class="label label-success" style="display: none;"/>').text(s.FormInfo.HoldResponsibility).css("margin-left", 3);
+            h.append($('<span class="label label-success"/>').html('Куратор формы <i class="icon icon-white"/>').click(function() {u.trigger('click')}),u);
+            u.zetauser();
+        }
+        s = null;
     }
     $(window.zefs).on(window.zefs.handlers.on_periodsload, function() {
         h.html(

@@ -387,7 +387,7 @@ root.init = root.init ||
 
     api.lock.canlock.onSuccess(function(e, result) {
         root.myform.canlock = result;
-        $(root).trigger(root.handlers.on_getcanlockload);
+        $(root).trigger(root.handlers.on_getcanlockload, result);
     });
 
     api.lock.history.onSuccess(function(e, result) {

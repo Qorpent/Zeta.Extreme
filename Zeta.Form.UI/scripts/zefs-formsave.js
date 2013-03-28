@@ -4,7 +4,7 @@
 !function($) {
     var zefsformsave = new root.security.Widget("zefsformsave", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 50 });
     var b = $('<button class="btn btn-small btn-primary" title="Сохранить форму" />').html('<i class="icon-ok icon-white"/>');
-    b.click(function(e) {
+    b.mousedown(function(e) {
         if (e.ctrlKey && e.shiftKey) {
             zefs.myform.forcesave();
         }

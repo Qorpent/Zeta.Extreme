@@ -23,10 +23,35 @@
     });
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление блокировками"/>')
         .html('<i class="icon-lock"></i><span class="caret"/>');
-    $(window.zefs).on(window.zefs.handlers.on_getcanlockload, function() {
-//        if (window.zefs.myform.canlock.canblock) {
-          menu.prepend($('<li/>').append(lockbtn,checkbtn,unlockbtn, progress));
-//        }
+    $(window.zefs).on(window.zefs.handlers.on_getcanlockload, function(e, result) {
+        var li = $('<li/>');
+        lockbtn.get(0).className = unlockbtn.get(0).className = checkbtn.get(0).className = "btn btn-mini";
+        if (result.haslockrole) {
+            li.append(lockbtn);
+            if (result.canblock) {
+                lockbtn.addClass("btn-warning");
+                lockbtn.removeAttr("disabled");
+            }
+            else lockbtn.attr("disabled", "disabled");
+            li.append(unlockbtn);
+            if (result.canopen) {
+                unlockbtn.addClass("btn-danger");
+                unlockbtn.removeAttr("disabled");
+            }
+            else unlockbtn.attr("disabled", "disabled");
+        }
+        if (result.hasholdlockrole) {
+            li.append(checkbtn);
+            if (result.cancheck) {
+                checkbtn.addClass("btn-success");
+                checkbtn.removeAttr("disabled");
+            }
+            else checkbtn.attr("disabled", "disabled");
+        }
+        if (!result.haslockrole && !result.hasholdlockrole) {
+            li.append($('<span style="margin: 0 7px;" class="label label-warning"/>').text("Вы не можете управлять блокировками"));
+        }
+        menu.prepend(li);
     });
     var h = $('<table class="table table-striped"/>');
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
@@ -34,25 +59,14 @@
         var lock =  window.zefs.myform.lock;
         if (lock != null) {
             b.get(0).className = "btn btn-small dropdown-toggle";
-            lockbtn.get(0).className = "btn-warning btn btn-mini";
-            unlockbtn.get(0).className = "btn-danger btn btn-mini";
-            checkbtn.get(0).className = "btn-success btn btn-mini";
-            lockbtn.removeAttr("disabled","disabled");
-            unlockbtn.removeAttr("disabled","disabled");
-            checkbtn.removeAttr("disabled","disabled");
             if (lock.state == "0ISOPEN"){
                 b.addClass("btn-danger");
-                unlockbtn.removeClass("btn-danger").attr("disabled","disabled");
-                checkbtn.removeClass("btn-success").attr("disabled","disabled");
             }
             else if (lock.state == "0ISBLOCK") {
                 b.addClass("btn-warning");
-                lockbtn.removeClass("btn-warning").attr("disabled","disabled");
             }
             else if (lock.state == "0ISCHECKED") {
                 b.addClass("btn-success");
-                lockbtn.removeClass("btn-warning").attr("disabled","disabled");
-                checkbtn.removeClass("btn-success").attr("disabled","disabled");
             }
             $(b.find("i")).addClass("icon-white");
         }
