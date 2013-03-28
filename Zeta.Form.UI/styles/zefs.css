@@ -161,10 +161,12 @@ div.open>.tooltip {
     color: #002a80;
 }
 
-.zetauserinfo td:first-child {
+.zetauserinfo td:first-child,
+.zefshotkeysinfo td:first-child,
+.zefssessioninfo td:first-child {
     font-weight: bold;
 }
 
-.zefssessioninfo td:first-child {
-    font-weight: bold;
+.zefshotkeysinfo td:first-child {
+    white-space: nowrap;
 }
