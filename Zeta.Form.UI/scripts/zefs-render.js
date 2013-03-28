@@ -104,6 +104,8 @@ $.extend(root,{
                 $cell.data("previous", val);
                 // реальное число без форматов, которое должно сохраняться в базу
                 $cell.data("value", val);
+                // если в ячейке произошла ошибка
+                if (!!b.iserror) $cell.addClass("erorrdata");
                 if (!!b.c) $cell.data("cellid", b.c);
                 $cell.attr("ri", b.ri);
                 if (val.search(/\./) != -1 && val.search("error") == -1) {
