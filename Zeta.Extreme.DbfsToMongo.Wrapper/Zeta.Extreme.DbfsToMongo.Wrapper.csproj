@@ -8,10 +8,6 @@
     <AssemblyName>Zeta.Extreme.DbfsToMongo.Wrapper</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="*.import" />
     <None Include="*.export" />
     <EmbeddedResource Include=".\**\*.*resource" />
@@ -39,11 +35,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbfsToMongoWrapper.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>
