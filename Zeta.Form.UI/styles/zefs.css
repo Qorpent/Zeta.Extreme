@@ -43,6 +43,19 @@ div.open>.tooltip {
     font-size: 11pt;
     padding-left: 20px;
     margin: 0;
+    display: inline;
+}
+
+.zefsformheader .label {
+    cursor: pointer;
+    margin-left: 3px;
+    float: right;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+
+.zefsformheader .label i {
+    background: url('../images/users.png') center no-repeat;
 }
 
 .zefsreport,
