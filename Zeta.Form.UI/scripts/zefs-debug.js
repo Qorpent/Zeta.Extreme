@@ -17,9 +17,6 @@
     var debuginfo = $('<a id="debugInfo"/>')
         .click(function() { Debug("zefs/debuginfo.json.qweb?session=" + sid, "Отладочные данные") })
         .html('<i class="icon-warning-sign"></i> Отладочная информация');
-    var restart = $('<a id="restartInfo"/>')
-        .click(function() { Debug(spec.server.restart) })
-        .html('<i class="icon-repeat"></i> Рестарт');
     var lock = $('<a id="currentlockInfo"/>')
         .click(function() { Debug("zefs/currentlockstate.json.qweb?session=" + sid, "Статус блокировки") })
         .html('<i class="icon-lock"></i> Текущий статус');
@@ -35,7 +32,7 @@
         b, $('<ul class="dropdown-menu"/>').append(
             $('<li/>').append(setup),$('<li/>').append(formuladebuger),$('<li class="divider"/>'),
             $('<li/>').append(lock),$('<li/>').append(canlock),$('<li/>').append(session),$('<li/>').append(debuginfo),$('<li class="divider"/>'),
-            $('<li/>').append(serverstatus),$('<li class="divider"/>'), $('<li/>').append(restart)
+            $('<li/>').append(serverstatus)
         )
     );
     b.tooltip({placement: 'bottom'});

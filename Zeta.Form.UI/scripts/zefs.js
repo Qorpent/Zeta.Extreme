@@ -208,6 +208,10 @@ root.init = root.init ||
         }
     };
 
+    var Restart = function() {
+        api.server.restart.execute();
+    };
+
     // Обработчики событий
     $(window.zefs).on(window.zefs.handlers.on_renderfinished, function(e, table) {
         ZefsIt(table);
@@ -286,6 +290,10 @@ root.init = root.init ||
                 content: $('<div/>').append(cellinfotoggle, cellinfo, cellhistory)
             });
         }
+    });
+
+    api.server.restart.onSuccess(function() {
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, { title: "Сервер был перезапущен" });
     });
 
     api.session.start.onSuccess(function(e, result) {
@@ -425,6 +433,7 @@ root.init = root.init ||
     $.extend(root.myform, {
         execute : function(){api.server.start()},
         save : Save,
+        restart : Restart,
         forcesave : ForceSave,
         message: Message,
         lockform: LockForm,
