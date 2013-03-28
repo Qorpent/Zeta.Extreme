@@ -30,6 +30,8 @@ namespace Zeta.Extreme.FrontEnd.Actions.SessionProcessing {
 		/// <returns> </returns>
 		protected override object MainProcess() {
 			MyFormServer.CheckGlobalReload();
+			MyFormServer.ReadyToServeForms.Wait();
+
 			return MyFormServer.Start(_realform, _realobj, year, period);
 		}
 	}

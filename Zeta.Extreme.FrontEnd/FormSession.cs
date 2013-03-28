@@ -73,10 +73,12 @@ namespace Zeta.Extreme.FrontEnd {
 			Usr = Application.Current.Principal.CurrentUser.Identity.Name;
 			IsStarted = false;
 			ObjInfo = new {Object.Id, Object.Code, Object.Name};
-			FormInfo = new {Template.Code, Template.Name};
+			var id = MetaCache.Default.Get<IZetaMainObject>("0CH").Id;
+			FormInfo = new {Template.Code, Template.Name, ObjectResponsibility = new NativeZetaReader().GetThemaResponsiveLogin(Template.Thema.Code, Object.Id), HoldResponsibility = new NativeZetaReader().GetThemaResponsiveLogin(Template.Thema.Code, id)};
 			NeedMeasure = Template.ShowMeasureColumn;
 			Activations = 1;
 			Logger = Application.Current.LogManager.GetLog("form.log", this);
+
 
 		}
 		/// <summary>
@@ -133,18 +135,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Сессия работы с данными
 		/// </summary>
 		[IgnoreSerialize] public ISession DataSession { get; private set; }
-		/// <summary>
-		/// Ответственный за форму от предприятия
-		/// </summary>
-		[SerializeNotNullOnly]
-		public string LeadLogin {
-			get {
-				if (null == _leadlogin) {
-					_leadlogin = new NativeZetaReader().GetThemaResponsiveLogin(Template.Thema.Code, Object.Id);
-				}
-				return _leadlogin;
-			}
-		}
+		
 
 		/// <summary>
 		/// 	Задача формирования структуры
@@ -953,6 +944,6 @@ namespace Zeta.Extreme.FrontEnd {
 		private IdxCol[] primarycols;
 		private IdxRow[] primaryrows;
 		private IdxRow[] rows;
-		private string _leadlogin;
+
 	}
 }
