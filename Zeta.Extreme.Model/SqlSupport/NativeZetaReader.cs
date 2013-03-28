@@ -195,5 +195,27 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				return (DateTime) cmd.ExecuteScalar();
 			}
 		}
+
+
+		/// <summary>
+		/// Retrieves global refresh hook from Zeta DB
+		/// </summary>
+		/// <returns></returns>
+		public string GetThemaResponsiveLogin(string themacode,int objid)
+		{
+			const string commandTemplate = "select login from usm.Underwriter u join usm.usrthemamap um on u.id = um.usr where thema = '{0}' and object = {1}";
+			var commandText = string.Format(commandTemplate, themacode.Replace("'", "''"), objid);
+			try {
+				using (var c = getConnection()) {
+					c.Open();
+					var cmd = c.CreateCommand();
+					cmd.CommandText = commandText;
+					return (string) cmd.ExecuteScalar();
+				}
+			}
+			catch {
+				return "";
+			}
+		}
 	}
 }

@@ -117,19 +117,20 @@ namespace Zeta.Extreme {
 			while (proceed) {
 				ResolveHardLinks();
 				Native = Native.ResolveExRef(column);
-				proceed = ResolveSingleRowFormula();
+				proceed = ResolveSingleRowFormula(session);
 			}
 			if (initialcode != Code && session is Session) {
 				session.StatIncRowRedirections();
 			}
 		}
 
-		private bool ResolveSingleRowFormula() {
+		private bool ResolveSingleRowFormula(ISession session) {
+			var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 			if (IsFormula && (FormulaType == "boo" || FormulaType == "cs")) {
 				var match = Regex.Match(Formula.Trim(), @"^\$([\w\d]+)\?$", RegexOptions.Compiled);
 				if (match.Success) {
 					var code = match.Groups[1].Value;
-					var reference = RowCache.get(code);
+					var reference = cache.Get<IZetaRow>(code);
 					Native = reference;
 					return true;
 				}
