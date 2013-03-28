@@ -718,15 +718,24 @@ namespace Zeta.Extreme.FrontEnd {
 			var state = Template.GetState(Object, null);
 			var cansave = state == "0ISOPEN";
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
-			var isinrole = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, Template.UnderwriteRole);
-			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message) && isinrole;
+			
+			var haslockrole = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, Template.UnderwriteRole);
+			var hasholdlockrole = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, "HOLDUNDERWRITER");
+
+			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message) && haslockrole;
+			var canopen = state != "0ISOPEN" && haslockrole && (state == "0ISBLOCK" || hasholdlockrole);
+			var cancheck = state == "0ISBLOCK" && haslockrole &&  hasholdlockrole;
 			return new LockStateInfo
 				{
 					isopen = isopen,
 					state = state,
 					cansave = cansave,
 					canblock = canblock,
-					message = message
+					message = message,
+					haslockrole = haslockrole,
+					hasholdlockrole = hasholdlockrole,
+					canopen = canopen,
+					cancheck  = cancheck,
 				};
 		}
 

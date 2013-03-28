@@ -40,8 +40,9 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// </summary>
 		/// <returns></returns>
 		public IEnumerable<FormAttachment> GetAttachments(IFormSession session) {
-			var allperiods = Periods.Eval(session.Year, session.Period, -11).Periods;
-			foreach (var period in allperiods) {
+			var allperiods = Periods.Eval(session.Year, session.Period, -11).Periods.ToList();
+			allperiods.Add(session.Period);
+			foreach (var period in allperiods.Distinct()) {
 				var query = new FormAttachment(session, null, AttachedFileType.Default, false);
 				query.Period = period;
 				var subresult = _storage.Find(query).Select(_ => new FormAttachment(session, _, AttachedFileType.Default));

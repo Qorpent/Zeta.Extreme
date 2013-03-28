@@ -45,5 +45,23 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// 	Текущий статус
 		/// </summary>
 		public string state;
+		/// <summary>
+		/// Наличие роли на блокировку
+		/// </summary>
+		public bool haslockrole;
+
+		/// <summary>
+		/// Наличие роли на утверждение
+		/// </summary>
+		public bool hasholdlockrole;
+		/// <summary>
+		/// Доступна кнопка "открыть"
+		/// </summary>
+		public bool canopen;
+
+		/// <summary>
+		/// Доступна кнопка "утвердить"
+		/// </summary>
+		public bool cancheck;
 	}
 }
