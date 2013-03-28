@@ -723,7 +723,7 @@ namespace Zeta.Extreme.FrontEnd {
 			var hasholdlockrole = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, "HOLDUNDERWRITER");
 
 			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message) && haslockrole;
-			var canopen = state != "0ISOPEN" && haslockrole && (state == "0ISBLOCK" || hasholdlockrole);
+			var canopen = state != "0ISOPEN" && haslockrole && hasholdlockrole;
 			var cancheck = state == "0ISBLOCK" && haslockrole &&  hasholdlockrole;
 			return new LockStateInfo
 				{
