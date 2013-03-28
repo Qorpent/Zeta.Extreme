@@ -63,5 +63,9 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// Доступна кнопка "утвердить"
 		/// </summary>
 		public bool cancheck;
+		/// <summary>
+		/// Признак возможности сохранения поверх блокировки
+		/// </summary>
+		public bool cansaveoverblock;
 	}
 }

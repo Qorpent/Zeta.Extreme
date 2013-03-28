@@ -74,7 +74,16 @@ namespace Zeta.Extreme.FrontEnd {
 			IsStarted = false;
 			ObjInfo = new {Object.Id, Object.Code, Object.Name};
 			var id = MetaCache.Default.Get<IZetaMainObject>("0CH").Id;
-			FormInfo = new {Template.Code, Template.Name, ObjectResponsibility = new NativeZetaReader().GetThemaResponsiveLogin(Template.Thema.Code, Object.Id), HoldResponsibility = new NativeZetaReader().GetThemaResponsiveLogin(Template.Thema.Code, id)};
+			FormInfo = new
+				{
+					Template.Code, 
+					Template.Name, 
+					ObjectResponsibility = new NativeZetaReader().GetThemaResponsiveLogin(Template.Thema.Code, Object.Id), 
+					HoldResponsibility = new NativeZetaReader().GetThemaResponsiveLogin(Template.Thema.Code, id),
+					Status = Template.Thema.GetParameter("status",""),
+					FirstYear = Template.Thema.GetParameter("firstyear", ""),
+					RolePrefix = Template.Thema.GetParameter("roleprefix", ""),
+				};
 			NeedMeasure = Template.ShowMeasureColumn;
 			Activations = 1;
 			Logger = Application.Current.LogManager.GetLog("form.log", this);
@@ -285,7 +294,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
 		/// </summary>
 		/// <returns> </returns>
-		public LockStateInfo GetCurrentLockInfo() {
+		public LockStateInfo GetMinimalStateInfo() {
 			var isopen = Template.IsOpen;
 			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
@@ -718,10 +727,13 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
 		/// </summary>
 		/// <returns> </returns>
-		public LockStateInfo GetCanBlockInfo() {
+		public LockStateInfo GetStateInfo() {
 			var isopen = Template.IsOpen;
 			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
+			if (string.IsNullOrWhiteSpace(state)) {
+				state = "0ISOPEN";
+			}
 			var cansave = state == "0ISOPEN";
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
 			
@@ -731,6 +743,8 @@ namespace Zeta.Extreme.FrontEnd {
 			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message) && haslockrole;
 			var canopen = state != "0ISOPEN" && haslockrole && hasholdlockrole;
 			var cancheck = state == "0ISBLOCK" && haslockrole &&  hasholdlockrole;
+			var cansaveoverblock = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, "NOBLOCK",true);
+			cansave = cansave || cansaveoverblock;
 			return new LockStateInfo
 				{
 					isopen = isopen,
@@ -742,6 +756,7 @@ namespace Zeta.Extreme.FrontEnd {
 					hasholdlockrole = hasholdlockrole,
 					canopen = canopen,
 					cancheck  = cancheck,
+					cansaveoverblock = cansaveoverblock 
 				};
 		}
 
@@ -815,7 +830,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns> </returns>
 		public bool DoLockForm() {
-			var currentstate = GetCanBlockInfo();
+			var currentstate = GetStateInfo();
 			if (currentstate.canblock) {
 				Template.SetState(Object, null, "0ISBLOCK");
 				return true;
