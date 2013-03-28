@@ -148,6 +148,14 @@ root.init = root.init ||
     };
 
     var Save = function() {
+        if (!root.myform.canlock.cansave
+            && !root.myform.canlock.cansaveoverblock) {
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "Не удалось сохранить форму",
+                text: "Форма заблокирована"
+            });
+            return;
+        }
         var obj = window.zefs.getChanges();
         if (!$.isEmptyObject(obj) && !root.myform.lock) return;
         root.myform.datatosave = obj;
@@ -156,6 +164,14 @@ root.init = root.init ||
     };
 
     var ForceSave = function() {
+        if (!root.myform.canlock.cansave
+            && !root.myform.canlock.cansaveoverblock) {
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "Не удалось сохранить форму",
+                text: "Форма заблокирована"
+            });
+            return;
+        }
         root.myform.datatosave = "FORCE";
         $(root).trigger(root.handlers.on_savestart);
         api.data.saveready.execute();
@@ -374,6 +390,13 @@ root.init = root.init ||
         $(root).trigger(root.handlers.on_message, { text: "Сохранение успешно завершено", autohide: 5000, type: "alert-success" });
         $(root).trigger(root.handlers.on_savefinished);
         api.data.reset.execute({session: root.myform.sessionId});
+    });
+
+    api.data.savestate.onError(function(e, result) {
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            title: "Во время сохранения формы произошла ошибка",
+            text: JSON.stringify(result)
+        });
     });
 
     api.lock.set.onComplete(function(e, result) {
