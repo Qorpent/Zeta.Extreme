@@ -133,6 +133,18 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Сессия работы с данными
 		/// </summary>
 		[IgnoreSerialize] public ISession DataSession { get; private set; }
+		/// <summary>
+		/// Ответственный за форму от предприятия
+		/// </summary>
+		[SerializeNotNullOnly]
+		public string LeadLogin {
+			get {
+				if (null == _leadlogin) {
+					_leadlogin = new NativeZetaReader().GetThemaResponsiveLogin(Template.Thema.Code, Object.Id);
+				}
+				return _leadlogin;
+			}
+		}
 
 		/// <summary>
 		/// 	Задача формирования структуры
@@ -566,18 +578,21 @@ namespace Zeta.Extreme.FrontEnd {
 				var cellid = 0;
 				if (null != q_.Value && null != q_.Value.Result) {
 					val = q_.Value.Result.NumericResult.ToString("0.#####", CultureInfo.InvariantCulture);
-					if (q_.Value.Result.Error != null) {
-						val = q_.Value.Result.Error.Message;
-					}
+					
 					cellid = q_.Value.Result.CellId;
 				}
 				var realkey = "";
 				if (canbefilled) {
 					realkey = q_.Value.Row.Code + "_" + q_.Value.Col.Code + "_" + q_.Value.Time.Year + "_" + q_.Value.Time.Period;
 				}
+				var cell = new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, ri = realkey};
+				if (q_.Value.Result.Error != null) {
+					cell.iserror = true;
+					cell.error = q_.Value.Result.Error;
+				}
 
 				lock (Data) {
-					Data.Add(new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, ri = realkey});
+					Data.Add(cell);
 				}
 			}
 		}
@@ -938,5 +953,6 @@ namespace Zeta.Extreme.FrontEnd {
 		private IdxCol[] primarycols;
 		private IdxRow[] primaryrows;
 		private IdxRow[] rows;
-		}
+		private string _leadlogin;
+	}
 }

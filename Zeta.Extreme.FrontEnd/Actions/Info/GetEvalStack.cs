@@ -70,9 +70,30 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 					currency = myquery.Currency,
 					type = myquery.EvaluationType,
 					value = myquery.Result.NumericResult,
+					iserror = null!=myquery.Result.Error,
+					error = GetErrorObject(myquery.Result.Error),
 					mult,
 					subqueries = GetSubQueries(myquery)
 				};
+		}
+
+		private object GetErrorObject(Exception error) {
+			if (null == error) return error;
+			if (error is QueryException) {
+				return new
+					{
+						query = ((QueryException) error).Query.GetCacheKey(),
+						realerror = GetErrorObject(error.InnerException)
+					};
+
+			}
+			else {
+				return new
+					{
+						message = error.Message,
+						inner = GetErrorObject(error.InnerException)
+					};
+			}
 		}
 
 		/// <exception cref="Exception"></exception>
