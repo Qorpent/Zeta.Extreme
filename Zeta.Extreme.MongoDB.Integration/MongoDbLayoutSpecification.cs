@@ -1,12 +1,14 @@
-﻿namespace Zeta.Extreme.MongoDB.Integration {
+﻿namespace Zeta.Extreme.MongoDB.Integration
+{
     /// <summary>
     ///     Набор заранее определённых данных для работы MongoDB.Integration
     /// </summary>
-    public static class MongoLayoutSpecification {
+    public static class MongoDbLayoutSpecification
+    {
         /// <summary>
         ///     Строка подключения по умолчанию
         /// </summary>
-        public const string DEFAULT_CONNECTION_STRING = "localhost";
+        public const string DEFAULT_CONNECTION_STRING = "mongodb://localhost";
 
         /// <summary>
         ///     Коллекция для хранения аттачей по умолчанию
