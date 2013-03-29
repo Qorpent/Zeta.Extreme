@@ -148,6 +148,14 @@ root.init = root.init ||
     };
 
     var Save = function() {
+        if (!root.myform.canlock.cansave
+            && !root.myform.canlock.cansaveoverblock) {
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "Не удалось сохранить форму",
+                text: "Форма заблокирована"
+            });
+            return;
+        }
         var obj = window.zefs.getChanges();
         if (!$.isEmptyObject(obj) && !root.myform.lock) return;
         root.myform.datatosave = obj;
@@ -156,6 +164,14 @@ root.init = root.init ||
     };
 
     var ForceSave = function() {
+        if (!root.myform.canlock.cansave
+            && !root.myform.canlock.cansaveoverblock) {
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "Не удалось сохранить форму",
+                text: "Форма заблокирована"
+            });
+            return;
+        }
         root.myform.datatosave = "FORCE";
         $(root).trigger(root.handlers.on_savestart);
         api.data.saveready.execute();
@@ -206,6 +222,10 @@ root.init = root.init ||
         if (!!root.myform.currentSession) {
             window.open(api.siterootold() + "row/index.rails?root=" + root.myform.currentSession.structure.rootrow, '_blank');
         }
+    };
+
+    var Restart = function() {
+        api.server.restart.execute();
     };
 
     // Обработчики событий
@@ -288,6 +308,10 @@ root.init = root.init ||
         }
     });
 
+    api.server.restart.onSuccess(function() {
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, { title: "Сервер был перезапущен" });
+    });
+
     api.session.start.onSuccess(function(e, result) {
         root.myform.currentSession = result;
         root.myform.sessionId = result.Uid;
@@ -368,6 +392,13 @@ root.init = root.init ||
         api.data.reset.execute({session: root.myform.sessionId});
     });
 
+    api.data.savestate.onError(function(e, result) {
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            title: "Во время сохранения формы произошла ошибка",
+            text: JSON.stringify(result)
+        });
+    });
+
     api.lock.set.onComplete(function(e, result) {
         if (result.status == 200) {
             api.lock.state.execute({session: root.myform.sessionId});
@@ -425,6 +456,7 @@ root.init = root.init ||
     $.extend(root.myform, {
         execute : function(){api.server.start()},
         save : Save,
+        restart : Restart,
         forcesave : ForceSave,
         message: Message,
         lockform: LockForm,
