@@ -46,6 +46,14 @@ div.open>.tooltip {
     display: inline;
 }
 
+.zefsformheader.isblock {
+    background-color: #F5D8B8;
+}
+
+.zefsformheader.ischecked {
+    background-color: #c1eab4;
+}
+
 .zefsformheader h6 {
     display: inline;
     margin-left: 10px;

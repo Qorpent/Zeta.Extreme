@@ -19,7 +19,15 @@
             }
         }
         s = null;
-    }
+    };
+    $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
+        var lock =  window.zefs.myform.lock;
+        if (lock != null) {
+            if (lock.state == "0ISOPEN") zefsformheader.body.addClass("isopen");
+            else if (lock.state == "0ISBLOCK") zefsformheader.body.addClass("isblock");
+            else if (lock.state == "0ISCHECKED") zefsformheader.body.addClass("ischecked");
+        }
+    });
     $(window.zefs).on(window.zefs.handlers.on_periodsload, function() {
         h.html(
             zefs.myform.currentSession.FormInfo.Name + " " +

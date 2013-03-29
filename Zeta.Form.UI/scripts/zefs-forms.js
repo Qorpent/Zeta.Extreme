@@ -103,8 +103,19 @@
     Zefs.prototype.clearNumberFormat = function($cell) {
         $cell = $($cell);
         if ($cell.text() != "") {
-            $cell.number($cell.text(), 0, '', '');
+            $cell.number($cell.text(), this.getNumberFormat($cell), '.', '');
         }
+    };
+
+    // сколько знаков после запятой
+    Zefs.prototype.getNumberFormat = function($cell) {
+        $cell = $($cell);
+        var d = 0;
+        if (!!$cell.data("format")) {
+            var format = $cell.data("format");
+            d = format.substring(format.indexOf('.') > 0 ? format.indexOf('.') + 1 : format.length).length;
+        }
+        return d;
     };
 
     /**
@@ -114,7 +125,7 @@
     Zefs.prototype.applyNumberFormat = function ($cell) {
         $cell = $($cell);
         if ($cell.text() != "") {
-            $cell.number($cell.text(), 0, '.', ' ');
+            $cell.number($cell.text(), this.getNumberFormat($cell), '.', ' ');
         }
     };
 
