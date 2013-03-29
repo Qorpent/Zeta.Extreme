@@ -67,5 +67,14 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// Признак возможности сохранения поверх блокировки
 		/// </summary>
 		public bool cansaveoverblock;
+		/// <summary>
+		/// Признак несошедшихся контрольных точек
+		/// </summary>
+		public bool hasbadcontrolpoints;
+
+		/// <summary>
+		/// Роль на блокировку поверх контрольных точек
+		/// </summary>
+		public bool hasnocontrolpoointsrole;
 	}
 }

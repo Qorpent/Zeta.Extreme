@@ -755,8 +755,8 @@ namespace Zeta.Extreme.FrontEnd {
 			
 			var haslockrole = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, Template.UnderwriteRole);
 			var hasholdlockrole = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, "HOLDUNDERWRITER");
-
-			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message) && haslockrole;
+			var hasnocontrolpoointsrole = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser,"SYS_NOCONTROLPOINTS",true);
+			var canblock = state == "0ISOPEN" && (string.IsNullOrWhiteSpace(message)||(message=="cpavoid"&&hasnocontrolpoointsrole)) && haslockrole;
 			var canopen = state != "0ISOPEN" && haslockrole && hasholdlockrole;
 			var cancheck = state == "0ISBLOCK" && haslockrole &&  hasholdlockrole;
 			var cansaveoverblock = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, "NOBLOCK",true);
@@ -770,9 +770,11 @@ namespace Zeta.Extreme.FrontEnd {
 					message = message,
 					haslockrole = haslockrole,
 					hasholdlockrole = hasholdlockrole,
+					hasnocontrolpoointsrole = hasnocontrolpoointsrole,
 					canopen = canopen,
 					cancheck  = cancheck,
-					cansaveoverblock = cansaveoverblock 
+					cansaveoverblock = cansaveoverblock,
+					hasbadcontrolpoints = message=="cpavoid" || message.Contains("точк")
 				};
 		}
 
