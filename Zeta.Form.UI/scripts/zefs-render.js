@@ -30,12 +30,15 @@ $.extend(root,{
 				$(thead.find("tr").first()).append($('<th class="measure"/>').text("Ед. изм."));
 			}
 			$.each(session.structure.cols, function(i,col) {
-				colgroup.append($('<col class="data"/>').attr("idx",col.idx));
-				var th = $('<th class="data"/>').attr("idx",col.idx).text(col.name);
+                colgroup.append($('<col class="data"/>').attr("idx",col.idx));
+                var th = $('<th class="data"/>').attr({
+                    "idx": col.idx,
+                    "title": col.code + " " + col.year + " " + col.period
+                }).text(col.name);
                 if (col.isprimary) {
                     th.addClass("primary");
                 }
-				thead.find("tr").append(th);
+                thead.find("tr").append(th);
 			});
 			table.append(colgroup);
 			table.append(thead);
