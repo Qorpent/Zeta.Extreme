@@ -367,6 +367,9 @@ root.init = root.init ||
         if (typeof root.myform.datatosave == "object") {
             root.myform.datatosave = JSON.stringify(root.myform.datatosave);
         }
+        $(root).trigger(root.handlers.on_message, {
+            text: "Сохранение данных формы", autohide: 5000, type: "alert"
+        });
         api.data.save.execute({
             session: root.myform.sessionId,
             data: root.myform.datatosave
@@ -375,20 +378,23 @@ root.init = root.init ||
 
     api.data.save.onSuccess(function() {
         root.myform.datatosave = {};
-        $(root).trigger(root.handlers.on_savefinished);
         api.data.savestate.execute({session: root.myform.sessionId});
     });
 
     api.data.savestate.onSuccess(function(e, result) {
-        if(result.stage != "Finished") {
+        if(result.stage != "Finished" && result.error == null) {
             window.setTimeout(function(){api.data.savestate.execute({session: root.myform.sessionId})}, 1000);
             return;
         }
-        if (null != result.error) {
-            $(root).trigger(root.handlers.on_message, { text: result.error, autohide: 5000, type: "alert-error" });
-        }
-        $(root).trigger(root.handlers.on_message, { text: "Сохранение успешно завершено", autohide: 5000, type: "alert-success" });
         $(root).trigger(root.handlers.on_savefinished);
+        if (!!result.error) {
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "Во время сохранения формы произошла ошибка",
+                text: JSON.stringify(result.error)
+            });
+            return;
+        }
+        $(root).trigger(root.handlers.on_message, { text: "Сохранение данных успешно завершено", autohide: 5000, type: "alert-success" });
         api.data.reset.execute({session: root.myform.sessionId});
     });
 

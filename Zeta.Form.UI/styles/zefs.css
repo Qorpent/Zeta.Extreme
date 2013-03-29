@@ -46,19 +46,35 @@ div.open>.tooltip {
     display: inline;
 }
 
+.zefsformheader.isblock {
+    background-color: #F5D8B8;
+}
+
+.zefsformheader.ischecked {
+    background-color: #c1eab4;
+}
+
+.zefsformheader h6 {
+    display: inline;
+    margin-left: 10px;
+}
+
 .zefsformheader .label {
     cursor: pointer;
     margin-left: 3px;
-    float: right;
-    margin-right: 20px;
     margin-top: 10px;
+}
+
+.zefsformheader .kurator {
+    margin-right: 20px;
+    float: right;
 }
 
 .zefsformheader .label i {
     background: url('../images/users.png') center no-repeat;
 }
 
-.zefsreport, .zefsrestart,
+.zefsreport, .zefsrestart, .zefshotkeys,
 .impersonator,.information,
 .zefsdebug, .feedback {
     margin-top: 4px;

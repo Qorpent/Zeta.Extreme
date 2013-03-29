@@ -8,10 +8,12 @@ using Zeta.Extreme.BizProcess.Forms;
 using MongoDB.Driver;
 using MongoDB.Bson;
 
-namespace Zeta.Extreme.MongoDB.Integration.Tests {
+namespace Zeta.Extreme.MongoDB.Integration.Tests
+{
 
     [TestFixture]
-    public class MongoDBAttachmentSourceTests {
+    public class MongoDbAttachmentSourceTests
+    {
         private readonly MongoDbAttachmentSource _mdb = new MongoDbAttachmentSource();
 
         protected MongoDatabase _db;
@@ -28,7 +30,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         /// </summary>
 
         protected MongoCollection<BsonDocument> _indexcollection;
-        
+
         [SetUp]
         public virtual void Setup()
         {
@@ -85,30 +87,33 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
 
         [Test]
-        public void CanFind() {
+        public void CanFind()
+        {
             var attachment = GetNewAttach();
 
             _mdb.Save(attachment);
-            using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
+            using (var stream = _mdb.Open(attachment, FileAccess.Write))
+            {
                 stream.Flush();
             }
-            
+
             var found = _mdb.Find(attachment).FirstOrDefault();
-            
+
             Assert.NotNull(found);
             Assert.AreEqual(attachment.Uid, found.Uid);
         }
 
         [Test]
-        public void CanSaveAndThenDelete() {
+        public void CanSaveAndThenDelete()
+        {
             var attachment = GetNewAttach();
 
             _mdb.Save(attachment);
-            using(var stream = _mdb.Open(attachment, FileAccess.Write))
+            using (var stream = _mdb.Open(attachment, FileAccess.Write))
             {
                 stream.Flush();
             }
-            
+
 
             var found = _mdb.Find(attachment).FirstOrDefault();
 
@@ -123,18 +128,19 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         }
 
         [Test]
-        public void CanDownload() {
+        public void CanDownload()
+        {
             var attachment = GetNewAttach();
-            byte[] someData = {1, 2, 3, 4, 5};
-            byte[] someBuffer = {0, 0, 0, 0, 0};
+            byte[] someData = { 1, 2, 3, 4, 5 };
+            byte[] someBuffer = { 0, 0, 0, 0, 0 };
 
             _mdb.Save(attachment);
-            using(var stream = _mdb.Open(attachment, FileAccess.Write))
+            using (var stream = _mdb.Open(attachment, FileAccess.Write))
             {
                 stream.Write(someData, 0, someData.Length);
                 stream.Flush();
             }
-           
+
 
             var found = _mdb.Find(attachment).FirstOrDefault();
 
@@ -142,7 +148,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             Assert.AreEqual(attachment.Uid, found.Uid);
             Assert.AreNotEqual(someData, someBuffer);
 
-            using (var stream = _mdb.Open(attachment, FileAccess.Read))  {
+            using (var stream = _mdb.Open(attachment, FileAccess.Read))
+            {
 
                 stream.Read(someBuffer, 0, someBuffer.Length);
                 stream.Flush();
@@ -152,10 +159,12 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
         }
 
-        public Attachment GetNewAttach(string uid = null) {
-            return new Attachment {
+        public Attachment GetNewAttach(string uid = null)
+        {
+            return new Attachment
+            {
                 Uid = ObjectId.GenerateNewId().ToString(),
-                Name =  "Name",
+                Name = "Name",
                 Comment = "Comment",
                 Revision = 115,
                 Version = new DateTime(1, 1, 1, 1, 1, 1, 1),
@@ -173,7 +182,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         }
 
         [Test]
-        public void CanCreateBinFileAndGetUid() {
+        public void CanCreateBinFileAndGetUid()
+        {
             var attachment = new Attachment();
 
             _mdb.Save(attachment);
@@ -182,11 +192,13 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         }
 
         [Test]
-        public void CanSaveAnAttachment() {
+        public void CanSaveAnAttachment()
+        {
             var attachment = GetNewAttach();
 
             _mdb.Save(attachment);
-            using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
+            using (var stream = _mdb.Open(attachment, FileAccess.Write))
+            {
                 stream.Flush();
             }
         }

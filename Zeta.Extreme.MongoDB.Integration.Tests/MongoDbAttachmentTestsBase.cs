@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,91 +8,102 @@ using MongoDB.Driver;
 using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Forms;
 
-namespace Zeta.Extreme.MongoDB.Integration.Tests {
-	public abstract class MongoDbAttachmentTestsBase {
-		protected const string TEST_STRING = "Test OK!";
-		protected static readonly byte[] TEST_DATA = Encoding.ASCII.GetBytes(TEST_STRING);
+namespace Zeta.Extreme.MongoDB.Integration.Tests
+{
+    public abstract class MongoDbAttachmentTestsBase
+    {
+        protected const string TEST_STRING = "Test OK!";
+        protected static readonly byte[] TEST_DATA = Encoding.ASCII.GetBytes(TEST_STRING);
         protected MongoDbAttachmentSource _mdb;
-		private int _uid = 0;
-		protected MongoDatabase _db;
-		/// <summary>
-		/// После P13-58 - коллекция для дескрипторов
-		/// </summary>
-		protected MongoCollection<BsonDocument> _filecollection;
-		/// <summary>
-		/// После P13-58 - коллекция для чанков
-		/// </summary>
-		protected MongoCollection<BsonDocument> _blobcollection;
-		/// <summary>
-		/// После P13-58 - коллекция для индекса
-		/// </summary>
-		
-		protected MongoCollection<BsonDocument> _indexcollection;
+        private int _uid = 0;
+        protected MongoDatabase _db;
+        /// <summary>
+        /// РџРѕСЃР»Рµ P13-58 - РєРѕР»Р»РµРєС†РёСЏ РґР»СЏ РґРµСЃРєСЂРёРїС‚РѕСЂРѕРІ
+        /// </summary>
+        protected MongoCollection<BsonDocument> _filecollection;
+        /// <summary>
+        /// РџРѕСЃР»Рµ P13-58 - РєРѕР»Р»РµРєС†РёСЏ РґР»СЏ С‡Р°РЅРєРѕРІ
+        /// </summary>
+        protected MongoCollection<BsonDocument> _blobcollection;
+        /// <summary>
+        /// РџРѕСЃР»Рµ P13-58 - РєРѕР»Р»РµРєС†РёСЏ РґР»СЏ РёРЅРґРµРєСЃР°
+        /// </summary>
 
-		public MongoDbAttachmentTestsBase() {
+        protected MongoCollection<BsonDocument> _indexcollection;
+
+        public MongoDbAttachmentTestsBase()
+        {
             _mdb = new MongoDbAttachmentSource
             {
-				Database = "MongoDbAttachments"
-			};
-		}
+                Database = "MongoDbAttachments"
+            };
+        }
 
-		
-	
 
-		/// <summary>
-		/// Вспомогательный метод - создать и сохранить с uid и возможно настройками
-		/// </summary>
-		/// <param name="uid">UID создававемого атача или Null</param>
-		/// <param name="setup">опциональная процедура дополнительно настройки атача</param>
-		/// <param name="data">опциональный массив данных в качестве блоба</param>
-		protected Attachment Create(string uid=null, Action<Attachment> setup = null, byte[] data = null) {
-			var attachment = GetNewAttach(uid);
-			if(null!=setup) {
-				setup(attachment);
-			}
 
-			Save(attachment, data);
-			return attachment;
-		}
 
-		[SetUp]
-		public virtual void Setup() {
-			_db = new MongoClient().GetServer().GetDatabase(_mdb.Database);
-			// По идее MondoDbAS должна использовать имя коллекции как базис для GridFS
-			_filecollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".files");
-			_blobcollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".chunks");
-			_indexcollection = _db.GetCollection<BsonDocument>("system.indexes");
-			_filecollection.Drop();
-			_blobcollection.Drop();
-			//NOTICE: we haven't drop SYSTEM.INDEXES - MongoDB prevent it!!!!
+        /// <summary>
+        /// Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ РјРµС‚РѕРґ - СЃРѕР·РґР°С‚СЊ Рё СЃРѕС…СЂР°РЅРёС‚СЊ СЃ uid Рё РІРѕР·РјРѕР¶РЅРѕ РЅР°СЃС‚СЂРѕР№РєР°РјРё
+        /// </summary>
+        /// <param name="uid">UID СЃРѕР·РґР°РІР°РІРµРјРѕРіРѕ Р°С‚Р°С‡Р° РёР»Рё Null</param>
+        /// <param name="setup">РѕРїС†РёРѕРЅР°Р»СЊРЅР°СЏ РїСЂРѕС†РµРґСѓСЂР° РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕ РЅР°СЃС‚СЂРѕР№РєРё Р°С‚Р°С‡Р°</param>
+        /// <param name="data">РѕРїС†РёРѕРЅР°Р»СЊРЅС‹Р№ РјР°СЃСЃРёРІ РґР°РЅРЅС‹С… РІ РєР°С‡РµСЃС‚РІРµ Р±Р»РѕР±Р°</param>
+        protected Attachment Create(string uid = null, Action<Attachment> setup = null, byte[] data = null)
+        {
+            var attachment = GetNewAttach(uid);
+            if (null != setup)
+            {
+                setup(attachment);
+            }
 
-			// Это выражает простую мысль - при работе компоненты должны существовать только эти коллекции
-			_filecollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".files");
-			_blobcollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".chunks");
-			_indexcollection = _db.GetCollection<BsonDocument>("system.indexes");
+            Save(attachment, data);
+            return attachment;
+        }
 
-		}
+        [SetUp]
+        public virtual void Setup()
+        {
+            _db = new MongoClient().GetServer().GetDatabase(_mdb.Database);
+            // РџРѕ РёРґРµРµ MondoDbAS РґРѕР»Р¶РЅР° РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РёРјСЏ РєРѕР»Р»РµРєС†РёРё РєР°Рє Р±Р°Р·РёСЃ РґР»СЏ GridFS
+            _filecollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".files");
+            _blobcollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".chunks");
+            _indexcollection = _db.GetCollection<BsonDocument>("system.indexes");
+            _filecollection.Drop();
+            _blobcollection.Drop();
+            //NOTICE: we haven't drop SYSTEM.INDEXES - MongoDB prevent it!!!!
 
-		public void Save(Attachment attachment, byte[] source = null) {
+            // Р­С‚Рѕ РІС‹СЂР°Р¶Р°РµС‚ РїСЂРѕСЃС‚СѓСЋ РјС‹СЃР»СЊ - РїСЂРё СЂР°Р±РѕС‚Рµ РєРѕРјРїРѕРЅРµРЅС‚С‹ РґРѕР»Р¶РЅС‹ СЃСѓС‰РµСЃС‚РІРѕРІР°С‚СЊ С‚РѕР»СЊРєРѕ СЌС‚Рё РєРѕР»Р»РµРєС†РёРё
+            _filecollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".files");
+            _blobcollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".chunks");
+            _indexcollection = _db.GetCollection<BsonDocument>("system.indexes");
+
+        }
+
+        public void Save(Attachment attachment, byte[] source = null)
+        {
             _mdb.Save(attachment);
-		    if (null != source) {
-		        using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
-		            stream.Write(source, 0, source.Length);
-		            stream.Flush();
-		        }
-		    }
-		}
+            if (null != source)
+            {
+                using (var stream = _mdb.Open(attachment, FileAccess.Write))
+                {
+                    stream.Write(source, 0, source.Length);
+                    stream.Flush();
+                }
+            }
+        }
 
-		public Attachment GetNewAttach(string uid = null) {
-			return new Attachment {
-				Uid = uid ?? string.Format("{0}{1}", "Attachment", ++_uid),
-				Name = string.Format("{0}{1}", "Name", _uid),
-				Comment = string.Format("{0}{1}", "Comment", _uid),
-				Revision = _uid,
-				User = string.Format("{0}{1}", "User", _uid),
-				MimeType = string.Format("{0}{1}", "MimeType", _uid),
-				Extension = string.Format("{0}{1}", "Extension", _uid),
-				Metadata = {
+        public Attachment GetNewAttach(string uid = null)
+        {
+            return new Attachment
+            {
+                Uid = uid ?? string.Format("{0}{1}", "Attachment", ++_uid),
+                Name = string.Format("{0}{1}", "Name", _uid),
+                Comment = string.Format("{0}{1}", "Comment", _uid),
+                Revision = _uid,
+                User = string.Format("{0}{1}", "User", _uid),
+                MimeType = string.Format("{0}{1}", "MimeType", _uid),
+                Extension = string.Format("{0}{1}", "Extension", _uid),
+                Metadata = {
 					{
 						string.Format("{0}{1}", "m1", _uid), string.Format("{0}{1}", "v1", _uid)
 					}, 
@@ -103,7 +114,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 						string.Format("{0}{1}", "m3", _uid), string.Format("{0}{1}", "v3", _uid)
 					}
 				}
-			};
-		}
-	}
+            };
+        }
+    }
 }
