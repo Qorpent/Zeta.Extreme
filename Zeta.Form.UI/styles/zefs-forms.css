@@ -22,9 +22,12 @@ table.data {
 }
 
 .data.error {
-    content: "error";
     font-weight: bold;
     color: red;
+}
+
+.data.error:after {
+    content: "Ошибка";
 }
 
 table.data col.number,
