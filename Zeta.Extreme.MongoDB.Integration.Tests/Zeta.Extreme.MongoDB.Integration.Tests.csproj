@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="MongoDbAttachmentSourceTests.cs" />
     <Compile Include="MongoDbAttachmentTestsBase.cs" />
+    <Compile Include="MongoDbLogsTests.cs" />
     <Compile Include="P1358Tests.cs" />
     <Compile Include="P1362FindPatternTests.cs" />
   </ItemGroup>
