@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IsTest>True</IsTest>
+    <Configuration>Debug</Configuration>
+    <ProjectGuid>{B73A8D00-55EA-4986-8094-5DC387A25190}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Zeta.Extreme.DbfsToMongo.Connector.Tests</RootNamespace>
+    <AssemblyName>Zeta.Extreme.DbfsToMongo.Connector.Tests</AssemblyName>
+    <AssemblyNameBase>Zeta.Extreme.DbfsToMongo.Connector</AssemblyNameBase>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="*.import" />
+    <None Include="*.export" />
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DbfsToMongo.Connector.Tests.cs" />
+    <Compile Include="DbfsToMongo.Connector.TestsBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=0.0.0.0, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\mongo-csharp-driver\MongoDB.Driver\bin\Debug\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=0.0.0.0, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\mongo-csharp-driver\MongoDB.Driver\bin\Debug\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="Qorpent.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Qorpent.Core.Debug\Qorpent.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Qorpent.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Qorpent.Data.Debug\Qorpent.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.BizProcess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.BizProcess.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.Form, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.Form.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.MongoDB.Integration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Zeta.Extreme.MongoDB.Integration.Debug\Zeta.Extreme.MongoDB.Integration.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="..\..\qorpent.kernel\build.targets" />
+</Project>

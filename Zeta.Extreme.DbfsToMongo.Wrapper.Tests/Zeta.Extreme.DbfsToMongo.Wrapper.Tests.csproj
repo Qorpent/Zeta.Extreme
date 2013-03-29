@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IsTest>True</IsTest>
+    <Configuration>Debug</Configuration>
+    <ProjectGuid>{B9D3F24D-8647-4254-B21D-71BC3973F43D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Zeta.Extreme.DbfsToMongo.Wrapper.Tests</RootNamespace>
+    <AssemblyName>Zeta.Extreme.DbfsToMongo.Wrapper.Tests</AssemblyName>
+    <AssemblyNameBase>Zeta.Extreme.DbfsToMongo.Wrapper</AssemblyNameBase>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="*.import" />
+    <None Include="*.export" />
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DbfsToMongoWrapperTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=0.0.0.0, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\mongo-csharp-driver\MongoDB.Driver\bin\Debug\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=0.0.0.0, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\mongo-csharp-driver\MongoDB.Driver\bin\Debug\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.BizProcess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.BizProcess.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.DbfsToMongo.Connector, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Zeta.Extreme.DbfsToMongo.Connector\obj\Debug\Zeta.Extreme.DbfsToMongo.Connector.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Zeta.Extreme.MongoDB.Integration\Zeta.Extreme.MongoDB.Integration.csproj">
+      <Project>{459E4387-484E-42DE-8795-A142E83CFCBB}</Project>
+      <Name>Zeta.Extreme.MongoDB.Integration</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\..\qorpent.kernel\build.targets" />
+</Project>
