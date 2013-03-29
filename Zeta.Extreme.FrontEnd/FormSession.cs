@@ -74,7 +74,7 @@ namespace Zeta.Extreme.FrontEnd {
 			IsStarted = false;
 			var reader = new NativeZetaReader();
 			var currency = Object.Currency;
-			if (!string.IsNullOrWhiteSpace(currency)) {
+			if (string.IsNullOrWhiteSpace(currency)) {
 				currency = "RUB";
 			}
 			decimal rate = 1;
