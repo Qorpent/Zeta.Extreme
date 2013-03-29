@@ -46,6 +46,11 @@ div.open>.tooltip {
     display: inline;
 }
 
+.zefsformheader h6 {
+    display: inline;
+    margin-left: 10px;
+}
+
 .zefsformheader .label {
     cursor: pointer;
     margin-left: 3px;

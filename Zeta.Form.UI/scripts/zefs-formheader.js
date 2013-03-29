@@ -7,6 +7,11 @@
     zefsformheader.body = $('<div/>').append(h);
     var InsertPeriod = function() {
         var s = window.zefs.myform.currentSession;
+        if (!!s.ObjInfo.Currency) {
+            if (s.ObjInfo.Currency != "RUB") {
+                zefsformheader.body.append($('<h6/>').text("Валюта: " + s.ObjInfo.Currency + " Курс для периода: " + s.ObjInfo.CurrencyRate));
+            }
+        }
         $(h.find('span').first()).text(zefs.getperiodbyid(s.Period));
         if (!!s.FormInfo.HoldResponsibility) {
             var u = $('<span class="label label-success" style="display: none;"/>').text(s.FormInfo.HoldResponsibility).css("margin-left", 3);
