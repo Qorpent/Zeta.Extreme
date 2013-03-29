@@ -7,16 +7,16 @@
     zefsformheader.body = $('<div/>').append(h);
     var InsertPeriod = function() {
         var s = window.zefs.myform.currentSession;
-        if (!!s.ObjInfo.Currency) {
-            if (s.ObjInfo.Currency != "RUB") {
-                zefsformheader.body.append($('<h6/>').text("Валюта: " + s.ObjInfo.Currency + " Курс для периода: " + s.ObjInfo.CurrencyRate));
-            }
-        }
         $(h.find('span').first()).text(zefs.getperiodbyid(s.Period));
         if (!!s.FormInfo.HoldResponsibility) {
             var u = $('<span class="label label-success" style="display: none;"/>').text(s.FormInfo.HoldResponsibility).css("margin-left", 3);
-            h.append($('<span class="label label-success"/>').html('Куратор формы <i class="icon icon-white"/>').click(function() {u.trigger('click')}),u);
+            h.append($('<span class="label label-success kurator"/>').html('Куратор формы <i class="icon icon-white"/>').click(function() {u.trigger('click')}),u);
             u.zetauser();
+        }
+        if (!!s.ObjInfo.Currency) {
+            if (s.ObjInfo.Currency != "RUB") {
+                h.append($('<span class="label label-info"/>').text("Валюта: " + s.ObjInfo.Currency + ", Курс для периода: " + s.ObjInfo.CurrencyRate));
+            }
         }
         s = null;
     }

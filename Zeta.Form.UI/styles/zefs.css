@@ -54,9 +54,12 @@ div.open>.tooltip {
 .zefsformheader .label {
     cursor: pointer;
     margin-left: 3px;
-    float: right;
-    margin-right: 20px;
     margin-top: 10px;
+}
+
+.zefsformheader .kurator {
+    margin-right: 20px;
+    float: right;
 }
 
 .zefsformheader .label i {
