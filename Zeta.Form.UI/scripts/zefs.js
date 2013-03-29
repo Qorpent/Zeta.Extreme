@@ -382,7 +382,7 @@ root.init = root.init ||
     });
 
     api.data.savestate.onSuccess(function(e, result) {
-        if(result.stage != "Finished") {
+        if(result.stage != "Finished" && result.error == null) {
             window.setTimeout(function(){api.data.savestate.execute({session: root.myform.sessionId})}, 1000);
             return;
         }
