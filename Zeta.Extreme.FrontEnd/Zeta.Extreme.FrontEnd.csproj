@@ -23,6 +23,7 @@
     <Compile Include="Actions\Info\GetCellHistory.cs" />
     <Compile Include="Actions\Info\GetEvalStack.cs" />
     <Compile Include="Actions\States\CanLockStateAction.cs" />
+    <Compile Include="Actions\States\GetLockStateAction.cs" />
     <Compile Include="Actions\SessionProcessing\DataLoadedAction.cs" />
     <Compile Include="Actions\Attachments\DeleteFileAction.cs" />
     <Compile Include="Actions\Info\GetFormListAction.cs" />

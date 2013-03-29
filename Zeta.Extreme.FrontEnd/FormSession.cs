@@ -72,14 +72,30 @@ namespace Zeta.Extreme.FrontEnd {
 			Created = DateTime.Now;
 			Usr = Application.Current.Principal.CurrentUser.Identity.Name;
 			IsStarted = false;
-			ObjInfo = new {Object.Id, Object.Code, Object.Name};
+			var reader = new NativeZetaReader();
+			var currency = Object.Currency;
+			if (!string.IsNullOrWhiteSpace(currency)) {
+				currency = "RUB";
+			}
+			decimal rate = 1;
+			if (currency != "RUB") {
+				rate = reader.GetCurrencyRate(Year, Period, currency, "RUB");
+			}
+			ObjInfo = new
+				{
+					Object.Id, 
+					Object.Code, 
+					Object.Name,
+					Currency=currency,
+					CurrencyRate = rate,
+				};
 			var id = MetaCache.Default.Get<IZetaMainObject>("0CH").Id;
 			FormInfo = new
 				{
 					Template.Code, 
 					Template.Name, 
-					ObjectResponsibility = new NativeZetaReader().GetThemaResponsiveLogin(Template.Thema.Code, Object.Id), 
-					HoldResponsibility = new NativeZetaReader().GetThemaResponsiveLogin(Template.Thema.Code, id),
+					ObjectResponsibility = reader.GetThemaResponsiveLogin(Template.Thema.Code, Object.Id), 
+					HoldResponsibility = reader.GetThemaResponsiveLogin(Template.Thema.Code, id),
 					Status = Template.Thema.GetParameter("status",""),
 					FirstYear = Template.Thema.GetParameter("firstyear", ""),
 					RolePrefix = Template.Thema.GetParameter("roleprefix", ""),
