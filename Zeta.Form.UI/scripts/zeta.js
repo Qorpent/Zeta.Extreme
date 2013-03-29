@@ -178,6 +178,7 @@ document.write('<script src="scripts/zefs-authinfo.js" type="text/javascript"></
 document.write('<script src="scripts/zefs-formsave.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-feedback.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-info.js" type="text/javascript"></script>');
+document.write('<script src="scripts/zefs-hotkeys.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-formheader.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-extrapannel.js" type="text/javascript"></script>');
 document.write('<script src="scripts/zefs-table.js" type="text/javascript"></script>');
