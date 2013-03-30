@@ -61,10 +61,7 @@
     };
 
     var progress = $('<div class="progress progress-striped active"/>').append($('<div class="bar" style="width:1%;"/>'));
-    var uploadform = $('<form method="post"/>').submit(function(e) {
-        e.preventDefault();
-        window.zefs.myform.attachfile($(e.target));
-    });
+    var uploadform = $('<form method="post"/>');
     var uploadbtn = $('<button type="submit" class="btn btn-mini btn-primary"/>').text("Прикрепить");
     var selectbtn = $('<button type="button" class="btn btn-mini"/>').text("Выбрать файл");
     // Поле с файлом
@@ -98,6 +95,11 @@
             )
         )
     );
+    uploadform.submit(function(e) {
+        e.preventDefault();
+        if (file.get(0).files.length == 0) return;
+        window.zefs.myform.attachfile($(e.target));
+    });
     var floating = $('<div class="floatmode"/>').click(function() {
         $(this).toggleClass("active");
         filelist.toggleClass("floating");

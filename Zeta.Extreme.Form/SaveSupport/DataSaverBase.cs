@@ -193,7 +193,7 @@ namespace Zeta.Extreme.Form.SaveSupport {
 		/// <param name="result"> </param>
 		/// <param name="user"> </param>
 		protected virtual void Authorize(IFormSession session, XElement savedata, SaveResult result, IPrincipal user) {
-			var cansave = session.GetCurrentLockInfo().cansave;
+			var cansave = session.GetStateInfo().cansave;
 			if (!cansave) {
 				throw new SecurityException("try to save into closed form");
 			}

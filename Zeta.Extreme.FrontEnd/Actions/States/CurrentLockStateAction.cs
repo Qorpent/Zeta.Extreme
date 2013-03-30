@@ -29,7 +29,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.States {
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			return MySession.GetCurrentLockInfo();
+			return MySession.GetMinimalStateInfo();
 		}
 	}
 }

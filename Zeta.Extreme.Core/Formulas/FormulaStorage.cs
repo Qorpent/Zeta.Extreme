@@ -209,6 +209,7 @@ namespace Zeta.Extreme {
 		/// 	Очистка кэша
 		/// </summary>
 		public void Clear() {
+			LastCompileError = null;
 			_registry.Clear();
 		}
 

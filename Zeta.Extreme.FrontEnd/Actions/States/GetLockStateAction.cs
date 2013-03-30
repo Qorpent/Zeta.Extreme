@@ -14,25 +14,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.FrontEnd/StartAction.cs
+// PROJECT ORIGIN: Zeta.Extreme.FrontEnd/CanLockStateAction.cs
 #endregion
 using Qorpent.Mvc;
 
-namespace Zeta.Extreme.FrontEnd.Actions.SessionProcessing {
+namespace Zeta.Extreme.FrontEnd.Actions.States {
 	/// <summary>
-	/// 	Инициирует сессию
+	/// 	Возвращает статус формы
 	/// </summary>
-	[Action("zefs.start")]
-	public class StartAction : SessionStartBase {
+	[Action("zefs.getlockstate")]
+	public class GetLockStateAction : FormSessionActionBase
+	{
 		/// <summary>
-		/// 	processing of execution - main method of action
+		/// 	Возвращает статус формы по блокировке
 		/// </summary>
 		/// <returns> </returns>
-		protected override object MainProcess() {
-			MyFormServer.CheckGlobalReload();
-			MyFormServer.ReadyToServeForms.Wait();
-
-			return MyFormServer.Start(_realform, _realobj, year, period);
+		protected override object MainProcess()
+		{
+			return MySession.GetStateInfo();
 		}
 	}
 }

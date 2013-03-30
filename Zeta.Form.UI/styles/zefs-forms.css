@@ -21,6 +21,15 @@ table.data {
     margin: 0 20px 20px 20px;
 }
 
+.data.error {
+    font-weight: bold;
+    color: red;
+}
+
+.data.error:after {
+    content: "Ошибка";
+}
+
 table.data col.number,
 table.data th.number {
     width: 1%; /*Будет занимать минимум места*/

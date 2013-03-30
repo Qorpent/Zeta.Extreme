@@ -28,7 +28,7 @@
             title: "Информация для службы поддержки",
             content: t
         });
-    }
+    };
     information.body = $('<div/>').append(m);
     root.console.RegisterWidget(information);
 }(window.jQuery);

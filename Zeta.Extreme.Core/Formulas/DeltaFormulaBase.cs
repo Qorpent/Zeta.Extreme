@@ -17,10 +17,13 @@
 // PROJECT ORIGIN: Zeta.Extreme.Core/DeltaFormulaBase.cs
 #endregion
 using System;
+using System.Linq;
+using Qorpent.Qlaood;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
+
 	/// <summary>
 	/// 	Базовая основа для формул, оснванных на переходах исходного запроса
 	/// </summary>
@@ -38,6 +41,9 @@ namespace Zeta.Extreme {
 				return null;
 			}
 			try {
+				if (null != Query.Result) {
+					return Query.Result;
+				}
 				playbackCounter = 0;
 				var result = EvaluateExpression();
 				if (result == null) {
@@ -52,7 +58,7 @@ namespace Zeta.Extreme {
 				return new QueryResult {IsComplete = true, StringResult = "-"};
 			}
 			catch (Exception e) {
-				return new QueryResult {IsComplete = false, Error = e};
+				return new QueryResult {IsComplete = false, Error = new QueryException(Query,e)};
 			}
 		}
 
@@ -63,7 +69,8 @@ namespace Zeta.Extreme {
 		protected internal decimal Eval(QueryDelta delta) {
 			var query = delta.Apply(Query);
 			if (IsInPlaybackMode) {
-				Query.FormulaDependency.Add(Session.Register(query));
+				var q = Session.Register(query);
+				Query.FormulaDependency.Add(q);
 				return 1;
 			}
 			var realq = Query.FormulaDependency[playbackCounter];
@@ -79,16 +86,25 @@ namespace Zeta.Extreme {
 			if (null == processable) {
 				var result = realq.Result;
 				if (null != result) {
-					return result.NumericResult;
+					return result.GetNumericResultSafe();
 				}
 			}
 			else {
 				var result = processable.GetResult();
 				if (null != result) {
-					return result.NumericResult;
+					return result.GetNumericResultSafe();
 				}
 			}
 			return 0m;
+		}
+		/// <summary>
+		/// Метод явного вызова исключения
+		/// </summary>
+		/// <param name="message"></param>
+		/// <returns></returns>
+		protected decimal raise(string message) {
+			if (IsInPlaybackMode) return 0m;
+			throw new Exception(message);
 		}
 
 		/// <summary>
