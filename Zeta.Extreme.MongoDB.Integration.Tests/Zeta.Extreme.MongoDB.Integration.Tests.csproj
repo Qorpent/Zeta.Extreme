@@ -27,15 +27,35 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\.build\bin\Qorpent.Core.Debug\Qorpent.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Qorpent.Data">
+      <HintPath>..\..\.build\bin\Qorpent.Data.Debug\Qorpent.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Qorpent.IoC">
+      <HintPath>..\..\.build\bin\Qorpent.IoC.Debug\Qorpent.IoC.dll</HintPath>
+    </Reference>
     <Reference Include="Zeta.Extreme.BizProcess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.BizProcess.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.Core">
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Core.Debug\Zeta.Extreme.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.Form">
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.Form.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.FrontEnd">
+      <HintPath>..\..\.build\bin\Zeta.Extreme.FrontEnd.Debug\Zeta.Extreme.FrontEnd.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Model.Debug\Zeta.Extreme.Model.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MongoDbAttachmentSourceTests.cs" />
     <Compile Include="MongoDbAttachmentTestsBase.cs" />
     <Compile Include="MongoDbLogsTests.cs" />
+    <Compile Include="MongoDbLogsTestsBase.cs" />
     <Compile Include="P1358Tests.cs" />
     <Compile Include="P1362FindPatternTests.cs" />
   </ItemGroup>

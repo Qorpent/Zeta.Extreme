@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Qorpent.Log;
+using Qorpent.Serialization;
+using Zeta.Extreme.Form;
 using Zeta.Extreme.BizProcess.Forms;
-using Zeta.Extreme.MongoDB.Integration;
-using MongoDB.Bson;
+using Zeta.Extreme.BizProcess.StateManagement;
+using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Form.InputTemplates;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Inerfaces;
 
-using System.Threading;
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests {
-    class MongoDbLogsTests {
+    class MongoDbLogsTests : MongoDbLogsTestsBase {
         private MongoDbLogs _mongoDbLogs;
 
         [TestFixtureSetUp]
@@ -28,6 +32,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             logMessageOrig.Code = "SomeCode";
             logMessageOrig.Message = "shitshitshit";
             logMessageOrig.Error = new Exception("someExc");
+            
 
 
             var document = MongoDbLogsSerializer.LogMessageToBson(logMessageOrig);
@@ -45,15 +50,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
         [Test]
         public void CanWriteLog() {
-            var logMessageOrig = new LogMessage();
-
-            logMessageOrig.Name = "Somename";
-            logMessageOrig.Level = (LogLevel)0;
-            logMessageOrig.Code = "SomeCode";
-            logMessageOrig.Message = "shitshitshit";
-            logMessageOrig.Error = new Exception("someExc");
-
- 
+            var logMessageOrig = GetNewLogInstance();
 
             _mongoDbLogs.Write(logMessageOrig);
         }
