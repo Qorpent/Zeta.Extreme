@@ -211,7 +211,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private void UpdatePeriodsCollection(ObjectId sourceObjectId, LogMessage message) {
             _mongoPeriodsCollection.Update(
                 Query.EQ(
-                    "company", ((IFormSession)message.HostObject).Period
+                    "period", ((IFormSession)message.HostObject).Period
                 ),
 
                 Update.Push(
