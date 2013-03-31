@@ -1,63 +1,54 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using MongoDB.Bson;
 using NUnit.Framework;
-using Qorpent.Data;
-using Qorpent.IoC;
+using Qorpent.Dsl;
 using Qorpent.Log;
+using Qorpent.Mvc;
+using Zeta.Extreme.BizProcess.Forms;
+using Zeta.Extreme.BizProcess.StateManagement;
+using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Model;
-using Zeta.Extreme.FrontEnd;
-using Zeta.Extreme.Model.MetaCaches;
-using Zeta.Extreme.Model.Querying;
-using Qorpent.Data.Connections;
-
-
+using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests {
     class MongoDbLogsTestsBase {
-        private static Task loadrowcahe;
-        private static bool wascallnhibernate;
+        protected MongoDbLogs _mongoDbLogs;
 
-        protected ISerialSession _serial;
-        protected Session session;
+        [TestFixtureSetUp]
+        public void FixTureSetUp() {
+            _mongoDbLogs = new MongoDbLogs();
+        }
 
-        [SetUp]
-		public virtual void setup() {
-			session = new Session(true);
-			_serial = session.AsSerial();
-		}
+        private class TestFormSession : IFormSession {
+            public string Uid { get; private set; }
+            public int Year { get; private set; }
+            public int Period { get; private set; }
+            public IZetaMainObject Object { get; private set; }
+            public IInputTemplate Template { get; private set; }
+            public string Usr { get; private set; }
+            public List<OutCell> Data { get; private set; }
+            public IUserLog Logger { get; set; }
+            public LockStateInfo GetStateInfo() {
+                return new LockStateInfo();
+            }
 
-		[TearDown]
-		public void teardown() {
-			if (null != session) {
-				Console.WriteLine(session.GetStatisticString());
-			}
-		}
+            public TestFormSession(int year, int period) {
+                Year = year;
+                Period = period;
+                Template = new InputTemplate();
+                Object = new Obj();
+            }
+        }
 
-		[TestFixtureSetUp]
-		public virtual void FixtureSetup() {
-			if (!wascallnhibernate) {
-				Qorpent.Applications.Application.Current.Container.Register(new BasicComponentDefinition { Lifestyle = Lifestyle.Singleton, ImplementationType = typeof(DatabaseConnectionProvider), ServiceType = typeof(IDatabaseConnectionProvider) });
-				Qorpent.Applications.Application.Current.DatabaseConnections.Register(new ConnectionDescriptor{PresereveCleanup=true, ConnectionString = "Data Source=assoibdx;Initial Catalog=eco;Persist Security Info=True;User ID=sfo_home;Password=rhfcysq$0;Application Name=zeta-test3",Name = "Default"},false);
-				Periods.Get(12);
-				RowCache.start();
-				ColumnCache.Start();
-				ObjCache.Start();
-				FormulaStorage.Default.AutoBatchCompile = false;
-				FormulaStorage.Default.LoadDefaultFormulas(null);
-				FormulaStorage.Default.AutoBatchCompile = true;
-				ColumnCache.Start();
-				wascallnhibernate = true;
-			}
-		}
-
-
-        public static LogMessage GetNewLogInstance(string unicString = "") {
+        public static LogMessage GetNewLogInstance(string unicString = "", bool noUnic = false) {
             var logInstance = new LogMessage();
 
             if (string.IsNullOrEmpty(unicString)) {
-                unicString = ObjectId.GenerateNewId().ToString();
+                if (noUnic == false) {
+                    unicString = ObjectId.GenerateNewId().ToString();
+                }
             }
 
             logInstance.Name = "SomeName" + unicString;
@@ -66,18 +57,19 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             logInstance.Message = "SomeMessage" + unicString;
             logInstance.Error = new Exception("someExc");
 
-
-
-            logInstance.HostObject =  new FormSession(new InputTemplate {
-                Code = "balans2011A.in"
-            }, 2012, 13, new Obj {
-                Id = 352
-            });
-
+            logInstance.HostObject = new TestFormSession(2013, 777) {
+                Template = {
+                    Code = "SomeTCode" + unicString
+                },
+                Object = {
+                    Name = "SomeOName" + unicString
+                }
+            };
 
             logInstance.ApplicationName = "SomeApp" + unicString;
-
-
+            logInstance.LexInfo = new LexInfo();
+            logInstance.MvcCallInfo = new MvcCallInfo();
+            logInstance.MvcContext = new SimpleMvcContext();
 
             return logInstance;
         }

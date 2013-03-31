@@ -14,12 +14,6 @@ using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests {
     class MongoDbLogsTests : MongoDbLogsTestsBase {
-        private MongoDbLogs _mongoDbLogs;
-
-        [TestFixtureSetUp]
-        public void FixTureSetUp() {
-            _mongoDbLogs = new MongoDbLogs();
-        }
 
 
         [Test]
