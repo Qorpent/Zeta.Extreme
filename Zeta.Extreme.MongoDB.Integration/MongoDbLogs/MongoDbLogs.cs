@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using System.Collections.Generic;
+using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Driver.Builders;
 using Qorpent.Log;
@@ -34,6 +35,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private string _mongoConnectionString;
         private string _mongoDatabaseName;
         private string _mongoLogsCollectionName;
+        
+        private int _mongoStatCollectionsPartCount;
 
         /// <summary>
         ///     Represents the MongoDB connection string
@@ -85,12 +88,34 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 
             }
         }
+
         /// <summary>
         ///     Minimal log level of writer
         /// </summary>
         public LogLevel Level {
             get;
             set;
+        }
+
+        /// <summary>
+        ///     The count of elements in a single part of statistics collections
+        /// </summary>
+        public int MongoStatCollectionsPartCount {
+            get {
+                return
+                    (_mongoStatCollectionsPartCount > 0)
+                        ? (_mongoStatCollectionsPartCount )
+                        : (_mongoStatCollectionsPartCount = MongoDbLayoutSpecification.MONGODBLOGS_STAT_PARTITION_COUNT);
+            }
+
+            set { _mongoStatCollectionsPartCount = value; }
+        }
+
+        /// <summary>
+        ///     Creates an instance of the MongoDbLogs class
+        /// </summary>
+        public MongoDbLogs() {
+            _mongoStatCollectionsPartCount = 0;
         }
 
         /// <summary>
@@ -133,14 +158,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="message">a message item</param>
         private void UpdateUsersCollection(ObjectId sourceObjectId, LogMessage message) {
             _mongoUsersCollection.Update(
-                Query.EQ(
-                    "user", message.User
-                ),
-
-                Update.Push(
-                   "id", sourceObjectId 
-                ),
-
+                GenerateStatisticsUpdateQuery("server", message.User),
+                GenerateStatisticsUpdateObject(sourceObjectId),
                 UpdateFlags.Upsert
             );
         }
@@ -152,14 +171,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="message">a message item</param>
         private void UpdateServersCollection(ObjectId sourceObjectId, LogMessage message) {
             _mongoServersCollection.Update(
-                Query.EQ(
-                    "server", message.Server
-                ),
-
-                Update.Push(
-                   "id", sourceObjectId
-                ),
-
+                GenerateStatisticsUpdateQuery("server", message.Server),
+                GenerateStatisticsUpdateObject(sourceObjectId),
                 UpdateFlags.Upsert
             );
         }
@@ -171,14 +184,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="message">a message item</param>
         private void UpdateFormsCollection(ObjectId sourceObjectId, LogMessage message) {
             _mongoFormsCollection.Update(
-                Query.EQ(
-                    "form", ((IFormSession)message.HostObject).Template.Code
-                ),
-
-                Update.Push(
-                   "id", sourceObjectId
-                ),
-
+                GenerateStatisticsUpdateQuery("form", ((IFormSession)message.HostObject).Template.Code),
+                GenerateStatisticsUpdateObject(sourceObjectId),
                 UpdateFlags.Upsert
             );
         }
@@ -190,18 +197,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="message">a message item</param>
         private void UpdateCompaniesCollection(ObjectId sourceObjectId, LogMessage message) {
             _mongoCompaniesCollection.Update(
-                Query.EQ(
-                    "company", ((IFormSession)message.HostObject).Object.Name
-                ),
-
-                Update.Push(
-                   "id", sourceObjectId
-                ),
-
+                GenerateStatisticsUpdateQuery("company", ((IFormSession)message.HostObject).Object.Name),
+                GenerateStatisticsUpdateObject(sourceObjectId),
                 UpdateFlags.Upsert
             );
         }
-
 
         /// <summary>
         ///     Add statistics by periods
@@ -210,15 +210,48 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="message">a message item</param>
         private void UpdatePeriodsCollection(ObjectId sourceObjectId, LogMessage message) {
             _mongoPeriodsCollection.Update(
-                Query.EQ(
-                    "period", ((IFormSession)message.HostObject).Period
-                ),
-
-                Update.Push(
-                   "id", sourceObjectId
-                ),
-
+                GenerateStatisticsUpdateQuery("period", ((IFormSession)message.HostObject).Period),
+                GenerateStatisticsUpdateObject(sourceObjectId),
                 UpdateFlags.Upsert
+            );
+        }
+
+        /// <summary>
+        ///     Generates a IMongoUpdate instance to increment elements count and push the source _id value
+        /// </summary>
+        /// <param name="sourceObjectId">ObjectId references to source document</param>
+        /// <returns>IMongoUpdate clause</returns>
+        private IMongoUpdate GenerateStatisticsUpdateObject(ObjectId sourceObjectId) {
+            var update = new UpdateBuilder();
+            update.Push("id", sourceObjectId);
+            update.Inc(
+                MongoDbLayoutSpecification.MONGODBLOGS_STAT_COUNTER_NAME,
+                MongoDbLayoutSpecification.MONGODBLOGS_STAT_COUNTER_INC_VAL
+            );
+
+            return update;
+        }
+
+        /// <summary>
+        ///     Generates a IMongoQuery instance to find and update or create a document
+        ///     in the statistics collections
+        /// </summary>
+        /// <param name="element">Name of elemnt to pushing</param>
+        /// <param name="value">Value of the element represents a document to pushing, e.g. period : 77</param>
+        /// <returns>IMongoQuery clause</returns>
+        private IMongoQuery GenerateStatisticsUpdateQuery(string element, BsonValue value) {
+            return Query.And(
+                new List<IMongoQuery> {
+                    Query.EQ(
+                        element,
+                        value
+                    ),
+
+                    Query.LT(
+                        MongoDbLayoutSpecification.MONGODBLOGS_STAT_COUNTER_NAME,
+                        MongoStatCollectionsPartCount
+                    )
+                }
             );
         }
 

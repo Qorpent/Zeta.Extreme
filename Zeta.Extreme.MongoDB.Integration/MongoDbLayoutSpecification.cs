@@ -29,5 +29,20 @@
         ///     The default logs collection name
         /// </summary>
         public const string DEFAULT_LOGS_COLLECTION = "unknownLogs";
+
+        /// <summary>
+        ///     The maximum count of items in a single document in statistics collections
+        /// </summary>
+        public const int MONGODBLOGS_STAT_PARTITION_COUNT = 5;
+
+        /// <summary>
+        ///     The dafault name of counter 
+        /// </summary>
+        public const string MONGODBLOGS_STAT_COUNTER_NAME = "elements";
+
+        /// <summary>
+        ///     The default increment value for elements counter
+        /// </summary>
+        public const int MONGODBLOGS_STAT_COUNTER_INC_VAL = 1;
     }
 }
