@@ -10,7 +10,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
     /// Ôèêñòóðà ïðîâåðÿåò íàñêîëüêî âåðíî ôîðìèðóåòñÿ ïàòòåðí ïîèñêà äëÿ àòà÷åé ïî îáðàçöó
     /// </summary>
     [TestFixture]
-    public class P1362FindPatternTests : MongoDbAttachmentTestsBase
+    public class MongoDbAttachmentSourceTestsP1362FindPattern : MongoDbAttachmentSourceTestsBase
     {
 
         [TestCase("Comment", "comment", null)]

@@ -52,12 +52,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MongoDbAttachmentSourceTests.cs" />
-    <Compile Include="MongoDbAttachmentTestsBase.cs" />
-    <Compile Include="MongoDbLogsTests.cs" />
-    <Compile Include="MongoDbLogsTestsBase.cs" />
-    <Compile Include="P1358Tests.cs" />
-    <Compile Include="P1362FindPatternTests.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTests.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsBase.cs" />
+    <Compile Include="MongoDbLogs\MongoDbLogsTests.cs" />
+    <Compile Include="MongoDbLogs\MongoDbLogsTestsBase.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsP1358.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsP1362FindPattern.cs" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

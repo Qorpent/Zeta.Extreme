@@ -12,44 +12,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
 {
 
     [TestFixture]
-    public class MongoDbAttachmentSourceTests
-    {
-        private readonly MongoDbAttachmentSource _mdb = new MongoDbAttachmentSource();
-
-        protected MongoDatabase _db;
-        /// <summary>
-        /// После P13-58 - коллекция для дескрипторов
-        /// </summary>
-        protected MongoCollection<BsonDocument> _filecollection;
-        /// <summary>
-        /// После P13-58 - коллекция для чанков
-        /// </summary>
-        protected MongoCollection<BsonDocument> _blobcollection;
-        /// <summary>
-        /// После P13-58 - коллекция для индекса
-        /// </summary>
-
-        protected MongoCollection<BsonDocument> _indexcollection;
-
-        [SetUp]
-        public virtual void Setup()
-        {
-            _db = new MongoClient().GetServer().GetDatabase(_mdb.Database);
-            // По идее MondoDbAS должна использовать имя коллекции как базис для GridFS
-            _filecollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".files");
-            _blobcollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".chunks");
-            _indexcollection = _db.GetCollection<BsonDocument>("system.indexes");
-            _filecollection.Drop();
-            _blobcollection.Drop();
-            //NOTICE: we haven't drop SYSTEM.INDEXES - MongoDB prevent it!!!!
-
-            // Это выражает простую мысль - при работе компоненты должны существовать только эти коллекции
-            _filecollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".files");
-            _blobcollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".chunks");
-            _indexcollection = _db.GetCollection<BsonDocument>("system.indexes");
-
-        }
-
+    public class MongoDbAttachmentSourceTests : MongoDbAttachmentSourceTestsBase {
         [Test]
         public void CanAttachmentToBsonAndBack()
         {
@@ -157,28 +120,6 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
 
             Assert.AreEqual(someBuffer, someData);
 
-        }
-
-        public Attachment GetNewAttach(string uid = null)
-        {
-            return new Attachment
-            {
-                Uid = ObjectId.GenerateNewId().ToString(),
-                Name = "Name",
-                Comment = "Comment",
-                Revision = 115,
-                Version = new DateTime(1, 1, 1, 1, 1, 1, 1),
-                User = "User",
-                MimeType = "MimeType",
-                Extension = "Extension",
-                Metadata = {
-                    {
-                        "m1", "v1"
-                    }, {
-                        "m2", "v2"
-                    }
-                }
-            };
         }
 
         [Test]

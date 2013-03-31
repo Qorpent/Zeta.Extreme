@@ -17,7 +17,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
     /// 	Тесты по тикету P1358 - проблема сохранения не в те коллекции
     /// </summary>
     [TestFixture]
-    public class P1358Tests : MongoDbAttachmentTestsBase
+    public class MongoDbAttachmentSourceTestsP1358 : MongoDbAttachmentSourceTestsBase
     {
         [Test]
         public void P1358_Only_Valid_Collections_Are_Created_On_Binary_Save()

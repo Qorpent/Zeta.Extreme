@@ -10,7 +10,7 @@ using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests
 {
-    public abstract class MongoDbAttachmentTestsBase
+    public abstract class MongoDbAttachmentSourceTestsBase
     {
         protected const string TEST_STRING = "Test OK!";
         protected static readonly byte[] TEST_DATA = Encoding.ASCII.GetBytes(TEST_STRING);
@@ -31,7 +31,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
 
         protected MongoCollection<BsonDocument> _indexcollection;
 
-        public MongoDbAttachmentTestsBase()
+        public MongoDbAttachmentSourceTestsBase()
         {
             _mdb = new MongoDbAttachmentSource
             {
@@ -92,14 +92,13 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
             }
         }
 
-        public Attachment GetNewAttach(string uid = null)
-        {
-            return new Attachment
-            {
+        public Attachment GetNewAttach(string uid = null) {
+            return new Attachment {
                 Uid = uid ?? string.Format("{0}{1}", "Attachment", ++_uid),
                 Name = string.Format("{0}{1}", "Name", _uid),
                 Comment = string.Format("{0}{1}", "Comment", _uid),
                 Revision = _uid,
+                Version = new DateTime(1, 1, 1, 1, 1, 1, 1),
                 User = string.Format("{0}{1}", "User", _uid),
                 MimeType = string.Format("{0}{1}", "MimeType", _uid),
                 Extension = string.Format("{0}{1}", "Extension", _uid),

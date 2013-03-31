@@ -13,11 +13,11 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MongoDbAttachmentSource.cs" />
-    <Compile Include="MongoDbAttachmentSourceSerializer.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSource.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceSerializer.cs" />
     <Compile Include="MongoDbLayoutSpecification.cs" />
-    <Compile Include="MongoDbLogs.cs" />
-    <Compile Include="MongoDbLogsSerializer.cs" />
+    <Compile Include="MongoDbLogs\MongoDbLogs.cs" />
+    <Compile Include="MongoDbLogs\MongoDbLogsSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MongoDB.Bson, Version=0.0.0.0, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
@@ -45,5 +45,6 @@
       <HintPath>..\..\.build\bin\Zeta.Extreme.Model.Debug\Zeta.Extreme.Model.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

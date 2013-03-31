@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Qorpent.Dsl;
 using Qorpent.Log;
 using MongoDB.Bson;
@@ -40,10 +41,24 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (!string.IsNullOrEmpty(message.ApplicationName)) document.Set("applicationName", message.ApplicationName);
             
             document.Set("time", message.Time);
-            document.Set("lexInfo", message.LexInfo.ToString());
-            
-            if (null != message.MvcCallInfo) document.Set("mvcCallInfo", message.MvcCallInfo.ToBson());
-            if (null != message.MvcContext) document.Set("mvcContext", message.MvcContext.ToBson());
+
+            if (null != message.MvcCallInfo) {
+                var sb = new StringBuilder();
+                sb.AppendFormat("{0}", message.LexInfo);
+                document.Set("lexInfo", sb.ToString());
+            }
+
+            if (null != message.MvcCallInfo) {
+                var sb = new StringBuilder();
+                sb.AppendFormat("{0}", message.MvcCallInfo);
+                document.Set("mvcCallInfo", sb.ToString());
+            }
+
+            if (null != message.MvcContext) {
+                var sb = new StringBuilder();
+                sb.AppendFormat("{0}", message.MvcContext);
+                document.Set("mvcContext", sb.ToString());
+            }
 
             // set _id manually
             document.Set("_id", ObjectId.GenerateNewId());
