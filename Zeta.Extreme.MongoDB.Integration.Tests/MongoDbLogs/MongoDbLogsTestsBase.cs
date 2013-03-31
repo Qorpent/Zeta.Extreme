@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
+using MongoDB.Driver;
 using NUnit.Framework;
 using Qorpent.Dsl;
 using Qorpent.Log;
@@ -16,9 +17,78 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
     class MongoDbLogsTestsBase {
         protected MongoDbLogs _mongoDbLogs;
 
+        private string _connectionString;
+        private string _databaseName;
+        private string _logsCollectionName;
+
+        /// <summary>
+        ///     Connection string
+        /// </summary>
+        public string ConnectionString {
+            get {
+                return _connectionString ?? (_connectionString = MongoDbLayoutSpecification.DEFAULT_CONNECTION_STRING);
+            }
+
+            set {
+                _connectionString = value;
+            }
+        }
+
+        /// <summary>
+        ///     Logs database
+        /// </summary>
+        public string DatabaseName {
+            get {
+                return _databaseName ?? (_databaseName = MongoDbLayoutSpecification.DEFAULT_LOGS_DB);
+            }
+
+            set {
+                _databaseName = value;
+            }
+        }
+
+        /// <summary>
+        ///     Default collection prefix
+        /// </summary>
+        public string LogsCollectionName {
+            get {
+                return _logsCollectionName ?? (_logsCollectionName = MongoDbLayoutSpecification.DEFAULT_LOGS_COLLECTION);
+            }
+
+            set {
+                _logsCollectionName = value;
+            }
+        }
+
         [TestFixtureSetUp]
         public void FixTureSetUp() {
-            _mongoDbLogs = new MongoDbLogs();
+            var mongoClient = new MongoClient(ConnectionString);
+            var mongoServer = mongoClient.GetServer();
+            var mongoDatabase = mongoServer.GetDatabase(DatabaseName, new MongoDatabaseSettings());
+            
+            mongoDatabase.Drop();
+
+            _mongoDbLogs = new MongoDbLogs {
+                MongoConnectionString = ConnectionString,
+                MongoLogsDatabaseName = DatabaseName,
+                MongoLogsCollectionName = LogsCollectionName
+            };
+        }
+
+        [SetUp]
+        public void TestSetup() {
+            var mongoClient = new MongoClient(ConnectionString);
+            var mongoServer = mongoClient.GetServer();
+            var mongoDatabase = mongoServer.GetDatabase(DatabaseName, new MongoDatabaseSettings());
+
+            var collections = mongoDatabase.GetCollectionNames();
+
+            foreach (var collection in collections) {
+                if (collection.StartsWith(LogsCollectionName)) {
+                    mongoDatabase.DropCollection(collection);
+                }
+            }
+
         }
 
         private class TestFormSession : IFormSession {
@@ -67,8 +137,15 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             };
 
             logInstance.ApplicationName = "SomeApp" + unicString;
-            logInstance.LexInfo = new LexInfo();
-            logInstance.MvcCallInfo = new MvcCallInfo();
+            logInstance.LexInfo = new LexInfo("testfile", 1, 2, 3, 4);
+            logInstance.MvcCallInfo = new MvcCallInfo {
+                Url = "https://www.example.com/test.html?q=e#c",
+                ActionName = "SomeShittyAction",
+                RenderName = "IKillYouIfNotCompile",
+                Parameters = new Dictionary<string, string> {
+                    {"ass", "hole"}
+                }
+            };
             logInstance.MvcContext = new SimpleMvcContext();
 
             return logInstance;
