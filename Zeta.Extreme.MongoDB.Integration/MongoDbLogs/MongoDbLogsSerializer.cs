@@ -11,10 +11,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
     /// </summary>
     public static class MongoDbLogsSerializer {
         /// <summary>
-        /// 
+        ///     Represents a LogMessage instance as a BsonDocument object
         /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
+        /// <param name="message">LogMessage instance</param>
+        /// <returns>BsonDocument instance</returns>
         public static BsonDocument LogMessageToBson(LogMessage message) {
             var document = new BsonDocument();
             LogMessageToBson(message, document);
@@ -23,10 +23,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
         
         /// <summary>
-        /// 
+        ///     Represents a LogMessage instance as a BsonDocument object
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="document"></param>
+        /// <param name="message">LogMessage instance</param>
+        /// <param name="document">BsonDocument instance</param>
         public static void LogMessageToBson(LogMessage message, BsonDocument document) {
             if(!string.IsNullOrEmpty(message.Name)) document.Set("name", message.Name);
             
@@ -65,23 +65,22 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
         /// <summary>
-        /// 
+        ///     Represents a BsonDocument object as a LogMessage instance
         /// </summary>
-        /// <param name="document"></param>
-        /// <returns></returns>
+        /// <param name="document">BsonDocument source</param>
+        /// <returns>LogMessage destination object</returns>
         public static LogMessage BsonToLogMessage(BsonDocument document) {
             var message = new LogMessage();
-
             BsonToLogMessage(document, message);
 
             return message;
         }
         
         /// <summary>
-        /// 
+        ///     Represents a BsonDocument object as a LogMessage instance
         /// </summary>
-        /// <param name="document"></param>
-        /// <param name="message"></param>
+        /// <param name="document">BsonDocument source</param>
+        /// <param name="message">LogMessage destination object</param>
         public static void BsonToLogMessage(BsonDocument document, LogMessage message) {
             BsonValue value;
             
@@ -95,9 +94,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (document.TryGetValue("server", out value)) message.Server = value.ToString();
             if (document.TryGetValue("applicationName", out value)) message.ApplicationName = value.ToString();
             if (document.TryGetValue("time", out value)) message.Time = value.ToUniversalTime();
-            //if (document.TryGetValue("lexInfo", out value)) message.LexInfo = value.ToString();
-            //if (document.TryGetValue("mvcCallInfo", out value)) message.MvcCallInfo = value.ToString();
-            //if (document.TryGetValue("mvcContext", out value)) message.MvcContext = value.ToString();
+            if (document.TryGetValue("lexInfo", out value)) message.LexInfo = new LexInfo();
+            if (document.TryGetValue("mvcCallInfo", out value)) message.MvcCallInfo = new MvcCallInfo();
+            if (document.TryGetValue("mvcContext", out value)) message.MvcContext = new SimpleMvcContext();
         }
     }
 }
