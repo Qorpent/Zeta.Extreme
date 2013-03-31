@@ -19,7 +19,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         public void CanWriteLog() {
             var logMessageOrig = GetNewLogInstance();
 
-            _mongoDbLogs.Write(logMessageOrig);
+            for (int i = 0; i < 27; i++ ) _mongoDbLogs.Write(logMessageOrig);
         }
     }
 }
