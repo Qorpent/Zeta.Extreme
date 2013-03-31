@@ -1,25 +1,27 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : P1358Tests.cs
+// Project: Zeta.Extreme.MongoDB.Integration.Tests
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
 using System.IO;
+using System.Linq;
+using MongoDB.Bson;
 using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Forms;
 
-using MongoDB.Driver;
-using MongoDB.Bson;
-
-namespace Zeta.Extreme.MongoDB.Integration.Tests
-{
-
+namespace Zeta.Extreme.MongoDB.Integration.Tests {
     [TestFixture]
     public class MongoDbAttachmentSourceTests : MongoDbAttachmentSourceTestsBase {
         [Test]
-        public void CanAttachmentToBsonAndBack()
-        {
-            var attachment = GetNewAttach();
-            var reformed = MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment);
-            var attachmentReformed = MongoDbAttachmentSourceSerializer.BsonToAttachment(reformed);
-
+        public void CanAttachmentToBsonAndBack() {
+            Attachment attachment = GetNewAttach();
+            BsonDocument reformed = MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment);
+            Attachment attachmentReformed = MongoDbAttachmentSourceSerializer.BsonToAttachment(reformed);
 
             Assert.AreSame(attachment.Uid, attachmentReformed.Uid);
             Assert.AreSame(attachment.Name, attachmentReformed.Name); // Name
@@ -28,16 +30,13 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
             Assert.AreNotEqual(attachment.Version, attachmentReformed.Version); // Version
             Assert.AreSame(attachment.MimeType, attachmentReformed.MimeType); // MimeType
             Assert.AreEqual(attachment.Revision, attachmentReformed.Revision); // Revision
-
-            // CollectionAssert.AreEquivalent(attachmentReformed.Metadata, attachment.Metadata);
         }
 
         [Test]
-        public void CanAttachmentToBsonForFind()
-        {
-            var attachment = GetNewAttach();
+        public void CanAttachmentToBsonForFind() {
+            Attachment attachment = GetNewAttach();
 
-            var inBson = MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(attachment);
+            BsonDocument inBson = MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(attachment);
 
             Assert.AreSame(attachment.Uid, inBson["_id"].ToString());
             Assert.AreSame(attachment.Name, inBson["filename"].ToString()); // Name
@@ -48,83 +47,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
             Assert.AreEqual(attachment.Revision, inBson["revision"].ToInt32()); // Revision
         }
 
-
         [Test]
-        public void CanFind()
-        {
-            var attachment = GetNewAttach();
-
-            _mdb.Save(attachment);
-            using (var stream = _mdb.Open(attachment, FileAccess.Write))
-            {
-                stream.Flush();
-            }
-
-            var found = _mdb.Find(attachment).FirstOrDefault();
-
-            Assert.NotNull(found);
-            Assert.AreEqual(attachment.Uid, found.Uid);
-        }
-
-        [Test]
-        public void CanSaveAndThenDelete()
-        {
-            var attachment = GetNewAttach();
-
-            _mdb.Save(attachment);
-            using (var stream = _mdb.Open(attachment, FileAccess.Write))
-            {
-                stream.Flush();
-            }
-
-
-            var found = _mdb.Find(attachment).FirstOrDefault();
-
-            Assert.NotNull(found);
-            Assert.AreEqual(attachment.Uid, found.Uid);
-
-            _mdb.Delete(attachment);
-
-            var not_found = _mdb.Find(attachment).FirstOrDefault();
-            Assert.IsNull(not_found);
-
-        }
-
-        [Test]
-        public void CanDownload()
-        {
-            var attachment = GetNewAttach();
-            byte[] someData = { 1, 2, 3, 4, 5 };
-            byte[] someBuffer = { 0, 0, 0, 0, 0 };
-
-            _mdb.Save(attachment);
-            using (var stream = _mdb.Open(attachment, FileAccess.Write))
-            {
-                stream.Write(someData, 0, someData.Length);
-                stream.Flush();
-            }
-
-
-            var found = _mdb.Find(attachment).FirstOrDefault();
-
-            Assert.NotNull(found);
-            Assert.AreEqual(attachment.Uid, found.Uid);
-            Assert.AreNotEqual(someData, someBuffer);
-
-            using (var stream = _mdb.Open(attachment, FileAccess.Read))
-            {
-
-                stream.Read(someBuffer, 0, someBuffer.Length);
-                stream.Flush();
-            }
-
-            Assert.AreEqual(someBuffer, someData);
-
-        }
-
-        [Test]
-        public void CanCreateBinFileAndGetUid()
-        {
+        public void CanCreateBinFileAndGetUid() {
             var attachment = new Attachment();
 
             _mdb.Save(attachment);
@@ -133,15 +57,76 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
         }
 
         [Test]
-        public void CanSaveAnAttachment()
-        {
-            var attachment = GetNewAttach();
+        public void CanDownload() {
+            Attachment attachment = GetNewAttach();
+            byte[] someData = {1, 2, 3, 4, 5};
+            byte[] someBuffer = {0, 0, 0, 0, 0};
 
             _mdb.Save(attachment);
-            using (var stream = _mdb.Open(attachment, FileAccess.Write))
-            {
+            using (Stream stream = _mdb.Open(attachment, FileAccess.Write)) {
+                stream.Write(someData, 0, someData.Length);
                 stream.Flush();
             }
+
+
+            Attachment found = _mdb.Find(attachment).FirstOrDefault();
+
+            Assert.NotNull(found);
+            Assert.AreEqual(attachment.Uid, found.Uid);
+            Assert.AreNotEqual(someData, someBuffer);
+
+            using (Stream stream = _mdb.Open(attachment, FileAccess.Read)) {
+                stream.Read(someBuffer, 0, someBuffer.Length);
+                stream.Flush();
+            }
+
+            Assert.AreEqual(someBuffer, someData);
+        }
+
+        [Test]
+        public void CanFind() {
+            Attachment attachment = GetNewAttach();
+
+            _mdb.Save(attachment);
+            using (Stream stream = _mdb.Open(attachment, FileAccess.Write)) {
+                stream.Flush();
+            }
+
+            Attachment found = _mdb.Find(attachment).FirstOrDefault();
+
+            Assert.NotNull(found);
+            Assert.AreEqual(attachment.Uid, found.Uid);
+        }
+
+        [Test]
+        public void CanSaveAnAttachment() {
+            Attachment attachment = GetNewAttach();
+
+            _mdb.Save(attachment);
+            using (Stream stream = _mdb.Open(attachment, FileAccess.Write)) {
+                stream.Flush();
+            }
+        }
+
+        [Test]
+        public void CanSaveAndThenDelete() {
+            Attachment attachment = GetNewAttach();
+
+            _mdb.Save(attachment);
+            using (Stream stream = _mdb.Open(attachment, FileAccess.Write)) {
+                stream.Flush();
+            }
+
+
+            Attachment found = _mdb.Find(attachment).FirstOrDefault();
+
+            Assert.NotNull(found);
+            Assert.AreEqual(attachment.Uid, found.Uid);
+
+            _mdb.Delete(attachment);
+
+            Attachment not_found = _mdb.Find(attachment).FirstOrDefault();
+            Assert.IsNull(not_found);
         }
     }
 }
