@@ -164,7 +164,7 @@ $.extend(api,(function(){
                 }
             }),
             //команда, возвращающая каталог периодов
-            getperiods : $.extend(new Command({domain: "zeta", name: "getperiods"}), {
+            getperiods : $.extend(new Command({domain: "zeta", name: "getperiods",cachekey:"zeta__getperiods"}), {
                 // Ждем задачу ZC-404, которая изменит структуру результата команды
                 wrap : function(obj) {
                     var years = {
@@ -181,7 +181,7 @@ $.extend(api,(function(){
                 }
             }),
             //команда, возвращающая список доступных предприятий
-            getobjects : $.extend(new Command({domain: "zeta", name: "getobjects"}), {
+            getobjects : $.extend(new Command({domain: "zeta", name: "getobjects",cachekey:"zeta__getobjects"}), {
                 wrap : function(obj) {
                     var myobjs = [];
                     $.each(obj.objs, function(i, o) {

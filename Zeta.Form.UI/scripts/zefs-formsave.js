@@ -2,6 +2,7 @@
  * Виджет инструмента для сохранения формы
  */
 !function($) {
+    var root = window.zeta = window.zeta || {};
     var zefsformsave = new root.security.Widget("zefsformsave", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 50 });
     var b = $('<button class="btn btn-small btn-primary" title="Сохранить форму" />').html('<i class="icon-ok icon-white"/>').hide();
     var preloader = $('<div/>').css("padding", "1px 7px").append($('<img src="images/300.gif"/>')).hide();

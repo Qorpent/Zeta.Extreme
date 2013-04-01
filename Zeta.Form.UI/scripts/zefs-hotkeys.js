@@ -2,6 +2,7 @@
  * Виджет кнопки горячих клавиш
  */
 !function($) {
+    var root = window.zeta = window.zeta || {};
     var zefshotkeys = new root.security.Widget("zefshotkeys", root.console.layout.position.layoutHeader, "right", { priority: 87 });
     var HotkeysInfo = function() {
         var t = $('<table class="table table-bordered zefshotkeysinfo"/>').append(

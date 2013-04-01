@@ -2,6 +2,7 @@
  * Виджет менеджера блокировок
  */
 !function($) {
+    var root = window.zeta = window.zeta || {};
     var zefsblockmanager = new root.security.Widget("zefsblockmanager", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 40 });
     var list = $('<div class="btn-group"/>');
     var menu = $('<ul class="dropdown-menu"/>');
