@@ -106,10 +106,12 @@ $.extend(api,(function(){
                     };
                 }
             }),
+            // Единая команда для получения статуса блокировок
+            state : new Command({domain: "zefs", name: "getlockstate"}),
             // Команда получения текущего статуса блокировки
-            state : new Command({domain: "zefs", name: "currentlockstate"}),
+//            state : new Command({domain: "zefs", name: "currentlockstate"}),
             // Команда получения статуса возможности блокировки
-            canlock : new Command({domain: "zefs", name: "canlockstate"}),
+//            canlock : new Command({domain: "zefs", name: "canlockstate"}),
             // Команда получения списка блокировок
             history : $.extend(new Command({domain: "zefs", name: "locklist"}), {
                 wrap: function(obj) {

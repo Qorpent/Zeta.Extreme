@@ -7,8 +7,8 @@
         zefs.myform.execute();
     } });
     zefsform.body = $('<table class="data"/>');
-    $(window.zefs).on(window.zefs.handlers.on_getcanlockload, function() {
-        if (!zefs.myform.canlock.cansave && !zefs.myform.canlock.cansaveoverblock) {
+    $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
+        if (!zefs.myform.lock.cansave && !zefs.myform.lock.cansaveoverblock) {
             zefsform.body.addClass("isblocked");
         }
     });
