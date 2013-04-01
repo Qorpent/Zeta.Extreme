@@ -148,8 +148,8 @@ root.init = root.init ||
     };
 
     var Save = function() {
-        if (!root.myform.canlock.cansave
-            && !root.myform.canlock.cansaveoverblock) {
+        if (!root.myform.lock.cansave
+            && !root.myform.lock.cansaveoverblock) {
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                 title: "Не удалось сохранить форму",
                 text: "Форма заблокирована"
@@ -164,8 +164,8 @@ root.init = root.init ||
     };
 
     var ForceSave = function() {
-        if (!root.myform.canlock.cansave
-            && !root.myform.canlock.cansaveoverblock) {
+        if (!root.myform.lock.cansave
+            && !root.myform.lock.cansaveoverblock) {
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                 title: "Не удалось сохранить форму",
                 text: "Форма заблокирована"
@@ -321,7 +321,6 @@ root.init = root.init ||
         api.metadata.getobjects.execute();
         api.metadata.getperiods.execute();
         api.lock.state.execute(sessiondata);
-        api.lock.canlock.execute(sessiondata);
         api.lock.history.execute(sessiondata);
         api.file.list.execute(sessiondata);
         window.setTimeout(function(){
@@ -420,11 +419,6 @@ root.init = root.init ||
     api.lock.state.onSuccess(function(e, result) {
         root.myform.lock = result;
         $(root).trigger(root.handlers.on_getlockload);
-    });
-
-    api.lock.canlock.onSuccess(function(e, result) {
-        root.myform.canlock = result;
-        $(root).trigger(root.handlers.on_getcanlockload, result);
     });
 
     api.lock.history.onSuccess(function(e, result) {

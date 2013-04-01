@@ -2,6 +2,7 @@
  * Виджет менеджера блокировок
  */
 !function($) {
+    var root = window.zeta = window.zeta || {};
     var zefsblockmanager = new root.security.Widget("zefsblockmanager", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 40 });
     var list = $('<div class="btn-group"/>');
     var menu = $('<ul class="dropdown-menu"/>');
@@ -23,54 +24,52 @@
     });
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление блокировками"/>')
         .html('<i class="icon-lock"></i><span class="caret"/>');
-    $(window.zefs).on(window.zefs.handlers.on_getcanlockload, function(e, result) {
-        var li = $('<li/>');
+    var controls = $('<li/>');
+    $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
+        var lock =  window.zefs.myform.lock;
+        b.get(0).className = "btn btn-small dropdown-toggle";
+        if (lock.state == "0ISOPEN"){
+            b.addClass("btn-danger");
+        }
+        else if (lock.state == "0ISBLOCK") {
+            b.addClass("btn-warning");
+        }
+        else if (lock.state == "0ISCHECKED") {
+            b.addClass("btn-success");
+        }
+        $(b.find("i")).addClass("icon-white");
+        controls.empty();
         lockbtn.get(0).className = unlockbtn.get(0).className = checkbtn.get(0).className = "btn btn-mini";
-        if (result.haslockrole) {
-            li.append(lockbtn);
-            if (result.canblock) {
+        if (lock.haslockrole) {
+            controls.append(lockbtn);
+            if (lock.canblock) {
                 lockbtn.addClass("btn-warning");
                 lockbtn.removeAttr("disabled");
             }
             else lockbtn.attr("disabled", "disabled");
-            li.append(unlockbtn);
-            if (result.canopen) {
+            controls.append(unlockbtn);
+            if (lock.canopen) {
                 unlockbtn.addClass("btn-danger");
                 unlockbtn.removeAttr("disabled");
             }
             else unlockbtn.attr("disabled", "disabled");
         }
-        if (result.hasholdlockrole) {
-            li.append(checkbtn);
-            if (result.cancheck) {
+        if (lock.hasholdlockrole) {
+            controls.append(checkbtn);
+            if (lock.cancheck) {
                 checkbtn.addClass("btn-success");
                 checkbtn.removeAttr("disabled");
             }
             else checkbtn.attr("disabled", "disabled");
         }
-        if (!result.haslockrole && !result.hasholdlockrole) {
-            li.append($('<span style="margin: 0 7px;" class="label label-warning"/>').text("Вы не можете управлять блокировками"));
+        if (!lock.haslockrole && !lock.hasholdlockrole) {
+            controls.append($('<span style="margin: 0 7px;" class="label label-warning"/>').text("Вы не можете управлять блокировками"));
         }
-        menu.prepend(li);
+        progress.hide();
+        controls.append(progress);
+        menu.prepend(controls);
     });
     var h = $('<table class="table table-striped"/>');
-    $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
-        progress.hide();
-        var lock =  window.zefs.myform.lock;
-        if (lock != null) {
-            b.get(0).className = "btn btn-small dropdown-toggle";
-            if (lock.state == "0ISOPEN"){
-                b.addClass("btn-danger");
-            }
-            else if (lock.state == "0ISBLOCK") {
-                b.addClass("btn-warning");
-            }
-            else if (lock.state == "0ISCHECKED") {
-                b.addClass("btn-success");
-            }
-            $(b.find("i")).addClass("icon-white");
-        }
-    });
     menu.append($('<li/>').append(h));
     h.append(
         $('<thead/>').append($('<tr/>').append($('<th colspan="3"/>').text("История блокировок"))),

@@ -2,6 +2,7 @@
  * Виджет информационного меню
  */
 !function($) {
+    var root = window.zeta = window.zeta || {};
     var information = new root.security.Widget("information", root.console.layout.position.layoutHeader, "right", { authonly: true, priority: 85 });
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Информация"/>').html('<i class="icon-book"></i><span class="caret"></span>');
     var support = $('<a/>').css("background-color", "#FFE1E1").text("Где я, кто я?");
