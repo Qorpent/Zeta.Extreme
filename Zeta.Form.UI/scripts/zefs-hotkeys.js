@@ -21,10 +21,11 @@
             content: t
         });
     };
-    var restart = $('<button class="btn btn-small"/>').append('<i class="icon-edit"/>')
+    var restart = $('<button class="btn btn-small" title="Горячие клавиши"/>').append('<i class="icon-edit"/>')
         .click(function() {
             HotkeysInfo()
         });
+    restart.tooltip({placement: 'bottom'});
     zefshotkeys.body = $('<div/>').append(restart);
     root.console.RegisterWidget(zefshotkeys);
 }(window.jQuery);
