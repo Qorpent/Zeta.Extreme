@@ -320,23 +320,6 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		/// <summary>
-		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
-		/// </summary>
-		/// <returns> </returns>
-		public LockStateInfo GetMinimalStateInfo() {
-			var isopen = Template.IsOpen;
-			Template.CleanupStates();
-			var state = Template.GetState(Object, null);
-			var cansave = state == "0ISOPEN";
-			return new LockStateInfo
-				{
-					isopen = isopen,
-					state = state,
-					cansave = cansave,
-				};
-		}
-
-		/// <summary>
 		/// 	Коллекция контрольных точек
 		/// </summary>
 		[IgnoreSerialize] public ControlPointResult[] ControlPoints {

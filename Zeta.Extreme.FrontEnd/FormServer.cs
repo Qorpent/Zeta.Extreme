@@ -159,18 +159,6 @@ namespace Zeta.Extreme.FrontEnd {
 			return ResolveService<IFormSessionDataSaver>() ?? new DefaultSessionDataSaver();
 		}
 
-		/// <summary>
-		/// 	Возвращает список форм
-		/// </summary>
-		/// <returns> </returns>
-		public object GetFormList() {
-			LoadThemas.Wait();
-			return ((ExtremeFormProvider) FormProvider).Factory
-				.GetAll().Where(_ => !_.Code.Contains("lib")).SelectMany(_ => _.GetAllForms())
-				.Select(_ => new {code = _.Code, name = _.Name}).ToArray();
-		}
-
-
 
 		/// <summary>
 		/// 	processing of execution - main method of action

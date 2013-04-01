@@ -23,15 +23,12 @@
     <Compile Include="Actions\Info\GetBizProcessList.cs" />
     <Compile Include="Actions\Info\GetCellHistory.cs" />
     <Compile Include="Actions\Info\GetEvalStack.cs" />
-    <Compile Include="Actions\States\CanLockStateAction.cs" />
     <Compile Include="Actions\States\GetLockStateAction.cs" />
     <Compile Include="Actions\SessionProcessing\DataLoadedAction.cs" />
     <Compile Include="Actions\Attachments\DeleteFileAction.cs" />
-    <Compile Include="Actions\Info\GetFormListAction.cs" />
     <Compile Include="Actions\Abstracts\FormServerActionBase.cs" />
     <Compile Include="Actions\ZefsServer\FormServerRestart.cs" />
     <Compile Include="Actions\Info\GetSessionDebugInfoAction.cs" />
-    <Compile Include="Actions\States\CurrentLockStateAction.cs" />
     <Compile Include="Actions\Abstracts\FormSessionActionBase.cs" />
     <Compile Include="Actions\Attachments\GetAttachmentListAction.cs" />
     <Compile Include="Actions\Info\GetOjectsAction.cs" />
