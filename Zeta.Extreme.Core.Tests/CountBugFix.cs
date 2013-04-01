@@ -41,6 +41,21 @@ namespace Zeta.Extreme.Core.Tests {
 		}
 
 		[Test]
+		public void ZC478_Refed_Formula_Not_Work()
+		{
+			var result = _serial.Eval(new Query
+			{
+				Row = { Code = "f12040" },
+				Col = { Code = "SNDS" },
+				Time = { Year = 2013, Period = 251 },
+				Obj = { Id = 449 },
+			});
+			Assert.True(result.IsComplete);
+			Assert.Null(result.Error);
+			Assert.AreEqual( 25589245m, result.NumericResult);
+		}
+
+		[Test]
 		public void ZC_273_NO_INSUMMA_DOUBLING() {
 			var result = _serial.Eval(new Query
 				{
