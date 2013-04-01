@@ -20,6 +20,7 @@
     <Compile Include="Actions\Abstracts\SingleAttachmentActionBase.cs" />
     <Compile Include="Actions\Attachments\DownloadFileAction.cs" />
     <Compile Include="Actions\Attachments\GetFileTypesAction.cs" />
+    <Compile Include="Actions\Info\GetBizProcessList.cs" />
     <Compile Include="Actions\Info\GetCellHistory.cs" />
     <Compile Include="Actions\Info\GetEvalStack.cs" />
     <Compile Include="Actions\States\CanLockStateAction.cs" />
@@ -63,6 +64,8 @@
     <Compile Include="Actions\Info\FormSessionStatusAction.cs" />
     <Compile Include="DataStructures\StructureItem.cs" />
     <Compile Include="Helpers\AccessibleObjectsHelper.cs" />
+    <Compile Include="Helpers\BizProcessEnumerator.cs" />
+    <Compile Include="Helpers\BizProcessRecord.cs" />
     <Compile Include="Helpers\PeriodCatalogHelper.cs" />
     <Compile Include="Helpers\SimpleUserInfo.cs" />
     <Compile Include="Helpers\UserInfoHelper.cs" />
