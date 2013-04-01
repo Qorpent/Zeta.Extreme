@@ -51,6 +51,7 @@
         if (!result.haslockrole && !result.hasholdlockrole) {
             li.append($('<span style="margin: 0 7px;" class="label label-warning"/>').text("Вы не можете управлять блокировками"));
         }
+        li.append(progress);
         menu.prepend(li);
     });
     var h = $('<table class="table table-striped"/>');
