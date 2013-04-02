@@ -37,6 +37,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             
             if (!string.IsNullOrEmpty(message.Code)) document.Set("code", message.Code);
             if (!string.IsNullOrEmpty(message.Message)) document.Set("message", message.Message);
+
             if (null != message.HostObject) {
                 document.Set(
                     "HostObject",
@@ -100,16 +101,18 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public static void BsonToLogMessage(BsonDocument document, LogMessage message) {
             BsonValue value;
 
-
             if (document.TryGetValue("name", out value)) message.Name = value.ToString();
             if (document.TryGetValue("level", out value)) message.Level = (LogLevel)value.ToInt32();
             if (document.TryGetValue("code", out value)) message.Code = value.ToString();
             if (document.TryGetValue("message", out value)) message.Message = value.ToString();
             if (document.TryGetValue("hostObject", out value)) message.HostObject = value.ToString();
             if (document.TryGetValue("user", out value)) message.User = value.ToString();
+
             var doc = document["error"];
-            message.Error = new Exception(doc["Message"].ToString());
-            
+            if (doc != BsonNull.Value) {
+                message.Error = new Exception(doc["Message"].ToString());
+            }
+
             if (document.TryGetValue("server", out value)) message.Server = value.ToString();
             if (document.TryGetValue("applicationName", out value)) message.ApplicationName = value.ToString();
             if (document.TryGetValue("time", out value)) message.Time = value.ToUniversalTime();
