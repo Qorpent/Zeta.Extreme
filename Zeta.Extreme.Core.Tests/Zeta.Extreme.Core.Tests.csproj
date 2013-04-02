@@ -51,6 +51,7 @@
     <Compile Include="ZC459ExceptionPropagationTest.cs" />
     <Compile Include="Zc478Problem.cs" />
     <Compile Include="Zc480ErrorTestForms.cs" />
+    <Compile Include="Zc483OnPockOtkl.cs" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

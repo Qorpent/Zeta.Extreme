@@ -187,14 +187,14 @@ namespace Zeta.Extreme {
 			else {
 				result = GetAllDependencies().Any(_ => _ == this);
 			}
-if (!result) { //отсутствие циркуляров на этом уровне гарантирует что их 
-				foreach (var query in GetAllDependencies().ToArray()) {
-					if (query is Query) {
-						//если мы не обнаружили циркулярных зависимостей тут
-						((Query) query)._circular = false;
-					}
-				}
-			}
+//if (!result) { //отсутствие циркуляров на этом уровне гарантирует что их 
+//				foreach (var query in GetAllDependencies().ToArray()) {
+//					if (query is Query) {
+//						//если мы не обнаружили циркулярных зависимостей тут
+//						((Query) query)._circular = false;
+//					}
+//				}
+//			}
 			return result;
 
 		}

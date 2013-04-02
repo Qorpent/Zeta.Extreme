@@ -34,16 +34,51 @@ namespace Zeta.Extreme.FrontEnd.Helpers
 							Code = _.Code, 
 							Name = _.Name, 
 							Group = _.Group, 
-							Idx=_.Idx, 
+							Idx=_.Idx == 0?100:_.Idx, 
 							Parent = _.Parent, 
 							IsGroup = _.IsGroup
-						});
+						}).ToArray();
 
+			//для родительских тем, по которым в набор включены дочки выводим их тоже в под-группу
+			var parents = themarecords.Where(_ => !string.IsNullOrWhiteSpace(_.Parent)).Select(_ => _.Parent).Distinct().ToArray();
+			foreach (var bizProcessRecord in themarecords) {
+				if (parents.Any(_ => _ == bizProcessRecord.Code)) {
+					bizProcessRecord.Parent = bizProcessRecord.Code;
+					if (bizProcessRecord.Idx >= 100) {
+						bizProcessRecord.Idx = 1;
+					}
+				}
+			}
+
+			
+
+			var groupbygrop = themarecords.Where(_=>!string.IsNullOrWhiteSpace(_.Group)).GroupBy(_ => _.Group).ToArray();
+			var groupbyparent = themarecords.Where(_ => !string.IsNullOrWhiteSpace(_.Parent)).GroupBy(_ => _.Parent).ToArray();
+
+			foreach (var p in groupbyparent) {
+				if (1 == p.Count()) {
+					p.First().Parent = "";
+				}
+				else {
+					var fstgroup = p.First().Group;
+					foreach (var bizProcessRecord in p) {
+						bizProcessRecord.Group = fstgroup;
+					}
+				}
+
+			}
+			foreach (var p in groupbygrop)
+			{
+				if (1 == p.Count())
+				{
+					p.First().Group = "";
+				}
+			}
 
 			return
-				themarecords.OrderByDescending(_ => _.IsGroup)
+				themarecords.OrderByDescending(_ =>string.IsNullOrWhiteSpace(_.Group)?"ZZZZZZZ": _.Group)
+				            .ThenBy(_ =>string.IsNullOrWhiteSpace(_.Parent)?"ZZZZZZZ": _.Parent)
 				            .ThenBy(_ => _.Idx)
-				            .ThenBy(_ => _.Parent)
 				            .ThenBy(_ => _.Name)
 				            .ToArray();
 		} 
