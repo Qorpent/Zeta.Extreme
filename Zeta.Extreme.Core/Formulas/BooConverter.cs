@@ -52,6 +52,7 @@ namespace Zeta.Extreme {
 						.Replace("q.Column", "q.Col")
 						.Replace("query.Column", "q.Col")
 						.Replace("MCOUNT", " f.monthCount(q) ")
+						.Replace(".altdiv(\"", ".altobjfilter(\"div_")
 					;
 
 				return result;

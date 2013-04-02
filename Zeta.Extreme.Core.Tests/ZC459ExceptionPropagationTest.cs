@@ -100,7 +100,7 @@ namespace Zeta.Extreme.Core.Tests
 			var result = session.AsSerial().Eval(q);
 			Assert.False(result.IsComplete);
 			Assert.NotNull(result.Error);
-			Assert.AreEqual("circular dependency", result.Error.Message);
+			Assert.AreEqual("circular dependency", result.Error.InnerException.Message);
 		}
 
 		[Test]
@@ -111,7 +111,7 @@ namespace Zeta.Extreme.Core.Tests
 			var result = session.AsSerial().Eval(q);
 			Assert.False(result.IsComplete);
 			Assert.NotNull(result.Error);
-			Assert.AreEqual("circular dependency", result.Error.Message);
+			Assert.AreEqual("circular dependency", result.Error.InnerException.Message);
 		}
 	}
 }

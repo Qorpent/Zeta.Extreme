@@ -20,6 +20,7 @@ using System;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Primary;
 
@@ -40,20 +41,8 @@ namespace Zeta.Extreme.Core.Tests {
 			Assert.AreEqual(905130m, result.NumericResult);
 		}
 
-		[Test]
-		public void ZC478_Refed_Formula_Not_Work()
-		{
-			var result = _serial.Eval(new Query
-			{
-				Row = { Code = "f12040" },
-				Col = { Code = "SNDS" },
-				Time = { Year = 2013, Period = 251 },
-				Obj = { Id = 449 },
-			});
-			Assert.True(result.IsComplete);
-			Assert.Null(result.Error);
-			Assert.AreEqual( 25589245m, result.NumericResult);
-		}
+	
+
 
 		[Test]
 		public void ZC_273_NO_INSUMMA_DOUBLING() {

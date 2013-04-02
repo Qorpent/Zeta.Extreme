@@ -49,6 +49,7 @@
     <Compile Include="Zc431PrototypeGeneratorTest.cs" />
     <Compile Include="Zc432AltObjFilterNormalization.cs" />
     <Compile Include="ZC459ExceptionPropagationTest.cs" />
+    <Compile Include="Zc478Problem.cs" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>
