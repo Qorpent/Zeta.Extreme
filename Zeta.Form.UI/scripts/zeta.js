@@ -154,11 +154,6 @@ root.security = root.security || $.extend(root.security, {
     root.console = new Console();
 }(window.jQuery);
 
-
-document.write('<script src="_sys/getjs.file.qweb?scriptname=zeta-options" type="text/javascript"></script>');
-document.write('<script src="_sys/getjs.file.qweb?scriptname=zeta-modal" type="text/javascript"></script>');
-
-
 !function($) {
     $(window).load(function() { window.zeta.console.whoami() });
 }(window.jQuery);

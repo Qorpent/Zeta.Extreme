@@ -6,7 +6,6 @@
         on_modal : "modal"
     });
     var zetamodal = new root.security.Widget("zetamodal", root.console.layout.position.layoutBodyMain, null);
-    var container = $('<div/>');
     var ShowModal = function(p) {
         p = $.extend({
             title: "",
@@ -50,6 +49,6 @@
         $(document).trigger('click.dropdown.data-api');
         ShowModal(params);
     });
-    zetamodal.body = $(container).append();
+    zetamodal.body = $('<div/>');
     root.console.RegisterWidget(zetamodal);
 }(window.jQuery);
