@@ -16,6 +16,18 @@
             $('<li/>').html('<a>О программе</a>')
         ));
     b.tooltip({placement: 'bottom'});
+    var RequestToSupport = function() {
+        var email = "support.assoi@ugmk.com";
+        var subject = "Проблема при работе в АССОИ";
+        var body =  "Сервер: " + location.host + "\n" +
+                    "Логин: " + window.zeta.security.user.getLogonName() + "\n" +
+                    "Код формы: " + zefs.myform.currentSession.FormInfo.Code + "\n" +
+                    "Код предприятия: " + zefs.myform.currentSession.ObjInfo.Id + "\n" +
+                    "Номер периода: " + zefs.myform.currentSession.Period + "\n" +
+                    "Год: " + zefs.myform.currentSession.Year + "\n" +
+                    "Блокировки: " + JSON.stringify(zefs.myform.lock);
+        window.open("mailto:" + email + "?subject=" + subject + "&body=" + encodeURIComponent(body), "_blank");
+    };
     var WhatTheHellAndWhoAmI = function() {
         var t = $('<table class="table table-bordered zefssessioninfo"/>').append(
             $('<tr/>').append($('<td/>').text("Сервер"), $('<td/>').text(location.host)),
@@ -27,6 +39,11 @@
         );
         $(window.zeta).trigger(window.zeta.handlers.on_modal, {
             title: "Информация для службы поддержки",
+            customButton : {
+                class: "btn-warning",
+                text: "Отправить администратору",
+                click: RequestToSupport
+            },
             content: t
         });
     };
