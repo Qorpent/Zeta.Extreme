@@ -38,7 +38,7 @@
         /// <summary>
         ///     The dafault name of counter 
         /// </summary>
-        public const string MONGODBLOGS_STAT_COUNTER_NAME = "elements";
+        public const string MONGODBLOGS_STAT_COUNTER_NAME = "hits";
 
         /// <summary>
         ///     The default increment value for elements counter
