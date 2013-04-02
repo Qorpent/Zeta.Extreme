@@ -123,8 +123,13 @@ div.open>.tooltip {
     background-color: #e6ffe1;
 }
 
-.dropdown-menu li.current>a {
+li.current>a {
     font-weight: bold;
+    color: #002a80;
+}
+
+li.current>a:hover {
+    color: white;
 }
 
 .zefscolmanager label {
