@@ -10,13 +10,18 @@
         p = $.extend({
             title: "",
             content: null,
-            ok: null,
+            customButton: null,
             text: "",
             type: "",
             fade: false,
             width: 0,
             height: 0
         },p);
+        $.extend({
+            class : "btn-primary",
+            text : "OK",
+            click : function() {}
+        }, p.customButton);
         var modal = $('<div class="modal" role="dialog" />');
         if (p.width != 0) modal.css("width", p.width);
         var modalheader = $("<div/>", {"class":"modal-header"}).append(
@@ -24,18 +29,21 @@
             $('<h3/>').text(p.title));
         var modalbody = $('<div class="modal-body" />').append(p.content || p.text);
         if (p.height != 0) modalbody.css("height", p.height);
-        var modalfooter = $('<div class="modal-footer"/>').append(
+        var modalfooter = $('<div class="modal-footer"/>');
+        if (p.customButton != null) {
+            modalfooter.append($('<a href="#" class="btn" />').addClass(p.customButton.class)
+                .click(function(e) {
+                    e.preventDefault();
+                    p.customButton.click();
+                })
+                .html(p.customButton.text));
+            if (p.customButton.class == "btn-primary") {
+                modalfooter.find('.closebtn').removeClass("btn-primary");
+            }
+        }
+        modalfooter.append(
             $('<a href="#" class="closebtn btn btn-primary" data-dismiss="modal" />')
                 .text("Закрыть"));
-        if (p.ok != null) {
-            modalfooter.append($('<a href="#" class="btn btn-primary" />')
-                .click(function() {
-                    p.ok();
-                    $(modal).modal('hide');
-                })
-                .html("OK"));
-            modalfooter.find('.closebtn').removeClass("btn-primary");
-        }
         modal.append(modalheader, modalbody, modalfooter);
         $('body').append(modal);
         modalheader = modalbody = modalfooter = null;

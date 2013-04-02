@@ -44,7 +44,10 @@
                                 $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                                     title: "Удаление файла",
                                     content: $('<p/>').html("Файл <strong>" + file.Name + "</strong> будет удален. Продолжить?"),
-                                    ok: function() { window.zefs.myform.deletefile(file.Uid) }
+                                    customButton: {
+                                        text: "Удалить",
+                                        click: function() { window.zefs.myform.deletefile(file.Uid) }
+                                    }
                                 });
                             }
                         )));
