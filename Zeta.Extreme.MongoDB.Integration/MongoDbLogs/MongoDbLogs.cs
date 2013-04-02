@@ -132,34 +132,29 @@ namespace Zeta.Extreme.MongoDB.Integration {
             var document = MongoDbLogsSerializer.LogMessageToBson(message);
             _mongoLogsCollection.Save(document);
 
-            UpdateStatisticsCollections(
-                document.GetValue("_id").AsObjectId,
-                message
-            );
+            UpdateStatisticsCollections(message);
         }
 
         /// <summary>
         ///     Updates or sets information in statistics collections
         /// </summary>
-        /// <param name="sourceObjectId">an ObjectId of an general log element</param>
         /// <param name="message">a message item</param>
-        private void UpdateStatisticsCollections(ObjectId sourceObjectId, LogMessage message) {
-            UpdateUsersCollection(sourceObjectId, message);
-            UpdateServersCollection(sourceObjectId, message);
-            UpdateFormsCollection(sourceObjectId, message);
-            UpdateCompaniesCollection(sourceObjectId, message);
-            UpdatePeriodsCollection(sourceObjectId, message);
+        private void UpdateStatisticsCollections(LogMessage message) {
+            UpdateUsersCollection(message);
+            UpdateServersCollection(message);
+            UpdateFormsCollection(message);
+            UpdateCompaniesCollection(message);
+            UpdatePeriodsCollection(message);
         }
 
         /// <summary>
         ///      Add statistics by users
         /// </summary>
-        /// <param name="sourceObjectId">an ObjectId of an general log element</param>
         /// <param name="message">a message item</param>
-        private void UpdateUsersCollection(ObjectId sourceObjectId, LogMessage message) {
+        private void UpdateUsersCollection(LogMessage message) {
             _mongoUsersCollection.Update(
                 GenerateStatisticsUpdateQuery("server", message.User),
-                GenerateStatisticsUpdateObject(sourceObjectId),
+                GenerateStatisticsUpdateObject(),
                 UpdateFlags.Upsert
             );
         }
@@ -167,12 +162,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <summary>
         ///     Add statistics by servers
         /// </summary>
-        /// <param name="sourceObjectId">an ObjectId of an general log element</param>
         /// <param name="message">a message item</param>
-        private void UpdateServersCollection(ObjectId sourceObjectId, LogMessage message) {
+        private void UpdateServersCollection(LogMessage message) {
             _mongoServersCollection.Update(
                 GenerateStatisticsUpdateQuery("server", message.Server),
-                GenerateStatisticsUpdateObject(sourceObjectId),
+                GenerateStatisticsUpdateObject(),
                 UpdateFlags.Upsert
             );
         }
@@ -180,12 +174,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <summary>
         ///     Add statistics by forms
         /// </summary>
-        /// <param name="sourceObjectId">an ObjectId of an general log element</param>
         /// <param name="message">a message item</param>
-        private void UpdateFormsCollection(ObjectId sourceObjectId, LogMessage message) {
+        private void UpdateFormsCollection(LogMessage message) {
             _mongoFormsCollection.Update(
                 GenerateStatisticsUpdateQuery("form", ((IFormSession)message.HostObject).Template.Code),
-                GenerateStatisticsUpdateObject(sourceObjectId),
+                GenerateStatisticsUpdateObject(),
                 UpdateFlags.Upsert
             );
         }
@@ -193,12 +186,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <summary>
         /// Add statistics by companies
         /// </summary>
-        /// <param name="sourceObjectId">an ObjectId of an general log element</param>
         /// <param name="message">a message item</param>
-        private void UpdateCompaniesCollection(ObjectId sourceObjectId, LogMessage message) {
+        private void UpdateCompaniesCollection(LogMessage message) {
             _mongoCompaniesCollection.Update(
                 GenerateStatisticsUpdateQuery("company", ((IFormSession)message.HostObject).Object.Name),
-                GenerateStatisticsUpdateObject(sourceObjectId),
+                GenerateStatisticsUpdateObject(),
                 UpdateFlags.Upsert
             );
         }
@@ -206,12 +198,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <summary>
         ///     Add statistics by periods
         /// </summary>
-        /// <param name="sourceObjectId">an ObjectId of an general log element</param>
         /// <param name="message">a message item</param>
-        private void UpdatePeriodsCollection(ObjectId sourceObjectId, LogMessage message) {
+        private void UpdatePeriodsCollection(LogMessage message) {
             _mongoPeriodsCollection.Update(
                 GenerateStatisticsUpdateQuery("period", ((IFormSession)message.HostObject).Period),
-                GenerateStatisticsUpdateObject(sourceObjectId),
+                GenerateStatisticsUpdateObject(),
                 UpdateFlags.Upsert
             );
         }
@@ -219,11 +210,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <summary>
         ///     Generates a IMongoUpdate instance to increment elements count and push the source _id value
         /// </summary>
-        /// <param name="sourceObjectId">ObjectId references to source document</param>
         /// <returns>IMongoUpdate clause</returns>
-        private IMongoUpdate GenerateStatisticsUpdateObject(ObjectId sourceObjectId) {
+        private IMongoUpdate GenerateStatisticsUpdateObject() {
             var update = new UpdateBuilder();
-            update.Push("id", sourceObjectId);
             update.Inc(
                 MongoDbLayoutSpecification.MONGODBLOGS_STAT_COUNTER_NAME,
                 MongoDbLayoutSpecification.MONGODBLOGS_STAT_COUNTER_INC_VAL
@@ -245,11 +234,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
                     Query.EQ(
                         element,
                         value
-                    ),
-
-                    Query.LT(
-                        MongoDbLayoutSpecification.MONGODBLOGS_STAT_COUNTER_NAME,
-                        MongoStatCollectionsPartCount
                     )
                 }
             );
