@@ -115,8 +115,12 @@ div.open>.tooltip {
     margin-left: 3px;
 }
 
-.objselector li.primary {
+.dropdown-menu li.primary {
     background-color: #e6ffe1;
+}
+
+.dropdown-menu li.current>a {
+    font-weight: bold;
 }
 
 .zefscolmanager label {

@@ -10,7 +10,7 @@
     list.append(b,menu);
     b.tooltip({placement: 'bottom'});
     var ChangeForm = function(a) {
-        location.hash = location.hash.replace(/(form=)(\w+)(\w\.in)/,'$1' + $(a).attr("code") + '$3');
+        location.hash = location.hash.replace(/(form=)(\w+)(\w\.in)/,'$1' + $(a).attr("formcode") + '$3');
         location.reload();
     };
     var GetReadableGroupName = function(code) {
@@ -52,23 +52,24 @@
     };
     $(window.zefs).on(window.zefs.handlers.on_formsload, function() {
         var forms = window.zefs.forms;
+        var current = window.zefs.myform.currentSession.FormInfo.Code || "";
         $.each(forms, function(i,f) {
             var groupname = GetReadableGroupName(f.Group);
             var parentgroupname = GetReadableParentName(f.Parent);
-            var ul = menu.find('ul.' + f.Group);
+            var ul = menu.find('ul[code="' + f.Group + '"]');
             if (ul.length == 0) {
-                ul = $('<ul class="dropdown-menu"/>').addClass(f.Group);
+                ul = $('<ul class="dropdown-menu"/>').attr("code", f.Group);
                 if (groupname != ""){
                     menu.append($('<li class="dropdown-submenu"/>')
                         .append($('<a/>').text(groupname), ul));
                 }
             }
-            var a = $('<a/>').text(f.Name).attr("code", f.Code);
+            var a = $('<a/>').text(f.Name).attr("formcode", f.Code);
             var li = $('<li/>').append(a);
             if (!!f.Parent) {
-                var parent = menu.find('ul.' + f.Parent);
+                var parent = menu.find('ul[code="' + f.Parent + '"]');
                 if (parent.length == 0) {
-                    parent = $('<ul class="dropdown-menu"/>').addClass(f.Parent);
+                    parent = $('<ul class="dropdown-menu"/>').attr("code", f.Parent);
                     if (parentgroupname != ""){
                         ul.append($('<li class="dropdown-submenu"/>')
                             .append($('<a/>').text(parentgroupname), parent));
@@ -81,6 +82,7 @@
             }
             a.click(function() { ChangeForm(this); });
         });
+        $('a[formcode="' + current.replace(/[A|B].in/, "") + '"]').parents('li').addClass("current");
     });
     zefsbizprocess.body = $('<div/>').append(list);
     root.console.RegisterWidget(zefsbizprocess);

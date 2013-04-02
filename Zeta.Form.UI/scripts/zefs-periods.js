@@ -14,12 +14,12 @@
         if (type.search("Plan") != -1) location.hash = location.hash.replace(/[ABC].in/gi,'B.in');
         else if (type == "Corrective") location.hash = location.hash.replace(/[ABC].in/gi,'C.in');
         else location.hash = location.hash.replace(/[ABC].in/gi,'A.in');
-        location.hash = location.hash.replace(/period=\d+/gi,"period=" + $(e.target).attr("value"));
+        location.hash = location.hash.replace(/period=\d+/gi,"period=" + $(e.target).attr("periodcode"));
         location.reload();
     };
 
     var ChangeYear = function(e) {
-        location.hash = location.hash.replace(/year=\d+/gi,"year=" + $(e.target).attr("value"));
+        location.hash = location.hash.replace(/year=\d+/gi,"year=" + $(e.target).attr("periodcode"));
         location.reload();
     };
 
@@ -38,13 +38,14 @@
     };
 
     window.zefs.api.metadata.getperiods.onSuccess(function(e, result) {
+        var current = window.zefs.myform.currentSession.Period || "";
         $.each(result, function(i,group) {
             if (group.type == "InYear") return;
             var li = $('<li class="dropdown-submenu"/>');
             var ul = $('<ul class="dropdown-menu"/>').attr("type", group.type);
             li.append($('<a/>').text(GetPeriodGroupName(group.type)), ul);
             $.each(group.periods, function(i,period) {
-                var a = $('<a/>').attr("value", period.id);
+                var a = $('<a/>').attr("periodcode", period.id);
                 a.click(function(e) {
                     period.type != "Year" ? ChangePeriod(e) : ChangeYear(e);
                 });
@@ -52,6 +53,7 @@
             });
             menu.append(li);
         });
+        $('a[periodcode="' + current + '"]').parents('li').addClass("current");
     });
 
     zefsperiodselector.body = $('<div/>').append(list);

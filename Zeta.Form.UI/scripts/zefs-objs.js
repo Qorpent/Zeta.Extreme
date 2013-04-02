@@ -10,11 +10,12 @@
     list.append(b,menu);
     b.tooltip({placement: 'bottom'});
     var ChangeObject = function(e) {
-        location.hash = location.hash.replace(/obj=\d+/gi,"obj=" + $(e.target).attr("value"));
+        location.hash = location.hash.replace(/obj=\d+/gi,"obj=" + $(e.target).attr("objcode"));
         location.reload();
     };
     $(window.zefs).on(window.zefs.handlers.on_objectsload, function(e) {
         var divs = $.map(window.zefs.divs, function(d){ return d });
+        var current = window.zefs.myform.currentSession.ObjInfo.Id || "";
         $.each(divs.sort(function(a,b) { return a.idx - b.idx }), function(i,div) {
             var ul = $('<ul class="dropdown-menu"/>').attr("code", div.code);
             menu.append($('<li class="dropdown-submenu"/>')
@@ -28,7 +29,7 @@
                 var li = $('<li/>');
                 if (this.length != 0) {
                     if (obj.ismyobj) li.addClass("primary");
-                    var a = $('<a/>').attr("value", obj.id);
+                    var a = $('<a/>').attr("objcode", obj.id);
                     a.click(function(e) {
                         ChangeObject(e);
                     });
@@ -39,6 +40,7 @@
             }, ul));
             ul = objs = null;
         });
+        $('a[objcode="' + current + '"]').parents('li').addClass("current");
     });
     zefsobjselector.body = $('<div/>').append(list);
     root.console.RegisterWidget(zefsobjselector);
