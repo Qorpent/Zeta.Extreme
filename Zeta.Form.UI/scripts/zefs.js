@@ -21,6 +21,7 @@ window.zefs.handlers = $.extend(window.zefs.handlers, {
     on_getlockhistoryload : "getlockhistory",
     on_lockform : "lockform",
     // Other handlers:
+    on_formsload : "formsload",
     on_periodsload : "periodsload",
     on_periodsfaild : "periodsfailed",
     on_objectsload : "objectsload",
@@ -253,6 +254,13 @@ root.init = root.init ||
         }
     });
 
+    api.metadata.getforms.onSuccess(function(e, result) {
+        if($.isEmptyObject(root.forms)) {
+            root.forms = result;
+            $(root).trigger(root.handlers.on_formsload);
+        }
+    });
+
     api.metadata.celldebug.onSuccess(function(e, result) {
         var htmlresult = window.zeta.jsformat.jsonObjToHTML(result);
         $(window.zeta).trigger(window.zeta.handlers.on_modal, {
@@ -320,6 +328,7 @@ root.init = root.init ||
         api.session.structure.execute(sessiondata);
         api.metadata.getobjects.execute();
         api.metadata.getperiods.execute();
+        api.metadata.getforms.execute();
         api.lock.state.execute(sessiondata);
         api.lock.history.execute(sessiondata);
         api.file.list.execute(sessiondata);

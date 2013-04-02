@@ -108,7 +108,7 @@ div.open>.tooltip {
    display: inline;
 }
 
-.zefsstatus, .zefsformsave,
+.zefsstatus, .zefsformsave, .zefsbizprocess,
 .periodselector, .objselector,
 .zefscolmanager, .zefsblockmanager {
     margin-top: 4px;
