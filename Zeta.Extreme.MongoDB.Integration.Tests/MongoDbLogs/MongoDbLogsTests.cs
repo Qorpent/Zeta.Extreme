@@ -21,9 +21,6 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
             Assert.AreEqual(logMessageOrig.Server, logMessageSerialized.Server);
             Assert.AreEqual(logMessageOrig.ApplicationName, logMessageSerialized.ApplicationName);
-
-
-            Assert.IsTrue(DateTime.Equals(logMessageOrig.Time, logMessageSerialized.Time));
         }
 
         [Test]
