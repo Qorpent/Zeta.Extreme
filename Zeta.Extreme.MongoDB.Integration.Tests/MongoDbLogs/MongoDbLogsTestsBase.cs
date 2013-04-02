@@ -15,6 +15,8 @@ using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests {
     class MongoDbLogsTestsBase {
+        protected const int WRITE_COMMITS_COUNT = 27;
+
         protected MongoDbLogs _mongoDbLogs;
 
         private string _connectionString;

@@ -1,4 +1,6 @@
-﻿using MongoDB.Driver;
+﻿using System;
+using System.Text;
+using MongoDB.Driver;
 using NUnit.Framework;
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests {
@@ -10,17 +12,25 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             var document = MongoDbLogsSerializer.LogMessageToBson(logMessageOrig);
             var logMessageSerialized = MongoDbLogsSerializer.BsonToLogMessage(document);
 
+            _mongoDbLogs.Write(logMessageOrig);
+
             Assert.AreEqual(logMessageOrig.Name, logMessageSerialized.Name);
             Assert.AreEqual(logMessageOrig.Level, logMessageSerialized.Level);
             Assert.AreEqual(logMessageOrig.Code, logMessageSerialized.Code);
             Assert.AreEqual(logMessageOrig.Message, logMessageSerialized.Message);
+
+            Assert.AreEqual(logMessageOrig.Server, logMessageSerialized.Server);
+            Assert.AreEqual(logMessageOrig.ApplicationName, logMessageSerialized.ApplicationName);
+
+
+            Assert.IsTrue(DateTime.Equals(logMessageOrig.Time, logMessageSerialized.Time));
         }
 
         [Test]
-        public void CanWriteLogsWithPartitioning() {
+        public void CanWriteLogs() {
             var logMessageOrig = GetNewLogInstance();
 
-            for (int i = 0; i < 27; i++) {
+            for (int i = 0; i < WRITE_COMMITS_COUNT; i++) {
                 _mongoDbLogs.Write(logMessageOrig);
             }
 
@@ -29,18 +39,41 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             var mongoDatabase = mongoServer.GetDatabase(DatabaseName, new MongoDatabaseSettings());
             var collections = mongoDatabase.GetCollectionNames();
 
+
+            // Проверим, что лог писался каждый раз и писался корректно
+            Assert.AreEqual(mongoDatabase.GetCollection(LogsCollectionName).Count(), WRITE_COMMITS_COUNT);
+
+            // проверим, что наши коллекции существуют
+            Assert.IsTrue(mongoDatabase.CollectionExists(LogsCollectionName));
+            Assert.IsTrue(mongoDatabase.CollectionExists(LogsCollectionName + ".users"));
+            Assert.IsTrue(mongoDatabase.CollectionExists(LogsCollectionName + ".forms"));
+            Assert.IsTrue(mongoDatabase.CollectionExists(LogsCollectionName + ".servers"));
+            Assert.IsTrue(mongoDatabase.CollectionExists(LogsCollectionName + ".companies"));
+            Assert.IsTrue(mongoDatabase.CollectionExists(LogsCollectionName + ".periods"));
+
             foreach (var collection in collections) {
                 if (collection.StartsWith(LogsCollectionName + ".")) {
-                    Assert.AreEqual(
-                        mongoDatabase.GetCollection(collection).Count(),
-                        (
-                            (27 / MongoDbLayoutSpecification.MONGODBLOGS_STAT_PARTITION_COUNT)
-                                +
-                                (((27 % MongoDbLayoutSpecification.MONGODBLOGS_STAT_PARTITION_COUNT) != 0) ? (1) : (0))
-                        )
-                    );
+                    // проверим, что всё писалось корректно
+                    Assert.AreEqual(mongoDatabase.GetCollection(collection).Count(), 1);
                 }
             }
+
+            // ПРОХОД ЗАПИСИ №2
+
+            var logMessageOrigNext = GetNewLogInstance();
+            for (int i = 0; i < WRITE_COMMITS_COUNT; i++) {
+                _mongoDbLogs.Write(logMessageOrigNext);
+            }
+
+            // Проверим, что лог писался каждый раз и писался корректно
+            Assert.AreEqual(mongoDatabase.GetCollection(LogsCollectionName).Count(), (WRITE_COMMITS_COUNT * 2));
+            /*
+            foreach (var collection in collections) {
+                if (collection.StartsWith(LogsCollectionName + ".")) {
+                    // проверим, что всё писалось корректно
+                    Assert.AreEqual(mongoDatabase.GetCollection(collection).Count(), 2);
+                }
+            }*/
         }
     }
 }
