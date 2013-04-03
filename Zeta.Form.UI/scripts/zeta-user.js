@@ -15,8 +15,8 @@ $.extend(window.zeta.handlers, {
     };
 
     ZetaUser.prototype.init = function () {
-        if (!!window.zeta.storage) {
-            this.details = window.zeta.storage.getUser(this.login);
+        if (!!window.zeta.sessionstorage) {
+            this.details = window.zeta.sessionstorage.getUser(this.login);
         }
         if (!this.details) {
             this.getDetails();
@@ -26,33 +26,33 @@ $.extend(window.zeta.handlers, {
     };
 
     ZetaUser.prototype.loginToName = function() {
-        this.element.text(this.details.getShortName());
+        this.element.text(this.details.ShortName);
     };
 
     ZetaUser.prototype.showDetails = function() {
         var details = $('<table class="table table-bordered zetauserinfo"/>');
         details.append(
-            $('<tr/>').append($('<td/>').text("Имя"), $('<td/>').text(this.details.getName())),
-            $('<tr/>').append($('<td/>').text("Должность"), $('<td/>').text(this.details.getJob())),
-            $('<tr/>').append($('<td/>').text("Контакты"), $('<td/>').text(this.details.getContact())),
-            $('<tr/>').append($('<td/>').text("Email"), $('<td/>').text(this.details.getEmail())),
-            $('<tr/>').append($('<td/>').text("Предприятие"), $('<td/>').text(this.details.getObjName()))
+            $('<tr/>').append($('<td/>').text("Имя"), $('<td/>').text(this.details.Name)),
+            $('<tr/>').append($('<td/>').text("Должность"), $('<td/>').text(this.details.Dolzh)),
+            $('<tr/>').append($('<td/>').text("Контакты"), $('<td/>').text(this.details.Contact)),
+            $('<tr/>').append($('<td/>').text("Email"), $('<td/>').text(this.details.Email)),
+            $('<tr/>').append($('<td/>').text("Предприятие"), $('<td/>').text(this.details.ObjName))
         );
         $(window.zeta).trigger(window.zeta.handlers.on_modal, { title: "Информация о пользователе", content: details, width: 450 });
     };
 
     ZetaUser.prototype.getDetails = function() {
         $.ajax({
-            url: siteroot+window.zeta.options.getuserinfo_command,
+            url: siteroot+window.zeta.api.metadata.userinfo.getUrl(),
             context: this,
             type: "POST",
             dataType: "json",
             data: { login : this.login }
         }).success($.proxy(function(d) {
-            this.details = window.zeta.options.asUserInfo(d);
+            this.details = window.zeta.api.metadata.userinfo.wrap(d);
             this.loginToName();
-            if (!!window.zeta.storage) {
-                window.zeta.storage.addUser(this.details);
+            if (!!window.zeta.sessionstorage) {
+                window.zeta.sessionstorage.addUser(this.details);
             }
         }, this));
     };
