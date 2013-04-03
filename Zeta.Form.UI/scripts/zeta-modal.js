@@ -5,7 +5,7 @@
     window.zeta.handlers = $.extend(window.zeta.handlers, {
         on_modal : "modal"
     });
-    var zetamodal = new root.security.Widget("zetamodal", root.console.layout.position.layoutBodyMain, null);
+    var zetamodal = new root.Widget("zetamodal", root.console.layout.position.layoutBodyMain, null);
     var ShowModal = function(p) {
         p = $.extend({
             title: "",

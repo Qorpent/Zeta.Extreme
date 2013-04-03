@@ -3,7 +3,7 @@
  */
 !function($) {
     var root = window.zeta = window.zeta || {};
-    var zefsobjselector = new root.security.Widget("objselector", root.console.layout.position.layoutHeader, "left", { authonly: true });
+    var zefsobjselector = new root.Widget("objselector", root.console.layout.position.layoutHeader, "left", { authonly: true });
     var list = $('<div class="btn-group"/>');
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Предприятие"/>').html('<i class="icon-map-marker"></i><span class="caret"/>');
     var menu = $('<ul class="dropdown-menu"/>');

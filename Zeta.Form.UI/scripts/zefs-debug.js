@@ -4,7 +4,7 @@
 !function($) {
     var root = window.zeta = window.zeta || {};
     var spec = window.zefs.api;
-    var zefsdebug = new root.security.Widget("zefsdebug", root.console.layout.position.layoutHeader, "right", { authonly: true, priority: 90, adminonly: true });
+    var zefsdebug = new root.Widget("zefsdebug", root.console.layout.position.layoutHeader, "right", { authonly: true, priority: 90, adminonly: true });
     var sid = "";
     var session = $('<a id="sessionInfo"/>')
         .click(function() { Debug("zefs/session.json.qweb?session=" + sid, "Данные о сессии") })
