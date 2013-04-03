@@ -63,5 +63,19 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             // Проверим, что лог писался каждый раз и писался корректно
             Assert.AreEqual(mongoDatabase.GetCollection(LogsCollectionName).Count(), (WRITE_COMMITS_COUNT * 2));
         }
+
+        [Test]
+        public void CorrectSerializingLexInfo() {
+            var logMessageOrig = GetNewLogInstance();
+
+            var document = MongoDbLogsSerializer.LogMessageToBsonDocument(logMessageOrig);
+            var lexInfo = document["LexInfo"];
+
+            Assert.AreEqual(logMessageOrig.LexInfo.File, lexInfo["File"].ToString());
+            Assert.AreEqual(logMessageOrig.LexInfo.CharIndex, lexInfo["CharIndex"].ToInt32());
+            Assert.AreEqual(logMessageOrig.LexInfo.Column, lexInfo["Column"].ToInt32());
+            Assert.AreEqual(logMessageOrig.LexInfo.Length, lexInfo["Length"].ToInt32());
+            Assert.AreEqual(logMessageOrig.LexInfo.Line, lexInfo["Line"].ToInt32());
+        }
     }
 }
