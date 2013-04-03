@@ -69,9 +69,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
             }
 
             if (null != message.MvcContext) {
-                var sb = new StringBuilder();
-                sb.AppendFormat("{0}", message.MvcContext);
-                document.Set("mvcContext", sb.ToString());
+                document.Set(
+                    "MvcContext",
+                    MvcContextToBsonDocument(message.MvcContext)
+                );
             }
 
             // set _id manually
@@ -197,6 +198,51 @@ namespace Zeta.Extreme.MongoDB.Integration {
             document.Set("ActionName", mvcCallInfo.ActionName);
             document.Set("RenderName", mvcCallInfo.RenderName);
             document.Set("Parameters", mvcCallInfo.Parameters.ToBsonDocument());
+        }
+
+        /// <summary>
+        ///     Represents an IMvcContext document as a BsonDocument
+        /// </summary>
+        /// <param name="mvcContext">an IMvcContext document</param>
+        /// <returns>IMvcContext document as a BsonDocument</returns>
+        private static BsonDocument MvcContextToBsonDocument(IMvcContext mvcContext) {
+            var document = new BsonDocument();
+            MvcContextToBsonDocument(mvcContext, document);
+
+            return document;
+        }
+
+        /// <summary>
+        ///     Represents an IMvcContext document as a BsonDocument
+        /// </summary>
+        /// <param name="mvcContext">an IMvcContext document</param>
+        /// <param name="document">an empty BsonDocument instance</param>
+        private static void MvcContextToBsonDocument(IMvcContext mvcContext, BsonDocument document) {
+            document.Set("Output", mvcContext.Output.ToBsonDocument()); // ???
+            document.Set("ActionName", mvcContext.ActionName);
+            document.Set("RenderName", mvcContext.RenderName);
+//            document.Set("User", mvcContext.User.ToBsonDocument()); // ???
+//            document.Set("ViewName", mvcContext.ViewName.ToBsonDocument()); // ???
+//            document.Set("MasterViewName", mvcContext.MasterViewName.ToBsonDocument()); // ???
+//            document.Set("XData", mvcContext.XData.ToBsonDocument()); // ???
+            document.Set("Parameters", mvcContext.Parameters.ToBsonDocument());
+//            document.Set("LogonUser", mvcContext.LogonUser.ToBsonDocument()); // ???
+//            document.Set("Application", mvcContext.Application.ToBsonDocument()); // ???
+//            document.Set("ActionDescriptor", mvcContext.ActionDescriptor.ToBsonDocument()); // ???
+//            document.Set("RenderDescriptor", mvcContext.RenderDescriptor.ToBsonDocument()); // ???
+//            document.Set("Uri", mvcContext.Uri.ToBsonDocument()); // ???
+//            document.Set("AuthrizeResult", mvcContext.AuthrizeResult.ToBsonDocument()); // ???
+//            document.Set("IgnoreActionResult", mvcContext.IgnoreActionResult);
+//            document.Set("NotModified", mvcContext.NotModified);
+//            document.Set("ActionResult", mvcContext.ActionResult.ToBsonDocument());
+            document.Set("Error", (mvcContext.Error != null) ? ExceptionToBsonDocument(mvcContext.Error).AsBsonValue : BsonNull.Value);
+            document.Set("StatusCode", mvcContext.StatusCode);
+            document.Set("LastModified", mvcContext.LastModified);
+            document.Set("Etag", (mvcContext.Etag != null) ? BsonValue.Create(mvcContext.Etag).AsBsonValue : BsonNull.Value);
+            document.Set("IfModifiedSince", mvcContext.IfModifiedSince);
+            document.Set("IfNoneMatch", (mvcContext.IfNoneMatch != null) ? BsonValue.Create(mvcContext.IfNoneMatch).AsBsonValue : BsonNull.Value);
+            document.Set("ContentType", (mvcContext.ContentType != null) ? BsonValue.Create(mvcContext.ContentType).AsBsonValue : BsonNull.Value);
+            document.Set("Language", (mvcContext.Language != null) ? BsonValue.Create(mvcContext.Language).AsBsonValue : BsonNull.Value);
         }
     }
 }
