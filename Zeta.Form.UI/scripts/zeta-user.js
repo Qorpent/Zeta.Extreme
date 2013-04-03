@@ -7,7 +7,7 @@ $.extend(window.zeta.handlers, {
         this.element = $(element);
         this.options = options;
         this.login = this.element.text();
-        this.details = null;
+        this.details = {};
         this.init();
         this.element.click($.proxy(function() {
             this.showDetails();
@@ -18,7 +18,7 @@ $.extend(window.zeta.handlers, {
         if (!!window.zeta.sessionstorage) {
             this.details = window.zeta.sessionstorage.getUser(this.login);
         }
-        if (!this.details) {
+        if (!this.details || $.isEmptyObject(this.details)) {
             this.getDetails();
         } else {
             this.loginToName();
@@ -52,7 +52,9 @@ $.extend(window.zeta.handlers, {
             this.details = window.zeta.api.metadata.userinfo.wrap(d);
             this.loginToName();
             if (!!window.zeta.sessionstorage) {
-                window.zeta.sessionstorage.addUser(this.details);
+                var user = {};
+                user[this.details.Login.toLowerCase()] = this.details;
+                window.zeta.sessionstorage.updateUser(user);
             }
         }, this));
     };

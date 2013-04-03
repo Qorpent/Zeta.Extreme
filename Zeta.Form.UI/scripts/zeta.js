@@ -119,7 +119,11 @@ root.handlers = $.extend(root.handlers, {
 
     root.api.security.login.onSuccess(function(e, result){
         root.auth = result;
-        $(window.zeta).trigger(result.isauthorized ? root.handlers.on_loginsuccess : root.handlers.on_loginfaild);
+        $(root).trigger(result.authenticated ? root.handlers.on_loginsuccess : root.handlers.on_loginfaild);
+    });
+
+    root.api.security.logout.onSuccess(function(e, result){
+        $(root).trigger(root.handlers.on_logout);
     });
 
     root.console = new Console();
