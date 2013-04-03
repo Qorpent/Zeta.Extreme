@@ -38,7 +38,8 @@
     };
 
     window.zefs.api.metadata.getperiods.onSuccess(function(e, result) {
-        var current = window.zefs.myform.currentSession.Period || "";
+        var currentPeriod = window.zefs.myform.currentSession.Period || "";
+        var currentYear = window.zefs.myform.currentSession.Year || "";
         $.each(result, function(i,group) {
             if (group.type == "InYear") return;
             var li = $('<li class="dropdown-submenu"/>');
@@ -53,7 +54,8 @@
             });
             menu.append(li);
         });
-        $('a[periodcode="' + current + '"]').parents('li').addClass("current");
+        $('a[periodcode="' + currentPeriod + '"]').parents('li').addClass("current");
+        $('a[periodcode="' + currentYear + '"]').parents('li').addClass("current");
     });
 
     zefsperiodselector.body = $('<div/>').append(list);
