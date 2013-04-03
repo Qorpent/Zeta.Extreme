@@ -1,7 +1,6 @@
-﻿using System;
-using System.Text;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using NUnit.Framework;
+using Qorpent.Log;
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests {
     class MongoDbLogsTests : MongoDbLogsTestsBase {
@@ -9,18 +8,17 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         [Test]
         public void IsValidSerializing() {
             var logMessageOrig = GetNewLogInstance();
-            var document = MongoDbLogsSerializer.LogMessageToBson(logMessageOrig);
-            var logMessageSerialized = MongoDbLogsSerializer.BsonToLogMessage(document);
+            var document = MongoDbLogsSerializer.LogMessageToBsonDocument(logMessageOrig);
 
             _mongoDbLogs.Write(logMessageOrig);
 
-            Assert.AreEqual(logMessageOrig.Name, logMessageSerialized.Name);
-            Assert.AreEqual(logMessageOrig.Level, logMessageSerialized.Level);
-            Assert.AreEqual(logMessageOrig.Code, logMessageSerialized.Code);
-            Assert.AreEqual(logMessageOrig.Message, logMessageSerialized.Message);
+            Assert.AreEqual(logMessageOrig.Name, document["name"].ToString());
+            Assert.AreEqual(logMessageOrig.Level, (LogLevel)document["level"].ToInt32());
+            Assert.AreEqual(logMessageOrig.Code, document["code"].ToString());
+            Assert.AreEqual(logMessageOrig.Message, document["message"].ToString());
 
-            Assert.AreEqual(logMessageOrig.Server, logMessageSerialized.Server);
-            Assert.AreEqual(logMessageOrig.ApplicationName, logMessageSerialized.ApplicationName);
+            Assert.AreEqual(logMessageOrig.Server, document["server"].ToString());
+            Assert.AreEqual(logMessageOrig.ApplicationName, document["applicationName"].ToString());
         }
 
         [Test]
@@ -64,13 +62,6 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
             // Проверим, что лог писался каждый раз и писался корректно
             Assert.AreEqual(mongoDatabase.GetCollection(LogsCollectionName).Count(), (WRITE_COMMITS_COUNT * 2));
-            /*
-            foreach (var collection in collections) {
-                if (collection.StartsWith(LogsCollectionName + ".")) {
-                    // проверим, что всё писалось корректно
-                    Assert.AreEqual(mongoDatabase.GetCollection(collection).Count(), 2);
-                }
-            }*/
         }
     }
 }
