@@ -126,7 +126,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 message.Level = Level;
             }
 
-            var document = MongoDbLogsSerializer.LogMessageToBson(message);
+            var document = MongoDbLogsSerializer.LogMessageToBsonDocument(message);
             _mongoLogsCollection.Save(document);
 
             UpdateStatisticsCollections(message);
