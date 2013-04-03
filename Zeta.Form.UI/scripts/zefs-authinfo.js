@@ -2,6 +2,7 @@
  * Виджет информации об авторизации польвателя
  */
 !function($) {
+    var root = window.zeta = window.zeta || {};
     var login = $('<span class="login-user label label-info"/>');
     var loginas = $('<span class="login-user label label-warning" />');
     var ConfigurePermissions = function() {

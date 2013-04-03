@@ -2,6 +2,7 @@
  * Виджет менеджера прикрепленных файлов
  */
 !function($) {
+    var root = window.zeta = window.zeta || {};
     var attacher = new root.security.Widget("attacher", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 30, ready: function() {
         attacher.body.find('.btn-group').floatmenu();
     } });

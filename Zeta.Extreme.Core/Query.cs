@@ -139,6 +139,11 @@ namespace Zeta.Extreme {
 				WaitPrepare();
 				
 				if (null != Result) {
+					if (null != Result.Error) {
+						if (!(Result.Error is QueryException)) {
+							Result.Error = new QueryException(this,Result.Error);
+						}
+					}
 					return Result;
 				}
 
@@ -181,14 +186,6 @@ namespace Zeta.Extreme {
 			}
 			else {
 				result = GetAllDependencies().Any(_ => _ == this);
-			}
-if (!result) { //отсутствие циркуляров на этом уровне гарантирует что их 
-				foreach (var query in GetAllDependencies().ToArray()) {
-					if (query is Query) {
-						//если мы не обнаружили циркулярных зависимостей тут
-						((Query) query)._circular = false;
-					}
-				}
 			}
 			return result;
 
@@ -298,7 +295,7 @@ if (!result) { //отсутствие циркуляров на этом уровне гарантирует что их
 			
 			var subresults = SummaDependency.Select(sq => new {sq, val = sq.Item2.GetResult()}).ToArray();
 			var fsterror = subresults.FirstOrDefault(_ => null != _.val.Error);
-			if (null != fsterror) {
+			if (null != fsterror) {		
 				Result = new QueryResult {IsComplete = false, Error = new QueryException(this, fsterror.val.Error)};
 			}
 			else {

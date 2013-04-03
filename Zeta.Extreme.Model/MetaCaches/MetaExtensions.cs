@@ -24,6 +24,14 @@ namespace Zeta.Extreme.Model.MetaCaches {
 				yield break;
 			}
 			var split = alias.Split('_');
+			if (1 == split.Length) {
+				var ids = ObjCache.ObjById.Where(_ => _.Value.GroupCache.Contains("/" + split[0] + "/")).Select(_ => _.Value.Id);
+				foreach (var id in ids)
+				{
+					yield return id;
+				}
+				yield break;
+			}
 			if (2 != split.Length) {
 				throw new FormatException("given alias cannot be treated as obj zone def " + alias);
 			}

@@ -19,7 +19,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Security.Principal;
+using System.Text;
 using System.Threading.Tasks;
 using Qorpent;
 using Qorpent.Applications;
@@ -53,6 +57,36 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 		}
 
+		private MD5 md5 = MD5.Create();
+		/// <summary>
+		/// Возвращает ETag для кэша, не привязанного к пользователю
+		/// </summary>
+		/// <returns></returns>
+		public string GetCommonETag() {
+			return Convert.ToBase64String(md5.ComputeHash(GetETagBase(null)));
+		}
+
+		private byte[] GetETagBase(object context) {
+			return Encoding.ASCII.GetBytes(LastRefreshTime.ToString()+context.ToStr());
+		}
+
+		/// <summary>
+		/// Возвращает стандартное время для LastModified
+		/// </summary>
+		/// <returns></returns>
+		public DateTime GetCommonLastModified() {
+			return LastRefreshTime;
+		}
+
+		/// <summary>
+		/// Возвращает ETag, связанный с пользователем
+		/// </summary>
+		/// <returns></returns>
+		public string GetUserETag(IPrincipal user = null) {
+			user = user ?? Application.Principal.CurrentUser;
+			return Convert.ToBase64String(md5.ComputeHash(GetETagBase(user.Identity.Name)));
+			
+		}
 
 		/// <summary>
 		/// 	Инстанция по умолчанию
@@ -159,16 +193,6 @@ namespace Zeta.Extreme.FrontEnd {
 			return ResolveService<IFormSessionDataSaver>() ?? new DefaultSessionDataSaver();
 		}
 
-		/// <summary>
-		/// 	Возвращает список форм
-		/// </summary>
-		/// <returns> </returns>
-		public object GetFormList() {
-			LoadThemas.Wait();
-			return ((ExtremeFormProvider) FormProvider).Factory
-				.GetAll().Where(_ => !_.Code.Contains("lib")).SelectMany(_ => _.GetAllForms())
-				.Select(_ => new {code = _.Code, name = _.Name}).ToArray();
-		}
 
 		/// <summary>
 		/// 	processing of execution - main method of action

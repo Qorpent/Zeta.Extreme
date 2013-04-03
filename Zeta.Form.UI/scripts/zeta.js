@@ -154,42 +154,10 @@ root.security = root.security || $.extend(root.security, {
     root.console = new Console();
 }(window.jQuery);
 
-/*!function($) {
-    $.getScript("scripts/zefs-debug.js");
-    $.getScript("scripts/zefs-auth.js");
-    $.getScript("scripts/zefs-authinfo.js");
-    $.getScript("scripts/zefs-formsave.js");
-    $.getScript("scripts/zefs-feedback.js");
-    $.getScript("scripts/zefs-info.js");
-    $.getScript("scripts/zefs-formheader.js");
-    $.getScript("scripts/zefs-table.js");
-    $.getScript("scripts/zefs-attacher.js");
-    $.getScript("scripts/zefs-periods.js");
-    $.getScript("scripts/zefs-objs.js");
-    $.getScript("scripts/zefs-colmanager.js");
-    $.getScript("scripts/zefs-lockmanager.js");
-    $.getScript("scripts/zefs-alerter.js");
-}(window.jQuery);*/
 
-document.write('<script src="scripts/zefs-debug.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-restart.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-auth.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-authinfo.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-formsave.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-feedback.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-info.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-hotkeys.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-formheader.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-extrapannel.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-table.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-attacher.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-periods.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-objs.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-colmanager.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-lockmanager.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-alerter.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zeta-modal.js" type="text/javascript"></script>');
-document.write('<script src="scripts/zefs-report.js" type="text/javascript"></script>');
+document.write('<script src="_sys/getjs.file.qweb?scriptname=zeta-options" type="text/javascript"></script>');
+document.write('<script src="_sys/getjs.file.qweb?scriptname=zeta-modal" type="text/javascript"></script>');
+
 
 !function($) {
     $(window).load(function() { window.zeta.console.whoami() });

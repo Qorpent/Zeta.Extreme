@@ -23,17 +23,13 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	/// 	Базовое действие сервера форм
 	/// </summary>
 	public abstract class FormServerActionBase : ActionBase {
-		/// <summary>
-		/// 	First phase of execution - override if need special input parameter's processing
-		/// </summary>
-		protected override void Initialize() {
-			base.Initialize();
-			MyFormServer = FormServer.Default;
-		}
+		
 
 		/// <summary>
 		/// 	Ссылка на сервер форм
 		/// </summary>
-		protected FormServer MyFormServer;
+		protected FormServer MyFormServer {
+			get { return FormServer.Default; }
+		}
 	}
 }

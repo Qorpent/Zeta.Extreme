@@ -2,6 +2,7 @@
  * Виджет заголовка таблицы
  */
 !function($) {
+    var root = window.zeta = window.zeta || {};
     var zefsformheader = new root.security.Widget("zefsformheader", root.console.layout.position.layoutBodyMain, null, { authonly: true, priority: 100 });
     var h = $('<h3/>');
     zefsformheader.body = $('<div/>').append(h);
@@ -23,6 +24,7 @@
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
         var lock =  window.zefs.myform.lock;
         if (lock != null) {
+            zefsformheader.body.get(0).className = "zefsformheader";
             if (lock.state == "0ISOPEN") zefsformheader.body.addClass("isopen");
             else if (lock.state == "0ISBLOCK") zefsformheader.body.addClass("isblock");
             else if (lock.state == "0ISCHECKED") zefsformheader.body.addClass("ischecked");

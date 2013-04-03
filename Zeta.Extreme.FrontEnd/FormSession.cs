@@ -89,13 +89,14 @@ namespace Zeta.Extreme.FrontEnd {
 					Currency=currency,
 					CurrencyRate = rate,
 				};
-			var id = MetaCache.Default.Get<IZetaMainObject>("0CH").Id;
+			
+			var holdlogin = GetHoldLogin(reader);
 			FormInfo = new
 				{
 					Template.Code, 
 					Template.Name, 
 					ObjectResponsibility = reader.GetThemaResponsiveLogin(Template.Thema.Code, Object.Id), 
-					HoldResponsibility = reader.GetThemaResponsiveLogin(Template.Thema.Code, id),
+					HoldResponsibility = holdlogin ,
 					Status = Template.Thema.GetParameter("status",""),
 					FirstYear = Template.Thema.GetParameter("firstyear", ""),
 					RolePrefix = Template.Thema.GetParameter("roleprefix", ""),
@@ -106,6 +107,18 @@ namespace Zeta.Extreme.FrontEnd {
 
 
 		}
+
+		private string GetHoldLogin(NativeZetaReader reader) {
+			int id = 0;
+			var holdlogin = "";
+			var holdobj = MetaCache.Default.Get<IZetaMainObject>("0CH");
+			if (holdobj != null) {
+				id = holdobj.Id;
+				holdlogin = reader.GetThemaResponsiveLogin(Template.Thema.Code, id);
+			}
+			return holdlogin;
+		}
+
 		/// <summary>
 		/// Журнал
 		/// </summary>
@@ -304,23 +317,6 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		[IgnoreSerialize] public List<OutCell> Data {
 			get { return _data ?? (_data = new List<OutCell>()); }
-		}
-
-		/// <summary>
-		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
-		/// </summary>
-		/// <returns> </returns>
-		public LockStateInfo GetMinimalStateInfo() {
-			var isopen = Template.IsOpen;
-			Template.CleanupStates();
-			var state = Template.GetState(Object, null);
-			var cansave = state == "0ISOPEN";
-			return new LockStateInfo
-				{
-					isopen = isopen,
-					state = state,
-					cansave = cansave,
-				};
 		}
 
 		/// <summary>
@@ -752,14 +748,15 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 			var cansave = state == "0ISOPEN";
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
+			var principal = Usr.toPrincipal();
 			
-			var haslockrole = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, Template.UnderwriteRole);
-			var hasholdlockrole = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, "HOLDUNDERWRITER");
-
-			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message) && haslockrole;
+			var haslockrole = Application.Current.Roles.IsInRole(principal, Template.UnderwriteRole);
+			var hasholdlockrole = Application.Current.Roles.IsInRole(principal, "HOLDUNDERWRITER");
+			var hasnocontrolpoointsrole = Application.Current.Roles.IsInRole(principal,"SYS_NOCONTROLPOINTS",true);
+			var canblock = state == "0ISOPEN" && (string.IsNullOrWhiteSpace(message)||(message=="cpavoid"&&hasnocontrolpoointsrole)) && haslockrole;
 			var canopen = state != "0ISOPEN" && haslockrole && hasholdlockrole;
 			var cancheck = state == "0ISBLOCK" && haslockrole &&  hasholdlockrole;
-			var cansaveoverblock = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, "NOBLOCK",true);
+			var cansaveoverblock = Application.Current.Roles.IsInRole(principal, "NOBLOCK",true);
 			cansave = cansave || cansaveoverblock;
 			return new LockStateInfo
 				{
@@ -770,9 +767,11 @@ namespace Zeta.Extreme.FrontEnd {
 					message = message,
 					haslockrole = haslockrole,
 					hasholdlockrole = hasholdlockrole,
+					hasnocontrolpoointsrole = hasnocontrolpoointsrole,
 					canopen = canopen,
 					cancheck  = cancheck,
-					cansaveoverblock = cansaveoverblock 
+					cansaveoverblock = cansaveoverblock,
+					hasbadcontrolpoints = message=="cpavoid" || message.Contains("точк")
 				};
 		}
 

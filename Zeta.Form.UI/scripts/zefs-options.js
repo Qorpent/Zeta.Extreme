@@ -106,10 +106,12 @@ $.extend(api,(function(){
                     };
                 }
             }),
+            // Единая команда для получения статуса блокировок
+            state : new Command({domain: "zefs", name: "getlockstate"}),
             // Команда получения текущего статуса блокировки
-            state : new Command({domain: "zefs", name: "currentlockstate"}),
+//            state : new Command({domain: "zefs", name: "currentlockstate"}),
             // Команда получения статуса возможности блокировки
-            canlock : new Command({domain: "zefs", name: "canlockstate"}),
+//            canlock : new Command({domain: "zefs", name: "canlockstate"}),
             // Команда получения списка блокировок
             history : $.extend(new Command({domain: "zefs", name: "locklist"}), {
                 wrap: function(obj) {
@@ -162,7 +164,7 @@ $.extend(api,(function(){
                 }
             }),
             //команда, возвращающая каталог периодов
-            getperiods : $.extend(new Command({domain: "zeta", name: "getperiods"}), {
+            getperiods : $.extend(new Command({domain: "zeta", name: "getperiods",cachekey:"zeta__getperiods"}), {
                 // Ждем задачу ZC-404, которая изменит структуру результата команды
                 wrap : function(obj) {
                     var years = {
@@ -179,7 +181,7 @@ $.extend(api,(function(){
                 }
             }),
             //команда, возвращающая список доступных предприятий
-            getobjects : $.extend(new Command({domain: "zeta", name: "getobjects"}), {
+            getobjects : $.extend(new Command({domain: "zeta", name: "getobjects",cachekey:"zeta__getobjects"}), {
                 wrap : function(obj) {
                     var myobjs = [];
                     $.each(obj.objs, function(i, o) {
