@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Qorpent.Dsl;
 using Qorpent.Log;
 using MongoDB.Bson;
 using Zeta.Extreme.BizProcess.Forms;
@@ -54,12 +55,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (!string.IsNullOrEmpty(message.ApplicationName)) document.Set("applicationName", message.ApplicationName);
             
             document.Set("time", message.Time);
-
-            if (null != message.MvcCallInfo) {
-                var sb = new StringBuilder();
-                sb.AppendFormat("{0}", message.LexInfo);
-                document.Set("lexInfo", sb.ToString());
-            }
+            document.Set(
+                "LexInfo",
+                LexInfoToBsonDocument(message.LexInfo)
+            );
 
             if (null != message.MvcCallInfo) {
                 var sb = new StringBuilder();
@@ -131,7 +130,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="formSession"></param>
         /// <returns></returns>
-        public static BsonDocument FormSessionToBsonDocument(IFormSession formSession) {
+        private static BsonDocument FormSessionToBsonDocument(IFormSession formSession) {
             var document = new BsonDocument();
             FormSessionToBsonDocument(formSession, document);
 
@@ -143,10 +142,35 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="formSession"></param>
         /// <param name="document"></param>
-        public static void FormSessionToBsonDocument(IFormSession formSession, BsonDocument document) {
+        private static void FormSessionToBsonDocument(IFormSession formSession, BsonDocument document) {
             document.Set("form", formSession.Template.Code);
             document.Set("company", formSession.Object.Name);
             document.Set("period", formSession.Period);
+        }
+
+        /// <summary>
+        ///     Represents a LexInfo document as a BsonDocument
+        /// </summary>
+        /// <param name="lexInfo">a LexInfo document</param>
+        /// <returns>LexInfo document as a BsonDocument</returns>
+        private static BsonDocument LexInfoToBsonDocument(LexInfo lexInfo) {
+            var document = new BsonDocument();
+            LexInfoToBsonDocument(lexInfo, document);
+
+            return document;
+        }
+
+        /// <summary>
+        ///     Represents a LexInfo document as a BsonDocument
+        /// </summary>
+        /// <param name="lexInfo">a LexInfo document</param>
+        /// <param name="document">an empty BsonDocument instance</param>
+        private static void LexInfoToBsonDocument(LexInfo lexInfo, BsonDocument document) {
+            document.Set("CharIndex", lexInfo.CharIndex);
+            document.Set("Column", lexInfo.Column);
+            document.Set("File", lexInfo.File);
+            document.Set("Length", lexInfo.Length);
+            document.Set("Line", lexInfo.Line);
         }
     }
 }
