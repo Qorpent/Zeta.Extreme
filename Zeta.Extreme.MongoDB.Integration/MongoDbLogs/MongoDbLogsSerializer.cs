@@ -3,6 +3,7 @@ using System.Text;
 using Qorpent.Dsl;
 using Qorpent.Log;
 using MongoDB.Bson;
+using Qorpent.Mvc;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration {
@@ -61,9 +62,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
             );
 
             if (null != message.MvcCallInfo) {
-                var sb = new StringBuilder();
-                sb.AppendFormat("{0}", message.MvcCallInfo);
-                document.Set("mvcCallInfo", sb.ToString());
+                document.Set(
+                    "MvcCallInfo",
+                    MvcCallInfoToBsonDocument(message.MvcCallInfo)
+                );
             }
 
             if (null != message.MvcContext) {
@@ -171,6 +173,30 @@ namespace Zeta.Extreme.MongoDB.Integration {
             document.Set("File", lexInfo.File);
             document.Set("Length", lexInfo.Length);
             document.Set("Line", lexInfo.Line);
+        }
+
+        /// <summary>
+        ///     Represents a MvcCallInfo document as a BsonDocument
+        /// </summary>
+        /// <param name="mvcCallInfo">a MvcCallInfo document</param>
+        /// <returns>MvcCallInfo document as a BsonDocument</returns>
+        private static BsonDocument MvcCallInfoToBsonDocument(MvcCallInfo mvcCallInfo) {
+            var document = new BsonDocument();
+            MvcCallInfoToBsonDocument(mvcCallInfo, document);
+
+            return document;
+        }
+
+        /// <summary>
+        ///     Represents a MvcCallInfo document as a BsonDocument
+        /// </summary>
+        /// <param name="mvcCallInfo">a MvcCallInfo document</param>
+        /// <param name="document">an empty BsonDocument instance</param>
+        private static void MvcCallInfoToBsonDocument(MvcCallInfo mvcCallInfo, BsonDocument document) {
+            document.Set("Url", mvcCallInfo.Url);
+            document.Set("ActionName", mvcCallInfo.ActionName);
+            document.Set("RenderName", mvcCallInfo.RenderName);
+            document.Set("Parameters", mvcCallInfo.Parameters.ToBsonDocument());
         }
     }
 }
