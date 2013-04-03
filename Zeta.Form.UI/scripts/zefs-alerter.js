@@ -3,7 +3,7 @@
  */
 !function($) {
     var root = window.zeta = window.zeta || {};
-    var zefsalerter = new root.security.Widget("zefsalerter", root.console.layout.position.layoutBodyMain, null, { authonly: true });
+    var zefsalerter = new root.Widget("zefsalerter", root.console.layout.position.layoutBodyMain, null, { authonly: true });
     var container = $('<div/>');
     var ShowMessage = function(p) {
         p = $.extend({

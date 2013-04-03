@@ -13,13 +13,9 @@ root.handlers = $.extend(root.handlers, {
     on_getuserinfo : "getuserinfo"
 });
 
-root.security = root.security || $.extend(root.security, {
-    user : null,
-    auth : null
-});
-
-!function($) {
-    var options = window.zeta.options;
+(function($) {
+    root.user = root.user || {};
+    root.auth = root.auth || {};
 
     var Console = function() {
 
@@ -43,16 +39,11 @@ root.security = root.security || $.extend(root.security, {
                 )
             ),
             body : $('<div id="consoleBody" class="console-body"/>'),
-            /*.append($('<div/>').append($('<section/>'))
-                $('<div class="span3 console-sidebar" />').append($('<ul class="nav nav-list"/>')),
-                 $('<div class="span9" />').append($('<section/>'))
-            ),*/
             footer : $('<div id="consoleFooter"/>'),
             add : function(e) {
-                $(e.body).addClass(e.name)
-                if (e.float != "none") $(e.body).addClass("pull-" + e.float)
+                $(e.body).addClass(e.name);
+                if (e.float != "none") $(e.body).addClass("pull-" + e.float);
                 if (e.pos == this.position.layoutHeader) $('#consoleHeader > .navbar > .navbar-inner').append(e.body);
-                //  if (e.pos == this.position.layoutBodyLeft) $('#consoleBody > .row > .span3 > .nav-list').append(e.body);
                 if (e.pos == this.position.layoutBodyMain) $('#consoleBody').append(e.body);
             }
         },
@@ -61,9 +52,9 @@ root.security = root.security || $.extend(root.security, {
             $('body').append(this.layout.header,this.layout.body,this.layout.footer);
             $.each(this.widgets.sort(function(a,b) { return b.options.priority - a.options.priority }),
                 $.proxy(function(i, e) {
-                    if ((root.security.user != null && root.security.user.getLogonName() != "" ) || !e.options.authonly) {
-                        if (e.options.adminonly && root.security.user != null) {
-                            if (!root.security.user.getIsAdmin()) return;
+                    if ((root.user != null && root.user.getLogonName() != "" ) || !e.options.authonly) {
+                        if (e.options.adminonly && root.user != null) {
+                            if (!root.user.getIsAdmin()) return;
                         }
                         if (!this.widgets[i].installed) {
                             this.layout.add(e);
@@ -83,60 +74,25 @@ root.security = root.security || $.extend(root.security, {
                 }
             }, this);
         }
-    }
+    };
 
     Console.prototype.whoami = function() {
-        $.ajax({
-            url: siteroot+root.options.whoami_command,
-            context: this,
-            dataType: 'json'
-        }).success($.proxy(function(d) {
-            root.security.user = root.options.asUserAuth(d);
-            $(root).trigger(root.handlers.on_getuserinfo);
-            window.zeta.console.Setup();
-        }, this));
+        root.api.security.whoami.execute();
     };
 
     Console.prototype.authorize = function(l,p) {
-        $.ajax({
-            url: siteroot+root.options.login_command,
-            type: "POST",
-            context: this,
-            data: {
-                _l_o_g_i_n_: l,
-                _p_a_s_s_: p
-            },
-            dataType: 'json'
-        }).success($.proxy(function(d) {
-            var auth = root.options.asAuth(d);
-            root.security.auth = root.options.asAuth(d);
-            $(root).trigger(auth.getIsLogin() ? root.handlers.on_loginsuccess : root.handlers.on_loginfaild);
-        }, this));
+        root.api.security.login.execute({ _l_o_g_i_n_: l, _p_a_s_s_: p });
     };
 
     Console.prototype.unauthorize = function() {
-        $.ajax({
-            url: siteroot+root.options.logout_command,
-            context: this,
-            dataType: 'json'
-        }).complete($.proxy(function(d) {
-            $(root).trigger(root.handlers.on_logout);
-        }, this));
+        root.api.security.logout.execute();
     };
 
     Console.prototype.impersonate = function(l) {
-        $.ajax({
-            url: siteroot+root.options.impersonate_command,
-            type: "POST",
-            context: this,
-            data: { Target : l},
-            dataType: 'json'
-        }).success($.proxy(function(d) {
-            $(root).trigger(l != null ? root.handlers.on_impersonate : root.handlers.on_deimpersonate);
-        }, this));
+        root.api.security.impersonate.execute({ Target : l});
     };
 
-    root.security.Widget = function(n, p, f, o) {
+    root.Widget = function(n, p, f, o) {
         this.name = n != null ? n : "widget";
         this.pos = p != null ? p : "none";
         this.float = f != null ? f : "none";
@@ -151,14 +107,28 @@ root.security = root.security || $.extend(root.security, {
         this.installed = false;
     };
 
+    root.api.security.whoami.onSuccess(function(e, result){
+        root.user = result;
+        $(window.zeta).trigger(root.handlers.on_getuserinfo);
+        window.zeta.console.Setup();
+    });
+
+    root.api.security.impersonate.onSuccess(function(e, result){
+        $(window.zeta).trigger(result != null ? root.handlers.on_impersonate : root.handlers.on_deimpersonate);
+    });
+
+    root.api.security.login.onSuccess(function(e, result){
+        root.auth = result;
+        $(root).trigger(result.authenticated ? root.handlers.on_loginsuccess : root.handlers.on_loginfaild);
+    });
+
+    root.api.security.logout.onSuccess(function(e, result){
+        $(root).trigger(root.handlers.on_logout);
+    });
+
     root.console = new Console();
-}(window.jQuery);
+})(jQuery);
 
-
-document.write('<script src="_sys/getjs.file.qweb?scriptname=zeta-options" type="text/javascript"></script>');
-document.write('<script src="_sys/getjs.file.qweb?scriptname=zeta-modal" type="text/javascript"></script>');
-
-
-!function($) {
+(function($) {
     $(window).load(function() { window.zeta.console.whoami() });
-}(window.jQuery);
+})(jQuery);

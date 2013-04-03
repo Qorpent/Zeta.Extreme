@@ -70,11 +70,11 @@
         e.stopPropagation();
     });
 
-    var authorizer = new root.security.Widget("authorizer", root.console.layout.position.layoutHeader, "right", { authonly: false, priority: 100, ready: function() {
-        if (window.zeta.security.user != null) {
-            if (window.zeta.security.user.getLogonName() != "") {
+    var authorizer = new root.Widget("authorizer", root.console.layout.position.layoutHeader, "right", { authonly: false, priority: 100, ready: function() {
+        if (window.zeta.user != null) {
+            if (window.zeta.user.getLogonName() != "") {
                 m.show();
-                if (window.zeta.security.user.getImpersonation()) {
+                if (window.zeta.user.getImpersonation()) {
                     deimp.show();
                     implogin.hide();
                 }

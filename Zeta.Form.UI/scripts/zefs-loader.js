@@ -1,4 +1,3 @@
-document.write('<script src="_sys/getjs.file.qweb?scriptname=qweb" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-options" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-render" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs" type="text/javascript"></script>');
@@ -20,6 +19,7 @@ document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-table" type="t
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-attacher" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-periods" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-objs" type="text/javascript"></script>');
+document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-bizprocess" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-colmanager" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-lockmanager" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-alerter" type="text/javascript"></script>');

@@ -21,12 +21,12 @@ table.data {
     margin: 0 20px 20px 20px;
 }
 
-.data.error {
+.data.errordata {
     font-weight: bold;
     color: red;
 }
 
-.data.error:after {
+.data.errordata:after {
     content: "Ошибка";
 }
 

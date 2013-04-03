@@ -118,7 +118,7 @@ $.extend(root,{
                 // если в ячейке произошла ошибка
                 if (!!b.iserror) {
                     $cell.val("");
-                    $cell.addClass("erorrdata");
+                    $cell.addClass("errordata");
                 }
                 if (!!b.c) $cell.data("cellid", b.c);
                 $cell.attr("ri", b.ri);

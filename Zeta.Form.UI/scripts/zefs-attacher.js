@@ -3,7 +3,7 @@
  */
 !function($) {
     var root = window.zeta = window.zeta || {};
-    var attacher = new root.security.Widget("attacher", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 30, ready: function() {
+    var attacher = new root.Widget("attacher", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 30, ready: function() {
         attacher.body.find('.btn-group').floatmenu();
     } });
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Прикрепленные файлы"/>')
@@ -37,14 +37,17 @@
                     $('<td class="filename"/>').html('<a href="' + window.zefs.api.file.download.getUrl(file.Uid) + '" target="_blank">' + file.Name + '</a>'),
                     $('<td class="username"/>').append(u.text(file.User))
                 ));
-                if (window.zeta.security.user != null) {
-                    if (window.zeta.security.user.getIsAdmin()) {
+                if (window.zeta.user != null) {
+                    if (window.zeta.user.getIsAdmin()) {
                         tr.append($('<td class="delete"/>').html($('<span class="icon icon-remove"/>').click(
                             function(e) {
                                 $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                                     title: "Удаление файла",
                                     content: $('<p/>').html("Файл <strong>" + file.Name + "</strong> будет удален. Продолжить?"),
-                                    ok: function() { window.zefs.myform.deletefile(file.Uid) }
+                                    customButton: {
+                                        text: "Удалить",
+                                        click: function() { window.zefs.myform.deletefile(file.Uid) }
+                                    }
                                 });
                             }
                         )));

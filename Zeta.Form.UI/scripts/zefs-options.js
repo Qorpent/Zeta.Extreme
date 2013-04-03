@@ -180,6 +180,22 @@ $.extend(api,(function(){
                     return obj;
                 }
             }),
+            //команда, возвращающая список доступных форм
+            getforms : $.extend(new Command({domain: "zefs", name: "bizprocesslist",cachekey:"zefs__bizprocesslist"}), {
+                wrap : function(obj) {
+                    obj.groups = [];
+                    obj.parents = [];
+                    $.each(obj, function(i,g) {
+                        if ($.inArray(g.Group,obj.groups) == -1) {
+                            obj.groups.push(g.Group);
+                        }
+                        if ($.inArray(g.Parent,obj.parents) == -1) {
+                            obj.parents.push(g.Parent);
+                        }
+                    });
+                    return obj;
+                }
+            }),
             //команда, возвращающая список доступных предприятий
             getobjects : $.extend(new Command({domain: "zeta", name: "getobjects",cachekey:"zeta__getobjects"}), {
                 wrap : function(obj) {

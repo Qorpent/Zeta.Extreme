@@ -3,7 +3,7 @@
  */
 !function($) {
     var root = window.zeta = window.zeta || {};
-    var zefsformheader = new root.security.Widget("zefsformheader", root.console.layout.position.layoutBodyMain, null, { authonly: true, priority: 100 });
+    var zefsformheader = new root.Widget("zefsformheader", root.console.layout.position.layoutBodyMain, null, { authonly: true, priority: 100 });
     var h = $('<h3/>');
     zefsformheader.body = $('<div/>').append(h);
     var InsertPeriod = function() {

@@ -1,56 +1,80 @@
 var root = window.zeta = window.zeta || {};
 
 !function($) {
-    var options = window.zeta.options;
-
-    var Storage = function() {
-
+    var Storage = function(opts) {
+        this.init();
+        if(!$.isEmptyObject(opts)) {
+            $.extend(this.options, opts);
+        }
     };
 
     Storage.prototype.init = function() {
-
+        this.options = this.options || {
+            storage : window.sessionStorage
+        };
     };
 
     Storage.prototype.support = function() {
         try {
-            return 'localStorage' in window && window['localStorage'] !== null;
+            return this.options.storage !== null;
         } catch (e) {
             return false;
         }
     };
 
-    Storage.prototype.getUsers = function() {
+    Storage.prototype.tryGetItem = function(code) {
+        var result = {};
         if (this.support()) {
-            return JSON.parse(window.localStorage.getItem("ZetaUsers")) || {};
+            try {
+                result = JSON.parse(this.options.storage.getItem(code));
+            } catch(e) {
+                this.options.storage.removeItem(code);
+                return result;
+            }
+        }
+        return result;
+    };
+
+    Storage.prototype.tryGetItemProp = function(code, name) {
+        var result = this.tryGetItem(code);
+        if (result != null && !$.isEmptyObject(result)) {
+            return result[name] || {};
         }
         return null;
+    };
+
+    Storage.prototype.tryUpdateItem = function(code, newitem) {
+        if (this.support()) {
+            var item = this.tryGetItem(code) || {};
+            $.extend(item, newitem);
+            this.options.storage.setItem(code, JSON.stringify(item));
+        }
+    };
+
+    /** ХРАНЕНИЕ ИНФОРМАЦИИ О ПОЛЬЗОВАТЕЛЯХ */
+
+    Storage.prototype.getUsers = function() {
+        return this.tryGetItem("ZetaUsers");
     };
 
     Storage.prototype.getUser = function(login) {
-        if (this.support()) {
-            var users = this.getUsers();
-            if (!!users[login.toLowerCase()]) {
-                return options.asUserInfo(users[login.toLowerCase()]);
-            }
-        }
-        return null;
+        return this.tryGetItemProp("ZetaUsers", login);
     };
 
-    Storage.prototype.addUser = function(user) {
-        if (this.support()) {
-            var users = this.getUsers();
-            users[user.getLogin().toLowerCase()] = users[user.getLogin().toLowerCase()] || {};
-            $.extend(users[user.getLogin().toLowerCase()], user);
-            window.localStorage.setItem("ZetaUsers", JSON.stringify(users));
-            users = null;
-        }
+    Storage.prototype.updateUser = function(newuser) {
+        this.tryUpdateItem("ZetaUsers", newuser);
     };
 
-    Storage.prototype.clear = function() {
-        if (this.support()) {
-            window.localStorage.setItem("ZetaUsers", {});
-        }
+    /** ХРАНЕНИЕ НАСТРОЕК ФОРМЫ */
+
+    Storage.prototype.getFormOptions = function(formcode) {
+        return this.tryGetItemProp("ZefsForms", formcode);
     };
 
-    root.storage = new Storage();
+    Storage.prototype.updateFormOptions = function(newform) {
+        this.tryUpdateItem("ZefsForms", newform);
+    };
+
+    root.localstorage = new Storage({ storage: window.localStorage });
+    root.sessionstorage = new Storage();
 }(window.jQuery);

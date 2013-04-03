@@ -3,7 +3,7 @@
  */
 !function($) {
     var root = window.zeta = window.zeta || {};
-    var zefshotkeys = new root.security.Widget("zefshotkeys", root.console.layout.position.layoutHeader, "right", { priority: 87 });
+    var zefshotkeys = new root.Widget("zefshotkeys", root.console.layout.position.layoutHeader, "right", { priority: 87 });
     var HotkeysInfo = function() {
         var t = $('<table class="table table-bordered zefshotkeysinfo"/>').append(
             $('<tr/>').append($('<td/>').text("Ctrl + ↑"), $('<td/>').html("Перемещение табличного курсора в самую <strong>верхнюю ячейку</stron> текущего столбца")),
