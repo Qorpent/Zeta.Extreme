@@ -151,7 +151,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private void UpdateUsersCollection(LogMessage message) {
             _mongoUsersCollection.Update(
                 GenerateStatisticsUpdateQuery(
-                    "server", message.User
+                    "user", message.User
                 ),
                 GenerateStatisticsUpdateObject(),
                 UpdateFlags.Upsert
