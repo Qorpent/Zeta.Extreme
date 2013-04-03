@@ -22,38 +22,57 @@ var root = window.zeta = window.zeta || {};
         }
     };
 
-    Storage.prototype.tryGetItem = function(item) {
+    Storage.prototype.tryGetItem = function(code) {
         var result = {};
         if (this.support()) {
             try {
-                result = JSON.parse(this.options.storage.getItem(item));
+                result = JSON.parse(this.options.storage.getItem(code));
             } catch(e) {
-                this.options.storage.removeItem(item);
+                this.options.storage.removeItem(code);
                 return result;
             }
         }
+        return result;
+    };
+
+    Storage.prototype.tryGetItemProp = function(code, name) {
+        var result = this.tryGetItem(code);
+        if (result != null && !$.isEmptyObject(result)) {
+            return result[name] || {};
+        }
         return null;
     };
+
+    Storage.prototype.tryUpdateItem = function(code, newitem) {
+        if (this.support()) {
+            var item = this.tryGetItem(code) || {};
+            $.extend(item, newitem);
+            this.options.storage.setItem(code, JSON.stringify(item));
+        }
+    };
+
+    /** ХРАНЕНИЕ ИНФОРМАЦИИ О ПОЛЬЗОВАТЕЛЯХ */
 
     Storage.prototype.getUsers = function() {
         return this.tryGetItem("ZetaUsers");
     };
 
     Storage.prototype.getUser = function(login) {
-        var users = this.getUsers();
-        if (!!users[login.toLowerCase()]) {
-            return users[login.toLowerCase()];
-        }
+        return this.tryGetItemProp("ZetaUsers", login);
     };
 
-    Storage.prototype.addUser = function(user) {
-        if (this.support()) {
-            var users = this.getUsers();
-            users[user.Login.toLowerCase()] = users[user.Login.toLowerCase()] || {};
-            $.extend(users[user.Login.toLowerCase()], user);
-            this.options.storage.setItem("ZetaUsers", JSON.stringify(users));
-            users = null;
-        }
+    Storage.prototype.updateUser = function(newuser) {
+        this.tryUpdateItem("ZetaUsers", newuser);
+    };
+
+    /** ХРАНЕНИЕ НАСТРОЕК ФОРМЫ */
+
+    Storage.prototype.getFormOptions = function(formcode) {
+        return this.tryGetItemProp("ZefsForms", formcode);
+    };
+
+    Storage.prototype.updateFormOptions = function(newform) {
+        this.tryUpdateItem("ZefsForms", newform);
     };
 
     root.localstorage = new Storage({ storage: window.localStorage });
