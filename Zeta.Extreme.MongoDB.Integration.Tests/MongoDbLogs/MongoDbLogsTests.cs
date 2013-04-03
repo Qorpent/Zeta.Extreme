@@ -1,4 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using NUnit.Framework;
 using Qorpent.Log;
 
@@ -76,6 +79,27 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             Assert.AreEqual(logMessageOrig.LexInfo.Column, lexInfo["Column"].ToInt32());
             Assert.AreEqual(logMessageOrig.LexInfo.Length, lexInfo["Length"].ToInt32());
             Assert.AreEqual(logMessageOrig.LexInfo.Line, lexInfo["Line"].ToInt32());
+        }
+
+        [Test]
+        public void CorrectSerializingMvcCallInfo() {
+            var logMessageOrig = GetNewLogInstance();
+            var document = MongoDbLogsSerializer.LogMessageToBsonDocument(logMessageOrig);
+            var mvcCallInfo = document["MvcCallInfo"];
+
+            Assert.AreEqual(logMessageOrig.MvcCallInfo.Url, mvcCallInfo["Url"].ToString());
+            Assert.AreEqual(logMessageOrig.MvcCallInfo.ActionName, mvcCallInfo["ActionName"].ToString());
+            Assert.AreEqual(logMessageOrig.MvcCallInfo.RenderName, mvcCallInfo["RenderName"].ToString());
+
+            var parameters = mvcCallInfo["Parameters"];
+            var dictionary = ((BsonDocument) parameters).ToDictionary(
+                    e => e.Name,
+                    e => e.Value.ToString()
+            );
+
+            foreach (var el in dictionary) {
+                Assert.AreEqual(el.Value, logMessageOrig.MvcCallInfo.Parameters[el.Key]);
+            }
         }
     }
 }
