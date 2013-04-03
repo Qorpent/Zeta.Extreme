@@ -149,6 +149,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                 }
             };
             logInstance.MvcContext = new SimpleMvcContext();
+            logInstance.MvcContext.Error = new Exception();
 
             return logInstance;
         }
