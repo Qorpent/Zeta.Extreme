@@ -84,9 +84,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
             get {
                 return _mongoConnected;
             }
-            set {
-                
-            }
         }
 
         /// <summary>
@@ -153,7 +150,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="message">a message item</param>
         private void UpdateUsersCollection(LogMessage message) {
             _mongoUsersCollection.Update(
-                GenerateStatisticsUpdateQuery("server", message.User),
+                GenerateStatisticsUpdateQuery(
+                    "server", message.User
+                ),
                 GenerateStatisticsUpdateObject(),
                 UpdateFlags.Upsert
             );
@@ -165,7 +164,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="message">a message item</param>
         private void UpdateServersCollection(LogMessage message) {
             _mongoServersCollection.Update(
-                GenerateStatisticsUpdateQuery("server", message.Server),
+                GenerateStatisticsUpdateQuery(
+                    "server",
+                    message.Server
+                ),
                 GenerateStatisticsUpdateObject(),
                 UpdateFlags.Upsert
             );
@@ -177,7 +179,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="message">a message item</param>
         private void UpdateFormsCollection(LogMessage message) {
             _mongoFormsCollection.Update(
-                GenerateStatisticsUpdateQuery("form", ((IFormSession)message.HostObject).Template.Code),
+                GenerateStatisticsUpdateQuery(
+                    "form",
+                    ((IFormSession)message.HostObject).Template.Code
+                ),
                 GenerateStatisticsUpdateObject(),
                 UpdateFlags.Upsert
             );
@@ -189,7 +194,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="message">a message item</param>
         private void UpdateCompaniesCollection(LogMessage message) {
             _mongoCompaniesCollection.Update(
-                GenerateStatisticsUpdateQuery("company", ((IFormSession)message.HostObject).Object.Name),
+                GenerateStatisticsUpdateQuery(
+                    "company",
+                    ((IFormSession)message.HostObject).Object.Name
+                ),
                 GenerateStatisticsUpdateObject(),
                 UpdateFlags.Upsert
             );
@@ -201,7 +209,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="message">a message item</param>
         private void UpdatePeriodsCollection(LogMessage message) {
             _mongoPeriodsCollection.Update(
-                GenerateStatisticsUpdateQuery("period", ((IFormSession)message.HostObject).Period),
+                GenerateStatisticsUpdateQuery(
+                    "period",
+                    ((IFormSession)message.HostObject).Period
+                ),
                 GenerateStatisticsUpdateObject(),
                 UpdateFlags.Upsert
             );
