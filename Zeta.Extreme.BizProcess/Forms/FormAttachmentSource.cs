@@ -27,6 +27,15 @@ namespace Zeta.Extreme.BizProcess.Forms {
 	/// </summary>
 	public class FormAttachmentSource : IFormAttachmentStorage {
 		private IAttachmentStorage _storage;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IAttachmentStorage InternalStorage  {
+            get { return _storage; }
+            set { _storage = value; }
+        }
+
 		/// <summary>
 		/// Устанавливает службу хранения
 		/// </summary>

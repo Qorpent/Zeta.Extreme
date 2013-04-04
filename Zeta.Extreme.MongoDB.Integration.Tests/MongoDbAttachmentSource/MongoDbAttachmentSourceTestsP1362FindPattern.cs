@@ -1,6 +1,15 @@
-﻿using System.Linq;
+﻿#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : P1358Tests.cs
+// Project: Zeta.Extreme.MongoDB.Integration.Tests
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
+using System.Linq;
 using MongoDB.Bson;
-using MongoDB.Driver;
 using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -10,14 +19,12 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
     /// Ôèêñòóðà ïðîâåðÿåò íàñêîëüêî âåðíî ôîðìèðóåòñÿ ïàòòåðí ïîèñêà äëÿ àòà÷åé ïî îáðàçöó
     /// </summary>
     [TestFixture]
-    public class P1362FindPatternTests : MongoDbAttachmentTestsBase
-    {
+    public class MongoDbAttachmentSourceTestsP1362FindPattern : MongoDbAttachmentSourceTestsBase {
 
         [TestCase("Comment", "comment", null)]
         [TestCase("Name", "filename", null)]
         [TestCase("Uid", "_id", null)]
-        public void OneElementPatternNoMetadata(string propetyname, string elementname, string value)
-        {
+        public void OneElementPatternNoMetadata(string propetyname, string elementname, string value) {
             if (string.IsNullOrWhiteSpace(elementname)) elementname = propetyname;
             if (string.IsNullOrWhiteSpace(value)) value = "TESTVALUE";
             var attachment = new Attachment();
@@ -33,32 +40,29 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
         [TestCase("one")]
         [TestCase("one,two")]
         [TestCase("one,two,three")]
-        public void CorrectMetadataSearch(string metaNames)
-        {
+        public void CorrectMetadataSearch(string metaNames) {
             var attachment = new Attachment();
             var names = metaNames.Split(',');
-            foreach (var name in names)
-            {
+
+            foreach (var name in names) {
                 attachment.Metadata[name] = name + "_value";
             }
+
             var searchobject = ConvertToSearchDocument(attachment);
             Assert.AreEqual(names.Length, searchobject.ElementCount - 1); // because "deleted" auto-added
 
 
-            foreach (var name in names)
-            {
+            foreach (var name in names) {
                 Assert.NotNull(searchobject.Elements.FirstOrDefault(_ => _.Name == "metadata." + name && _.Value == name + "_value"));
             }
         }
 
-        private BsonDocument ConvertToSearchDocument(Attachment attachment)
-        {
+        private BsonDocument ConvertToSearchDocument(Attachment attachment) {
             return MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(attachment);
         }
 
         [Test]
-        public void CanFindByMetadata()
-        {
+        public void CanFindByMetadata() {
             var attachment1 = new Attachment { Uid = "1" };
             var attachment2 = new Attachment { Uid = "2" };
             var attachment3 = new Attachment { Uid = "3" };
