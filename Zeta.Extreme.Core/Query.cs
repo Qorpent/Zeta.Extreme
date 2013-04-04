@@ -74,6 +74,34 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public Task PrepareTask { get; set; }
 
+		private bool? _isrecycle;
+
+		/// <summary>
+		/// ѕровер€ет, €вл€етс€ ли запрос циклическим
+		/// </summary>
+		public bool GetIsRecycle(IDictionary<long, bool> dictionary=null)
+		{
+			if (_isrecycle.HasValue) return _isrecycle.Value;
+			return (_isrecycle = CheckRecycle(dictionary??new Dictionary<long,bool> ())).Value;
+		}
+
+		private bool CheckRecycle(IDictionary<long, bool> dictionary) {
+			if (EvaluationType == QueryEvaluationType.Primary || EvaluationType == QueryEvaluationType.Unknown) {
+				return false;
+			}
+			if (dictionary.ContainsKey(Uid)) return true;
+			dictionary[Uid] = true;
+			if (EvaluationType == QueryEvaluationType.Formula) {
+				foreach (var d in FormulaDependency.OfType<IQueryWithProcessing>()) {
+					if (d.GetIsRecycle(dictionary)) return true;
+				}
+			}else if (EvaluationType == QueryEvaluationType.Summa) {
+				foreach (var sd in SummaDependency.Select(_=>_.Item2).OfType<IQueryWithProcessing>()) {
+					if (sd.GetIsRecycle(dictionary)) return true;
+				}
+			}
+			return false;
+		}
 
 		/// <summary>
 		/// 	Client processed mark
@@ -147,7 +175,7 @@ namespace Zeta.Extreme {
 					return Result;
 				}
 
-				if (IsCircularDependency()) {
+				if (GetIsRecycle()) {
 					Result = new QueryResult{IsComplete = false, Error = new Exception("circular dependency")};
 				}
 				
@@ -163,119 +191,6 @@ namespace Zeta.Extreme {
 					return Result;
 				}
 				return Result;
-			}
-		}
-
-		private bool? _circular;
-		/// <summary>
-		/// ѕровер€ет, что запрос имеет циклические зависимости
-		/// </summary>
-		public bool IsCircularDependency() {
-			if (null == _circular) {
-				_circular = EvalIsCircularDependency();
-			}
-			return _circular.Value;
-		}
-
-		private bool EvalIsCircularDependency() {
-			if (IsPrimary) return false;
-			var result = false;
-			bool evalIsCircularDependency;
-			if (CheckCachedDataForFormula(out evalIsCircularDependency)) {
-				result = evalIsCircularDependency;
-			}
-			else {
-				result = GetAllDependencies().Any(_ => _ == this);
-			}
-			return result;
-
-		}
-		private IEnumerable<Query> GetFirstLevelDependeny() {
-			if (null != _formulaDependency) {
-				foreach (var query in _formulaDependency.OfType<Query>()) {
-					yield return query;
-				}
-			}
-			if (null != _summaDependency)
-			{
-				foreach (var query in _summaDependency.Select(_=>_.Item2).OfType<Query>())
-				{
-					yield return query;
-				}
-			}
-		}
-		private bool CheckCachedDataForFormula(out bool evalIsCircularDependency) {
-			evalIsCircularDependency = false;
-			bool hasresult = true;
-			bool hascircular = false;
-			
-				foreach (var q in GetFirstLevelDependeny()) {
-					if (null != q) {
-						if (q._circular.HasValue) {
-							if (q._circular.Value) {
-								hascircular = true;
-							}
-						}
-						else {
-							hasresult = false;
-						}
-					}
-				}
-				
-			
-			if (hascircular)
-			{
-				evalIsCircularDependency = true;
-				return true;
-			}
-			if (hasresult)
-			{
-				evalIsCircularDependency = false;
-				return true;
-			}
-			return false;
-		}
-
-		/// <summary>
-		/// ¬озвращает все зависимости
-		/// </summary>
-		/// <returns></returns>
-		public IEnumerable<IQuery> GetAllDependencies() {
-			if(IsPrimary)yield break;
-			if (null != SummaDependency && 0 != SummaDependency.Count) {
-				foreach (var tuple in SummaDependency) {
-					var query = tuple.Item2;
-					yield return query;
-				}
-				//only if first level clean go to next
-				foreach (var tuple in SummaDependency) {
-					var query = tuple.Item2 as Query;
-					if (query != this) { //prevent circular
-						var deps = query.GetAllDependencies();
-						foreach (var dep in deps) {
-							yield return dep;
-						}
-					}
-				}
-			}
-			if (null != FormulaDependency && 0 != FormulaDependency.Count) {
-				foreach (var query in FormulaDependency)
-				{
-					yield return query;
-				}
-				//only if first level clean go to next
-				foreach (Query query in FormulaDependency)
-				{
-					if (null != query) {
-						if (query != this) {
-							//prevent circular
-							var deps = query.GetAllDependencies();
-							foreach (var dep in deps) {
-								yield return dep;
-							}
-						}
-					}
-				}
 			}
 		}
 
