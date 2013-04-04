@@ -5,7 +5,7 @@
     var login = $('<span class="login-user label label-info" />');
     var loginas = $('<span class="login-user label label-warning" />');
     var ConfigurePermissions = function() {
-        var user = window.zeta.security.user;
+        var user = window.zeta.user;
         if (user != null) {
             if (user.getRealLogonName()) {
                 login.text(user.getRealLogonName());
@@ -34,7 +34,7 @@
     $(window.zeta).on(window.zeta.handlers.on_getuserinfo, function() {
         ConfigurePermissions();
     });
-    var logininfo = new root.security.Widget("logininfo", root.console.layout.position.layoutHeader, "right", { authonly: false, priority: 70, ready: function() {
+    var logininfo = new root.Widget("logininfo", root.console.layout.position.layoutHeader, "right", { authonly: false, priority: 70, ready: function() {
         ConfigurePermissions();
     }});
     logininfo.body = $('<div/>').append(login, loginas.hide());

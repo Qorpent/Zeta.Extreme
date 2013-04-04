@@ -85,6 +85,13 @@ namespace Zeta.Extreme.Model.SqlSupport {
 			select Id, Version, Year, Period, RowId, ColId, ObjId, DetailId, DecimalValue, StringValue, Usr, Currency, ContragentId from zeta.normalcell
 		";
 
+		private const string UserThemaQueryBase = "select login from usm.Underwriter u join usm.usrthemamap um on u.id = um.usr where thema = '{0}' and object = {1}";
+
+		private const string GetCurrencyRateQueryBase =
+				"select value from usm.periodcourse where  year = {0}  and period = {1} and intype ='{2}' and outtype ='{3}'";
+
+		private const string GlobalRefreshDate = "select comdiv.get_global_refresh_time()";
+
 		/// <summary>
 		/// 	Сериализует учетные записи пользователей
 		/// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
@@ -187,13 +194,30 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// </summary>
 		/// <returns></returns>
 		public DateTime GetLastGlobalRefreshTime() {
-			const string commandText = "select comdiv.get_global_refresh_time()";
-			using (var c = getConnection()) {
-				c.Open();
-				var cmd = c.CreateCommand();
-				cmd.CommandText = commandText;
-				return (DateTime) cmd.ExecuteScalar();
-			}
+			return GetScalar(GlobalRefreshDate, DateTime.MinValue);
+		}
+
+
+		/// <summary>
+		/// Retrieves global refresh hook from Zeta DB
+		/// </summary>
+		/// <returns></returns>
+		public string GetThemaResponsiveLogin(string themacode,int objid) {
+			return GetScalar(UserThemaQueryBase, "", themacode, objid);
+
+		}
+
+		/// <summary>
+		/// Получение курса валюты на период
+		/// </summary>
+		/// <param name="year"></param>
+		/// <param name="period"></param>
+		/// <param name="intype"></param>
+		/// <param name="outtype"></param>
+		/// <returns></returns>
+		public decimal GetCurrencyRate(int year, int period, string intype, string outtype = "RUB") {
+			return GetScalar(GetCurrencyRateQueryBase,0m, year, period, intype, outtype);
+			
 		}
 	}
 }

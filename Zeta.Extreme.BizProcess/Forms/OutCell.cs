@@ -16,6 +16,8 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.BizProcess/OutCell.cs
 #endregion
+
+using System;
 using Qorpent.Serialization;
 using Zeta.Extreme.Model.Querying;
 
@@ -58,5 +60,14 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// 	Ссылка на запрос для заполняемых значений
 		/// </summary>
 		[IgnoreSerialize] public IQuery query;
+		/// <summary>
+		/// Признак наличия ошибок
+		/// </summary>
+		public bool iserror;
+		/// <summary>
+		/// Ошибка
+		/// </summary>
+		[IgnoreSerialize]
+		public Exception error;
 	}
 }

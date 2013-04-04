@@ -45,7 +45,7 @@ namespace Zeta.Extreme.Core.Tests
 
 		[TestCase("zdiv_A,3,2", true)]
 		[TestCase("div_A,3,2",false)]
-		[TestCase("1f,", true)]
+		[TestCase("1f,", false)] //it's group
 		[TestCase("1,", false)]
 		[TestCase("1,2", false)]
 		[TestCase("1",false)]

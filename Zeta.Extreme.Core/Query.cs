@@ -137,35 +137,176 @@ namespace Zeta.Extreme {
 		public QueryResult GetResult(int timeout = -1) {
 			lock (this) {
 				WaitPrepare();
+				
 				if (null != Result) {
+					if (null != Result.Error) {
+						if (!(Result.Error is QueryException)) {
+							Result.Error = new QueryException(this,Result.Error);
+						}
+					}
 					return Result;
 				}
+
+				if (IsCircularDependency()) {
+					Result = new QueryResult{IsComplete = false, Error = new Exception("circular dependency")};
+				}
+				
 				if (EvaluationType == QueryEvaluationType.Summa && null == Result) {
-					var result =
-						(from sq in SummaDependency let val = sq.Item2.GetResult() where null != val select val.NumericResult*sq.Item1).
-							Sum();
-					Result = new QueryResult {IsComplete = true, NumericResult = result};
-					return Result;
+					return GetSummaResult();
 				}
 
 				if (EvaluationType == QueryEvaluationType.Formula && null == Result) {
-					AssignedFormula.Init(this);
-					try {
-						Result = AssignedFormula.Eval();
-					}
-					finally {
-						AssignedFormula.CleanUp();
-						//FormulaStorage.Default.Return(key, formula);
-					}
-					return Result;
+					return GetFormulaResult();
 				}
-
 				WaitResult(timeout);
 				if (null != Result) {
 					return Result;
 				}
 				return Result;
 			}
+		}
+
+		private bool? _circular;
+		/// <summary>
+		/// ѕровер€ет, что запрос имеет циклические зависимости
+		/// </summary>
+		public bool IsCircularDependency() {
+			if (null == _circular) {
+				_circular = EvalIsCircularDependency();
+			}
+			return _circular.Value;
+		}
+
+		private bool EvalIsCircularDependency() {
+			if (IsPrimary) return false;
+			var result = false;
+			bool evalIsCircularDependency;
+			if (CheckCachedDataForFormula(out evalIsCircularDependency)) {
+				result = evalIsCircularDependency;
+			}
+			else {
+				result = GetAllDependencies().Any(_ => _ == this);
+			}
+			return result;
+
+		}
+		private IEnumerable<Query> GetFirstLevelDependeny() {
+			if (null != _formulaDependency) {
+				foreach (var query in _formulaDependency.OfType<Query>()) {
+					yield return query;
+				}
+			}
+			if (null != _summaDependency)
+			{
+				foreach (var query in _summaDependency.Select(_=>_.Item2).OfType<Query>())
+				{
+					yield return query;
+				}
+			}
+		}
+		private bool CheckCachedDataForFormula(out bool evalIsCircularDependency) {
+			evalIsCircularDependency = false;
+			bool hasresult = true;
+			bool hascircular = false;
+			
+				foreach (var q in GetFirstLevelDependeny()) {
+					if (null != q) {
+						if (q._circular.HasValue) {
+							if (q._circular.Value) {
+								hascircular = true;
+							}
+						}
+						else {
+							hasresult = false;
+						}
+					}
+				}
+				
+			
+			if (hascircular)
+			{
+				evalIsCircularDependency = true;
+				return true;
+			}
+			if (hasresult)
+			{
+				evalIsCircularDependency = false;
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// ¬озвращает все зависимости
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<IQuery> GetAllDependencies() {
+			if(IsPrimary)yield break;
+			if (null != SummaDependency && 0 != SummaDependency.Count) {
+				foreach (var tuple in SummaDependency) {
+					var query = tuple.Item2;
+					yield return query;
+				}
+				//only if first level clean go to next
+				foreach (var tuple in SummaDependency) {
+					var query = tuple.Item2 as Query;
+					if (query != this) { //prevent circular
+						var deps = query.GetAllDependencies();
+						foreach (var dep in deps) {
+							yield return dep;
+						}
+					}
+				}
+			}
+			if (null != FormulaDependency && 0 != FormulaDependency.Count) {
+				foreach (var query in FormulaDependency)
+				{
+					yield return query;
+				}
+				//only if first level clean go to next
+				foreach (Query query in FormulaDependency)
+				{
+					if (null != query) {
+						if (query != this) {
+							//prevent circular
+							var deps = query.GetAllDependencies();
+							foreach (var dep in deps) {
+								yield return dep;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		private QueryResult GetFormulaResult() {
+			AssignedFormula.Init(this);
+			try {
+				Result = AssignedFormula.Eval();
+			}
+			finally {
+				AssignedFormula.CleanUp();
+				//FormulaStorage.Default.Return(key, formula);
+			}
+			return Result;
+		}
+
+		private QueryResult GetSummaResult() {
+			
+			var subresults = SummaDependency.Select(sq => new {sq, val = sq.Item2.GetResult()}).ToArray();
+			var fsterror = subresults.FirstOrDefault(_ => null != _.val.Error);
+			if (null != fsterror) {		
+				Result = new QueryResult {IsComplete = false, Error = new QueryException(this, fsterror.val.Error)};
+			}
+			else {
+				var result =
+					(subresults
+						.Where(@t => null != @t.val)
+						.Select(@t => @t.val.NumericResult*@t.sq.Item1)).
+						Sum();
+				Result = new QueryResult {IsComplete = true, NumericResult = result};
+			}
+			return Result;
 		}
 
 

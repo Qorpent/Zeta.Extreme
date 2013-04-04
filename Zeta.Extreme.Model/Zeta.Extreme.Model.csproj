@@ -73,6 +73,7 @@
     <Compile Include="Inerfaces\IZetaObjectGroup.cs" />
     <Compile Include="Querying\DetailMode.cs" />
     <Compile Include="Querying\ExtremeFactory.cs" />
+    <Compile Include="Querying\FormulaCompilationException.cs" />
     <Compile Include="Querying\FormulaRequest.cs" />
     <Compile Include="Querying\IColumnHandler.cs" />
     <Compile Include="Querying\IQueryWithProcessing.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Querying\IWithQueryRegistry.cs" />
     <Compile Include="Querying\PrepareState.cs" />
     <Compile Include="Querying\QueryEvaluationType.cs" />
+    <Compile Include="Querying\QueryException.cs" />
     <Compile Include="Querying\ZoneType.cs" />
     <Compile Include="Querying\QueryResult.cs" />
     <Compile Include="Querying\QuerySetupInfo.cs" />

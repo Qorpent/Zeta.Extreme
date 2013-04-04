@@ -56,10 +56,19 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="query"> </param>
 		public void Playback(IQuery query) {
-			IsInPlaybackMode = true;
-			Init(query);
-			InternalEval();
-			CleanUp();
+			try {
+				IsInPlaybackMode = true;
+				Init(query);
+				InternalEval();
+				CleanUp();
+			}
+			catch (Exception e) {
+				query.Result = new QueryResult
+					{
+						IsComplete = false,
+						Error = new QueryException(query,e)
+					};
+			}
 		}
 
 

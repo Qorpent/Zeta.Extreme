@@ -17,6 +17,8 @@
 // PROJECT ORIGIN: Zeta.Extreme.Model/DetailMode.cs
 #endregion
 using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Zeta.Extreme.Model.Querying {
 	/// <summary>

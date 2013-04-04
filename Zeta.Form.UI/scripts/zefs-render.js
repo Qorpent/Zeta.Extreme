@@ -30,12 +30,15 @@ $.extend(root,{
 				$(thead.find("tr").first()).append($('<th class="measure"/>').text("Ед. изм."));
 			}
 			$.each(session.structure.cols, function(i,col) {
-				colgroup.append($('<col class="data"/>').attr("idx",col.idx));
-				var th = $('<th class="data"/>').attr("idx",col.idx).text(col.name);
+                colgroup.append($('<col class="data"/>').attr("idx",col.idx));
+                var th = $('<th class="data"/>').attr({
+                    "idx": col.idx,
+                    "title": col.code + " " + col.year + " " + col.period
+                }).text(col.name);
                 if (col.isprimary) {
                     th.addClass("primary");
                 }
-				thead.find("tr").append(th);
+                thead.find("tr").append(th);
 			});
 			table.append(colgroup);
 			table.append(thead);
@@ -70,6 +73,8 @@ $.extend(root,{
                         if (col.controlpoint && row.controlpoint) td.addClass("control");
                         if (col.isprimary && row.isprimary) td.addClass("editable");
                         if (col.exref && row.exref) td.removeClass("editable");
+                        if (col.format != null && col.format != "") td.data("format", col.format);
+                        if (row.format != null && row.format != "") td.data("format", row.format);
                         tr.append(td);
                     });
                 }
@@ -89,21 +94,32 @@ $.extend(root,{
 			$.each(batch.data, function(i,b) {
                 var $cell = $("td[id='" + b.i +  "']");
                 var val = b.v || "";
-                $cell.number($cell.text(),0,'','');
-                if ($cell.text() != Math.round(val) && !$.isEmptyObject($cell.data())) {
+                // сколько знаков после запятой
+                var d = 0;
+                if (!!$cell.data("format")) {
+                    var format = $cell.data("format");
+                    d = format.substring(format.indexOf('.') > 0 ? format.indexOf('.') + 1 : format.length).length;
+                }
+                $cell.number($cell.text(),d,'.','');
+                if (parseFloat($cell.text()) != parseFloat(val).toFixed(d) && !!$cell.data("history")) {
                     $cell.addClass("recalced");
                 }
                 if (val == "0") {
                     if (b.c == undefined || !$cell.hasClass("editable")) val = "";
                     $cell.text(val);
                 } else {
-                    $cell.number(val,0,'.',' ');
+                    $cell.number(val,d,'.',' ');
                 }
                 $cell.removeClass("notloaded");
                 $cell.data("history", val);
                 $cell.data("previous", val);
                 // реальное число без форматов, которое должно сохраняться в базу
                 $cell.data("value", val);
+                // если в ячейке произошла ошибка
+                if (!!b.iserror) {
+                    $cell.val("");
+                    $cell.addClass("errordata");
+                }
                 if (!!b.c) $cell.data("cellid", b.c);
                 $cell.attr("ri", b.ri);
                 if (val.search(/\./) != -1 && val.search("error") == -1) {

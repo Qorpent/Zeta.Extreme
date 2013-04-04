@@ -106,10 +106,12 @@ $.extend(api,(function(){
                     };
                 }
             }),
+            // Единая команда для получения статуса блокировок
+            state : new Command({domain: "zefs", name: "getlockstate"}),
             // Команда получения текущего статуса блокировки
-            state : new Command({domain: "zefs", name: "currentlockstate"}),
+//            state : new Command({domain: "zefs", name: "currentlockstate"}),
             // Команда получения статуса возможности блокировки
-            canlock : new Command({domain: "zefs", name: "canlockstate"}),
+//            canlock : new Command({domain: "zefs", name: "canlockstate"}),
             // Команда получения списка блокировок
             history : $.extend(new Command({domain: "zefs", name: "locklist"}), {
                 wrap: function(obj) {
@@ -162,7 +164,7 @@ $.extend(api,(function(){
                 }
             }),
             //команда, возвращающая каталог периодов
-            getperiods : $.extend(new Command({domain: "zeta", name: "getperiods"}), {
+            getperiods : $.extend(new Command({domain: "zeta", name: "getperiods",cachekey:"zeta__getperiods"}), {
                 // Ждем задачу ZC-404, которая изменит структуру результата команды
                 wrap : function(obj) {
                     var years = {
@@ -178,8 +180,24 @@ $.extend(api,(function(){
                     return obj;
                 }
             }),
+            //команда, возвращающая список доступных форм
+            getforms : $.extend(new Command({domain: "zefs", name: "bizprocesslist",cachekey:"zefs__bizprocesslist"}), {
+                wrap : function(obj) {
+                    obj.groups = [];
+                    obj.parents = [];
+                    $.each(obj, function(i,g) {
+                        if ($.inArray(g.Group,obj.groups) == -1) {
+                            obj.groups.push(g.Group);
+                        }
+                        if ($.inArray(g.Parent,obj.parents) == -1) {
+                            obj.parents.push(g.Parent);
+                        }
+                    });
+                    return obj;
+                }
+            }),
             //команда, возвращающая список доступных предприятий
-            getobjects : $.extend(new Command({domain: "zeta", name: "getobjects"}), {
+            getobjects : $.extend(new Command({domain: "zeta", name: "getobjects",cachekey:"zeta__getobjects"}), {
                 wrap : function(obj) {
                     var myobjs = [];
                     $.each(obj.objs, function(i, o) {
