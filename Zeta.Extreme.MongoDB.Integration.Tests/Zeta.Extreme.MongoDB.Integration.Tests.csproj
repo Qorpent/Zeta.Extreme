@@ -61,10 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MongoDbAttachmentSourceIoCTests.cs" />
-    <Compile Include="MongoDbAttachmentSourceTests.cs" />
-    <Compile Include="MongoDbAttachmentTestsBase.cs" />
-    <Compile Include="P1358Tests.cs" />
-    <Compile Include="P1362FindPatternTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\qorpent.sys\Qorpent.IoC\Qorpent.IoC.csproj">
