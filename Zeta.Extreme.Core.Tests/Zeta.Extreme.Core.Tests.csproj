@@ -54,6 +54,8 @@
     <Compile Include="Zc480ErrorTestForms.cs" />
     <Compile Include="Zc483OnPockOtkl.cs" />
     <Compile Include="Zc486PlayBackHang.cs" />
+    <Compile Include="Zc491CanUseTagAndThemaResolutionInFormulas.cs" />
+    <Compile Include="Zc491RealData.cs" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

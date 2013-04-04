@@ -13,7 +13,7 @@ namespace Zeta.Extreme.Core.Tests {
 					Row =
 						{
 							Native =
-								new Row {Code = "r1", Formula = "f.If ( (2 / q.Col.Id ) > 3 , {1}, {2} )", FormulaType = "boo", IsFormula = true}
+								new Row {Code = "rc1", Formula = "f.If ( (2 / q.Col.Id ) > 3 , {1}, {2} )", FormulaType = "boo", IsFormula = true}
 						},
 					Col = {Code = "X"},
 					Time = {Year = 2013, Period = 1},

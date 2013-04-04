@@ -60,6 +60,7 @@
     <Compile Include="Actions\ZefsServer\ReadyToServeAction.cs" />
     <Compile Include="Actions\Info\FormSessionStatusAction.cs" />
     <Compile Include="DataStructures\StructureItem.cs" />
+    <Compile Include="FormSessionDataSessionPropertySoruce.cs" />
     <Compile Include="Helpers\AccessibleObjectsHelper.cs" />
     <Compile Include="Helpers\BizProcessEnumerator.cs" />
     <Compile Include="Helpers\BizProcessRecord.cs" />

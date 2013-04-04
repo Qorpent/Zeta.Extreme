@@ -65,7 +65,7 @@ namespace Zeta.Extreme {
 		private static string GetCodeFormFormula(string formula) {
 			if (!_resolvedColFormulaCache.ContainsKey(formula)) {
 				string code = null;
-				var match = Regex.Match(formula, @"^@([\w\d]+)\?$", RegexOptions.Compiled);
+				var match = Regex.Match(formula, @"^@([\p{Ll}\p{Lu}][\p{Ll}\p{Lu}\d][\w\d]*)\?$", RegexOptions.Compiled);
 				if (match.Success) {
 					code = match.Groups[1].Value;
 				}

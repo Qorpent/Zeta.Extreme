@@ -50,7 +50,7 @@ namespace Zeta.Extreme {
 					return new QueryResult();
 				}
 				if (result is decimal || result is int) {
-					return new QueryResult((decimal) result);
+					return new QueryResult(Convert.ToDecimal( result));
 				}
 				return new QueryResult {IsComplete = true, StringResult = result.ToString()};
 			}

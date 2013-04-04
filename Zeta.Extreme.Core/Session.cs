@@ -184,6 +184,11 @@ namespace Zeta.Extreme {
 			}
 		}
 
+		/// <summary>
+		/// Источник дополнительных параметров
+		/// </summary>
+		public ISessionPropertySource PropertySource { get; set; }
+
 
 		/// <summary>
 		///     Производит асинхронную подготовку запроса к выполнению использует ту же

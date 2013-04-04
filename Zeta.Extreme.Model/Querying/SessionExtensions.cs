@@ -19,6 +19,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Extensions;
 
 namespace Zeta.Extreme.Model.Querying {
 
@@ -57,6 +59,37 @@ namespace Zeta.Extreme.Model.Querying {
 			var sessionAsDataSession = session as IWithDataServices;
 			if(null==sessionAsDataSession) return MetaCache.Default;
 			return sessionAsDataSession.MetaCache ?? MetaCache.Default;
+		}
+
+		/// <summary>
+		/// Метод разрешения сложного смещения строки
+		/// </summary>
+		/// <param name="query"></param>
+		/// <param name="pseudocode"></param>
+		/// <returns></returns>
+		public static string ResolveRealCode(this IQuery query, string pseudocode)
+		{
+			if (null != query) {
+				if (query.Session != null && query.Session.PropertySource != null)
+				{
+					var code = query.Session.PropertySource.Get(pseudocode).ToStr();
+					if (!string.IsNullOrWhiteSpace(code)) return code;
+				}
+
+				if (null != query.Row && null!=query.Row.Native) {
+					if (query.Row.Native.TemporalParent != null) {
+						var code = query.Row.Native.TemporalParent.ResolveTag(pseudocode);
+						if (!string.IsNullOrWhiteSpace(code)) return code;
+					}
+					else {
+						var code = query.Row.Native.ResolveTag(pseudocode);
+						if (!string.IsNullOrWhiteSpace(code)) return code;
+					}
+				}
+			
+				
+			}
+			throw new Exception("cannot resolve " + pseudocode + " from " + query);
 		}
 
 		/// <summary>

@@ -72,6 +72,7 @@
     <Compile Include="Inerfaces\Partial\IWithMarkCache.cs" />
     <Compile Include="Inerfaces\IZetaObjectGroup.cs" />
     <Compile Include="Querying\DetailMode.cs" />
+    <Compile Include="Querying\DictionarySessionPropertySource.cs" />
     <Compile Include="Querying\ExtremeFactory.cs" />
     <Compile Include="Querying\FormulaCompilationException.cs" />
     <Compile Include="Querying\FormulaRequest.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Querying\IRowHandler.cs" />
     <Compile Include="Querying\ISerialSession.cs" />
     <Compile Include="Querying\ISession.cs" />
+    <Compile Include="Querying\ISessionPropertySource.cs" />
     <Compile Include="Querying\ITimeHandler.cs" />
     <Compile Include="Querying\IWithCacheKey.cs" />
     <Compile Include="Querying\IWithQueryRegistry.cs" />

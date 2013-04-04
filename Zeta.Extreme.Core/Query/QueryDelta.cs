@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
@@ -211,7 +212,12 @@ namespace Zeta.Extreme {
 			}
 			else if (!string.IsNullOrWhiteSpace(ColCode)) {
 				if (ColCode != result.Col.Code) {
-					result.Col = new ColumnHandler {Code = ColCode};
+					var realcolcode = ColCode;
+					if (ColCode.StartsWith("__"))
+					{
+						realcolcode = result.ResolveRealCode(realcolcode.Substring(2));
+					}
+					result.Col = new ColumnHandler { Code = realcolcode };
 				}
 			}
 		}
@@ -221,13 +227,24 @@ namespace Zeta.Extreme {
 				if (Row != result.Row.Native) {
 					result.Row = new RowHandler {Native = Row};
 				}
+
 			}
-			else if (!string.IsNullOrWhiteSpace(RowCode)) {
-				if (RowCode != result.Row.Code) {
-					result.Row = new RowHandler {Code = RowCode};
+			else if (!string.IsNullOrWhiteSpace(RowCode))
+			{
+				if (RowCode != result.Row.Code)
+				{
+					var realrowcode = RowCode;
+					if (RowCode.StartsWith("__"))
+					{
+						realrowcode = result.ResolveRealCode(RowCode.Substring(2));
+					}
+					result.Row = new RowHandler { Code = realrowcode };
 				}
 			}
+			
 		}
+
+	
 
 		private void MoveObj(IQuery result) {
 			if (HasObjDelta(result)) {
