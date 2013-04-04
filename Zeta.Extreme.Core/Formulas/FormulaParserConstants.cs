@@ -49,7 +49,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Паттерн смещения по объекту
 		/// </summary>
-		public const string ObjPattern = @"((\.toobj\(\s*(?<o>\d+)\s*\))?)"; //сразу настраивается как опицональный
+		public const string ObjPattern = @"((\.toobj\(\s*(?<o>-?\d+)\s*\))?)"; //сразу настраивается как опицональный
 
 		/// <summary>
 		/// 	Паттерн фильтра по контрагентам

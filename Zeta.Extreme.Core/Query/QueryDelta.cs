@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
@@ -254,7 +255,24 @@ namespace Zeta.Extreme {
 					}
 				}
 				else if (0 != ObjId) {
-					if (ObjId != result.Obj.Id) {
+					if (ObjId == -1 ) {
+						var mc = MetaCache.Default;
+						if (null != result.Session) {
+							mc = result.Session.GetMetaCache();
+						}
+						if (null != result.Obj.Native) {
+							var current = (Obj)result.Obj.Native;
+							while (current.ParentId.HasValue) {
+								current = mc.Get<Obj>(current.ParentId.Value);
+							}
+							if (current.Id != result.Obj.Id) {
+								result.Obj = new ObjHandler {Native = current};
+							}
+						}
+						else {
+							throw new Exception("cannot apply root object to null");
+						}
+					}else if (ObjId != result.Obj.Id) {
 						result.Obj = new ObjHandler { Id =ObjId};
 					}
 				}

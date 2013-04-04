@@ -27,5 +27,28 @@ namespace Zeta.Extreme.Core.Tests {
 			Assert.Null(r.Error);
 			Assert.AreEqual(0,r.NumericResult);
 		}
+
+		[Test]
+		public void Zc491_z210211()
+		{
+			var q = new Query
+			{
+				Row = { Code = "z210211" },
+				Col = { Code = "KOLEDFACTCALC" },
+				Time = { Year = 2012, Period = 112 },
+				Obj = { Id = 449 }
+			};
+			q = (Query)session.Register(q);
+			q.WaitPrepare();
+			Assert.Null(q.Result);
+			var r = session.AsSerial().Eval(q);
+			if (null != r.Error)
+			{
+				Console.WriteLine(r.Error);
+			}
+			Assert.True(r.IsComplete);
+			Assert.Null(r.Error);
+			Assert.AreEqual(0.0568m, Math.Round(r.NumericResult,4));
+		}
 	}
 }
