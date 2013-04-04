@@ -41,6 +41,7 @@
     <Compile Include="NativeMaping\ZC438NativeCellReading.cs" />
     <Compile Include="NativeMaping\ZC439NativeCellHistoryReading.cs" />
     <Compile Include="PrimaryTests\ZC248AltObjToSqlTest.cs" />
+    <Compile Include="RowTagResolutionTest.cs" />
     <Compile Include="SerialAcessTest.cs" />
     <Compile Include="SubQuery\ExistedFormulasParsingTest.cs" />
     <Compile Include="SubQuery\FormulaCompilerTest.cs" />
