@@ -13,9 +13,11 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MongoDbAttachmentSource.cs" />
-    <Compile Include="MongoDbAttachmentSourceSerializer.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSource.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceSerializer.cs" />
     <Compile Include="MongoDbLayoutSpecification.cs" />
+    <Compile Include="MongoDbLogs\MongoDbLogs.cs" />
+    <Compile Include="MongoDbLogs\MongoDbLogsSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MongoDB.Bson, Version=0.0.0.0, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
@@ -34,6 +36,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\.build\bin\Qorpent.Utils.Debug\Qorpent.Utils.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Zeta.Extreme.BizProcess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.BizProcess.dll</HintPath>
@@ -43,5 +47,6 @@
       <HintPath>..\..\.build\bin\Zeta.Extreme.Model.Debug\Zeta.Extreme.Model.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>
