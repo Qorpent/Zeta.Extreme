@@ -20,7 +20,7 @@ namespace Zeta.Extreme.MongoDB.Integration
                 {"filename", attachment.Name},
                 {"comment", attachment.Comment},
                 {"owner", attachment.User},
-                {"uploadDate", attachment.Version},
+                {"uploadDate",attachment.Version.Year<=1990?DateTime.Now: attachment.Version},
                 {"contentType", attachment.MimeType},
                 {"revision", attachment.Revision},
                 {"extension", attachment.Extension},
