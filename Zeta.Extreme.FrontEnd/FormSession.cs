@@ -72,13 +72,53 @@ namespace Zeta.Extreme.FrontEnd {
 			Created = DateTime.Now;
 			Usr = Application.Current.Principal.CurrentUser.Identity.Name;
 			IsStarted = false;
-			ObjInfo = new {Object.Id, Object.Code, Object.Name};
-			FormInfo = new {Template.Code, Template.Name};
+			var reader = new NativeZetaReader();
+			var currency = Object.Currency;
+			if (string.IsNullOrWhiteSpace(currency)) {
+				currency = "RUB";
+			}
+			decimal rate = 1;
+			if (currency != "RUB") {
+				rate = reader.GetCurrencyRate(Year, Period, currency, "RUB");
+			}
+			ObjInfo = new
+				{
+					Object.Id, 
+					Object.Code, 
+					Object.Name,
+					Currency=currency,
+					CurrencyRate = rate,
+				};
+			
+			var holdlogin = GetHoldLogin(reader);
+			FormInfo = new
+				{
+					Template.Code, 
+					Template.Name, 
+					ObjectResponsibility = reader.GetThemaResponsiveLogin(Template.Thema.Code, Object.Id), 
+					HoldResponsibility = holdlogin ,
+					Status = Template.Thema.GetParameter("status",""),
+					FirstYear = Template.Thema.GetParameter("firstyear", ""),
+					RolePrefix = Template.Thema.GetParameter("roleprefix", ""),
+				};
 			NeedMeasure = Template.ShowMeasureColumn;
 			Activations = 1;
 			Logger = Application.Current.LogManager.GetLog("form.log", this);
 
+
 		}
+
+		private string GetHoldLogin(NativeZetaReader reader) {
+			int id = 0;
+			var holdlogin = "";
+			var holdobj = MetaCache.Default.Get<IZetaMainObject>("0CH");
+			if (holdobj != null) {
+				id = holdobj.Id;
+				holdlogin = reader.GetThemaResponsiveLogin(Template.Thema.Code, id);
+			}
+			return holdlogin;
+		}
+
 		/// <summary>
 		/// Журнал
 		/// </summary>
@@ -133,6 +173,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Сессия работы с данными
 		/// </summary>
 		[IgnoreSerialize] public ISession DataSession { get; private set; }
+		
 
 		/// <summary>
 		/// 	Задача формирования структуры
@@ -276,23 +317,6 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		[IgnoreSerialize] public List<OutCell> Data {
 			get { return _data ?? (_data = new List<OutCell>()); }
-		}
-
-		/// <summary>
-		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
-		/// </summary>
-		/// <returns> </returns>
-		public LockStateInfo GetCurrentLockInfo() {
-			var isopen = Template.IsOpen;
-			Template.CleanupStates();
-			var state = Template.GetState(Object, null);
-			var cansave = state == "0ISOPEN";
-			return new LockStateInfo
-				{
-					isopen = isopen,
-					state = state,
-					cansave = cansave,
-				};
 		}
 
 		/// <summary>
@@ -566,18 +590,21 @@ namespace Zeta.Extreme.FrontEnd {
 				var cellid = 0;
 				if (null != q_.Value && null != q_.Value.Result) {
 					val = q_.Value.Result.NumericResult.ToString("0.#####", CultureInfo.InvariantCulture);
-					if (q_.Value.Result.Error != null) {
-						val = q_.Value.Result.Error.Message;
-					}
+					
 					cellid = q_.Value.Result.CellId;
 				}
 				var realkey = "";
 				if (canbefilled) {
 					realkey = q_.Value.Row.Code + "_" + q_.Value.Col.Code + "_" + q_.Value.Time.Year + "_" + q_.Value.Time.Period;
 				}
+				var cell = new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, ri = realkey};
+				if (q_.Value.Result.Error != null) {
+					cell.iserror = true;
+					cell.error = q_.Value.Result.Error;
+				}
 
 				lock (Data) {
-					Data.Add(new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, ri = realkey});
+					Data.Add(cell);
 				}
 			}
 		}
@@ -712,21 +739,39 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
 		/// </summary>
 		/// <returns> </returns>
-		public LockStateInfo GetCanBlockInfo() {
+		public LockStateInfo GetStateInfo() {
 			var isopen = Template.IsOpen;
 			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
+			if (string.IsNullOrWhiteSpace(state)) {
+				state = "0ISOPEN";
+			}
 			var cansave = state == "0ISOPEN";
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
-			var isinrole = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, Template.UnderwriteRole);
-			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message) && isinrole;
+			var principal = Usr.toPrincipal();
+			
+			var haslockrole = Application.Current.Roles.IsInRole(principal, Template.UnderwriteRole);
+			var hasholdlockrole = Application.Current.Roles.IsInRole(principal, "HOLDUNDERWRITER");
+			var hasnocontrolpoointsrole = Application.Current.Roles.IsInRole(principal,"SYS_NOCONTROLPOINTS",true);
+			var canblock = state == "0ISOPEN" && (string.IsNullOrWhiteSpace(message)||(message=="cpavoid"&&hasnocontrolpoointsrole)) && haslockrole;
+			var canopen = state != "0ISOPEN" && haslockrole && hasholdlockrole;
+			var cancheck = state == "0ISBLOCK" && haslockrole &&  hasholdlockrole;
+			var cansaveoverblock = Application.Current.Roles.IsInRole(principal, "NOBLOCK",true);
+			cansave = cansave || cansaveoverblock;
 			return new LockStateInfo
 				{
 					isopen = isopen,
 					state = state,
 					cansave = cansave,
 					canblock = canblock,
-					message = message
+					message = message,
+					haslockrole = haslockrole,
+					hasholdlockrole = hasholdlockrole,
+					hasnocontrolpoointsrole = hasnocontrolpoointsrole,
+					canopen = canopen,
+					cancheck  = cancheck,
+					cansaveoverblock = cansaveoverblock,
+					hasbadcontrolpoints = message=="cpavoid" || message.Contains("точк")
 				};
 		}
 
@@ -800,7 +845,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns> </returns>
 		public bool DoLockForm() {
-			var currentstate = GetCanBlockInfo();
+			var currentstate = GetStateInfo();
 			if (currentstate.canblock) {
 				Template.SetState(Object, null, "0ISBLOCK");
 				return true;
@@ -929,5 +974,6 @@ namespace Zeta.Extreme.FrontEnd {
 		private IdxCol[] primarycols;
 		private IdxRow[] primaryrows;
 		private IdxRow[] rows;
-		}
+
+	}
 }

@@ -20,6 +20,7 @@ using System;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Primary;
 
@@ -39,6 +40,9 @@ namespace Zeta.Extreme.Core.Tests {
 			});
 			Assert.AreEqual(905130m, result.NumericResult);
 		}
+
+	
+
 
 		[Test]
 		public void ZC_273_NO_INSUMMA_DOUBLING() {
@@ -100,6 +104,7 @@ namespace Zeta.Extreme.Core.Tests {
 		}
 
 		[Test]
+		[Ignore("данные поменялись")]
 		public void BUG_KRU_INVALID_VALUE()
 		{
 			/*

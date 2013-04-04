@@ -343,5 +343,23 @@ namespace Zeta.Extreme.Model.SqlSupport {
 
 			return _;
 		}
+
+		private T GetScalar<T>(string commandbase, T def, params object[] parameters) {
+			var commandText = string.Format(commandbase,(object[])parameters);
+			try
+			{
+				using (var c = getConnection())
+				{
+					c.Open();
+					var cmd = c.CreateCommand();
+					cmd.CommandText = commandText;
+					return (T)cmd.ExecuteScalar();
+				}
+			}
+			catch
+			{
+				return def;
+			}
+		}
 	}
 }

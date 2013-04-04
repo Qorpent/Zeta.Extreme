@@ -57,14 +57,23 @@ namespace Zeta.Extreme.Model.Querying {
 		/// </summary>
 		public bool IsNull;
 
-		/// <summary>
-		/// 	Численное значение
-		/// </summary>
-		public decimal NumericResult;
-
+		
 		/// <summary>
 		/// 	Строчный результат
 		/// </summary>
 		public string StringResult;
+
+		/// <summary>
+		/// 	Численное значение
+		/// </summary>
+		public decimal NumericResult;
+		/// <summary>
+		/// Не дает получить численное значение если была ошибка
+		/// </summary>
+		/// <returns></returns>
+		public decimal GetNumericResultSafe() {
+			if (null != Error) throw Error;
+			return NumericResult;
+		}
 	}
 }

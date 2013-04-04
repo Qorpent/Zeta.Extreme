@@ -41,6 +41,7 @@
     <Compile Include="NativeMaping\ZC438NativeCellReading.cs" />
     <Compile Include="NativeMaping\ZC439NativeCellHistoryReading.cs" />
     <Compile Include="PrimaryTests\ZC248AltObjToSqlTest.cs" />
+    <Compile Include="RowTagResolutionTest.cs" />
     <Compile Include="SerialAcessTest.cs" />
     <Compile Include="SubQuery\ExistedFormulasParsingTest.cs" />
     <Compile Include="SubQuery\FormulaCompilerTest.cs" />
@@ -48,6 +49,11 @@
     <Compile Include="SubQuery\QueryDeltaTest.cs" />
     <Compile Include="Zc431PrototypeGeneratorTest.cs" />
     <Compile Include="Zc432AltObjFilterNormalization.cs" />
+    <Compile Include="ZC459ExceptionPropagationTest.cs" />
+    <Compile Include="Zc478Problem.cs" />
+    <Compile Include="Zc480ErrorTestForms.cs" />
+    <Compile Include="Zc483OnPockOtkl.cs" />
+    <Compile Include="Zc486PlayBackHang.cs" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

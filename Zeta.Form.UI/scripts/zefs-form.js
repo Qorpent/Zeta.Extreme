@@ -2,7 +2,8 @@
  * Виджет Zefs-формы
  */
 !function($) {
-    var zefsform = new root.security.Widget("zefsform", root.console.layout.position.layoutBodyMain, null, { authonly: true, ready: function() {
+    var root = window.zeta = window.zeta || {};
+    var zefsform = new root.Widget("zefsform", root.console.layout.position.layoutBodyMain, null, { authonly: true, ready: function() {
         zefs.init(jQuery);
         zefs.myform.execute();
     } });

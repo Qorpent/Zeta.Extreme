@@ -2,7 +2,8 @@
  * Виджет менеджера колонок
  */
 !function($) {
-    var zefscolmanager = new root.security.Widget("zefscolmanager", root.console.layout.position.layoutHeader, "left", { authonly: true });
+    var root = window.zeta = window.zeta || {};
+    var zefscolmanager = new root.Widget("zefscolmanager", root.console.layout.position.layoutHeader, "left", { authonly: true });
     var list = $('<div class="btn-group"/>');
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление колонками"/>')
         .html('<i class="icon-list"></i><span class="caret"/>');

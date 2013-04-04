@@ -39,6 +39,7 @@
 
 .attacher td.username span {
     max-width: 95%;
+    text-align: left;
 }
 
 .attacher td.type.PDF,

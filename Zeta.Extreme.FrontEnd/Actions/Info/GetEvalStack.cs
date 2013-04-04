@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.FrontEnd.Actions.Info {
@@ -57,6 +58,9 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 					cachekey = myquery.GetCacheKey(),
 					rowcode = myquery.Row.Code,
 					rowname = myquery.Row.Name,
+					isformula = myquery.EvaluationType==QueryEvaluationType.Formula,
+					issum = myquery.EvaluationType==QueryEvaluationType.Summa,
+					isprimary = myquery.EvaluationType==QueryEvaluationType.Primary||myquery.EvaluationType==QueryEvaluationType.Unknown,
 					rowformula = myquery.Row.IsFormula? myquery.Row.Formula:"",
 					colcode = myquery.Col.Code,
 					colname = myquery.Col.Name,
@@ -66,13 +70,35 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 					year = myquery.Time.Year,
 					period = myquery.Time.Period,
 					periods = myquery.Time.Periods==null?"":string.Join(",",myquery.Time.Periods),
+					periodname = Periods.Get(myquery.Time.Period).Name,
 					reference = myquery.Reference.GetCacheKey(),
 					currency = myquery.Currency,
 					type = myquery.EvaluationType,
 					value = myquery.Result.NumericResult,
+					iserror = null!=myquery.Result.Error,
+					error = GetErrorObject(myquery.Result.Error),
 					mult,
 					subqueries = GetSubQueries(myquery)
 				};
+		}
+
+		private object GetErrorObject(Exception error) {
+			if (null == error) return error;
+			if (error is QueryException) {
+				return new
+					{
+						query = ((QueryException) error).Query.GetCacheKey(),
+						realerror = GetErrorObject(error.InnerException)
+					};
+
+			}
+			else {
+				return new
+					{
+						message = error.Message,
+						inner = GetErrorObject(error.InnerException)
+					};
+			}
 		}
 
 		/// <exception cref="Exception"></exception>

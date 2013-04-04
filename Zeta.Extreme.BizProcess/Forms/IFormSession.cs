@@ -72,6 +72,6 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
 		/// </summary>
 		/// <returns> </returns>
-		LockStateInfo GetCurrentLockInfo();
+		LockStateInfo GetStateInfo();
 	}
 }

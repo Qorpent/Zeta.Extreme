@@ -14,23 +14,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.FrontEnd/GetFormListAction.cs
+// PROJECT ORIGIN: Zeta.Extreme.FrontEnd/CanLockStateAction.cs
 #endregion
-
 using Qorpent.Mvc;
 
-namespace Zeta.Extreme.FrontEnd.Actions.Info {
+namespace Zeta.Extreme.FrontEnd.Actions.States {
 	/// <summary>
-	/// 	Выдает список загруженных форм
+	/// 	Возвращает статус формы
 	/// </summary>
-	[Action("zefs.formlist")]
-	public class GetFormListAction : FormServerActionBase {
+	[Action("zefs.getlockstate")]
+	public class GetLockStateAction : FormSessionActionBase
+	{
 		/// <summary>
-		/// 	processing of execution - main method of action
+		/// 	Возвращает статус формы по блокировке
 		/// </summary>
 		/// <returns> </returns>
-		protected override object MainProcess() {
-			return MyFormServer.GetFormList();
+		protected override object MainProcess()
+		{
+			return MySession.GetStateInfo();
 		}
 	}
 }
