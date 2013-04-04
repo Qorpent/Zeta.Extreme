@@ -102,7 +102,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             public string Usr { get; private set; }
             public List<OutCell> Data { get; private set; }
             public IUserLog Logger { get; set; }
-            public LockStateInfo GetStateInfo() {
+            public LockStateInfo GetCurrentLockInfo() {
                 return new LockStateInfo();
             }
 

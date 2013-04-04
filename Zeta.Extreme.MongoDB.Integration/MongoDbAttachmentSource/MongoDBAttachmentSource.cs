@@ -99,8 +99,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
             _gridFs.Files.Update(
                 new QueryDocument(
-                    new BsonElement("_id", attachment.Uid)
-                ),
+                    new BsonElement("_id", attachment.Uid)  
+                ), 
                 Update.Set("deleted", true),
                 UpdateFlags.None
             );

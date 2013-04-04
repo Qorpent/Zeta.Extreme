@@ -1,10 +1,10 @@
 ﻿#region LICENSE
 
-// Copyright 2012-2013 Media Technology LTD
+// Copyright 2012-2013 Media Technology LTD 
 // Original file : P1358Tests.cs
 // Project: Zeta.Extreme.MongoDB.Integration.Tests
-// This code cannot be used without agreement from
-// Media Technology LTD
+// This code cannot be used without agreement from 
+// Media Technology LTD 
 
 #endregion
 
@@ -59,8 +59,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         [Test]
         public void CanDownload() {
             Attachment attachment = GetNewAttach();
-            byte[] someData = { 1, 2, 3, 4, 5 };
-            byte[] someBuffer = { 0, 0, 0, 0, 0 };
+            byte[] someData = {1, 2, 3, 4, 5};
+            byte[] someBuffer = {0, 0, 0, 0, 0};
 
             _mdb.Save(attachment);
             using (Stream stream = _mdb.Open(attachment, FileAccess.Write)) {
@@ -134,7 +134,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         public void CanUploadAttachmentAndUpdate() {
             Attachment attachment = GetNewAttach();
             byte[] someData = { 1, 2, 3, 4, 5 };
-            byte[] someData2 = { 1, 2 };
+            byte[] someData2 = { 1, 2};
             byte[] someBuffer = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
             _mdb.Save(attachment);
