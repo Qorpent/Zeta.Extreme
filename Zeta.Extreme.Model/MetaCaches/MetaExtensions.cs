@@ -3,12 +3,39 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
+
 
 namespace Zeta.Extreme.Model.MetaCaches {
 	/// <summary>
 	/// Extensions over meta cache, that provides additional meta-awared methods, usefull for querying
 	/// </summary>
 	public static class MetaExtensions {
+		
+		/// <summary>
+		/// Проверяет, относится ли указанный объект к какому-либо групповому альясу
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <param name="alias"></param>
+		/// <returns></returns>
+		public static bool IsMatchAliases(this IZetaMainObject obj, string alias) {
+			var aliases = alias.SmartSplit();
+			foreach (var a in aliases) {
+				if (a.StartsWith("div_")) {
+					var divcode = a.Substring(4);
+					if (obj.Division != null && obj.Division.Code == divcode) return true;
+				}else if (a.StartsWith("grp_")) {
+					var grpcode = a.Substring(4);
+					if (!string.IsNullOrWhiteSpace(obj.GroupCache) && obj.GroupCache.Contains("/" + grpcode + "/")) return true;
+				}else if (obj.Id.ToString() == a) {
+					return true;
+				}else if (!string.IsNullOrWhiteSpace(obj.GroupCache) && obj.GroupCache.Contains("/" + a + "/")) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 		/// <summary>
 		/// Retrievs array of zeta object's IDs by zone alias
 		/// </summary>

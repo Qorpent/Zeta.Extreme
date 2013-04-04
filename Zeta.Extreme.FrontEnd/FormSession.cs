@@ -732,6 +732,12 @@ namespace Zeta.Extreme.FrontEnd {
 			if (row.IsMarkSeted("0NOINPUT")) {
 				return false;
 			}
+			var viewforgroup = row.ResolveTag("viewforgroup");
+			if (!string.IsNullOrWhiteSpace(viewforgroup)) {
+				if (!Object.IsMatchAliases(viewforgroup)) {
+					return false;
+				}
+			}
 			return true;
 		}
 
