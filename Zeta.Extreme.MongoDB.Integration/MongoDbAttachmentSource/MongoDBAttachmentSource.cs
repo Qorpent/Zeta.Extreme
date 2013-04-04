@@ -61,10 +61,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
             return _gridFs.Files.FindAs<BsonDocument>(
                 new QueryDocument(
                     MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(query)
-                    )
-                ).Select(
-                    MongoDbAttachmentSourceSerializer.BsonToAttachment
-                ).ToList();
+                )
+            ).Select(
+                MongoDbAttachmentSourceSerializer.BsonToAttachment
+            ).ToList();
         }
 
         /// <summary>
