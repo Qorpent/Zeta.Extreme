@@ -19,20 +19,35 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Qorpent;
+using Qorpent.Applications;
 using Zeta.Extreme.Model.MetaCaches;
 
 namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>
 	///Служба для работы с аттачами формы
 	/// </summary>
-	public class FormAttachmentSource : IFormAttachmentStorage {
+	public class FormAttachmentSource : ServiceBase,IFormAttachmentStorage {
 		private IAttachmentStorage _storage;
-		/// <summary>
+        /// <summary>
+        /// Акцессор нижележащего хранилища
+        /// </summary>
+        public IAttachmentStorage InternalStorage {
+	        get {
+	            if (null == _storage) {
+	                _storage = Container.Get<IAttachmentStorage>("attachment.source");
+	            }
+	            return _storage;
+	        }
+	        set { _storage = value; }
+	    }
+
+	    /// <summary>
 		/// Устанавливает службу хранения
 		/// </summary>
 		/// <param name="storage"></param>
 		public void SetStorage(IAttachmentStorage storage) {
-			_storage = storage;
+			InternalStorage = storage;
 		}
 
 		/// <summary>
@@ -45,7 +60,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 			foreach (var period in allperiods.Distinct()) {
 				var query = new FormAttachment(session, null, AttachedFileType.Default, false);
 				query.Period = period;
-				var subresult = _storage.Find(query).Select(_ => new FormAttachment(session, _, AttachedFileType.Default));
+				var subresult = InternalStorage.Find(query).Select(_ => new FormAttachment(session, _, AttachedFileType.Default));
 				foreach (var attachment in subresult) {
 					yield return attachment;
 				}
@@ -60,7 +75,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <param name="attachment">присоединенный контент</param>
 		public FormAttachment SaveAttachment(IFormSession session, Attachment attachment) {
 			var realattach = new FormAttachment(session, attachment, AttachedFileType.Default, false) {User = session.Usr};
-			_storage.Save(realattach);
+			InternalStorage.Save(realattach);
 			return realattach;
 		}
 
@@ -69,7 +84,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// </summary>
 		/// <param name="attachment"></param>
 		public void Delete(FormAttachment attachment) {
-			_storage.Delete(attachment);
+			InternalStorage.Delete(attachment);
 		}
 
 		/// <summary>
@@ -79,7 +94,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <param name="mode"> </param>
 		/// <returns></returns>
 		public Stream Open(FormAttachment attachment,FileAccess mode) {
-			return _storage.Open(attachment,mode);
+			return InternalStorage.Open(attachment,mode);
 		}
 
 		
