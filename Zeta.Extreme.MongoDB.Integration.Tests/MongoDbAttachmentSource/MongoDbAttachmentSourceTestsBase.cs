@@ -1,17 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region LICENSE
+
+// Copyright 2012-2013 Media Technology LTD 
+// Original file : P1358Tests.cs
+// Project: Zeta.Extreme.MongoDB.Integration.Tests
+// This code cannot be used without agreement from 
+// Media Technology LTD 
+
+#endregion
+
+using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Forms;
 
-namespace Zeta.Extreme.MongoDB.Integration.Tests
-{
-    public abstract class MongoDbAttachmentTestsBase
-    {
+namespace Zeta.Extreme.MongoDB.Integration.Tests {
+    public abstract class MongoDbAttachmentSourceTestsBase {
         protected const string TEST_STRING = "Test OK!";
         protected static readonly byte[] TEST_DATA = Encoding.ASCII.GetBytes(TEST_STRING);
         protected MongoDbAttachmentSource _mdb;
@@ -31,16 +37,11 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
 
         protected MongoCollection<BsonDocument> _indexcollection;
 
-        public MongoDbAttachmentTestsBase()
-        {
-            _mdb = new MongoDbAttachmentSource
-            {
+        public MongoDbAttachmentSourceTestsBase() {
+            _mdb = new MongoDbAttachmentSource {
                 Database = "MongoDbAttachments"
             };
         }
-
-
-
 
         /// <summary>
         /// Вспомогательный метод - создать и сохранить с uid и возможно настройками
@@ -48,11 +49,9 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
         /// <param name="uid">UID создававемого атача или Null</param>
         /// <param name="setup">опциональная процедура дополнительно настройки атача</param>
         /// <param name="data">опциональный массив данных в качестве блоба</param>
-        protected Attachment Create(string uid = null, Action<Attachment> setup = null, byte[] data = null)
-        {
+        protected Attachment Create(string uid = null, Action<Attachment> setup = null, byte[] data = null) {
             var attachment = GetNewAttach(uid);
-            if (null != setup)
-            {
+            if (null != setup) {
                 setup(attachment);
             }
 
@@ -61,8 +60,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
         }
 
         [SetUp]
-        public virtual void Setup()
-        {
+        public virtual void Setup() {
             _db = new MongoClient().GetServer().GetDatabase(_mdb.Database);
             // По идее MondoDbAS должна использовать имя коллекции как базис для GridFS
             _filecollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".files");
@@ -79,27 +77,23 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests
 
         }
 
-        public void Save(Attachment attachment, byte[] source = null)
-        {
+        public void Save(Attachment attachment, byte[] source = null) {
             _mdb.Save(attachment);
-            if (null != source)
-            {
-                using (var stream = _mdb.Open(attachment, FileAccess.Write))
-                {
+            if (null != source) {
+                using (var stream = _mdb.Open(attachment, FileAccess.Write)) {
                     stream.Write(source, 0, source.Length);
                     stream.Flush();
                 }
             }
         }
 
-        public Attachment GetNewAttach(string uid = null)
-        {
-            return new Attachment
-            {
+        public Attachment GetNewAttach(string uid = null) {
+            return new Attachment {
                 Uid = uid ?? string.Format("{0}{1}", "Attachment", ++_uid),
                 Name = string.Format("{0}{1}", "Name", _uid),
                 Comment = string.Format("{0}{1}", "Comment", _uid),
                 Revision = _uid,
+                Version = new DateTime(1, 1, 1, 1, 1, 1, 1),
                 User = string.Format("{0}{1}", "User", _uid),
                 MimeType = string.Format("{0}{1}", "MimeType", _uid),
                 Extension = string.Format("{0}{1}", "Extension", _uid),

@@ -27,16 +27,50 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\.build\bin\Qorpent.Core.Debug\Qorpent.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Qorpent.Data">
+      <HintPath>..\..\.build\bin\Qorpent.Data.Debug\Qorpent.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Qorpent.IoC">
+      <HintPath>..\..\.build\bin\Qorpent.IoC.Debug\Qorpent.IoC.dll</HintPath>
+    </Reference>
     <Reference Include="Zeta.Extreme.BizProcess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.BizProcess.dll</HintPath>
     </Reference>
+    <Reference Include="Zeta.Extreme.Core">
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Core.Debug\Zeta.Extreme.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.Form">
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.Form.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.FrontEnd">
+      <HintPath>..\..\.build\bin\Zeta.Extreme.FrontEnd.Debug\Zeta.Extreme.FrontEnd.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeta.Extreme.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\.build\bin\Zeta.Extreme.Model.Debug\Zeta.Extreme.Model.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MongoDbAttachmentSourceTests.cs" />
-    <Compile Include="MongoDbAttachmentTestsBase.cs" />
-    <Compile Include="P1358Tests.cs" />
-    <Compile Include="P1362FindPatternTests.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTests.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsBase.cs" />
+    <Compile Include="MongoDbLogs\MongoDbLogsTests.cs" />
+    <Compile Include="MongoDbLogs\MongoDbLogsTestsBase.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsP1358.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsP1362FindPattern.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MongoDbAttachmentSourceIoCTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.IoC\Qorpent.IoC.csproj">
+      <Project>{62f22ffa-a1cf-4a74-838c-9ab33a9442ea}</Project>
+      <Name>Qorpent.IoC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
+      <Project>{44653de7-dee5-4960-a906-e0d6b1f83fcc}</Project>
+      <Name>Zeta.Extreme.BizProcess</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

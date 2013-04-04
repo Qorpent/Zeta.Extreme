@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using MongoDB.Driver.GridFS;
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -75,19 +76,17 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
             attachment.Uid = attachment.Uid ?? (attachment.Uid = ObjectId.GenerateNewId().ToString());
 
-            // creates a file view in the files collection
-            _gridFs.Create(
-                attachment.Name,
-                new MongoGridFSCreateOptions {
-                    Id = attachment.Uid
-                }
+            if (_gridFs.ExistsById(attachment.Uid) == false) {
+                _gridFs.Create(
+                    attachment.Name,
+                    new MongoGridFSCreateOptions {
+                        Id = attachment.Uid
+                    }
                 );
+            }
 
-            // now we gonna get this description from the collection
-            var doc = _gridFs.Files.FindOneByIdAs<BsonDocument>(attachment.Uid);
-            // and add our delta
-            doc.AddRange(MongoDbAttachmentSourceSerializer.AttachmentToBsonForSave(attachment));
-
+            var doc = _gridFs.Files.FindOneById(attachment.Uid);
+            doc.Merge(MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment));
             _gridFs.Files.Save(doc);
         }
 
@@ -98,14 +97,13 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public void Delete(Attachment attachment) {
             SetupConnection();
 
-            foreach (
-                var document in Find(attachment).Select(
-                    MongoDbAttachmentSourceSerializer.AttachmentToBson
-                    )
-                ) {
-                MongoDbAttachmentSourceSerializer.AttachmentSetDeleted(document);
-                _gridFs.Files.Save(document);
-            }
+            _gridFs.Files.Update(
+                new QueryDocument(
+                    new BsonElement("_id", attachment.Uid)  
+                ), 
+                Update.Set("deleted", true),
+                UpdateFlags.None
+            );
         }
 
         /// <summary>
