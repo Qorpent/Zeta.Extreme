@@ -67,29 +67,40 @@ namespace Zeta.Extreme.Model.Querying {
 		/// <param name="query"></param>
 		/// <param name="pseudocode"></param>
 		/// <returns></returns>
-		public static string ResolveRealCode(this IQuery query, string pseudocode)
-		{
-			if (null != query) {
-				if (query.Session != null && query.Session.PropertySource != null)
-				{
-					var code = query.Session.PropertySource.Get(pseudocode).ToStr();
-					if (!string.IsNullOrWhiteSpace(code)) return code;
-				}
-
-				if (null != query.Row && null!=query.Row.Native) {
-					if (query.Row.Native.TemporalParent != null) {
-						var code = query.Row.Native.TemporalParent.ResolveTag(pseudocode);
-						if (!string.IsNullOrWhiteSpace(code)) return code;
-					}
-					else {
-						var code = query.Row.Native.ResolveTag(pseudocode);
-						if (!string.IsNullOrWhiteSpace(code)) return code;
-					}
-				}
+		public static string ResolveRealCode(this IQuery query, string pseudocode) {
+			if (null != query)
+			{
+			var session = query.Session;
+			var rowhandler = query.Row;
 			
-				
+				return ResolveRealCode(session, rowhandler, pseudocode);
 			}
 			throw new Exception("cannot resolve " + pseudocode + " from " + query);
+		}
+
+		public static string ResolveRealCode(this ISession session, IRowHandler rowhandler, string pseudocode) {
+			if (session != null && session.PropertySource != null) {
+				var code = session.PropertySource.Get(pseudocode).ToStr();
+				if (!string.IsNullOrWhiteSpace(code)) {
+					return code;
+				}
+			}
+
+			if (null != rowhandler && null != rowhandler.Native) {
+				if (rowhandler.Native.TemporalParent != null) {
+					var code = rowhandler.Native.TemporalParent.ResolveTag(pseudocode);
+					if (!string.IsNullOrWhiteSpace(code)) {
+						return code;
+					}
+				}
+				else {
+					var code = rowhandler.Native.ResolveTag(pseudocode);
+					if (!string.IsNullOrWhiteSpace(code)) {
+						return code;
+					}
+				}
+			}
+			return null;
 		}
 
 		/// <summary>

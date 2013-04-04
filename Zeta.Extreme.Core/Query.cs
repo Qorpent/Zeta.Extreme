@@ -391,13 +391,13 @@ namespace Zeta.Extreme {
 		public void Normalize(ISession session = null) {
 			var objt = Task.Run(() => Obj.Normalize(session ?? Session)); //объекты зачастую из БД догружаются
 			Time.Normalize(session ?? Session);
-			Col.Normalize(session ?? Session);
+			Col.Normalize(session ?? Session,Row);
 			ResolveTemporalCustomCodeBasedColumns(session);
 			Row.Normalize(session ?? Session, Col.Native); //тут формулы парсим простые как рефы			
 			objt.Wait();
 			AdaptDetailModeForDetailBasedSubtrees();
 			AdaptExRefLinkSourceForColumns(session);
-			Reference.Normalize(session);
+			Reference.Normalize(session,Obj);
 			InvalidateCacheKey();
 		}
 

@@ -133,7 +133,7 @@ namespace Zeta.Extreme {
 		/// 	–егул€рное выражение оценки и разбора суммовых формул
 		/// </summary>
 		public const string PseudoSumPattern =
-			@"^\s*-?\s*" + IndirectSafeCallDeltaPattern + @"(((\s*[+-]\s*)|\s+)" + IndirectSafeCallDeltaPattern + @")*\s*$";
+			@"^\s*-?\s*" + CallDeltaPattern + @"(((\s*[+-]\s*)|\s+)" + CallDeltaPattern + @")*\s*$";
 			
 		
 
@@ -141,6 +141,6 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	–егул€рное выражение дл€ выборки отдельного элемента приводимой к сумме формулы
 		/// </summary>
-		public const string PseudoSumVector = @"(?<s>[-+])?\s*" + IndirectSafeCallDeltaPattern;
+		public const string PseudoSumVector = @"(?<s>[-+])?\s*" + CallDeltaPattern;
 	}
 }

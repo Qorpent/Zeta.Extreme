@@ -51,10 +51,19 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="session"></param>
 		public void Normalize(ISession session) {
+			Normalize(session, null);
+		}
+
+		/// <summary>
+		/// Нормализация ищмерения для запроса
+		/// </summary>
+		/// <param name="session"></param>
+		/// <param name="handler"></param>
+		public void Normalize(ISession session, IObjHandler handler) {
 			if (!string.IsNullOrWhiteSpace(Contragents))
 			{
 				var cache = session.GetMetaCache();
-				var ids = Contragents.SmartSplit().SelectMany(cache.ResolveZoneAliasToObjectIds).Distinct().OrderBy(_ => _);
+				var ids = Contragents.SmartSplit().SelectMany(_ => cache.ResolveZoneAliasToObjectIds(_, null == handler ? null : handler.ObjRef)).Distinct().OrderBy(_ => _);
 				Contragents = string.Join(",", ids);
 			}
 		}

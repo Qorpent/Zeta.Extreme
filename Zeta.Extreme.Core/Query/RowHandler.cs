@@ -127,9 +127,12 @@ namespace Zeta.Extreme {
 		private bool ResolveSingleRowFormula(ISession session) {
 			var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 			if (IsFormula && (FormulaType == "boo" || FormulaType == "cs")) {
-				var match = Regex.Match(Formula.Trim(), @"^\$([\p{Ll}\p{Lu}][\p{Ll}\p{Lu}\d][\w\d]*)\?$", RegexOptions.Compiled);
+				var match = Regex.Match(Formula.Trim(), @"^\$([\w\d]+)\?$", RegexOptions.Compiled);
 				if (match.Success) {
 					var code = match.Groups[1].Value;
+					if (code.StartsWith("__")) {
+						code = session.ResolveRealCode(this, code.Substring(2));
+					}
 					var reference = cache.Get<IZetaRow>(code);
 					Native = reference;
 					return true;

@@ -15,7 +15,7 @@ namespace Zeta.Extreme.Model.Querying {
 		/// Нормализация ищмерения для запроса
 		/// </summary>
 		/// <param name="session"></param>
-		void Normalize(ISession session);
+		void Normalize(ISession session,IObjHandler handler);
 		/// <summary>
 		/// Копирование при копировании запроса
 		/// </summary>

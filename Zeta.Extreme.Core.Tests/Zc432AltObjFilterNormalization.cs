@@ -52,10 +52,10 @@ namespace Zeta.Extreme.Core.Tests
 		public void OnlyMatchedFormatSupported(string sample, bool throwerror) {
 			var objh = new ReferenceHandler {Contragents = sample};
 			if (throwerror) {
-				Assert.Throws<FormatException>(() => objh.Normalize(null));
+				Assert.Throws<FormatException>(() => objh.Normalize(null,null));
 			}
 			else {
-				objh.Normalize(null);
+				objh.Normalize(null,null);
 			}
 		}
 
@@ -72,7 +72,7 @@ namespace Zeta.Extreme.Core.Tests
 		[TestCase("1,2,3","1,2,3",Description = "basis")]
 		public void GeneratesValidAltObjFilter(string sample, string result) {
 			var objh = new ReferenceHandler {Contragents = sample};
-			objh.Normalize(_session);
+			objh.Normalize(_session,null);
 			Assert.AreEqual(result,objh.Contragents);
 		}
 	}

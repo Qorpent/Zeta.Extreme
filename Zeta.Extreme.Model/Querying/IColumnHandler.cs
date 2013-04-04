@@ -28,5 +28,12 @@ namespace Zeta.Extreme.Model.Querying {
 		/// </summary>
 		/// <returns> </returns>
 		IColumnHandler Copy();
+
+		/// <summary>
+		/// 	Нормализует колонку до нормали
+		/// </summary>
+		/// <param name="session"> </param>
+		/// <param name="row"></param>
+		void Normalize(ISession session,IRowHandler row);
 	}
 }

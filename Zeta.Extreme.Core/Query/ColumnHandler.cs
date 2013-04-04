@@ -16,6 +16,8 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Core/ColumnHandler.cs
 #endregion
+
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Zeta.Extreme.Model;
@@ -39,35 +41,51 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// 	Нормализует объект зоны
+		/// </summary>
+		/// <param name="session"> </param>
+		/// <exception cref="NotImplementedException"></exception>
+		public override void Normalize(ISession session)
+		{
+			Normalize(session,null);
+		}
+
+		/// <summary>
 		/// 	Нормализует колонку до нормали
 		/// </summary>
 		/// <param name="session"> </param>
-		public override void Normalize(ISession session) {
+		/// <param name="row"></param>
+		public void Normalize(ISession session,IRowHandler row) {
 			var cache = session == null ? MetaCache.Default : session.GetMetaCache();
 			if (IsStandaloneSingletonDefinition()) {
 				//try load native
 				Native = cache.Get<IZetaColumn>(0 == Id ? (object) Code : Id);
 			}
-			ResolveSingleColFormula();
+			ResolveSingleColFormula(session,row);
 		}
 
-		private void ResolveSingleColFormula() {
+		private void ResolveSingleColFormula(ISession session, IRowHandler row) {
 			if (IsFormula && (FormulaType == "boo" || FormulaType == "cs")) {
 				var formula = Formula;
-				var code = GetCodeFormFormula(formula);
+				var code = GetCodeFrom(formula);
 				if (null != code) {
+					if (code.StartsWith("__"))
+					{
+						code = session.ResolveRealCode(row, code.Substring(2));
+					}
 					var reference = ColumnCache.get(code);
 					Native = reference;
 				}
 			}
 		}
 
-		private static string GetCodeFormFormula(string formula) {
+		private static string GetCodeFrom(string formula) {
 			if (!_resolvedColFormulaCache.ContainsKey(formula)) {
 				string code = null;
-				var match = Regex.Match(formula, @"^@([\p{Ll}\p{Lu}][\p{Ll}\p{Lu}\d][\w\d]*)\?$", RegexOptions.Compiled);
+				var match = Regex.Match(formula, @"^@([\w\d]+)\?$", RegexOptions.Compiled);
 				if (match.Success) {
 					code = match.Groups[1].Value;
+
 				}
 				_resolvedColFormulaCache[formula] = code;
 				return code;

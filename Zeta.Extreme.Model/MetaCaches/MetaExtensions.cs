@@ -43,7 +43,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 		/// <param name="alias"></param>
 		/// <returns></returns>
 		/// <exception cref="FormatException"></exception>
-		public static IEnumerable<int> ResolveZoneAliasToObjectIds(this IMetaCache cache, string alias) {
+		public static IEnumerable<int> ResolveZoneAliasToObjectIds(this IMetaCache cache, string alias,IZetaMainObject currentObject=null) {
 			int intval;
 			if ("0" == alias) yield break;
 			if (0 != (intval = alias.ToInt())) {
@@ -70,6 +70,18 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			}
 			else if (split[0] == "div") {
 				var div = cache.Get<Division>(split[1]);
+				if (split[1] == "CURRENT")
+				{
+					if (null == currentObject) {
+						throw new Exception("cannot resolve without current object");
+					}
+					if (null == currentObject.Division) {
+						throw new Exception("current obj have not division");
+					}
+					div = (Division) currentObject.Division;
+				}
+				
+				
 				if (null == div || null==div.MainObjects) {
 					yield break;
 				}
