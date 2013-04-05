@@ -8,18 +8,36 @@
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление колонками"/>')
         .html('<i class="icon-list"></i><span class="caret"/>');
     var menu = $('<ul class="dropdown-menu"/>');
+    var input = $('<input type="checkbox" checked/>');
+    input.click(function() {
+        if (input.is(":checked")) {
+            root.formoptionsstorage.AddOrUpdate({ hidenullrows: false });
+            ShowNullRows();
+        } else  {
+            root.formoptionsstorage.AddOrUpdate({ hidenullrows: true });
+            HideNullRows();
+        }
+    });
     list.append(b,menu);
     var HideColumn = function(n) {
         $('table.data col[idx=' + n + ']').hide();
         $('table.data th[idx=' + n + ']').hide();
         $('table.data td[idx=' + n + ']').hide();
         $(window).trigger("resize");
+        StoreColVisible(n, false);
     };
     var ShowColumn = function(n) {
         $('table.data col[idx=' + n + ']').show();
         $('table.data th[idx=' + n + ']').show();
         $('table.data td[idx=' + n + ']').show();
         $(window).trigger("resize");
+        StoreColVisible(n, true);
+    };
+    var StoreColVisible = function(col, visible) {
+        var colvisiblelist = root.coloptionsstorage.Get();
+        colvisiblelist.colsvisible = colvisiblelist.colsvisible || {};
+        colvisiblelist.colsvisible[col] = visible;
+        root.coloptionsstorage.AddOrUpdate(colvisiblelist);
     };
     var HideNullRows = function() {
         $.each($(".zefsform tbody tr"), function(i,tr) {
@@ -58,11 +76,22 @@
             }
             menu.append(li.append($('<a/>').append($('<label/>').append(input, $(col).text()))));
         });
-        var input = $('<input type="checkbox" checked/>');
-        input.click(function() {
-            input.is(":checked") ? ShowNullRows() : HideNullRows();
-        });
         menu.append($('<li class="divider"/>'), $('<li/>').append($('<a/>').append($('<label/>').append(input, "Нулевые строки"))));
+    });
+    $(window.zefs).on(window.zefs.handlers.on_dataload, function() {
+        var formopts = root.formoptionsstorage.Get();
+        var colopts = root.coloptionsstorage.Get();
+        colopts.colsvisible = colopts.colsvisible || {};
+        $.each(colopts.colsvisible, function(col, visible) {
+             if (!visible) menu.find('input[value="' + col + '"]').first().trigger("click");
+        });
+        if (formopts == null || $.isEmptyObject(formopts)) {
+            root.formoptionsstorage.AddOrUpdate({ hidenullrows: false });
+        } else {
+            if (formopts.hidenullrows) {
+                input.trigger("click");
+            }
+        }
     });
     b.tooltip({placement: 'bottom'});
     zefscolmanager.body = $('<div/>').append(list);
