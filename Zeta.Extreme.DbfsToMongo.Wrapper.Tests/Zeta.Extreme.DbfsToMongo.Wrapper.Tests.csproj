@@ -30,14 +30,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.BizProcess.dll</HintPath>
     </Reference>
-    <Reference Include="Zeta.Extreme.DbfsToMongo.Connector, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
+    <Reference Include="Zeta.Extreme.DbfsToMongo.Wrapper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Zeta.Extreme.DbfsToMongo.Connector\obj\Debug\Zeta.Extreme.DbfsToMongo.Connector.dll</HintPath>
+      <HintPath>..\..\.build\bin\Zeta.Extreme.DbfsToMongo.Wrapper.Debug\Zeta.Extreme.DbfsToMongo.Wrapper.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Zeta.Extreme.DbfsToMongo.Connector\Zeta.Extreme.DbfsToMongo.Connector.csproj">
+      <Project>{FDBAD490-E7CB-41DE-ABDA-55475A4F12D1}</Project>
+      <Name>Zeta.Extreme.DbfsToMongo.Connector</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.MongoDB.Integration\Zeta.Extreme.MongoDB.Integration.csproj">
-      <Project>{459E4387-484E-42DE-8795-A142E83CFCBB}</Project>
+      <Project>{459e4387-484e-42de-8795-a142e83cfcbb}</Project>
       <Name>Zeta.Extreme.MongoDB.Integration</Name>
     </ProjectReference>
   </ItemGroup>

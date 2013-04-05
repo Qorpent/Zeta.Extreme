@@ -3,10 +3,10 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
 using System.IO;
-using DbfsToMongo.Connector;
+using Zeta.Extreme.DbfsToMongo.Connector;
 using Zeta.Extreme.BizProcess.Forms;
 
-namespace DbfsToMongo.Wrapper
+namespace Zeta.Extreme.DbfsToMongo.Wrapper
 {
     /// <summary>
     ///
@@ -14,13 +14,13 @@ namespace DbfsToMongo.Wrapper
     public class DbfsToMongoWrapper
     {
         private const string GET_UIDS_QUERY = "SELECT code, size FROM [comdiv_dbfs].[usr_view]";
-        private const string FIND_ATT_QUERY = "SELECT code, name, comment,version, usr, revision, mime, hash, size, _doctype as type, extension FROM [comdiv_dbfs].[usr_view] WHERE code = '{0}'";
+        private const string FIND_ATT_QUERY = "SELECT code, name, comment,version, usr, revision, mime, hash, size, _doctype as type, extension, _form, _year, _period, _obj FROM [comdiv_dbfs].[usr_view] WHERE code = '{0}'";
 
         private readonly DbfsToMongoConnector _connector;
         /// <summary>
         /// Connector copy for tests
         /// </summary>
-        public readonly DbfsToMongoConnector connector;
+        public DbfsToMongoConnector Сonnector;
         /// <summary>
         ///
         /// </summary>
@@ -37,41 +37,33 @@ namespace DbfsToMongo.Wrapper
         /// <summary>
         ///
         /// </summary>
-        public DbfsToMongoWrapper()
-        {
+        public DbfsToMongoWrapper() {
             _connector = new DbfsToMongoConnector();
-            connector = _connector;
             CheckNeedUpdate();
         }
 
-        private void GetAllUidsFromDbfs()
-        {
+        private void GetAllUidsFromDbfs() {
             attSignaturesDbfs = new Dictionary<string, Int64>();
 
-            using (var c = _connector.OpenConnection())
-            {
+            using (var c = _connector.OpenConnection()) {
 
                 var cmd = c.CreateCommand();
                 cmd.CommandText = GET_UIDS_QUERY;
 
-                using (var r = cmd.ExecuteReader())
-                {
-                    while (r.Read())
-                    {
+                using (var r = cmd.ExecuteReader()) {
+                    while (r.Read()) {
                         attSignaturesDbfs.Add(r.GetString(0), r.GetInt64(1));
                     }
                 }
             }
         }
 
-        private void GetUidsAndLengthFromMongo()
-        {
+        private void GetUidsAndLengthFromMongo() {
             attSignaturesMongo = new Dictionary<string, Int64>();
 
             var found = _connector.MongoDb.Find(new Attachment());
 
-            foreach (var attachment in found)
-            {
+            foreach (var attachment in found) {
                 attSignaturesMongo.Add(attachment.Uid, attachment.Size);
             }
         }
@@ -134,8 +126,32 @@ namespace DbfsToMongo.Wrapper
                         clause.MimeType = r.GetString(6);
                         clause.Hash = r.GetString(7);
                         clause.Size = r.GetInt64(8);
-                        clause.Type = r.GetString(9);
+                        if (!r.IsDBNull(9)) r.GetString(9);
                         clause.Extension = r.GetString(10);
+                        clause.Metadata["template"] =  (!r.IsDBNull(11)) ? r.GetString(11) : "";
+                        if (!r.IsDBNull(12)) {
+                            clause.Metadata["year"] =
+                                Convert.ToInt32(string.IsNullOrEmpty(r.GetString(12)) ? "0" : r.GetString(12));
+                        }
+                        else {
+                            clause.Metadata["year"] = "";
+                        }
+                        if (!r.IsDBNull(13)) {
+                            clause.Metadata["period"] =
+                                Convert.ToInt32(string.IsNullOrEmpty(r.GetString(13)) ? "0" : r.GetString(13));
+                        }
+                        else {
+                            clause.Metadata["period"] = "";
+                        }
+
+                        if (!r.IsDBNull(14)) {
+                            var t = r.GetString(14);
+                            if (string.IsNullOrEmpty(t)) t = "0";
+                            clause.Metadata["obj"] = Convert.ToInt32(t);
+                        }
+                        else {
+                            clause.Metadata["obj"] = "";
+                        }
                     }
                 }
             }
@@ -177,16 +193,33 @@ namespace DbfsToMongo.Wrapper
         /// Migrate next attachment to MongoDB
         /// </summary>
         /// <returns></returns>
-        public Attachment MigrateNextAttachmentToMongo()
-        {
+        public Attachment MigrateNextAttachmentToMongo() {
             var attachment = GetNextAttachmentFromDbfs();
 
-            if (attachment != null)
-            {
+            if (attachment != null) {
                 MigrateAttachmentToMongo(attachment);
             }
 
             return attachment;
+        }
+
+        /// <summary>
+        /// find
+        /// </summary>
+        /// <param name="attachment"></param>
+        /// <returns></returns>
+        public IEnumerable<Attachment> Find(Attachment attachment) {
+            return _connector.MongoDb.Find(attachment);
+        }
+
+        /// <summary>
+        /// open
+        /// </summary>
+        /// <param name="attachment"></param>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        public Stream Open(Attachment attachment, FileAccess mode) {
+            return _connector.MongoDb.Open(attachment, mode);
         }
     }
 }

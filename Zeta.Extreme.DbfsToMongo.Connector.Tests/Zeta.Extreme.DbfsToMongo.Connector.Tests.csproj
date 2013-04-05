@@ -27,26 +27,36 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\mongo-csharp-driver\MongoDB.Driver\bin\Debug\MongoDB.Driver.dll</HintPath>
     </Reference>
-    <Reference Include="Qorpent.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\.build\bin\Qorpent.Core.Debug\Qorpent.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Qorpent.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\.build\bin\Qorpent.Data.Debug\Qorpent.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Zeta.Extreme.BizProcess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.BizProcess.dll</HintPath>
-    </Reference>
-    <Reference Include="Zeta.Extreme.Form, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.Form.dll</HintPath>
-    </Reference>
-    <Reference Include="Zeta.Extreme.MongoDB.Integration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\.build\bin\Zeta.Extreme.MongoDB.Integration.Debug\Zeta.Extreme.MongoDB.Integration.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
+      <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
+      <Name>Qorpent.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Data\Qorpent.Data.csproj">
+      <Project>{e762abb0-9982-444c-a2b5-23b5866954f3}</Project>
+      <Name>Qorpent.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.IoC\Qorpent.IoC.csproj">
+      <Project>{62f22ffa-a1cf-4a74-838c-9ab33a9442ea}</Project>
+      <Name>Qorpent.IoC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
+      <Project>{44653de7-dee5-4960-a906-e0d6b1f83fcc}</Project>
+      <Name>Zeta.Extreme.BizProcess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.DbfsToMongo.Connector\Zeta.Extreme.DbfsToMongo.Connector.csproj">
+      <Project>{fdbad490-e7cb-41de-abda-55475a4f12d1}</Project>
+      <Name>Zeta.Extreme.DbfsToMongo.Connector</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.Form\Zeta.Extreme.Form.csproj">
+      <Project>{fbd09f91-b185-4207-b05d-6051505ca868}</Project>
+      <Name>Zeta.Extreme.Form</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.MongoDB.Integration\Zeta.Extreme.MongoDB.Integration.csproj">
+      <Project>{459e4387-484e-42de-8795-a142e83cfcbb}</Project>
+      <Name>Zeta.Extreme.MongoDB.Integration</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

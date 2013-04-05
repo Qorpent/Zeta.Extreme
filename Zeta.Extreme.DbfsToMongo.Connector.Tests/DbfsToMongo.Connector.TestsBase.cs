@@ -2,14 +2,10 @@
 using MongoDB.Bson;
 using Zeta.Extreme.BizProcess.Forms;
 
-namespace DbfsToMongo.Connector.Tests
-{
-    class DbfsToMongoConnectorTestsBase
-    {
-        public static Attachment GetNewAttach(string uid = null)
-        {
-            return new Attachment
-            {
+namespace Zeta.Extreme.DbfsToMongo.Connector.Tests {
+    internal class DbfsToMongoConnectorTestsBase {
+        public static Attachment GetNewAttach(string uid = null) {
+            return new Attachment {
                 Uid = ObjectId.GenerateNewId().ToString(),
                 Name = "Name",
                 Comment = "Comment",

@@ -1,19 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Data;
+﻿using System.Data;
 using Qorpent.Applications;
 using Qorpent.Data;
 using Qorpent.Data.Connections;
 using Qorpent.IoC;
 using Zeta.Extreme.Form.DbfsAttachmentSource;
 using Zeta.Extreme.MongoDB.Integration;
-using Qorpent.Utils.Extensions;
-using Zeta.Extreme.BizProcess.Forms;
 
-namespace DbfsToMongo.Connector
-{
+namespace Zeta.Extreme.DbfsToMongo.Connector {
 
     /// <summary>
     /// Connector to establysh connection between DBFS and MongoDB
@@ -36,16 +29,18 @@ namespace DbfsToMongo.Connector
         /// <summary>
         ///
         /// </summary>
-        public DbfsToMongoConnector()
-        {
-            MongoDb = new MongoDbAttachmentSource();
-            Dbfs = new DbfsAttachmentStorage
-            {
+        public DbfsToMongoConnector() {
+            MongoDb = new MongoDbAttachmentSource {
+                ConnectionString = "mongodb://ugmk-as2:28017,ugmk-econ:28017,ugmk-as5:28017/?connect=replicaset",
+                Collection = "attachments",
+                Database = "formdata"
+            };
+
+            Dbfs = new DbfsAttachmentStorage {
                 ConnectionName = DBFS_DEFAULT_CONNECTION_NAME
             };
 
-            if (null == Application.Current.DatabaseConnections)
-            {
+            if (null == Application.Current.DatabaseConnections) {
                 Application.Current.Container.Register(
                     new BasicComponentDefinition
                     {
@@ -60,8 +55,7 @@ namespace DbfsToMongo.Connector
                 !Application.Current.DatabaseConnections.Exists(
                     DBFS_DEFAULT_CONNECTION_NAME
                 )
-            )
-            {
+            ) {
                 Application.Current.DatabaseConnections.Register(
                     new ConnectionDescriptor
                     {
@@ -73,17 +67,14 @@ namespace DbfsToMongo.Connector
             }
         }
 
-        private string GetConnectionName()
-        {
+        private string GetConnectionName() {
             return Dbfs.ConnectionName ?? "Default";
         }
 
-        private string GetDatabaseName()
-        {
+        private string GetDatabaseName() {
             if (
                 string.IsNullOrWhiteSpace(Dbfs.DatabaseName) && "Default" == GetConnectionName()
-            )
-            {
+            ) {
                 return "dbfs";
             }
 
@@ -94,8 +85,7 @@ namespace DbfsToMongo.Connector
         /// Openin connection to DBFS
         /// </summary>
         /// <returns></returns>
-        public IDbConnection OpenConnection()
-        {
+        public IDbConnection OpenConnection() {
             var connection = Application.Current.DatabaseConnections.GetConnection(
                 GetConnectionName()
             );

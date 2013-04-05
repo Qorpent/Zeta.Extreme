@@ -1,5 +1,5 @@
-﻿using DbfsToMongo.Wrapper;
-using System;
+﻿using Zeta.Extreme.DbfsToMongo.Wrapper;
+using Zeta.Extreme.BizProcess.Forms;
 
 
 namespace Zeta.Extreme.DbfsToMongo.Console
@@ -8,7 +8,7 @@ namespace Zeta.Extreme.DbfsToMongo.Console
     {
         static void Main()
         {
-            System.Console.WriteLine(@"Сколько файлов перегнать, мой повелитель?");
+            System.Console.WriteLine(@"Сколько файлов перегнать?");
 
 
             int value;
@@ -17,23 +17,23 @@ namespace Zeta.Extreme.DbfsToMongo.Console
             if (value > 0)
             {
                 System.Console.WriteLine();
-                System.Console.WriteLine(string.Format(@"Превосходно, мой повелитель! Будем перегонять {0} файлов", value));
+                System.Console.WriteLine(string.Format(@"Будем перегонять {0} файлов", value));
 
                 var wrapper = new DbfsToMongoWrapper();
 
-                for (int i = 0; i < value; i++)
-                {
-                    System.Console.Write(@"Ухнем! ");
-                    wrapper.MigrateNextAttachmentToMongo();
+                for (int i = 0; i < value; i++) {
+                    System.Console.Write(@".");
+                    var att = wrapper.MigrateNextAttachmentToMongo();
+                    if (att == null) break;
                 }
 
                 System.Console.WriteLine();
-                System.Console.WriteLine(@"Осмеюсь доложить, мой повелитель, что Ваш безвольный раб закончил работу! ");
-                System.Console.WriteLine(@"Нажмите <Enter>, мой повелитель!");
+                System.Console.WriteLine(@"Завершено. ");
+                System.Console.WriteLine(@"Нажмите <Enter> для выхода.");
             }
             else
             {
-                System.Console.WriteLine(@"До встречи, мой повелитель!");
+                System.Console.WriteLine(@"Окончание выполнения. Нажмите <Enter> для выхода.");
             }
 
             System.Console.ReadKey();
