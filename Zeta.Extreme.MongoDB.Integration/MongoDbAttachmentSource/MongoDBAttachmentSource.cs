@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MongoDB.Bson;
@@ -86,7 +87,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             }
 
             var doc = _gridFs.Files.FindOneById(attachment.Uid);
-            doc.Merge(MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment));
+            doc.Merge(MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment), true);
             _gridFs.Files.Save(doc);
         }
 
