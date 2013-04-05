@@ -47,6 +47,7 @@
             case "rasbal"           : return "Расшифровки баланса";
             case "energogroup"      : return "Энергетика";
             case "testgroup"        : return "Тестовые";
+            case "calcgroup"        : return "Калькуляции";
             default                 : return "";
         }
     };
