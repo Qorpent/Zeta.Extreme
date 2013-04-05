@@ -91,16 +91,28 @@ namespace Zeta.Extreme {
 			}
 			return query.Row.Native ?? (IZetaQueryDimension) query.Row;
 		}
+		IFormulaStorage Formulas
+		{
+			get
+			{
+				if (_session is ISessionWithExtendedServices)
+				{
+					return (_session as ISessionWithExtendedServices).FormulaStorage ?? FormulaStorage.Default;
+				}
+				return FormulaStorage.Default;
+			}
+		}
+
 
 		private void PrepareFormulas(IQueryWithProcessing query, IZetaQueryDimension mostpriority) {
 			query.EvaluationType = QueryEvaluationType.Formula;
 			_session.StatIncQueryTypeFormula();
 			var key = GetKey(mostpriority);
-			var formula = FormulaStorage.Default.GetFormula(key, false);
+			var formula = Formulas.GetFormula(key, false);
 			if (null == formula) {
-				FormulaStorage.Default.Register(new FormulaRequest
+				Formulas.Register(new FormulaRequest
 					{Formula = mostpriority.Formula, Language = mostpriority.FormulaType, Key = key});
-				formula = FormulaStorage.Default.GetFormula(key, false);
+				formula = Formulas.GetFormula(key, false);
 			}
 
 			if (null == formula) {

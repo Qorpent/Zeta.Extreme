@@ -16,6 +16,8 @@ namespace Zeta.Extreme.Core.Tests {
 			_mc = new MetaCache();
 			IZetaRow r = null;
 			IZetaRow r2 =null;
+			//FormulaStorage.Default.Clear();
+			
 			_mc.Set(new Row {Code = "rc1", IsFormula = true, Formula = "100", FormulaType = "boo"});
 			_mc.Set(new Row { Code = "rc2", IsFormula = true, Formula = "20", FormulaType = "boo" });
 			_mc.Set(r = new Row { Code = "r1byTag", IsFormula = true, Formula = "$__MYTAG? * $__MYTAG?",Tag = "/MYTAG:rc1/",FormulaType = "boo"});
@@ -26,7 +28,7 @@ namespace Zeta.Extreme.Core.Tests {
 			_mc.Set(new Row { Code = "r1STagAndSource", IsFormula = true, Formula = "$__MYTAG? + $__SRC?", Parent = r, FormulaType = "boo" });
 			_mc.Set(new Row { Code = "r1RefSource", IsFormula = true, Formula = "$__SRC?", Parent = r, FormulaType = "boo" });
 			r.Children.Add(r2);
-			_session = new Session {MetaCache = _mc,PropertySource = new DictionarySessionPropertySource(new Dictionary<string, object>{{"SRC","rc2"}})};
+			_session = new Session {MetaCache = _mc,FormulaStorage = new FormulaStorage(), PropertySource = new DictionarySessionPropertySource(new Dictionary<string, object>{{"SRC","rc2"}})};
 		}
 
 		[TestCase("r1byTag",10000)]

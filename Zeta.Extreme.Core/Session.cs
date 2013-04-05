@@ -406,6 +406,11 @@ namespace Zeta.Extreme {
 		public bool CollectStatistics { get; private set; }
 
 		/// <summary>
+		/// ’ранилище формул сессии
+		/// </summary>
+		public IFormulaStorage FormulaStorage { get; set; }
+
+		/// <summary>
 		///     ѕозвол€ет вернуть использованную подсессию в пул
 		/// </summary>
 		/// <param name="session"></param>

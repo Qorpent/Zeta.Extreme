@@ -64,14 +64,23 @@ namespace Zeta.Extreme {
 			PrepareFormulaForObject(internalquery);
 		}
 
+		IFormulaStorage Formulas {
+			get {
+				if (_session is ISessionWithExtendedServices) {
+					return (_session as ISessionWithExtendedServices).FormulaStorage ?? FormulaStorage.Default;
+				}
+				return FormulaStorage.Default;
+			}
+		}
+
 		private void PrepareFormulaForObject(IQuery internalquery) {
 			if (internalquery.Obj.IsFormula && !_sumh.IsSum(internalquery.Obj)) {
 				var key = "obj:" + internalquery.Row.Code;
 				if (null == internalquery.Obj.Native) {
 					key = "dynobj:" + internalquery.Obj.Formula;
 				}
-				if (!FormulaStorage.Default.Exists(key)) {
-					FormulaStorage.Default.Register(new FormulaRequest
+				if (!Formulas.Exists(key)) {
+					Formulas.Register(new FormulaRequest
 						{
 							Key = key,
 							Formula = internalquery.Obj.Formula,
@@ -88,8 +97,8 @@ namespace Zeta.Extreme {
 				if (null == internalquery.Col.Native) {
 					key = "dyncol:" + internalquery.Col.Formula;
 				}
-				if (!FormulaStorage.Default.Exists(key)) {
-					FormulaStorage.Default.Register(new FormulaRequest
+				if (!Formulas.Exists(key)) {
+					Formulas.Register(new FormulaRequest
 						{
 							Key = key,
 							Formula = internalquery.Col.Formula,
@@ -107,8 +116,8 @@ namespace Zeta.Extreme {
 				if (null == internalquery.Row.Native) {
 					key = "dynrow:" + internalquery.Row.Formula;
 				}
-				if (!FormulaStorage.Default.Exists(key)) {
-					FormulaStorage.Default.Register(new FormulaRequest
+				if (!Formulas.Exists(key)) {
+					Formulas.Register(new FormulaRequest
 						{
 							Key = key,
 							Formula = internalquery.Row.Formula,
