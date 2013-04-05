@@ -19,35 +19,29 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Qorpent;
-using Qorpent.Applications;
 using Zeta.Extreme.Model.MetaCaches;
 
 namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>
 	///Служба для работы с аттачами формы
 	/// </summary>
-	public class FormAttachmentSource : ServiceBase,IFormAttachmentStorage {
+	public class FormAttachmentSource : IFormAttachmentStorage {
 		private IAttachmentStorage _storage;
-        /// <summary>
-        /// Акцессор нижележащего хранилища
-        /// </summary>
-        public IAttachmentStorage InternalStorage {
-	        get {
-	            if (null == _storage) {
-	                _storage = Container.Get<IAttachmentStorage>("attachment.source");
-	            }
-	            return _storage;
-	        }
-	        set { _storage = value; }
-	    }
 
-	    /// <summary>
+        /// <summary>
+        /// 
+        /// </summary>
+        public IAttachmentStorage InternalStorage  {
+            get { return _storage; }
+            set { _storage = value; }
+        }
+
+		/// <summary>
 		/// Устанавливает службу хранения
 		/// </summary>
 		/// <param name="storage"></param>
 		public void SetStorage(IAttachmentStorage storage) {
-			InternalStorage = storage;
+			_storage = storage;
 		}
 
 		/// <summary>
@@ -55,12 +49,11 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// </summary>
 		/// <returns></returns>
 		public IEnumerable<FormAttachment> GetAttachments(IFormSession session) {
-			var allperiods = Periods.Eval(session.Year, session.Period, -11).Periods.ToList();
-			allperiods.Add(session.Period);
-			foreach (var period in allperiods.Distinct()) {
+			var allperiods = Periods.Eval(session.Year, session.Period, -11).Periods;
+			foreach (var period in allperiods) {
 				var query = new FormAttachment(session, null, AttachedFileType.Default, false);
 				query.Period = period;
-				var subresult = InternalStorage.Find(query).Select(_ => new FormAttachment(session, _, AttachedFileType.Default));
+				var subresult = _storage.Find(query).Select(_ => new FormAttachment(session, _, AttachedFileType.Default));
 				foreach (var attachment in subresult) {
 					yield return attachment;
 				}
@@ -75,7 +68,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <param name="attachment">присоединенный контент</param>
 		public FormAttachment SaveAttachment(IFormSession session, Attachment attachment) {
 			var realattach = new FormAttachment(session, attachment, AttachedFileType.Default, false) {User = session.Usr};
-			InternalStorage.Save(realattach);
+			_storage.Save(realattach);
 			return realattach;
 		}
 
@@ -84,7 +77,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// </summary>
 		/// <param name="attachment"></param>
 		public void Delete(FormAttachment attachment) {
-			InternalStorage.Delete(attachment);
+			_storage.Delete(attachment);
 		}
 
 		/// <summary>
@@ -94,7 +87,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <param name="mode"> </param>
 		/// <returns></returns>
 		public Stream Open(FormAttachment attachment,FileAccess mode) {
-			return InternalStorage.Open(attachment,mode);
+			return _storage.Open(attachment,mode);
 		}
 
 		
