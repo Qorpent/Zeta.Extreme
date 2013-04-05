@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Zeta.Extreme.Model.Extensions;
@@ -46,6 +47,34 @@ namespace Zeta.Extreme {
 			Obj = new ObjHandler();
 			Reference = new ReferenceHandler();
 			Currency = "NONE";
+		}
+		/// <summary>
+		/// ѕростой конструктор типовых запросов
+		/// </summary>
+		/// <param name="rowcode"></param>
+		/// <param name="colcode"></param>
+		/// <param name="obj"></param>
+		/// <param name="year"></param>
+		/// <param name="period"></param>
+		public Query(string rowcode, string colcode, int obj, int year, int period):this() {
+			Row.Code = rowcode;
+			if (!Regex.IsMatch(rowcode, @"^[\w\d]+$")) {
+				Row.Code = Convert.ToBase64String(Encoding.UTF8.GetBytes(rowcode));
+				Row.IsFormula = true;
+				Row.Formula = rowcode;
+				Row.FormulaType = "boo";
+			}
+			Col.Code = colcode;
+			if (!Regex.IsMatch(colcode, @"^[\w\d]+$"))
+			{
+				Col.Code = Convert.ToBase64String(Encoding.UTF8.GetBytes(colcode));
+				Col.IsFormula = true;
+				Col.Formula = rowcode;
+				Col.FormulaType = "boo";
+			}
+			Obj.Id = obj;
+			Time.Year = year;
+			Time.Period = period;
 		}
 
 		/// <summary>
