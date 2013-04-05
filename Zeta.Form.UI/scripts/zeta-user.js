@@ -26,7 +26,9 @@ $.extend(window.zeta.handlers, {
     };
 
     ZetaUser.prototype.loginToName = function() {
-        this.element.text(this.details.ShortName);
+        if (this.details.ShortName !== "NOT REGISTERED IN DB") {
+            this.element.text(this.details.ShortName);
+        }
     };
 
     ZetaUser.prototype.showDetails = function() {
