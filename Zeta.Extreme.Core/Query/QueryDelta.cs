@@ -21,6 +21,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
@@ -45,8 +47,16 @@ namespace Zeta.Extreme {
 			MoveRow(result);
 			MoveObj(result);
 			MoveTime(result);
+			MoveContragent(result);
 			result.InvalidateCacheKey();
 			return result;
+		}
+
+		private void MoveContragent(IQuery result) {
+			if (!string.IsNullOrWhiteSpace(Contragents)) {
+				result.Reference = result.Reference.Copy();
+				result.Reference.Contragents = Contragents;
+			}
 		}
 
 		/// <summary>
@@ -103,7 +113,7 @@ namespace Zeta.Extreme {
 
 			//ZC-248
 			if (!string.IsNullOrWhiteSpace(aof)) {
-				delta.AltObjFilter = aof;
+				delta.Contragents = aof;
 			}
 			return delta;
 		}
@@ -112,7 +122,7 @@ namespace Zeta.Extreme {
 		/// Фильтр по контрагенту
 		/// </summary>
 		/// <remarks>Совместимая реализация по ZC-248</remarks>
-		public string AltObjFilter { get; set; }
+		public string Contragents { get; set; }
 
 		/// <summary>
 		/// 	Конвертирует дельту в C# - конструктор для генерации формул
@@ -155,8 +165,8 @@ namespace Zeta.Extreme {
 			if (Period != 0) {
 				s.Append("Period = " + Period + ", ");
 			}
-			if (!string.IsNullOrWhiteSpace(AltObjFilter)) {
-				s.Append("AltObjFilter = \"" + AltObjFilter + "\", ");
+			if (!string.IsNullOrWhiteSpace(Contragents)) {
+				s.Append("Contragents = \"" + Contragents + "\", ");
 			}
 			s.Append("}");
 			if (!string.IsNullOrWhiteSpace(infunctionName)) {
@@ -191,7 +201,7 @@ namespace Zeta.Extreme {
 						}
 					}
 				}
-				result.Time.Normalize(result.Session);
+				result.Time.Normalize(result);
 			}
 		}
 
@@ -203,7 +213,12 @@ namespace Zeta.Extreme {
 			}
 			else if (!string.IsNullOrWhiteSpace(ColCode)) {
 				if (ColCode != result.Col.Code) {
-					result.Col = new ColumnHandler {Code = ColCode};
+					var realcolcode = ColCode;
+					if (ColCode.StartsWith("__"))
+					{
+						realcolcode = result.ResolveRealCode(realcolcode.Substring(2));
+					}
+					result.Col = new ColumnHandler { Code = realcolcode };
 				}
 			}
 		}
@@ -213,38 +228,54 @@ namespace Zeta.Extreme {
 				if (Row != result.Row.Native) {
 					result.Row = new RowHandler {Native = Row};
 				}
+
 			}
-			else if (!string.IsNullOrWhiteSpace(RowCode)) {
-				if (RowCode != result.Row.Code) {
-					result.Row = new RowHandler {Code = RowCode};
+			else if (!string.IsNullOrWhiteSpace(RowCode))
+			{
+				if (RowCode != result.Row.Code)
+				{
+					var realrowcode = RowCode;
+					if (RowCode.StartsWith("__"))
+					{
+						realrowcode = result.ResolveRealCode(RowCode.Substring(2));
+					}
+					result.Row = new RowHandler { Code = realrowcode };
 				}
 			}
+			
 		}
+
+	
 
 		private void MoveObj(IQuery result) {
 			if (HasObjDelta(result)) {
-				var exaltobj = result.Obj.AltObjFilter;
-				if (!string.IsNullOrWhiteSpace(AltObjFilter))
-				{
-					if (AltObjFilter != exaltobj) {
-						exaltobj = AltObjFilter;
-					}
-				}
-				
 				if (null != Obj) {
 					if (!Equals(Obj, result.Obj.Native)) {
-						result.Obj = new ObjHandler {Native = Obj,AltObjFilter = AltObjFilter};
+						result.Obj = new ObjHandler {Native = Obj};
 					}
 				}
 				else if (0 != ObjId) {
-					if (ObjId != result.Obj.Id) {
-						result.Obj = new ObjHandler { Id =ObjId,AltObjFilter = AltObjFilter};
+					if (ObjId == -1 ) {
+						var mc = MetaCache.Default;
+						if (null != result.Session) {
+							mc = result.Session.GetMetaCache();
+						}
+						if (null != result.Obj.Native) {
+							var current = (Obj)result.Obj.Native;
+							while (current.ParentId.HasValue) {
+								current = mc.Get<Obj>(current.ParentId.Value);
+							}
+							if (current.Id != result.Obj.Id) {
+								result.Obj = new ObjHandler {Native = current};
+							}
+						}
+						else {
+							throw new Exception("cannot apply root object to null");
+						}
+					}else if (ObjId != result.Obj.Id) {
+						result.Obj = new ObjHandler { Id =ObjId};
 					}
-				}else if (exaltobj != result.Obj.AltObjFilter) {
-					result.Obj = null == result.Obj ? new ObjHandler() : result.Obj.Copy();
-					result.Obj.AltObjFilter = exaltobj;
 				}
-				
 			}
 
 		}
@@ -257,10 +288,6 @@ namespace Zeta.Extreme {
 			if (0 != ObjId) {
 				if (null == result.Obj) return true;
 				if (ObjId != result.Obj.Id) return true;
-			}
-			if (!string.IsNullOrWhiteSpace(AltObjFilter)) {
-				if (null == result.Obj) return true;
-				if (AltObjFilter != result.Obj.AltObjFilter) return true;
 			}
 			return false;
 		}
@@ -281,6 +308,8 @@ namespace Zeta.Extreme {
 			}
 
 			if (HasObjDelta(target)) return false;
+
+			if (!string.IsNullOrWhiteSpace(Contragents) && target.Reference.Contragents != Contragents) return false;
 			
 			if (!string.IsNullOrWhiteSpace(ColCode) && ColCode != target.Col.Code) {
 				return false;

@@ -21,6 +21,12 @@ namespace Zeta.Extreme.Primary {
 	/// 	ќписатель прототипа первичного запроса
 	/// </summary>
 	public struct PrimaryQueryPrototype {
+		
+		/// <summary>
+		/// Marks that query requires zeta.data instead of zeta.cell
+		/// </summary>
+		public bool UseViewInsteadOfTable { get; set; }
+
 		/// <summary>
 		/// 	ѕризнак использовани€ агрегации
 		/// </summary>
@@ -39,11 +45,16 @@ namespace Zeta.Extreme.Primary {
 		/// <summary>
 		/// 	»спользование специального метода доступа к первичным значени€м
 		/// </summary>
-		public bool RequreZetaEval { get; set; }
+		public bool UseZetaEval { get; set; }
 
 		/// <summary>
 		/// 	÷елева€ валюта
 		/// </summary>
-		public string Valuta { get; set; }
+		public string Currency { get; set; }
+
+		/// <summary>
+		/// Marks that period is aggregated period
+		/// </summary>
+		public bool AggregatePeriod { get; set; }
 	}
 }

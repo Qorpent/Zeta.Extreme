@@ -100,6 +100,9 @@ namespace Zeta.Extreme.Model {
 			if (typeof (IZetaMainObject).IsAssignableFrom(type)) {
 				return typeof (IZetaMainObject);
 			}
+			if (typeof (IObjectDivision).IsAssignableFrom(type)) {
+				return typeof (IObjectDivision);
+			}
 			return type;
 		}
 
@@ -120,6 +123,7 @@ namespace Zeta.Extreme.Model {
 				if (typeof (IObjectDivision).IsAssignableFrom(typeof (T))) {
 					return (T) ObjCache.GetDiv(id);
 				}
+
 				return null;
 			}
 			catch {

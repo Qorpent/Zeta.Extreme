@@ -198,7 +198,7 @@ namespace Zeta.Extreme.Primary {
 							_grouped[row].FirstOrDefault(
 								_ =>
 								_.Col.Id == col && _.Obj.Id == obj && (int) _.Obj.Type == otype && _.Time.Year == year &&
-								_.Time.Period == period && (_.Obj.AltObjFilter??"")==altobj);
+								_.Time.Period == period && (_.Reference.Contragents??"")==altobj);
 						if (null != target) {
 							_session.StatIncPrimaryAffected();
 							target.HavePrimary = true;
@@ -232,30 +232,17 @@ namespace Zeta.Extreme.Primary {
 			return string.Join("\r\n", groups.Select(_ => _.GenerateSqlScript()));
 		}
 
-		private  IEnumerable<PrimaryQueryGroup> ExplodeToGroups(IEnumerable<IQuery> myrequests) {
-			
-			var valutagroups = myrequests.GroupBy(_ => _.Valuta, _ => _);
-			foreach (var valutagroup in valutagroups) {
-				var detailgroup = valutagroup.GroupBy(_ => _.Obj.DetailMode, _ => _);
-				foreach (var dgroup in detailgroup) {
-					var prot = new PrimaryQueryPrototype();
-					if (valutagroup.Key != "NONE") {
-						prot.RequreZetaEval = true;
-						prot.Valuta = valutagroup.Key;
-					}
-					if (dgroup.Key == DetailMode.SafeObject) {
-						prot.PreserveDetails = true;
-					}
-					else if (dgroup.Key == DetailMode.SafeSumObject) {
-						prot.RequireDetails = true;
-					}
-					var altobjgroups = dgroup.GroupBy(_ => _.Obj.AltObjFilter);
-					foreach (var altobjgroup in altobjgroups) {
-						yield return new PrimaryQueryGroup { Queries = altobjgroup.ToArray(), ScriptGenerator = new SimpleObjectDataScriptGenerator(), Prototype = prot };	
-					}
-					
-				}
-			}
+		private  IEnumerable<PrimaryQueryGroup> ExplodeToGroups(IQueryWithProcessing[] myrequests) {
+			return 
+				from prototypegroup in myrequests.GroupBy(_ => _.GetPrototype(), _ => _)
+				from dgroup in prototypegroup.GroupBy(_ => _.Obj.DetailMode, _ => _) 
+				from altobjgroup in dgroup.GroupBy(_ => _.Reference.Contragents)  
+				select new PrimaryQueryGroup
+					{
+						Queries = altobjgroup.ToArray(), 
+						ScriptGenerator = new Zeta2SqlScriptGenerator(), 
+						Prototype = prototypegroup.Key
+					};
 		}
 
 

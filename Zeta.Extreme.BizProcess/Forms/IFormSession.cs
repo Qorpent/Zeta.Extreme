@@ -17,6 +17,7 @@
 // PROJECT ORIGIN: Zeta.Extreme.BizProcess/IFormSession.cs
 #endregion
 using System.Collections.Generic;
+using Qorpent.Log;
 using Qorpent.Serialization;
 using Zeta.Extreme.BizProcess.StateManagement;
 using Zeta.Extreme.BizProcess.Themas;
@@ -63,9 +64,14 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		[IgnoreSerialize] List<OutCell> Data { get; }
 
 		/// <summary>
+		/// Журнал
+		/// </summary>
+		IUserLog Logger { get; set; }
+
+		/// <summary>
 		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
 		/// </summary>
 		/// <returns> </returns>
-		LockStateInfo GetCurrentLockInfo();
+		LockStateInfo GetStateInfo();
 	}
 }

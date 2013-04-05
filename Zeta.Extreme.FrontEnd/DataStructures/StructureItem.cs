@@ -88,5 +88,9 @@ namespace Zeta.Extreme.FrontEnd {
 		/// Признак расширенного редиректа
 		/// </summary>
 		[SerializeNotNullOnly]public bool exref;
+		/// <summary>
+		/// Формат числа
+		/// </summary>
+		public string format;
 	}
 }

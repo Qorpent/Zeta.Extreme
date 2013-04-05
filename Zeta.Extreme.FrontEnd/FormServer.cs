@@ -19,7 +19,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Security.Principal;
+using System.Text;
 using System.Threading.Tasks;
 using Qorpent;
 using Qorpent.Applications;
@@ -32,6 +36,7 @@ using Zeta.Extreme.Form.Themas;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
@@ -52,6 +57,36 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 		}
 
+		private MD5 md5 = MD5.Create();
+		/// <summary>
+		/// Возвращает ETag для кэша, не привязанного к пользователю
+		/// </summary>
+		/// <returns></returns>
+		public string GetCommonETag() {
+			return Convert.ToBase64String(md5.ComputeHash(GetETagBase(null)));
+		}
+
+		private byte[] GetETagBase(object context) {
+			return Encoding.ASCII.GetBytes(LastRefreshTime.ToString()+context.ToStr());
+		}
+
+		/// <summary>
+		/// Возвращает стандартное время для LastModified
+		/// </summary>
+		/// <returns></returns>
+		public DateTime GetCommonLastModified() {
+			return LastRefreshTime;
+		}
+
+		/// <summary>
+		/// Возвращает ETag, связанный с пользователем
+		/// </summary>
+		/// <returns></returns>
+		public string GetUserETag(IPrincipal user = null) {
+			user = user ?? Application.Principal.CurrentUser;
+			return Convert.ToBase64String(md5.ComputeHash(GetETagBase(user.Identity.Name)));
+			
+		}
 
 		/// <summary>
 		/// 	Инстанция по умолчанию
@@ -128,7 +163,7 @@ namespace Zeta.Extreme.FrontEnd {
 			LoadThemas = new TaskWrapper(GetLoadThemasTask());
 			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
 			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
-			ReadyToServeForms = new TaskWrapper(Task.FromResult(true), LoadThemas, MetaCacheLoad,
+			ReadyToServeForms = new TaskWrapper(GetCompleteAllTask(), LoadThemas, MetaCacheLoad,
 			                                    CompileFormulas);
 
 			MetaCacheLoad.Run();
@@ -136,6 +171,19 @@ namespace Zeta.Extreme.FrontEnd {
 			LoadThemas.Run();
 			ReadyToServeForms.Run();
 		}
+
+		private Task<bool> GetCompleteAllTask() {
+			return new Task<bool>(() =>
+				{
+					LastRefreshTime = DateTime.Now;
+					return true;
+				});
+
+		}
+		/// <summary>
+		/// Время  последней глобальной очистки
+		/// </summary>
+		protected DateTime LastRefreshTime { get; set; }
 
 		/// <summary>
 		/// 	Возвращает инстанцию класса для сохранения данных
@@ -145,16 +193,6 @@ namespace Zeta.Extreme.FrontEnd {
 			return ResolveService<IFormSessionDataSaver>() ?? new DefaultSessionDataSaver();
 		}
 
-		/// <summary>
-		/// 	Возвращает список форм
-		/// </summary>
-		/// <returns> </returns>
-		public object GetFormList() {
-			LoadThemas.Wait();
-			return ((ExtremeFormProvider) FormProvider).Factory
-				.GetAll().Where(_ => !_.Code.Contains("lib")).SelectMany(_ => _.GetAllForms())
-				.Select(_ => new {code = _.Code, name = _.Name}).ToArray();
-		}
 
 		/// <summary>
 		/// 	processing of execution - main method of action
@@ -180,6 +218,8 @@ namespace Zeta.Extreme.FrontEnd {
 			return new
 				{
 					time = ReadyToServeForms.ExecuteTime,
+					lastrefresh = LastRefreshTime,
+					reloadcount = ReloadCount,
 					meta = new
 						{
 							status = MetaCacheLoad.Status,
@@ -217,7 +257,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="initsavemode"> пред-открытие для сохранения </param>
 		/// <returns> </returns>
 		public FormSession Start(IInputTemplate template, IZetaMainObject obj, int year, int period, bool initsavemode = false) {
-			lock (this) {
+			lock (ReloadState) {
 				var usr = Application.Principal.CurrentUser.Identity.Name;
 				var existed =
 					Sessions.FirstOrDefault(
@@ -253,22 +293,54 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Перезагрузка системы
 		/// </summary>
 		public void Reload() {
-			((IResetable) (Application.Files).GetResolver()).Reset(null);
-			((IResetable) Application.Roles).Reset(null);
-			Sessions.Clear();
+			lock (ReloadState) {
+					((IResetable) (Application.Files).GetResolver()).Reset(null);
+					((IResetable) Application.Roles).Reset(null);
+					Sessions.Clear();
 
-			LoadThemas = new TaskWrapper(GetLoadThemasTask());
-			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
-			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
-			ReadyToServeForms = new TaskWrapper(Task.FromResult(true),
-			                                    LoadThemas,
-			                                    MetaCacheLoad,
-			                                    CompileFormulas);
-			MetaCacheLoad.Run();
-			CompileFormulas.Run();
-			LoadThemas.Run();
-			ReadyToServeForms.Run();
+					LoadThemas = new TaskWrapper(GetLoadThemasTask());
+					MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
+					CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
+					ReadyToServeForms = new TaskWrapper(GetCompleteAllTask(),
+					                                    LoadThemas,
+					                                    MetaCacheLoad,
+					                                    CompileFormulas);
+					MetaCacheLoad.Run();
+					CompileFormulas.Run();
+					LoadThemas.Run();
+					ReadyToServeForms.Run();
+				
+			
+			}
 		}
+		/// <summary>
+		/// Объект синхронизации с перезагрузкой
+		/// </summary>
+		public readonly object ReloadState = new object();
+
+		/// <summary>
+		/// Проверяет глобальный маркер очистки Zeta и производит перезапуск системы ( в синхронном режиме)
+		/// </summary>
+		public void CheckGlobalReload() {
+			lock (ReloadState) {
+				if (null != ReadyToServeForms && !ReadyToServeForms.IsCompleted) {
+					ReadyToServeForms.Wait();
+				}
+				var lastrefresh = new NativeZetaReader().GetLastGlobalRefreshTime();
+				if (lastrefresh > LastRefreshTime) {
+					Sessions.Clear(); //иначе будет устаревшая структура
+					Reload();
+					ReadyToServeForms.Wait();
+					LastRefreshTime = lastrefresh;
+					ReloadCount ++;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Счетчик числа перезагрузок
+		/// </summary>
+		public int ReloadCount { get; set; }
 
 		private Task GetCompileFormulasTask() {
 			return new Task(() =>

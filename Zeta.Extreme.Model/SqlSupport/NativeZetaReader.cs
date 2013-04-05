@@ -16,6 +16,8 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/NativeZetaReader.cs
 #endregion
+
+using System;
 using System.Collections.Generic;
 
 namespace Zeta.Extreme.Model.SqlSupport {
@@ -74,6 +76,21 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				Id, Version, ObjAdmin, Dolzh, Contact, Name, Email,  ObjId, ObjName, Login, Active, Roles, SlotList 
 			from [zeta].[normalusr]
 		";
+	
+		private const string Historyquerybase = @"
+			select  Id,Time,CellId,BizKey,Value,Deleted,Usr from zeta.normalhist
+		";
+
+		private const string Cellquerybase = @"
+			select Id, Version, Year, Period, RowId, ColId, ObjId, DetailId, DecimalValue, StringValue, Usr, Currency, ContragentId from zeta.normalcell
+		";
+
+		private const string UserThemaQueryBase = "select login from usm.Underwriter u join usm.usrthemamap um on u.id = um.usr where thema = '{0}' and object = {1}";
+
+		private const string GetCurrencyRateQueryBase =
+				"select value from usm.periodcourse where  year = {0}  and period = {1} and intype ='{2}' and outtype ='{3}'";
+
+		private const string GlobalRefreshDate = "select comdiv.get_global_refresh_time()";
 
 		/// <summary>
 		/// 	Сериализует учетные записи пользователей
@@ -154,6 +171,53 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// <returns> </returns>
 		public IEnumerable<Row> ReadRows(string condition = "") {
 			return Read(condition, Rowquerybase, ReaderToRow);
+		}
+		/// <summary>
+		/// Сериализует историю по конкретной ячейке (не поддерживается полный поиск!!!)
+		/// </summary>
+		/// <param name="targetCellId"></param>
+		/// <returns></returns>
+		public IEnumerable<CellHistory> GetCellHistory(int targetCellId) {
+			return Read("cellid = " + targetCellId, Historyquerybase, ReaderToHistory);
+		}
+		/// <summary>
+		/// Запрашивет ячейки напрямую
+		/// </summary>
+		/// <param name="condition"></param>
+		/// <returns></returns>
+		public IEnumerable<Cell> GetCells(string condition = "") {
+			return Read(condition, Cellquerybase, ReaderToCell);
+		}
+
+		/// <summary>
+		/// Retrieves global refresh hook from Zeta DB
+		/// </summary>
+		/// <returns></returns>
+		public DateTime GetLastGlobalRefreshTime() {
+			return GetScalar(GlobalRefreshDate, DateTime.MinValue);
+		}
+
+
+		/// <summary>
+		/// Retrieves global refresh hook from Zeta DB
+		/// </summary>
+		/// <returns></returns>
+		public string GetThemaResponsiveLogin(string themacode,int objid) {
+			return GetScalar(UserThemaQueryBase, "", themacode, objid);
+
+		}
+
+		/// <summary>
+		/// Получение курса валюты на период
+		/// </summary>
+		/// <param name="year"></param>
+		/// <param name="period"></param>
+		/// <param name="intype"></param>
+		/// <param name="outtype"></param>
+		/// <returns></returns>
+		public decimal GetCurrencyRate(int year, int period, string intype, string outtype = "RUB") {
+			return GetScalar(GetCurrencyRateQueryBase,0m, year, period, intype, outtype);
+			
 		}
 	}
 }

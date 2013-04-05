@@ -7,6 +7,9 @@
     <RootNamespace>Zeta.Extreme</RootNamespace>
     <AssemblyName>Zeta.Extreme.Core</AssemblyName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="*.import" />
     <None Include="Zeta.Extreme.Core.export" />
@@ -17,7 +20,6 @@
     <Compile Include="Abstracts\CachedItemHandlerBase.cs" />
     <Compile Include="Abstracts\IPreloadProcessor.cs" />
     <Compile Include="Abstracts\IQueryPreparator.cs" />
-    <Compile Include="Abstracts\IQueryWithProcessing.cs" />
     <Compile Include="Abstracts\ISerializableSession.cs" />
     <Compile Include="Abstracts\ISessionWithExtendedServices.cs" />
     <Compile Include="Extensions\SerialAccessExtensions.cs" />
@@ -37,14 +39,14 @@
     <Compile Include="Formulas\FormulaParserConstants.cs" />
     <Compile Include="Formulas\IllegalSyntaxFormulaStub.cs" />
     <Compile Include="Formulas\NoExtremeFormulaStub.cs" />
-    <Compile Include="Model\RowTagResolutionTest.cs" />
     <Compile Include="Primary\IScriptGenerator.cs" />
     <Compile Include="Primary\ObjColQueryGeneratorStruct.cs" />
-    <Compile Include="Primary\SimpleObjectDataScriptGenerator.cs" />
+    <Compile Include="Primary\PrimaryConstants.cs" />
+    <Compile Include="Primary\QueryPrototypeExtension.cs" />
+    <Compile Include="Primary\Zeta2SQLScriptGenerator.cs" />
     <Compile Include="Primary\TimeQueryGeneratorStruct.cs" />
     <Compile Include="Primary\DefaultPrimarySource.cs" />
-    <Compile Include="Query\PrepareState.cs" />
-    <Compile Include="Query\QueryEvaluationType.cs" />
+    <Compile Include="Query\ReferenceHandler.cs" />
     <Compile Include="Query\StrongSumProvider.cs" />
     <Compile Include="Query\QueryDelta.cs" />
     <Compile Include="Primary\PrimaryQueryGroup.cs" />
@@ -63,10 +65,6 @@
     <Compile Include="Session.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\.build\bin\Zeta.Extreme.Core.Tests.Debug\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />

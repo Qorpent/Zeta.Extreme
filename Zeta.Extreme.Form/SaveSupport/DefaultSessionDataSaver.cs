@@ -66,17 +66,20 @@ namespace Zeta.Extreme.Form.SaveSupport {
 		/// <param name="result"> </param>
 		/// <param name="user"> </param>
 		protected override void Save(IFormSession session, XElement savedata, SaveResult result, IPrincipal user) {
+			if (result.SaveCells.Length == 0) return;
 			var script = "";
 			foreach (var cell in result.SaveCells) {
 				script += GenerateSaveSql(cell, user);
 			}
-			result.SaveSqlScript = script;
-			using (var c = GetConnection()) {
-				c.Open();
-				var cmd = c.CreateCommand();
-				cmd.CommandText = script;
-				cmd.ExecuteNonQuery();
-			}
+			
+				result.SaveSqlScript = script;
+				using (var c = GetConnection()) {
+					c.Open();
+					var cmd = c.CreateCommand();
+					cmd.CommandText = script;
+					cmd.ExecuteNonQuery();
+				}
+			
 		}
 
 		private IDbConnection GetConnection() {
@@ -85,14 +88,14 @@ namespace Zeta.Extreme.Form.SaveSupport {
 
 		private string GenerateSaveSql(OutCell cell, IPrincipal user) {
 			if (cell.linkedcell.c != 0) {
-				return string.Format("\r\nupdate cell set decimalvalue= {0}, usr= '{1}' where id= {2}",
+				return string.Format("\r\nupdate cell set version=getdate(), decimalvalue= {0}, usr= '{1}' where id= {2}",
 				                     cell.v,
 				                     user.Identity.Name,
 				                     cell.linkedcell.c);
 			}
 			return string.Format(@"
-insert usm.insertdata(year,period,obj,row,col,decimalvalue,stringvalue,usr,op)
-values ({0},{1},{2},{3},{4},{5},{5},'{6}','=')
+insert usm.insertdata(year,period,obj,row,col,decimalvalue,stringvalue,valuta,usr,op)
+values ({0},{1},{2},{3},{4},{5},{5},'{6}','{7}','=')
 ",
 			                     cell.linkedcell.query.Time.Year,
 			                     cell.linkedcell.query.Time.Period,
@@ -100,6 +103,7 @@ values ({0},{1},{2},{3},{4},{5},{5},'{6}','=')
 			                     cell.linkedcell.query.Row.Id,
 			                     cell.linkedcell.query.Col.Id,
 			                     cell.v,
+								 cell.linkedcell.query.Obj.ObjRef.Currency,
 								 user.Identity.Name
 				);
 		}

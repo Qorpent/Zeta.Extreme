@@ -184,6 +184,11 @@ namespace Zeta.Extreme {
 			}
 		}
 
+		/// <summary>
+		/// Источник дополнительных параметров
+		/// </summary>
+		public ISessionPropertySource PropertySource { get; set; }
+
 
 		/// <summary>
 		///     Производит асинхронную подготовку запроса к выполнению использует ту же
@@ -399,6 +404,11 @@ namespace Zeta.Extreme {
 		///     Если включено, службы накапливают статистические данные по работе сессии
 		/// </summary>
 		public bool CollectStatistics { get; private set; }
+
+		/// <summary>
+		/// Хранилище формул сессии
+		/// </summary>
+		public IFormulaStorage FormulaStorage { get; set; }
 
 		/// <summary>
 		///     Позволяет вернуть использованную подсессию в пул

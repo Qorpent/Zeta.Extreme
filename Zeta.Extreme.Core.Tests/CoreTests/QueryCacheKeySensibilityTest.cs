@@ -104,8 +104,8 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 
 		[Test]
 		public void AltObjFilterIsUsedInCache() {
-			var q1 = new Query {Obj = {AltObjFilter = "1"}};
-			var q2 = new Query {Obj = {AltObjFilter = "2"}};
+			var q1 = new Query {Reference = {Contragents = "1"}};
+			var q2 = new Query {Reference = {Contragents = "2"}};
 			Assert.AreNotEqual(q1.GetCacheKey(),q2.GetCacheKey());
 		}
 

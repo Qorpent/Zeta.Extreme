@@ -43,5 +43,7 @@ namespace Zeta.Extreme.Model {
 		/// <param name="item"> </param>
 		/// <returns> </returns>
 		IMetaCache Set<T>(T item) where T : class, IEntity;
+
+
 	}
 }

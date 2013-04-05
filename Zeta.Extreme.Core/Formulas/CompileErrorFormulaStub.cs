@@ -16,6 +16,8 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Core/CompileErrorFormulaStub.cs
 #endregion
+
+using System;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
 
@@ -24,13 +26,15 @@ namespace Zeta.Extreme {
 	/// 	Специальная заглушка для возврата псевдозначения
 	/// </summary>
 	public class CompileErrorFormulaStub : FormulaBase {
+		private Exception error;
+
 		/// <summary>
 		/// 	Устанавливает контекст использования формулы
 		/// </summary>
 		/// <param name="request"> </param>
 		public override void SetContext(FormulaRequest request) {
 			base.SetContext(request);
-			Result = new QueryResult {IsComplete = false, Error = request.ErrorInCompilation};
+			this.error = request.ErrorInCompilation;
 		}
 
 		/// <summary>
@@ -38,12 +42,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <returns> </returns>
 		protected override QueryResult InternalEval() {
-			return Result;
+			return new QueryResult{IsComplete = false, Error = new QueryException(Query,error)};
 		}
-
-		///<summary>
-		///	Константный результат данной формулы
-		///</summary>
-		protected QueryResult Result;
 	}
 }

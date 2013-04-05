@@ -19,7 +19,8 @@
         if(!this.finishEventName)this.finishEventName=this.url+":finish";
 		this.repeatWait = false;
         this.useProgress = !!options.useProgress;
-
+        this.cachekey = options.cachekey || "";
+        this.wrap = options.wrap || function(r){return r;};
 		if(options.timeout){
 			this.basetimeout = options.timeout;
 			this.currenttimeout = this.basetimeout;
@@ -88,7 +89,7 @@
                    self.triggerOnError(result);
                    return;
                 }
-                if (!!self.wrap) result = self.wrap(result);
+                result = self.wrap(result);
                 self.triggerOnSuccess(result);
             });
 		},
@@ -109,6 +110,12 @@
 			});
 		},
         nativeCall : function(params, options){
+            if (this.cachekey){
+                if(root.embedStorage && root.embedStorage[this.cachekey] ){
+                    this.triggerOnSuccess(this.wrap(root.embedStorage[this.cachekey]));
+                    return;
+                }
+            }
             var self = this;
             var myoptions = options || {};
             $.extend(myoptions, {

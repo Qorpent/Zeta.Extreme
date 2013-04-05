@@ -17,6 +17,7 @@
 // PROJECT ORIGIN: Zeta.Extreme.Core/QueryProcessor.cs
 #endregion
 using System;
+using System.Linq;
 using System.Threading;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
@@ -90,16 +91,28 @@ namespace Zeta.Extreme {
 			}
 			return query.Row.Native ?? (IZetaQueryDimension) query.Row;
 		}
+		IFormulaStorage Formulas
+		{
+			get
+			{
+				if (_session is ISessionWithExtendedServices)
+				{
+					return (_session as ISessionWithExtendedServices).FormulaStorage ?? FormulaStorage.Default;
+				}
+				return FormulaStorage.Default;
+			}
+		}
+
 
 		private void PrepareFormulas(IQueryWithProcessing query, IZetaQueryDimension mostpriority) {
 			query.EvaluationType = QueryEvaluationType.Formula;
 			_session.StatIncQueryTypeFormula();
 			var key = GetKey(mostpriority);
-			var formula = FormulaStorage.Default.GetFormula(key, false);
+			var formula = Formulas.GetFormula(key, false);
 			if (null == formula) {
-				FormulaStorage.Default.Register(new FormulaRequest
+				Formulas.Register(new FormulaRequest
 					{Formula = mostpriority.Formula, Language = mostpriority.FormulaType, Key = key});
-				formula = FormulaStorage.Default.GetFormula(key, false);
+				formula = Formulas.GetFormula(key, false);
 			}
 
 			if (null == formula) {
@@ -130,21 +143,21 @@ namespace Zeta.Extreme {
 		}
 
 		private void ExpandSum(IQuery query, IZetaQueryDimension mostpriority) {
-			var peocessablequery = query as IQueryWithProcessing;
-			if(null==peocessablequery)return;
-			peocessablequery.EvaluationType = QueryEvaluationType.Summa;
+			var processablequery = query as IQueryWithProcessing;
+			if(null==processablequery)return;
+			processablequery.EvaluationType = QueryEvaluationType.Summa;
 			_session.StatIncQueryTypeSum();
 			foreach (var r in _sumh.GetSumDelta(mostpriority)) {
-				var sq = r.Apply(peocessablequery);
+				var sq = r.Apply(processablequery);
 				sq = _session.Register(sq);
 				if (null == sq) {
 					continue;
 				}
-				peocessablequery.SummaDependency.Add(new Tuple<decimal, IQuery>(r.Multiplicator, sq));
+				processablequery.SummaDependency.Add(new Tuple<decimal, IQuery>(r.Multiplicator, sq));
 			}
 
-			if (peocessablequery.SummaDependency.Count == 0) {
-				peocessablequery.Result = new QueryResult {IsComplete = true, NumericResult = 0m};
+			if (processablequery.SummaDependency.Count == 0) {
+				processablequery.Result = new QueryResult {IsComplete = true, NumericResult = 0m};
 			}
 		}
 

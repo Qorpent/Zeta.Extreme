@@ -92,5 +92,10 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// </summary>
 		/// <param name="timeout"> </param>
 		void SyncPreEval(int timeout);
+
+		/// <summary>
+		/// Хранилище формул сессии
+		/// </summary>
+		IFormulaStorage FormulaStorage { get; set; }
 	}
 }

@@ -16,6 +16,8 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/IColumnHandler.cs
 #endregion
+
+using System;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.Querying {
@@ -24,7 +26,7 @@ namespace Zeta.Extreme.Model.Querying {
 	/// </summary>
 	public interface IColumnHandler : IQueryDimension<IZetaColumn> {
 		/// <summary>
-		/// 	Простая копия условия на время
+		/// Простая копия условия на время
 		/// </summary>
 		/// <returns> </returns>
 		IColumnHandler Copy();

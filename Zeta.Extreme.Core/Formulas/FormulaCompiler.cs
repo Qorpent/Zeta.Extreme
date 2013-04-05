@@ -25,6 +25,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.CSharp;
+using Qorpent.Model;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
@@ -90,6 +91,7 @@ namespace Zeta.Extreme.DyncamicFormulas {
 			parameters.ReferencedAssemblies.Add("mscorlib.dll");
 			parameters.ReferencedAssemblies.Add("System.dll");
 			parameters.ReferencedAssemblies.Add("System.Core.dll");
+			parameters.ReferencedAssemblies.Add(Assembly.GetAssembly(typeof(IWithId)).CodeBase.Replace("file:///", ""));
 			parameters.ReferencedAssemblies.Add(Assembly.GetAssembly(typeof (IFormula)).CodeBase.Replace("file:///", ""));
 			parameters.ReferencedAssemblies.Add(Assembly.GetAssembly(typeof(BackwardCompatibleFormulaBase)).CodeBase.Replace("file:///", ""));
 

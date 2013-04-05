@@ -44,9 +44,14 @@ namespace Zeta.Extreme.Model.Querying {
 		IObjHandler Obj { get; set; }
 
 		/// <summary>
+		/// Описывает контрагента и/или счет
+		/// </summary>
+		IReferenceHandler Reference { get; set; }
+
+		/// <summary>
 		/// 	Выходная валюта
 		/// </summary>
-		string Valuta { get; set; }
+		string Currency { get; set; }
 
 		/// <summary>
 		/// Текущий кэшированный резултат

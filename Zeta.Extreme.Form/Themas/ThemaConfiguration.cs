@@ -202,16 +202,16 @@ namespace Zeta.Extreme.Form.Themas {
 			result.Name = Name;
 			result.Role = Role;
 			result.Idx = Index;
-			if (ConfigurationProvider.Options.LoadIerarchy) {
+			//if (ConfigurationProvider.Options.LoadIerarchy) {
 				result.IsGroup = IsGroup;
 				result.Group = Group;
-			}
+			//}
 			result.Layout = Layout;
 			result.Visible = Visible;
 			result.IsTemplate = IsTemplate;
-			if (ConfigurationProvider.Options.LoadIerarchy) {
+			//if (ConfigurationProvider.Options.LoadIerarchy) {
 				result.Parent = Parent;
-			}
+			//}
 
 			try {
 				foreach (var output in Outputs.Values) {

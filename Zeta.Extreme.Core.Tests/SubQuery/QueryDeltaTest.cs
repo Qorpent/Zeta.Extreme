@@ -161,10 +161,10 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 
 		[Test]
 		public void Zc248AltObjFilterMove() {
-			var q = new Query {Obj = {AltObjFilter = ""}};
-			var d = new QueryDelta {AltObjFilter = "1878"};
+			var q = new Query {Reference = {Contragents = ""}};
+			var d = new QueryDelta {Contragents = "1878"};
 			var dq = d.Apply(q);
-			Assert.AreEqual("1878",dq.Obj.AltObjFilter);
+			Assert.AreEqual("1878",dq.Reference.Contragents);
 		}
 	}
 }
