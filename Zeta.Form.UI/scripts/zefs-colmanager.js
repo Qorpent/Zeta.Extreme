@@ -77,6 +77,21 @@
             menu.append(li.append($('<a/>').append($('<label/>').append(input, $(col).text()))));
         });
         menu.append($('<li class="divider"/>'), $('<li/>').append($('<a/>').append($('<label/>').append(input, "Нулевые строки"))));
+        var colopts = root.coloptionsstorage.Get();
+        colopts.colsvisible = colopts.colsvisible || {};
+        $.each(colopts.colsvisible, function(col, visible) {
+            if (!visible) menu.find('input[value="' + col + '"]').first().trigger("click");
+        });
+    });
+    $(window.zefs).on(window.zefs.handlers.on_dataload, function() {
+        var formopts = root.formoptionsstorage.Get();
+        if (formopts == null || $.isEmptyObject(formopts)) {
+            root.formoptionsstorage.AddOrUpdate({ hidenullrows: false });
+        } else {
+            if (formopts.hidenullrows) {
+                input.trigger("click");
+            }
+        }
     });
     $(window.zefs).on(window.zefs.handlers.on_dataload, function() {
         var formopts = root.formoptionsstorage.Get();
