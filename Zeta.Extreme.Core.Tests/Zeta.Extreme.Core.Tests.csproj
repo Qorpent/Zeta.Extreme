@@ -15,8 +15,8 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CanCalculateDetails.cs" />
-    <Compile Include="CanCalculateValuta.cs" />
+    <Compile Include="FeatureAndBugFix\CanCalculateDetails.cs" />
+    <Compile Include="FeatureAndBugFix\CanCalculateValuta.cs" />
     <Compile Include="CheckKnownData.cs" />
     <Compile Include="ControlpointBug\ControlpointAllTests.cs" />
     <Compile Include="CoreTests\DefaultRegistryHelperTestBase.cs" />
@@ -24,7 +24,7 @@
     <Compile Include="CoreTests\QueryCacheKeySensibilityTest.cs" />
     <Compile Include="CoreTests\SessionTestBase.cs" />
     <Compile Include="CoreTests\ZatrSimpleTest.cs" />
-    <Compile Include="CountBugFix.cs" />
+    <Compile Include="FeatureAndBugFix\CountBugFix.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\BothColumnAndRowFormula.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\CustomCodeSupport.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\DoExRefBaseTest.cs" />
@@ -33,7 +33,8 @@
     <Compile Include="DatabaseIgnorancePureZeta\RowColAndObjFormula.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\SimpleFormula.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\SimpleHardLink.cs" />
-    <Compile Include="FinplanOldNewMatch.cs" />
+    <Compile Include="FeatureAndBugFix\FinplanOldNewMatch.cs" />
+    <Compile Include="FeatureAndBugFix\Zc493AltDivTest.cs" />
     <Compile Include="FormulaStorageTests\CanParseFormulaWithAltObjFilter.cs" />
     <Compile Include="FormulaStorageTests\DllCacheTests.cs" />
     <Compile Include="MockFormulaTest.cs" />
@@ -47,15 +48,15 @@
     <Compile Include="SubQuery\FormulaCompilerTest.cs" />
     <Compile Include="SubQuery\ZetaVirtualSumHelperTest.cs" />
     <Compile Include="SubQuery\QueryDeltaTest.cs" />
-    <Compile Include="Zc431PrototypeGeneratorTest.cs" />
-    <Compile Include="Zc432AltObjFilterNormalization.cs" />
-    <Compile Include="ZC459ExceptionPropagationTest.cs" />
-    <Compile Include="Zc478Problem.cs" />
-    <Compile Include="Zc480ErrorTestForms.cs" />
-    <Compile Include="Zc483OnPockOtkl.cs" />
-    <Compile Include="Zc486PlayBackHang.cs" />
-    <Compile Include="Zc491CanUseTagAndThemaResolutionInFormulas.cs" />
-    <Compile Include="Zc491RealData.cs" />
+    <Compile Include="FeatureAndBugFix\Zc431PrototypeGeneratorTest.cs" />
+    <Compile Include="FeatureAndBugFix\Zc432AltObjFilterNormalization.cs" />
+    <Compile Include="FeatureAndBugFix\ZC459ExceptionPropagationTest.cs" />
+    <Compile Include="FeatureAndBugFix\Zc478Problem.cs" />
+    <Compile Include="FeatureAndBugFix\Zc480ErrorTestForms.cs" />
+    <Compile Include="FeatureAndBugFix\Zc483OnPockOtkl.cs" />
+    <Compile Include="FeatureAndBugFix\Zc486PlayBackHang.cs" />
+    <Compile Include="FeatureAndBugFix\Zc491CanUseTagAndThemaResolutionInFormulas.cs" />
+    <Compile Include="FeatureAndBugFix\Zc491RealData.cs" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>
