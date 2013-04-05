@@ -15,8 +15,8 @@ $.extend(window.zeta.handlers, {
     };
 
     ZetaUser.prototype.init = function () {
-        if (!!window.zeta.sessionstorage) {
-            this.details = window.zeta.sessionstorage.getUser(this.login);
+        if (!!window.zeta.userinfostorage) {
+            this.details = window.zeta.userinfostorage.Get()[this.login];
         }
         if (!this.details || $.isEmptyObject(this.details)) {
             this.getDetails();
@@ -51,10 +51,10 @@ $.extend(window.zeta.handlers, {
         }).success($.proxy(function(d) {
             this.details = window.zeta.api.metadata.userinfo.wrap(d);
             this.loginToName();
-            if (!!window.zeta.sessionstorage) {
+            if (!!window.zeta.userinfostorage) {
                 var user = {};
                 user[this.details.Login.toLowerCase()] = this.details;
-                window.zeta.sessionstorage.updateUser(user);
+                window.zeta.userinfostorage.AddOrUpdate(user);
             }
         }, this));
     };

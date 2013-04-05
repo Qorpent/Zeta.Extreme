@@ -1,6 +1,6 @@
 ﻿(function(){
 var root = window.zefs = window.zefs || {};
-window.zefs.handlers = $.extend(window.zefs.handlers, {
+root.handlers = $.extend(root.handlers, {
     on_renderfinished : "renderfinished"
 });
 $.extend(root,{
@@ -82,7 +82,7 @@ $.extend(root,{
 			});
 			table.append(body);
 
-            $(root).trigger(window.zefs.handlers.on_renderfinished, table);
+            $(root).trigger(root.handlers.on_renderfinished, table);
 
 			session.wasRendered = true;
 			return session;
