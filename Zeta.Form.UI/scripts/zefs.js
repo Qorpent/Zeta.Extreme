@@ -9,6 +9,7 @@ window.zefs.handlers = $.extend(window.zefs.handlers, {
     on_sessionload : "sessionload",
     on_structureload : "structureload",
     // Form handlers:
+    on_dataload : "dataload",
     on_formready : "forrmready",
     on_statusload : "statusload",
     on_statusfailed : "statusfaild",
@@ -352,6 +353,7 @@ root.init = root.init ||
         if(result.state != "w"){
             // Это штука для перерисовки шапки
             $(window).trigger("resize");
+            $(root).trigger(root.handlers.on_dataload);
         } else {
             var idx = !$.isEmptyObject(result.data) ? result.ei+1 : result.si;
             window.setTimeout(function(){api.data.start.execute({session: root.myform.sessionId,startidx: idx})},500);
@@ -387,6 +389,13 @@ root.init = root.init ||
     api.data.save.onSuccess(function() {
         root.myform.datatosave = {};
         api.data.savestate.execute({session: root.myform.sessionId});
+    });
+
+    api.data.save.onError(function(e, result) {
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            title: "Во время сохранения формы произошла ошибка",
+            text: JSON.stringify(result)
+        });
     });
 
     api.data.savestate.onSuccess(function(e, result) {

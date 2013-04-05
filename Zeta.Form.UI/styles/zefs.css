@@ -51,7 +51,7 @@ div.open>.tooltip {
 }
 
 .zefsformheader.isblock {
-    background-color: #F5D8B8;
+    background-color: #FDFDBD;
 }
 
 .zefsformheader.ischecked {
@@ -79,7 +79,7 @@ div.open>.tooltip {
 }
 
 .zefsreport, .zefsrestart, .zefshotkeys,
-.impersonator,.information,
+.impersonator,.information, .zefsfaq,
 .zefsdebug, .feedback {
     margin-top: 4px;
     margin-right: 3px;
