@@ -92,6 +92,7 @@
                 input.trigger("click");
             }
         }
+        window.zefs.restorelaststate();
     });
     b.tooltip({placement: 'bottom'});
     zefscolmanager.body = $('<div/>').append(list);
