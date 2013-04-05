@@ -1,5 +1,6 @@
 ﻿using System;
 using MongoDB.Bson;
+using MongoDB.Driver;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration {
@@ -18,7 +19,12 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (attachment.Comment != null) document.Set("comment", attachment.Comment);
             if (attachment.User != null) document.Set("owner", attachment.User);
             if (attachment.MimeType != null) document.Set("contentType", attachment.MimeType);
-            document.Set("uploadDate", new BsonDateTime(attachment.Version.Year <= 1990 ? DateTime.Now : attachment.Version));
+
+            if (attachment.Version.Year <= 1990) {
+                attachment.Version = DateTime.Now;
+            }
+            document.Set("uploadDate", DateTime.Now);
+
             document.Set("revision", attachment.Revision);
             if (attachment.Extension != null) document.Set("extension", attachment.Extension);
             document.Set("metadata", new BsonDocument(attachment.Metadata));
@@ -50,13 +56,15 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (document.Contains("owner")) attachment.User = document["owner"].ToString();
             if (document.Contains("uploadDate")) attachment.Version = document["uploadDate"].ToLocalTime();
             if (document.Contains("contentType")) attachment.MimeType = document["contentType"].ToString();
-            if (document.Contains("revision")) attachment.Revision = document["revision"].ToInt32();
-            if (document.Contains("extension")) attachment.Extension = document["extension"].ToString();
+            if (document.Contains("md5")) attachment.Hash = document["md5"].ToString();
             if (document.Contains("length")) attachment.Size = document["length"].ToInt64();
-
+            if (document.Contains("revision")) attachment.Revision = document["revision"].ToInt32();
+            
             foreach (var el in (BsonDocument)document["metadata"]) {
                 attachment.Metadata[el.Name] = el.Value;
             }
+
+            if (document.Contains("extension")) attachment.Extension = document["extension"].ToString();
         }
 
         /// <summary>
@@ -83,20 +91,24 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 document.Set("owner", attachment.User);
             }
 
+            if (DateTime.Compare(attachment.Version, new DateTime()) != 0) {
+                document.Set("uploadDate", attachment.Version);
+            }
+
             if (attachment.MimeType != null) {
                 document.Set("contentType", attachment.MimeType);
             }
 
-            if (attachment.Extension != null) {
-                document.Set("extension", attachment.Extension);
+            if (attachment.Hash != null) {
+                document.Set("md5", attachment.Hash);
+            }
+
+            if (attachment.Size > 0) {
+                document.Set("length", attachment.Size);
             }
 
             if (attachment.Revision > 0) {
                 document.Set("revision", attachment.Revision);
-            }
-
-            if (DateTime.Compare(attachment.Version, new DateTime()) != 0) {
-                document.Set("uploadDate", attachment.Version);
             }
 
             if (attachment.Metadata.Count != 0) {
@@ -105,9 +117,27 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 }
             }
 
+            if (attachment.Extension != null) {
+                document.Set("extension", attachment.Extension);
+            }
+
             document.Set("deleted", false);
 
             return document;
+        }
+
+        /// <summary>
+        ///     Makes a QueryDocument for update a document by Uid
+        /// </summary>
+        /// <param name="attachment">an Attachment instance</param>
+        /// <returns>QueryDocument clause</returns>
+        public static QueryDocument UpdateByUidClause(Attachment attachment) {
+            return new QueryDocument(
+                new BsonElement(
+                    "_id",
+                    attachment.Uid
+                )
+            );
         }
     }
 }
