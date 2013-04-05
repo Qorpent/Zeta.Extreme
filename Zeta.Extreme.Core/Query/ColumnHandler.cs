@@ -39,30 +39,21 @@ namespace Zeta.Extreme {
 		public IColumnHandler Copy() {
 			return MemberwiseClone() as ColumnHandler;
 		}
-
 		/// <summary>
-		/// 	Нормализует объект зоны
+		/// Нормализует измерение
 		/// </summary>
-		/// <param name="session"> </param>
-		/// <exception cref="NotImplementedException"></exception>
-		public override void Normalize(ISession session)
+		/// <param name="query"></param>
+		public override void Normalize(IQuery query)
 		{
-			Normalize(session,null);
+			base.Normalize(query);
+			if (IsStandaloneSingletonDefinition())
+			{
+				//try load native
+				Native = MetaCache.Get<IZetaColumn>(0 == Id ? (object)Code : Id);
+			}
+			ResolveSingleColFormula(query.Session,query.Row);
 		}
 
-		/// <summary>
-		/// 	Нормализует колонку до нормали
-		/// </summary>
-		/// <param name="session"> </param>
-		/// <param name="row"></param>
-		public void Normalize(ISession session,IRowHandler row) {
-			var cache = session == null ? MetaCache.Default : session.GetMetaCache();
-			if (IsStandaloneSingletonDefinition()) {
-				//try load native
-				Native = cache.Get<IZetaColumn>(0 == Id ? (object) Code : Id);
-			}
-			ResolveSingleColFormula(session,row);
-		}
 
 		private void ResolveSingleColFormula(ISession session, IRowHandler row) {
 			if (IsFormula && (FormulaType == "boo" || FormulaType == "cs")) {

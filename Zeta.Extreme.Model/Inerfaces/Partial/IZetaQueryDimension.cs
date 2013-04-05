@@ -18,6 +18,7 @@
 #endregion
 using System.Collections.Generic;
 using Qorpent.Model;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
@@ -25,7 +26,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 	/// </summary>
 	public interface IZetaQueryDimension : IEntity,
 		IWithFormula
-	{		
+	{		 
 		/// <summary>
 		/// Temporary (local) properties collection
 		/// </summary>

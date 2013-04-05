@@ -1,8 +1,10 @@
+using System;
+
 namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// Интерфейс измерения "контрагент"
 	/// </summary>
-	public interface IReferenceHandler:IWithCacheKey {
+	public interface IReferenceHandler:IQueryDimension {
 		/// <summary>
 		/// Фильтр по контрагентам
 		/// </summary>
@@ -11,11 +13,7 @@ namespace Zeta.Extreme.Model.Querying {
 		/// Фильтр по счетам
 		/// </summary>
 		string Accounts { get; set; }
-		/// <summary>
-		/// Нормализация ищмерения для запроса
-		/// </summary>
-		/// <param name="session"></param>
-		void Normalize(ISession session,IObjHandler handler);
+
 		/// <summary>
 		/// Копирование при копировании запроса
 		/// </summary>

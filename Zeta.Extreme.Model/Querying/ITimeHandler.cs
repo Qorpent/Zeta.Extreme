@@ -20,7 +20,7 @@ namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
 	/// 	Стандартный описатель измерения времени
 	/// </summary>
-	public interface ITimeHandler : IWithCacheKey {
+	public interface ITimeHandler : IQueryDimension {
 		/// <summary>
 		/// 	Год
 		/// </summary>
@@ -68,11 +68,5 @@ namespace Zeta.Extreme.Model.Querying {
 		/// </summary>
 		/// <returns> </returns>
 		ITimeHandler Copy();
-
-		/// <summary>
-		/// 	Нормализует формульные года и периоды
-		/// </summary>
-		/// <param name="session"> </param>
-		void Normalize(ISession session = null);
 	}
 }

@@ -97,23 +97,26 @@ namespace Zeta.Extreme {
 			return MemberwiseClone() as ObjHandler;
 		}
 
+
+
 		/// <summary>
-		/// 	Нормализует объект зоны
+		/// Нормализует измерение
 		/// </summary>
-		/// <param name="session"> </param>
-		/// <exception cref="NotImplementedException"></exception>
-		public override void Normalize(ISession session) {
-			if (Type == ZoneType.None) {
+		/// <param name="query"></param>
+		public override void Normalize(IQuery query)
+		{
+			base.Normalize(query);
+			if (Type == ZoneType.None)
+			{
 				Type = ZoneType.Obj;
 			}
-			NormalizeNative(session);
+			NormalizeNative(query.Session);
 		}
-
 	
 
 		private void NormalizeNative(ISession session) {
 			if (IsStandaloneSingletonDefinition()) {
-				var cache = session == null ? MetaCache.Default : session.GetMetaCache();
+				var cache = session == null ? Model.MetaCache.Default : session.GetMetaCache();
 				switch (Type) {
 					case ZoneType.Obj:
 						Native = cache.Get<IZetaMainObject>(GetEffectiveKey());

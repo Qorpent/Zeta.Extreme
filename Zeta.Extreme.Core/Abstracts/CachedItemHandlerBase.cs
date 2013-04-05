@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Qorpent.Model;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
 
@@ -61,6 +62,18 @@ namespace Zeta.Extreme {
 				_native = value;
 				InvalidateCacheKey();
 			}
+		}
+		/// <summary>
+		/// Акцессор к метакэшу
+		/// </summary>
+		protected IMetaCache MetaCache {
+			get {
+				if (null == _query) return Model.MetaCache.Default;
+				 if (null == _query.Session) return Model.MetaCache.Default;
+				return _query.Session.GetMetaCache();
+			}
+
+
 		}
 
 		/// <summary>
@@ -279,12 +292,6 @@ namespace Zeta.Extreme {
 			return !IsFormula;
 		}
 
-		/// <summary>
-		/// 	Нормализует объект зоны
-		/// </summary>
-		/// <param name="session"> </param>
-		/// <exception cref="NotImplementedException"></exception>
-		public abstract void Normalize(ISession session);
 
 		/// <summary>
 		/// 	An index of object
@@ -413,5 +420,14 @@ namespace Zeta.Extreme {
 		private TItem _native;
 		private string _tag;
 		private string _name;
+		private IQuery _query;
+
+		/// <summary>
+		/// Нормализует измерение
+		/// </summary>
+		/// <param name="query"></param>
+		public virtual void Normalize(IQuery query) {
+			this._query = query;
+		}
 	}
 }
