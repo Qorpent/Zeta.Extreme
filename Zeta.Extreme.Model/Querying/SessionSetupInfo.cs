@@ -25,5 +25,10 @@ namespace Zeta.Extreme.Model.Querying {
 		/// Включить сбор статистики
 		/// </summary>
 		public bool CollectStatistics { get; set; }
+
+		/// <summary>
+		/// Источник дополнительных свойств
+		/// </summary>
+		public ISessionPropertySource PropertySource { get; set; }
 	}
 }

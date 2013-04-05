@@ -42,27 +42,27 @@
         root.console.authorize(l.val(), p.val());
     }
 
-    $(window.zeta).on(window.zeta.handlers.on_loginsuccess, function(e) {
-        window.zeta.console.Setup();
+    $(window.zeta).on(window.zeta.handlers.on_loginsuccess, function() {
+        window.zeta.console.whoami();
         f.hide();
         m.show();
     });
 
-    $(window.zeta).on(window.zeta.handlers.on_deimpersonate, function(e) {
+    $(window.zeta).on(window.zeta.handlers.on_deimpersonate, function() {
 //        window.zeta.console.whoami();
 //        deimp.hide();
 //        implogin.show();
         location.reload();
     });
 
-    $(window.zeta).on(window.zeta.handlers.on_impersonate, function(e) {
+    $(window.zeta).on(window.zeta.handlers.on_impersonate, function() {
 //        window.zeta.console.whoami();
 //        implogin.hide();
 //        deimp.show();
         location.reload();
     });
 
-    $(window.zeta).on(window.zeta.handlers.on_logout, function(e) {
+    $(window.zeta).on(window.zeta.handlers.on_logout, function() {
         location.reload();
     });
 
@@ -70,11 +70,11 @@
         e.stopPropagation();
     });
 
-    var authorizer = new root.security.Widget("authorizer", root.console.layout.position.layoutHeader, "right", { authonly: false, priority: 100, ready: function() {
-        if (window.zeta.security.user != null) {
-            if (window.zeta.security.user.getLogonName() != "") {
+    var authorizer = new root.Widget("authorizer", root.console.layout.position.layoutHeader, "right", { authonly: false, priority: 100, ready: function() {
+        if (window.zeta.user != null) {
+            if (window.zeta.user.getLogonName() != "") {
                 m.show();
-                if (window.zeta.security.user.getImpersonation()) {
+                if (window.zeta.user.getImpersonation()) {
                     deimp.show();
                     implogin.hide();
                 }

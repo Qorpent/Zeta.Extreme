@@ -33,5 +33,32 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			MyFormServer.MetaCacheLoad.Wait();
 			return new PeriodCatalogHelper().GetPeriodGroups();
 		}
+
+		/// <summary>
+		/// ƒанное действие умеет поддреживать статус 304
+		/// </summary>
+		/// <returns></returns>
+		protected override bool GetSupportNotModified() {
+			return true;
+		}
+
+		/// <summary>
+		/// 	использует общий ETag сервера форм
+		/// </summary>
+		/// <returns> </returns>
+		protected override string EvalEtag() {
+			MyFormServer.MetaCacheLoad.Wait();
+			return FormServer.Default.GetCommonETag();
+		}
+
+		/// <summary>
+		/// 	override if Yr action provides 304 state  and return Last-Modified-State header
+		/// </summary>
+		/// <returns> </returns>
+		protected override System.DateTime EvalLastModified() {
+			MyFormServer.MetaCacheLoad.Wait();
+			return FormServer.Default.GetCommonLastModified();
+		}
+
 	}
 }

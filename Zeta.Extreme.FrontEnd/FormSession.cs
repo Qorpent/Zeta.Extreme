@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
 using Qorpent.Applications;
+using Qorpent.Log;
 using Qorpent.Mvc;
 using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
@@ -71,11 +72,57 @@ namespace Zeta.Extreme.FrontEnd {
 			Created = DateTime.Now;
 			Usr = Application.Current.Principal.CurrentUser.Identity.Name;
 			IsStarted = false;
-			ObjInfo = new {Object.Id, Object.Code, Object.Name};
-			FormInfo = new {Template.Code, Template.Name};
+			var reader = new NativeZetaReader();
+			var currency = Object.Currency;
+			if (string.IsNullOrWhiteSpace(currency)) {
+				currency = "RUB";
+			}
+			decimal rate = 1;
+			if (currency != "RUB") {
+				rate = reader.GetCurrencyRate(Year, Period, currency, "RUB");
+			}
+			ObjInfo = new
+				{
+					Object.Id, 
+					Object.Code, 
+					Object.Name,
+					Currency=currency,
+					CurrencyRate = rate,
+				};
+			
+			var holdlogin = GetHoldLogin(reader);
+			FormInfo = new
+				{
+					Template.Code, 
+					Template.Name, 
+					ObjectResponsibility = reader.GetThemaResponsiveLogin(Template.Thema.Code, Object.Id), 
+					HoldResponsibility = holdlogin ,
+					Status = Template.Thema.GetParameter("status",""),
+					FirstYear = Template.Thema.GetParameter("firstyear", ""),
+					RolePrefix = Template.Thema.GetParameter("roleprefix", ""),
+				};
 			NeedMeasure = Template.ShowMeasureColumn;
 			Activations = 1;
+			Logger = Application.Current.LogManager.GetLog("form.log", this);
+
+
 		}
+
+		private string GetHoldLogin(NativeZetaReader reader) {
+			int id = 0;
+			var holdlogin = "";
+			var holdobj = MetaCache.Default.Get<IZetaMainObject>("0CH");
+			if (holdobj != null) {
+				id = holdobj.Id;
+				holdlogin = reader.GetThemaResponsiveLogin(Template.Thema.Code, id);
+			}
+			return holdlogin;
+		}
+
+		/// <summary>
+		/// Журнал
+		/// </summary>
+		public IUserLog Logger { get; set; }
 
 
 		/// <summary>
@@ -126,6 +173,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Сессия работы с данными
 		/// </summary>
 		[IgnoreSerialize] public ISession DataSession { get; private set; }
+		
 
 		/// <summary>
 		/// 	Задача формирования структуры
@@ -272,23 +320,6 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		/// <summary>
-		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
-		/// </summary>
-		/// <returns> </returns>
-		public LockStateInfo GetCurrentLockInfo() {
-			var isopen = Template.IsOpen;
-			Template.CleanupStates();
-			var state = Template.GetState(Object, null);
-			var cansave = state == "0ISOPEN";
-			return new LockStateInfo
-				{
-					isopen = isopen,
-					state = state,
-					cansave = cansave,
-				};
-		}
-
-		/// <summary>
 		/// 	Коллекция контрольных точек
 		/// </summary>
 		[IgnoreSerialize] public ControlPointResult[] ControlPoints {
@@ -407,12 +438,13 @@ namespace Zeta.Extreme.FrontEnd {
 						 name = r.Name,
 						 idx = ri.i,
 						 iscaption = r.IsMarkSeted("0CAPTION"),
-						 isprimary = !r.IsFormula && !r.IsMarkSeted("0SA") && 0 == r.Children.Count,
+						 isprimary = r.GetIsPrimary(),
 						 level = ri.l,
 						 number = r.OuterCode,
 						 measure = NeedMeasure ? r.ResolveMeasure() : "",
 						 controlpoint = r.IsMarkSeted("CONTROLPOINT"),
-						 exref = null!=r.ExRefTo
+						 exref = null!=r.ExRefTo,
+						 format = r.ResolveTag("numberformat")
 					 })
 					.Union(
 						(from ci in cols
@@ -427,7 +459,8 @@ namespace Zeta.Extreme.FrontEnd {
 								 year = c.Year,
 								 period = c.Period,
 								 controlpoint = c.ControlPoint,
-								 exref = null!=c.Target && c.Target.IsMarkSeted("DOEXREF")
+								 exref = null!=c.Target && c.Target.IsMarkSeted("DOEXREF"),
+								 format = c.NumberFormat
 							 })
 					).ToArray();
 			sw.Stop();
@@ -464,6 +497,7 @@ namespace Zeta.Extreme.FrontEnd {
 				}
 			}
 			InitSaveMode = false;
+			Logger.Info("data loaded");
 		}
 
 		private void LoadNoPrimary(IDictionary<string, IQuery> queries) {
@@ -556,18 +590,21 @@ namespace Zeta.Extreme.FrontEnd {
 				var cellid = 0;
 				if (null != q_.Value && null != q_.Value.Result) {
 					val = q_.Value.Result.NumericResult.ToString("0.#####", CultureInfo.InvariantCulture);
-					if (q_.Value.Result.Error != null) {
-						val = q_.Value.Result.Error.Message;
-					}
+					
 					cellid = q_.Value.Result.CellId;
 				}
 				var realkey = "";
 				if (canbefilled) {
 					realkey = q_.Value.Row.Code + "_" + q_.Value.Col.Code + "_" + q_.Value.Time.Year + "_" + q_.Value.Time.Period;
 				}
+				var cell = new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, ri = realkey};
+				if (q_.Value.Result.Error != null) {
+					cell.iserror = true;
+					cell.error = q_.Value.Result.Error;
+				}
 
 				lock (Data) {
-					Data.Add(new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, ri = realkey});
+					Data.Add(cell);
 				}
 			}
 		}
@@ -657,13 +694,23 @@ namespace Zeta.Extreme.FrontEnd {
 			rows = result.ToArray();
 		}
 
-		private void AddRow(IList<IdxRow> result, IZetaRow row, int level) {
+		private void AddRow(IList<IdxRow> result, IZetaRow row, int level, bool markreadonly= false) {
 			_ridx++;
-			result.Add(new IdxRow {i = _ridx, l = level, _ = row});
-			var children = row.Children.OrderBy(_ => _.GetSortKey()).ToArray();
+			bool mymarkreadonly = markreadonly;
+			var myrow = row;
+			if (myrow.RefTo != null) {
+				myrow = (IZetaRow) myrow.RefTo.GetCopyOfHierarchy();
+				myrow.Name = row.Name;
+				mymarkreadonly = true;
+			}
+			if (mymarkreadonly) {
+				myrow.LocalProperties["readonly"] = true;
+			}
+			result.Add(new IdxRow {i = _ridx, l = level, _ = myrow});
+			var children = myrow.Children.OrderBy(_ => _.GetSortKey()).ToArray();
 			foreach (var c in children) {
 				if (IsRowMatch(c)) {
-					AddRow(result, c, level + 1);
+					AddRow(result, c, level + 1,mymarkreadonly);
 				}
 			}
 		}
@@ -685,6 +732,12 @@ namespace Zeta.Extreme.FrontEnd {
 			if (row.IsMarkSeted("0NOINPUT")) {
 				return false;
 			}
+			var viewforgroup = row.ResolveTag("viewforgroup");
+			if (!string.IsNullOrWhiteSpace(viewforgroup)) {
+				if (!Object.IsMatchAliases(viewforgroup)) {
+					return false;
+				}
+			}
 			return true;
 		}
 
@@ -692,21 +745,39 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
 		/// </summary>
 		/// <returns> </returns>
-		public LockStateInfo GetCanBlockInfo() {
+		public LockStateInfo GetStateInfo() {
 			var isopen = Template.IsOpen;
 			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
+			if (string.IsNullOrWhiteSpace(state)) {
+				state = "0ISOPEN";
+			}
 			var cansave = state == "0ISOPEN";
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
-			var isinrole = Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, Template.UnderwriteRole);
-			var canblock = state == "0ISOPEN" && string.IsNullOrWhiteSpace(message) && isinrole;
+			var principal = Usr.toPrincipal();
+			
+			var haslockrole = Application.Current.Roles.IsInRole(principal, Template.UnderwriteRole);
+			var hasholdlockrole = Application.Current.Roles.IsInRole(principal, "HOLDUNDERWRITER");
+			var hasnocontrolpoointsrole = Application.Current.Roles.IsInRole(principal,"SYS_NOCONTROLPOINTS",true);
+			var canblock = state == "0ISOPEN" && (string.IsNullOrWhiteSpace(message)||(message=="cpavoid"&&hasnocontrolpoointsrole)) && haslockrole;
+			var canopen = state != "0ISOPEN" && haslockrole && hasholdlockrole;
+			var cancheck = state == "0ISBLOCK" && haslockrole &&  hasholdlockrole;
+			var cansaveoverblock = Application.Current.Roles.IsInRole(principal, "NOBLOCK",true);
+			cansave = cansave || cansaveoverblock;
 			return new LockStateInfo
 				{
 					isopen = isopen,
 					state = state,
 					cansave = cansave,
 					canblock = canblock,
-					message = message
+					message = message,
+					haslockrole = haslockrole,
+					hasholdlockrole = hasholdlockrole,
+					hasnocontrolpoointsrole = hasnocontrolpoointsrole,
+					canopen = canopen,
+					cancheck  = cancheck,
+					cansaveoverblock = cansaveoverblock,
+					hasbadcontrolpoints = message=="cpavoid" || message.Contains("точк")
 				};
 		}
 
@@ -717,6 +788,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public bool BeginSaveData(XElement xmldata) {
 			lock (this) {
+				
 				if (null != _currentSaveTask) {
 					if (!_currentSaveTask.IsFaulted) {
 						_currentSaveTask.Wait();
@@ -724,6 +796,7 @@ namespace Zeta.Extreme.FrontEnd {
 				}
 				CurrentSaver = CurrentSaver ?? (null == FormServer ? null : FormServer.GetSaver()) ?? new DefaultSessionDataSaver();
 				_currentSaveTask = CurrentSaver.BeginSave(this, xmldata, Application.Current.Principal.CurrentUser);
+				Logger.Info("save started");
 				return true;
 			}
 		}
@@ -778,7 +851,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns> </returns>
 		public bool DoLockForm() {
-			var currentstate = GetCanBlockInfo();
+			var currentstate = GetStateInfo();
 			if (currentstate.canblock) {
 				Template.SetState(Object, null, "0ISBLOCK");
 				return true;
@@ -820,8 +893,9 @@ namespace Zeta.Extreme.FrontEnd {
 		private static IFormAttachmentStorage GetFormAttachStorage() {
 			var result = Application.Current.Container.Get<IFormAttachmentStorage>();
 			if (null == result) {
+				var basestorage = Application.Current.Container.Get<IAttachmentStorage>("attachment.source") ?? new DbfsAttachmentStorage();
 				result = new FormAttachmentSource();
-				((FormAttachmentSource) result).SetStorage(new DbfsAttachmentStorage());
+				((FormAttachmentSource) result).SetStorage(basestorage);
 			}
 			return result;
 		}
@@ -871,7 +945,7 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void EnsureDataSession() {
-			DataSession = DataSession ?? ExtremeFactory.CreateSession(new SessionSetupInfo {CollectStatistics = true});
+			DataSession = DataSession ?? ExtremeFactory.CreateSession(new SessionSetupInfo {CollectStatistics = true, PropertySource = new FormSessionDataSessionPropertySoruce(this)});
 		}
 
 		#region Nested type: IdxCol
@@ -906,5 +980,6 @@ namespace Zeta.Extreme.FrontEnd {
 		private IdxCol[] primarycols;
 		private IdxRow[] primaryrows;
 		private IdxRow[] rows;
-		}
+
+	}
 }

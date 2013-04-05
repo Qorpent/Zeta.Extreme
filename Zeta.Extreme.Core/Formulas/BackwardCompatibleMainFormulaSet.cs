@@ -44,6 +44,9 @@ namespace Zeta.Extreme {
 		/// <param name="query"> </param>
 		/// <returns> </returns>
 		public int monthCount(IQuery query) {
+			if (query.Time.Periods != null && 1 != query.Time.Periods.Length) {
+				return query.Time.Periods.Length;
+			}
 			return monthCount(query.Time.Period);
 		}
 

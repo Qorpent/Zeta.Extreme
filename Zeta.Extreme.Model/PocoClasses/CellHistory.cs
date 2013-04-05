@@ -35,7 +35,7 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		///     Merged code of source <see cref="Cell" />
 		/// </summary>
-		public string PseudoCode { get; set; }
+		public string BizKey { get; set; }
 
 		/// <summary>
 		///     ID of target <see cref="Cell" />
@@ -56,5 +56,12 @@ namespace Zeta.Extreme.Model {
 		///     New value
 		/// </summary>
 		public string Value { get; set; }
+
+
+
+		/// <summary>
+		/// PK ID in database terms
+		/// </summary>
+		public int Id { get; set; }
 	}
 }

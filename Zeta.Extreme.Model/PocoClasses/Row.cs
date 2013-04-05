@@ -27,6 +27,7 @@ using Qorpent.Model;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Model {
 	/// <summary>
@@ -444,7 +445,7 @@ namespace Zeta.Extreme.Model {
 			return true;
 		}
 
-
+		
 		/// <summary>
 		/// Prepares shallow non hierarchical copy of this node
 		/// </summary>
@@ -454,14 +455,14 @@ namespace Zeta.Extreme.Model {
 			result._children = new List<IZetaRow>();
 			result._allchildren = null;
 			result.LocalProperties = new Dictionary<string, object>(LocalProperties);
-			
-				foreach (var row in _children)
-				{
+			if (null != _children) {
+				foreach (var row in _children) {
 					var r_ = row.GetCopyOfHierarchy();
 					r_.Parent = result;
 					result._children.Add((IZetaRow) r_);
 				}
-			
+			}
+
 			if (null != result.RefTo)
 			{
 				result.RefTo = (IZetaRow) result.RefTo.GetCopyOfHierarchy();

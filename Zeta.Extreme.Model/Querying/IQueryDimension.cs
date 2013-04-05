@@ -23,10 +23,21 @@ using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.Querying {
 	/// <summary>
+	/// Base query dimension descriptor
+	/// </summary>
+	public interface IQueryDimension : IWithCacheKey {
+		/// <summary>
+		/// Нормализует измерение
+		/// </summary>
+		/// <param name="session"></param>
+		void Normalize(IQuery query);
+	}
+
+	/// <summary>
 	/// 	Описывает стандартное измерение запросов Zeta
 	/// </summary>
 	/// <typeparam name="TItem"> </typeparam>
-	public interface IQueryDimension<TItem> : IWithCacheKey, IZetaQueryDimension, IEntity, IWithFormula where TItem : class, IWithCode, IWithId, IWithTag {
+	public interface IQueryDimension<TItem> : IZetaQueryDimension, IQueryDimension where TItem : class, IWithCode, IWithId, IWithTag {
 		/// <summary>
 		/// 	Набор кодов элемента
 		/// </summary>
@@ -52,12 +63,5 @@ namespace Zeta.Extreme.Model.Querying {
 		/// </summary>
 		/// <returns> </returns>
 		bool IsPrimary();
-
-		/// <summary>
-		/// 	Нормализует объект зоны
-		/// </summary>
-		/// <param name="session"> </param>
-		/// <exception cref="NotImplementedException"></exception>
-		void Normalize(ISession session);
-		}
+	}
 }

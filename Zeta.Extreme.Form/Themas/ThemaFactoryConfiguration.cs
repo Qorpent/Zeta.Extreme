@@ -53,6 +53,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <returns> </returns>
 		public IThemaFactory Configure() {
 			var result = new ThemaFactory();
+			
 			result.Version = Version;
 			result.SrcXml = SrcXml.ToString();
 			foreach (var thcfg in _configurations) {
@@ -63,9 +64,10 @@ namespace Zeta.Extreme.Form.Themas {
 					result.Themas.Add(thema);
 				}
 			}
-			foreach (var thema in result.Themas) {
+			var allthemas = result.Themas.ToArray();
+			foreach (var thema in allthemas) {
 				if (thema.Group.IsNotEmpty()) {
-					var grp = result.Themas.FirstOrDefault(x => x.Code == thema.Group);
+					var grp = allthemas.FirstOrDefault(x => x.Code == thema.Group);
 					if (null != grp) {
 						((Thema) grp).GroupMembers.Add(thema);
 					}

@@ -33,5 +33,33 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			MyFormServer.MetaCacheLoad.Wait();
 			return new AccessibleObjectsHelper().GetAccessibleObjects();
 		}
+
+		/// <summary>
+		/// Данное действие умеет поддреживать статус 304
+		/// </summary>
+		/// <returns></returns>
+		protected override bool GetSupportNotModified()
+		{
+			return true;
+		}
+
+		/// <summary>
+		/// Etag привязан к пользователю
+		/// </summary>
+		/// <returns></returns>
+		protected override string EvalEtag() {
+			MyFormServer.MetaCacheLoad.Wait();
+			return FormServer.Default.GetUserETag();
+		}
+
+		/// <summary>
+		/// 	override if Yr action provides 304 state  and return Last-Modified-State header
+		/// </summary>
+		/// <returns> </returns>
+		protected override System.DateTime EvalLastModified()
+		{
+			MyFormServer.MetaCacheLoad.Wait();
+			return FormServer.Default.GetCommonLastModified();
+		}
 	}
 }

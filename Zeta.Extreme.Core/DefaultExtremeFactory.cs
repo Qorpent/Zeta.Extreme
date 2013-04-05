@@ -31,7 +31,7 @@ namespace Zeta.Extreme {
 		/// <returns></returns>
 		public ISession CreateSession(SessionSetupInfo setupInfo = null) {
 			setupInfo = setupInfo ?? new SessionSetupInfo();
-			return new Session(setupInfo.CollectStatistics);
+			return new Session(setupInfo.CollectStatistics){PropertySource = setupInfo.PropertySource};
 		}
 
 		/// <summary>
@@ -45,7 +45,7 @@ namespace Zeta.Extreme {
 				result.Col = setupInfo.Col;
 				result.Obj = setupInfo.Obj;
 				result.Time = setupInfo.Time;
-				result.Valuta = setupInfo.Valuta;
+				result.Currency = setupInfo.Valuta;
 			}
 			return result;
 		}

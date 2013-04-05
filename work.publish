@@ -9,5 +9,7 @@
 	<ItemGroup>	
 		<Config Include="assoibd-eco-as-default.db-connection"/>
 		<Config Include="..\deployconfig\devel.rolemap.bxl"/>
+		<Config Include="..\deployconfig\temporalrolefix.rolemap.bxl"/>
+  <Config Include="mongodbattachmentsource.ioc-manifest.bxl"/>
 	</ItemGroup>
 </Project>

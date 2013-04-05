@@ -32,14 +32,24 @@ namespace Zeta.Extreme {
 		public const string RowPattern = @"\$(?<r>[\w\d]+)";
 
 		/// <summary>
+		/// 	Паттерн смещения по строке
+		/// </summary>
+		public const string IndirectSafeRowPattern = @"\$(?<r>[\p{Ll}\p{Lu}][\p{Ll}\p{Lu}\d][\w\d]*)";
+
+		/// <summary>
 		/// 	Паттерн смещения по колонке
 		/// </summary>
 		public const string ColPattern = @"\@(?<c>[\w\d]+)";
 
 		/// <summary>
+		/// 	Паттерн смещения по колонке
+		/// </summary>
+		public const string IndirectSafeColPattern = @"\@(?<c>[\p{Ll}\p{Lu}][\p{Ll}\p{Lu}\d][\w\d]*)";
+
+		/// <summary>
 		/// 	Паттерн смещения по объекту
 		/// </summary>
-		public const string ObjPattern = @"((\.toobj\(\s*(?<o>\d+)\s*\))?)"; //сразу настраивается как опицональный
+		public const string ObjPattern = @"((\.toobj\(\s*(?<o>-?\d+)\s*\))?)"; //сразу настраивается как опицональный
 
 		/// <summary>
 		/// 	Паттерн фильтра по контрагентам
@@ -71,6 +81,18 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public const string ColOrRowOptionalPattern = "(" + ColOrRowPattern + "?" + ")";
 
+
+		/// <summary>
+		/// 	Паттерн смещения по строке
+		/// </summary>
+		public const string IndirectSafeColOrRowPattern = "((" + IndirectSafeRowPattern + ")|(" + IndirectSafeColPattern + "))";
+
+		/// <summary>
+		/// 	Паттерн смещения по строке
+		/// </summary>
+		public const string IndirectSafeColOrRowOptionalPattern = "(" + IndirectSafeColOrRowPattern + "?" + ")";
+
+
 		/// <summary>
 		/// 	Вариант между одним или несколькими периодами
 		/// </summary>
@@ -86,17 +108,35 @@ namespace Zeta.Extreme {
 			AltObjFilterPattern +
 			YearPattern +
 			PeriodOrPeriodsPattern;
+			
+		/// <summary>
+		/// 	Общий паттерн выражения дельты (с защитой от параметрических переходов)
+		/// </summary>
+		public const string IndirectSafeDeltaPattern =
+			IndirectSafeColOrRowPattern +
+			IndirectSafeColOrRowOptionalPattern +
+			ObjPattern +
+			AltObjFilterPattern +
+			YearPattern +
+			PeriodOrPeriodsPattern;
 
 		/// <summary>
 		/// 	Шаблон вызова дельты
 		/// </summary>
 		public const string CallDeltaPattern = DeltaPattern + "\\?";
+		/// <summary>
+		/// 	Шаблон вызова дельты
+		/// </summary>
+		public const string IndirectSafeCallDeltaPattern = IndirectSafeDeltaPattern + "\\?";
 
 		/// <summary>
 		/// 	Регулярное выражение оценки и разбора суммовых формул
 		/// </summary>
 		public const string PseudoSumPattern =
 			@"^\s*-?\s*" + CallDeltaPattern + @"(((\s*[+-]\s*)|\s+)" + CallDeltaPattern + @")*\s*$";
+			
+		
+
 
 		/// <summary>
 		/// 	Регулярное выражение для выборки отдельного элемента приводимой к сумме формулы

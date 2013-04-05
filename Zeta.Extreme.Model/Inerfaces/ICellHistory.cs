@@ -17,16 +17,17 @@
 // PROJECT ORIGIN: Zeta.Extreme.Model/ICellHistory.cs
 #endregion
 using System;
+using Qorpent.Model;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	/// <see cref="Cell"/> history in cube
 	/// </summary>
-	public interface ICellHistory {
+	public interface ICellHistory:IWithId {
 		/// <summary>
 		/// Merged code of source <see cref="Cell"/>
 		/// </summary>
-		string PseudoCode { get; set; }
+		string BizKey { get; set; }
 		/// <summary>
 		/// ID of target <see cref="Cell"/>
 		/// </summary>

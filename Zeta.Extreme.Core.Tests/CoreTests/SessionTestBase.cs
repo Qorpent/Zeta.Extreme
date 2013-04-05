@@ -45,6 +45,19 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			}
 		}
 
+		protected Query Eval(Query q) {
+			q = (Query) session.Register(q);
+			var r = _serial.Eval(q);
+			q.Result = r;
+			if (null != q.Result.Error) {
+				Console.WriteLine(q.Result.Error);
+			}
+			else {
+				Console.WriteLine(q.Result.NumericResult);
+			}
+			return q;
+		}
+
 		[TestFixtureSetUp]
 		public virtual void FixtureSetup() {
 			if (!wascallnhibernate) {

@@ -67,6 +67,9 @@
 			<Library Include="Zeta.Extreme.Form" />
 			<Library Include="Zeta.Extreme.BizProcess" />
 			<Library Include="Zeta.Extreme.FrontEnd" />
+			<Library Include="MongoDB.Driver" />
+			<Library Include="MongoDB.Bson" />
+			<Library Include="Zeta.Extreme.MongoDB.Integration" />
 			<Config Include="*.base.ioc-manifest.bxl"/>
 			<!--
 			<Script Include="Zeta.Form.UI\scripts\*.js"/>

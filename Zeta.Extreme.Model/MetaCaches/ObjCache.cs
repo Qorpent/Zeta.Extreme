@@ -123,7 +123,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			if (_objByCode.ContainsKey(code)) {
 				return _objByCode[code];
 			}
-			var native = new NativeZetaReader().ReadObjects("Code = " + code).FirstOrDefault();
+			var native = new NativeZetaReader().ReadObjects("Code = '" + code.Replace("'","''")+"'").FirstOrDefault();
 			if (null != native) {
 				RegisterObject(native);
 				return native;

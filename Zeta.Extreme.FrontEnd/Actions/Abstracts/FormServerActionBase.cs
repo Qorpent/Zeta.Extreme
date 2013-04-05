@@ -26,14 +26,18 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		/// <summary>
 		/// 	First phase of execution - override if need special input parameter's processing
 		/// </summary>
-		protected override void Initialize() {
+		protected override void Initialize()
+		{
 			base.Initialize();
-			MyFormServer = FormServer.Default;
+			//force sync with form server
+			lock (MyFormServer.ReloadState) {}
+			
 		}
-
 		/// <summary>
 		/// 	—сылка на сервер форм
 		/// </summary>
-		protected FormServer MyFormServer;
+		protected FormServer MyFormServer {
+			get { return FormServer.Default; }
+		}
 	}
 }

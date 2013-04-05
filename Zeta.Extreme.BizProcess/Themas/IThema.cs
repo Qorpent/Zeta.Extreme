@@ -207,4 +207,7 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// <returns> </returns>
 		T GetParameter<T>(string code, T def);
 	}
+
+
+	
 }

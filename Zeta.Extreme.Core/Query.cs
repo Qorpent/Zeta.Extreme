@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Zeta.Extreme.Model.Extensions;
@@ -44,7 +45,36 @@ namespace Zeta.Extreme {
 			Row = new RowHandler();
 			Col = new ColumnHandler();
 			Obj = new ObjHandler();
-			Valuta = "NONE";
+			Reference = new ReferenceHandler();
+			Currency = "NONE";
+		}
+		/// <summary>
+		/// Простой конструктор типовых запросов
+		/// </summary>
+		/// <param name="rowcode"></param>
+		/// <param name="colcode"></param>
+		/// <param name="obj"></param>
+		/// <param name="year"></param>
+		/// <param name="period"></param>
+		public Query(string rowcode, string colcode, int obj, int year, int period):this() {
+			Row.Code = rowcode;
+			if (!Regex.IsMatch(rowcode, @"^[\w\d]+$")) {
+				Row.Code = Convert.ToBase64String(Encoding.UTF8.GetBytes(rowcode));
+				Row.IsFormula = true;
+				Row.Formula = rowcode;
+				Row.FormulaType = "boo";
+			}
+			Col.Code = colcode;
+			if (!Regex.IsMatch(colcode, @"^[\w\d]+$"))
+			{
+				Col.Code = Convert.ToBase64String(Encoding.UTF8.GetBytes(colcode));
+				Col.IsFormula = true;
+				Col.Formula = rowcode;
+				Col.FormulaType = "boo";
+			}
+			Obj.Id = obj;
+			Time.Year = year;
+			Time.Period = period;
 		}
 
 		/// <summary>
@@ -73,6 +103,34 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public Task PrepareTask { get; set; }
 
+		private bool? _isrecycle;
+
+		/// <summary>
+		/// Проверяет, является ли запрос циклическим
+		/// </summary>
+		public bool GetIsRecycle(IDictionary<long, bool> dictionary=null)
+		{
+			if (_isrecycle.HasValue) return _isrecycle.Value;
+			return (_isrecycle = CheckRecycle(dictionary??new Dictionary<long,bool> ())).Value;
+		}
+
+		private bool CheckRecycle(IDictionary<long, bool> dictionary) {
+			if (EvaluationType == QueryEvaluationType.Primary || EvaluationType == QueryEvaluationType.Unknown) {
+				return false;
+			}
+			if (dictionary.ContainsKey(Uid)) return true;
+			dictionary[Uid] = true;
+			if (EvaluationType == QueryEvaluationType.Formula) {
+				foreach (var d in FormulaDependency.OfType<IQueryWithProcessing>()) {
+					if (d.GetIsRecycle(dictionary)) return true;
+				}
+			}else if (EvaluationType == QueryEvaluationType.Summa) {
+				foreach (var sd in SummaDependency.Select(_=>_.Item2).OfType<IQueryWithProcessing>()) {
+					if (sd.GetIsRecycle(dictionary)) return true;
+				}
+			}
+			return false;
+		}
 
 		/// <summary>
 		/// 	Client processed mark
@@ -97,6 +155,11 @@ namespace Zeta.Extreme {
 		public IRowHandler Row { get; set; }
 
 		/// <summary>
+		///  Измерение по контрагенту
+		/// </summary>
+		public IReferenceHandler Reference { get; set; }
+
+		/// <summary>
 		/// 	Условие на колонку
 		/// </summary>
 		public IColumnHandler Col { get; set; }
@@ -109,7 +172,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Выходная валюта
 		/// </summary>
-		public string Valuta { get; set; }
+		public string Currency { get; set; }
 
 		/// <summary>
 		/// 	Сбрасывает кэш-строку
@@ -131,35 +194,63 @@ namespace Zeta.Extreme {
 		public QueryResult GetResult(int timeout = -1) {
 			lock (this) {
 				WaitPrepare();
+				
 				if (null != Result) {
+					if (null != Result.Error) {
+						if (!(Result.Error is QueryException)) {
+							Result.Error = new QueryException(this,Result.Error);
+						}
+					}
 					return Result;
 				}
+
+				if (GetIsRecycle()) {
+					Result = new QueryResult{IsComplete = false, Error = new Exception("circular dependency")};
+				}
+				
 				if (EvaluationType == QueryEvaluationType.Summa && null == Result) {
-					var result =
-						(from sq in SummaDependency let val = sq.Item2.GetResult() where null != val select val.NumericResult*sq.Item1).
-							Sum();
-					Result = new QueryResult {IsComplete = true, NumericResult = result};
-					return Result;
+					return GetSummaResult();
 				}
 
 				if (EvaluationType == QueryEvaluationType.Formula && null == Result) {
-					AssignedFormula.Init(this);
-					try {
-						Result = AssignedFormula.Eval();
-					}
-					finally {
-						AssignedFormula.CleanUp();
-						//FormulaStorage.Default.Return(key, formula);
-					}
-					return Result;
+					return GetFormulaResult();
 				}
-
 				WaitResult(timeout);
 				if (null != Result) {
 					return Result;
 				}
 				return Result;
 			}
+		}
+
+		private QueryResult GetFormulaResult() {
+			AssignedFormula.Init(this);
+			try {
+				Result = AssignedFormula.Eval();
+			}
+			finally {
+				AssignedFormula.CleanUp();
+				//FormulaStorage.Default.Return(key, formula);
+			}
+			return Result;
+		}
+
+		private QueryResult GetSummaResult() {
+			
+			var subresults = SummaDependency.Select(sq => new {sq, val = sq.Item2.GetResult()}).ToArray();
+			var fsterror = subresults.FirstOrDefault(_ => null != _.val.Error);
+			if (null != fsterror) {		
+				Result = new QueryResult {IsComplete = false, Error = new QueryException(this, fsterror.val.Error)};
+			}
+			else {
+				var result =
+					(subresults
+						.Where(@t => null != @t.val)
+						.Select(@t => @t.val.NumericResult*@t.sq.Item1)).
+						Sum();
+				Result = new QueryResult {IsComplete = true, NumericResult = result};
+			}
+			return Result;
 		}
 
 
@@ -202,8 +293,9 @@ namespace Zeta.Extreme {
 			sb.Append('/');
 			sb.Append(null == Time ? "NOTIME" : Time.GetCacheKey());
 			sb.Append('/');
-			sb.Append(string.IsNullOrWhiteSpace(Valuta) ? "NOVAL" : "VAL:" + Valuta);
-
+			sb.Append(string.IsNullOrWhiteSpace(Currency) ? "NOVAL" : "VAL:" + Currency);
+			sb.Append('/');
+			sb.Append(Reference.GetCacheKey());
 			return sb.ToString();
 		}
 
@@ -230,6 +322,7 @@ namespace Zeta.Extreme {
 				result.Row = result.Row.Copy();
 				result.Time = result.Time.Copy();
 				result.Obj = result.Obj.Copy();
+				result.Reference = result.Reference.Copy();
 			}
 
 			return result;
@@ -240,14 +333,16 @@ namespace Zeta.Extreme {
 		/// 	Стандартная процедура нормализации
 		/// </summary>
 		public void Normalize(ISession session = null) {
-			var objt = Task.Run(() => Obj.Normalize(session ?? Session)); //объекты зачастую из БД догружаются
-			Time.Normalize(session ?? Session);
-			Col.Normalize(session ?? Session);
+			Session = session;
+			var objt = Task.Run(() => Obj.Normalize(this)); //объекты зачастую из БД догружаются
+			Time.Normalize(this);
+			Col.Normalize(this);
 			ResolveTemporalCustomCodeBasedColumns(session);
-			Row.Normalize(session ?? Session, Col.Native); //тут формулы парсим простые как рефы			
+			Row.Normalize(this); //тут формулы парсим простые как рефы			
 			objt.Wait();
 			AdaptDetailModeForDetailBasedSubtrees();
 			AdaptExRefLinkSourceForColumns(session);
+			Reference.Normalize(this);
 			InvalidateCacheKey();
 		}
 
@@ -276,7 +371,7 @@ namespace Zeta.Extreme {
 				if (0 != _c.Native.Year || 0 != _c.Native.Period) {
 					Time = new TimeHandler {Year = _c.Native.Year, Period = _c.Native.Period};
 				}
-				Col.Normalize(session ?? Session);
+				Col.Normalize(this);
 			}
 		}
 

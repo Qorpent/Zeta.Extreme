@@ -16,6 +16,8 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Core/ColumnHandler.cs
 #endregion
+
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Zeta.Extreme.Model;
@@ -37,37 +39,44 @@ namespace Zeta.Extreme {
 		public IColumnHandler Copy() {
 			return MemberwiseClone() as ColumnHandler;
 		}
-
 		/// <summary>
-		/// 	Нормализует колонку до нормали
+		/// Нормализует измерение
 		/// </summary>
-		/// <param name="session"> </param>
-		public override void Normalize(ISession session) {
-			var cache = session == null ? MetaCache.Default : session.GetMetaCache();
-			if (IsStandaloneSingletonDefinition()) {
+		/// <param name="query"></param>
+		public override void Normalize(IQuery query)
+		{
+			base.Normalize(query);
+			if (IsStandaloneSingletonDefinition())
+			{
 				//try load native
-				Native = cache.Get<IZetaColumn>(0 == Id ? (object) Code : Id);
+				Native = MetaCache.Get<IZetaColumn>(0 == Id ? (object)Code : Id);
 			}
-			ResolveSingleColFormula();
+			ResolveSingleColFormula(query.Session,query.Row);
 		}
 
-		private void ResolveSingleColFormula() {
+
+		private void ResolveSingleColFormula(ISession session, IRowHandler row) {
 			if (IsFormula && (FormulaType == "boo" || FormulaType == "cs")) {
 				var formula = Formula;
-				var code = GetCodeFormFormula(formula);
+				var code = GetCodeFrom(formula);
 				if (null != code) {
+					if (code.StartsWith("__"))
+					{
+						code = session.ResolveRealCode(row, code.Substring(2));
+					}
 					var reference = ColumnCache.get(code);
 					Native = reference;
 				}
 			}
 		}
 
-		private static string GetCodeFormFormula(string formula) {
+		private static string GetCodeFrom(string formula) {
 			if (!_resolvedColFormulaCache.ContainsKey(formula)) {
 				string code = null;
 				var match = Regex.Match(formula, @"^@([\w\d]+)\?$", RegexOptions.Compiled);
 				if (match.Success) {
 					code = match.Groups[1].Value;
+
 				}
 				_resolvedColFormulaCache[formula] = code;
 				return code;

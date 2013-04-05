@@ -31,7 +31,12 @@ namespace Zeta.Extreme.FrontEnd.Actions.SessionProcessing {
 		/// 	Third part of execution - setup system-bound internal state here (called after validate, but before authorize)
 		/// </summary>
 		protected override void Prepare() {
-			_xmldata = Application.Container.Get<ISpecialXmlParser>("json.xml.parser").Parse(_jsonSaveData);
+			if (_jsonSaveData=="FORCE") {
+				_xmldata = new XElement("root");
+			}
+			else {
+				_xmldata = Application.Container.Get<ISpecialXmlParser>("json.xml.parser").Parse(_jsonSaveData);
+			}
 		}
 
 		/// <summary>

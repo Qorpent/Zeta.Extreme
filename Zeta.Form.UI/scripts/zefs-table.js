@@ -2,13 +2,16 @@
  * Виджет Zefs-формы
  */
 !function($) {
-    var zefsform = new root.security.Widget("zefsform", root.console.layout.position.layoutBodyMain, null, { authonly: true, ready: function() {
+    var root = window.zeta = window.zeta || {};
+    var zefsform = new root.Widget("zefsform", root.console.layout.position.layoutBodyMain, null, { authonly: true, ready: function() {
         zefs.init(jQuery);
         zefs.myform.execute();
     } });
-    zefsform.body = $('<table class="data"/>');
+    zefsform.body = $('<table class="data isblocked"/>');
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
-        if (!zefs.myform.lock.cansave) {
+        if (zefs.myform.lock.cansave || zefs.myform.lock.cansaveoverblock) {
+            zefsform.body.removeClass("isblocked");
+        } else {
             zefsform.body.addClass("isblocked");
         }
     });
