@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MongoDB.Bson;
@@ -87,6 +88,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
             var doc = _gridFs.Files.FindOneById(attachment.Uid);
             doc.Merge(MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment));
+	        doc["uploadDate"] = DateTime.Now; //в продуктиве - любое обновление должно обновить дату
+			
             _gridFs.Files.Save(doc);
         }
 

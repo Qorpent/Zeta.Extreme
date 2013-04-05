@@ -16,8 +16,12 @@ namespace Zeta.Extreme.MongoDB.Integration {
             document.Set("_id", attachment.Uid);
             if (attachment.Name != null) document.Set("filename", attachment.Name);
             if (attachment.Comment != null) document.Set("comment", attachment.Comment);
-            if (attachment.Comment != null) document.Set("owner", attachment.User);
-            document.Set("uploadDate", attachment.Version);
+            if (attachment.User != null) document.Set("owner", attachment.User);
+	        var version = attachment.Version;
+			if (version.Date.Year <= 1990) {
+				version = DateTime.Now;
+			}
+            document.Set("uploadDate", version);
             if (attachment.MimeType != null) document.Set("contentType", attachment.MimeType);
             document.Set("revision", attachment.Revision);
             if (attachment.Extension != null) document.Set("extension", attachment.Extension);
