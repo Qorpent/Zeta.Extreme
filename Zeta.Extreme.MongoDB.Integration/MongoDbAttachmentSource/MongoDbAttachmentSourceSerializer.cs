@@ -17,8 +17,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (attachment.Name != null) document.Set("filename", attachment.Name);
             if (attachment.Comment != null) document.Set("comment", attachment.Comment);
             if (attachment.Comment != null) document.Set("owner", attachment.User);
-            document.Set("uploadDate", attachment.Version);
             if (attachment.MimeType != null) document.Set("contentType", attachment.MimeType);
+            document.Set("uploadDate", new BsonDateTime(attachment.Version.Year <= 1990 ? DateTime.Now : attachment.Version));
             document.Set("revision", attachment.Revision);
             if (attachment.Extension != null) document.Set("extension", attachment.Extension);
             document.Set("metadata", new BsonDocument(attachment.Metadata));
@@ -52,6 +52,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (document.Contains("contentType")) attachment.MimeType = document["contentType"].ToString();
             if (document.Contains("revision")) attachment.Revision = document["revision"].ToInt32();
             if (document.Contains("extension")) attachment.Extension = document["extension"].ToString();
+            if (document.Contains("length")) attachment.Size = document["length"].ToInt64();
+
+            foreach (var el in (BsonDocument)document["metadata"]) {
+                attachment.Metadata[el.Name] = el.Value;
+            }
         }
 
         /// <summary>
@@ -103,13 +108,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
             document.Set("deleted", false);
 
             return document;
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="document"></param>
-        public static void AttachmentSetDeleted(BsonDocument document) {
-            document.Set("deleted", true);
         }
     }
 }

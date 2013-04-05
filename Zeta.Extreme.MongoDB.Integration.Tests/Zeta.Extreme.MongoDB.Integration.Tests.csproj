@@ -60,9 +60,6 @@
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsP1362FindPattern.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MongoDbAttachmentSourceIoCTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\mongo-csharp-driver\MongoDB.Bson\MongoDB.Bson.csproj">
       <Project>{0e9a3a2a-49cd-4f6c-847c-dc79b4b65ce6}</Project>
       <Name>MongoDB.Bson</Name>
@@ -83,9 +80,6 @@
       <Project>{62f22ffa-a1cf-4a74-838c-9ab33a9442ea}</Project>
       <Name>Qorpent.IoC</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="MongoDbAttachmentSourceIoCTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\qorpent.sys\Qorpent.IoC\Qorpent.IoC.csproj">
