@@ -257,7 +257,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="initsavemode"> пред-открытие для сохранения </param>
 		/// <returns> </returns>
 		public FormSession Start(IInputTemplate template, IZetaMainObject obj, int year, int period, bool initsavemode = false) {
-			lock (this) {
+			lock (ReloadState) {
 				var usr = Application.Principal.CurrentUser.Identity.Name;
 				var existed =
 					Sessions.FirstOrDefault(
@@ -293,28 +293,36 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Перезагрузка системы
 		/// </summary>
 		public void Reload() {
-			((IResetable) (Application.Files).GetResolver()).Reset(null);
-			((IResetable) Application.Roles).Reset(null);
-			Sessions.Clear();
+			lock (ReloadState) {
+					((IResetable) (Application.Files).GetResolver()).Reset(null);
+					((IResetable) Application.Roles).Reset(null);
+					Sessions.Clear();
 
-			LoadThemas = new TaskWrapper(GetLoadThemasTask());
-			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
-			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
-			ReadyToServeForms = new TaskWrapper(GetCompleteAllTask(),
-			                                    LoadThemas,
-			                                    MetaCacheLoad,
-			                                    CompileFormulas);
-			MetaCacheLoad.Run();
-			CompileFormulas.Run();
-			LoadThemas.Run();
-			ReadyToServeForms.Run();
+					LoadThemas = new TaskWrapper(GetLoadThemasTask());
+					MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
+					CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
+					ReadyToServeForms = new TaskWrapper(GetCompleteAllTask(),
+					                                    LoadThemas,
+					                                    MetaCacheLoad,
+					                                    CompileFormulas);
+					MetaCacheLoad.Run();
+					CompileFormulas.Run();
+					LoadThemas.Run();
+					ReadyToServeForms.Run();
+				
+			
+			}
 		}
+		/// <summary>
+		/// Объект синхронизации с перезагрузкой
+		/// </summary>
+		public readonly object ReloadState = new object();
 
 		/// <summary>
 		/// Проверяет глобальный маркер очистки Zeta и производит перезапуск системы ( в синхронном режиме)
 		/// </summary>
 		public void CheckGlobalReload() {
-			lock (this) {
+			lock (ReloadState) {
 				if (null != ReadyToServeForms && !ReadyToServeForms.IsCompleted) {
 					ReadyToServeForms.Wait();
 				}
