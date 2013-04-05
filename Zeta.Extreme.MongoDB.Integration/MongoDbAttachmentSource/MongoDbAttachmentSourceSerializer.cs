@@ -14,20 +14,27 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="attachment">Описание аттача типа Attachment</param>
         public static BsonDocument AttachmentToBson(Attachment attachment) {
             var document = new BsonDocument();
+
             document.Set("_id", attachment.Uid);
             if (attachment.Name != null) document.Set("filename", attachment.Name);
             if (attachment.Comment != null) document.Set("comment", attachment.Comment);
             if (attachment.User != null) document.Set("owner", attachment.User);
             if (attachment.MimeType != null) document.Set("contentType", attachment.MimeType);
+            if (attachment.Hash != null) document.Set("md5", attachment.Hash);
+            if (attachment.Size > 0) document.Set("length", attachment.Size);
+            if(attachment.Revision > 0) document.Set("revision", attachment.Revision);
 
             if (attachment.Version.Year <= 1990) {
                 attachment.Version = DateTime.Now;
+                document.Set("uploadDate", attachment.Version);
+            } else {
+                document.Set("uploadDate", attachment.Version);
             }
-            document.Set("uploadDate", DateTime.Now);
+            
 
-            document.Set("revision", attachment.Revision);
-            if (attachment.Extension != null) document.Set("extension", attachment.Extension);
             document.Set("metadata", new BsonDocument(attachment.Metadata));
+            if (attachment.Extension != null) document.Set("extension", attachment.Extension);
+
             document.Set("deleted", false);
 
             return document;
