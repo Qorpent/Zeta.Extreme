@@ -30,7 +30,7 @@ div.open>.tooltip {
 }
 
 .zefsextrapannel {
-    position: fixed;
+    position: absolute;
     top: 37px;
     z-index: 994;
     background-color: #F0F0F0;

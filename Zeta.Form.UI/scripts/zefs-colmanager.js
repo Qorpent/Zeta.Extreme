@@ -92,6 +92,7 @@
                 input.trigger("click");
             }
         }
+        window.zefs.restorelaststate();
     });
     $(window.zefs).on(window.zefs.handlers.on_dataload, function() {
         var formopts = root.formoptionsstorage.Get();
