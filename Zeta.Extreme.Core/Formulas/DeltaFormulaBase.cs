@@ -17,6 +17,7 @@
 // PROJECT ORIGIN: Zeta.Extreme.Core/DeltaFormulaBase.cs
 #endregion
 using System;
+using System.Linq;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
@@ -95,7 +96,7 @@ namespace Zeta.Extreme {
 					query = Session.Register(query);
 
 				}
-				realq = query;
+				realq =Query.FormulaDependency.First(_=>_.GetCacheKey()==query.GetCacheKey());
 			}
 			return GetNumericResult(realq);
 		}

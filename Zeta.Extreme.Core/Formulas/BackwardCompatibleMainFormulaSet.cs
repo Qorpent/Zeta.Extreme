@@ -83,32 +83,27 @@ namespace Zeta.Extreme {
 		/// <param name="val2"> </param>
 		/// <returns> </returns>
 		public T If<T>(Expression<Func<bool>> condition, Func<T> val1, Func<T> val2) {
+			
 			if (_host.IsInPlaybackMode) {
 				var deltas = new QueryDeltaFindVisitor().CollectDeltas(condition).ToArray();
 				if (0 != deltas.Length) {
+					_host.OptimizeDeltaFinding = false;	
 					foreach (var queryDelta in deltas) {
 						_host.Eval(queryDelta);
 					}
 					val1();
 					return val2();
 				}
-				else {
-					if (condition.Compile()()) {
-						return val1();
-					}
-					return val2();
-				}
-			}
-			_host.OptimizeDeltaFinding = false;
-			try {
 				if (condition.Compile()()) {
 					return val1();
 				}
 				return val2();
 			}
-			finally {
-				_host.OptimizeDeltaFinding = true;
+			if (condition.Compile()()) {
+				return val1();
 			}
+			return val2();
+			
 		}
 
 		/// <summary>
