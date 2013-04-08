@@ -312,7 +312,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// 	Пользователь
 		/// </summary>
-		public string Usr { get; private set; }
+		public string Usr { get; set; }
 
 		/// <summary>
 		/// 	Хранит уже подготовленные данные
