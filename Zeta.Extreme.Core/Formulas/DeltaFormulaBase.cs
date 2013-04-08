@@ -17,9 +17,6 @@
 // PROJECT ORIGIN: Zeta.Extreme.Core/DeltaFormulaBase.cs
 #endregion
 using System;
-using System.Linq;
-using Qorpent.Qlaood;
-using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
@@ -28,6 +25,12 @@ namespace Zeta.Extreme {
 	/// 	Базовая основа для формул, оснванных на переходах исходного запроса
 	/// </summary>
 	public abstract class DeltaFormulaBase : FormulaBase {
+		/// <summary>
+		/// 
+		/// </summary>
+		public DeltaFormulaBase():base() {
+			OptimizeDeltaFinding = true;
+		}
 		/// <summary>
 		/// 	Команда вычисления результата - игнорирует деление на ноль, возвращает в этом случае строковый результат
 		/// </summary>
@@ -61,20 +64,39 @@ namespace Zeta.Extreme {
 				return new QueryResult {IsComplete = false, Error = new QueryException(Query,e)};
 			}
 		}
-
+		/// <summary>
+		/// it's usefull in cases where we have to control facts of eval, such as in ZC-496
+		/// </summary>
+		public int EvalCounter = 0;
 		/// <summary>
 		/// 	Основной промежуточный метод , все приводит к числу
 		/// </summary>
 		/// <param name="delta"> </param>
 		protected internal decimal Eval(QueryDelta delta) {
-			var query = delta.Apply(Query);
+			EvalCounter++;
 			if (IsInPlaybackMode) {
-				var q = Session.Register(query);
-				Query.FormulaDependency.Add(q);
+				var query = delta.Apply(Query);			
+				if (null != Session) {
+					query = Session.Register(query);
+					
+				}
+				Query.FormulaDependency.Add(query);
 				return 1;
 			}
-			var realq = Query.FormulaDependency[playbackCounter];
-			playbackCounter++;
+			IQuery realq = null;
+			if (OptimizeDeltaFinding) {
+				realq = Query.FormulaDependency[playbackCounter];
+				playbackCounter++;
+			}
+			else {
+				var query = delta.Apply(Query);
+				if (null != Session)
+				{
+					query = Session.Register(query);
+
+				}
+				realq = query;
+			}
 			return GetNumericResult(realq);
 		}
 
@@ -117,5 +139,9 @@ namespace Zeta.Extreme {
 		/// 	Счетчик смещений на плейбэках
 		/// </summary>
 		protected int playbackCounter;
+		/// <summary>
+		/// Флаг, регулирующий порядок поздней резолюции дельт, по
+		/// </summary>
+		public bool OptimizeDeltaFinding { get; set; }
 	}
 }

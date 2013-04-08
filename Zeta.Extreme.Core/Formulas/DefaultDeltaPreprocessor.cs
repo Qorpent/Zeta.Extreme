@@ -55,6 +55,9 @@ namespace Zeta.Extreme {
 				if (result.Contains("@") || result.Contains("$") || result.Contains("?")) {
 					request.PreparedType = typeof (IllegalSyntaxFormulaStub);
 				}
+				if (result.Contains("f.If")) {
+					result = Regex.Replace(result, @"f\.If\s*\(", "f.If(()=>", RegexOptions.Compiled);
+				}
 				return result;
 			}
 			return currentResult;
