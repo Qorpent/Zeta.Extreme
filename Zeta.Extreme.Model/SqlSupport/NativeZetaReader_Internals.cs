@@ -262,11 +262,11 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Occupation = r.GetString(3),
 					Contact = r.GetString(4),
 					Name = r.GetString(5),
-					Comment = r.GetString(6),
+					Comment = r.IsDBNull(6)?"": r.GetString(6),
 					Login = r.GetString(9),
 					Active = r.GetBoolean(10),
-					Roles = r.GetString(11),
-					SlotList = r.GetString(12),
+					Roles =r.IsDBNull(11)?"": r.GetString(11),
+					SlotList = r.IsDBNull(12)?"": r.GetString(12),
 				};
 
 			if (!r.IsDBNull(7)) {
