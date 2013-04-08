@@ -1,9 +1,11 @@
 using System;
+using Qorpent.Serialization;
 
 namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>
 	/// Ёлемент записи в бло
 	/// </summary>
+	[Serialize]
 	public class FormChatItem {
 		/// <summary>
 		/// ”никальный идентификатор записи

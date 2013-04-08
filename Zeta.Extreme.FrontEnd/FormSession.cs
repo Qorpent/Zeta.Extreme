@@ -137,6 +137,33 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public bool NeedMeasure { get; set; }
 
+
+		/// <summary>
+		/// Получить перечень сообщений в чате
+		/// </summary>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
+		public FormChatItem[] GetChatList() {
+			var provider = Application.Current.Container.Get<IFormChatProvider>();
+			if (null == provider) {
+				throw new Exception("no form chat configured");
+			}
+			return provider.GetSessionItems(this).ToArray();
+		}
+
+		/// <summary>
+		/// Добавить сообщение в чат
+		/// </summary>
+		/// <returns></returns>
+		public FormChatItem AddChatMessage(string message) {
+			var provider = Application.Current.Container.Get<IFormChatProvider>();
+			if (null == provider)
+			{
+				throw new Exception("no form chat configured");
+			}
+			return provider.AddMessage(this, message);
+		}
+
 		/// <summary>
 		/// 	Признак, что сессия стартовала
 		/// </summary>

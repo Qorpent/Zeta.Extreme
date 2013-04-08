@@ -16,9 +16,11 @@
     <None Include="Zeta.Extreme.Model.import" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\Attachments\AddChatMessage.cs" />
     <Compile Include="Actions\Attachments\AttachFileAction.cs" />
     <Compile Include="Actions\Abstracts\SingleAttachmentActionBase.cs" />
     <Compile Include="Actions\Attachments\DownloadFileAction.cs" />
+    <Compile Include="Actions\Attachments\GetChatList.cs" />
     <Compile Include="Actions\Attachments\GetFileTypesAction.cs" />
     <Compile Include="Actions\Info\GetBizProcessList.cs" />
     <Compile Include="Actions\Info\GetCellHistory.cs" />

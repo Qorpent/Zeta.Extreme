@@ -44,6 +44,19 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			result.Time = document["time"].ToLocalTime();
 			return result;
 		}
+		/// <summary>
+		/// Формирует объект для поиска чата по сессии
+		/// </summary>
+		/// <param name="session"></param>
+		/// <returns></returns>
+		public static BsonDocument SessionToSearchDocument(IFormSession session) {
+			var result = new BsonDocument();
+			result["year"] = session.Year;
+			result["period"] = session.Period;
+			result["obj"] = session.Object.Id;
+			result["form"] = session.Template.Code;
+			return result;
+		}
 
 		/// <summary>
 		/// Нормализовать исходный FormChatItem
