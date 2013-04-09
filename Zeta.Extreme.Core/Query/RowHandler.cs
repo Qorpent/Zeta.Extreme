@@ -16,13 +16,11 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Core/RowHandler.cs
 #endregion
-using System;
+
 using System.Text.RegularExpressions;
-using System.Threading;
-using Zeta.Extreme.Model;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
@@ -62,6 +60,9 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <returns> </returns>
 		public override bool IsPrimary() {
+			if (IsFormula && null != _query && TagHelper.Value(Tag, "fromyear").ToInt() > _query.Time.Year) {
+				return true;
+			}
 			if (!base.IsPrimary()) {
 				return false;
 			}

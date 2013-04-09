@@ -420,7 +420,11 @@ namespace Zeta.Extreme {
 		private TItem _native;
 		private string _tag;
 		private string _name;
-		private IQuery _query;
+
+		/// <summary>
+		/// Обратная ссылка на запрос
+		/// </summary>
+		protected IQuery _query;
 
 		/// <summary>
 		/// Нормализует измерение
