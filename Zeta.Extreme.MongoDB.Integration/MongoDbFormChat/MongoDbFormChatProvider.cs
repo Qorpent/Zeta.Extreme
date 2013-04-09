@@ -1,7 +1,18 @@
+#region LICENSE
+
+// Copyright 2012-2013 Fagim Sadykov
+// Project: Zeta.Extreme.MongoDB.Integration
+// Original file :MongoDbFormChatProvider.cs
+// Branch: ZEUS
+// This code is produced especially for ZEUS PROJECT and
+// can be used only with agreement from Fagim Sadykov
+// and ZEUS PROJECTS'S owner
+
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Principal;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Qorpent.IoC;
@@ -9,37 +20,40 @@ using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration {
 	/// <summary>
-	/// Mongo - реализаци€ чата формы
+	///     Mongo - реализаци€ чата формы
 	/// </summary>
-	[ContainerComponent(Lifestyle.Transient,ServiceType = typeof(IFormChatProvider))]
+	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IFormChatProvider))]
 	public class MongoDbFormChatProvider : MongoAttachedProviderBase, IFormChatProvider {
 		/// <summary>
-		/// ѕоиск св€занных с сессией сообщений чата
+		///     ѕоиск св€занных с сессией сообщений чата
 		/// </summary>
 		/// <param name="session"></param>
-		/// <returns></returns>
+		/// <returns>
+		/// </returns>
 		public IEnumerable<FormChatItem> GetSessionItems(IFormSession session) {
 			SetupConnection();
 			var search = MongoDbFormChatSerializer.SessionToSearchDocument(session);
-			return Collection.Find(new QueryDocument(search)).Select(_ => MongoDbFormChatSerializer.BsonToChatItem(_));
+			return Collection.Find(new QueryDocument(search)).Select(MongoDbFormChatSerializer.BsonToChatItem);
 		}
 
 		/// <summary>
-		/// ƒобавление нового сообщени€
+		///     ƒобавление нового сообщени€
 		/// </summary>
 		/// <param name="session"></param>
 		/// <param name="message"></param>
-		/// <returns></returns>
+		/// <returns>
+		/// </returns>
 		public FormChatItem AddMessage(IFormSession session, string message) {
 			SetupConnection();
 			var item = new FormChatItem {Text = message};
-			var bson = MongoDbFormChatSerializer.ChatItemToBson(session,item);
+			var bson = MongoDbFormChatSerializer.ChatItemToBson(session, item);
 			Collection.Save(bson);
 			return item;
 		}
 
 		/// <summary>
-		/// ѕомечает сообщение с указанным идентификатором как прочтенное пользователем
+		///     ѕомечает сообщение с указанным идентификатором как прочтенное
+		///     пользователем
 		/// </summary>
 		/// <param name="uid"></param>
 		/// <param name="user"></param>
@@ -60,7 +74,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		}
 
 		/// <summary>
-		/// ѕомечает сообщение с указанным идентификатором как прочтенное пользователем
+		///     ѕомечает сообщение с указанным идентификатором как прочтенное
+		///     пользователем
 		/// </summary>
 		/// <param name="user"></param>
 		public void SetHaveRead(string user) {
@@ -68,7 +83,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			var data = new Dictionary<string, object>
 				{
 					{"message_id", "ALL"},
-					{"user",user}
+					{"user", user}
 				};
 			var query = new BsonDocument(data);
 			var item = collection.FindOne(new QueryDocument(query));
@@ -78,17 +93,19 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			item["lastread"] = DateTime.Now;
 			collection.Save(item);
 		}
+
 		/// <summary>
-		/// ¬озвращает дату последней отметки о прочтении
+		///     ¬озвращает дату последней отметки о прочтении
 		/// </summary>
 		/// <param name="user"></param>
-		/// <returns></returns>
+		/// <returns>
+		/// </returns>
 		public DateTime GetLastRead(string user) {
 			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
 			var data = new Dictionary<string, object>
 				{
 					{"message_id", "ALL"},
-					{"user",user}
+					{"user", user}
 				};
 			var query = new BsonDocument(data);
 			var item = collection.FindOne(new QueryDocument(query));
@@ -102,26 +119,28 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		}
 
 		/// <summary>
-		/// ѕровер€ет наличие обноелний в базе сообщений
+		///     ѕровер€ет наличие обноелний в базе сообщений
 		/// </summary>
 		/// <param name="user"></param>
-		/// <returns></returns>
-		public bool HasUpdates(string user) {
+		/// <returns>
+		/// </returns>
+		public long GetUpdatesCount(string user) {
 			var lastread = GetLastRead(user);
 			var query = GenerateFindAllMessagesQuery(user, lastread, null, null, false);
-			return 0 != Collection.Count(new QueryDocument(query));
+			return Collection.Count(new QueryDocument(query));
 		}
 
 		/// <summary>
-		/// 
 		/// </summary>
 		/// <param name="user"></param>
 		/// <param name="startdate"></param>
 		/// <param name="objids"></param>
 		/// <param name="types"></param>
 		/// <param name="includeArchived"></param>
-		/// <returns></returns>
-		public IEnumerable<FormChatItem> FindAll(string user,DateTime startdate, int[] objids, string[] types, bool includeArchived) {
+		/// <returns>
+		/// </returns>
+		public IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids, string[] types,
+		                                         bool includeArchived) {
 			var query = GenerateFindAllMessagesQuery(user, startdate, objids, types, includeArchived);
 			return Collection.Find(new QueryDocument(query)).Select(MongoDbFormChatSerializer.BsonToChatItem);
 		}

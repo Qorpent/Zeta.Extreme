@@ -95,6 +95,26 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat {
 			Assert.AreEqual(count,allmessagesNoFilters.Length);
 		}
 
+		[Test]
+		public void TestHaveUpdates() {
+			var session = new FormSession(new InputTemplate { Code = "x" }, 2012, 1, new Obj { Id = 2 }) { Usr = "y" };
+			var message = _provider.AddMessage(session, "test1");
+			_provider.AddMessage(session, "test2");
+
+			Assert.AreEqual(2,_provider.GetUpdatesCount("x"));
+			_provider.Archive(message.Id,"x");
+			Assert.AreEqual(1, _provider.GetUpdatesCount("x"));
+			_provider.SetHaveRead("x");
+			Assert.AreEqual(0, _provider.GetUpdatesCount("x"));
+
+			_provider.AddMessage(session, "test3");
+			_provider.AddMessage(session, "test4");
+			_provider.AddMessage(session, "test5");
+
+			Assert.AreEqual(3, _provider.GetUpdatesCount("x"));
+
+		}
+
 		private void PrepareMessagesForFindAll() {
 			var session = new FormSession(new InputTemplate {Code = "x"}, 2012, 1, new Obj {Id = 2}) {Usr = "y"};
 			var message  = _provider.AddMessage(session, "test1");
