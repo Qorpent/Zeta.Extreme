@@ -35,6 +35,7 @@ $.extend(window.zeta.handlers, {
         var details = $('<table class="table table-bordered zetauserinfo"/>');
         details.append(
             $('<tr/>').append($('<td/>').text("Имя"), $('<td/>').text(this.details.Name)),
+            $('<tr/>').append($('<td/>').text("Логин"), $('<td/>').text(this.details.Login)),
             $('<tr/>').append($('<td/>').text("Должность"), $('<td/>').text(this.details.Dolzh)),
             $('<tr/>').append($('<td/>').text("Контакты"), $('<td/>').text(this.details.Contact)),
             $('<tr/>').append($('<td/>').text("Email"), $('<td/>').text(this.details.Email)),
