@@ -151,6 +151,19 @@ $.extend(api,(function(){
             gettypes : new Command({domain: "zefs", name: "getfiletypes"})
         },
 
+        chat : {
+            list : $.extend(new Command({ domain: "zefs", name: "chatlist" }), {
+                wrap : function(obj) {
+                    if ($.isEmptyObject(obj)) return obj;
+                    $.each(obj, function(i,o) {
+                        o.Date = eval(o.Time.substring(2));
+                    });
+                    return obj;
+                }
+            }),
+            add : new Command({domain: "zefs", name: "chatadd" })
+        },
+
         metadata : {
             celldebug : new Command({ domain: "zefs", name: "evalstack" }),
             cellhistory : $.extend(new Command({domain: "zefs", name: "cellhistory"}), {

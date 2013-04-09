@@ -17,7 +17,9 @@ window.zefs.handlers = $.extend(window.zefs.handlers, {
     on_message : "message",
     // File handlers:
     on_fileloadstart: "fileloadstart", on_fileloadfinish: "fileloadfinish",
-    on_fileloaderror: "fileloaderror", on_fileloadprocess: "fileloadprocess"
+    on_fileloaderror: "fileloaderror", on_fileloadprocess: "fileloadprocess",
+    // Chat handlers:
+    on_chatlistload : "chatlistload"
 });
 var root = window.zefs = window.zefs || {};
 var api = root.api;
@@ -92,6 +94,14 @@ root.init = root.init ||
 
     var DownloadFile = function(uid) {
         api.file.download.getUrl(uid);
+    };
+
+    var ChatList = function() {
+        api.chat.list.execute({session: root.myform.sessionId});
+    };
+
+    var ChatAdd = function(t) {
+        api.chat.add.execute({session: root.myform.sessionId, text: t});
     };
 
     var LockForm = function() {
@@ -313,6 +323,7 @@ root.init = root.init ||
         api.metadata.getobjects.execute();
         api.metadata.getperiods.execute();
         api.metadata.getforms.execute();
+        api.chat.list.execute({session: root.myform.sessionId});
         api.lock.state.execute(sessiondata);
         api.lock.history.execute(sessiondata);
         api.file.list.execute(sessiondata);
@@ -450,6 +461,18 @@ root.init = root.init ||
         $(root).trigger(root.handlers.on_fileloadprocess, result);
     });
 
+    api.chat.add.onSuccess(function() {
+        root.myform.chatlist()
+    });
+
+    api.chat.list.onSuccess(function(e, result) {
+        $(root).trigger(root.handlers.on_chatlistload, result);
+    });
+
+    api.chat.list.onError(function(e, result) {
+        $(root).trigger(root.handlers.on_chatlistload);
+    });
+
     $.extend(root, {
         getperiodbyid : GetPeriodName
     });
@@ -470,7 +493,9 @@ root.init = root.init ||
         setupform: SetupForm,
         cellhistory: CellHistory,
         celldebug: CellDebug,
-        openformuladebuger: OpenFormulaDebuger
+        openformuladebuger: OpenFormulaDebuger,
+        chatlist: ChatList,
+        chatadd: ChatAdd
     });
 
     return root.myform;
