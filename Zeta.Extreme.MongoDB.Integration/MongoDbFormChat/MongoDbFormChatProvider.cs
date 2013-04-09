@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
+using MongoDB.Driver.Wrappers;
 using Qorpent.IoC;
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -149,7 +151,22 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		public IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids, string[] types,bool includeArchived) {
 			SetupConnection();
 			var query = GenerateFindAllMessagesQuery(user, startdate, objids, types, includeArchived);
-			return Collection.Find(new QueryDocument(query)).Select(MongoDbFormChatSerializer.BsonToChatItem);
+			var mongoquery = new QueryDocument(query);
+			var result = Collection.Find(mongoquery).SetSortOrder(SortBy.Ascending("time")).Select(MongoDbFormChatSerializer.BsonToChatItem).ToArray();
+			foreach (var formChatItem in result) {
+				var colleciton = Database.GetCollection(CollectionName + "_usr");
+				var usrdata  = colleciton.FindOne(new QueryDocument(new BsonDocument(new Dictionary<string, object>
+					{
+						{"message_id", formChatItem.Id},
+						{"user", user}
+					})));
+				if (null != usrdata) {
+					formChatItem.Userdata = usrdata.ToDictionary();
+				}
+					
+			}
+			return result;
+
 		}
 
 		private BsonDocument GenerateFindAllMessagesQuery(string user, DateTime startdate, int[] objids, string[] types,
@@ -168,7 +185,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			if (!includeArchived) {
 				query["$where"] = string.Format(
 					"!db.{0}_usr.findOne({{message_id:this._id, user:'{1}', archive:true}})",
-					CollectionName, user);
+					CollectionName, user.Replace("\\","\\\\"));
 			}
 			return query;
 		}

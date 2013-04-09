@@ -43,5 +43,12 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// Тип сообщения
 		/// </summary>
 		public string Type { get; set; }
+
+		/// <summary>
+		/// Дополнительные данные
+		/// </summary>
+		[Serialize]
+		[SerializeNotNullOnly]
+		public object Userdata { get; set; }
 	}
 }
