@@ -3,7 +3,7 @@
  */
 !function($) {
     var root = window.zeta = window.zeta || {};
-    var extrapannel = new root.Widget("zefsextrapannel", root.console.layout.position.layoutHeader, null, { authonly: true });
+    var extrapannel = new root.Widget("zefsextrapannel", root.console.layout.position.layoutBodyMain, null, { authonly: true });
     extrapannel.body = $('<div/>').hide();
     var ChangeObject = function(id) {
         location.hash = location.hash.replace(/obj=\d+/gi,"obj=" + id);
