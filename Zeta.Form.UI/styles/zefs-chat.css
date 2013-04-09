@@ -18,8 +18,7 @@
 }
 
 .chat-list-header {
-    line-height: 22px;
-    height: 22px;
+    height: 26px;
     font-size: 90%;
     font-weight: bold;
 }
@@ -27,6 +26,8 @@
 .chat-list-body {
     font-size: 90%;
     cursor: default;
+    max-height: 350px;
+    overflow-y: auto;
 }
 
 .chat-list-cell.date {
@@ -45,4 +46,13 @@
 
 .chat-list-cell.username {
     display: table-cell;
+}
+
+.chat-list-row:nth-child(2n-1) {
+    background-color: #F9F9F9;
+}
+
+.chat-list-row {
+    padding: 3px 0;
+    border-top: 1px solid #DDD;
 }
