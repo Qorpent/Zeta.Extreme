@@ -1,7 +1,7 @@
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 
-namespace Zeta.Extreme.FrontEnd.Actions.Attachments {
+namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 	/// <summary>
 	/// 
 	/// </summary>
