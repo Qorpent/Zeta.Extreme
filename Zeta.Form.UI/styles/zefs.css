@@ -113,7 +113,7 @@ div.open>.tooltip {
 }
 
 .zefsstatus, .zefsformsave, .zefsbizprocess,
-.periodselector, .objselector,
+.periodselector, .objselector, .zefschat,
 .zefscolmanager, .zefsblockmanager {
     margin-top: 4px;
     margin-left: 3px;

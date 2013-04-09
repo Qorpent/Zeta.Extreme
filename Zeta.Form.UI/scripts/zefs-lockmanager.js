@@ -3,7 +3,7 @@
  */
 !function($) {
     var root = window.zeta = window.zeta || {};
-    var zefsblockmanager = new root.Widget("zefsblockmanager", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 40 });
+    var zefsblockmanager = new root.Widget("zefsblockmanager", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 99 });
     var list = $('<div class="btn-group"/>');
     var list2 = $('<div class="btn-group"/>');
     var menu = $('<ul class="dropdown-menu"/>');
