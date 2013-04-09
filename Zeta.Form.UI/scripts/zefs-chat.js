@@ -17,7 +17,7 @@
         refresh.hide(); progress.show();
     });
     var chatform = $('<form method="post"/>');
-    var chatinput = $('<textarea type="text" name="text" placeholder="Текст сообщения..." class="input-small"/>');
+    var chatinput = $('<textarea type="text" name="text" placeholder="Текст сообщения..." class="input-small"/>').css("height", 32);
     var chatadd = $('<button type="submit" class="btn btn-mini btn-primary"/>').append($('<i class="icon-white icon-pencil"/>'));
     chatform.append($('<div class="chat-input"/>').append(chatinput, chatadd, refresh));
     chatform.submit(function(e) {
