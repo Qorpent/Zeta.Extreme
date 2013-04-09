@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson;
@@ -13,60 +12,6 @@ using Zeta.Extreme.Model;
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
 {
-	[TestFixture]
-	public class MongoDbFormChatProviderTest {
-		private MongoDbFormChatProvider _provider;
-
-		[SetUp]
-		public void Setup() {
-			_provider = new MongoDbFormChatProvider();
-			_provider.DatabaseName = "test";
-			_provider.CollectionName = "test";
-			_provider.SetupConnection();
-			_provider.Database.Drop();
-			_provider.SetupConnection();
-		}
-
-		[Test]
-		public void CanSaveItem() {
-			var session = new FormSession(new InputTemplate {Code = "x"}, 2012, 1, new Obj {Id = 2}){Usr = "y"};
-			_provider.AddMessage(session, "test1");
-			_provider.AddMessage(session, "test2");
-			_provider.AddMessage(session, "test3");
-			var all = _provider.Collection.FindAll().ToArray();
-			Assert.AreEqual(3,all.Length);
-			Assert.True(all.All(_=>_["year"].AsInt32==2012));
-			Assert.True(all.All(_ => _["period"].AsInt32 == 1));
-			Assert.True(all.All(_ => _["obj"].AsInt32 == 2));
-			Assert.True(all.All(_ => _["form"].AsString == "x"));
-			Assert.True(all.All(_ => _["user"].AsString == "y"));
-			Assert.True(all.Any(_=>_["text"].AsString == "test1"));
-			Assert.True(all.Any(_=>_["text"].AsString == "test2"));
-			Assert.True(all.Any(_=>_["text"].AsString == "test3"));
-		}
-
-		[Test]
-		public void CanFindItems()
-		{
-			var session = new FormSession(new InputTemplate { Code = "x" }, 2012, 1, new Obj { Id = 2 }) { Usr = "y" };
-			_provider.AddMessage(session, "test1");
-			_provider.AddMessage(session, "test2");
-			_provider.AddMessage(session, "test3");
-			var session2 = new FormSession(new InputTemplate { Code = "x" }, 2013, 1, new Obj { Id = 2 }) { Usr = "y" };
-			_provider.AddMessage(session2, "test3");
-			_provider.AddMessage(session2, "test4");
-			_provider.AddMessage(session2, "test5");
-			var result1 = _provider.GetSessionItems(session).ToArray();
-			var result2= _provider.GetSessionItems(session2).ToArray();
-			Assert.AreEqual(3,result1.Length);
-			Assert.AreEqual(3, result2.Length);
-			Assert.True(result1.Any(_=>_.Text=="test1"));
-			Assert.True(result2.Any(_ => _.Text == "test4")); 
-
-		}
-	}
-
-
 	[TestFixture]
 	public class MongoDbFormChatSerializerTest
 	{

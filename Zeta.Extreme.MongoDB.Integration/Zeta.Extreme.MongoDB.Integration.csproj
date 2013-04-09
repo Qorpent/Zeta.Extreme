@@ -41,15 +41,16 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Zeta.Extreme.BizProcess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.BizProcess.dll</HintPath>
-    </Reference>
     <Reference Include="Zeta.Extreme.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\.build\bin\Zeta.Extreme.Model.Debug\Zeta.Extreme.Model.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
+      <Project>{44653de7-dee5-4960-a906-e0d6b1f83fcc}</Project>
+      <Name>Zeta.Extreme.BizProcess</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

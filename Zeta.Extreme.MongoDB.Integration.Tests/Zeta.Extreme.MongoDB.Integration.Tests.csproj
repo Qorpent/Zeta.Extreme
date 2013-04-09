@@ -55,6 +55,7 @@
     <Compile Include="MongoDbAttachmentSourceIoCTests.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTests.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsBase.cs" />
+    <Compile Include="MongoDbFormChat\MongoDbFormChatProviderTest.cs" />
     <Compile Include="MongoDbFormChat\MongoDbFormChatSerializerTest.cs" />
     <Compile Include="MongoDbLogs\MongoDbLogsTests.cs" />
     <Compile Include="MongoDbLogs\MongoDbLogsTestsBase.cs" />

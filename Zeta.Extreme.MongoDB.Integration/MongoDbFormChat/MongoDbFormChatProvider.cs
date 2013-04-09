@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
+using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.GridFS;
 using Qorpent.IoC;
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -37,6 +38,113 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			return item;
 		}
 
+		/// <summary>
+		/// ѕомечает сообщение с указанным идентификатором как прочтенное пользователем
+		/// </summary>
+		/// <param name="uid"></param>
+		/// <param name="user"></param>
+		public void Archive(string uid, string user) {
+			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
+			var data = new Dictionary<string, object>
+				{
+					{"message_id", uid},
+					{"user", user}
+				};
+			var query = new BsonDocument(data);
+			var item = collection.FindOne(new QueryDocument(query));
+			if (null == item) {
+				item = query;
+			}
+			item["archive"] = true;
+			collection.Save(item);
+		}
 
+		/// <summary>
+		/// ѕомечает сообщение с указанным идентификатором как прочтенное пользователем
+		/// </summary>
+		/// <param name="user"></param>
+		public void SetHaveRead(string user) {
+			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
+			var data = new Dictionary<string, object>
+				{
+					{"message_id", "ALL"},
+					{"user",user}
+				};
+			var query = new BsonDocument(data);
+			var item = collection.FindOne(new QueryDocument(query));
+			if (null == item) {
+				item = query;
+			}
+			item["lastread"] = DateTime.Now;
+			collection.Save(item);
+		}
+		/// <summary>
+		/// ¬озвращает дату последней отметки о прочтении
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		public DateTime GetLastRead(string user) {
+			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
+			var data = new Dictionary<string, object>
+				{
+					{"message_id", "ALL"},
+					{"user",user}
+				};
+			var query = new BsonDocument(data);
+			var item = collection.FindOne(new QueryDocument(query));
+			if (null == item) {
+				return DateTime.MinValue;
+			}
+			if (!item.Contains("lastread")) {
+				return DateTime.MinValue;
+			}
+			return item["lastread"].ToLocalTime();
+		}
+
+		/// <summary>
+		/// ѕровер€ет наличие обноелний в базе сообщений
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		public bool HasUpdates(string user) {
+			var lastread = GetLastRead(user);
+			var query = GenerateFindAllMessagesQuery(user, lastread, null, null, false);
+			return 0 != Collection.Count(new QueryDocument(query));
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="user"></param>
+		/// <param name="startdate"></param>
+		/// <param name="objids"></param>
+		/// <param name="types"></param>
+		/// <param name="includeArchived"></param>
+		/// <returns></returns>
+		public IEnumerable<FormChatItem> FindAll(string user,DateTime startdate, int[] objids, string[] types, bool includeArchived) {
+			var query = GenerateFindAllMessagesQuery(user, startdate, objids, types, includeArchived);
+			return Collection.Find(new QueryDocument(query)).Select(MongoDbFormChatSerializer.BsonToChatItem);
+		}
+
+		private BsonDocument GenerateFindAllMessagesQuery(string user, DateTime startdate, int[] objids, string[] types,
+		                                                  bool includeArchived) {
+			if (startdate.Year <= 1990) {
+				startdate = DateTime.Now.AddDays(-30);
+			}
+			var query = new BsonDocument();
+			query["time"] = new BsonDocument("$gt", startdate);
+			if (null != objids && 0 != objids.Length) {
+				query["obj"] = new BsonDocument("$in", new BsonArray(objids));
+			}
+			if (null != types && 0 != types.Length) {
+				query["type"] = new BsonDocument("$in", new BsonArray(types));
+			}
+			if (!includeArchived) {
+				query["$where"] = string.Format(
+					"!db.{0}_usr.findOne({{message_id:this._id, user:'{1}', archive:true}})",
+					CollectionName, user);
+			}
+			return query;
+		}
 	}
 }

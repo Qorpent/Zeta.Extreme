@@ -24,6 +24,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			document.Set("user", chatItem.User);
 			document.Set("text", chatItem.Text);
 			document.Set("time", chatItem.Time);
+			document.Set("type", chatItem.Type);
 			return document;
 		}
 
@@ -67,14 +68,21 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			if (string.IsNullOrWhiteSpace(chatItem.Id)) {
 				chatItem.Id = ObjectId.GenerateNewId().ToString();
 			}
-			chatItem.FormCode = session.Template.Code;
-			chatItem.Year = session.Year;
-			chatItem.Period = session.Period;
-			chatItem.ObjId = session.Object.Id;
-			if (string.IsNullOrWhiteSpace(chatItem.User)) {
-				chatItem.User = session.Usr;
+			if (null != session) {
+				chatItem.FormCode = session.Template.Code;
+				chatItem.Year = session.Year;
+				chatItem.Period = session.Period;
+				chatItem.ObjId = session.Object.Id;
+				if (string.IsNullOrWhiteSpace(chatItem.User)) {
+					chatItem.User = session.Usr;
+				}
 			}
-			chatItem.Time = DateTime.Now;
+			if (chatItem.Time.Year <= 1990) {
+				chatItem.Time = DateTime.Now;
+			}
+			if (string.IsNullOrWhiteSpace(chatItem.Type)) {
+				chatItem.Type = "default";
+			}
 		}
 	}
 }

@@ -39,5 +39,9 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// Период
 		/// </summary>
 		public int Period { get; set; }
+		/// <summary>
+		/// Тип сообщения
+		/// </summary>
+		public string Type { get; set; }
 	}
 }
