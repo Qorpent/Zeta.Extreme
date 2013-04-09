@@ -156,7 +156,7 @@ $.extend(api,(function(){
                 wrap : function(obj) {
                     if ($.isEmptyObject(obj)) return obj;
                     $.each(obj, function(i,o) {
-                        o.Date = eval(o.Version.substring(2));
+                        o.Date = eval(o.Time.substring(2));
                     });
                     return obj;
                 }
