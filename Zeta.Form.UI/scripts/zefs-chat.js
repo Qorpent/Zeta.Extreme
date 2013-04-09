@@ -4,33 +4,22 @@
 !function($) {
     var root = window.zeta = window.zeta || {};
     var zefs = window.zefs || {};
-    var chat = new root.Widget("zefschat attacher", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 97, ready: function() {
+    var chat = new root.Widget("zefschat", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 97, ready: function() {
         chat.body.find('.btn-group').floatmenu();
     } });
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Лента сообщений"/>')
         .html('<i class="icon-comment"></i>');
-    var menu = $('<div class="dropdown-menu"/>').css({"padding": 5, "width": 450});
-    var progress = $('<img src="images/300.gif" class="pull-right"/>').hide();
-    var refresh = $('<button class="btn btn-mini pull-right"/>').text("Обновить");
+    var menu = $('<div class="dropdown-menu"/>').css({"padding": 5, "width": 400});
+    var progress = $('<img src="images/300.gif"/>').hide();
+    var refresh = $('<button class="btn btn-mini"/>').append($('<i class="icon-repeat"/>'));
     refresh.click(function() {
         zefs.myform.chatlist();
         refresh.hide(); progress.show();
     });
     var chatform = $('<form method="post"/>');
-    var chatinput = $('<input type="text" name="text" placeholder="Текст сообщения..." class="input-small"/>');
-    var chatadd = $('<input type="submit" class="btn btn-mini btn-primary pull-right"/>').val("Отправить сообщение");
-    chatform.append(
-        $("<table/>").append(
-            $('<colgroup/>').append(
-                $('<col/>').css("width",""),
-                $('<col/>').css("width",140),
-                $('<col/>').css("width",70)
-            ),
-            $('<tbody/>').append($('<tr/>').append(
-                $('<td/>').append(chatinput),$('<td/>').append(chatadd),$('<td/>').append(refresh))
-            )
-        )
-    );
+    var chatinput = $('<textarea type="text" name="text" placeholder="Текст сообщения..." class="input-small"/>').css("height", 32);
+    var chatadd = $('<button type="submit" class="btn btn-mini btn-primary"/>').append($('<i class="icon-white icon-pencil"/>'));
+    chatform.append($('<div class="chat-input"/>').append(chatinput, chatadd, refresh));
     chatform.submit(function(e) {
         e.preventDefault();
         if (chatinput.val() != "") {
@@ -39,30 +28,25 @@
             chatinput.val("");
         }
     });
-    var chatlist = $('<table class="table table-striped"/>');
+    var chatlist = $('<div class="chat-list"/>');
     chatlist.append(
-        $('<colgroup/>').append(
-            $('<col/>').css("width",70),
-            $('<col/>').css("width",230),
-            $('<col/>').css("width",150)
-        ),
-        $('<thead/>').append($('<tr/>').append($('<th colspan="3"/>').append("Лента сообщений формы", progress))),
-        $('<tbody/>').append($('<tr/>').append($('<td colspan="3"/>').text("Пока сообщений нет")))
+        $('<div class="chat-list-header"/>').append("Лента сообщений формы", progress),
+        $('<div class="chat-list-body"/>').text("Пока сообщений нет")
     );
     $(zefs).on(zefs.handlers.on_chatlistload, function(e, cl) {
         refresh.show(); progress.hide();
-        var body = $(chatlist.find('tbody'));
+        var body = $(chatlist.find('.chat-list-body'));
         if (cl != null && !$.isEmptyObject(cl)) {
             body.empty();
             b.addClass("btn-success");
             b.find("i").addClass("icon-white");
             $.each(cl, function(i,message) {
-                var tr = $('<tr/>');
+                var tr = $('<div class="chat-list-row"/>');
                 var u = $('<span class="label label-inverse"/>');
                 body.append(tr.append(
-                    $('<td/>').text(message.Date.format("dd.mm.yyyy ")),
-                    $('<td class="filename"/>').text(message.Text),
-                    $('<td class="username"/>').append(u.text(message.User))
+                    $('<div class="chat-list-cell username"/>').append(u.text(message.User)),
+                    $('<div class="chat-list-cell date"/>').text(message.Date.format("dd.mm.yyyy HH:MM")),
+                    $('<div class="chat-list-cell message"/>').text(message.Text)
                 ));
                 u.zetauser();
                 tr = u = null;
@@ -75,6 +59,11 @@
         body = cl = null;
     });
     menu.append(chatform, chatlist);
+    b.tooltip({placement: 'bottom'});
+    $(document).on('click.dropdown.data-api', '.zefschat>div', function (e) {
+        // e.preventDefault();
+        e.stopPropagation();
+    });
     chat.body = $('<div/>').append($('<div class="btn-group"/>').append(b,menu));
     root.console.RegisterWidget(chat);
 }(window.jQuery);

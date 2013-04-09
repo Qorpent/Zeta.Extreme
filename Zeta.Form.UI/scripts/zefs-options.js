@@ -161,7 +161,18 @@ $.extend(api,(function(){
                     return obj;
                 }
             }),
-            add : new Command({domain: "zefs", name: "chatadd" })
+            add : new Command({domain: "zefs", name: "chatadd" }),
+            // возвращает список сообщений
+            // from : date (DEFAULT LAST 30 DAY), showarchived : bool (DEFAULT false), typefilter : string (DEFAULT NULL)
+            get : new Command({domain: "zecl", name: "get"}),
+            // пометить конкретное сообщение как прочитанное (архивированное)
+            archive : new Command({domain: "zecl", name: "archive"}),
+            // вовращает boolean - true - если есть обновления после lastread
+            updatecount : new Command({domain: "zecl", name: "updatecount"}),
+            // получить дату последней отметки zecl/haveread
+            getlastread : new Command({domain: "zecl", name: "getlastread"}),
+            // устанавливает внутреннюю переменную lastread
+            haveread : new Command({domain: "zecl", name: "haveread"})
         },
 
         metadata : {

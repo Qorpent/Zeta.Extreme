@@ -47,9 +47,10 @@
                 .text("Закрыть"));
         modal.append(modalheader, modalbody, modalfooter);
         $('body').append(modal);
+
+        modalbody.stopParentScroll();
         modalheader = modalbody = modalfooter = null;
         $(modal).modal({backdrop: false});
-
         // Убиваем окно после его закрытия
         $(modal).on('hidden', function() { $(this).remove() });
         $(modal).draggable({ handle: ".modal-header", containment: "window"});
