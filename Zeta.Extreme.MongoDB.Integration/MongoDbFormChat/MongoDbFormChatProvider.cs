@@ -58,6 +58,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <param name="uid"></param>
 		/// <param name="user"></param>
 		public void Archive(string uid, string user) {
+			SetupConnection();
 			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
 			var data = new Dictionary<string, object>
 				{
@@ -79,6 +80,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// </summary>
 		/// <param name="user"></param>
 		public void SetHaveRead(string user) {
+			SetupConnection();
 			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
 			var data = new Dictionary<string, object>
 				{
@@ -101,6 +103,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <returns>
 		/// </returns>
 		public DateTime GetLastRead(string user) {
+			SetupConnection();
 			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
 			var data = new Dictionary<string, object>
 				{
@@ -122,11 +125,15 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		///     ѕровер€ет наличие обноелний в базе сообщений
 		/// </summary>
 		/// <param name="user"></param>
+		/// <param name="objids"></param>
+		/// <param name="types"></param>
 		/// <returns>
 		/// </returns>
-		public long GetUpdatesCount(string user) {
+		public long GetUpdatesCount(string user,int[] objids = null, string[] types=null) {
+			SetupConnection();
 			var lastread = GetLastRead(user);
 			var query = GenerateFindAllMessagesQuery(user, lastread, null, null, false);
+			query["user"] = new BsonDocument("$ne",user);
 			return Collection.Count(new QueryDocument(query));
 		}
 
@@ -139,8 +146,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <param name="includeArchived"></param>
 		/// <returns>
 		/// </returns>
-		public IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids, string[] types,
-		                                         bool includeArchived) {
+		public IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids, string[] types,bool includeArchived) {
+			SetupConnection();
 			var query = GenerateFindAllMessagesQuery(user, startdate, objids, types, includeArchived);
 			return Collection.Find(new QueryDocument(query)).Select(MongoDbFormChatSerializer.BsonToChatItem);
 		}

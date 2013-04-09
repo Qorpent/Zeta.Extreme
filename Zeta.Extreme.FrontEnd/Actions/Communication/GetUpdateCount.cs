@@ -2,7 +2,7 @@
 
 // Copyright 2012-2013 Fagim Sadykov
 // Project: Zeta.Extreme.FrontEnd
-// Original file :GetChatList.cs
+// Original file :GetUpdateCount.cs
 // Branch: ZEUS
 // This code is produced especially for ZEUS PROJECT and
 // can be used only with agreement from Fagim Sadykov
@@ -10,21 +10,22 @@
 
 #endregion
 
-using System.Linq;
 using Qorpent.Mvc;
 
 namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 	/// <summary>
+	///     Действие, возвращающее количество непрочитанных сообщений по доступным
+	///     формам
 	/// </summary>
-	[Action("zefs.chatlist")]
-	public class GetChatList : FormSessionActionBase {
+	[Action("zecl.updatecount", Role = "BUDGET,CURATOR")]
+	public class GetUpdateCount : ChatProviderActionBase {
 		/// <summary>
 		///     processing of execution - main method of action
 		/// </summary>
 		/// <returns>
 		/// </returns>
 		protected override object MainProcess() {
-			return MySession.GetChatList().OrderByDescending(_ => _.Time);
+			return _provider.GetUpdatesCount(Context.User.Identity.Name, GetMyOwnObjects());
 		}
 	}
 }

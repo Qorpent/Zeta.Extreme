@@ -44,9 +44,11 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		///     ѕровер€ет наличие обноелний в базе сообщений
 		/// </summary>
 		/// <param name="user"></param>
+		/// <param name="objids"></param>
+		/// <param name="types"></param>
 		/// <returns>
 		/// </returns>
-		long GetUpdatesCount(string user);
+		long GetUpdatesCount(string user, int[] objids = null, string[] types = null);
 
 		/// <summary>
 		/// </summary>
