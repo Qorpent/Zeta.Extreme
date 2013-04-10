@@ -19,7 +19,8 @@ window.zefs.handlers = $.extend(window.zefs.handlers, {
     on_fileloadstart: "fileloadstart", on_fileloadfinish: "fileloadfinish",
     on_fileloaderror: "fileloaderror", on_fileloadprocess: "fileloadprocess",
     // Chat handlers:
-    on_chatlistload : "chatlistload"
+    on_chatlistload : "chatlistload", on_adminchatlistload : "adminchatlistload",
+    on_adminchatcountload : "adminchatcountload"
 });
 var root = window.zefs = window.zefs || {};
 var api = root.api;
@@ -56,6 +57,20 @@ root.init = root.init ||
         if (location.host.search('admin|corp|133|49') != -1 || location.port == '448' || location.port == '449') return '/ecot/';
 //      else if (location.host.search('assoi') == 0 || location.port == '447') return '/eco/';
         return '/eco/';
+    };
+
+    var OpenForm = function(params, blank) {
+        params = params || {};
+        params = $.extend(api.getParameters(), params);
+        blank = blank || false;
+        var loc = document.location.protocol + "//" + document.location.host + siteroot + "zefs-test.html#" +
+            "form=" + params.form + "|year=" + params.year + "|period=" + params.period + "|obj=" + params.obj;
+        if (!blank) {
+            document.location.href = loc;
+            document.location.reload();
+        } else {
+            window.open(loc, "_blank");
+        }
     };
 
     var Fill = function(session) {
@@ -98,10 +113,17 @@ root.init = root.init ||
 
     var ChatList = function() {
         api.chat.list.execute({session: root.myform.sessionId});
+        if (zeta.user.getIsAdmin()) {
+            api.chat.get.execute(zeta.chatoptionsstorage.Get());
+        }
     };
 
     var ChatAdd = function(t) {
         api.chat.add.execute({session: root.myform.sessionId, text: t});
+    };
+
+    var ChatArchive = function(id) {
+        api.chat.archive.execute({id: id});
     };
 
     var LockForm = function() {
@@ -323,7 +345,12 @@ root.init = root.init ||
         api.metadata.getobjects.execute();
         api.metadata.getperiods.execute();
         api.metadata.getforms.execute();
+        // получаем ленту сообщений формы
         api.chat.list.execute({session: root.myform.sessionId});
+        // если админы, то получаем все ленты сообщений
+        if (zeta.user.getIsAdmin()) {
+            api.chat.get.execute(zeta.chatoptionsstorage.Get());
+        }
         api.lock.state.execute(sessiondata);
         api.lock.history.execute(sessiondata);
         api.file.list.execute(sessiondata);
@@ -473,12 +500,25 @@ root.init = root.init ||
         $(root).trigger(root.handlers.on_chatlistload);
     });
 
+    api.chat.get.onSuccess(function(e, result) {
+        $(root).trigger(root.handlers.on_adminchatlistload, result);
+    });
+
+    api.chat.archive.onSuccess(function(e, result) {
+        root.myform.chatlist();
+    });
+
+    api.chat.updatecount.onSuccess(function(e, result) {
+        $(root).trigger(root.handlers.on_adminchatcountload, result);
+    });
+
     $.extend(root, {
         getperiodbyid : GetPeriodName
     });
 
     $.extend(root.myform, {
         execute : function(){api.server.start()},
+        openform: OpenForm,
         save : Save,
         restart : Restart,
         forcesave : ForceSave,
@@ -495,7 +535,8 @@ root.init = root.init ||
         celldebug: CellDebug,
         openformuladebuger: OpenFormulaDebuger,
         chatlist: ChatList,
-        chatadd: ChatAdd
+        chatadd: ChatAdd,
+        chatarchive: ChatArchive
     });
 
     return root.myform;
