@@ -53,6 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MongoDbAttachmentSourceIoCTests.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceSerializer\MongoDbAttachmentSourceSerializerTests.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceSerializer\MongoDbAttachmentSourceSerializerTestsBase.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTests.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsBase.cs" />
     <Compile Include="MongoDbFormChat\MongoDbFormChatProviderTest.cs" />

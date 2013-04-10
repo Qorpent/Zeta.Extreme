@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MongoDB.Bson;
@@ -10,7 +9,7 @@ using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration {
     /// <summary>
-    ///     альтернативный класс MongoDbAttachmentSource с перереработанной структурой
+    ///     Альтернативный класс MongoDbAttachmentSource
     /// </summary>
     public class MongoDbAttachmentSource : IAttachmentStorage {
         // Internal variables to determine names of collection, db and connection string
@@ -75,16 +74,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         public void Save(Attachment attachment) {
             SetupConnection();
 
-            attachment.Uid = attachment.Uid ?? (attachment.Uid = ObjectId.GenerateNewId().ToString());
-
-            if (_gridFs.ExistsById(attachment.Uid) == false) {
-                _gridFs.Create(
-                    attachment.Name,
-                    new MongoGridFSCreateOptions {
-                        Id = attachment.Uid
-                    }
-                );
-            }
+            SetIdToAttachmentIfNull(attachment);
+            CreateFileIfNotExists(attachment);
 
             var doc = _gridFs.Files.FindOneById(attachment.Uid);
             doc.Merge(MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment), true);
@@ -99,9 +90,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             SetupConnection();
 
             _gridFs.Files.Update(
-                new QueryDocument(
-                    new BsonElement("_id", attachment.Uid)  
-                ), 
+                MongoDbAttachmentSourceSerializer.UpdateByUidClause(attachment), 
                 Update.Set("deleted", true),
                 UpdateFlags.None
             );
@@ -118,12 +107,15 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
             return _gridFs.FindOneById(
                 attachment.Uid
-                ).Open(
-                    mode == FileAccess.Write ? FileMode.Create : FileMode.OpenOrCreate,
-                    mode
-                );
+            ).Open(
+                (mode == FileAccess.Write) ? (FileMode.Create) : (FileMode.OpenOrCreate),
+                mode
+            );
         }
 
+        /// <summary>
+        ///     Setup connection to the MongoDB using ConnectionString
+        /// </summary>
         private void SetupConnection() {
             _dbSettings = new MongoDatabaseSettings();
             _gridFsSettings = new MongoGridFSSettings {
@@ -142,6 +134,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
             EnsureIndexesAreActual();
         }
 
+        /// <summary>
+        ///     MongoDB.Driver «bonus» fixing
+        /// </summary>
         private void EnsureIndexesAreActual() {
             var keys = new IndexKeysDocument {
                 {"files_id", "n"}
@@ -149,6 +144,31 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
             if (!_gridFs.Chunks.IndexExists(keys)) {
                 _gridFs.Chunks.ResetIndexCache();
+            }
+        }
+
+        /// <summary>
+        ///     Sets the ObjectId to the Uid field if null
+        /// </summary>
+        /// <param name="attachment">an Attachment instance</param>
+        private void SetIdToAttachmentIfNull(Attachment attachment) {
+            if (attachment.Uid == null) {
+                attachment.Uid = ObjectId.GenerateNewId().ToString();
+            }
+        }
+
+        /// <summary>
+        ///     Creates a GridFS file if not exists
+        /// </summary>
+        /// <param name="attachment">an Attachment instance</param>
+        private void CreateFileIfNotExists(Attachment attachment) {
+            if (_gridFs.ExistsById(attachment.Uid) == false) {
+                _gridFs.Create(
+                    attachment.Name,
+                    new MongoGridFSCreateOptions {
+                        Id = attachment.Uid
+                    }
+                );
             }
         }
     }

@@ -164,7 +164,15 @@ $.extend(api,(function(){
             add : new Command({domain: "zefs", name: "chatadd" }),
             // возвращает список сообщений
             // from : date (DEFAULT LAST 30 DAY), showarchived : bool (DEFAULT false), typefilter : string (DEFAULT NULL)
-            get : new Command({domain: "zecl", name: "get"}),
+            get : $.extend(new Command({domain: "zecl", name: "get"}), {
+                wrap : function(obj) {
+                    if ($.isEmptyObject(obj)) return obj;
+                    $.each(obj, function(i,o) {
+                        o.Date = eval(o.Time.substring(2));
+                    });
+                    return obj;
+                }
+            }),
             // пометить конкретное сообщение как прочитанное (архивированное)
             archive : new Command({domain: "zecl", name: "archive"}),
             // вовращает boolean - true - если есть обновления после lastread
