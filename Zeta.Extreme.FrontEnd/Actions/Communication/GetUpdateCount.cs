@@ -25,7 +25,9 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 		/// <returns>
 		/// </returns>
 		protected override object MainProcess() {
-			return _provider.GetUpdatesCount(Context.User.Identity.Name, GetMyOwnObjects());
+			var myobjs = GetMyOwnObjects();
+			if (0 == myobjs.Length) return 0;
+			return _provider.GetUpdatesCount(Context.User.Identity.Name, myobjs);
 		}
 	}
 }

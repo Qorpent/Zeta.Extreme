@@ -3,6 +3,7 @@ using System.Linq;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 	/// <summary>
@@ -34,8 +35,9 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 		/// <returns>
 		/// </returns>
 		protected override object MainProcess() {
-			return _provider.FindAll(Context.User.Identity.Name, From, GetMyOwnObjects(), TypeFilter.SmartSplit().ToArray(),
-			                         ShowArchived).ToArray();
+			var myobjs = GetMyOwnObjects();
+			if (0 == myobjs.Length) return new FormChatItem[] {};
+			return _provider.FindAll(Context.User.Identity.Name, From, myobjs, TypeFilter.SmartSplit().ToArray(), ShowArchived).ToArray();
 		}
 	}
 }
