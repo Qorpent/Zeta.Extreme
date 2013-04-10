@@ -62,6 +62,7 @@ var root = window.zeta = window.zeta || {};
     };
 
     root.userinfostorage = new Storage({name: "__zeta_users"});
+    root.chatoptionsstorage = new Storage({name: "__zeta_chatoptions"});
     root.temporarystorage = new Storage({name: "__zeta_temporary"});
     root.formoptionsstorage = $.extend(new Storage({name: "__zeta_formoptions", dependency: ["form"]}), {
         getParameters : function() {
