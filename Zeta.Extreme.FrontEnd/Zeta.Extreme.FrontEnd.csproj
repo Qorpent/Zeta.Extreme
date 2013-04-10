@@ -16,10 +16,18 @@
     <None Include="Zeta.Extreme.Model.import" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\Communication\AddChatMessage.cs" />
     <Compile Include="Actions\Attachments\AttachFileAction.cs" />
     <Compile Include="Actions\Abstracts\SingleAttachmentActionBase.cs" />
     <Compile Include="Actions\Attachments\DownloadFileAction.cs" />
+    <Compile Include="Actions\Communication\ChatProviderActionBase.cs" />
+    <Compile Include="Actions\Communication\GetAllMessages.cs" />
+    <Compile Include="Actions\Communication\GetChatList.cs" />
     <Compile Include="Actions\Attachments\GetFileTypesAction.cs" />
+    <Compile Include="Actions\Communication\GetLastReadDate.cs" />
+    <Compile Include="Actions\Communication\GetUpdateCount.cs" />
+    <Compile Include="Actions\Communication\SetHaveReadUpdates.cs" />
+    <Compile Include="Actions\Communication\SetMessageArchived.cs" />
     <Compile Include="Actions\Info\GetBizProcessList.cs" />
     <Compile Include="Actions\Info\GetCellHistory.cs" />
     <Compile Include="Actions\Info\GetEvalStack.cs" />

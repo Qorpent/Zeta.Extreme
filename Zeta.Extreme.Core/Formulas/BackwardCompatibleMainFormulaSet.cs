@@ -18,8 +18,8 @@
 #endregion
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 
@@ -72,6 +72,8 @@ namespace Zeta.Extreme {
 			return deltas.Select(d => _host.Eval(d)).FirstOrDefault(qr => 0 != qr);
 		}
 
+		
+
 		/// <summary>
 		/// 	Тернарный генерик - условие
 		/// </summary>
@@ -80,11 +82,28 @@ namespace Zeta.Extreme {
 		/// <param name="val1"> </param>
 		/// <param name="val2"> </param>
 		/// <returns> </returns>
-		public T If<T>(bool condition, Func<T> val1, Func<T> val2) {
-			if (condition) {
+		public T If<T>(Expression<Func<bool>> condition, Func<T> val1, Func<T> val2) {
+			
+			if (_host.IsInPlaybackMode) {
+				var deltas = new QueryDeltaFindVisitor().CollectDeltas(condition).ToArray();
+				if (0 != deltas.Length) {
+					_host.OptimizeDeltaFinding = false;	
+					foreach (var queryDelta in deltas) {
+						_host.Eval(queryDelta);
+					}
+					val1();
+					return val2();
+				}
+				if (condition.Compile()()) {
+					return val1();
+				}
+				return val2();
+			}
+			if (condition.Compile()()) {
 				return val1();
 			}
 			return val2();
+			
 		}
 
 		/// <summary>
@@ -94,11 +113,8 @@ namespace Zeta.Extreme {
 		/// <param name="condition"> </param>
 		/// <param name="val1"> </param>
 		/// <returns> </returns>
-		public T If<T>(bool condition, Func<T> val1) {
-			if (condition) {
-				return val1();
-			}
-			return default(T);
+		public T If<T>(Expression<Func<bool>> condition, Func<T> val1) {
+			return If(condition, val1, () => default(T));
 		}
 
 		/// <summary>

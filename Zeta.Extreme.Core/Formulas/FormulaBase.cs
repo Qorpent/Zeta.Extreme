@@ -106,7 +106,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Флаг нахождения в режиме плейбэка
 		/// </summary>
-		protected bool IsInPlaybackMode;
+		public bool IsInPlaybackMode;
 
 		/// <summary>
 		/// 	Ссылка на контекст текущего запроса

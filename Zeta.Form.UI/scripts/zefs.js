@@ -2,39 +2,24 @@
 var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 window.zefs.handlers = $.extend(window.zefs.handlers, {
     // Zefs handlers:
-    on_zefsready : "zefsready",
-    on_zefsstarting : "zefsstarting",
-    on_zefsfailed : "zefsfailed",
+    on_zefsready : "zefsready", on_zefsstarting : "zefsstarting", on_zefsfailed : "zefsfailed",
     // Session handlers:
-    on_sessionload : "sessionload",
-    on_structureload : "structureload",
+    on_sessionload : "sessionload", on_structureload : "structureload",
     // Form handlers:
-    on_dataload : "dataload",
-    on_formready : "forrmready",
-    on_statusload : "statusload",
-    on_statusfailed : "statusfaild",
-    on_savestart : "savestart",
-    on_savefailed : "savefaild",
-    on_savefinished : "savefinished",
-    on_getcanlockload : "getcanlockload",
-    on_getlockfailed : "getlockfinished",
-    on_getlockload : "getlockload",
-    on_getlockhistoryload : "getlockhistory",
-    on_lockform : "lockform",
+    on_dataload : "dataload", on_formready : "forrmready", on_statusload : "statusload",
+    on_statusfailed : "statusfaild", on_savestart : "savestart", on_savefailed : "savefaild",
+    on_savefinished : "savefinished", on_getcanlockload : "getcanlockload", on_getlockfailed : "getlockfinished",
+    on_getlockload : "getlockload", on_getlockhistoryload : "getlockhistory", on_lockform : "lockform",
     // Other handlers:
-    on_formsload : "formsload",
-    on_periodsload : "periodsload",
-    on_periodsfaild : "periodsfailed",
-    on_objectsload : "objectsload",
-    on_objectsfaild : "objectsfailed",
-    on_attachmentload : "attachmentload",
+    on_formsload : "formsload", on_periodsload : "periodsload", on_periodsfaild : "periodsfailed",
+    on_objectsload : "objectsload", on_objectsfaild : "objectsfailed", on_attachmentload : "attachmentload",
     // Message handlers:
     on_message : "message",
     // File handlers:
-    on_fileloadstart: "fileloadstart",
-    on_fileloadfinish: "fileloadfinish",
-    on_fileloaderror: "fileloaderror",
-    on_fileloadprocess: "fileloadprocess"
+    on_fileloadstart: "fileloadstart", on_fileloadfinish: "fileloadfinish",
+    on_fileloaderror: "fileloaderror", on_fileloadprocess: "fileloadprocess",
+    // Chat handlers:
+    on_chatlistload : "chatlistload"
 });
 var root = window.zefs = window.zefs || {};
 var api = root.api;
@@ -109,6 +94,14 @@ root.init = root.init ||
 
     var DownloadFile = function(uid) {
         api.file.download.getUrl(uid);
+    };
+
+    var ChatList = function() {
+        api.chat.list.execute({session: root.myform.sessionId});
+    };
+
+    var ChatAdd = function(t) {
+        api.chat.add.execute({session: root.myform.sessionId, text: t});
     };
 
     var LockForm = function() {
@@ -330,6 +323,7 @@ root.init = root.init ||
         api.metadata.getobjects.execute();
         api.metadata.getperiods.execute();
         api.metadata.getforms.execute();
+        api.chat.list.execute({session: root.myform.sessionId});
         api.lock.state.execute(sessiondata);
         api.lock.history.execute(sessiondata);
         api.file.list.execute(sessiondata);
@@ -467,6 +461,18 @@ root.init = root.init ||
         $(root).trigger(root.handlers.on_fileloadprocess, result);
     });
 
+    api.chat.add.onSuccess(function() {
+        root.myform.chatlist()
+    });
+
+    api.chat.list.onSuccess(function(e, result) {
+        $(root).trigger(root.handlers.on_chatlistload, result);
+    });
+
+    api.chat.list.onError(function(e, result) {
+        $(root).trigger(root.handlers.on_chatlistload);
+    });
+
     $.extend(root, {
         getperiodbyid : GetPeriodName
     });
@@ -487,7 +493,9 @@ root.init = root.init ||
         setupform: SetupForm,
         cellhistory: CellHistory,
         celldebug: CellDebug,
-        openformuladebuger: OpenFormulaDebuger
+        openformuladebuger: OpenFormulaDebuger,
+        chatlist: ChatList,
+        chatadd: ChatAdd
     });
 
     return root.myform;

@@ -4,7 +4,7 @@ using MongoDB.Driver;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration {
-    /// <summary>
+	/// <summary>
     ///     The representation of the Attachemnt format
     /// </summary>
     public static class MongoDbAttachmentSourceSerializer {

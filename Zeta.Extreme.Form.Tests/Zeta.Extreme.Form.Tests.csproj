@@ -17,6 +17,7 @@
   <ItemGroup>
     <Compile Include="DbfsStorageTest.cs" />
     <Compile Include="ExtremeFormProviderTests.cs" />
+    <Compile Include="FormBehavior\Zc482PeriodRedirectTest.cs" />
     <Compile Include="ThemaLoader\AF400CanApplyRowsToThemaTest.cs" />
     <Compile Include="ZC371TestBench\BenchMarkTools.cs" />
     <Compile Include="ZC371TestBench\ConditionMatcherBase.cs" />
@@ -32,6 +33,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ThemaLoader\balans2011.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Zeta.Extreme.FrontEnd\Zeta.Extreme.FrontEnd.csproj">
+      <Project>{75E74DED-91CC-4090-B3B2-2E8AE3C085E8}</Project>
+      <Name>Zeta.Extreme.FrontEnd</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

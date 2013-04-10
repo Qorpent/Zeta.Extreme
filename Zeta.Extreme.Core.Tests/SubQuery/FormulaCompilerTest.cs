@@ -40,8 +40,8 @@ f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) 
 			storage.Preprocess(request);
 
 			Console.WriteLine(request.PreprocessedFormula);
-			Assert.AreEqual(@"f.If ( year == 2011 && periodin ( 4,112 ) && colin (""Á1"",""PLAN"") , ()=>( - Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) - Eval( new QueryDelta{ RowCode = ""r2161111"", ColCode = ""Ok"", Period = 4, }) - Eval( new QueryDelta{ RowCode = ""r2161131"", ColCode = ""Ok"", Period = 4, }) ) , ()=>(
-f.If ( year == 2011 || (  year == 2012 && periodin ( 301,251,252,303,306,309 ) ) , ()=>( f.If ( colin(""PLANC"") , ()=>( Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""PLANC"", }) ), ()=>( f.If ( colin (""Á1"",""PLAN""), ()=>( - Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) ) ) ) ) ), ()=>( f.If ( year < 2011 , ()=>( f.If ( colin(""PLANC"") , ()=>( Eval( new QueryDelta{ RowCode = ""m211216"", ColCode = ""PLANC"", }) ), ()=>( f.If ( colin (""Á1"",""PLAN""), ()=>( - Eval( new QueryDelta{ RowCode = ""m211216"", ColCode = ""DELTA"", }) ) ) ) ) ) , ()=>( f.If ( colin (""Á1"",""PLAN""), ()=>( Eval( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Rd"", }) - Eval( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Pd"", }) ) ) ) ) ) ) ) )
+			Assert.AreEqual(@"f.If(()=> year == 2011 && periodin ( 4,112 ) && colin (""Á1"",""PLAN"") , ()=>( - Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) - Eval( new QueryDelta{ RowCode = ""r2161111"", ColCode = ""Ok"", Period = 4, }) - Eval( new QueryDelta{ RowCode = ""r2161131"", ColCode = ""Ok"", Period = 4, }) ) , ()=>(
+f.If(()=> year == 2011 || (  year == 2012 && periodin ( 301,251,252,303,306,309 ) ) , ()=>( f.If(()=> colin(""PLANC"") , ()=>( Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""PLANC"", }) ), ()=>( f.If(()=> colin (""Á1"",""PLAN""), ()=>( - Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) ) ) ) ) ), ()=>( f.If(()=> year < 2011 , ()=>( f.If(()=> colin(""PLANC"") , ()=>( Eval( new QueryDelta{ RowCode = ""m211216"", ColCode = ""PLANC"", }) ), ()=>( f.If(()=> colin (""Á1"",""PLAN""), ()=>( - Eval( new QueryDelta{ RowCode = ""m211216"", ColCode = ""DELTA"", }) ) ) ) ) ) , ()=>( f.If(()=> colin (""Á1"",""PLAN""), ()=>( Eval( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Rd"", }) - Eval( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Pd"", }) ) ) ) ) ) ) ) )
 ".Trim(), request.PreprocessedFormula.Trim());
 		}
 
@@ -58,7 +58,7 @@ f.If ( year == 2011 || (  year == 2012 && periodin ( 301,251,252,303,306,309 ) )
 			storage.Preprocess(request);
 
 			Console.WriteLine(request.PreprocessedFormula);
-			Assert.AreEqual(@"f.If ( ! colin( ""REVISION"" ), ()=>( Eval( new QueryDelta{ RowCode = ""m111110"", }) - Eval( new QueryDelta{ RowCode = ""m111130"", }) ) )
+			Assert.AreEqual(@"f.If(()=> ! colin( ""REVISION"" ), ()=>( Eval( new QueryDelta{ RowCode = ""m111110"", }) - Eval( new QueryDelta{ RowCode = ""m111130"", }) ) )
 ".Trim(), request.PreprocessedFormula.Trim());
 		}
 
@@ -75,7 +75,7 @@ f.If ( year == 2011 || (  year == 2012 && periodin ( 301,251,252,303,306,309 ) )
 			storage.Preprocess(request);
 
 			Console.WriteLine(request.PreprocessedFormula);
-			Assert.AreEqual(@"f.If ( ! colin( ""REVISION"" ), ()=>( Eval( new QueryDelta{ ColCode = ""m111110"", }) - Eval( new QueryDelta{ ColCode = ""m111130"", }) ) )
+			Assert.AreEqual(@"f.If(()=> ! colin( ""REVISION"" ), ()=>( Eval( new QueryDelta{ ColCode = ""m111110"", }) - Eval( new QueryDelta{ ColCode = ""m111130"", }) ) )
 ".Trim(), request.PreprocessedFormula.Trim());
 		}
 
@@ -92,7 +92,7 @@ f.If ( year == 2011 || (  year == 2012 && periodin ( 301,251,252,303,306,309 ) )
 			storage.Preprocess(request);
 
 			Console.WriteLine(request.PreprocessedFormula);
-			Assert.AreEqual(@"f.If ( ! colin( ""REVISION"" ), ()=>( Eval( new QueryDelta{ ColCode = ""m111110"", ObjId = 345, }) - Eval( new QueryDelta{ RowCode = ""m111130"", ObjId = 333, }) ) )
+			Assert.AreEqual(@"f.If(()=> ! colin( ""REVISION"" ), ()=>( Eval( new QueryDelta{ ColCode = ""m111110"", ObjId = 345, }) - Eval( new QueryDelta{ RowCode = ""m111130"", ObjId = 333, }) ) )
 ".Trim(), request.PreprocessedFormula.Trim());
 		}
 
@@ -106,8 +106,8 @@ f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) 
 ", new FormulaRequest {Language = "boo"});
 			Console.WriteLine(result);
 			Assert.AreEqual(
-				@"f.If ( year == 2011 and periodin ( 4,112 ) and colin (""Á1"",""PLAN"") , { - Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) - Eval( new QueryDelta{ RowCode = ""r2161111"", ColCode = ""Ok"", Period = 4, }) - Eval( new QueryDelta{ RowCode = ""r2161131"", ColCode = ""Ok"", Period = 4, }) } , {
-f.If ( year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) ) , { f.If ( colin(""PLANC"") , { Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""PLANC"", }) }, { f.If ( colin (""Á1"",""PLAN""), { - Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) } ) } ) }, { f.If ( year < 2011 , { f.If ( colin(""PLANC"") , { Eval( new QueryDelta{ RowCode = ""m211216"", ColCode = ""PLANC"", }) }, { f.If ( colin (""Á1"",""PLAN""), { - Eval( new QueryDelta{ RowCode = ""m211216"", ColCode = ""DELTA"", }) } ) } ) } , { f.If ( colin (""Á1"",""PLAN""), { Eval( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Rd"", }) - Eval( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Pd"", }) } ) } ) } ) } )"
+				@"f.If(()=> year == 2011 and periodin ( 4,112 ) and colin (""Á1"",""PLAN"") , { - Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) - Eval( new QueryDelta{ RowCode = ""r2161111"", ColCode = ""Ok"", Period = 4, }) - Eval( new QueryDelta{ RowCode = ""r2161131"", ColCode = ""Ok"", Period = 4, }) } , {
+f.If(()=> year == 2011 or (  year == 2012 and periodin ( 301,251,252,303,306,309 ) ) , { f.If(()=> colin(""PLANC"") , { Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""PLANC"", }) }, { f.If(()=> colin (""Á1"",""PLAN""), { - Eval( new QueryDelta{ RowCode = ""m1111216"", ColCode = ""DELTA"", }) } ) } ) }, { f.If(()=> year < 2011 , { f.If(()=> colin(""PLANC"") , { Eval( new QueryDelta{ RowCode = ""m211216"", ColCode = ""PLANC"", }) }, { f.If(()=> colin (""Á1"",""PLAN""), { - Eval( new QueryDelta{ RowCode = ""m211216"", ColCode = ""DELTA"", }) } ) } ) } , { f.If(()=> colin (""Á1"",""PLAN""), { Eval( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Rd"", }) - Eval( new QueryDelta{ RowCode = ""r2161200"", ColCode = ""Pd"", }) } ) } ) } ) } )"
 					.Trim(), result.Trim());
 		}
 

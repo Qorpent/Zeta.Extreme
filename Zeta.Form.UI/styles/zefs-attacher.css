@@ -21,6 +21,7 @@
 
 .attacher th {
     padding: 4px 2px;
+    line-height: 22px;
 }
 
 .attacher td {
@@ -82,6 +83,7 @@
     padding: 2px;
 }
 
+.attacher input[name="text"],
 .attacher input[name="filename"] {
     width: 100%;
     font-size: 12px;

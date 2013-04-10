@@ -63,12 +63,12 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="obj"> </param>
 		public FormSession(IInputTemplate form, int year, int period, IZetaMainObject obj) {
 			Uid = Guid.NewGuid().ToString();
+			Object = obj;
 			Created = DateTime.Now;
 			Template = form.PrepareForPeriod(year, period, new DateTime(1900, 1, 1), Object);
 			Template.AttachedSession = this;
 			Year = Template.Year;
 			Period = Template.Period;
-			Object = obj;
 			Created = DateTime.Now;
 			Usr = Application.Current.Principal.CurrentUser.Identity.Name;
 			IsStarted = false;
@@ -91,16 +91,18 @@ namespace Zeta.Extreme.FrontEnd {
 				};
 			
 			var holdlogin = GetHoldLogin(reader);
-			FormInfo = new
-				{
-					Template.Code, 
-					Template.Name, 
-					ObjectResponsibility = reader.GetThemaResponsiveLogin(Template.Thema.Code, Object.Id), 
-					HoldResponsibility = holdlogin ,
-					Status = Template.Thema.GetParameter("status",""),
-					FirstYear = Template.Thema.GetParameter("firstyear", ""),
-					RolePrefix = Template.Thema.GetParameter("roleprefix", ""),
-				};
+			if (null != Template.Thema) {
+				FormInfo = new
+					{
+						Template.Code,
+						Template.Name,
+						ObjectResponsibility = reader.GetThemaResponsiveLogin(Template.Thema.Code, Object.Id),
+						HoldResponsibility = holdlogin,
+						Status = Template.Thema.GetParameter("status", ""),
+						FirstYear = Template.Thema.GetParameter("firstyear", ""),
+						RolePrefix = Template.Thema.GetParameter("roleprefix", ""),
+					};
+			}
 			NeedMeasure = Template.ShowMeasureColumn;
 			Activations = 1;
 			Logger = Application.Current.LogManager.GetLog("form.log", this);
@@ -134,6 +136,33 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Признак требования показывать колонку с единицей измерения
 		/// </summary>
 		public bool NeedMeasure { get; set; }
+
+
+		/// <summary>
+		/// Получить перечень сообщений в чате
+		/// </summary>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
+		public FormChatItem[] GetChatList() {
+			var provider = Application.Current.Container.Get<IFormChatProvider>();
+			if (null == provider) {
+				throw new Exception("no form chat configured");
+			}
+			return provider.GetSessionItems(this).ToArray();
+		}
+
+		/// <summary>
+		/// Добавить сообщение в чат
+		/// </summary>
+		/// <returns></returns>
+		public FormChatItem AddChatMessage(string message) {
+			var provider = Application.Current.Container.Get<IFormChatProvider>();
+			if (null == provider)
+			{
+				throw new Exception("no form chat configured");
+			}
+			return provider.AddMessage(this, message);
+		}
 
 		/// <summary>
 		/// 	Признак, что сессия стартовала
@@ -310,7 +339,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// 	Пользователь
 		/// </summary>
-		public string Usr { get; private set; }
+		public string Usr { get; set; }
 
 		/// <summary>
 		/// 	Хранит уже подготовленные данные
