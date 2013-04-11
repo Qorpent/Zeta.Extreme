@@ -20,8 +20,10 @@
         if ($(this).hasClass("hasunread")) {
             zefs.myform.chatread();
             $(this).removeClass("hasunread");
+            var html = $(this).html();
             $(this).empty();
-            $(this).html('<i class="icon-comment"></i>');
+            $(this).html(html);
+            html = null;
         }
     });
     chatinput.keydown(function(e) {
