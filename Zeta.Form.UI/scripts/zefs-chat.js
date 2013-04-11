@@ -123,8 +123,8 @@
             header.append(showarchive);
             chatlist.append(header.append("Все ваши сообщения"), body);
         }
+        body.empty();
         if (cl != null && !$.isEmptyObject(cl)) {
-            body.empty();
             b.addClass("btn-success");
             b.find("i").addClass("icon-white");
             $.each(cl, function(i,message) {
@@ -162,6 +162,7 @@
     b.tooltip({placement: 'bottom'});
     $(document).on('click.dropdown.data-api', '.zefschat>div', function (e) {
         e.preventDefault();
+        e.stopPropagation();
     });
     chat.body = $('<div/>').append($('<div class="btn-group"/>').append(b,menu));
     root.console.RegisterWidget(chat);
