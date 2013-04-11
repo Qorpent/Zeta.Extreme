@@ -30,7 +30,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 				if (0 == myobjs.Length) return 0;
 				return _provider.GetUpdatesCount(Context.User.Identity.Name, myobjs);
 			}
-			if (IsInRole("OPERATOR") && !IsInRole("ADMIN") && !IsInRole("SYS_ALLOBJECTS")) {
+			if (!IsInRole("ADMIN") && !IsInRole("SYS_ALLOBJECTS")) {
 				var myobjs = GetMyAccesibleObjects();
 				var myforms = GetMyFormCodes();
 				return _provider.GetUpdatesCount(Context.User.Identity.Name,myobjs,forms:myforms);

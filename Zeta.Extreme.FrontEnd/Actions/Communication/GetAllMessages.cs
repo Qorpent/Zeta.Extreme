@@ -37,19 +37,28 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 		/// <returns>
 		/// </returns>
 		protected override object MainProcess() {
+			var lastread = _provider.GetLastRead(Context.User.Identity.Name);
+			FormChatItem[] items = null;
 			if (IsInRole("BUDGET"))
 			{
 				var myobjs = GetMyOwnObjects();
 				if (0 == myobjs.Length) return new FormChatItem[]{};
-				return _provider.FindAll(Context.User.Identity.Name, From, myobjs, includeArchived: ShowArchived);
+				items= _provider.FindAll(Context.User.Identity.Name, From, myobjs, includeArchived: ShowArchived).OrderByDescending(_ => _.Time).ToArray() ;
 			}
-			if (IsInRole("OPERATOR") && !IsInRole("ADMIN") && !IsInRole("SYS_ALLOBJECTS"))
+			else if (!IsInRole("ADMIN") && !IsInRole("SYS_ALLOBJECTS"))
 			{
 				var myobjs = GetMyAccesibleObjects();
 				var myforms = GetMyFormCodes();
-				return _provider.FindAll(Context.User.Identity.Name, From, myobjs, forms: myforms, includeArchived:ShowArchived);
+				items = _provider.FindAll(Context.User.Identity.Name, From, myobjs, forms: myforms, includeArchived:ShowArchived).OrderByDescending(_=>_.Time).ToArray();
 			}
-			return new FormChatItem[]{};
+			if (null != items) {
+				foreach (var chatitem in items) {
+					if (chatitem.Time > lastread) {
+						chatitem.Userdata["isnew"] = true;
+					}
+				}
+			}
+			return  items ?? new FormChatItem[]{};
 		}
 	}
 }

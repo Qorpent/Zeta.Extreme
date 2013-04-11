@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Qorpent.Serialization;
 
 namespace Zeta.Extreme.BizProcess.Forms {
@@ -49,6 +50,6 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// </summary>
 		[Serialize]
 		[SerializeNotNullOnly]
-		public object Userdata { get; set; }
+		public IDictionary<string,object> Userdata { get; set; }
 	}
 }
