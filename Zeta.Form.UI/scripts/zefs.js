@@ -427,11 +427,13 @@ root.init = root.init ||
         api.data.savestate.execute({session: root.myform.sessionId});
     });
 
-    api.data.save.onError(function(e, result) {
-        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
-            title: "Во время сохранения формы произошла ошибка",
-            text: JSON.stringify(result)
-        });
+    api.data.save.onComplete(function(e, result) {
+        if (result.status != "200") {
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "Во время сохранения формы произошла ошибка",
+                text: JSON.stringify(result.responseText)
+            });
+        }
     });
 
     api.data.savestate.onSuccess(function(e, result) {
