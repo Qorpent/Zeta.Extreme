@@ -119,10 +119,6 @@
       <Project>{a4442a74-4590-4ba3-b44c-56c98ce4a088}</Project>
       <Name>Zeta.Extreme.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Zeta.Extreme.MongoDB.Integration\Zeta.Extreme.MongoDB.Integration.csproj">
-      <Project>{459e4387-484e-42de-8795-a142e83cfcbb}</Project>
-      <Name>Zeta.Extreme.MongoDB.Integration</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />

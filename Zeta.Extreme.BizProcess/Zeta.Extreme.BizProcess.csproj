@@ -20,9 +20,11 @@
     <Compile Include="Forms\FormAttachment.cs" />
     <Compile Include="Forms\FormAttachmentSource.cs" />
     <Compile Include="Forms\FormChatItem.cs" />
+    <Compile Include="Forms\FormStructureRow.cs" />
     <Compile Include="Forms\IAttachmentStorage.cs" />
     <Compile Include="Forms\IFormAttachmentStorage.cs" />
     <Compile Include="Forms\IFormChatProvider.cs" />
+    <Compile Include="Forms\IFormRowProvider.cs" />
     <Compile Include="Forms\OutCell.cs" />
     <Compile Include="Reports\IParameterConfigurator.cs" />
     <Compile Include="Reports\IReportDefinition.cs" />
