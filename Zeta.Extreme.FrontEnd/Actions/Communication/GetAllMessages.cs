@@ -9,7 +9,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 	/// <summary>
 	///     Действие, выставляющее глобальный признак просмотра обновлений
 	/// </summary>
-	[Action("zecl.get", Role = "BUDGET,CURATOR")]
+	[Action("zecl.get", Role = "DEFAULT")]
 	public class GetAllMessages : ChatProviderActionBase
 	{
 		/// <summary>
@@ -29,15 +29,27 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 
 		
 
+		
+
 		/// <summary>
 		///     processing of execution - main method of action
 		/// </summary>
 		/// <returns>
 		/// </returns>
 		protected override object MainProcess() {
-			var myobjs = GetMyOwnObjects();
-			if (0 == myobjs.Length) return new FormChatItem[] {};
-			return _provider.FindAll(Context.User.Identity.Name, From, myobjs, TypeFilter.SmartSplit().ToArray(), ShowArchived).ToArray();
+			if (IsInRole("BUDGET"))
+			{
+				var myobjs = GetMyOwnObjects();
+				if (0 == myobjs.Length) return new FormChatItem[]{};
+				return _provider.FindAll(Context.User.Identity.Name, From, myobjs, includeArchived: ShowArchived);
+			}
+			if (IsInRole("OPERATOR") && !IsInRole("ADMIN") && !IsInRole("SYS_ALLOBJECTS"))
+			{
+				var myobjs = GetMyAccesibleObjects();
+				var myforms = GetMyFormCodes();
+				return _provider.FindAll(Context.User.Identity.Name, From, myobjs, forms: myforms, includeArchived:ShowArchived);
+			}
+			return new FormChatItem[]{};
 		}
 	}
 }

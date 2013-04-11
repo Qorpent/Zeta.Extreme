@@ -17,7 +17,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 	///     Действие, возвращающее количество непрочитанных сообщений по доступным
 	///     формам
 	/// </summary>
-	[Action("zecl.updatecount", Role = "BUDGET,CURATOR")]
+	[Action("zecl.updatecount", Role = "DEFAULT")]
 	public class GetUpdateCount : ChatProviderActionBase {
 		/// <summary>
 		///     processing of execution - main method of action
@@ -25,9 +25,17 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 		/// <returns>
 		/// </returns>
 		protected override object MainProcess() {
-			var myobjs = GetMyOwnObjects();
-			if (0 == myobjs.Length) return 0;
-			return _provider.GetUpdatesCount(Context.User.Identity.Name, myobjs);
+			if (IsInRole("BUDGET")) {
+				var myobjs = GetMyOwnObjects();
+				if (0 == myobjs.Length) return 0;
+				return _provider.GetUpdatesCount(Context.User.Identity.Name, myobjs);
+			}
+			if (IsInRole("OPERATOR") && !IsInRole("ADMIN") && !IsInRole("SYS_ALLOBJECTS")) {
+				var myobjs = GetMyAccesibleObjects();
+				var myforms = GetMyFormCodes();
+				return _provider.GetUpdatesCount(Context.User.Identity.Name,myobjs,forms:myforms);
+			}
+			return 0;
 		}
 	}
 }

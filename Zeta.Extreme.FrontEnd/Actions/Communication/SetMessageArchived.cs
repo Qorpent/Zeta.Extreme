@@ -17,7 +17,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 	/// <summary>
 	///     ƒействие, выставл€ющее глобальный признак просмотра обновлений
 	/// </summary>
-	[Action("zecl.archive", Role = "BUDGET,CURATOR")]
+	[Action("zecl.archive", Role = "DEFAULT")]
 	public class SetMessageArchived : ChatProviderActionBase {
 		/// <summary>
 		///     »дентификатор новости

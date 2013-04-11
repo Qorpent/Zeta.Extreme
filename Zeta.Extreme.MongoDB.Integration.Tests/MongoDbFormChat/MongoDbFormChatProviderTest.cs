@@ -91,7 +91,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat {
 			if (!string.IsNullOrWhiteSpace(typenames)) {
 				types = typenames.Split(',');
 			}
-			var allmessagesNoFilters = _provider.FindAll("x", new DateTime(year,1,1), objs, types, includeread).ToArray();
+			var allmessagesNoFilters = _provider.FindAll("x", new DateTime(year,1,1), objs, types, null, includeread).ToArray();
 			Assert.AreEqual(count,allmessagesNoFilters.Length);
 		}
 

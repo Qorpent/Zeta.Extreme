@@ -4,7 +4,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 	/// <summary>
 	///     Действие, выставляющее глобальный признак просмотра обновлений
 	/// </summary>
-	[Action("zecl.haveread", Role = "BUDGET,CURATOR")]
+	[Action("zecl.haveread", Role = "DEFAULT")]
 	public class SetHaveReadUpdates : ChatProviderActionBase
 	{
 		/// <summary>

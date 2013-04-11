@@ -129,12 +129,13 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <param name="user"></param>
 		/// <param name="objids"></param>
 		/// <param name="types"></param>
+		/// <param name="forms"></param>
 		/// <returns>
 		/// </returns>
-		public long GetUpdatesCount(string user,int[] objids = null, string[] types=null) {
+		public long GetUpdatesCount(string user,int[] objids = null, string[] types=null, string[] forms = null) {
 			SetupConnection();
 			var lastread = GetLastRead(user);
-			var query = GenerateFindAllMessagesQuery(user, lastread, null, null, false);
+			var query = GenerateFindAllMessagesQuery(user, lastread, objids, types,forms,  false);
 			query["user"] = new BsonDocument("$ne",user);
 			return Collection.Count(new QueryDocument(query));
 		}
@@ -145,12 +146,13 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <param name="startdate"></param>
 		/// <param name="objids"></param>
 		/// <param name="types"></param>
+		/// <param name="forms"></param>
 		/// <param name="includeArchived"></param>
 		/// <returns>
 		/// </returns>
-		public IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids, string[] types,bool includeArchived) {
+		public IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids = null, string[] types=null, string[] forms=null,bool includeArchived=false) {
 			SetupConnection();
-			var query = GenerateFindAllMessagesQuery(user, startdate, objids, types, includeArchived);
+			var query = GenerateFindAllMessagesQuery(user, startdate, objids, types,forms, includeArchived);
 			var mongoquery = new QueryDocument(query);
 			var result = Collection.Find(mongoquery).SetSortOrder(SortBy.Ascending("time")).Select(MongoDbFormChatSerializer.BsonToChatItem).ToArray();
 			foreach (var formChatItem in result) {
@@ -169,7 +171,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
 		}
 
-		private BsonDocument GenerateFindAllMessagesQuery(string user, DateTime startdate, int[] objids, string[] types,
+		private BsonDocument GenerateFindAllMessagesQuery(string user, DateTime startdate, int[] objids, string[] types,string[] forms,
 		                                                  bool includeArchived) {
 			if (startdate.Year <= 1990) {
 				startdate = DateTime.Now.AddDays(-30);
@@ -181,6 +183,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			}
 			if (null != types && 0 != types.Length) {
 				query["type"] = new BsonDocument("$in", new BsonArray(types));
+			}
+			if (null != forms && 0 != forms.Length)
+			{
+				query["form"] = new BsonDocument("$in", new BsonArray(forms));
 			}
 			if (!includeArchived) {
 				query["$where"] = string.Format(

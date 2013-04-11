@@ -42,6 +42,28 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 				                             .Select(_ => _.id)
 				                             .ToArray();
 		}
+
+
+		/// <summary>
+		/// Все доступные предприятия
+		/// </summary>
+		/// <returns></returns>
+		protected int[] GetMyAccesibleObjects() {
+			return
+				new AccessibleObjectsHelper().GetAccessibleObjects(Context.User)
+											 .objs
+											 .Select(_ => _.id)
+											 .ToArray();
+		}
+		/// <summary>
+		/// Список доступных форм
+		/// </summary>
+		/// <returns></returns>
+		protected string[] GetMyFormCodes() {
+			return new BizProcessEnumerator().GetAllBizProcesses(Context.User).SelectMany(
+				_=>new[]{_.Code+"A.in",_.Code+"B.in"}
+			).ToArray();
+		}
 		/// <summary>
 		/// Провайдер работы с чатом
 		/// </summary>

@@ -4,7 +4,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 	/// <summary>
 	///     Действие, выставляющее глобальный признак просмотра обновлений
 	/// </summary>
-	[Action("zecl.getlastread", Role = "BUDGET,CURATOR")]
+	[Action("zecl.getlastread", Role = "DEFAULT")]
 	public class GetLastReadDate : ChatProviderActionBase
 	{
 		

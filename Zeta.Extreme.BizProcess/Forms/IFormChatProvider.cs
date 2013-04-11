@@ -46,9 +46,10 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <param name="user"></param>
 		/// <param name="objids"></param>
 		/// <param name="types"></param>
+		/// <param name="forms"></param>
 		/// <returns>
 		/// </returns>
-		long GetUpdatesCount(string user, int[] objids = null, string[] types = null);
+		long GetUpdatesCount(string user, int[] objids = null, string[] types = null, string[] forms = null);
 
 		/// <summary>
 		/// </summary>
@@ -56,10 +57,11 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <param name="startdate"></param>
 		/// <param name="objids"></param>
 		/// <param name="types"></param>
+		/// <param name="forms"></param>
 		/// <param name="includeArchived"></param>
 		/// <returns>
 		/// </returns>
-		IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids, string[] types,
-		                                                  bool includeArchived);
+		IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids=null, string[] types=null, string[] forms=null,
+		                                                  bool includeArchived=false);
 	}
 }
