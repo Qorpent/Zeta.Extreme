@@ -18,7 +18,7 @@
         chatlist = $('<div class="chat-list scrollable"/>');
     b.click(function() {
         if ($(this).hasClass("hasunread")) {
-            zefs.api.chat.haveread.execute();
+            zefs.myform.chatread();
             $(this).removeClass("hasunread");
             $(this).empty();
             $(this).html('<i class="icon-comment"></i>');

@@ -126,6 +126,12 @@ root.init = root.init ||
         api.chat.archive.execute({id: id});
     };
 
+    var ChatRead = function() {
+        if (zeta.user.getImpersonation() == null) {
+            api.chat.haveread.execute();
+        }
+    };
+
     var LockForm = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
 //            if (root.myform.lockinfo.canblock) {
@@ -536,7 +542,8 @@ root.init = root.init ||
         openformuladebuger: OpenFormulaDebuger,
         chatlist: ChatList,
         chatadd: ChatAdd,
-        chatarchive: ChatArchive
+        chatarchive: ChatArchive,
+        chatread: ChatRead
     });
 
     return root.myform;
