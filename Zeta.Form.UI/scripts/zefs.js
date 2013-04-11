@@ -139,6 +139,10 @@ root.init = root.init ||
         },60000);
     };
 
+    var ChatUpdateOnce = function() {
+        api.chat.updatecount.execute();
+    };
+
     var LockForm = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
 //            if (root.myform.lockinfo.canblock) {
@@ -362,7 +366,6 @@ root.init = root.init ||
         api.chat.list.execute({session: root.myform.sessionId});
         // если админы, то получаем все ленты сообщений
         api.chat.get.execute(zeta.chatoptionsstorage.Get());
-        ChatUpdate();
         api.lock.state.execute(sessiondata);
         api.lock.history.execute(sessiondata);
         api.file.list.execute(sessiondata);
@@ -520,8 +523,8 @@ root.init = root.init ||
         root.myform.chatlist();
     });
 
-    api.chat.updatecount.onSuccess(function(e, result) {
-        $(root).trigger(root.handlers.on_adminchatcountload, result);
+    api.chat.updatecount.onComplete(function(e, result) {
+        $(root).trigger(root.handlers.on_adminchatcountload, result.responseText);
     });
 
     $.extend(root, {
@@ -549,7 +552,8 @@ root.init = root.init ||
         chatlist: ChatList,
         chatadd: ChatAdd,
         chatarchive: ChatArchive,
-        chatread: ChatRead
+        chatread: ChatRead,
+        chatupdateds: ChatUpdateOnce
     });
 
     return root.myform;

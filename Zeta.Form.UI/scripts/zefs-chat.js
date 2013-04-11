@@ -84,9 +84,17 @@
     }
     // Количество новых сообщений
     $(zefs).on(zefs.handlers.on_adminchatcountload, function(e, count) {
+        window.setTimeout(function(){
+            zefs.myform.chatupdateds();
+        },60000);
+        var strong = $(b.find('strong'));
+        if (strong.length != 0) {
+            strong.clear();
+        }
         if (parseInt(count) > 0) {
             b.addClass("hasunread");
-            b.append($('<strong/>').text(count));
+            strong.clear();
+            strong.text(count);
         }
     });
     // Наполняем ленту сообщений
@@ -136,21 +144,31 @@
                 arch.click(function() {
                     zefs.myform.chatarchive(message.Id);
                 });
+                var form = $.map(zefs.forms, function(i) { if (i.Code == message.FormCode.replace(/[A|B]\.in/,'')) return i });
+                var obj = $.map(zefs.objects, function(o) { if (o.id == message.ObjId) return o });
+                var formname = $('<span class="adminchat chat-list-cell formname"/>')
+                    .text($(form).get(0).Name + " " + $(obj).get(0).name + " за " + zefs.getperiodbyid(message.Period) + ", " + message.Year + " год");
+                formname.hover(function() { $(this).toggleClass("hovering") });
                 body.append(tr.append(
                     arch,
-                    $('<div class="adminchat chat-list-cell username"/>').append(u.text(message.User)),
-                    $('<div class="adminchat chat-list-cell date"/>').text(message.Date.format("dd.mm.yyyy HH:MM")),
-                    $('<div class="adminchat chat-list-cell message"/>').append($('<a/>').click(
-                        function(e) {
-                            var cl = $(this).parents('.chat-list-row').data();
-                            e.preventDefault();
-                            zefs.myform.openform({form: cl.FormCode, period: cl.Period, obj: cl.ObjId, year: cl.Year}, true);
-                        }
-                    ).text(message.Text))
+                    $('<div class="adminchat chat-list-cell username"/>').append(
+                        u.text(message.User),
+                        $('<div class="adminchat chat-list-cell date"/>').text(message.Date.format("dd.mm.yyyy HH:MM")),
+                        formname
+                    ),
+                    $('<div class="adminchat chat-list-cell message"/>').text(message.Text)
                 ));
+                formname.click(function(e) {
+                    var m = $(this).parents('.chat-list-row').data();
+                    e.preventDefault();
+                    zefs.myform.openform({form: m.FormCode, period: m.Period, obj: m.ObjId, year: m.Year}, true);
+                });
                 // помечаем прочитанным
                 if (!!message.Userdata) {
                     if (message.Userdata.archive) tr.addClass("archived");
+                }
+                if (message.isnew) {
+                    tr.addClass("notreaded");
                 }
                 tr.data(message);
                 u.zetauser();
