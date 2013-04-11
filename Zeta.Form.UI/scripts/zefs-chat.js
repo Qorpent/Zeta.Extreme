@@ -18,10 +18,12 @@
         chatlist = $('<div class="chat-list scrollable"/>');
     b.click(function() {
         if ($(this).hasClass("hasunread")) {
-            zefs.api.chat.haveread.execute();
+            zefs.myform.chatread();
             $(this).removeClass("hasunread");
+            var html = $(this).html();
             $(this).empty();
-            $(this).html('<i class="icon-comment"></i>');
+            $(this).html(html);
+            html = null;
         }
     });
     chatinput.keydown(function(e) {
@@ -123,8 +125,8 @@
             header.append(showarchive);
             chatlist.append(header.append("Все ваши сообщения"), body);
         }
+        body.empty();
         if (cl != null && !$.isEmptyObject(cl)) {
-            body.empty();
             b.addClass("btn-success");
             b.find("i").addClass("icon-white");
             $.each(cl, function(i,message) {
@@ -162,6 +164,7 @@
     b.tooltip({placement: 'bottom'});
     $(document).on('click.dropdown.data-api', '.zefschat>div', function (e) {
         e.preventDefault();
+        e.stopPropagation();
     });
     chat.body = $('<div/>').append($('<div class="btn-group"/>').append(b,menu));
     root.console.RegisterWidget(chat);

@@ -23,6 +23,7 @@
             if (this.menu.hasClass("ui-draggable")) {
                 this.menu.draggable('destroy');
                 this.menu.css({"top": "", "left": ""});
+                $(document).trigger('click.dropdown.data-api');
             } else {
                 this.menu.draggable();
             }

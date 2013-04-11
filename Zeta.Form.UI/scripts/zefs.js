@@ -126,6 +126,19 @@ root.init = root.init ||
         api.chat.archive.execute({id: id});
     };
 
+    var ChatRead = function() {
+        if (zeta.user.getImpersonation() == null) {
+            api.chat.haveread.execute();
+        }
+    };
+
+    var ChatUpdate = function() {
+        api.chat.updatecount.execute();
+        window.setTimeout(function(){
+            ChatUpdate();
+        },60000);
+    };
+
     var LockForm = function() {
         if (root.myform.sessionId != null && root.myform.lock != null) {
 //            if (root.myform.lockinfo.canblock) {
@@ -348,9 +361,8 @@ root.init = root.init ||
         // получаем ленту сообщений формы
         api.chat.list.execute({session: root.myform.sessionId});
         // если админы, то получаем все ленты сообщений
-        if (zeta.user.getIsAdmin()) {
-            api.chat.get.execute(zeta.chatoptionsstorage.Get());
-        }
+        api.chat.get.execute(zeta.chatoptionsstorage.Get());
+        ChatUpdate();
         api.lock.state.execute(sessiondata);
         api.lock.history.execute(sessiondata);
         api.file.list.execute(sessiondata);
@@ -536,7 +548,8 @@ root.init = root.init ||
         openformuladebuger: OpenFormulaDebuger,
         chatlist: ChatList,
         chatadd: ChatAdd,
-        chatarchive: ChatArchive
+        chatarchive: ChatArchive,
+        chatread: ChatRead
     });
 
     return root.myform;
