@@ -295,6 +295,10 @@ th.active {
     background: -moz-linear-gradient(top, #ffd359, #ffef71) !important;
 }
 
+tr.preactive td.number {
+    border-bottom-color: #c28a30;
+}
+
 tr.active td.number {
     border-color: #c28a30;
     background: -webkit-linear-gradient(top, #ffd359, #ffef71) !important;
