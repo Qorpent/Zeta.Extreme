@@ -547,7 +547,7 @@ namespace Zeta.Extreme.FrontEnd {
 						{
 							Row = {Native = r.Native},
 							Col = ch,
-							Obj = {Native = Object},
+							Obj = {Native = r.AttachedObject ?? Object},
 							Time = {Year = c._.Year, Period = c._.Period}
 						});
 					q = DataSession.Register(q, key);
@@ -624,6 +624,9 @@ namespace Zeta.Extreme.FrontEnd {
 				var realkey = "";
 				if (canbefilled) {
 					realkey = q_.Value.Row.Code + "_" + q_.Value.Col.Code + "_" + q_.Value.Time.Year + "_" + q_.Value.Time.Period;
+					if (q_.Value.Obj.Native != Object) {
+						realkey += q_.Value.Obj.Type + "_" + q_.Value.Obj.Id;
+					}
 				}
 				var cell = new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, ri = realkey};
 				if (q_.Value.Result.Error != null) {

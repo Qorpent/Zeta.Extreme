@@ -17,5 +17,10 @@ namespace Zeta.Extreme.FrontEnd {
 		/// Уровень
 		/// </summary>
 		public int Level;
+
+		/// <summary>
+		/// Присоединенный к элементу структуры объект (для запросов и проч)
+		/// </summary>
+		public IZetaObject AttachedObject;
 	}
 }
