@@ -1,6 +1,6 @@
-using Zeta.Extreme.BizProcess.Forms;
+using Zeta.Extreme.FrontEnd;
 
-namespace Zeta.Extreme.FrontEnd {
+namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>
 	/// Общий интерфейс расширений для формирования исходного набора строк формы
 	/// </summary>

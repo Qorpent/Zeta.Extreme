@@ -94,6 +94,17 @@ namespace Zeta.Extreme.Form.SaveSupport {
 				                     user.Identity.Name,
 				                     cell.linkedcell.c);
 			}
+			var currency = "NONE";
+			if (cell.linkedcell.query.Obj.ObjRef != null) {
+				currency = cell.linkedcell.query.Obj.ObjRef.Currency;
+				
+			}
+			if (!string.IsNullOrWhiteSpace(cell.linkedcell.query.Row.Native.Currency)) {
+				currency = cell.linkedcell.query.Row.Native.Currency;
+			}
+			if (string.IsNullOrWhiteSpace(currency)) {
+				currency = "RUB";
+			}
 			if (cell.linkedcell.query.Obj.Type == ZoneType.Obj) {
 				return string.Format(@"
 insert usm.insertdata(year,period,obj,row,col,decimalvalue,stringvalue,valuta,usr,op)
@@ -105,7 +116,7 @@ values ({0},{1},{2},{3},{4},{5},{5},'{6}','{7}','=')
 				                     cell.linkedcell.query.Row.Id,
 				                     cell.linkedcell.query.Col.Id,
 				                     cell.v,
-				                     cell.linkedcell.query.Obj.ObjRef.Currency,
+				                     currency,
 				                     user.Identity.Name
 					);
 			}
@@ -120,7 +131,7 @@ values ({0},{1},{2},{3},{4},{5},{5},'{6}','{7}','=')
 									 cell.linkedcell.query.Row.Id,
 									 cell.linkedcell.query.Col.Id,
 									 cell.v,
-									 cell.linkedcell.query.Obj.ObjRef.Currency,
+									 currency,
 									 user.Identity.Name
 					);
 			}

@@ -583,7 +583,7 @@ namespace Zeta.Extreme.FrontEnd {
 						{
 							Row = {Native = primaryrow.Native},
 							Col = {Native = primarycol._.Target},
-							Obj = {Native = Object},
+							Obj = { Native = primaryrow.AttachedObject ?? Object },
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
 						});
 					var key = primaryrow.Idx + ":" + primarycol.i;
@@ -599,7 +599,7 @@ namespace Zeta.Extreme.FrontEnd {
 						{
 							Row = {Native = primaryrow.Native},
 							Col = {Native = primarycol._.Target},
-							Obj = {Native = Object},
+							Obj = { Native = primaryrow.AttachedObject ?? Object },
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
 						});
 					var key = primaryrow.Idx + ":" + primarycol.i;

@@ -85,7 +85,13 @@ namespace Zeta.Extreme {
 		/// 	—сылка на реальный экземпл€р старшего объекта
 		/// </summary>
 		public IZetaMainObject ObjRef {
-			get { return Native as IZetaMainObject; }
+			get {
+				if(Type==ZoneType.Obj)return Native as IZetaMainObject;
+				if (Type == ZoneType.Detail) {
+					return (Native as IZetaDetailObject).Object;
+				}
+				return null;
+			}
 		}
 		
 
