@@ -50,8 +50,21 @@
 }
 
 .chat-list-cell.date {
-    display: table-cell;
-    width: 105px;
+    display: inline-block;
+    padding: 0 4px;
+}
+
+.chat-list-cell.formname {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.chat-list-cell.formname.hovering {
+    position: absolute;
+    background-color: #F9F9F9;
+    box-shadow: 1px 2px 5px #666;
+    cursor: pointer;
+    border-radius: 5px;
     padding: 0 4px;
 }
 
@@ -68,7 +81,9 @@
 }
 
 .chat-list-cell.username {
-    display: table-cell;
+    overflow: hidden;
+    /*text-overflow: ellipsis;*/
+    white-space: nowrap;
 }
 
 .chat-list-row:nth-child(2n-1) {
@@ -78,6 +93,10 @@
 .chat-list-row {
     padding: 3px 0;
     border-top: 1px solid #DDD;
+}
+
+.chat-list-row.notreded {
+    background-color: rgb(255, 252, 221);
 }
 
 .chat-list-row.archived i {

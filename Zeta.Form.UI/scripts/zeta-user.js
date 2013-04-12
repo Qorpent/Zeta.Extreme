@@ -6,7 +6,7 @@ $.extend(window.zeta.handlers, {
     var ZetaUser = function(element, options) {
         this.element = $(element);
         this.options = options;
-        this.login = this.element.text();
+        this.login = this.element.text().replace('/', '\\');
         this.details = {};
         this.init();
         this.element.click($.proxy(function() {
@@ -16,7 +16,7 @@ $.extend(window.zeta.handlers, {
 
     ZetaUser.prototype.init = function () {
         if (!!window.zeta.userinfostorage) {
-            this.details = window.zeta.userinfostorage.Get()[this.login];
+            this.details = window.zeta.userinfostorage.Get()[this.login.toLowerCase()];
         }
         if (!this.details || $.isEmptyObject(this.details)) {
             this.getDetails();

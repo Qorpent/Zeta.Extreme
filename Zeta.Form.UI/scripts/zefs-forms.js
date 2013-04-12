@@ -14,6 +14,11 @@
             var cell = this.getActiveCell();
             return cell.parent();
         };
+        this.getActiveCol = function() {
+            var cell = this.getActiveCell();
+            var colindex = this.getColIndex(cell);
+            return $(this.table.find("th")[colindex]);
+        };
         var self = this;
         $.extend(zefs, {
             getChanges: function() { return self.getChanges(); },
@@ -171,8 +176,7 @@
         else if (isoutofview == "bottom") {
             $(window).scrollTop($cell.offset().top + $cell.outerHeight() - window.innerHeight);
         }
-        var $colindex = this.getColIndex($cell);
-        var $col = $(this.table.find("col")[$colindex]);
+
         this.deactivateCell(null);
         $cell.parent().css("height", $cell.height());
 //      $col.css("width", $(this.table.find("th")[$colindex]).outerWidth());
@@ -186,7 +190,16 @@
         ts["activecell"] = $cell.attr("id");
         zeta.temporarystorage.AddOrUpdate(ts);
 
+        this.rowcolHighlight();
+
         return $cell;
+    };
+
+    Zefs.prototype.rowcolHighlight = function() {
+        $(this.table.find("th.active")).removeClass("active");
+        $(this.table.find("tr.active")).removeClass("active");
+        this.getActiveCol().addClass("active");
+        this.getActiveRow().addClass("active");
     };
 
     Zefs.prototype.deactivateCell = function(e) {
