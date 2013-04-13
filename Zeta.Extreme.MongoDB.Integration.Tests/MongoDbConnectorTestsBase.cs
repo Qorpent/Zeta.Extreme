@@ -2,8 +2,6 @@
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests {
     class MongoDbConnectorTestsBase {
-        protected const string DEFAULT_DB_NAME = "MongoDbConnectorTest";
-
         protected MongoDbConnector Connector;
 
         [TestFixtureSetUp]

@@ -1,5 +1,5 @@
-﻿using MongoDB.Bson;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests {
