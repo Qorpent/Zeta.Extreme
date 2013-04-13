@@ -7,6 +7,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         [TestFixtureSetUp]
         public void FixtureSetUp() {
             Connector = new MongoDbConnector();
+            Connector.Collection.RemoveAll();
         }
     }
 }
