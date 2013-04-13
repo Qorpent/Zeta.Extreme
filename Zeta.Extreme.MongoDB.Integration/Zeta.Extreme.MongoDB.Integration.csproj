@@ -15,6 +15,7 @@
   <ItemGroup>
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSource.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceSerializer.cs" />
+    <Compile Include="MongoDbConnector.cs" />
     <Compile Include="MongoDbFormChat\MongoAttachedProviderBase.cs" />
     <Compile Include="MongoDbFormChat\MongoDbFormChatProvider.cs" />
     <Compile Include="MongoDbFormChat\MongoDbFormChatSerializer.cs" />
