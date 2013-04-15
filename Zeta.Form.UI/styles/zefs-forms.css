@@ -190,7 +190,7 @@ table.data td>input {
 }
 
 table.data td.active {
-    background-color: #fafad2 !important;
+    /*background-color: #fafad2 !important;*/
     display: block;
     position: absolute !important;
     border: 3px solid #000000 !important;

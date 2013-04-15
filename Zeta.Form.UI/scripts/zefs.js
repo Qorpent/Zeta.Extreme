@@ -193,7 +193,6 @@ root.init = root.init ||
         var obj = window.zefs.getChanges();
         if (!$.isEmptyObject(obj) && !root.myform.lock) return;
         root.myform.datatosave = obj;
-        $(root).trigger(root.handlers.on_savestart);
         api.data.saveready.execute();
     };
 
@@ -378,8 +377,8 @@ root.init = root.init ||
         api.lock.history.execute(sessiondata);
         api.file.list.execute(sessiondata);
         window.setTimeout(function(){
-                root.myform.currentSession.data = [];
-                api.data.start.execute($.extend(sessiondata, {startidx: 0}))}
+            root.myform.currentSession.data = [];
+            api.data.start.execute($.extend(sessiondata, {startidx: 0}))}
         ,1000); //первый запрос на данные
         $(root).trigger(root.handlers.on_sessionload);
     });
@@ -424,6 +423,7 @@ root.init = root.init ||
         $(root).trigger(root.handlers.on_message, {
             text: "Сохранение данных формы", autohide: 5000, type: "alert"
         });
+        $(root).trigger(root.handlers.on_savestart);
         api.data.save.execute({
             session: root.myform.sessionId,
             data: root.myform.datatosave
