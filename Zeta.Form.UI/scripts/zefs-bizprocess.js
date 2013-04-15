@@ -48,6 +48,7 @@
             case "energogroup"      : return "Энергетика";
             case "testgroup"        : return "Тестовые";
             case "calcgroup"        : return "Калькуляции";
+            case "ras_dk"           : return "Дебиторы и кредиторы";
             default                 : return "";
         }
     };
@@ -67,14 +68,12 @@
             }
             var a = $('<a/>').text(f.Name).attr("formcode", f.Code);
             var li = $('<li/>').append(a);
-            if (!!f.Parent) {
+            if (!!f.Parent && parentgroupname != "") {
                 var parent = menu.find('ul[code="' + f.Parent + '"]');
                 if (parent.length == 0) {
                     parent = $('<ul class="dropdown-menu"/>').attr("code", f.Parent);
-                    if (parentgroupname != ""){
-                        ul.append($('<li class="dropdown-submenu"/>')
-                            .append($('<a/>').text(parentgroupname), parent));
-                    }
+                    ul.append($('<li class="dropdown-submenu"/>')
+                        .append($('<a/>').text(parentgroupname), parent));
                 }
                 parent.append(li);
                 if (f.Parent == f.Code) parent.append($('<li class="divider"/>'));
