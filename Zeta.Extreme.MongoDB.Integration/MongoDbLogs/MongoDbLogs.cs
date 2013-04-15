@@ -128,7 +128,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
             }
 
             var document = MongoDbLogsSerializer.LogMessageToBsonDocument(message);
-            RebuildLogMessageByLogLevel(message.Level, document);
+            RebuildLogMessageByLogLevel(
+                message.Level,
+                document
+            );
 
             if (!noRealWrite) {
                 _connector.Collection.Save(document);
@@ -139,13 +142,17 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private void RebuildLogMessageByLogLevel(LogLevel logLevel, BsonDocument document) {
             switch (logLevel) {
                 case LogLevel.Trace:
-
+                    document.Remove("error");    
                  break;
                 case LogLevel.Info:
-                    
+                    document.Remove("error");
+                    document.Remove("MvcCallInfo");
+                    document.Remove("MvcContext");        
                  break;
                 case  LogLevel.Warning:
-
+                    document.Remove("error");
+                    document.Remove("MvcCallInfo");
+                    document.Remove("MvcContext");
                  break;
                 default:
                     noRealWrite = false;
