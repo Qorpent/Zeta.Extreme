@@ -20,6 +20,7 @@
   <ItemGroup>
     <Compile Include="AccessiblleObjectsTest.cs" />
     <Compile Include="AttachmentBugTests.cs" />
+    <Compile Include="FormServerTests.cs" />
     <Compile Include="JsonSaveParseTest.cs" />
   </ItemGroup>
   <ItemGroup>
