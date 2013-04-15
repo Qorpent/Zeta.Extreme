@@ -355,112 +355,118 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// 	Перезагрузка системы
 		/// </summary>
-		public void Reload() {
-			lock (ReloadState) {
-                ((IResetable) (Application.Files).GetResolver()).Reset(null);
-                ((IResetable) Application.Roles).Reset(null);
+        public void Reload() {
+            lock (ReloadState) {
+                ((IResetable)(Application.Files).GetResolver()).Reset(null);
+                ((IResetable)Application.Roles).Reset(null);
                 Sessions.Clear();
 
                 LoadThemas = new TaskWrapper(GetLoadThemasTask());
                 MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
+                
                 CompileFormulas = new TaskWrapper(
                     GetCompileFormulasTask(),
                     MetaCacheLoad
                 );
-
+                
                 ReadyToServeForms = new TaskWrapper(
                     GetCompleteAllTask(),
                     LoadThemas,
                     MetaCacheLoad,
                     CompileFormulas
                 );
-
+                
                 MetaCacheLoad.Run();
                 CompileFormulas.Run();
                 LoadThemas.Run();
                 ReadyToServeForms.Run();
-			}
-		}
+            }
+        }
 
 		/// <summary>
 		///     Проверяет глобальный маркер очистки Zeta и
 		///     производит перезапуск системы ( в синхронном режиме)
 		/// </summary>
-		public void CheckGlobalReload() {
-			lock (ReloadState) {
-				if (
+        public void CheckGlobalReload() {
+            lock (ReloadState) {
+                if (
                     (null != ReadyToServeForms)
                         &&
                     (!ReadyToServeForms.IsCompleted)
                 ) {
-					ReadyToServeForms.Wait();
-				}
-
-				var lastrefresh = new NativeZetaReader().GetLastGlobalRefreshTime();
-				if (lastrefresh > LastRefreshTime) {
-					Sessions.Clear(); //иначе будет устаревшая структура
-					Reload();
-					ReadyToServeForms.Wait();
-					LastRefreshTime = lastrefresh;
-					ReloadCount ++;
-				}
-			}
-		}
-
-		private Task GetCompileFormulasTask() {
-			return new Task(
+                    ReadyToServeForms.Wait();
+                }
+                
+                var lastrefresh = new NativeZetaReader().GetLastGlobalRefreshTime();
+                if (lastrefresh > LastRefreshTime) {
+                    Sessions.Clear(); //иначе будет устаревшая структура
+                    Reload();
+                    ReadyToServeForms.Wait();
+                    
+                    LastRefreshTime = lastrefresh;
+                    ReloadCount++;
+                }
+            }
+        }
+        
+        private Task GetCompileFormulasTask() {
+            return new Task(
                 () => {
-					var formulas = ExtremeFactory.GetFormulaStorage();
-					var stopwatch = Stopwatch.StartNew();
-
-					formulas.AutoBatchCompile = false;
-					formulas.Clear();
-
-					formulas.LoadDefaultFormulas(
+                    var formulas = ExtremeFactory.GetFormulaStorage();
+                    var stopwatch = Stopwatch.StartNew();
+                    
+                    formulas.AutoBatchCompile = false;
+                    formulas.Clear();
+                    
+                    formulas.LoadDefaultFormulas(
                         Application.Files.Resolve(
                             "~/.tmp/formula_dll",
                             false
                         )
                     );
-
-					formulas.AutoBatchCompile = true;
-					stopwatch.Stop();
-					_formulaRegisterTime = stopwatch.Elapsed;
-				});
-		}
-
-
-		private Task GetLoadThemasTask() {
-			return new Task(
-                () => {
-					//Debugger.Break();
-					FormProvider = new ExtremeFormProvider(ThemaRootDirectory);
-					var factory = ((ExtremeFormProvider) FormProvider).Factory; //force reload
-					Application.Container.Register(
-                        new BasicComponentDefinition {
-							Implementation = factory,
-							ServiceType = typeof (IThemaFactory),
-							Lifestyle = Lifestyle.Singleton,
-							Name = "form.server.themas",
-						}
-                    );
-				}
+                    
+                    formulas.AutoBatchCompile = true;
+                    stopwatch.Stop();
+                    _formulaRegisterTime = stopwatch.Elapsed;
+                }
             );
-		}
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private Task GetLoadThemasTask() {
+            return new Task(
+                () => {
+                    //Debugger.Break();
+                    FormProvider = new ExtremeFormProvider(ThemaRootDirectory);
+                    var factory = ((ExtremeFormProvider)FormProvider).Factory; //force reload
+                    Application.Container.Register(
+                        new BasicComponentDefinition {
+                            Implementation = factory,
+                            ServiceType = typeof(IThemaFactory),
+                            Lifestyle = Lifestyle.Singleton,
+                            Name = "form.server.themas",
+                        }
+                    );
+                }
+            );
+        }
 
         /// <summary>
         ///     
         /// </summary>
         /// <returns></returns>
-		private Task GetMetaCacheLoadTask() {
-	        return new Task(
+        private Task GetMetaCacheLoadTask() {
+            return new Task(
                 () => {
-				    Periods.Get(12);
-					RowCache.start();
-					ColumnCache.Start();
-					ObjCache.Start();
-				}
+                    Periods.Get(12);
+                    RowCache.start();
+                    ColumnCache.Start();
+                    ObjCache.Start();
+                }
             );
-		}
-	}
+        }
+    }
 }
