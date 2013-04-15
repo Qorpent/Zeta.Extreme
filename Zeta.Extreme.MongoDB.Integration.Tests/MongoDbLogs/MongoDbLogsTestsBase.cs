@@ -71,7 +71,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             mongoDatabase.Drop();
 
             _mongoDbLogs = new MongoDbLogs {
-                MongoConnectionString = ConnectionString,
+                MongoLogsConnectionString = ConnectionString,
                 MongoLogsDatabaseName = DatabaseName,
                 MongoLogsCollectionName = LogsCollectionName
             };
