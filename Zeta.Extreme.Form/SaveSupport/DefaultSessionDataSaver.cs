@@ -22,6 +22,7 @@ using System.Security.Principal;
 using System.Xml.Linq;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Forms;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Form.SaveSupport {
 	/// <summary>
@@ -93,19 +94,47 @@ namespace Zeta.Extreme.Form.SaveSupport {
 				                     user.Identity.Name,
 				                     cell.linkedcell.c);
 			}
-			return string.Format(@"
+			var currency = "NONE";
+			if (cell.linkedcell.query.Obj.ObjRef != null) {
+				currency = cell.linkedcell.query.Obj.ObjRef.Currency;
+				
+			}
+			if (!string.IsNullOrWhiteSpace(cell.linkedcell.query.Row.Native.Currency)) {
+				currency = cell.linkedcell.query.Row.Native.Currency;
+			}
+			if (string.IsNullOrWhiteSpace(currency)) {
+				currency = "RUB";
+			}
+			if (cell.linkedcell.query.Obj.Type == ZoneType.Obj) {
+				return string.Format(@"
 insert usm.insertdata(year,period,obj,row,col,decimalvalue,stringvalue,valuta,usr,op)
 values ({0},{1},{2},{3},{4},{5},{5},'{6}','{7}','=')
 ",
-			                     cell.linkedcell.query.Time.Year,
-			                     cell.linkedcell.query.Time.Period,
-			                     cell.linkedcell.query.Obj.Id,
-			                     cell.linkedcell.query.Row.Id,
-			                     cell.linkedcell.query.Col.Id,
-			                     cell.v,
-								 cell.linkedcell.query.Obj.ObjRef.Currency,
-								 user.Identity.Name
-				);
+				                     cell.linkedcell.query.Time.Year,
+				                     cell.linkedcell.query.Time.Period,
+				                     cell.linkedcell.query.Obj.Id,
+				                     cell.linkedcell.query.Row.Id,
+				                     cell.linkedcell.query.Col.Id,
+				                     cell.v,
+				                     currency,
+				                     user.Identity.Name
+					);
+			}
+			else { //details
+				return string.Format(@"
+insert usm.insertdata(year,period,detail,row,col,decimalvalue,stringvalue,valuta,usr,op)
+values ({0},{1},{2},{3},{4},{5},{5},'{6}','{7}','=')
+",
+									 cell.linkedcell.query.Time.Year,
+									 cell.linkedcell.query.Time.Period,
+									 cell.linkedcell.query.Obj.Id,
+									 cell.linkedcell.query.Row.Id,
+									 cell.linkedcell.query.Col.Id,
+									 cell.v,
+									 currency,
+									 user.Identity.Name
+					);
+			}
 		}
 	}
 }

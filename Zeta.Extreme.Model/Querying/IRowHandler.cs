@@ -16,6 +16,8 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Model/IRowHandler.cs
 #endregion
+
+using System;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Model.Querying {
@@ -39,11 +41,5 @@ namespace Zeta.Extreme.Model.Querying {
 		/// <returns> </returns>
 		IRowHandler Copy();
 
-		/// <summary>
-		/// 	Нормализует ссылки и параметры
-		/// </summary>
-		/// <param name="session"> </param>
-		/// <param name="column"> </param>
-		void Normalize(ISession session, IZetaColumn column);
 	}
 }

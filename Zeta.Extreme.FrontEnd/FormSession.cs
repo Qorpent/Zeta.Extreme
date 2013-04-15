@@ -63,12 +63,12 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="obj"> </param>
 		public FormSession(IInputTemplate form, int year, int period, IZetaMainObject obj) {
 			Uid = Guid.NewGuid().ToString();
+			Object = obj;
 			Created = DateTime.Now;
 			Template = form.PrepareForPeriod(year, period, new DateTime(1900, 1, 1), Object);
 			Template.AttachedSession = this;
 			Year = Template.Year;
 			Period = Template.Period;
-			Object = obj;
 			Created = DateTime.Now;
 			Usr = Application.Current.Principal.CurrentUser.Identity.Name;
 			IsStarted = false;
@@ -91,20 +91,21 @@ namespace Zeta.Extreme.FrontEnd {
 				};
 			
 			var holdlogin = GetHoldLogin(reader);
-			FormInfo = new
-				{
-					Template.Code, 
-					Template.Name, 
-					ObjectResponsibility = reader.GetThemaResponsiveLogin(Template.Thema.Code, Object.Id), 
-					HoldResponsibility = holdlogin ,
-					Status = Template.Thema.GetParameter("status",""),
-					FirstYear = Template.Thema.GetParameter("firstyear", ""),
-					RolePrefix = Template.Thema.GetParameter("roleprefix", ""),
-				};
+			if (null != Template.Thema) {
+				FormInfo = new
+					{
+						Template.Code,
+						Template.Name,
+						ObjectResponsibility = reader.GetThemaResponsiveLogin(Template.Thema.Code, Object.Id),
+						HoldResponsibility = holdlogin,
+						Status = Template.Thema.GetParameter("status", ""),
+						FirstYear = Template.Thema.GetParameter("firstyear", ""),
+						RolePrefix = Template.Thema.GetParameter("roleprefix", ""),
+					};
+			}
 			NeedMeasure = Template.ShowMeasureColumn;
 			Activations = 1;
 			Logger = Application.Current.LogManager.GetLog("form.log", this);
-
 
 		}
 
@@ -134,6 +135,33 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Признак требования показывать колонку с единицей измерения
 		/// </summary>
 		public bool NeedMeasure { get; set; }
+
+
+		/// <summary>
+		/// Получить перечень сообщений в чате
+		/// </summary>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
+		public FormChatItem[] GetChatList() {
+			var provider = Application.Current.Container.Get<IFormChatProvider>();
+			if (null == provider) {
+				throw new Exception("no form chat configured");
+			}
+			return provider.GetSessionItems(this).ToArray();
+		}
+
+		/// <summary>
+		/// Добавить сообщение в чат
+		/// </summary>
+		/// <returns></returns>
+		public FormChatItem AddChatMessage(string message) {
+			var provider = Application.Current.Container.Get<IFormChatProvider>();
+			if (null == provider)
+			{
+				throw new Exception("no form chat configured");
+			}
+			return provider.AddMessage(this, message);
+		}
 
 		/// <summary>
 		/// 	Признак, что сессия стартовала
@@ -310,7 +338,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// 	Пользователь
 		/// </summary>
-		public string Usr { get; private set; }
+		public string Usr { get; set; }
 
 		/// <summary>
 		/// 	Хранит уже подготовленные данные
@@ -430,16 +458,16 @@ namespace Zeta.Extreme.FrontEnd {
 			var sw = Stopwatch.StartNew();
 			Structure =
 				(from ri in rows
-				 let r = ri._
+				 let r = ri.Native
 				 select new StructureItem
 					 {
 						 type = "r",
 						 code = r.Code,
 						 name = r.Name,
-						 idx = ri.i,
+						 idx = ri.Idx,
 						 iscaption = r.IsMarkSeted("0CAPTION"),
 						 isprimary = r.GetIsPrimary(),
-						 level = ri.l,
+						 level = ri.Level,
 						 number = r.OuterCode,
 						 measure = NeedMeasure ? r.ResolveMeasure() : "",
 						 controlpoint = r.IsMarkSeted("CONTROLPOINT"),
@@ -503,7 +531,7 @@ namespace Zeta.Extreme.FrontEnd {
 		private void LoadNoPrimary(IDictionary<string, IQuery> queries) {
 			foreach (var c in cols) {
 				foreach (var r in rows) {
-					var key = r.i + ":" + c.i;
+					var key = r.Idx + ":" + c.i;
 					if (queries.ContainsKey(key)) {
 						continue;
 					}
@@ -517,16 +545,16 @@ namespace Zeta.Extreme.FrontEnd {
 					}
 					var q = ExtremeFactory.CreateQuery( new QuerySetupInfo
 						{
-							Row = {Native = r._},
+							Row = {Native = r.Native},
 							Col = ch,
-							Obj = {Native = Object},
+							Obj = {Native = r.AttachedObject ?? Object},
 							Time = {Year = c._.Year, Period = c._.Period}
 						});
 					q = DataSession.Register(q, key);
 
 					if (null != q) {
-						if (c._.ControlPoint && r._.IsMarkSeted("CONTROLPOINT")) {
-							_controlpoints.Add(new ControlPointResult {Col = c._, Row = r._, Query = q});
+						if (c._.ControlPoint && r.Native.IsMarkSeted("CONTROLPOINT")) {
+							_controlpoints.Add(new ControlPointResult {Col = c._, Row = r.Native, Query = q});
 						}
 						queries[key] = q;
 					}
@@ -553,12 +581,12 @@ namespace Zeta.Extreme.FrontEnd {
 				foreach (var primarycol in primarycols) {
 					var q = ExtremeFactory.CreateQuery(  new QuerySetupInfo
 						{
-							Row = {Native = primaryrow._},
+							Row = {Native = primaryrow.Native},
 							Col = {Native = primarycol._.Target},
-							Obj = {Native = Object},
+							Obj = { Native = primaryrow.AttachedObject ?? Object },
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
 						});
-					var key = primaryrow.i + ":" + primarycol.i;
+					var key = primaryrow.Idx + ":" + primarycol.i;
 					queries[key] = (IQuery) DataSession.Register(q, key);
 				}
 			}
@@ -569,12 +597,12 @@ namespace Zeta.Extreme.FrontEnd {
 				foreach (var primarycol in neditprimarycols) {
 					var q =  ExtremeFactory.CreateQuery( new QuerySetupInfo
 						{
-							Row = {Native = primaryrow._},
+							Row = {Native = primaryrow.Native},
 							Col = {Native = primarycol._.Target},
-							Obj = {Native = Object},
+							Obj = { Native = primaryrow.AttachedObject ?? Object },
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
 						});
-					var key = primaryrow.i + ":" + primarycol.i;
+					var key = primaryrow.Idx + ":" + primarycol.i;
 					queries[key] = DataSession.Register(q, key);
 				}
 			}
@@ -596,6 +624,9 @@ namespace Zeta.Extreme.FrontEnd {
 				var realkey = "";
 				if (canbefilled) {
 					realkey = q_.Value.Row.Code + "_" + q_.Value.Col.Code + "_" + q_.Value.Time.Year + "_" + q_.Value.Time.Period;
+					if (q_.Value.Obj.Native != Object) {
+						realkey += q_.Value.Obj.Type + "_" + q_.Value.Obj.Id;
+					}
 				}
 				var cell = new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, ri = realkey};
 				if (q_.Value.Result.Error != null) {
@@ -622,7 +653,7 @@ namespace Zeta.Extreme.FrontEnd {
 			InitializeColset();
 			primarycols = cols.Where(_ => _._.Editable && !_._.IsFormula).ToArray();
 			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
-			primaryrows = rows.Where(_ => !_._.IsFormula && 0 == _._.Children.Count && !_._.IsMarkSeted("0ISCAPTION")).ToArray();
+			primaryrows = rows.Where(_ => !_.Native.IsFormula && 0 == _.Native.Children.Count && !_.Native.IsMarkSeted("0ISCAPTION")).ToArray();
 		}
 
 		private void InitializeColset() {
@@ -679,8 +710,18 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void PrepareRows() {
+			var customRowPreparator = Application.Current.Container.Get<IFormRowProvider>(Template.Thema.Code+".row.preparator");
+			if (null != customRowPreparator) {
+				rows = customRowPreparator.GetRows(this);
+			}
+			else {
+				DefaultPrepareRows();
+			}
+		}
+
+		private void DefaultPrepareRows() {
 			_ridx = 0;
-			IList<IdxRow> result = new List<IdxRow>();
+			IList<FormStructureRow> result = new List<FormStructureRow>();
 			foreach (var r in Template.Rows) {
 				if (null == r.Target) {
 					r.Target = MetaCache.Default.Get<IZetaRow>(r.Code);
@@ -691,10 +732,11 @@ namespace Zeta.Extreme.FrontEnd {
 					AddRow(result, row, 0);
 				}
 			}
+
 			rows = result.ToArray();
 		}
 
-		private void AddRow(IList<IdxRow> result, IZetaRow row, int level, bool markreadonly= false) {
+		private void AddRow(IList<FormStructureRow> result, IZetaRow row, int level, bool markreadonly= false) {
 			_ridx++;
 			bool mymarkreadonly = markreadonly;
 			var myrow = row;
@@ -706,7 +748,7 @@ namespace Zeta.Extreme.FrontEnd {
 			if (mymarkreadonly) {
 				myrow.LocalProperties["readonly"] = true;
 			}
-			result.Add(new IdxRow {i = _ridx, l = level, _ = myrow});
+			result.Add(new FormStructureRow {Idx = _ridx, Level = level, Native = myrow});
 			var children = myrow.Children.OrderBy(_ => _.GetSortKey()).ToArray();
 			foreach (var c in children) {
 				if (IsRowMatch(c)) {
@@ -731,6 +773,12 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 			if (row.IsMarkSeted("0NOINPUT")) {
 				return false;
+			}
+			var viewforgroup = row.ResolveTag("viewforgroup");
+			if (!string.IsNullOrWhiteSpace(viewforgroup)) {
+				if (!Object.IsMatchAliases(viewforgroup)) {
+					return false;
+				}
 			}
 			return true;
 		}
@@ -939,7 +987,7 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void EnsureDataSession() {
-			DataSession = DataSession ?? ExtremeFactory.CreateSession(new SessionSetupInfo {CollectStatistics = true});
+			DataSession = DataSession ?? ExtremeFactory.CreateSession(new SessionSetupInfo {CollectStatistics = true, PropertySource = new FormSessionDataSessionPropertySoruce(this)});
 		}
 
 		#region Nested type: IdxCol
@@ -952,12 +1000,6 @@ namespace Zeta.Extreme.FrontEnd {
 		#endregion
 
 		#region Nested type: IdxRow
-
-		private class IdxRow {
-			public IZetaRow _;
-			public int i;
-			public int l;
-		}
 
 		#endregion
 
@@ -972,8 +1014,8 @@ namespace Zeta.Extreme.FrontEnd {
 		private IEnumerable<IdxCol> cols;
 		private IdxCol[] neditprimarycols;
 		private IdxCol[] primarycols;
-		private IdxRow[] primaryrows;
-		private IdxRow[] rows;
+		private FormStructureRow[] primaryrows;
+		private FormStructureRow[] rows;
 
 	}
 }

@@ -3,12 +3,39 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
+
 
 namespace Zeta.Extreme.Model.MetaCaches {
 	/// <summary>
 	/// Extensions over meta cache, that provides additional meta-awared methods, usefull for querying
 	/// </summary>
 	public static class MetaExtensions {
+		
+		/// <summary>
+		/// Проверяет, относится ли указанный объект к какому-либо групповому альясу
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <param name="alias"></param>
+		/// <returns></returns>
+		public static bool IsMatchAliases(this IZetaMainObject obj, string alias) {
+			var aliases = alias.SmartSplit();
+			foreach (var a in aliases) {
+				if (a.StartsWith("div_")) {
+					var divcode = a.Substring(4);
+					if (obj.Division != null && obj.Division.Code == divcode) return true;
+				}else if (a.StartsWith("grp_")) {
+					var grpcode = a.Substring(4);
+					if (!string.IsNullOrWhiteSpace(obj.GroupCache) && obj.GroupCache.Contains("/" + grpcode + "/")) return true;
+				}else if (obj.Id.ToString() == a) {
+					return true;
+				}else if (!string.IsNullOrWhiteSpace(obj.GroupCache) && obj.GroupCache.Contains("/" + a + "/")) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 		/// <summary>
 		/// Retrievs array of zeta object's IDs by zone alias
 		/// </summary>
@@ -16,7 +43,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 		/// <param name="alias"></param>
 		/// <returns></returns>
 		/// <exception cref="FormatException"></exception>
-		public static IEnumerable<int> ResolveZoneAliasToObjectIds(this IMetaCache cache, string alias) {
+		public static IEnumerable<int> ResolveZoneAliasToObjectIds(this IMetaCache cache, string alias,IZetaMainObject currentObject=null) {
 			int intval;
 			if ("0" == alias) yield break;
 			if (0 != (intval = alias.ToInt())) {
@@ -43,6 +70,18 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			}
 			else if (split[0] == "div") {
 				var div = cache.Get<Division>(split[1]);
+				if (split[1] == "CURRENT")
+				{
+					if (null == currentObject) {
+						throw new Exception("cannot resolve without current object");
+					}
+					if (null == currentObject.Division) {
+						throw new Exception("current obj have not division");
+					}
+					div = (Division) currentObject.Division;
+				}
+				
+				
 				if (null == div || null==div.MainObjects) {
 					yield break;
 				}

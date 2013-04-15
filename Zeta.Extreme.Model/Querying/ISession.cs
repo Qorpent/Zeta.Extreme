@@ -64,6 +64,9 @@ namespace Zeta.Extreme.Model.Querying {
 		/// <param name="timeout"> </param>
 		void Execute(int timeout = -1);
 
-
+		/// <summary>
+		/// Источник дополнительных параметров
+		/// </summary>
+		ISessionPropertySource PropertySource { get; set; }
 	}
 }

@@ -19,6 +19,8 @@
 
 #endregion
 
+using Zeta.Extreme.Model.Querying;
+
 namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
 	///     Zeta column part of attributes dimension
@@ -44,5 +46,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		///     Type of native data under column
 		/// </summary>
 		ValueDataType DataType { get; set; }
+
+	
 	}
 }

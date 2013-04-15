@@ -6,7 +6,7 @@ $.extend(window.zeta.handlers, {
     var ZetaUser = function(element, options) {
         this.element = $(element);
         this.options = options;
-        this.login = this.element.text();
+        this.login = this.element.text().replace('/', '\\');
         this.details = {};
         this.init();
         this.element.click($.proxy(function() {
@@ -15,8 +15,8 @@ $.extend(window.zeta.handlers, {
     };
 
     ZetaUser.prototype.init = function () {
-        if (!!window.zeta.sessionstorage) {
-            this.details = window.zeta.sessionstorage.getUser(this.login);
+        if (!!window.zeta.userinfostorage) {
+            this.details = window.zeta.userinfostorage.Get()[this.login.toLowerCase()];
         }
         if (!this.details || $.isEmptyObject(this.details)) {
             this.getDetails();
@@ -26,13 +26,16 @@ $.extend(window.zeta.handlers, {
     };
 
     ZetaUser.prototype.loginToName = function() {
-        this.element.text(this.details.ShortName);
+        if (this.details.ShortName !== "NOT REGISTERED IN DB") {
+            this.element.text(this.details.ShortName);
+        }
     };
 
     ZetaUser.prototype.showDetails = function() {
         var details = $('<table class="table table-bordered zetauserinfo"/>');
         details.append(
             $('<tr/>').append($('<td/>').text("Имя"), $('<td/>').text(this.details.Name)),
+            $('<tr/>').append($('<td/>').text("Логин"), $('<td/>').text(this.details.Login)),
             $('<tr/>').append($('<td/>').text("Должность"), $('<td/>').text(this.details.Dolzh)),
             $('<tr/>').append($('<td/>').text("Контакты"), $('<td/>').text(this.details.Contact)),
             $('<tr/>').append($('<td/>').text("Email"), $('<td/>').text(this.details.Email)),
@@ -51,10 +54,10 @@ $.extend(window.zeta.handlers, {
         }).success($.proxy(function(d) {
             this.details = window.zeta.api.metadata.userinfo.wrap(d);
             this.loginToName();
-            if (!!window.zeta.sessionstorage) {
+            if (!!window.zeta.userinfostorage) {
                 var user = {};
                 user[this.details.Login.toLowerCase()] = this.details;
-                window.zeta.sessionstorage.updateUser(user);
+                window.zeta.userinfostorage.AddOrUpdate(user);
             }
         }, this));
     };

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Model.MetaCaches;
 namespace Zeta.Extreme {
@@ -49,12 +50,12 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// Нормализация ищмерения для запроса
 		/// </summary>
-		/// <param name="session"></param>
-		public void Normalize(ISession session) {
+		/// <param name="query"></param>
+		public void Normalize(IQuery query) {
 			if (!string.IsNullOrWhiteSpace(Contragents))
 			{
-				var cache = session.GetMetaCache();
-				var ids = Contragents.SmartSplit().SelectMany(cache.ResolveZoneAliasToObjectIds).Distinct().OrderBy(_ => _);
+				var cache = null==query.Session?MetaCache.Default: query.Session.GetMetaCache();
+				var ids = Contragents.SmartSplit().SelectMany(_ => cache.ResolveZoneAliasToObjectIds(_, null == query.Obj ? null : query.Obj.ObjRef)).Distinct().OrderBy(_ => _);
 				Contragents = string.Join(",", ids);
 			}
 		}

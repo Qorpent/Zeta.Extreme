@@ -2,38 +2,25 @@
 var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 window.zefs.handlers = $.extend(window.zefs.handlers, {
     // Zefs handlers:
-    on_zefsready : "zefsready",
-    on_zefsstarting : "zefsstarting",
-    on_zefsfailed : "zefsfailed",
+    on_zefsready : "zefsready", on_zefsstarting : "zefsstarting", on_zefsfailed : "zefsfailed",
     // Session handlers:
-    on_sessionload : "sessionload",
-    on_structureload : "structureload",
+    on_sessionload : "sessionload", on_structureload : "structureload",
     // Form handlers:
-    on_formready : "forrmready",
-    on_statusload : "statusload",
-    on_statusfailed : "statusfaild",
-    on_savestart : "savestart",
-    on_savefailed : "savefaild",
-    on_savefinished : "savefinished",
-    on_getcanlockload : "getcanlockload",
-    on_getlockfailed : "getlockfinished",
-    on_getlockload : "getlockload",
-    on_getlockhistoryload : "getlockhistory",
-    on_lockform : "lockform",
+    on_dataload : "dataload", on_formready : "forrmready", on_statusload : "statusload",
+    on_statusfailed : "statusfaild", on_savestart : "savestart", on_savefailed : "savefaild",
+    on_savefinished : "savefinished", on_getcanlockload : "getcanlockload", on_getlockfailed : "getlockfinished",
+    on_getlockload : "getlockload", on_getlockhistoryload : "getlockhistory", on_lockform : "lockform",
     // Other handlers:
-    on_formsload : "formsload",
-    on_periodsload : "periodsload",
-    on_periodsfaild : "periodsfailed",
-    on_objectsload : "objectsload",
-    on_objectsfaild : "objectsfailed",
-    on_attachmentload : "attachmentload",
+    on_formsload : "formsload", on_periodsload : "periodsload", on_periodsfaild : "periodsfailed",
+    on_objectsload : "objectsload", on_objectsfaild : "objectsfailed", on_attachmentload : "attachmentload",
     // Message handlers:
     on_message : "message",
     // File handlers:
-    on_fileloadstart: "fileloadstart",
-    on_fileloadfinish: "fileloadfinish",
-    on_fileloaderror: "fileloaderror",
-    on_fileloadprocess: "fileloadprocess"
+    on_fileloadstart: "fileloadstart", on_fileloadfinish: "fileloadfinish",
+    on_fileloaderror: "fileloaderror", on_fileloadprocess: "fileloadprocess",
+    // Chat handlers:
+    on_chatlistload : "chatlistload", on_adminchatlistload : "adminchatlistload",
+    on_adminchatcountload : "adminchatcountload"
 });
 var root = window.zefs = window.zefs || {};
 var api = root.api;
@@ -72,6 +59,20 @@ root.init = root.init ||
         return '/eco/';
     };
 
+    var OpenForm = function(params, blank) {
+        params = params || {};
+        params = $.extend(api.getParameters(), params);
+        blank = blank || false;
+        var loc = document.location.protocol + "//" + document.location.host + siteroot + "zefs-test.html#" +
+            "form=" + params.form + "|year=" + params.year + "|period=" + params.period + "|obj=" + params.obj;
+        if (!blank) {
+            document.location.href = loc;
+            document.location.reload();
+        } else {
+            window.open(loc, "_blank");
+        }
+    };
+
     var Fill = function(session) {
         if(!session.wasRendered) { //вот тут чо за хрень была? он в итоге дважды рендировал
             return;
@@ -108,6 +109,38 @@ root.init = root.init ||
 
     var DownloadFile = function(uid) {
         api.file.download.getUrl(uid);
+    };
+
+    var ChatList = function() {
+        api.chat.list.execute({session: root.myform.sessionId});
+        if (zeta.user.getIsAdmin()) {
+            api.chat.get.execute(zeta.chatoptionsstorage.Get());
+        }
+    };
+
+    var ChatAdd = function(t) {
+        api.chat.add.execute({session: root.myform.sessionId, text: t});
+    };
+
+    var ChatArchive = function(id) {
+        api.chat.archive.execute({id: id});
+    };
+
+    var ChatRead = function() {
+        if (zeta.user.getImpersonation() == null) {
+            api.chat.haveread.execute();
+        }
+    };
+
+    var ChatUpdate = function() {
+        api.chat.updatecount.execute();
+        window.setTimeout(function(){
+            ChatUpdate();
+        },60000);
+    };
+
+    var ChatUpdateOnce = function() {
+        api.chat.updatecount.execute();
     };
 
     var LockForm = function() {
@@ -329,6 +362,10 @@ root.init = root.init ||
         api.metadata.getobjects.execute();
         api.metadata.getperiods.execute();
         api.metadata.getforms.execute();
+        // получаем ленту сообщений формы
+        api.chat.list.execute({session: root.myform.sessionId});
+        // если админы, то получаем все ленты сообщений
+        api.chat.get.execute(zeta.chatoptionsstorage.Get());
         api.lock.state.execute(sessiondata);
         api.lock.history.execute(sessiondata);
         api.file.list.execute(sessiondata);
@@ -352,6 +389,7 @@ root.init = root.init ||
         if(result.state != "w"){
             // Это штука для перерисовки шапки
             $(window).trigger("resize");
+            $(root).trigger(root.handlers.on_dataload);
         } else {
             var idx = !$.isEmptyObject(result.data) ? result.ei+1 : result.si;
             window.setTimeout(function(){api.data.start.execute({session: root.myform.sessionId,startidx: idx})},500);
@@ -387,6 +425,15 @@ root.init = root.init ||
     api.data.save.onSuccess(function() {
         root.myform.datatosave = {};
         api.data.savestate.execute({session: root.myform.sessionId});
+    });
+
+    api.data.save.onComplete(function(e, result) {
+        if (result.status != "200") {
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "Во время сохранения формы произошла ошибка",
+                text: JSON.stringify(result.responseText)
+            });
+        }
     });
 
     api.data.savestate.onSuccess(function(e, result) {
@@ -458,12 +505,37 @@ root.init = root.init ||
         $(root).trigger(root.handlers.on_fileloadprocess, result);
     });
 
+    api.chat.add.onSuccess(function() {
+        root.myform.chatlist()
+    });
+
+    api.chat.list.onSuccess(function(e, result) {
+        $(root).trigger(root.handlers.on_chatlistload, result);
+    });
+
+    api.chat.list.onError(function(e, result) {
+        $(root).trigger(root.handlers.on_chatlistload);
+    });
+
+    api.chat.get.onSuccess(function(e, result) {
+        $(root).trigger(root.handlers.on_adminchatlistload, result);
+    });
+
+    api.chat.archive.onSuccess(function(e, result) {
+        root.myform.chatlist();
+    });
+
+    api.chat.updatecount.onComplete(function(e, result) {
+        $(root).trigger(root.handlers.on_adminchatcountload, result.responseText);
+    });
+
     $.extend(root, {
         getperiodbyid : GetPeriodName
     });
 
     $.extend(root.myform, {
         execute : function(){api.server.start()},
+        openform: OpenForm,
         save : Save,
         restart : Restart,
         forcesave : ForceSave,
@@ -478,7 +550,12 @@ root.init = root.init ||
         setupform: SetupForm,
         cellhistory: CellHistory,
         celldebug: CellDebug,
-        openformuladebuger: OpenFormulaDebuger
+        openformuladebuger: OpenFormulaDebuger,
+        chatlist: ChatList,
+        chatadd: ChatAdd,
+        chatarchive: ChatArchive,
+        chatread: ChatRead,
+        chatupdateds: ChatUpdateOnce
     });
 
     return root.myform;

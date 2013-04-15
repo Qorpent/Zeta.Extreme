@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using Qorpent.Model;
 using Zeta.Extreme.Model.Deprecated;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
@@ -155,5 +156,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// <returns></returns>
 		[Obsolete("Due to ZC-410 must be moved to another implementation")]
 		bool IsMatchZoneAcronym(string s);
+
+	
 	}
 }

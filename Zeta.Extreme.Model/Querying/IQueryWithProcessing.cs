@@ -40,6 +40,11 @@ namespace Zeta.Extreme.Model.Querying {
 		Task PrepareTask { get; set; }
 
 		/// <summary>
+		/// ѕровер€ет, €вл€етс€ ли запрос циклическим
+		/// </summary>
+		bool GetIsRecycle(IDictionary<long,bool> registry = null );
+
+		/// <summary>
 		/// 	Client processed mark
 		/// </summary>
 		bool Processed { get; set; }

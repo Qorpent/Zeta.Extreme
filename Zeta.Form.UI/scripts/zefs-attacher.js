@@ -3,7 +3,7 @@
  */
 !function($) {
     var root = window.zeta = window.zeta || {};
-    var attacher = new root.Widget("attacher", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 30, ready: function() {
+    var attacher = new root.Widget("attacher", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 98, ready: function() {
         attacher.body.find('.btn-group').floatmenu();
     } });
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Прикрепленные файлы"/>')

@@ -13,10 +13,12 @@ document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-formsave" type
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-feedback" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-info" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-hotkeys" type="text/javascript"></script>');
+document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-faq" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-formheader" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-extrapannel" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-table" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-attacher" type="text/javascript"></script>');
+document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-chat" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-periods" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-objs" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-bizprocess" type="text/javascript"></script>');

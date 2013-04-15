@@ -1464,18 +1464,17 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			if (RedirectPeriodMap == null) {
 				return period;
 			}
-
+			int newp = 0;
 			var objperiodtype = "";
 			if (null != obj) {
 				if (obj.GroupCache.IsNotEmpty() && obj.GroupCache.Contains("/PR_")) {
 					objperiodtype = obj.GroupCache.RegexFind(@"/(PR_\w+)/", 1);
+					newp = RedirectPeriodMap.SafeGet(period+"_" + objperiodtype);
+				}
+				else {
+					newp = RedirectPeriodMap.SafeGet(period + "_");
 				}
 			}
-			//if (null != obj){
-			//    objperiodtype = Query.EvaluateRawConstant(obj, "ODPERIODTYPE").toInt();
-			//}
-			//NOTE: disabled by not functional usage and performance issue
-			var newp = RedirectPeriodMap.SafeGet("0_" + objperiodtype);
 			if(0==newp)newp = period;
 			return newp;
 		}

@@ -52,8 +52,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MongoDbAttachmentSourceIoCTests.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceSerializer\MongoDbAttachmentSourceSerializerTests.cs" />
+    <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceSerializer\MongoDbAttachmentSourceSerializerTestsBase.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTests.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsBase.cs" />
+    <Compile Include="MongoDbConnectorTests.cs" />
+    <Compile Include="MongoDbConnectorTestsBase.cs" />
+    <Compile Include="MongoDbFormChat\MongoDbFormChatProviderTest.cs" />
+    <Compile Include="MongoDbFormChat\MongoDbFormChatSerializerTest.cs" />
     <Compile Include="MongoDbLogs\MongoDbLogsTests.cs" />
     <Compile Include="MongoDbLogs\MongoDbLogsTestsBase.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsP1358.cs" />
@@ -86,6 +93,10 @@
       <Project>{62f22ffa-a1cf-4a74-838c-9ab33a9442ea}</Project>
       <Name>Qorpent.IoC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
+      <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
+      <Name>Qorpent.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
       <Project>{44653de7-dee5-4960-a906-e0d6b1f83fcc}</Project>
       <Name>Zeta.Extreme.BizProcess</Name>
@@ -110,10 +121,7 @@
       <Project>{a4442a74-4590-4ba3-b44c-56c98ce4a088}</Project>
       <Name>Zeta.Extreme.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Zeta.Extreme.MongoDB.Integration\Zeta.Extreme.MongoDB.Integration.csproj">
-      <Project>{459e4387-484e-42de-8795-a142e83cfcbb}</Project>
-      <Name>Zeta.Extreme.MongoDB.Integration</Name>
-    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

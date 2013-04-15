@@ -2,6 +2,17 @@
     margin-right: 2px;
 }
 
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: #f3f3ee;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: #cecece;
+}
+
 .modal iframe {
     width: 100%;
     box-sizing: border-box;
@@ -14,6 +25,7 @@
 .label {
     overflow: hidden;
     text-overflow: ellipsis;
+    vertical-align: middle;
 }
 
 /*Это чтобы тултипы не перекрывали открытые dropdown-menu*/
@@ -51,7 +63,7 @@ div.open>.tooltip {
 }
 
 .zefsformheader.isblock {
-    background-color: #F5D8B8;
+    background-color: #FDFDBD;
 }
 
 .zefsformheader.ischecked {
@@ -79,7 +91,7 @@ div.open>.tooltip {
 }
 
 .zefsreport, .zefsrestart, .zefshotkeys,
-.impersonator,.information,
+.impersonator,.information, .zefsfaq,
 .zefsdebug, .feedback {
     margin-top: 4px;
     margin-right: 3px;
@@ -113,7 +125,7 @@ div.open>.tooltip {
 }
 
 .zefsstatus, .zefsformsave, .zefsbizprocess,
-.periodselector, .objselector,
+.periodselector, .objselector, .zefschat,
 .zefscolmanager, .zefsblockmanager {
     margin-top: 4px;
     margin-left: 3px;
@@ -187,7 +199,7 @@ li.current>a:hover {
 }
 
 .zefsalerter {
-    position: absolute;
+    position: fixed;
     top: 41px;
     right: 20px;
     z-index: 1000;

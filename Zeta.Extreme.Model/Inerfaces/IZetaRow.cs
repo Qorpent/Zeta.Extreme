@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using Qorpent.Model;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
@@ -216,5 +217,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// </returns>
 		[Obsolete("ZC-415")]
 		bool IsObsolete(int year);
+
 	}
 }

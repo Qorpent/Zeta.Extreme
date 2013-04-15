@@ -173,14 +173,7 @@ pre {
 
 .s span {
     overflow: hidden;
-    white-space:nowrap;
-    text-overflow:ellipsis;
-    max-width:300px;
-    display:inline-block;
-}
-
-.s span:hover {
-    display:inline;
+    text-overflow: ellipsis;
 }
 
 /*

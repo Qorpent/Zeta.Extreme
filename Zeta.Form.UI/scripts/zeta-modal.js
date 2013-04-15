@@ -27,7 +27,7 @@
         var modalheader = $("<div/>", {"class":"modal-header"}).append(
             $('<button type="button" class="close" data-dismiss="modal" aria-hidden="true" />').html("&times;"),
             $('<h3/>').text(p.title));
-        var modalbody = $('<div class="modal-body" />').append(p.content || p.text);
+        var modalbody = $('<div class="modal-body scrollable" />').append(p.content || p.text);
         if (p.height != 0) modalbody.css("height", p.height);
         var modalfooter = $('<div class="modal-footer"/>');
         if (p.customButton != null) {
@@ -49,7 +49,6 @@
         $('body').append(modal);
         modalheader = modalbody = modalfooter = null;
         $(modal).modal({backdrop: false});
-
         // Убиваем окно после его закрытия
         $(modal).on('hidden', function() { $(this).remove() });
         $(modal).draggable({ handle: ".modal-header", containment: "window"});

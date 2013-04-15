@@ -14,10 +14,16 @@
             var cell = this.getActiveCell();
             return cell.parent();
         };
+        this.getActiveCol = function() {
+            var cell = this.getActiveCell();
+            var colindex = this.getColIndex(cell);
+            return $(this.table.find("th")[colindex]);
+        };
         var self = this;
         $.extend(zefs, {
             getChanges: function() { return self.getChanges(); },
-            hidechildrows: function() { return self.toggleChildRows(); }
+            hidechildrows: function() { return self.toggleChildRows(); },
+            restorelaststate: function() { self.restoreLastState(); }
         });
         $(zefs).on(zefs.handlers.on_savefinished, $.proxy(function() {
             this.applyChanges();
@@ -25,7 +31,6 @@
         this.table.delegate('td.name', "click", $.proxy(function(e) {
             this.toggleChildRows($(e.target).parent());
         }, this));
-        this.nextCell();
     };
 
     Zefs.prototype.init = function () {
@@ -51,20 +56,37 @@
 
         // Фиксируем шапку сразу
         this.fixHeader();
-
-        /*$(window).scroll($.proxy(function(e) {
-            var theadScreenOut = this.isHeadOutScreen(this.table);
-            if (theadScreenOut == "top") {
-                if (!this.header.hasClass("fixed")) this.fixHeader();
-            }
-            else this.unfixHeader();
-        },this));*/
+        var timer;
+        $(window).on('scroll', $.proxy(function () {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                var ts = zeta.temporarystorage.Get();
+                ts["pageoffset"] = { offset: window.pageYOffset, session: zefs.myform.sessionId };
+                zeta.temporarystorage.AddOrUpdate(ts);
+            }, 1000);
+        }, this));
         $(window).resize($.proxy(function() {
             if (this.header.hasClass("fixed")) {
                 this.unfixHeader();
                 this.fixHeader();
             }
         },this));
+    };
+
+    Zefs.prototype.restoreLastState = function() {
+        var ts = zeta.temporarystorage.Get();
+        if (!!ts["activecell"]) {
+            if (ts.pageoffset.session == zefs.myform.sessionId) {
+                this.activateCell($('td.data[id="' + ts.activecell + '"]'));
+            } else {
+                this.nextCell();
+            }
+        }
+        if (!!ts["pageoffset"]) {
+            if (ts.pageoffset.session == zefs.myform.sessionId) {
+                $(window).scrollTop(ts.pageoffset.offset);
+            }
+        }
     };
 
     // Эта функция пока не нужна, так как шапка сейчас фиксируется по-умолчанию
@@ -154,8 +176,7 @@
         else if (isoutofview == "bottom") {
             $(window).scrollTop($cell.offset().top + $cell.outerHeight() - window.innerHeight);
         }
-        var $colindex = this.getColIndex($cell);
-        var $col = $(this.table.find("col")[$colindex]);
+
         this.deactivateCell(null);
         $cell.parent().css("height", $cell.height());
 //      $col.css("width", $(this.table.find("th")[$colindex]).outerWidth());
@@ -163,7 +184,22 @@
         $cell.css("height", $cell.height());
         $cell.addClass("active");
         this.clearNumberFormat($cell);
+
+        // store current active cell
+        var ts = zeta.temporarystorage.Get();
+        ts["activecell"] = $cell.attr("id");
+        zeta.temporarystorage.AddOrUpdate(ts);
+
+        this.rowcolHighlight();
+
         return $cell;
+    };
+
+    Zefs.prototype.rowcolHighlight = function() {
+        $(this.table.find("th.active")).removeClass("active");
+        $(this.table.find("tr.active")).removeClass("active");
+        this.getActiveCol().addClass("active");
+        this.getActiveRow().addClass("active");
     };
 
     Zefs.prototype.deactivateCell = function(e) {

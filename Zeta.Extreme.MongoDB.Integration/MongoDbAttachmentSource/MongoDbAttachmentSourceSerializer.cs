@@ -1,9 +1,10 @@
 ﻿using System;
 using MongoDB.Bson;
+using MongoDB.Driver;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration {
-    /// <summary>
+	/// <summary>
     ///     The representation of the Attachemnt format
     /// </summary>
     public static class MongoDbAttachmentSourceSerializer {
@@ -13,15 +14,27 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="attachment">Описание аттача типа Attachment</param>
         public static BsonDocument AttachmentToBson(Attachment attachment) {
             var document = new BsonDocument();
+
             document.Set("_id", attachment.Uid);
             if (attachment.Name != null) document.Set("filename", attachment.Name);
             if (attachment.Comment != null) document.Set("comment", attachment.Comment);
-            if (attachment.Comment != null) document.Set("owner", attachment.User);
+            if (attachment.User != null) document.Set("owner", attachment.User);
             if (attachment.MimeType != null) document.Set("contentType", attachment.MimeType);
-            document.Set("uploadDate", new BsonDateTime(attachment.Version.Year <= 1990 ? DateTime.Now : attachment.Version));
-            document.Set("revision", attachment.Revision);
-            if (attachment.Extension != null) document.Set("extension", attachment.Extension);
+            if (attachment.Hash != null) document.Set("md5", attachment.Hash);
+            if (attachment.Size > 0) document.Set("length", attachment.Size);
+            if(attachment.Revision > 0) document.Set("revision", attachment.Revision);
+
+            if (attachment.Version.Year <= 1990) {
+                attachment.Version = DateTime.Now;
+                document.Set("uploadDate", attachment.Version);
+            } else {
+                document.Set("uploadDate", attachment.Version);
+            }
+            
+
             document.Set("metadata", new BsonDocument(attachment.Metadata));
+            if (attachment.Extension != null) document.Set("extension", attachment.Extension);
+
             document.Set("deleted", false);
 
             return document;
@@ -50,13 +63,15 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (document.Contains("owner")) attachment.User = document["owner"].ToString();
             if (document.Contains("uploadDate")) attachment.Version = document["uploadDate"].ToLocalTime();
             if (document.Contains("contentType")) attachment.MimeType = document["contentType"].ToString();
-            if (document.Contains("revision")) attachment.Revision = document["revision"].ToInt32();
-            if (document.Contains("extension")) attachment.Extension = document["extension"].ToString();
+            if (document.Contains("md5")) attachment.Hash = document["md5"].ToString();
             if (document.Contains("length")) attachment.Size = document["length"].ToInt64();
-
+            if (document.Contains("revision")) attachment.Revision = document["revision"].ToInt32();
+            
             foreach (var el in (BsonDocument)document["metadata"]) {
                 attachment.Metadata[el.Name] = el.Value;
             }
+
+            if (document.Contains("extension")) attachment.Extension = document["extension"].ToString();
         }
 
         /// <summary>
@@ -83,20 +98,24 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 document.Set("owner", attachment.User);
             }
 
+            if (DateTime.Compare(attachment.Version, new DateTime()) != 0) {
+                document.Set("uploadDate", attachment.Version);
+            }
+
             if (attachment.MimeType != null) {
                 document.Set("contentType", attachment.MimeType);
             }
 
-            if (attachment.Extension != null) {
-                document.Set("extension", attachment.Extension);
+            if (attachment.Hash != null) {
+                document.Set("md5", attachment.Hash);
+            }
+
+            if (attachment.Size > 0) {
+                document.Set("length", attachment.Size);
             }
 
             if (attachment.Revision > 0) {
                 document.Set("revision", attachment.Revision);
-            }
-
-            if (DateTime.Compare(attachment.Version, new DateTime()) != 0) {
-                document.Set("uploadDate", attachment.Version);
             }
 
             if (attachment.Metadata.Count != 0) {
@@ -105,9 +124,27 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 }
             }
 
+            if (attachment.Extension != null) {
+                document.Set("extension", attachment.Extension);
+            }
+
             document.Set("deleted", false);
 
             return document;
+        }
+
+        /// <summary>
+        ///     Makes a QueryDocument for update a document by Uid
+        /// </summary>
+        /// <param name="attachment">an Attachment instance</param>
+        /// <returns>QueryDocument clause</returns>
+        public static QueryDocument UpdateByUidClause(Attachment attachment) {
+            return new QueryDocument(
+                new BsonElement(
+                    "_id",
+                    attachment.Uid
+                )
+            );
         }
     }
 }

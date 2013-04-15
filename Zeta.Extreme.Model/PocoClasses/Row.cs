@@ -27,6 +27,7 @@ using Qorpent.Model;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Model {
 	/// <summary>
@@ -444,7 +445,7 @@ namespace Zeta.Extreme.Model {
 			return true;
 		}
 
-
+		
 		/// <summary>
 		/// Prepares shallow non hierarchical copy of this node
 		/// </summary>

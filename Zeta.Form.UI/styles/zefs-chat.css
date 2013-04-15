@@ -1,0 +1,108 @@
+.chat-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.chat-list i {
+    cursor: pointer;
+}
+
+.chat-input textarea[type="text"] {
+    min-width: 315px;
+    max-width: 315px;
+    line-height: 14px;
+    font-size: 90%;
+    min-height: 14px;
+    margin: 0 0 5px 0;
+}
+
+.chat-input button {
+    margin-left: 4px;
+    vertical-align: top;
+}
+
+.chat-list-header img {
+    margin-left: 4px;
+}
+
+.adminchat.chat-list-header {
+    padding-top: 4px;
+    background-color: rgb(204, 255, 194);
+}
+
+.chat-list-body+.chat-list-header {
+    border-top: 1px solid #DDD;
+}
+
+.chat-list-header {
+    height: 26px;
+    font-size: 90%;
+    font-weight: bold;
+}
+
+.chat-list-body {
+    font-size: 90%;
+    cursor: default;
+}
+
+.chat-list-body:empty:after {
+    content: "Пока сообщений нет";
+}
+
+.chat-list-cell.date {
+    display: inline-block;
+    padding: 0 4px;
+}
+
+.chat-list-cell.formname {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.chat-list-cell.formname.hovering {
+    position: absolute;
+    background-color: #F9F9F9;
+    box-shadow: 1px 2px 5px #666;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 0 4px;
+}
+
+.chat-list-cell.message {
+    width: 100%;
+    color: #08C;
+    cursor: text;
+    white-space: normal;
+    line-height: 18px;
+}
+
+.chat-list-cell.message a {
+    cursor: pointer;
+}
+
+.chat-list-cell.username {
+    overflow: hidden;
+    /*text-overflow: ellipsis;*/
+    white-space: nowrap;
+}
+
+.chat-list-row:nth-child(2n-1) {
+    background-color: #F9F9F9;
+}
+
+.chat-list-row {
+    padding: 3px 0;
+    border-top: 1px solid #DDD;
+}
+
+.chat-list-row.notreded {
+    background-color: rgb(255, 252, 221);
+}
+
+.chat-list-row.archived i {
+    opacity: .5;
+}
+
+.chat-list-header.collapsed+.chat-list-body {
+    display: none;
+}

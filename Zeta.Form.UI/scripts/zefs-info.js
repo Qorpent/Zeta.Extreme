@@ -7,11 +7,19 @@
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Информация"/>').html('<i class="icon-book"></i><span class="caret"></span>');
     var support = $('<a/>').css("background-color", "#FFE1E1").text("Где я, кто я?");
     support.click(function() { WhatTheHellAndWhoAmI() });
+    var formdoc = $('<a/>').text("Справка по форме").click(
+        function(e) {
+            e.preventDefault();
+            var formacode = zefs.myform.currentSession.FormInfo.Code;
+            var iframe = $('<iframe/>').css("height", 340).attr("src", siteroot + "resources/doc_" + formacode.replace(/[A|B]\.in/, '') + ".html");
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, { title: "Справка по форме", content: iframe, width: 700, height: 350});
+        }
+    )
     var m = $('<div class="btn-group"/>').append(
         b, $('<ul class="dropdown-menu pull-right"/>').append(
             $('<li/>').append(support),
             $('<li/>').html('<a>Инструкция пользователя</a>'),
-            $('<li/>').html('<a>Справка по форме</a>'),
+            $('<li/>').html(formdoc),
             $('<li class="divider"/>'),
             $('<li/>').html('<a>О программе</a>')
         ));

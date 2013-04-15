@@ -138,13 +138,12 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// 	Ќормализует формульные года и периоды
 		/// </summary>
-		/// <param name="session"> </param>
-		public void Normalize(ISession session = null) {
+		public void Normalize(IQuery query) {
 			if (!IsYearDefinied()) {
 				ResolveYear();
 			}
 			if (!IsPeriodDefined()) {
-				ResolvePeriod(session);
+				ResolvePeriod(query.Session);
 			}
 			if (null != _periods && 0 != _periods.Length) {
 				Periods = _periods.Distinct().OrderBy(_ => _).ToArray();

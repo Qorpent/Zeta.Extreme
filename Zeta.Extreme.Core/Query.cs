@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Zeta.Extreme.Model.Extensions;
@@ -46,6 +47,34 @@ namespace Zeta.Extreme {
 			Obj = new ObjHandler();
 			Reference = new ReferenceHandler();
 			Currency = "NONE";
+		}
+		/// <summary>
+		/// Простой конструктор типовых запросов
+		/// </summary>
+		/// <param name="rowcode"></param>
+		/// <param name="colcode"></param>
+		/// <param name="obj"></param>
+		/// <param name="year"></param>
+		/// <param name="period"></param>
+		public Query(string rowcode, string colcode, int obj, int year, int period):this() {
+			Row.Code = rowcode;
+			if (!Regex.IsMatch(rowcode, @"^[\w\d]+$")) {
+				Row.Code = Convert.ToBase64String(Encoding.UTF8.GetBytes(rowcode));
+				Row.IsFormula = true;
+				Row.Formula = rowcode;
+				Row.FormulaType = "boo";
+			}
+			Col.Code = colcode;
+			if (!Regex.IsMatch(colcode, @"^[\w\d]+$"))
+			{
+				Col.Code = Convert.ToBase64String(Encoding.UTF8.GetBytes(colcode));
+				Col.IsFormula = true;
+				Col.Formula = rowcode;
+				Col.FormulaType = "boo";
+			}
+			Obj.Id = obj;
+			Time.Year = year;
+			Time.Period = period;
 		}
 
 		/// <summary>
@@ -74,6 +103,34 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public Task PrepareTask { get; set; }
 
+		private bool? _isrecycle;
+
+		/// <summary>
+		/// Проверяет, является ли запрос циклическим
+		/// </summary>
+		public bool GetIsRecycle(IDictionary<long, bool> dictionary=null)
+		{
+			if (_isrecycle.HasValue) return _isrecycle.Value;
+			return (_isrecycle = CheckRecycle(dictionary??new Dictionary<long,bool> ())).Value;
+		}
+
+		private bool CheckRecycle(IDictionary<long, bool> dictionary) {
+			if (EvaluationType == QueryEvaluationType.Primary || EvaluationType == QueryEvaluationType.Unknown) {
+				return false;
+			}
+			if (dictionary.ContainsKey(Uid)) return true;
+			dictionary[Uid] = true;
+			if (EvaluationType == QueryEvaluationType.Formula) {
+				foreach (var d in FormulaDependency.OfType<IQueryWithProcessing>()) {
+					if (d.GetIsRecycle(dictionary)) return true;
+				}
+			}else if (EvaluationType == QueryEvaluationType.Summa) {
+				foreach (var sd in SummaDependency.Select(_=>_.Item2).OfType<IQueryWithProcessing>()) {
+					if (sd.GetIsRecycle(dictionary)) return true;
+				}
+			}
+			return false;
+		}
 
 		/// <summary>
 		/// 	Client processed mark
@@ -147,7 +204,7 @@ namespace Zeta.Extreme {
 					return Result;
 				}
 
-				if (IsCircularDependency()) {
+				if (GetIsRecycle()) {
 					Result = new QueryResult{IsComplete = false, Error = new Exception("circular dependency")};
 				}
 				
@@ -163,119 +220,6 @@ namespace Zeta.Extreme {
 					return Result;
 				}
 				return Result;
-			}
-		}
-
-		private bool? _circular;
-		/// <summary>
-		/// Проверяет, что запрос имеет циклические зависимости
-		/// </summary>
-		public bool IsCircularDependency() {
-			if (null == _circular) {
-				_circular = EvalIsCircularDependency();
-			}
-			return _circular.Value;
-		}
-
-		private bool EvalIsCircularDependency() {
-			if (IsPrimary) return false;
-			var result = false;
-			bool evalIsCircularDependency;
-			if (CheckCachedDataForFormula(out evalIsCircularDependency)) {
-				result = evalIsCircularDependency;
-			}
-			else {
-				result = GetAllDependencies().Any(_ => _ == this);
-			}
-			return result;
-
-		}
-		private IEnumerable<Query> GetFirstLevelDependeny() {
-			if (null != _formulaDependency) {
-				foreach (var query in _formulaDependency.OfType<Query>()) {
-					yield return query;
-				}
-			}
-			if (null != _summaDependency)
-			{
-				foreach (var query in _summaDependency.Select(_=>_.Item2).OfType<Query>())
-				{
-					yield return query;
-				}
-			}
-		}
-		private bool CheckCachedDataForFormula(out bool evalIsCircularDependency) {
-			evalIsCircularDependency = false;
-			bool hasresult = true;
-			bool hascircular = false;
-			
-				foreach (var q in GetFirstLevelDependeny()) {
-					if (null != q) {
-						if (q._circular.HasValue) {
-							if (q._circular.Value) {
-								hascircular = true;
-							}
-						}
-						else {
-							hasresult = false;
-						}
-					}
-				}
-				
-			
-			if (hascircular)
-			{
-				evalIsCircularDependency = true;
-				return true;
-			}
-			if (hasresult)
-			{
-				evalIsCircularDependency = false;
-				return true;
-			}
-			return false;
-		}
-
-		/// <summary>
-		/// Возвращает все зависимости
-		/// </summary>
-		/// <returns></returns>
-		public IEnumerable<IQuery> GetAllDependencies() {
-			if(IsPrimary)yield break;
-			if (null != SummaDependency && 0 != SummaDependency.Count) {
-				foreach (var tuple in SummaDependency) {
-					var query = tuple.Item2;
-					yield return query;
-				}
-				//only if first level clean go to next
-				foreach (var tuple in SummaDependency) {
-					var query = tuple.Item2 as Query;
-					if (query != this) { //prevent circular
-						var deps = query.GetAllDependencies();
-						foreach (var dep in deps) {
-							yield return dep;
-						}
-					}
-				}
-			}
-			if (null != FormulaDependency && 0 != FormulaDependency.Count) {
-				foreach (var query in FormulaDependency)
-				{
-					yield return query;
-				}
-				//only if first level clean go to next
-				foreach (Query query in FormulaDependency)
-				{
-					if (null != query) {
-						if (query != this) {
-							//prevent circular
-							var deps = query.GetAllDependencies();
-							foreach (var dep in deps) {
-								yield return dep;
-							}
-						}
-					}
-				}
 			}
 		}
 
@@ -389,15 +333,16 @@ namespace Zeta.Extreme {
 		/// 	Стандартная процедура нормализации
 		/// </summary>
 		public void Normalize(ISession session = null) {
-			var objt = Task.Run(() => Obj.Normalize(session ?? Session)); //объекты зачастую из БД догружаются
-			Time.Normalize(session ?? Session);
-			Col.Normalize(session ?? Session);
+			Session = session;
+			var objt = Task.Run(() => Obj.Normalize(this)); //объекты зачастую из БД догружаются
+			Time.Normalize(this);
+			Col.Normalize(this);
 			ResolveTemporalCustomCodeBasedColumns(session);
-			Row.Normalize(session ?? Session, Col.Native); //тут формулы парсим простые как рефы			
+			Row.Normalize(this); //тут формулы парсим простые как рефы			
 			objt.Wait();
 			AdaptDetailModeForDetailBasedSubtrees();
 			AdaptExRefLinkSourceForColumns(session);
-			Reference.Normalize(session);
+			Reference.Normalize(this);
 			InvalidateCacheKey();
 		}
 
@@ -426,7 +371,7 @@ namespace Zeta.Extreme {
 				if (0 != _c.Native.Year || 0 != _c.Native.Period) {
 					Time = new TimeHandler {Year = _c.Native.Year, Period = _c.Native.Period};
 				}
-				Col.Normalize(session ?? Session);
+				Col.Normalize(this);
 			}
 		}
 

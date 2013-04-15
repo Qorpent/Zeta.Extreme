@@ -2,16 +2,16 @@ var root = window.zeta = window.zeta || {};
 
 !function($) {
     var Storage = function(opts) {
-        this.init();
-        if(!$.isEmptyObject(opts)) {
-            $.extend(this.options, opts);
+        // Определение текущего хранилища sessionStorage || localStorage
+        this.location = window.sessionStorage;
+        this.dependency = [];
+        if (!$.isEmptyObject(opts)) {
+            $.extend(this, opts);
         }
     };
 
     Storage.prototype.init = function() {
-        this.options = this.options || {
-            storage : window.sessionStorage
-        };
+
     };
 
     Storage.prototype.support = function() {
@@ -22,59 +22,59 @@ var root = window.zeta = window.zeta || {};
         }
     };
 
-    Storage.prototype.tryGetItem = function(code) {
+    /**
+     * Функция возвращает набор параметров (для перекрывания)
+     * @returns {{}}
+     */
+    Storage.prototype.getParameters = function() {
+        return {};
+    };
+
+    Storage.prototype.getCode = function() {
+        var params = this.getParameters();
+        var code = this.name;
+        if (!$.isEmptyObject(params)) {
+            code += $.map(this.dependency, function(type) { return "_"+type+":"+params[type] }).join('');
+        }
+        return code;
+    };
+
+    Storage.prototype.Get = function() {
         var result = {};
-        if (this.support()) {
-            try {
-                result = JSON.parse(this.options.storage.getItem(code));
-            } catch(e) {
-                this.options.storage.removeItem(code);
-                return result;
-            }
+        var code = this.getCode();
+        try {
+            result = JSON.parse(this.location.getItem(code)) || {};
+        } catch(e) {
+            this.location.removeItem(this.name);
         }
         return result;
     };
 
-    Storage.prototype.tryGetItemProp = function(code, name) {
-        var result = this.tryGetItem(code);
-        if (result != null && !$.isEmptyObject(result)) {
-            return result[name] || {};
+    Storage.prototype.AddOrUpdate = function(newitem) {
+        var item = this.Get();
+        $.extend(item, newitem);
+        this.location.setItem(this.getCode(), JSON.stringify(item));
+    };
+
+    Storage.prototype.Delete = function() {
+        var item = this.Get();
+        this.location.removeItem(item);
+    };
+
+    root.userinfostorage = new Storage({name: "__zeta_users"});
+    root.chatoptionsstorage = new Storage({name: "__zeta_chatoptions"});
+    root.temporarystorage = new Storage({name: "__zeta_temporary"});
+    root.formoptionsstorage = $.extend(new Storage({name: "__zeta_formoptions", dependency: ["form"]}), {
+        getParameters : function() {
+            return { form: zefs.myform.currentSession.FormInfo.Code || "undefined" }
         }
-        return null;
-    };
-
-    Storage.prototype.tryUpdateItem = function(code, newitem) {
-        if (this.support()) {
-            var item = this.tryGetItem(code) || {};
-            $.extend(item, newitem);
-            this.options.storage.setItem(code, JSON.stringify(item));
+    });
+    root.coloptionsstorage = $.extend(new Storage({name: "__zeta_coloptions", dependency: ["period", "form"]}), {
+        getParameters : function() {
+            return {
+                form: zefs.myform.currentSession.FormInfo.Code || "undefined",
+                period: zefs.myform.currentSession.Period || 0
+            }
         }
-    };
-
-    /** ХРАНЕНИЕ ИНФОРМАЦИИ О ПОЛЬЗОВАТЕЛЯХ */
-
-    Storage.prototype.getUsers = function() {
-        return this.tryGetItem("ZetaUsers");
-    };
-
-    Storage.prototype.getUser = function(login) {
-        return this.tryGetItemProp("ZetaUsers", login);
-    };
-
-    Storage.prototype.updateUser = function(newuser) {
-        this.tryUpdateItem("ZetaUsers", newuser);
-    };
-
-    /** ХРАНЕНИЕ НАСТРОЕК ФОРМЫ */
-
-    Storage.prototype.getFormOptions = function(formcode) {
-        return this.tryGetItemProp("ZefsForms", formcode);
-    };
-
-    Storage.prototype.updateFormOptions = function(newform) {
-        this.tryUpdateItem("ZefsForms", newform);
-    };
-
-    root.localstorage = new Storage({ storage: window.localStorage });
-    root.sessionstorage = new Storage();
-}(window.jQuery);
+    });
+}(jQuery);

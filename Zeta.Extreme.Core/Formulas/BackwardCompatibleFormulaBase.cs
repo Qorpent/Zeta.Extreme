@@ -166,43 +166,7 @@ namespace Zeta.Extreme {
 		/// <param name="name"> </param>
 		/// <returns> </returns>
 		protected object getp(string name) {
-			if (IsInPlaybackMode) {
-				return "STUB";
-			}
-			throw new NotSupportedException("extreme does not supports parameter-based conditions for now");
-			//object result = "";
-			//if (null != ParameterSource)
-			//{
-			//	result = ParameterSource.GetParameter(name);
-			//	if (null != result && result.toStr().hasContent())
-			//	{
-			//		return result;
-			//	}
-			//}
-			//var tag = q.Row.Target.ResolveTag(name);
-			//if (tag.hasContent()) return tag;
-			//if (null != q.Row.Target.RefTo)
-			//{
-			//	tag = q.Row.Target.RefTo.ResolveTag(name);
-			//}
-			//if (tag.noContent() && null != q.MasterRow)
-			//{
-			//	tag = q.MasterRow.ResolveTag(name);
-			//	if (tag.hasContent()) return tag;
-			//	if (null != q.MasterRow.RefTo)
-			//	{
-			//		tag = q.MasterRow.RefTo.ResolveTag(name);
-			//	}
-			//}
-
-
-			//if (tag.noContent() && (q.Zone.Item is ICanResolveTag))
-			//{
-
-			//	var rt = q.Zone.Item as ICanResolveTag;
-			//	tag = rt.ResolveTag(name);
-			//}
-			//return tag ?? "";
+			return query.ResolveRealCode(name);
 		}
 
 		/// <summary>
