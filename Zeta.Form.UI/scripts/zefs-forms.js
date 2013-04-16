@@ -198,8 +198,13 @@
     Zefs.prototype.rowcolHighlight = function() {
         $(this.table.find("th.active")).removeClass("active");
         $(this.table.find("tr.active")).removeClass("active");
+        $(this.table.find("tr.preactive")).removeClass("preactive");
         this.getActiveCol().addClass("active");
         this.getActiveRow().addClass("active");
+        // небольшой изврат чтобы изменить цвет нижнего бордера у предыдущей tr
+        if (this.getActiveRow().prev('tr').length != 0) {
+            this.getActiveRow().prev('tr').addClass("preactive");
+        }
     };
 
     Zefs.prototype.deactivateCell = function(e) {
