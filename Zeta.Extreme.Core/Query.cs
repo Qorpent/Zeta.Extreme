@@ -23,9 +23,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
+using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -46,7 +48,7 @@ namespace Zeta.Extreme {
 			Col = new ColumnHandler();
 			Obj = new ObjHandler();
 			Reference = new ReferenceHandler();
-			Currency = "NONE";
+			Currency = PrimaryConstants.VALUTA_NONE;
 		}
 		/// <summary>
 		/// ѕростой конструктор типовых запросов
@@ -343,6 +345,9 @@ namespace Zeta.Extreme {
 			AdaptDetailModeForDetailBasedSubtrees();
 			AdaptExRefLinkSourceForColumns(session);
 			Reference.Normalize(this);
+			if (string.IsNullOrWhiteSpace(Currency)) {
+				Currency = PrimaryConstants.VALUTA_NONE;
+			}
 			InvalidateCacheKey();
 		}
 
