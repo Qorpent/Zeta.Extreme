@@ -40,15 +40,48 @@ namespace Zeta.Extreme.Primary {
 			var script = "";
 			if (0 != queries.Length) {
 				var times = GetTimedGroup(queries);
-				var colobj = GetColumnAndObjectGroups(queries);
+				var colobj = GetColumnAndObjectGroups(queries).ToArray();
+				var objtypes = GetObjTypeIdsGroup(queries).ToArray();
+				string colids = null;
 				var rowids = string.Join(",", queries.Select(_ => _.Row.Id).Distinct());
-				script = times.Aggregate(
+				colids = string.Join(",", queries.Select(_ => _.Col.Id).Distinct());
+				if (objtypes.Length < colids.Length) {
+					//ineffective plan
+					script = times.Aggregate(
+						script,
+						(_, time) => objtypes.Aggregate(
+							_, (current, objtype) =>
+							   current + GenerateQuery(time, objtype, rowids, colids, prototype)
+							             )
+						);
+				}
+				else {
+					script = times.Aggregate(
 					script,
 					(_, time) => colobj.Aggregate(
 						_, (current, cobj) =>
-						   current + GenerateQuery(time, cobj, rowids, prototype)));
+						   current + GenerateQuery(time, cobj, rowids,colids, prototype)));	
+				}
+				
 			}
 			return script;
+		}
+
+
+		private static IEnumerable<ObjColQueryGeneratorStruct> GetObjTypeIdsGroup(IEnumerable<IQuery> queries)
+		{
+			var objtypes =
+				queries.GroupBy(_ => _.Obj.Type+"_"+_.Obj.DetailMode, _ => _).Select(
+					_ =>
+					new ObjColQueryGeneratorStruct
+					{
+						t = _.First().Obj.Type,
+						m = _.First().Obj.DetailMode,
+						ids = string.Join(",",_.Select(__=>__.Obj.Id).Distinct().OrderBy(___=>___)),
+						af = _.First().Reference.Contragents
+					}).Distinct().
+						ToArray();
+			return objtypes;
 		}
 
 		private static IEnumerable<ObjColQueryGeneratorStruct> GetColumnAndObjectGroups(IEnumerable<IQuery> queries) {
@@ -81,28 +114,39 @@ namespace Zeta.Extreme.Primary {
 		}
 
 
-		private string GenerateQuery(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj, string rowids,
+		private string GenerateQuery(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj, string rowids, string colids,
 		                             PrimaryQueryPrototype prototype) {
 			var select = GetSelectPart(time, cobj, prototype);
 			var from = GetFromPart(prototype);
-			var where = GetWherePart(time, cobj, rowids, prototype);
+			var where = GetWherePart(time, cobj, rowids,colids, prototype);
 			var groupby = GetGroupByPart(cobj, prototype);
 			return select + from + where + groupby;
 		}
 
-		private string GetWherePart(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj, string rowids,
+
+
+		private string GetWherePart(TimeQueryGeneratorStruct time, ObjColQueryGeneratorStruct cobj, string rowids,string colids,
 		                            PrimaryQueryPrototype prototype) {
 			var objfld = GetObjectField(cobj);
 			var contragentCondition = GetContragentCondition(cobj);
 			var detailCondition = GetDetailCondition(cobj, prototype);
+			var colcondition = " col = " + cobj.c;
+			if (!string.IsNullOrWhiteSpace(colids)) {
+				colcondition = " col in ( " + colids + ")";
+			}
+			var objcondition = objfld + "=" + cobj.o;
+			if (0==cobj.o) {
+				objcondition = objfld + " in ( " + cobj.ids + " )";
+			}
+
 			if (string.IsNullOrWhiteSpace(time.ps)) {
 				return string.Format(
-					@" WHERE period={0} and year={1} and col={2} and {5}={3} and row in ({4}){6}{7} ",
-					time.p, time.y, cobj.c, cobj.o, rowids, objfld, detailCondition, contragentCondition);
+					@" WHERE period={0} and year={1} and {2} and {5} and row in ({4}){6}{7}  ",
+					time.p, time.y, colcondition, cobj.o, rowids, objcondition, detailCondition, contragentCondition);
 			}
 			return string.Format(
-				" WHERE period in ({0}) and year={1} and col={2} and {5}={3} and row in ({4}){6}{7} ",
-				time.ps, time.y, cobj.c, cobj.o, rowids, objfld, detailCondition, contragentCondition);
+				" WHERE period in ({0}) and year={1} and {2} and  {5} and row in ({4}){6}{7} ",
+				time.ps, time.y, colcondition, cobj.o, rowids, objcondition, detailCondition, contragentCondition);
 		}
 
 		private static string GetContragentCondition(ObjColQueryGeneratorStruct cobj) {
