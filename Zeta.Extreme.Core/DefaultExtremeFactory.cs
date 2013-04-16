@@ -91,6 +91,10 @@ namespace Zeta.Extreme {
 			return FormulaStorage.Default;
 		}
 
+		/// <summary>
+		/// Создает описатель ссылки
+		/// </summary>
+		/// <returns></returns>
 		public IReferenceHandler CreateReference() {
 			return new ReferenceHandler();
 
