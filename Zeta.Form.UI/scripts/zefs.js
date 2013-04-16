@@ -193,6 +193,7 @@ root.init = root.init ||
         var obj = window.zefs.getChanges();
         if (!$.isEmptyObject(obj) && !root.myform.lock) return;
         root.myform.datatosave = obj;
+        $(root).trigger(root.handlers.on_savestart);
         api.data.saveready.execute();
     };
 
@@ -423,10 +424,17 @@ root.init = root.init ||
         $(root).trigger(root.handlers.on_message, {
             text: "Сохранение данных формы", autohide: 5000, type: "alert"
         });
-        $(root).trigger(root.handlers.on_savestart);
         api.data.save.execute({
             session: root.myform.sessionId,
             data: root.myform.datatosave
+        });
+    });
+
+    api.data.saveready.onError(function() {
+        $(root).trigger(root.handlers.on_savefinished);
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            title: "Сохранение формы не возможно",
+            text: "Обратитесь за помощью в службу поддержки"
         });
     });
 
