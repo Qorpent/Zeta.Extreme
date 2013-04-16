@@ -60,5 +60,10 @@ namespace Zeta.Extreme.Model.Querying {
 		/// </summary>
 		/// <returns></returns>
 		IFormulaStorage GetFormulaStorage();
+		/// <summary>
+		/// Создает описатель ссылки
+		/// </summary>
+		/// <returns></returns>
+		IReferenceHandler CreateReference();
 	}
 }
