@@ -33,7 +33,8 @@
                     "Код предприятия: " + zefs.myform.currentSession.ObjInfo.Id + "\n" +
                     "Номер периода: " + zefs.myform.currentSession.Period + "\n" +
                     "Год: " + zefs.myform.currentSession.Year + "\n" +
-                    "Блокировки: " + JSON.stringify(zefs.myform.lock);
+                    "Блокировки: " + JSON.stringify(zefs.myform.lock) + "\n" +
+                    "Ссылка на форму: " + location.href;
         window.open("mailto:" + email + "?subject=" + subject + "&body=" + encodeURIComponent(body), "_blank");
     };
     var WhatTheHellAndWhoAmI = function() {
