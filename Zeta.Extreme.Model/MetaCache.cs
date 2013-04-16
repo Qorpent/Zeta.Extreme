@@ -165,6 +165,6 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		/// 	If false - first error - no more native, true - will try again and again
 		/// </summary>
-		public bool OptimisticOnNativeError;
+		public bool OptimisticOnNativeError = true;
 	}
 }
