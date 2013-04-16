@@ -1,10 +1,8 @@
-﻿namespace Zeta.Extreme.MongoDB.Integration
-{
+﻿namespace Zeta.Extreme.MongoDB.Integration {
     /// <summary>
     ///     Набор заранее определённых данных для работы MongoDB.Integration
     /// </summary>
-    public static class MongoDbLayoutSpecification
-    {
+    public static class MongoDbLayoutSpecification {
         /// <summary>
         ///     Строка подключения по умолчанию
         /// </summary>
@@ -44,5 +42,20 @@
         ///     The default increment value for elements counter
         /// </summary>
         public const int MONGODBLOGS_STAT_COUNTER_INC_VAL = 1;
+
+        /// <summary>
+        ///     Default connection string
+        /// </summary>
+        public const string DEF_CONNECTION_STRING = "mongodb://localhost";
+
+        /// <summary>
+        ///     Default database
+        /// </summary>
+        public const string DEF_DATABASE_NAME = "defdb";
+
+        /// <summary>
+        ///     Default collection name
+        /// </summary>
+        public const string DEF_COLLECTION_NAME = "testCollection";
     }
 }

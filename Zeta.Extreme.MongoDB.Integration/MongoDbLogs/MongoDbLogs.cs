@@ -16,16 +16,17 @@ namespace Zeta.Extreme.MongoDB.Integration {
         private const string SERVERS_COLLECTION_POSTFIX = ".servers";
         private const string COMPANIES_COLLECTION_POSTFIX = ".companies";
         private const string PERIODS_COLLECTION_POSTFIX = ".periods";
-
-        private MongoDatabaseSettings _mongoDatabaseSettings;
         
         // collections
-        private MongoCollection _mongoLogsCollection;
         private MongoCollection _mongoUsersCollection;
         private MongoCollection _mongoFormsCollection;
         private MongoCollection _mongoServersCollection;
         private MongoCollection _mongoCompaniesCollection;
         private MongoCollection _mongoPeriodsCollection;
+
+        private MongoDbConnector _connector;
+
+        private bool noRealWrite;
 
         /// <summary>
         ///     Connection marker
@@ -41,7 +42,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <summary>
         ///     Represents the MongoDB connection string
         /// </summary>
-        public string MongoConnectionString {
+        public string MongoLogsConnectionString {
             get {
                 return _mongoConnectionString ??
                        (_mongoConnectionString = MongoDbLayoutSpecification.DEFAULT_CONNECTION_STRING);
@@ -127,9 +128,36 @@ namespace Zeta.Extreme.MongoDB.Integration {
             }
 
             var document = MongoDbLogsSerializer.LogMessageToBsonDocument(message);
-            _mongoLogsCollection.Save(document);
+            RebuildLogMessageByLogLevel(
+                message.Level,
+                document
+            );
 
-            UpdateStatisticsCollections(message);
+            if (!noRealWrite) {
+                _connector.Collection.Save(document);
+                UpdateStatisticsCollections(message);
+            }
+        }
+
+        private void RebuildLogMessageByLogLevel(LogLevel logLevel, BsonDocument document) {
+            switch (logLevel) {
+                case LogLevel.Trace:
+                    document.Remove("error");    
+                 break;
+                case LogLevel.Info:
+                    document.Remove("error");
+                    document.Remove("MvcCallInfo");
+                    document.Remove("MvcContext");        
+                 break;
+                case  LogLevel.Warning:
+                    document.Remove("error");
+                    document.Remove("MvcCallInfo");
+                    document.Remove("MvcContext");
+                 break;
+                default:
+                    noRealWrite = false;
+                 break;
+            }
         }
 
         /// <summary>
@@ -254,16 +282,14 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// Sets up connection to the database
         /// </summary>
         private void ConnectionSetup() {
-            _mongoDatabaseSettings = new MongoDatabaseSettings();
+            _connector = new MongoDbConnector {
+                ConnectionString = MongoLogsConnectionString,
+                DatabaseSettings = new MongoDatabaseSettings(),
+                DatabaseName = MongoLogsDatabaseName,
+                CollectionName = MongoLogsCollectionName
+            };
 
-            var mongoClient = new MongoClient(MongoConnectionString);
-            var mongoServer = mongoClient.GetServer();
-            var mongoDatabase = mongoServer.GetDatabase(
-                MongoLogsDatabaseName,
-                _mongoDatabaseSettings
-            );
-
-            CollectionsSetup(mongoDatabase);
+            CollectionsSetup(_connector.Database);
 
             _mongoConnected = true;
         }
@@ -273,8 +299,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="mongoDatabase">Mongo database pointer</param>
         private void CollectionsSetup(MongoDatabase mongoDatabase) {
-            _mongoLogsCollection = mongoDatabase.GetCollection(MongoLogsCollectionName);
-            
+           
             // users collection
             _mongoUsersCollection = mongoDatabase.GetCollection(
                 MongoLogsCollectionName + USERS_COLLECTION_POSTFIX
