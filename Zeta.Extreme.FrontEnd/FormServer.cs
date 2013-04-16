@@ -294,8 +294,9 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public void Reload() {
 			lock (ReloadState) {
-					((IResetable) (Application.Files).GetResolver()).Reset(null);
-					((IResetable) Application.Roles).Reset(null);
+
+					((IResetable) Application.Files).Reset(null);
+;					((IResetable) Application.Roles).Reset(null);
 					Sessions.Clear();
 
 					LoadThemas = new TaskWrapper(GetLoadThemasTask());
