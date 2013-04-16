@@ -657,7 +657,12 @@ namespace Zeta.Extreme.FrontEnd {
 			InitializeColset();
 			primarycols = cols.Where(_ => _._.Editable && !_._.IsFormula).ToArray();
 			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
-			primaryrows = rows.Where(_ => !_.Native.IsFormula && 0 == _.Native.Children.Count && !_.Native.IsMarkSeted("0ISCAPTION")).ToArray();
+			primaryrows = rows.Where(_ => 
+				!_.Native.IsFormula && 
+				0 == _.Native.Children.Count && 
+				!_.Native.IsMarkSeted("0ISCAPTION") &&
+				!_.SumObj &&
+				string.IsNullOrWhiteSpace(_.AltObjFilter)).ToArray();
 		}
 
 		private void InitializeColset() {
@@ -767,9 +772,9 @@ namespace Zeta.Extreme.FrontEnd {
 
 		private bool PrepareByCustomGeneratorIfNeeded(IList<FormStructureRow> result, IZetaRow row, int level) {
 			var specialView = TagHelper.Value(row.Tag, "specialformview");
-			if (string.IsNullOrWhiteSpace(specialView)) {
+			if (!string.IsNullOrWhiteSpace(specialView)) {
 				var customRowPreparator =
-					Application.Current.Container.Get<IFormRowProvider>(Template.Thema.Code + ".special.row.preparator");
+					Application.Current.Container.Get<IFormRowProvider>(specialView + ".special.row.preparator");
 				if (null == customRowPreparator) {
 					var stub = new Row
 						{
