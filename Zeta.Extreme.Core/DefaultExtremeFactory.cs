@@ -46,6 +46,7 @@ namespace Zeta.Extreme {
 				result.Obj = setupInfo.Obj;
 				result.Time = setupInfo.Time;
 				result.Currency = setupInfo.Valuta;
+				result.Reference = setupInfo.Reference;
 			}
 			return result;
 		}
@@ -88,6 +89,11 @@ namespace Zeta.Extreme {
 		/// <returns></returns>
 		public IFormulaStorage GetFormulaStorage() {
 			return FormulaStorage.Default;
+		}
+
+		public IReferenceHandler CreateReference() {
+			return new ReferenceHandler();
+
 		}
 	}
 }
