@@ -10,7 +10,6 @@ namespace Zeta.Extreme.FrontEnd {
     ///     FormServer Interface
     /// </summary>
     public interface IFormServer {
-
         /// <summary>
         /// 
         /// </summary>

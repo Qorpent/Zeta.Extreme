@@ -32,8 +32,11 @@ using Qorpent.IoC;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Form;
+using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.Themas;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
@@ -44,7 +47,8 @@ namespace Zeta.Extreme.FrontEnd {
 	/// 	Выполняет стартовую настройку сервера форм
 	/// </summary>
 	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IApplicationStartup), Name = "extreme.form.start")]
-	public class FormServer : ServiceBase, IApplicationStartup {
+    public class FormServer : ServiceBase, IFormServer, IApplicationStartup
+    {
         private readonly bool _doNotRun;
         private TimeSpan _formulaRegisterTime;
         private int _index = -100;
@@ -137,7 +141,7 @@ namespace Zeta.Extreme.FrontEnd {
                 _doNotRun = true;
             }
 
-            CreateFormSessionContainer();
+            //CreateFormSessionContainer();
         }
 
         /// <summary>
@@ -327,10 +331,15 @@ namespace Zeta.Extreme.FrontEnd {
                 );
 
 				if (null == existed) {
-					var session = new FormSession(template, year, period, obj) {
-					    FormServer = this,
-                        InitSaveMode = initsavemode
-					};
+                    var session = Application.Container.Get<FormSession>(
+                        null,
+                        new object[] {
+                            template,
+                            year,
+                            period,
+                            obj
+                        }
+                    );
 
 				    Sessions.Add(session);
 					session.Start();
@@ -481,6 +490,7 @@ namespace Zeta.Extreme.FrontEnd {
             formSessionComponent.ServiceType = typeof(IFormSession);
             formSessionComponent.ImplementationType = typeof(FormSession);
             formSessionComponent.Lifestyle = Lifestyle.Transient;
+            formSessionComponent.Parameters["FormServer"] = this;
 
             Application.Container.Register(formSessionComponent);
         }

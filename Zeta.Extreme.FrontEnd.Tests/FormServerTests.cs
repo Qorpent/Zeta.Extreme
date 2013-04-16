@@ -11,11 +11,14 @@ namespace Zeta.Extreme.FrontEnd.Tests {
                 Container = new Container()
             };
 
+
             var component = application.Container.EmptyComponent();
-            component.ServiceType = typeof(FormServer);
+            component.ServiceType = typeof(IFormServer);
+            component.ImplementationType = typeof (FormServer);
+            component.Lifestyle = Lifestyle.Transient;
             application.Container.Register(component);
 
-            var formServer = application.Container.Get(typeof(FormServer));
+            var formServer = application.Container.Get<IFormServer>();
             Assert.IsNotNull(formServer);
         }
     }
