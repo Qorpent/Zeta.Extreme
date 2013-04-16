@@ -482,7 +482,7 @@ root.init = root.init ||
             api.lock.history.execute({session: root.myform.sessionId});
         } else {
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
-                title: result.responseText.match(/<H1>([^<]+)/)[1].trim(),
+                title: result.responseText.match(/<[h|H]1>([^<]+)/)[1].trim(),
                 text: result.responseText.match(/<i>([^<]+)/)[1].trim()
             });
         }

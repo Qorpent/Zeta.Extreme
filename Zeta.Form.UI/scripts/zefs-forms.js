@@ -1,8 +1,8 @@
 (function ($) {
     var Zefs = function(element, options) {
         this.table = $(element);
-        this.header = $(this.table.find('thead'));
-        this.inputs = this.table.find("td.editable");
+        this.header = $($('table.zefsform thead'));
+        this.inputs = $("table.zefsform td.editable");
         this.options = options;
         this.init();
         this.hotkeysConfigure();
@@ -17,7 +17,7 @@
         this.getActiveCol = function() {
             var cell = this.getActiveCell();
             var colindex = this.getColIndex(cell);
-            return $(this.table.find("th")[colindex]);
+            return $($("table.zefsform th")[colindex]);
         };
         var self = this;
         $.extend(zefs, {
@@ -104,9 +104,9 @@
     };
 
     Zefs.prototype.fixHeader = function() {
-        $.each(this.table.find('th'), $.proxy(function(i,th) {
+        $.each($('table.zefsform th'), $.proxy(function(i,th) {
             $(th).css("width", $(th).width());
-//          $(this.table.find("col")[i]).css("width", $(th).outerWidth());
+//          $($("table.zefsform col")[i]).css("width", $(th).outerWidth());
         },this));
         this.header.addClass("fixed");
         this.header.css("top", this.options.fixHeaderX);
@@ -114,7 +114,7 @@
     };
 
     Zefs.prototype.unfixHeader = function() {
-        $.each(this.table.find('th'), $.proxy(function(i,th) {
+        $.each($('table.zefsform th'), $.proxy(function(i,th) {
             $(th).css("width", "");
         },this));
         this.header.removeClass("fixed");
@@ -179,7 +179,7 @@
 
         this.deactivateCell(null);
         $cell.parent().css("height", $cell.height());
-//      $col.css("width", $(this.table.find("th")[$colindex]).outerWidth());
+//      $col.css("width", $($("table.zefsform th")[$colindex]).outerWidth());
         $cell.css("min-width", $cell.width());
         $cell.css("height", $cell.height());
         $cell.addClass("active");
@@ -196,9 +196,9 @@
     };
 
     Zefs.prototype.rowcolHighlight = function() {
-        $(this.table.find("th.active")).removeClass("active");
-        $(this.table.find("tr.active")).removeClass("active");
-        $(this.table.find("tr.preactive")).removeClass("preactive");
+        $($("table.zefsform th.active")).removeClass("active");
+        $($("table.zefsform tr.active")).removeClass("active");
+        $($("table.zefsform tr.preactive")).removeClass("preactive");
         this.getActiveCol().addClass("active");
         this.getActiveRow().addClass("active");
         // небольшой изврат чтобы изменить цвет нижнего бордера у предыдущей tr
@@ -208,18 +208,16 @@
     };
 
     Zefs.prototype.deactivateCell = function(e) {
-        $.each(this.getActiveCell(), $.proxy(function(i,td) {
-            var $cell = $(td);
-            if (e != "esc" && $cell.hasClass('editing')) {
-                this.uninputCell();
-            }
-            $cell.removeClass("active");
-            $(this.table.find("col")[this.getColIndex($cell)]).css("width", "");
-            $cell.css("min-width", "");
-            $cell.css("height", "");
-            $cell.parent().css("height", "");
-            this.applyNumberFormat($cell);
-        }, this));
+        var $cell = this.getActiveCell();
+        if (e != "esc" && $cell.hasClass('editing')) {
+            this.uninputCell();
+        }
+        $cell.removeClass("active");
+        $($("table.zefsform col")[this.getColIndex($cell)]).css("width", "");
+        $cell.css("min-width", "");
+        $cell.css("height", "");
+        $cell.parent().css("height", "");
+        this.applyNumberFormat($cell);
     };
 
     Zefs.prototype.inputCell = function($mode) {
@@ -262,7 +260,7 @@
     };
 
     Zefs.prototype.getActiveCell = function() {
-        return $(this.table.find("td.active"));
+        return $("td.active");
     };
 
     Zefs.prototype.nextCell = function() {
@@ -326,7 +324,7 @@
     Zefs.prototype.upFirstCell = function() {
         var $cell = this.getActiveCell();
         var $colindex = this.getColIndex($cell);
-        var $current = this.table.find("tbody>tr").first();
+        var $current = $("table.zefsform tbody>tr").first();
         while (!$($current.children()[$colindex]).hasClass("editable")) {
             if ($current.next().length != 0) $current = $current.next();
             else return;
@@ -337,7 +335,7 @@
     Zefs.prototype.downLastCell = function() {
         var $cell = this.getActiveCell();
         var $colindex = this.getColIndex($cell);
-        var $current = this.table.find("tbody>tr").last();
+        var $current = $("table.zefsform tbody>tr").last();
         while (!$($current.children()[$colindex]).hasClass("editable")) {
             if ($current.prev().length != 0) $current = $current.prev();
             else return;
