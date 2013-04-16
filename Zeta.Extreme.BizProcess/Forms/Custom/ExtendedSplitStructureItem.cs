@@ -20,7 +20,7 @@
 		/// <summary>
 		/// Номер группы
 		/// </summary>
-		public string Grp;
+		public string GrpId;
 		/// <summary>
 		/// Индекс
 		/// </summary>
@@ -41,5 +41,9 @@
 		/// Упрощенное имя контрагента
 		/// </summary>
 		public string SimpleName;
+		/// <summary>
+		/// Имя группы
+		/// </summary>
+		public string GrpName;
 	}
 }

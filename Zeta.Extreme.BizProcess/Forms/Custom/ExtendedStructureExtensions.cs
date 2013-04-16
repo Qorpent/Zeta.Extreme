@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace Zeta.Extreme.BizProcess.Forms.Custom
@@ -93,7 +94,7 @@ namespace Zeta.Extreme.BizProcess.Forms.Custom
 						{
 							if (field.Key == "id")
 							{
-								subresult.AltObj = reader.GetInt32(field.Value);
+								subresult.AltObj = Convert.ToInt32(reader[field.Value]);
 							}
 							else if (field.Key == "name")
 							{
@@ -103,9 +104,12 @@ namespace Zeta.Extreme.BizProcess.Forms.Custom
 							{
 								subresult.BillCode = reader.GetString(field.Value);
 							}
-							else if (field.Key == "grp")
+							else if (field.Key == "grp") {
+								subresult.GrpId = reader.GetString(field.Value);
+							}
+							else if (field.Key == "grpname")
 							{
-								subresult.Grp = reader.GetString(field.Value);
+								subresult.GrpName = reader.GetString(field.Value);
 							}
 							else if (field.Key == "idx")
 							{
