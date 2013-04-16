@@ -30,6 +30,7 @@ using Qorpent.Applications;
 using Qorpent.Events;
 using Qorpent.IoC;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.Themas;
@@ -135,6 +136,8 @@ namespace Zeta.Extreme.FrontEnd {
             } else {
                 _doNotRun = true;
             }
+
+            CreateFormSessionContainer();
         }
 
         /// <summary>
@@ -467,6 +470,19 @@ namespace Zeta.Extreme.FrontEnd {
                     ObjCache.Start();
                 }
             );
+        }
+
+        /// <summary>
+        ///     Creates a container with an IFormSession instance
+        /// </summary>
+        private void CreateFormSessionContainer() {
+            var formSessionComponent = Application.Container.EmptyComponent();
+
+            formSessionComponent.ServiceType = typeof(IFormSession);
+            formSessionComponent.ImplementationType = typeof(FormSession);
+            formSessionComponent.Lifestyle = Lifestyle.Transient;
+
+            Application.Container.Register(formSessionComponent);
         }
     }
 }
