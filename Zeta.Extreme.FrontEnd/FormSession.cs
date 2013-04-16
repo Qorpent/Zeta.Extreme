@@ -466,7 +466,7 @@ namespace Zeta.Extreme.FrontEnd {
 						 name = r.Name,
 						 idx = ri.Idx,
 						 iscaption = r.IsMarkSeted("0CAPTION"),
-						 isprimary = r.GetIsPrimary(),
+						 isprimary = ri.GetIsPrimary() ,
 						 level = ri.Level,
 						 number = r.OuterCode,
 						 measure = NeedMeasure ? r.ResolveMeasure() : "",
@@ -657,12 +657,7 @@ namespace Zeta.Extreme.FrontEnd {
 			InitializeColset();
 			primarycols = cols.Where(_ => _._.Editable && !_._.IsFormula).ToArray();
 			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
-			primaryrows = rows.Where(_ => 
-				!_.Native.IsFormula && 
-				0 == _.Native.Children.Count && 
-				!_.Native.IsMarkSeted("0ISCAPTION") &&
-				!_.SumObj &&
-				string.IsNullOrWhiteSpace(_.AltObjFilter)).ToArray();
+			primaryrows = rows.Where(_ => _.GetIsPrimary()).ToArray();
 		}
 
 		private void InitializeColset() {

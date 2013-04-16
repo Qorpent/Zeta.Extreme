@@ -1,3 +1,4 @@
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.FrontEnd {
@@ -33,5 +34,17 @@ namespace Zeta.Extreme.FrontEnd {
 		/// Дополнительный фильтр на ID контрагентов
 		/// </summary>
 		public string AltObjFilter;
+
+
+		/// <summary>
+		/// Дополнительный расчет первичности строки
+		/// </summary>
+		/// <returns></returns>
+		public bool GetIsPrimary() {
+			if (!Native.GetIsPrimary()) return false;
+			if (SumObj) return false;
+			if (!string.IsNullOrWhiteSpace(AltObjFilter)) return false;
+			return true;
+		}
 	}
 }
