@@ -20,6 +20,8 @@ using System;
 using System.Web;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
+using Zeta.Extreme.BizProcess.Forms;
+using Zeta.Extreme.Form.DbfsAttachmentSource;
 
 namespace Zeta.Extreme.FrontEnd.Actions.Attachments {
 	///<summary>
@@ -51,7 +53,16 @@ namespace Zeta.Extreme.FrontEnd.Actions.Attachments {
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
+			try {
+				var dbfsAttacher = new DbfsAttachmentStorage();
+				var formattacher = new FormAttachmentSource {InternalStorage = dbfsAttacher};
+				formattacher.AttachHttpFile(MySession, _datafile, filename, type, uid);
+			}
+			catch {
+				
+			}
 			return MySession.AttachFile(_datafile, filename, type, uid);
+
 		}
 
 		private HttpPostedFileBase _datafile;
