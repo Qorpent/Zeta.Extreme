@@ -58,6 +58,14 @@
     $(document).on('click.dropdown.data-api', '.zefscolmanager li', function (e) {
         e.stopPropagation();
     });
+
+    // Hotkey для скрытия нулевых строк
+    $(document).on('keydown', function(e) {
+        if (e.keyCode == 49 && e.altKey) {
+            input.trigger('click');
+            e.stopPropagation();
+        }
+    });
     $(window.zefs).on(window.zefs.handlers.on_structureload, function() {
         $.each(($('table.data>thead>tr').first()).children(), function(i,col) {
             var li = $('<li/>');

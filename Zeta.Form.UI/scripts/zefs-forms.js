@@ -283,28 +283,26 @@
 
     Zefs.prototype.rightCell = function() {
         var $cell = this.getActiveCell();
-        var $filter = this.options.jumpNoneditable ? '.editable' : '';
-        if ($cell.next($filter).length != 0) this.activateCell($cell.next($filter));
+        if ($cell.nextAll('.editable:visible:first').length != 0) this.activateCell($cell.nextAll('.editable:visible:first'));
         else {
-            if ($filter != '') this.nextCell();
+            this.nextCell();
         }
     };
 
     Zefs.prototype.leftCell = function() {
         var $cell = this.getActiveCell();
-        var $filter = this.options.jumpNoneditable ? '.editable' : '';
-        if ($cell.prev($filter).length != 0) this.activateCell($cell.prev($filter));
+        if ($cell.prevAll('.editable:visible:first').length != 0) this.activateCell($cell.prevAll('.editable:visible:first'));
         else {
-            if ($filter != '') this.prevCell();
+            this.prevCell();
         }
     };
 
     Zefs.prototype.downCell = function() {
         var $cell = this.getActiveCell();
         var $colindex = this.getColIndex($cell);
-        var $next = $cell.parent().next();
+        var $next = $cell.parent().nextAll(':visible:first');
         while (!$($next.children()[$colindex]).hasClass("editable")) {
-            if ($next.next().length != 0) $next = $next.next();
+            if ($next.nextAll(':visible:first').length != 0) $next = $next.nextAll(':visible:first');
             else return;
         }
         this.activateCell($next.children()[$colindex]);
@@ -313,9 +311,9 @@
     Zefs.prototype.upCell = function() {
         var $cell = this.getActiveCell();
         var $colindex = this.getColIndex($cell);
-        var $prev = $cell.parent().prev();
+        var $prev = $cell.parent().prevAll(':visible:first');
         while (!$($prev.children()[$colindex]).hasClass("editable")) {
-            if ($prev.prev().length != 0) $prev = $prev.prev();
+            if ($prev.prevAll(':visible:first').length != 0) $prev = $prev.prevAll(':visible:first');
             else return;
         }
         this.activateCell($prev.children()[$colindex]);
@@ -431,7 +429,7 @@
                     }
                     break;
                 default :
-                    if (!printable || e.ctrlKey) return;
+                    if (!printable || e.ctrlKey || e.altKey) return;
                     if (!$cell.hasClass('editing')) {
                         this.inputCell("replace");
                     }
