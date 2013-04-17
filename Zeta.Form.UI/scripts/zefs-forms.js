@@ -291,7 +291,11 @@
 
     Zefs.prototype.rightCell = function() {
         var $cell = this.getActiveCell();
-        if ($cell.nextAll('.editable:visible:first').length != 0) this.activateCell($cell.nextAll('.editable:visible:first'));
+        var c = $cell.nextAll('.editable:visible:first');
+        if (c.length != 0) {
+            this.activateCell(c);
+            c = null;
+        }
         else {
             this.nextCell();
         }
@@ -299,7 +303,11 @@
 
     Zefs.prototype.leftCell = function() {
         var $cell = this.getActiveCell();
-        if ($cell.prevAll('.editable:visible:first').length != 0) this.activateCell($cell.prevAll('.editable:visible:first'));
+        var c = $cell.prevAll('.editable:visible:first');
+        if (c.length != 0) {
+            this.activateCell(c);
+            c = null;
+        }
         else {
             this.prevCell();
         }
@@ -310,7 +318,8 @@
         var $colindex = this.getColIndex($cell);
         var $next = $cell.parent().nextAll(':visible:first');
         while (!$($next.children()[$colindex]).hasClass("editable")) {
-            if ($next.nextAll(':visible:first').length != 0) $next = $next.nextAll(':visible:first');
+            var c = $next.nextAll(':visible:first');
+            if (c.length != 0) $next = c;
             else return;
         }
         this.activateCell($next.children()[$colindex]);
@@ -321,7 +330,8 @@
         var $colindex = this.getColIndex($cell);
         var $prev = $cell.parent().prevAll(':visible:first');
         while (!$($prev.children()[$colindex]).hasClass("editable")) {
-            if ($prev.prevAll(':visible:first').length != 0) $prev = $prev.prevAll(':visible:first');
+            var c = $prev.prevAll(':visible:first');
+            if (c.length != 0) $prev = c;
             else return;
         }
         this.activateCell($prev.children()[$colindex]);
@@ -330,9 +340,12 @@
     Zefs.prototype.upFirstCell = function() {
         var $cell = this.getActiveCell();
         var $colindex = this.getColIndex($cell);
-        var $current = $("table.zefsform tbody>tr").first();
+        var $current = $(".zefsform tbody tr:visible").first();
         while (!$($current.children()[$colindex]).hasClass("editable")) {
-            if ($current.next().length != 0) $current = $current.next();
+            var c = $current.nextAll(':visible:first');
+            if (c.length != 0) {
+                $current = c;
+            }
             else return;
         }
         this.activateCell($current.children()[$colindex]);
@@ -341,9 +354,12 @@
     Zefs.prototype.downLastCell = function() {
         var $cell = this.getActiveCell();
         var $colindex = this.getColIndex($cell);
-        var $current = $("table.zefsform tbody>tr").last();
+        var $current = $(".zefsform tbody tr:visible").last();
         while (!$($current.children()[$colindex]).hasClass("editable")) {
-            if ($current.prev().length != 0) $current = $current.prev();
+            var c = $current.prevAll(':visible:first');
+            if (c.length != 0) {
+                $current = c;
+            }
             else return;
         }
         this.activateCell($current.children()[$colindex]);
