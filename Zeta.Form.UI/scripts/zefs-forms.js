@@ -265,14 +265,22 @@
 
     Zefs.prototype.nextCell = function() {
         var $cell = this.getActiveCell();
-        var $index = -1;
-        if ($cell.length != 0) {
-            $index = this.inputs.index($cell);
-            if ($index == -1) {
-                $index = this.inputs.index($cell.nextAll('.editable').first()) - 1;
+        var $next = $cell.nextAll('.editable:visible:first');
+        if ($next.length != 0) {
+            this.activateCell($next);
+        } else {
+            var $index = this.inputs.index($cell) + 1;
+            while (this.inputs.length > $index) {
+                $next = $(this.inputs.get($index));
+                if ($next.is(':visible')) {
+                    this.activateCell($next);
+                    return;
+                } else {
+                    $index++;
+                }
             }
+            return;
         }
-        this.activateCell(this.inputs[($index + 1 == this.inputs.length) ? 0 : $index + 1]);
     };
 
     Zefs.prototype.prevCell = function() {
