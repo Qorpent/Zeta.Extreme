@@ -96,8 +96,11 @@
         if (formopts == null || $.isEmptyObject(formopts)) {
             root.formoptionsstorage.AddOrUpdate({ hidenullrows: false });
         } else {
-            if (formopts.hidenullrows) {
+            if (formopts.hidenullrows && input.is(':checked')) {
                 input.trigger("click");
+            } else {
+                ShowNullRows();
+                HideNullRows();
             }
         }
         window.zefs.restorelaststate();
