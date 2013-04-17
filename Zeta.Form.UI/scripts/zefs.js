@@ -63,6 +63,9 @@ root.init = root.init ||
         params = params || {};
         params = $.extend(api.getParameters(), params);
         blank = blank || false;
+        if (params.form.search('.in') == -1) {
+            params.form += api.getParameters()["form"].match(/[A|B]\.in/)[0];
+        }
         var loc = document.location.protocol + "//" + document.location.host + siteroot + "zefs-test.html#" +
             "form=" + params.form + "|year=" + params.year + "|period=" + params.period + "|obj=" + params.obj;
         if (!blank) {
