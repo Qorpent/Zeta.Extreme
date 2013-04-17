@@ -92,14 +92,14 @@
     // Эта функция пока не нужна, так как шапка сейчас фиксируется по-умолчанию
     Zefs.prototype.isHeadOutScreen = function($e) {
         if ($e.offset().top - window.pageYOffset - this.options.fixHeaderX < 0) return "top";
-        else if (window.innerHeight + window.pageYOffset - $e.offset().top - $e.outerHeight() < 0) return "bottom"
+        else if (window.innerHeight + window.pageYOffset - $e.offset().top - $e.outerHeight() < 0) return "bottom";
         return "none";
     };
 
     // Пока эти две функции отличаются только тем, что учитывают высоту хидера
     Zefs.prototype.isCellOutScreen = function($e) {
         if ($e.offset().top - window.pageYOffset - this.options.fixHeaderX - this.header.height() < 0) return "top";
-        else if (window.innerHeight + window.pageYOffset - $e.offset().top - $e.outerHeight() < 0) return "bottom"
+        else if (window.innerHeight + window.pageYOffset - $e.offset().top - $e.outerHeight() < 0) return "bottom";
         return "none";
     };
 
