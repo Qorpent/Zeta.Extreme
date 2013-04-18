@@ -103,5 +103,12 @@ namespace Zeta.Extreme.Model.Querying {
 				}
 			}
 		}
+		/// <summary>
+		/// Создает описатель ссылки
+		/// </summary>
+		/// <returns></returns>
+		public static IReferenceHandler CreateReference() {
+			return RealFactory.CreateReference();
+		}
 	}
 }

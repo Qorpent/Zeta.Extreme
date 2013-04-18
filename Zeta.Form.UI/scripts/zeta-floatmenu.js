@@ -25,7 +25,7 @@
                 this.menu.css({"top": "", "left": ""});
                 $(document).trigger('click.dropdown.data-api');
             } else {
-                this.menu.draggable();
+                this.menu.draggable({ containment: "window"});
             }
         }, this));
         this.menu.prepend(this.floatbutton);

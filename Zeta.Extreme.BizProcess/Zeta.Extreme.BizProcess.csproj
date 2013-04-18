@@ -16,7 +16,11 @@
     <Compile Include="Forms\AttachedFileType.cs" />
     <Compile Include="Forms\Attachment.cs" />
     <Compile Include="Forms\BufferedAttachmentStorageBase.cs" />
+    <Compile Include="Forms\Custom\ExtendedSplitStructureItem.cs" />
     <Compile Include="Forms\DataCollectionStream.cs" />
+    <Compile Include="Forms\Custom\ExtendedStructureExtensions.cs" />
+    <Compile Include="Forms\Custom\ExtendedStructureItem.cs" />
+    <Compile Include="Forms\Custom\ExtensionSqlBasedStarter.cs" />
     <Compile Include="Forms\FormAttachment.cs" />
     <Compile Include="Forms\FormAttachmentSource.cs" />
     <Compile Include="Forms\FormChatItem.cs" />
@@ -70,6 +74,7 @@
     <Compile Include="Themas\TypedParameter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>

@@ -9,9 +9,9 @@
     var menu = $('<ul class="dropdown-menu"/>');
     list.append(b,menu);
     b.tooltip({placement: 'bottom'});
-    var ChangeForm = function(a) {
-        location.hash = location.hash.replace(/(form=)(\w+)(\w\.in)/,'$1' + $(a).attr("formcode") + '$3');
-        location.reload();
+    var ChangeForm = function(a, blank) {
+        blank = blank || false;
+        zefs.myform.openform({form: $(a).attr("formcode")}, blank);
     };
     var GetReadableGroupName = function(code) {
         switch (code) {
@@ -48,6 +48,7 @@
             case "energogroup"      : return "Энергетика";
             case "testgroup"        : return "Тестовые";
             case "calcgroup"        : return "Калькуляции";
+            case "ras_dk"           : return "Дебиторы и кредиторы";
             default                 : return "";
         }
     };
@@ -67,21 +68,21 @@
             }
             var a = $('<a/>').text(f.Name).attr("formcode", f.Code);
             var li = $('<li/>').append(a);
-            if (!!f.Parent) {
+            if (!!f.Parent && parentgroupname != "") {
                 var parent = menu.find('ul[code="' + f.Parent + '"]');
                 if (parent.length == 0) {
                     parent = $('<ul class="dropdown-menu"/>').attr("code", f.Parent);
-                    if (parentgroupname != ""){
-                        ul.append($('<li class="dropdown-submenu"/>')
-                            .append($('<a/>').text(parentgroupname), parent));
-                    }
+                    ul.append($('<li class="dropdown-submenu"/>')
+                        .append($('<a/>').text(parentgroupname), parent));
                 }
                 parent.append(li);
                 if (f.Parent == f.Code) parent.append($('<li class="divider"/>'));
             } else {
                 ul.append(li);
             }
-            a.click(function() { ChangeForm(this); });
+            a.click(function(e) {{
+                ChangeForm(this, e.ctrlKey);
+            }});
         });
         $('a[formcode="' + current.replace(/[A|B].in/, "") + '"]').parents('li').addClass("current");
     });

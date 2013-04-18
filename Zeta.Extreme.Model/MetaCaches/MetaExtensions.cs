@@ -24,7 +24,13 @@ namespace Zeta.Extreme.Model.MetaCaches {
 				if (a.StartsWith("div_")) {
 					var divcode = a.Substring(4);
 					if (obj.Division != null && obj.Division.Code == divcode) return true;
-				}else if (a.StartsWith("grp_")) {
+				}
+				else if (a.StartsWith("obj_"))
+				{
+					var objids = a.Substring(4);
+					if (obj.Id.ToString() == objids) return true;
+				}
+				else if (a.StartsWith("grp_")) {
 					var grpcode = a.Substring(4);
 					if (!string.IsNullOrWhiteSpace(obj.GroupCache) && obj.GroupCache.Contains("/" + grpcode + "/")) return true;
 				}else if (obj.Id.ToString() == a) {

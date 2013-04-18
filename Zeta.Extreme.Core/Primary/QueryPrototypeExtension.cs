@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Querying;
 
@@ -35,12 +36,15 @@ namespace Zeta.Extreme.Primary
 
 			if (query.Obj.IsForObj && result.UseSum) {
 				if (IsDetailAggregate(query)) {
-					result.RequireDetails = true;
+					result.RequireDetails = false;
 					result.PreserveDetails = false;
 				}
 				
 				return;
 			} 
+			if (TagHelper.Value(query.Row.Tag, "allowdetails").ToBool()) {
+				result.PreserveDetails = false;
+			}
 		}
 
 		private static void CheckAggregateEvalUsage(IQuery query,ref PrimaryQueryPrototype result) {

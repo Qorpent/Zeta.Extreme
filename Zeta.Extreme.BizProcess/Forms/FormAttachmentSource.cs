@@ -19,6 +19,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Qorpent.IoC;
 using Zeta.Extreme.Model.MetaCaches;
 
 namespace Zeta.Extreme.BizProcess.Forms {
@@ -31,7 +32,8 @@ namespace Zeta.Extreme.BizProcess.Forms {
         /// <summary>
         /// 
         /// </summary>
-        public IAttachmentStorage InternalStorage  {
+        [Inject(Name = "attachment.source")]
+		public IAttachmentStorage InternalStorage  {
             get { return _storage; }
             set { _storage = value; }
         }

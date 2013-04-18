@@ -19,6 +19,49 @@ table.data {
     /*border: 2px solid #555;*/
     font-size: 10pt;
     margin: 0 20px 20px 20px;
+    table-layout: fixed;
+}
+
+table.data th.active {
+    box-shadow: inset 0 1px 0 #c28a30, inset 0 -1px 0 #c28a30;
+    color: black;
+    text-shadow: none;
+    background: -webkit-linear-gradient(top, #ffd359, #ffef71);
+    background: -moz-linear-gradient(top, #ffd359, #ffef71);
+}
+
+table.data tr.preactive td.number {
+    border-bottom-color: #c28a30;
+}
+
+table.data tr.active td.number {
+    border-color: #c28a30;
+    background: -webkit-linear-gradient(top, #ffd359, #ffef71);
+    background: -moz-linear-gradient(top, #ffd359, #ffef71);
+}
+
+
+table.data td.data.active {
+    /*background-color: #fafad2 !important;*/
+    display: block;
+    position: absolute;
+    border: 3px solid #000000;
+    margin-top: -4px;
+    margin-left: -4px;
+    cursor: text;
+    z-index: 900;
+}
+
+table.data td.data.active:after {
+    content: "";
+    display: block;
+    width: 6px;
+    height: 6px;
+    background-color: #000;
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    border: 1px solid #fff;
 }
 
 .data.errordata {
@@ -189,29 +232,6 @@ table.data td>input {
     -webkit-box-shadow: none !important;
 }
 
-table.data td.active {
-    background-color: #fafad2 !important;
-    display: block;
-    position: absolute !important;
-    border: 3px solid #000000 !important;
-    margin-top: -4px;
-    margin-left: -4px;
-    cursor: text;
-    z-index: 900;
-}
-
-table.data td.active:after {
-    content: "";
-    display: block;
-    width: 6px;
-    height: 6px;
-    background-color: #000;
-    position: absolute;
-    bottom: -6px;
-    right: -6px;
-    border: 1px solid #fff;
-}
-
 tr[level="0"] td.name {
     font-size : 10pt;
 }
@@ -259,6 +279,18 @@ tr[level="4"].haschild td.name {
     background-position: 105px;
 }
 
+tr[level="5"].haschild td.name {
+    background-position: 135px;
+}
+
+tr[level="6"].haschild td.name {
+    background-position: 165px;
+}
+
+tr[level="7"].haschild td.name {
+    background-position: 165px;
+}
+
 tr[level="1"] td.name {
 	padding-left : 30px;
 	font-size : 10pt;
@@ -283,20 +315,24 @@ table.data tr[level="5"] td.name {
 	padding-left : 150px;
 }
 
+table.data tr[level="6"] td.name {
+	padding-left : 180px;
+}
+
+table.data tr[level="7"] td.name {
+	padding-left : 180px;
+}
+
 table.data td.number {
     text-align: right;
 }
 
-th.active {
-    box-shadow: inset 0 1px 0 #c28a30, inset 0 -1px 0 #c28a30;
-    color: black !important;
-    text-shadow: none !important;
-    background: -webkit-linear-gradient(top, #ffd359, #ffef71) !important;
-    background: -moz-linear-gradient(top, #ffd359, #ffef71) !important;
-}
-
-tr.active td.number {
-    border-color: #c28a30;
-    background: -webkit-linear-gradient(top, #ffd359, #ffef71) !important;
-    background: -moz-linear-gradient(top, #ffd359, #ffef71) !important;
+.zefsbackdrop {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    opacity: 0.5;
+    z-index: 901;
 }
