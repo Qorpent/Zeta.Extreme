@@ -279,6 +279,18 @@ tr[level="4"].haschild td.name {
     background-position: 105px;
 }
 
+tr[level="5"].haschild td.name {
+    background-position: 135px;
+}
+
+tr[level="6"].haschild td.name {
+    background-position: 165px;
+}
+
+tr[level="7"].haschild td.name {
+    background-position: 165px;
+}
+
 tr[level="1"] td.name {
 	padding-left : 30px;
 	font-size : 10pt;
@@ -301,6 +313,14 @@ table.data tr[level="4"] td.name {
 
 table.data tr[level="5"] td.name {
 	padding-left : 150px;
+}
+
+table.data tr[level="6"] td.name {
+	padding-left : 180px;
+}
+
+table.data tr[level="7"] td.name {
+	padding-left : 180px;
 }
 
 table.data td.number {
