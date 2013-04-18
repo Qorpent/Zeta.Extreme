@@ -36,6 +36,7 @@
     <Compile Include="Reports\ISavedReportParameter.cs" />
     <Compile Include="Reports\Parameter.cs" />
     <Compile Include="Reports\ParametersCollection.cs" />
+    <Compile Include="StateManagement\DefaultFormStateRepository.cs" />
     <Compile Include="StateManagement\DefaultStateManager.cs" />
     <Compile Include="StateManagement\FormStateOperationDenyReason.cs" />
     <Compile Include="StateManagement\FormStateType.cs" />

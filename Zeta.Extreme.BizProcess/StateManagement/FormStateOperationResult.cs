@@ -19,6 +19,8 @@
 
 #endregion
 
+using Zeta.Extreme.Model;
+
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	///      ласс, описывающий результат проверки возможности выставлени€ определенного
@@ -29,6 +31,11 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		///     ќбщий признак возможности установки статуса
 		/// </summary>
 		public bool Allow { get; set; }
+
+		/// <summary>
+		/// ѕрисоединенна€ запись о статусе
+		/// </summary>
+		public FormState AttachedFormState { get; set; }
 
 		/// <summary>
 		///     ѕричины запрета установки статуса

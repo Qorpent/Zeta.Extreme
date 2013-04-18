@@ -43,5 +43,20 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		///     Принята (на вырост)
 		/// </summary>
 		Accepted = 3,
+
+		/// <summary>
+		/// Зарезервированный статус
+		/// </summary>
+		Reserved1 = 4,
+
+		/// <summary>
+		/// Зарезервированный статус
+		/// </summary>
+		
+		Reserved2 = 5,
+		/// <summary>
+		/// Зарезервированный статус
+		/// </summary>
+		Reserved3 = 6
 	}
 }

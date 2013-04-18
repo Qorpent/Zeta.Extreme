@@ -19,8 +19,9 @@
 
 #endregion
 
+using System;
 using System.Security.Principal;
-using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.Model;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
@@ -34,7 +35,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <param name="form"></param>
 		/// <returns>
 		/// </returns>
-		Form GetFormRecord(IInputTemplate form);
+		Form GetFormRecord(IFormSession form);
 
 		/// <summary>
 		///     Возвращает историю статусов для формы
@@ -42,7 +43,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <param name="form"></param>
 		/// <returns>
 		/// </returns>
-		FormState[] GetFormStateHistory(Form form);
+		FormState[] GetFormStateHistory(IFormSession form);
 
 
 		/// <summary>
@@ -51,14 +52,16 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <param name="form"></param>
 		/// <returns>
 		/// </returns>
-		FormState GetLastFormState(Form form);
+		FormState GetLastFormState(IFormSession form);
 
 		/// <summary>
 		///     Устанавливает новый статус для формы
 		/// </summary>
-		/// <param name="targetForm"></param>
+		/// <param name="form"></param>
 		/// <param name="stateType"></param>
+		/// <param name="parentId"></param>
 		/// <param name="principal">Учетная запись пользователя</param>
-		void SetState(Form targetForm, FormStateType stateType, IPrincipal principal = null);
+		/// <param name="comment"></param>
+		FormState SetState(IFormSession form, FormStateType stateType, string comment, int parentId, IPrincipal principal = null);
 	}
 }

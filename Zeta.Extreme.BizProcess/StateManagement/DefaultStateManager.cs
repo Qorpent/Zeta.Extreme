@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Qorpent;
 using Qorpent.IoC;
-using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
@@ -74,12 +74,11 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <param name="newStateType"></param>
 		/// <returns>
 		/// </returns>
-		public FormStateOperationResult GetCanSet(IInputTemplate form, FormStateType newStateType) {
+		public FormStateOperationResult GetCanSet(IFormSession form, FormStateType newStateType) {
 			try {
 				CheckCheckersOrder();
 				var formRecord = Repository.GetFormRecord(form);
-				var lastState = Repository.GetLastFormState(formRecord);
-
+				var lastState = Repository.GetLastFormState(form);
 				foreach (var checker in StateAvailabilityCheckers) {
 					var checkerResult = checker.GetCanSet(this, form, formRecord, lastState, newStateType);
 					if (!checkerResult.Allow) {
@@ -101,14 +100,15 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// </summary>
 		/// <param name="form"></param>
 		/// <param name="newStateType"></param>
+		/// <param name="comment"></param>
+		/// <param name="parentId"></param>
 		/// <returns>
 		/// </returns>
-		public FormStateOperationResult SetState(IInputTemplate form, FormStateType newStateType) {
+		public FormStateOperationResult SetState(IFormSession form, FormStateType newStateType, string comment = "", int parentId = 0) {
 			try {
 				var canSetState = GetCanSet(form, newStateType);
 				if (canSetState.Allow) {
-					var formRecord = Repository.GetFormRecord(form);
-					Repository.SetState(formRecord, newStateType);
+					Repository.SetState(form, newStateType,comment,parentId);
 				}
 				return canSetState;
 			}

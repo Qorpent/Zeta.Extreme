@@ -20,6 +20,7 @@
 #endregion
 
 using Qorpent.Model;
+using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Model;
 
@@ -40,7 +41,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <returns>
 		/// </returns>
 		FormStateOperationResult GetCanSet(IFormStateManager manager,
-		                                   IInputTemplate form,
+		                                   IFormSession form,
 		                                   Form savedFormData,
 		                                   FormState savedLastState,
 		                                   FormStateType newState);

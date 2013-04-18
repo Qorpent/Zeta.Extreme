@@ -19,7 +19,7 @@
 
 #endregion
 
-using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
@@ -46,15 +46,17 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <param name="newStateType"></param>
 		/// <returns>
 		/// </returns>
-		FormStateOperationResult GetCanSet(IInputTemplate form, FormStateType newStateType);
+		FormStateOperationResult GetCanSet(IFormSession form, FormStateType newStateType);
 
 		/// <summary>
 		///     Устанавливает новый статус для формы
 		/// </summary>
 		/// <param name="form"></param>
 		/// <param name="newStateType"></param>
+		/// <param name="comment"></param>
+		/// <param name="parentId"></param>
 		/// <returns>
 		/// </returns>
-		FormStateOperationResult SetState(IInputTemplate form, FormStateType newStateType);
+		FormStateOperationResult SetState(IFormSession form, FormStateType newStateType, string comment="", int parentId = 0);
 	}
 }
