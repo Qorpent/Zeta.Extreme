@@ -1,4 +1,4 @@
-п»ї#region LICENSE
+#region LICENSE
 
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
@@ -15,22 +15,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: ILockPeriodMapper.cs
+// PROJECT ORIGIN: FormStateOperationDenyReason.cs
 
 #endregion
 
+using System;
+
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
-	///     РРЅС‚РµСЂС„РµР№СЃ РјР°РїРµСЂР° Р±Р»РѕРєРёСЂРѕРІРєРё РїРµСЂРёРѕРґРѕРІ
+	///     Описание причиныотказа
 	/// </summary>
-	public interface ILockPeriodMapper {
+	public class FormStateOperationDenyReason {
 		/// <summary>
-		///     РџРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє Р±Р»РѕРєРёСЂРѕРІР°РЅРЅС‹С… РїРµСЂРёРѕРґРѕРІ СЃ РєРѕРјР°РЅРґР°РјРё Р±Р»РѕРєРёСЂРѕРІРєРё
+		///     Тип причины отказа
 		/// </summary>
-		/// <param name="operation"></param>
-		/// <param name="givenperiod"></param>
-		/// <returns>
-		/// </returns>
-		int[] GetLockingPeriods(LockOperation operation, int givenperiod);
+		public FormStateOperationDenyReasonType Type { get; set; }
+
+		/// <summary>
+		///     Текстовое сообщение
+		/// </summary>
+		public string Message { get; set; }
+
+		/// <summary>
+		///     Объект исключения
+		/// </summary>
+		public Exception Error { get; set; }
+
+		/// <summary>
+		///     Обратная ссылка на объект проверки статуса
+		/// </summary>
+		public IFormStateAvailabilityChecker Checker { get; set; }
+
+
+		/// <summary>
+		///     Ссылка на унаследованный результат
+		/// </summary>
+		public FormStateOperationResult ParentResult { get; set; }
 	}
 }

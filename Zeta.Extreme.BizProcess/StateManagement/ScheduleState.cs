@@ -1,4 +1,5 @@
 ﻿#region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,22 +15,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.BizProcess/ScheduleState.cs
+// PROJECT ORIGIN: ScheduleState.cs
+
 #endregion
+
 using System;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
-	/// 	Статус относительно расписания формы
+	///     Статус относительно расписания формы
 	/// </summary>
 	public class ScheduleState {
 		/// <summary>
-		/// 	Целевая дата
+		///     Целевая дата
 		/// </summary>
 		public DateTime Date { get; set; }
 
 		/// <summary>
-		/// 	Тип соответствия расписанию
+		///     Тип соответствия расписанию
 		/// </summary>
 		public ScheduleOvertime Overtime { get; set; }
 	}

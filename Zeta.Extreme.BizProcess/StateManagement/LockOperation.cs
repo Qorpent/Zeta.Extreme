@@ -1,4 +1,5 @@
 ﻿#region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,30 +15,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.BizProcess/LockOperation.cs
+// PROJECT ORIGIN: LockOperation.cs
+
 #endregion
+
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
-	/// 	Тип операции блокировки
+	///     Тип операции блокировки
 	/// </summary>
 	public enum LockOperation {
 		/// <summary>
-		/// 	Нет
+		///     Нет
 		/// </summary>
 		None,
 
 		/// <summary>
-		/// 	Открыть
+		///     Открыть
 		/// </summary>
 		Open,
 
 		/// <summary>
-		/// 	Блокировать
+		///     Блокировать
 		/// </summary>
 		Block,
 
 		/// <summary>
-		/// 	Утвердить
+		///     Утвердить
 		/// </summary>
 		Underwrite
 	}

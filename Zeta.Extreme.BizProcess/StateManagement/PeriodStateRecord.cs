@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,45 +15,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.BizProcess/PeriodStateRecord.cs
+// PROJECT ORIGIN: PeriodStateRecord.cs
+
 #endregion
+
 using System;
 using Qorpent;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
-	/// 	Запись статуса периода
+	///     Запись статуса периода
 	/// </summary>
 	public sealed class PeriodStateRecord {
-		///<summary>
-		///	Создает стандартную запись
-		///</summary>
+		/// <summary>
+		///     Создает стандартную запись
+		/// </summary>
 		public PeriodStateRecord() {
 			DeadLine = QorpentConst.Date.Begin;
 		}
 
 		/// <summary>
-		/// 	Дедлайн
+		///     Дедлайн
 		/// </summary>
 		public DateTime DeadLine;
 
 		/// <summary>
-		/// 	Период
+		///     Период
 		/// </summary>
 		public int Period;
 
 		/// <summary>
-		/// 	Статус
+		///     Статус
 		/// </summary>
 		public bool State;
 
 		/// <summary>
-		/// 	Общий дедлайн
+		///     Общий дедлайн
 		/// </summary>
 		public DateTime UDeadLine;
 
 		/// <summary>
-		/// 	Год
+		///     Год
 		/// </summary>
 		public int Year;
 	}

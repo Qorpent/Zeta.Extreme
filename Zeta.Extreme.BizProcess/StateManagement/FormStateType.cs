@@ -1,4 +1,4 @@
-п»ї#region LICENSE
+#region LICENSE
 
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
@@ -15,22 +15,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: ILockPeriodMapper.cs
+// PROJECT ORIGIN: FormStateType.cs
 
 #endregion
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
-	///     РРЅС‚РµСЂС„РµР№СЃ РјР°РїРµСЂР° Р±Р»РѕРєРёСЂРѕРІРєРё РїРµСЂРёРѕРґРѕРІ
+	///     Статусы формы
 	/// </summary>
-	public interface ILockPeriodMapper {
+	public enum FormStateType {
 		/// <summary>
-		///     РџРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє Р±Р»РѕРєРёСЂРѕРІР°РЅРЅС‹С… РїРµСЂРёРѕРґРѕРІ СЃ РєРѕРјР°РЅРґР°РјРё Р±Р»РѕРєРёСЂРѕРІРєРё
+		///     Открыта
 		/// </summary>
-		/// <param name="operation"></param>
-		/// <param name="givenperiod"></param>
-		/// <returns>
-		/// </returns>
-		int[] GetLockingPeriods(LockOperation operation, int givenperiod);
+		Open = 0,
+
+		/// <summary>
+		///     Закрыта
+		/// </summary>
+		Closed = 1,
+
+		/// <summary>
+		///     Проверена
+		/// </summary>
+		Checked = 2,
+
+		/// <summary>
+		///     Принята (на вырост)
+		/// </summary>
+		Accepted = 3,
 	}
 }

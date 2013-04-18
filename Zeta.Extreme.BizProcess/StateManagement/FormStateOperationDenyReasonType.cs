@@ -15,44 +15,63 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: IPeriodStateManager.cs
+// PROJECT ORIGIN: FormStateOperationDenyReasonType.cs
 
 #endregion
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
-	///     Интерфейс менеджера статуса периодов
+	///     Тип причин для запрета установки статуса
 	/// </summary>
-	public interface IPeriodStateManager {
+	public enum FormStateOperationDenyReasonType {
 		/// <summary>
-		///     Система
+		///     Пользовательский тип
 		/// </summary>
-		string System { get; set; }
+		Custom = 0,
 
 		/// <summary>
-		///     БД
+		///     Программное исключение
 		/// </summary>
-		string Database { get; set; }
+		Exception = 1,
 
 		/// <summary>
-		///     Получить запись по году и периоду
+		///     Какая-то общаяошибка безопасности
 		/// </summary>
-		/// <param name="year"></param>
-		/// <param name="period"></param>
-		/// <returns>
-		/// </returns>
-		PeriodStateRecord Get(int year, int period);
+		GenericSecurity = 2,
 
 		/// <summary>
-		///     Обновить дедлайн
+		///     Недостаток требуемой роли
 		/// </summary>
-		/// <param name="record"></param>
-		void UpdateDeadline(PeriodStateRecord record);
+		InsufficientRole = 3,
 
 		/// <summary>
-		///     Обновить дедлайн по подписанию
+		///     Исходный статус формы не подходит
 		/// </summary>
-		/// <param name="record"></param>
-		void UpdateUDeadline(PeriodStateRecord record);
+		InvalidBaseState = 4,
+
+		/// <summary>
+		///     Проблема в контрольных точках
+		/// </summary>
+		ControlPoint = 5,
+
+		/// <summary>
+		///     Проблема в зависимостях от других форм
+		/// </summary>
+		Dependency = 6,
+
+		/// <summary>
+		///     Проблема в зависимости от "шляпы"
+		/// </summary>
+		FinalDependency = 7,
+
+		/// <summary>
+		///     Проблема в присоединенных файлах
+		/// </summary>
+		Files = 8,
+
+		/// <summary>
+		///     Проблема в каком-то унаследованном статусе
+		/// </summary>
+		Parent = 9,
 	}
 }

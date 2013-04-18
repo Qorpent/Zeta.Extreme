@@ -1,4 +1,5 @@
 ﻿#region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,23 +15,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.BizProcess/ScheduleOvertime.cs
+// PROJECT ORIGIN: ScheduleOvertime.cs
+
 #endregion
+
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
-	/// 	Уровень несоответствия расписанию
+	///     Уровень несоответствия расписанию
 	/// </summary>
 	public enum ScheduleOvertime {
 		/// <summary>
-		/// 	Не просрочено
+		///     Не просрочено
 		/// </summary>
 		None, //нет, не просрочено
 		/// <summary>
-		/// 	Наступил срок подачи
+		///     Наступил срок подачи
 		/// </summary>
 		Critical, //наступил срок подачи
 		/// <summary>
-		/// 	Просрочено
+		///     Просрочено
 		/// </summary>
 		Fail, // просрочено
 	}

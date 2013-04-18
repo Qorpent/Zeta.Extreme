@@ -1,4 +1,4 @@
-п»ї#region LICENSE
+#region LICENSE
 
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
@@ -15,23 +15,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: IScheduleChecker.cs
+// PROJECT ORIGIN: IFormStateAvailabilityChecker.cs
 
 #endregion
 
+using Qorpent.Model;
 using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Model;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
-	///     РРЅС‚РµСЂС„РµР№СЃ РєРѕРЅС‚СЂРѕР»СЏ СЂР°СЃРїРёСЃР°РЅРёР№
+	///     Точка расширения и основного функционала - объект проверки возможности
+	///     установки статуса
 	/// </summary>
-	public interface IScheduleChecker {
+	public interface IFormStateAvailabilityChecker : IWithIndex {
 		/// <summary>
-		///     РІС‹С‡РёСЃР»РµРЅРёРµ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёСЏ СЂР°СЃРїРёСЃР°РЅРёСЋ
+		///     Проверка возможности установки статуса
 		/// </summary>
-		/// <param name="template"></param>
+		/// <param name="manager">обратная ссылка на вызывающий менеджер</param>
+		/// <param name="form"></param>
+		/// <param name="savedFormData"></param>
+		/// <param name="savedLastState"></param>
+		/// <param name="newState"></param>
 		/// <returns>
 		/// </returns>
-		ScheduleState Evaluate(IInputTemplate template);
+		FormStateOperationResult GetCanSet(IFormStateManager manager,
+		                                   IInputTemplate form,
+		                                   Form savedFormData,
+		                                   FormState savedLastState,
+		                                   FormStateType newState);
 	}
 }

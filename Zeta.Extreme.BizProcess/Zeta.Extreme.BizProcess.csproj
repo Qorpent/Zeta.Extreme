@@ -36,6 +36,14 @@
     <Compile Include="Reports\ISavedReportParameter.cs" />
     <Compile Include="Reports\Parameter.cs" />
     <Compile Include="Reports\ParametersCollection.cs" />
+    <Compile Include="StateManagement\DefaultStateManager.cs" />
+    <Compile Include="StateManagement\FormStateOperationDenyReason.cs" />
+    <Compile Include="StateManagement\FormStateType.cs" />
+    <Compile Include="StateManagement\FormStateOperationDenyReasonType.cs" />
+    <Compile Include="StateManagement\FormStateOperationResult.cs" />
+    <Compile Include="StateManagement\IFormStateAvailabilityChecker.cs" />
+    <Compile Include="StateManagement\IFormStateManager.cs" />
+    <Compile Include="StateManagement\IFormStateRepository.cs" />
     <Compile Include="StateManagement\ILockPeriodMapper.cs" />
     <Compile Include="StateManagement\IPeriodStateManager.cs" />
     <Compile Include="StateManagement\IScheduleChecker.cs" />

@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,23 +15,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.BizProcess/IStateCheckInterceptor.cs
+// PROJECT ORIGIN: IStateCheckInterceptor.cs
+
 #endregion
+
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
-	/// 	Интерфейс перехватчика проверки статуса
+	///     Интерфейс перехватчика проверки статуса
 	/// </summary>
 	public interface IStateCheckInterceptor {
 		/// <summary>
-		/// 	Проверка статуса
+		///     Проверка статуса
 		/// </summary>
-		/// <param name="template"> </param>
-		/// <param name="obj"> </param>
-		/// <param name="detail"> </param>
-		/// <returns> </returns>
+		/// <param name="template"></param>
+		/// <param name="obj"></param>
+		/// <param name="detail"></param>
+		/// <returns>
+		/// </returns>
 		string GetState(IInputTemplate template, IZetaMainObject obj, IZetaDetailObject detail);
 	}
 }

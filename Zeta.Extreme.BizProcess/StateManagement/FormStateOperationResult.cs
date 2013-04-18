@@ -1,4 +1,4 @@
-п»ї#region LICENSE
+#region LICENSE
 
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
@@ -15,22 +15,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: ILockPeriodMapper.cs
+// PROJECT ORIGIN: FormStateOperationResult.cs
 
 #endregion
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
-	///     РРЅС‚РµСЂС„РµР№СЃ РјР°РїРµСЂР° Р±Р»РѕРєРёСЂРѕРІРєРё РїРµСЂРёРѕРґРѕРІ
+	///     Класс, описывающий результат проверки возможности выставления определенного
+	///     статуса целевой форме
 	/// </summary>
-	public interface ILockPeriodMapper {
+	public class FormStateOperationResult {
 		/// <summary>
-		///     РџРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє Р±Р»РѕРєРёСЂРѕРІР°РЅРЅС‹С… РїРµСЂРёРѕРґРѕРІ СЃ РєРѕРјР°РЅРґР°РјРё Р±Р»РѕРєРёСЂРѕРІРєРё
+		///     Общий признак возможности установки статуса
 		/// </summary>
-		/// <param name="operation"></param>
-		/// <param name="givenperiod"></param>
-		/// <returns>
-		/// </returns>
-		int[] GetLockingPeriods(LockOperation operation, int givenperiod);
+		public bool Allow { get; set; }
+
+		/// <summary>
+		///     Причины запрета установки статуса
+		/// </summary>
+		public FormStateOperationDenyReason Reason { get; set; }
 	}
 }
