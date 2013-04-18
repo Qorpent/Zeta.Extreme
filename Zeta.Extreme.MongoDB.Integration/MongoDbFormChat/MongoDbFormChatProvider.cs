@@ -34,8 +34,14 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// </returns>
 		public IEnumerable<FormChatItem> GetSessionItems(IFormSession session) {
 			SetupConnection();
-			var search = MongoDbFormChatSerializer.SessionToSearchDocument(session);
-			return Collection.Find(new QueryDocument(search)).Select(MongoDbFormChatSerializer.BsonToChatItem);
+			
+            return Collection.Find(
+                new QueryDocument(
+                    MongoDbFormChatSerializer.SessionToSearchDocument(session)    
+                )
+            ).Select(
+                MongoDbFormChatSerializer.BsonToChatItem
+            );
 		}
 
 		/// <summary>
