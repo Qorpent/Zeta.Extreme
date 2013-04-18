@@ -140,8 +140,6 @@ namespace Zeta.Extreme.FrontEnd {
             } else {
                 _doNotRun = true;
             }
-
-            //CreateFormSessionContainer();
         }
 
         /// <summary>
@@ -320,6 +318,10 @@ namespace Zeta.Extreme.FrontEnd {
             int period,
             bool initsavemode = false
         ) {
+            if (Application.Container.FindComponent(typeof (FormSession), null) == null) {
+                CreateFormSessionContainer();
+            }
+
 			lock (ReloadState) {
 				var usr = Application.Principal.CurrentUser.Identity.Name;
 				var existed = Sessions.FirstOrDefault(
