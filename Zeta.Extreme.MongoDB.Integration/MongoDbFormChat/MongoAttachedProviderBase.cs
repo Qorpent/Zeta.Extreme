@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 using Qorpent;
 
 namespace Zeta.Extreme.MongoDB.Integration {
@@ -8,6 +9,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
 	/// Provides core functionality for typical mongo-attached service
 	/// </summary>
 	public abstract class MongoAttachedProviderBase:ServiceBase {
+        /// <summary>
+        ///     Connector to MongoDB
+        /// </summary>
+	    protected MongoDbConnector Connector;
+
 		/// <summary>
 		/// </summary>
 		protected MongoAttachedProviderBase() {
@@ -44,13 +50,16 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <summary>
 		/// Reset connection
 		/// </summary>
-		public void SetupConnection()
-		{
-			DbSettings = new MongoDatabaseSettings();
-			var mongoClient = new MongoClient(ConnectionString);
-			var mongoServer = mongoClient.GetServer();
-			Database = mongoServer.GetDatabase(DatabaseName, DbSettings);
-			Collection = Database.GetCollection(CollectionName);
+		public void SetupConnection() {
+            Connector = new MongoDbConnector {
+                ConnectionString = ConnectionString,
+                DatabaseName = DatabaseName,
+                DatabaseSettings = new MongoDatabaseSettings(),
+                CollectionName = CollectionName
+            };
+
+		    Database = Connector.Database;
+		    Collection = Connector.Collection;
 		}
 	}
 }

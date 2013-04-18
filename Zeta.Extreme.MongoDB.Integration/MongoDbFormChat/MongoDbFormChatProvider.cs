@@ -46,10 +46,20 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <returns>
 		/// </returns>
 		public FormChatItem AddMessage(IFormSession session, string message) {
-			SetupConnection();
-			var item = new FormChatItem {Text = message};
-			var bson = MongoDbFormChatSerializer.ChatItemToBson(session, item);
-			Collection.Save(bson);
+            SetupConnection();
+
+			var item = new FormChatItem {
+			    Text = message
+			};
+
+
+			Connector.Collection.Save(
+                MongoDbFormChatSerializer.ChatItemToBson(
+                    session,
+                    item
+                )
+            );
+
 			return item;
 		}
 
@@ -84,18 +94,19 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		public void SetHaveRead(string user) {
 			SetupConnection();
 			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
-			var data = new Dictionary<string, object>
-				{
-					{"message_id", "ALL"},
-					{"user", user}
-				};
-			var query = new BsonDocument(data);
+
+			var query = new BsonDocument(
+                new Dictionary<string, object> {
+                    {"message_id", "ALL"},
+                    {"user", user}
+                }
+            );
 			var item = collection.FindOne(new QueryDocument(query));
 			if (null == item) {
 				item = query;
 			}
 			item["lastread"] = DateTime.Now;
-			collection.Save(item);
+            collection.Save(item);
 		}
 
 		/// <summary>
@@ -106,20 +117,25 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// </returns>
 		public DateTime GetLastRead(string user) {
 			SetupConnection();
-			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
-			var data = new Dictionary<string, object>
-				{
+			
+			var data = new Dictionary<string, object> {
 					{"message_id", "ALL"},
 					{"user", user}
-				};
+            };
+
 			var query = new BsonDocument(data);
-			var item = collection.FindOne(new QueryDocument(query));
+			var item = Connector.Collection.FindOne(
+                new QueryDocument(query)
+            );
+
 			if (null == item) {
 				return DateTime.MinValue;
 			}
+
 			if (!item.Contains("lastread")) {
 				return DateTime.MinValue;
 			}
+
 			return item["lastread"].ToLocalTime();
 		}
 
@@ -137,7 +153,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			var lastread = GetLastRead(user);
 			var query = GenerateFindAllMessagesQuery(user, lastread, objids, types,forms,  false);
 			query["user"] = new BsonDocument("$ne",user);
-			return Collection.Count(new QueryDocument(query));
+			return Connector.Collection.Count(new QueryDocument(query));
 		}
 
 		/// <summary>
@@ -152,47 +168,95 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// </returns>
 		public IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids = null, string[] types=null, string[] forms=null,bool includeArchived=false) {
 			SetupConnection();
-			var query = GenerateFindAllMessagesQuery(user, startdate, objids, types,forms, includeArchived);
+			var query = GenerateFindAllMessagesQuery(
+                user,
+                startdate,
+                objids,
+                types,
+                forms,
+                includeArchived
+            );
 			var mongoquery = new QueryDocument(query);
-			var result = Collection.Find(mongoquery).SetSortOrder(SortBy.Ascending("time")).Select(MongoDbFormChatSerializer.BsonToChatItem).ToArray();
+			var result = Connector.Collection.Find(
+                mongoquery
+            ).SetSortOrder(
+                SortBy.Ascending("time")
+            ).Select(
+                MongoDbFormChatSerializer.BsonToChatItem
+            ).ToArray();
+
 			foreach (var formChatItem in result) {
-				var colleciton = Database.GetCollection(CollectionName + "_usr");
-				var usrdata  = colleciton.FindOne(new QueryDocument(new BsonDocument(new Dictionary<string, object>
-					{
-						{"message_id", formChatItem.Id},
-						{"user", user}
-					})));
+				var colleciton = Connector.Database.GetCollection(CollectionName + "_usr");
+				var usrdata  = colleciton.FindOne(
+                    new QueryDocument(
+                        new BsonDocument(
+                            new Dictionary<string, object> {
+						        {"message_id", formChatItem.Id},
+						        {"user", user}
+					        }
+                        )
+                    )
+                );
+
 				if (null != usrdata) {
 					formChatItem.Userdata = usrdata.ToDictionary();
 				}
 					
 			}
-			return result;
 
+		    return result;
 		}
 
-		private BsonDocument GenerateFindAllMessagesQuery(string user, DateTime startdate, int[] objids, string[] types,string[] forms,
-		                                                  bool includeArchived) {
+		private BsonDocument GenerateFindAllMessagesQuery(
+            string user,
+            DateTime startdate,
+            int[] objids,
+            string[] types,
+            string[] forms,
+            bool includeArchived
+        ) {
 			if (startdate.Year <= 1990) {
 				startdate = DateTime.Now.AddDays(-30);
 			}
+
 			var query = new BsonDocument();
-			query["time"] = new BsonDocument("$gt", startdate);
+			query["time"] = new BsonDocument(
+                "$gt",
+                startdate
+            );
+
 			if (null != objids && 0 != objids.Length) {
-				query["obj"] = new BsonDocument("$in", new BsonArray(objids));
+				query["obj"] = new BsonDocument(
+                    "$in",
+                    new BsonArray(objids)
+                );
 			}
+
 			if (null != types && 0 != types.Length) {
-				query["type"] = new BsonDocument("$in", new BsonArray(types));
+				query["type"] = new BsonDocument(
+                    "$in",
+                    new BsonArray(types)
+                );
 			}
-			if (null != forms && 0 != forms.Length)
-			{
-				query["form"] = new BsonDocument("$in", new BsonArray(forms));
+
+			if (null != forms && 0 != forms.Length) {
+				query["form"] = new BsonDocument(
+                    "$in",
+                    new BsonArray(forms)
+                );
 			}
+
 			if (!includeArchived) {
 				query["$where"] = string.Format(
 					"!db.{0}_usr.findOne({{message_id:this._id, user:'{1}', archive:true}})",
-					CollectionName, user.Replace("\\","\\\\"));
+					CollectionName,
+                    user.Replace(
+                        "\\",
+                        "\\\\"
+                    )
+                );
 			}
+
 			return query;
 		}
 	}
