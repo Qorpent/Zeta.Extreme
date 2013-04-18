@@ -303,6 +303,14 @@ table.data tr[level="5"] td.name {
 	padding-left : 150px;
 }
 
+table.data tr[level="6"] td.name {
+	padding-left : 180px;
+}
+
+table.data tr[level="7"] td.name {
+	padding-left : 180px;
+}
+
 table.data td.number {
     text-align: right;
 }
