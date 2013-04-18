@@ -32,6 +32,7 @@ namespace Zeta.Extreme.BizProcess.Forms.Custom
 						}
 						var subresult = new ExtendedStructureItem();
 						foreach (var field in fields) {
+							if (reader.IsDBNull(field.Value)) continue;
 							if (field.Key == "detail") {
 								subresult.Detail = reader.GetInt32(field.Value);
 							}
@@ -61,6 +62,9 @@ namespace Zeta.Extreme.BizProcess.Forms.Custom
 				return result;
 			}
 		}
+
+
+		
 
 		/// <summary>
 		/// Обеспечивает чтение сведений из структуры по SQL запросу с заданными именами полей
@@ -92,6 +96,7 @@ namespace Zeta.Extreme.BizProcess.Forms.Custom
 						var subresult = new ExtendedSplitStructureItem();
 						foreach (var field in fields)
 						{
+							if(reader.IsDBNull(field.Value))continue;
 							if (field.Key == "id")
 							{
 								subresult.AltObj = Convert.ToInt32(reader[field.Value]);
