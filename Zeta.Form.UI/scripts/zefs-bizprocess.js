@@ -9,9 +9,9 @@
     var menu = $('<ul class="dropdown-menu"/>');
     list.append(b,menu);
     b.tooltip({placement: 'bottom'});
-    var ChangeForm = function(a) {
-        location.hash = location.hash.replace(/(form=)(\w+)(\w\.in)/,'$1' + $(a).attr("formcode") + '$3');
-        location.reload();
+    var ChangeForm = function(a, blank) {
+        blank = blank || false;
+        zefs.myform.openform({form: $(a).attr("formcode")}, blank);
     };
     var GetReadableGroupName = function(code) {
         switch (code) {
@@ -80,7 +80,9 @@
             } else {
                 ul.append(li);
             }
-            a.click(function() { ChangeForm(this); });
+            a.click(function(e) {{
+                ChangeForm(this, e.ctrlKey);
+            }});
         });
         $('a[formcode="' + current.replace(/[A|B].in/, "") + '"]').parents('li').addClass("current");
     });

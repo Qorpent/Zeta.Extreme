@@ -10,8 +10,7 @@
     list.append(b,menu);
     b.tooltip({placement: 'bottom'});
     var ChangeObject = function(e) {
-        location.hash = location.hash.replace(/obj=\d+/gi,"obj=" + $(e.target).attr("objcode"));
-        location.reload();
+        zefs.myform.openform({obj: $(e.target).attr("objcode")}, e.ctrlKey);
     };
     $(window.zefs).on(window.zefs.handlers.on_objectsload, function(e) {
         var divs = $.map(window.zefs.divs, function(d){ return d });

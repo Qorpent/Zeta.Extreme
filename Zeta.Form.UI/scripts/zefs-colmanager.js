@@ -8,16 +8,6 @@
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление колонками"/>')
         .html('<i class="icon-list"></i><span class="caret"/>');
     var menu = $('<ul class="dropdown-menu"/>');
-    var input = $('<input type="checkbox" checked/>');
-    input.click(function() {
-        if (input.is(":checked")) {
-            root.formoptionsstorage.AddOrUpdate({ hidenullrows: false });
-            ShowNullRows();
-        } else  {
-            root.formoptionsstorage.AddOrUpdate({ hidenullrows: true });
-            HideNullRows();
-        }
-    });
     list.append(b,menu);
     var HideColumn = function(n) {
         $('table.data col[idx=' + n + ']').hide();
@@ -39,22 +29,7 @@
         colvisiblelist.colsvisible[col] = visible;
         root.coloptionsstorage.AddOrUpdate(colvisiblelist);
     };
-    var HideNullRows = function() {
-        $.each($(".zefsform tbody tr"), function(i,tr) {
-            if ($(tr).hasClass("istitle")) return;
-            var isempty = true;
-            $.each($(tr).find("td.data"), function(j,td) {
-                if (isempty && ($(td).data("history") != "" && $(td).data("history") != "0")) {
-                    isempty = false;
-                }
-            });
-            if(isempty) $(tr).addClass("isempty");
-        });
-        $("tr.isempty").hide();
-    };
-    var ShowNullRows = function() {
-        $("tr.isempty").removeClass("isempty").show();
-    };
+
     $(document).on('click.dropdown.data-api', '.zefscolmanager li', function (e) {
         e.stopPropagation();
     });
@@ -76,38 +51,11 @@
             }
             menu.append(li.append($('<a/>').append($('<label/>').append(input, $(col).text()))));
         });
-        menu.append($('<li class="divider"/>'), $('<li/>').append($('<a/>').append($('<label/>').append(input, "Нулевые строки"))));
         var colopts = root.coloptionsstorage.Get();
         colopts.colsvisible = colopts.colsvisible || {};
         $.each(colopts.colsvisible, function(col, visible) {
             if (!visible) menu.find('input[value="' + col + '"]').first().trigger("click");
         });
-    });
-    $(window.zefs).on(window.zefs.handlers.on_dataload, function() {
-        var formopts = root.formoptionsstorage.Get();
-        if (formopts == null || $.isEmptyObject(formopts)) {
-            root.formoptionsstorage.AddOrUpdate({ hidenullrows: false });
-        } else {
-            if (formopts.hidenullrows) {
-                input.trigger("click");
-            }
-        }
-        window.zefs.restorelaststate();
-    });
-    $(window.zefs).on(window.zefs.handlers.on_dataload, function() {
-        var formopts = root.formoptionsstorage.Get();
-        var colopts = root.coloptionsstorage.Get();
-        colopts.colsvisible = colopts.colsvisible || {};
-        $.each(colopts.colsvisible, function(col, visible) {
-             if (!visible) menu.find('input[value="' + col + '"]').first().trigger("click");
-        });
-        if (formopts == null || $.isEmptyObject(formopts)) {
-            root.formoptionsstorage.AddOrUpdate({ hidenullrows: false });
-        } else {
-            if (formopts.hidenullrows) {
-                input.trigger("click");
-            }
-        }
     });
     b.tooltip({placement: 'bottom'});
     zefscolmanager.body = $('<div/>').append(list);
