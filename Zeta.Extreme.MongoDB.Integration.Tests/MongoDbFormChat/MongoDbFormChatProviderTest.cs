@@ -17,8 +17,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat {
 			_provider.DatabaseName = "test";
 			_provider.CollectionName = "test";
 			_provider.SetupConnection();
-			_provider.Collection.RemoveAll();
-			_provider.Database.GetCollection(_provider.CollectionName + "_usr").RemoveAll();
+			_provider.Connector.Collection.RemoveAll();
+            _provider.Connector.Database.GetCollection(_provider.CollectionName + "_usr").RemoveAll();
 		}
 
 		[Test]
@@ -27,7 +27,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat {
 			_provider.AddMessage(session, "test1");
 			_provider.AddMessage(session, "test2");
 			_provider.AddMessage(session, "test3");
-			var all = _provider.Collection.FindAll().ToArray();
+            var all = _provider.Connector.Collection.FindAll().ToArray();
 			Assert.AreEqual(3,all.Length);
 			Assert.True(all.All(_=>_["year"].AsInt32==2012));
 			Assert.True(all.All(_ => _["period"].AsInt32 == 1));
@@ -64,7 +64,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat {
 			var session = new FormSession(new InputTemplate { Code = "x" }, 2012, 1, new Obj { Id = 2 }) { Usr = "y" };
 			var message = _provider.AddMessage(session, "test1");
 			_provider.Archive(message.Id,"x");
-			var marks = _provider.Database.GetCollection(_provider.CollectionName + "_usr").FindAll().ToArray();
+            var marks = _provider.Connector.Database.GetCollection(_provider.CollectionName + "_usr").FindAll().ToArray();
 			Assert.AreEqual(1,marks.Length);
 			var mark = marks.First();
 			Assert.AreEqual(mark["message_id"].AsString,message.Id);
@@ -117,6 +117,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat {
 			
             _provider.Archive(message.Id,"x");
 			Assert.AreEqual(1, _provider.GetUpdatesCount("x"));
+
 			_provider.SetHaveRead("x");
 			Assert.AreEqual(0, _provider.GetUpdatesCount("x"));
 
@@ -140,9 +141,9 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat {
 			message2.ObjId = 4;
 			message3.Time  = new DateTime(2007, 1, 1);
 			message3.ObjId = 5;
-			_provider.Collection.Save(MongoDbFormChatSerializer.ChatItemToBson(null,message1));
-			_provider.Collection.Save(MongoDbFormChatSerializer.ChatItemToBson(null, message2));
-			_provider.Collection.Save(MongoDbFormChatSerializer.ChatItemToBson(null, message3));
+            _provider.Connector.Collection.Save(MongoDbFormChatSerializer.ChatItemToBson(null, message1));
+            _provider.Connector.Collection.Save(MongoDbFormChatSerializer.ChatItemToBson(null, message2));
+            _provider.Connector.Collection.Save(MongoDbFormChatSerializer.ChatItemToBson(null, message3));
 			_provider.Archive(message1.Id, "x");
 			_provider.Archive(message2.Id, "x");
 		}

@@ -14,9 +14,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson;
-using MongoDB.Driver;
+using MongoDB.Driver; 
 using MongoDB.Driver.Builders;
 using MongoDB.Driver.Wrappers;
+using Qorpent;
 using Qorpent.IoC;
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -25,8 +26,47 @@ namespace Zeta.Extreme.MongoDB.Integration {
 	///     Mongo - реализация чата формы
 	/// </summary>
 	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IFormChatProvider))]
-	public class MongoDbFormChatProvider : MongoAttachedProviderBase, IFormChatProvider {
+	public class MongoDbFormChatProvider : ServiceBase, IFormChatProvider {
+
+        /// <summary>
+        /// Conneciton string for mongo
+        /// </summary>
+        public string ConnectionString { get; set; }
+        /// <summary>
+        /// Database in mongo
+        /// </summary>
+        public string DatabaseName { get; set; }
+        /// <summary>
+        /// Collection in mongo
+        /// </summary>
+        public string CollectionName { get; set; }
+
+        /// <summary>
+        /// Reset connection
+        /// </summary>
+        public void SetupConnection() {
+            Connector = new MongoDbConnector {
+                ConnectionString = ConnectionString,
+                DatabaseName = DatabaseName,
+                DatabaseSettings = new MongoDatabaseSettings(),
+                CollectionName = CollectionName
+            };
+        }
+
+        /// <summary>
+        ///     Connector to MongoDB
+        /// </summary>
+	    public MongoDbConnector Connector;
+
 		/// <summary>
+		/// </summary>
+        public MongoDbFormChatProvider() {
+			ConnectionString = "mongodb://localhost:27017";
+			DatabaseName = "MongoAttachedProviderBase";
+			CollectionName = GetType().Name;
+		}
+
+        /// <summary>
 		///     Поиск связанных с сессией сообщений чата
 		/// </summary>
 		/// <param name="session"></param>
@@ -35,7 +75,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		public IEnumerable<FormChatItem> GetSessionItems(IFormSession session) {
 			SetupConnection();
 			
-            return Collection.Find(
+            return Connector.Collection.Find(
                 new QueryDocument(
                     MongoDbFormChatSerializer.SessionToSearchDocument(session)    
                 )
@@ -57,8 +97,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			var item = new FormChatItem {
 			    Text = message
 			};
-
-
+            
 			Connector.Collection.Save(
                 MongoDbFormChatSerializer.ChatItemToBson(
                     session,
@@ -94,7 +133,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <returns></returns>
         private MongoCollection<BsonDocument> SelectUsrCollection() {
-            return Database.GetCollection<BsonDocument>(
+            return Connector.Database.GetCollection<BsonDocument>(
                 CollectionName + "_usr"
             );
         }
@@ -121,11 +160,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <param name="user"></param>
 		public void SetHaveRead(string user) {
 			SetupConnection();
-			var collection = Database.GetCollection<BsonDocument>(
-                CollectionName + "_usr"
-            );
-
-		    var query = MakeSearchQueryForUsrCollection("ALL", user);
+            
+            var collection = SelectUsrCollection();
+            var query = MakeSearchQueryForUsrCollection("ALL", user);
 
 			var item = (
                 collection.FindOne(
@@ -133,7 +170,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		        )
             ) ?? query;
 
-		    item["lastread"] = DateTime.Now;
+            item.Set("lastread", DateTime.Now);
             collection.Save(item);
 		}
 
@@ -175,7 +212,14 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		public long GetUpdatesCount(string user,int[] objids = null, string[] types=null, string[] forms = null) {
 			SetupConnection();
 			var lastread = GetLastRead(user);
-			var query = GenerateFindAllMessagesQuery(user, lastread, objids, types,forms,  false);
+			var query = GenerateFindAllMessagesQuery(
+                user,
+                lastread,
+                objids,
+                types,
+                forms,
+                false
+            );
 			query["user"] = new BsonDocument("$ne",user);
 			return Connector.Collection.Count(new QueryDocument(query));
 		}
