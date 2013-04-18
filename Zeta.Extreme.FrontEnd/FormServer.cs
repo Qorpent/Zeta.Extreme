@@ -30,13 +30,9 @@ using Qorpent.Applications;
 using Qorpent.Events;
 using Qorpent.IoC;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Form;
-using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.Themas;
-using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
@@ -47,12 +43,50 @@ namespace Zeta.Extreme.FrontEnd {
 	/// 	Выполняет стартовую настройку сервера форм
 	/// </summary>
 	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IApplicationStartup), Name = "extreme.form.start")]
-    public class FormServer : ServiceBase, IFormServer, IApplicationStartup
-    {
-        private readonly bool _doNotRun;
-        private TimeSpan _formulaRegisterTime;
-        private int _index = -100;
-        private MD5 md5 = MD5.Create();
+	public class FormServer : ServiceBase, IApplicationStartup {
+		/// <summary>
+		/// 	Конструктор по умолчанию
+		/// </summary>
+		public FormServer() {
+			if (null == Default) {
+				Default = this;
+				Sessions = new List<FormSession>();
+			}
+			else {
+				_doNotRun = true;
+			}
+		}
+
+		private MD5 md5 = MD5.Create();
+		/// <summary>
+		/// Возвращает ETag для кэша, не привязанного к пользователю
+		/// </summary>
+		/// <returns></returns>
+		public string GetCommonETag() {
+			return Convert.ToBase64String(md5.ComputeHash(GetETagBase(null)));
+		}
+
+		private byte[] GetETagBase(object context) {
+			return Encoding.ASCII.GetBytes(LastRefreshTime.ToString()+context.ToStr());
+		}
+
+		/// <summary>
+		/// Возвращает стандартное время для LastModified
+		/// </summary>
+		/// <returns></returns>
+		public DateTime GetCommonLastModified() {
+			return LastRefreshTime;
+		}
+
+		/// <summary>
+		/// Возвращает ETag, связанный с пользователем
+		/// </summary>
+		/// <returns></returns>
+		public string GetUserETag(IPrincipal user = null) {
+			user = user ?? Application.Principal.CurrentUser;
+			return Convert.ToBase64String(md5.ComputeHash(GetETagBase(user.Identity.Name)));
+			
+		}
 
 		/// <summary>
 		/// 	Инстанция по умолчанию
@@ -64,11 +98,6 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public List<FormSession> Sessions { get; private set; }
 
-        /// <summary>
-        /// Объект синхронизации с перезагрузкой
-        /// </summary>
-        public readonly object ReloadState = new object();
-
 		/// <summary>
 		/// 	Проверяет общее состояние загрузки
 		/// </summary>
@@ -76,10 +105,6 @@ namespace Zeta.Extreme.FrontEnd {
 			get { return MetaCacheLoad.IsCompleted && CompileFormulas.IsCompleted && LoadThemas.IsCompleted; }
 		}
 
-        /// <summary>
-        /// Счетчик числа перезагрузок
-        /// </summary>
-        public int ReloadCount { get; set; }
 
 		/// <summary>
 		/// 	Корневая папка тем
@@ -116,11 +141,6 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public TaskWrapper MetaCacheLoad { get; private set; }
 
-        /// <summary>
-        /// Время  последней глобальной очистки
-        /// </summary>
-        protected DateTime LastRefreshTime { get; set; }
-
 
 		/// <summary>
 		/// 	An index of object
@@ -130,54 +150,6 @@ namespace Zeta.Extreme.FrontEnd {
 			set { _index = value; }
 		}
 
-        /// <summary>
-        /// 	Конструктор по умолчанию
-        /// </summary>
-        public FormServer() {
-            if (null == Default) {
-                Default = this;
-                Sessions = new List<FormSession>();
-            } else {
-                _doNotRun = true;
-            }
-        }
-
-        /// <summary>
-        /// Возвращает ETag для кэша, не привязанного к пользователю
-        /// </summary>
-        /// <returns></returns>
-        public string GetCommonETag() {
-            return Convert.ToBase64String(md5.ComputeHash(GetETagBase(null)));
-        }
-
-        private byte[] GetETagBase(object context) {
-            return Encoding.ASCII.GetBytes(LastRefreshTime.ToString() + context.ToStr());
-        }
-
-        /// <summary>
-        /// Возвращает стандартное время для LastModified
-        /// </summary>
-        /// <returns></returns>
-        public DateTime GetCommonLastModified() {
-            return LastRefreshTime;
-        }
-
-        /// <summary>
-        /// Возвращает ETag, связанный с пользователем
-        /// </summary>
-        /// <returns></returns>
-        public string GetUserETag(IPrincipal user = null) {
-            user = user ?? Application.Principal.CurrentUser;
-            
-            return Convert.ToBase64String(
-                md5.ComputeHash(
-                    GetETagBase(
-                        user.Identity.Name
-                    )
-                )
-            );
-        }
-
 		/// <summary>
 		/// 	Executes some startup logic against given application
 		/// </summary>
@@ -186,28 +158,13 @@ namespace Zeta.Extreme.FrontEnd {
 			if (_doNotRun) {
 				return; //singleton imitation
 			}
-
-            Debug.Assert(null != Application.Container.Get<IExtremeFactory>());
-
-			LoadThemas = new TaskWrapper(
-                GetLoadThemasTask()
-            );
-			
-            MetaCacheLoad = new TaskWrapper(
-                GetMetaCacheLoadTask()
-            );
-
-			CompileFormulas = new TaskWrapper(
-                GetCompileFormulasTask(),
-                MetaCacheLoad
-            );
-
-			ReadyToServeForms = new TaskWrapper(
-                GetCompleteAllTask(),
-                LoadThemas,
-                MetaCacheLoad,
-                CompileFormulas
-            );
+			var container = Application.Container;
+			Debug.Assert(null!=container.Get<IExtremeFactory>());
+			LoadThemas = new TaskWrapper(GetLoadThemasTask());
+			MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
+			CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
+			ReadyToServeForms = new TaskWrapper(GetCompleteAllTask(), LoadThemas, MetaCacheLoad,
+			                                    CompileFormulas);
 
 			MetaCacheLoad.Run();
 			CompileFormulas.Run();
@@ -216,13 +173,17 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private Task<bool> GetCompleteAllTask() {
-			return new Task<bool>(
-                () => {
+			return new Task<bool>(() =>
+				{
 					LastRefreshTime = DateTime.Now;
 					return true;
-				}
-            );
+				});
+
 		}
+		/// <summary>
+		/// Время  последней глобальной очистки
+		/// </summary>
+		protected DateTime LastRefreshTime { get; set; }
 
 		/// <summary>
 		/// 	Возвращает инстанцию класса для сохранения данных
@@ -240,66 +201,50 @@ namespace Zeta.Extreme.FrontEnd {
 		public object GetServerStateInfo() {
 			var formulas = ExtremeFactory.GetFormulaStorage();
 			object sessions = null;
-
 			if (0 != Sessions.Count) {
-				sessions = new {
-				    count = Sessions.Count,
-					users = Sessions.Select(_ => _.Usr).Distinct().Count(),
-					activations = Sessions.Select(_ => _.Activations).Sum(),
-					
-                    uniqueforms = Sessions.Select(
-                        _ => new {
-                            y = _.Year,
-                            p = _.Period,
-                            o = _.Object.Id,
-                            f = _.Template.Code
-                        }
-                    ).Distinct().Count(),
-				    
-                    totaldatatime = Sessions.Select(
-                        _ => _.OverallDataTime
-                    ).Aggregate(
-                        (a, x) => a + x
-                    ),
-					
-                    avgdatatime = TimeSpan.FromMilliseconds(
-                        Sessions.Select(
-                            _ => _.OverallDataTime
-                        ).Aggregate(
-                            (a, x) => a + x
-                        ).TotalMilliseconds / Sessions.Select(_ => _.DataCollectionRequests).Sum()),
+				sessions = new
+					{
+						count = Sessions.Count,
+						users = Sessions.Select(_ => _.Usr).Distinct().Count(),
+						activations = Sessions.Select(_ => _.Activations).Sum(),
+						uniqueforms =
+							Sessions.Select(_ => new {y = _.Year, p = _.Period, o = _.Object.Id, f = _.Template.Code}).Distinct().Count(),
+						totaldatatime = Sessions.Select(_ => _.OverallDataTime).Aggregate((a, x) => a + x),
+						avgdatatime =
+							TimeSpan.FromMilliseconds(Sessions.Select(_ => _.OverallDataTime).Aggregate((a, x) => a + x).TotalMilliseconds/
+							                          Sessions.Select(_ => _.DataCollectionRequests).Sum()),
 					};
 			}
-            
-            return new {
-                time = ReadyToServeForms.ExecuteTime,
-				lastrefresh = LastRefreshTime,
-				reloadcount = ReloadCount,
-				
-                meta = new {
-					status = MetaCacheLoad.Status,
-					error = MetaCacheLoad.Error.ToStr(),
-					rows = RowCache.Byid.Count,
-					time = MetaCacheLoad.ExecuteTime,
-				},
-				
-                formulas = new {
-                    status = CompileFormulas.Status,
-					taskerror = CompileFormulas.Error.ToStr(),
-					time = CompileFormulas.ExecuteTime,
-					compileerror = formulas.LastCompileError == null ? "" : formulas.LastCompileError.ToString(),
-                    formulacount = formulas.Count,
-					compiletime = _formulaRegisterTime
-			    },
-				
-                themas = new {
-					time = LoadThemas.ExecuteTime,
-					status = Default.LoadThemas.Status,
-					error = Default.LoadThemas.Error.ToStr(),
-				},
-				
-                sessions
-			};
+			return new
+				{
+					time = ReadyToServeForms.ExecuteTime,
+					lastrefresh = LastRefreshTime,
+					reloadcount = ReloadCount,
+					meta = new
+						{
+							status = MetaCacheLoad.Status,
+							error = MetaCacheLoad.Error.ToStr(),
+							rows = RowCache.Byid.Count,
+							time = MetaCacheLoad.ExecuteTime,
+						},
+					formulas = new
+						{
+							status = CompileFormulas.Status,
+							taskerror = CompileFormulas.Error.ToStr(),
+							time = CompileFormulas.ExecuteTime,
+							compileerror =
+								formulas.LastCompileError == null ? "" : formulas.LastCompileError.ToString(),
+							formulacount = formulas.Count,
+							compiletime = _formulaRegisterTime
+						},
+					themas = new
+						{
+							time = LoadThemas.ExecuteTime,
+							status = Default.LoadThemas.Status,
+							error = Default.LoadThemas.Error.ToStr(),
+						},
+					sessions
+				};
 		}
 
 		/// <summary>
@@ -311,29 +256,20 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="period"> </param>
 		/// <param name="initsavemode"> пред-открытие для сохранения </param>
 		/// <returns> </returns>
-		public FormSession Start(
-            IInputTemplate template,
-            IZetaMainObject obj,
-            int year,
-            int period,
-            bool initsavemode = false
-        ) {
-            if (Application.Container.FindComponent(typeof (FormSession), null) == null) {
+		public FormSession Start(IInputTemplate template, IZetaMainObject obj, int year, int period, bool initsavemode = false) {
+			if (Application.Container.FindComponent(typeof (FormSession), null) == null) {
                 CreateFormSessionContainer();
             }
 
+
 			lock (ReloadState) {
 				var usr = Application.Principal.CurrentUser.Identity.Name;
-				var existed = Sessions.FirstOrDefault(
-                    _ =>    _.Usr == usr &&
-                            _.Year == year &&
-                            _.Period == period &&
-                            _.Template.Code == template.Code &&
-                            _.Object.Id == obj.Id
-                );
-
+				var existed =
+					Sessions.FirstOrDefault(
+						_ =>
+						_.Usr == usr && _.Year == year && _.Period == period && _.Template.Code == template.Code && _.Object.Id == obj.Id);
 				if (null == existed) {
-                    var session = Application.Container.Get<FormSession>(
+					var session = Application.Container.Get<FormSession>(
                         null,
                         new object[] {
                             template,
@@ -342,148 +278,128 @@ namespace Zeta.Extreme.FrontEnd {
                             obj
                         }
                     );
-
-				    Sessions.Add(session);
+                    
+					session.FormServer = this;
+					session.InitSaveMode = initsavemode;
+					Sessions.Add(session);
 					session.Start();
-
 					return session;
 				}
-
-			    existed.Activations++;
+				else {
 					
-			    if (!initsavemode) {
-			        if (!existed.IsStarted) {
-			            existed.Start();
-			        } else {
-			            if (existed.IsFinished) {
-			                existed.Error = null;
-			                existed.RestartData();
-			            }
-			        }
-			    }
-
-			    return existed;
+					if (!initsavemode) {
+						if (!existed.IsStarted) {
+							existed.Start();
+						}
+						else {
+							if (existed.IsFinished) {
+								existed.Error = null;
+								existed.RestartData();
+							}
+						}
+					}
+					return existed;
+				}
 			}
 		}
 
 		/// <summary>
 		/// 	Перезагрузка системы
 		/// </summary>
-        public void Reload() {
-            lock (ReloadState) {
-                ((IResetable)(Application.Files).GetResolver()).Reset(null);
-                ((IResetable)Application.Roles).Reset(null);
-                Sessions.Clear();
+		public void Reload() {
+			lock (ReloadState) {
 
-                LoadThemas = new TaskWrapper(GetLoadThemasTask());
-                MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
-                
-                CompileFormulas = new TaskWrapper(
-                    GetCompileFormulasTask(),
-                    MetaCacheLoad
-                );
-                
-                ReadyToServeForms = new TaskWrapper(
-                    GetCompleteAllTask(),
-                    LoadThemas,
-                    MetaCacheLoad,
-                    CompileFormulas
-                );
-                
-                MetaCacheLoad.Run();
-                CompileFormulas.Run();
-                LoadThemas.Run();
-                ReadyToServeForms.Run();
-            }
-        }
+					((IResetable) Application.Files).Reset(null);
+;					((IResetable) Application.Roles).Reset(null);
+					Sessions.Clear();
+
+					LoadThemas = new TaskWrapper(GetLoadThemasTask());
+					MetaCacheLoad = new TaskWrapper(GetMetaCacheLoadTask());
+					CompileFormulas = new TaskWrapper(GetCompileFormulasTask(), MetaCacheLoad);
+					ReadyToServeForms = new TaskWrapper(GetCompleteAllTask(),
+					                                    LoadThemas,
+					                                    MetaCacheLoad,
+					                                    CompileFormulas);
+					MetaCacheLoad.Run();
+					CompileFormulas.Run();
+					LoadThemas.Run();
+					ReadyToServeForms.Run();
+				
+			
+			}
+		}
+		/// <summary>
+		/// Объект синхронизации с перезагрузкой
+		/// </summary>
+		public readonly object ReloadState = new object();
 
 		/// <summary>
-		///     Проверяет глобальный маркер очистки Zeta и
-		///     производит перезапуск системы ( в синхронном режиме)
+		/// Проверяет глобальный маркер очистки Zeta и производит перезапуск системы ( в синхронном режиме)
 		/// </summary>
-        public void CheckGlobalReload() {
-            lock (ReloadState) {
-                if (
-                    (null != ReadyToServeForms)
-                        &&
-                    (!ReadyToServeForms.IsCompleted)
-                ) {
-                    ReadyToServeForms.Wait();
-                }
-                
-                var lastrefresh = new NativeZetaReader().GetLastGlobalRefreshTime();
-                if (lastrefresh > LastRefreshTime) {
-                    Sessions.Clear(); //иначе будет устаревшая структура
-                    Reload();
-                    ReadyToServeForms.Wait();
-                    
-                    LastRefreshTime = lastrefresh;
-                    ReloadCount++;
-                }
-            }
-        }
-        
-        private Task GetCompileFormulasTask() {
-            return new Task(
-                () => {
-                    var formulas = ExtremeFactory.GetFormulaStorage();
-                    var stopwatch = Stopwatch.StartNew();
-                    
-                    formulas.AutoBatchCompile = false;
-                    formulas.Clear();
-                    
-                    formulas.LoadDefaultFormulas(
-                        Application.Files.Resolve(
-                            "~/.tmp/formula_dll",
-                            false
-                        )
-                    );
-                    
-                    formulas.AutoBatchCompile = true;
-                    stopwatch.Stop();
-                    _formulaRegisterTime = stopwatch.Elapsed;
-                }
-            );
-        }
+		public void CheckGlobalReload() {
+			lock (ReloadState) {
+				if (null != ReadyToServeForms && !ReadyToServeForms.IsCompleted) {
+					ReadyToServeForms.Wait();
+				}
+				var lastrefresh = new NativeZetaReader().GetLastGlobalRefreshTime();
+				if (lastrefresh > LastRefreshTime) {
+					Sessions.Clear(); //иначе будет устаревшая структура
+					Reload();
+					ReadyToServeForms.Wait();
+					LastRefreshTime = lastrefresh;
+					ReloadCount ++;
+				}
+			}
+		}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        private Task GetLoadThemasTask() {
-            return new Task(
-                () => {
-                    //Debugger.Break();
-                    FormProvider = new ExtremeFormProvider(ThemaRootDirectory);
-                    var factory = ((ExtremeFormProvider)FormProvider).Factory; //force reload
-                    Application.Container.Register(
-                        new BasicComponentDefinition {
-                            Implementation = factory,
-                            ServiceType = typeof(IThemaFactory),
-                            Lifestyle = Lifestyle.Singleton,
-                            Name = "form.server.themas",
-                        }
-                    );
-                }
-            );
-        }
+		/// <summary>
+		/// Счетчик числа перезагрузок
+		/// </summary>
+		public int ReloadCount { get; set; }
 
-        /// <summary>
-        ///     
-        /// </summary>
-        /// <returns></returns>
-        private Task GetMetaCacheLoadTask() {
-            return new Task(
-                () => {
-                    Periods.Get(12);
-                    RowCache.start();
-                    ColumnCache.Start();
-                    ObjCache.Start();
-                }
-            );
-        }
+		private Task GetCompileFormulasTask() {
+			return new Task(() =>
+				{
+					var formulas = ExtremeFactory.GetFormulaStorage();
+					var _sw = Stopwatch.StartNew();
+					formulas.AutoBatchCompile = false;
+					formulas.Clear();
+					var tmp = Application.Files.Resolve("~/.tmp/formula_dll", false);
+					formulas.LoadDefaultFormulas(tmp);
+					formulas.AutoBatchCompile = true;
+					_sw.Stop();
+					_formulaRegisterTime = _sw.Elapsed;
+				});
+		}
 
-        /// <summary>
+
+		private Task GetLoadThemasTask() {
+			return new Task(() =>
+				{
+					//Debugger.Break();
+					FormProvider = new ExtremeFormProvider(ThemaRootDirectory);
+					var _f = ((ExtremeFormProvider) FormProvider).Factory; //force reload
+					Application.Container.Register(new BasicComponentDefinition
+						{
+							Implementation = _f,
+							ServiceType = typeof (IThemaFactory),
+							Lifestyle = Lifestyle.Singleton,
+							Name = "form.server.themas",
+						});
+				});
+		}
+
+		private Task GetMetaCacheLoadTask() {
+			return new Task(() =>
+				{
+					Periods.Get(12);
+					RowCache.start();
+					ColumnCache.Start();
+					ObjCache.Start();
+				});
+		}
+
+		/// <summary>
         ///     Creates a container with an IFormSession instance
         /// </summary>
         private void CreateFormSessionContainer() {
@@ -496,5 +412,10 @@ namespace Zeta.Extreme.FrontEnd {
 
             Application.Container.Register(formSessionComponent);
         }
-    }
+
+
+		private readonly bool _doNotRun;
+		private TimeSpan _formulaRegisterTime;
+		private int _index = -100;
+	}
 }
