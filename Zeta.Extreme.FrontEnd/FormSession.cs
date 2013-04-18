@@ -409,7 +409,7 @@ namespace Zeta.Extreme.FrontEnd {
 				if (IsStarted) {
 					return;
 				}
-
+				Activations++;
 				var sw = Stopwatch.StartNew();
 				PrepareMetaSets();
 				sw.Stop();
@@ -901,8 +901,11 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public bool RestartData() {
 			lock (this) {
+				Activations++;
 				WaitData();
 				PrepareDataTask = null;
+				DataSession = null;
+				Data.Clear();
 				StartCollectData();
 				return true;
 			}

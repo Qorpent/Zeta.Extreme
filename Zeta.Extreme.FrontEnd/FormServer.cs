@@ -272,7 +272,7 @@ namespace Zeta.Extreme.FrontEnd {
 					return session;
 				}
 				else {
-					existed.Activations++;
+					
 					if (!initsavemode) {
 						if (!existed.IsStarted) {
 							existed.Start();
