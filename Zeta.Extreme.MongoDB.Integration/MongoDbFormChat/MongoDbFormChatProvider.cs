@@ -71,20 +71,42 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <param name="user"></param>
 		public void Archive(string uid, string user) {
 			SetupConnection();
-			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
-			var data = new Dictionary<string, object>
-				{
-					{"message_id", uid},
-					{"user", user}
-				};
-			var query = new BsonDocument(data);
-			var item = collection.FindOne(new QueryDocument(query));
-			if (null == item) {
-				item = query;
-			}
-			item["archive"] = true;
+
+            var collection = SelectUsrCollection();
+            var query = MakeSearchQueryForUsrCollection(uid, user);
+			var item = collection.FindOne(
+                new QueryDocument(query)
+            ) ?? query;
+
+		    MongoDbFormChatSerializer.SetArchived(item);
+
 			collection.Save(item);
 		}
+
+        /// <summary>
+        ///     Selects the COLLECTIONAME_usr collection
+        /// </summary>
+        /// <returns></returns>
+        private MongoCollection<BsonDocument> SelectUsrCollection() {
+            return Database.GetCollection<BsonDocument>(
+                CollectionName + "_usr"
+            );
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        private BsonDocument MakeSearchQueryForUsrCollection(string uid, string user) {
+            return new BsonDocument(
+                new Dictionary<string, object> {
+					{"message_id", uid},
+					{"user", user}
+			    }
+            );
+        }
 
 		/// <summary>
 		///     Помечает сообщение с указанным идентификатором как прочтенное
@@ -93,19 +115,19 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <param name="user"></param>
 		public void SetHaveRead(string user) {
 			SetupConnection();
-			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
-
-			var query = new BsonDocument(
-                new Dictionary<string, object> {
-                    {"message_id", "ALL"},
-                    {"user", user}
-                }
+			var collection = Database.GetCollection<BsonDocument>(
+                CollectionName + "_usr"
             );
-			var item = collection.FindOne(new QueryDocument(query));
-			if (null == item) {
-				item = query;
-			}
-			item["lastread"] = DateTime.Now;
+
+		    var query = MakeSearchQueryForUsrCollection("ALL", user);
+
+			var item = (
+                collection.FindOne(
+			        new QueryDocument(query)
+		        )
+            ) ?? query;
+
+		    item["lastread"] = DateTime.Now;
             collection.Save(item);
 		}
 
@@ -117,13 +139,13 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// </returns>
 		public DateTime GetLastRead(string user) {
 			SetupConnection();
-			
-			var data = new Dictionary<string, object> {
+
+			var query = new BsonDocument(
+                new Dictionary<string, object> {
 					{"message_id", "ALL"},
 					{"user", user}
-            };
-
-			var query = new BsonDocument(data);
+                }
+            );
 			var item = Connector.Collection.FindOne(
                 new QueryDocument(query)
             );
@@ -132,11 +154,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 				return DateTime.MinValue;
 			}
 
-			if (!item.Contains("lastread")) {
-				return DateTime.MinValue;
-			}
-
-			return item["lastread"].ToLocalTime();
+			return !item.Contains("lastread") ? DateTime.MinValue : item["lastread"].ToLocalTime();
 		}
 
 		/// <summary>
