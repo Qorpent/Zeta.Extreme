@@ -1,6 +1,44 @@
 (function(){
     var root = window.qweb = window.qweb || {};
     var siteroot = document.location.pathname.match(/([\\w\\d_\-]+)?/)[0];
+
+    var Log = function() {
+        this.init();
+    };
+
+    Log.prototype.init = function() {
+        this.messages = [];
+    };
+
+    Log.prototype.Get = function() {
+        return this.messages;
+    };
+
+    Log.prototype.W = function(m) {
+        if (this.messages.length > 199) {
+            this.messages.splice(0, 100);
+        }
+        this.messages.push(m)
+    };
+
+    var log = window.qweb.log = window.qweb.log || new Log();
+
+    var LogMessage = function(params) {
+        params = $.extend({
+            type : "error",
+            code : 0,
+            status : "",
+            message : "",
+            innerException : {}
+        }, params);
+        this.type = params.type;
+        this.event = params.event;
+        this.message = params.message;
+        this.code = params.code;
+        this.status = params.status;
+        this.innerException = params.innerException;
+    };
+
     root.Command = function(sourceoptions){
         var options = sourceoptions || {};
         if (typeof(options)=="string"){
@@ -85,7 +123,7 @@
 		_getUsualCallFunciton : function(){
 			var self = this;
 			return (function(result){
-                if (!result) {
+                if (!result && result != 0) {
                    self.triggerOnError(result);
                    return;
                 }
@@ -96,7 +134,7 @@
 		_getRepeatWaitCallFunciton : function(){
 			var self = this;
 			return (function(result,params){
-                if(!result){
+                if(!result && result != 0){
 					self.currenttimeout -= self.delay;
 					if(self.currenttimeout<=0){
 						self.triggerOnError(null);
@@ -146,7 +184,14 @@
                 .success(function(r){
                     myoptions.onsuccess(r,params);
                 })
-                .error(myoptions.onerror||function(error){console.log(error)})
+                .error(myoptions.onerror ||
+                function(error) {
+                    log.W(new LogMessage({
+                        code : error.status,
+                        status : error.statusText,
+                        innerException : JSON.parse(error.responseText)
+                    }));
+                })
                 .complete(function(r) {
                     self.triggerOnComplete(r)
                 });
