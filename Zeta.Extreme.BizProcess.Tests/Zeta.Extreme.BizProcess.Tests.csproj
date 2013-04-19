@@ -14,5 +14,20 @@
     <None Include="*.export" />
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="StateManagement\DefaultStateManagerTest.cs" />
+    <Compile Include="StateManagement\FakeStateChecker.cs" />
+    <Compile Include="StateManagement\FakeStateRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Zeta.Extreme.Form\Zeta.Extreme.Form.csproj">
+      <Project>{FBD09F91-B185-4207-B05D-6051505CA868}</Project>
+      <Name>Zeta.Extreme.Form</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.FrontEnd\Zeta.Extreme.FrontEnd.csproj">
+      <Project>{75E74DED-91CC-4090-B3B2-2E8AE3C085E8}</Project>
+      <Name>Zeta.Extreme.FrontEnd</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

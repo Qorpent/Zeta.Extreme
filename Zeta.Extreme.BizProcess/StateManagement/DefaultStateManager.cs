@@ -47,6 +47,16 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// </summary>
 		[Inject] public IList<IFormStateAvailabilityChecker> StateAvailabilityCheckers { get; private set; }
 
+		/// <summary>
+		/// Быстрое получение текущего типа статуса формы
+		/// </summary>
+		/// <param name="session"></param>
+		/// <returns></returns>
+		public FormStateType GetCurrentState(IFormSession session) {
+			return
+				(FormStateType)
+				Array.IndexOf(DefaultFormStateRepository.StateStrings, Repository.GetFormRecord(session).CurrentState);
+		}
 
 		/// <summary>
 		///     Установить поставщика исходной информации по статусам
@@ -81,7 +91,8 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 				var lastState = Repository.GetLastFormState(form);
 				foreach (var checker in StateAvailabilityCheckers) {
 					var checkerResult = checker.GetCanSet(this, form, formRecord, lastState, newStateType);
-					if (!checkerResult.Allow) {
+					
+					if ( null!= checkerResult  && !checkerResult.Allow) {
 						checkerResult.Reason = checkerResult.Reason ??
 						                       new FormStateOperationDenyReason {Type = FormStateOperationDenyReasonType.Custom};
 						checkerResult.Reason.Checker = checkerResult.Reason.Checker ?? checker;

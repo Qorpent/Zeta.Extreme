@@ -58,5 +58,12 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <returns>
 		/// </returns>
 		FormStateOperationResult SetState(IFormSession form, FormStateType newStateType, string comment="", int parentId = 0);
+
+		/// <summary>
+		/// Ѕыстрое получение текущего типа статуса формы
+		/// </summary>
+		/// <param name="session"></param>
+		/// <returns></returns>
+		FormStateType GetCurrentState(IFormSession session);
 	}
 }
