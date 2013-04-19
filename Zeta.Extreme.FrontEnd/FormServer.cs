@@ -257,11 +257,6 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="initsavemode"> пред-открытие для сохранения </param>
 		/// <returns> </returns>
 		public FormSession Start(IInputTemplate template, IZetaMainObject obj, int year, int period, bool initsavemode = false) {
-			if (Application.Container.FindComponent(typeof (FormSession), null) == null) {
-                CreateFormSessionContainer();
-            }
-
-
 			lock (ReloadState) {
 				var usr = Application.Principal.CurrentUser.Identity.Name;
 				var existed =
@@ -269,16 +264,7 @@ namespace Zeta.Extreme.FrontEnd {
 						_ =>
 						_.Usr == usr && _.Year == year && _.Period == period && _.Template.Code == template.Code && _.Object.Id == obj.Id);
 				if (null == existed) {
-					var session = Application.Container.Get<FormSession>(
-                        null,
-                        new object[] {
-                            template,
-                            year,
-                            period,
-                            obj
-                        }
-                    );
-                    
+					var session = new FormSession(template, year, period, obj);
 					session.FormServer = this;
 					session.InitSaveMode = initsavemode;
 					Sessions.Add(session);
@@ -398,20 +384,6 @@ namespace Zeta.Extreme.FrontEnd {
 					ObjCache.Start();
 				});
 		}
-
-		/// <summary>
-        ///     Creates a container with an IFormSession instance
-        /// </summary>
-        private void CreateFormSessionContainer() {
-            var formSessionComponent = Application.Container.EmptyComponent();
-
-            formSessionComponent.ServiceType = typeof(IFormSession);
-            formSessionComponent.ImplementationType = typeof(FormSession);
-            formSessionComponent.Lifestyle = Lifestyle.Transient;
-            formSessionComponent.Parameters["FormServer"] = this;
-
-            Application.Container.Register(formSessionComponent);
-        }
 
 
 		private readonly bool _doNotRun;
