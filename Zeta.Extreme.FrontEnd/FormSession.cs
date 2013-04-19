@@ -52,9 +52,9 @@ namespace Zeta.Extreme.FrontEnd {
 	/// </summary>
 	[Serialize]
 	public class FormSession :
-		IFormSession,
 		IFormDataSynchronize,
-		IFormSessionControlPointSource {
+		IFormSessionControlPointSource,
+        IFormSession {
 		/// <summary>
 		/// 	Создает сессию формы
 		/// </summary>

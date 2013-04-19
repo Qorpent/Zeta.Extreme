@@ -84,5 +84,13 @@ namespace Zeta.Extreme.MongoDB.Integration {
 				chatItem.Type = "default";
 			}
 		}
+
+        /// <summary>
+        ///     Sets Archived mark
+        /// </summary>
+        /// <param name="document"></param>
+        public static void SetArchived(BsonDocument document) {
+            document.Set("archive", true);
+        }
 	}
 }

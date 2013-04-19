@@ -1,4 +1,4 @@
-#region LICENSE
+п»ї#region LICENSE
 
 // Copyright 2012-2013 Fagim Sadykov
 // Project: Zeta.Extreme.MongoDB.Integration
@@ -14,117 +14,191 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson;
-using MongoDB.Driver;
+using MongoDB.Driver; 
 using MongoDB.Driver.Builders;
 using MongoDB.Driver.Wrappers;
+using Qorpent;
 using Qorpent.IoC;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration {
 	/// <summary>
-	///     Mongo - реализация чата формы
+	///     Mongo - СЂРµР°Р»РёР·Р°С†РёСЏ С‡Р°С‚Р° С„РѕСЂРјС‹
 	/// </summary>
 	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IFormChatProvider))]
-	public class MongoDbFormChatProvider : MongoAttachedProviderBase, IFormChatProvider {
+	public class MongoDbFormChatProvider : ServiceBase, IFormChatProvider {
+
+        /// <summary>
+        /// Conneciton string for mongo
+        /// </summary>
+        public string ConnectionString { get; set; }
+        /// <summary>
+        /// Database in mongo
+        /// </summary>
+        public string DatabaseName { get; set; }
+        /// <summary>
+        /// Collection in mongo
+        /// </summary>
+        public string CollectionName { get; set; }
+
+        /// <summary>
+        /// Reset connection
+        /// </summary>
+        public void SetupConnection() {
+            Connector = new MongoDbConnector {
+                ConnectionString = ConnectionString,
+                DatabaseName = DatabaseName,
+                DatabaseSettings = new MongoDatabaseSettings(),
+                CollectionName = CollectionName
+            };
+        }
+
+        /// <summary>
+        ///     Connector to MongoDB
+        /// </summary>
+	    public MongoDbConnector Connector;
+
 		/// <summary>
-		///     Поиск связанных с сессией сообщений чата
+		/// </summary>
+        public MongoDbFormChatProvider() {
+			ConnectionString = "mongodb://localhost:27017";
+			DatabaseName = "MongoAttachedProviderBase";
+			CollectionName = GetType().Name;
+		}
+
+        /// <summary>
+		///     РџРѕРёСЃРє СЃРІСЏР·Р°РЅРЅС‹С… СЃ СЃРµСЃСЃРёРµР№ СЃРѕРѕР±С‰РµРЅРёР№ С‡Р°С‚Р°
 		/// </summary>
 		/// <param name="session"></param>
 		/// <returns>
 		/// </returns>
 		public IEnumerable<FormChatItem> GetSessionItems(IFormSession session) {
 			SetupConnection();
-			var search = MongoDbFormChatSerializer.SessionToSearchDocument(session);
-			return Collection.Find(new QueryDocument(search)).Select(MongoDbFormChatSerializer.BsonToChatItem);
+			
+            return Connector.Collection.Find(
+                new QueryDocument(
+                    MongoDbFormChatSerializer.SessionToSearchDocument(session)    
+                )
+            ).Select(
+                MongoDbFormChatSerializer.BsonToChatItem
+            );
 		}
 
 		/// <summary>
-		///     Добавление нового сообщения
+		///     Р”РѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ
 		/// </summary>
 		/// <param name="session"></param>
 		/// <param name="message"></param>
 		/// <returns>
 		/// </returns>
 		public FormChatItem AddMessage(IFormSession session, string message) {
-			SetupConnection();
-			var item = new FormChatItem {Text = message};
-			var bson = MongoDbFormChatSerializer.ChatItemToBson(session, item);
-			Collection.Save(bson);
+            SetupConnection();
+
+			var item = new FormChatItem {
+			    Text = message
+			};
+            
+			Connector.Collection.Save(
+                MongoDbFormChatSerializer.ChatItemToBson(
+                    session,
+                    item
+                )
+            );
+
 			return item;
 		}
 
 		/// <summary>
-		///     Помечает сообщение с указанным идентификатором как прочтенное
-		///     пользователем
+		///     РџРѕРјРµС‡Р°РµС‚ СЃРѕРѕР±С‰РµРЅРёРµ СЃ СѓРєР°Р·Р°РЅРЅС‹Рј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј РєР°Рє РїСЂРѕС‡С‚РµРЅРЅРѕРµ
+		///     РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј
 		/// </summary>
 		/// <param name="uid"></param>
 		/// <param name="user"></param>
 		public void Archive(string uid, string user) {
 			SetupConnection();
-			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
-			var data = new Dictionary<string, object>
-				{
-					{"message_id", uid},
-					{"user", user}
-				};
-			var query = new BsonDocument(data);
-			var item = collection.FindOne(new QueryDocument(query));
-			if (null == item) {
-				item = query;
-			}
-			item["archive"] = true;
+
+            var collection = SelectUsrCollection();
+            var query = MakeSearchQueryForUsrCollection(uid, user);
+			var item = collection.FindOne(
+                new QueryDocument(query)
+            ) ?? query;
+
+		    MongoDbFormChatSerializer.SetArchived(item);
+
 			collection.Save(item);
 		}
 
+        /// <summary>
+        ///     Selects the COLLECTIONAME_usr collection
+        /// </summary>
+        /// <returns></returns>
+        private MongoCollection<BsonDocument> SelectUsrCollection() {
+            return Connector.Database.GetCollection<BsonDocument>(
+                CollectionName + "_usr"
+            );
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        private BsonDocument MakeSearchQueryForUsrCollection(string uid, string user) {
+            return new BsonDocument(
+                new Dictionary<string, object> {
+					{"message_id", uid},
+					{"user", user}
+			    }
+            );
+        }
+
 		/// <summary>
-		///     Помечает сообщение с указанным идентификатором как прочтенное
-		///     пользователем
+		///     РџРѕРјРµС‡Р°РµС‚ СЃРѕРѕР±С‰РµРЅРёРµ СЃ СѓРєР°Р·Р°РЅРЅС‹Рј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј РєР°Рє РїСЂРѕС‡С‚РµРЅРЅРѕРµ
+		///     РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј
 		/// </summary>
 		/// <param name="user"></param>
 		public void SetHaveRead(string user) {
 			SetupConnection();
-			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
-			var data = new Dictionary<string, object>
-				{
-					{"message_id", "ALL"},
-					{"user", user}
-				};
-			var query = new BsonDocument(data);
-			var item = collection.FindOne(new QueryDocument(query));
-			if (null == item) {
-				item = query;
-			}
-			item["lastread"] = DateTime.Now;
-			collection.Save(item);
+            
+            var collection = SelectUsrCollection();
+            var query = MakeSearchQueryForUsrCollection("ALL", user);
+
+			var document = (
+                collection.FindOne(
+			        new QueryDocument(query)
+		        )
+            ) ?? query;
+
+            document.Set("lastread", DateTime.Now);
+            collection.Save(document);
 		}
 
 		/// <summary>
-		///     Возвращает дату последней отметки о прочтении
+		///     Р’РѕР·РІСЂР°С‰Р°РµС‚ РґР°С‚Сѓ РїРѕСЃР»РµРґРЅРµР№ РѕС‚РјРµС‚РєРё Рѕ РїСЂРѕС‡С‚РµРЅРёРё
 		/// </summary>
 		/// <param name="user"></param>
 		/// <returns>
 		/// </returns>
 		public DateTime GetLastRead(string user) {
 			SetupConnection();
-			var collection = Database.GetCollection<BsonDocument>(CollectionName + "_usr");
-			var data = new Dictionary<string, object>
-				{
-					{"message_id", "ALL"},
-					{"user", user}
-				};
-			var query = new BsonDocument(data);
-			var item = collection.FindOne(new QueryDocument(query));
+
+            var item = SelectUsrCollection().FindOne(
+                Query.And(
+                    Query.EQ("message_id", "ALL"),
+                    Query.EQ("user", user)
+                )  
+            );
+
 			if (null == item) {
 				return DateTime.MinValue;
 			}
-			if (!item.Contains("lastread")) {
-				return DateTime.MinValue;
-			}
-			return item["lastread"].ToLocalTime();
+
+			return !item.Contains("lastread") ? DateTime.MinValue : item["lastread"].ToLocalTime();
 		}
 
 		/// <summary>
-		///     Проверяет наличие обноелний в базе сообщений
+		///     РџСЂРѕРІРµСЂСЏРµС‚ РЅР°Р»РёС‡РёРµ РѕР±РЅРѕРµР»РЅРёР№ РІ Р±Р°Р·Рµ СЃРѕРѕР±С‰РµРЅРёР№
 		/// </summary>
 		/// <param name="user"></param>
 		/// <param name="objids"></param>
@@ -135,9 +209,16 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		public long GetUpdatesCount(string user,int[] objids = null, string[] types=null, string[] forms = null) {
 			SetupConnection();
 			var lastread = GetLastRead(user);
-			var query = GenerateFindAllMessagesQuery(user, lastread, objids, types,forms,  false);
+			var query = GenerateFindAllMessagesQuery(
+                user,
+                lastread,
+                objids,
+                types,
+                forms,
+                false
+            );
 			query["user"] = new BsonDocument("$ne",user);
-			return Collection.Count(new QueryDocument(query));
+			return Connector.Collection.Count(new QueryDocument(query));
 		}
 
 		/// <summary>
@@ -152,47 +233,93 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// </returns>
 		public IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids = null, string[] types=null, string[] forms=null,bool includeArchived=false) {
 			SetupConnection();
-			var query = GenerateFindAllMessagesQuery(user, startdate, objids, types,forms, includeArchived);
-			var mongoquery = new QueryDocument(query);
-			var result = Collection.Find(mongoquery).SetSortOrder(SortBy.Ascending("time")).Select(MongoDbFormChatSerializer.BsonToChatItem).ToArray();
+			var query = GenerateFindAllMessagesQuery(
+                user,
+                startdate,
+                objids,
+                types,
+                forms,
+                includeArchived
+            );
+
+			var result = Connector.Collection.Find(
+                new QueryDocument(query)
+            ).SetSortOrder(
+                SortBy.Ascending("time")
+            ).Select(
+                MongoDbFormChatSerializer.BsonToChatItem
+            ).ToArray();
+
 			foreach (var formChatItem in result) {
-				var colleciton = Database.GetCollection(CollectionName + "_usr");
-				var usrdata  = colleciton.FindOne(new QueryDocument(new BsonDocument(new Dictionary<string, object>
-					{
-						{"message_id", formChatItem.Id},
-						{"user", user}
-					})));
+                var usrdata = SelectUsrCollection().FindOne(
+                    new QueryDocument(
+                        new BsonDocument(
+                            new Dictionary<string, object> {
+						        {"message_id", formChatItem.Id},
+						        {"user", user}
+					        }
+                        )
+                    )
+                );
+
 				if (null != usrdata) {
 					formChatItem.Userdata = usrdata.ToDictionary();
 				}
-					
 			}
-			return result;
 
+		    return result;
 		}
 
-		private BsonDocument GenerateFindAllMessagesQuery(string user, DateTime startdate, int[] objids, string[] types,string[] forms,
-		                                                  bool includeArchived) {
+		private BsonDocument GenerateFindAllMessagesQuery(
+            string user,
+            DateTime startdate,
+            int[] objids,
+            string[] types,
+            string[] forms,
+            bool includeArchived
+        ) {
 			if (startdate.Year <= 1990) {
 				startdate = DateTime.Now.AddDays(-30);
 			}
+
 			var query = new BsonDocument();
-			query["time"] = new BsonDocument("$gt", startdate);
+			query["time"] = new BsonDocument(
+                "$gt",
+                startdate
+            );
+
 			if (null != objids && 0 != objids.Length) {
-				query["obj"] = new BsonDocument("$in", new BsonArray(objids));
+				query["obj"] = new BsonDocument(
+                    "$in",
+                    new BsonArray(objids)
+                );
 			}
+
 			if (null != types && 0 != types.Length) {
-				query["type"] = new BsonDocument("$in", new BsonArray(types));
+				query["type"] = new BsonDocument(
+                    "$in",
+                    new BsonArray(types)
+                );
 			}
-			if (null != forms && 0 != forms.Length)
-			{
-				query["form"] = new BsonDocument("$in", new BsonArray(forms));
+
+			if (null != forms && 0 != forms.Length) {
+				query["form"] = new BsonDocument(
+                    "$in",
+                    new BsonArray(forms)
+                );
 			}
+
 			if (!includeArchived) {
 				query["$where"] = string.Format(
 					"!db.{0}_usr.findOne({{message_id:this._id, user:'{1}', archive:true}})",
-					CollectionName, user.Replace("\\","\\\\"));
+					CollectionName,
+                    user.Replace(
+                        "\\",
+                        "\\\\"
+                    )
+                );
 			}
+
 			return query;
 		}
 	}
