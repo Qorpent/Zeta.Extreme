@@ -1,4 +1,4 @@
-#region LICENSE
+п»ї#region LICENSE
 
 // Copyright 2012-2013 Fagim Sadykov
 // Project: Zeta.Extreme.MongoDB.Integration
@@ -23,7 +23,7 @@ using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration {
 	/// <summary>
-	///     Mongo - реализация чата формы
+	///     Mongo - СЂРµР°Р»РёР·Р°С†РёСЏ С‡Р°С‚Р° С„РѕСЂРјС‹
 	/// </summary>
 	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IFormChatProvider))]
 	public class MongoDbFormChatProvider : ServiceBase, IFormChatProvider {
@@ -67,7 +67,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		}
 
         /// <summary>
-		///     Поиск связанных с сессией сообщений чата
+		///     РџРѕРёСЃРє СЃРІСЏР·Р°РЅРЅС‹С… СЃ СЃРµСЃСЃРёРµР№ СЃРѕРѕР±С‰РµРЅРёР№ С‡Р°С‚Р°
 		/// </summary>
 		/// <param name="session"></param>
 		/// <returns>
@@ -85,7 +85,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		}
 
 		/// <summary>
-		///     Добавление нового сообщения
+		///     Р”РѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ
 		/// </summary>
 		/// <param name="session"></param>
 		/// <param name="message"></param>
@@ -109,8 +109,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		}
 
 		/// <summary>
-		///     Помечает сообщение с указанным идентификатором как прочтенное
-		///     пользователем
+		///     РџРѕРјРµС‡Р°РµС‚ СЃРѕРѕР±С‰РµРЅРёРµ СЃ СѓРєР°Р·Р°РЅРЅС‹Рј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј РєР°Рє РїСЂРѕС‡С‚РµРЅРЅРѕРµ
+		///     РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј
 		/// </summary>
 		/// <param name="uid"></param>
 		/// <param name="user"></param>
@@ -154,8 +154,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
         }
 
 		/// <summary>
-		///     Помечает сообщение с указанным идентификатором как прочтенное
-		///     пользователем
+		///     РџРѕРјРµС‡Р°РµС‚ СЃРѕРѕР±С‰РµРЅРёРµ СЃ СѓРєР°Р·Р°РЅРЅС‹Рј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј РєР°Рє РїСЂРѕС‡С‚РµРЅРЅРѕРµ
+		///     РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј
 		/// </summary>
 		/// <param name="user"></param>
 		public void SetHaveRead(string user) {
@@ -164,18 +164,18 @@ namespace Zeta.Extreme.MongoDB.Integration {
             var collection = SelectUsrCollection();
             var query = MakeSearchQueryForUsrCollection("ALL", user);
 
-			var item = (
+			var document = (
                 collection.FindOne(
 			        new QueryDocument(query)
 		        )
             ) ?? query;
 
-            item.Set("lastread", DateTime.Now);
-            collection.Save(item);
+            document.Set("lastread", DateTime.Now);
+            collection.Save(document);
 		}
 
 		/// <summary>
-		///     Возвращает дату последней отметки о прочтении
+		///     Р’РѕР·РІСЂР°С‰Р°РµС‚ РґР°С‚Сѓ РїРѕСЃР»РµРґРЅРµР№ РѕС‚РјРµС‚РєРё Рѕ РїСЂРѕС‡С‚РµРЅРёРё
 		/// </summary>
 		/// <param name="user"></param>
 		/// <returns>
@@ -183,14 +183,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		public DateTime GetLastRead(string user) {
 			SetupConnection();
 
-			var query = new BsonDocument(
-                new Dictionary<string, object> {
-					{"message_id", "ALL"},
-					{"user", user}
-                }
-            );
-			var item = Connector.Collection.FindOne(
-                new QueryDocument(query)
+            var item = SelectUsrCollection().FindOne(
+                Query.And(
+                    Query.EQ("message_id", "ALL"),
+                    Query.EQ("user", user)
+                )  
             );
 
 			if (null == item) {
@@ -201,7 +198,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		}
 
 		/// <summary>
-		///     Проверяет наличие обноелний в базе сообщений
+		///     РџСЂРѕРІРµСЂСЏРµС‚ РЅР°Р»РёС‡РёРµ РѕР±РЅРѕРµР»РЅРёР№ РІ Р±Р°Р·Рµ СЃРѕРѕР±С‰РµРЅРёР№
 		/// </summary>
 		/// <param name="user"></param>
 		/// <param name="objids"></param>
@@ -244,9 +241,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 forms,
                 includeArchived
             );
-			var mongoquery = new QueryDocument(query);
+
 			var result = Connector.Collection.Find(
-                mongoquery
+                new QueryDocument(query)
             ).SetSortOrder(
                 SortBy.Ascending("time")
             ).Select(
@@ -254,8 +251,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             ).ToArray();
 
 			foreach (var formChatItem in result) {
-				var colleciton = Connector.Database.GetCollection(CollectionName + "_usr");
-				var usrdata  = colleciton.FindOne(
+                var usrdata = SelectUsrCollection().FindOne(
                     new QueryDocument(
                         new BsonDocument(
                             new Dictionary<string, object> {
@@ -269,7 +265,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
 				if (null != usrdata) {
 					formChatItem.Userdata = usrdata.ToDictionary();
 				}
-					
 			}
 
 		    return result;
