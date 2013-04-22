@@ -348,6 +348,10 @@ namespace Zeta.Extreme {
 			if (string.IsNullOrWhiteSpace(Currency)) {
 				Currency = PrimaryConstants.VALUTA_NONE;
 			}
+			//жестка€ защита от референции на несуществующие строки
+			if (!IgnoreCheckPrimaryRowExistence && Row.IsPrimary() && Row.Native == null) {
+				Result = new QueryResult{IsComplete = false,Error = new Exception("¬ качестве первичной строки указан несуществующий код"+Row.Code)};
+			}
 			InvalidateCacheKey();
 		}
 
@@ -454,6 +458,11 @@ namespace Zeta.Extreme {
 		/// 	јвтоматический код запроса, присваиваемый системой
 		/// </summary>
 		public long Uid { get; set; }
+
+		/// <summary>
+		/// ‘лаг отключени€ проверки наличи€ строки
+		/// </summary>
+		public bool IgnoreCheckPrimaryRowExistence;
 
 		private List<IQuery> _formulaDependency;
 
