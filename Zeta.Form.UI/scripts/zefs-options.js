@@ -36,6 +36,7 @@ $.extend(api,(function(){
                         // массив колонок
                         cols : []
                     };
+                    var currentRow = null;
                     $.each(obj, function(i,o) {
                         if (o.type=="c") {
                             o.exref = o.exref || false;
@@ -45,7 +46,21 @@ $.extend(api,(function(){
                             o.measure = o.measure || "тыс. руб.";
                             o.level = o.level || 0;
                             o.exref = o.exref || false;
-                            result.rows.push(o);
+                            o.childrens = o.childrens || [];
+                            if (!!currentRow) {
+                                if (o.level > currentRow.level) {
+                                    o.parent = currentRow;
+                                    currentRow.childrens.push(o);
+                                    currentRow = o;
+                                } else {
+                                    currentRow.parent.childrens.push(o);
+                                    currentRow = currentRow.parent;
+                                }
+                            } else {
+                                currentRow = o;
+                                o.parent = result.rows;
+                                result.rows.push(o);
+                            }
                         }
                     });
                     result.rootrow = $($.map(result.rows, function(e) { if (e.level == 0) return e.code })).get(0);
