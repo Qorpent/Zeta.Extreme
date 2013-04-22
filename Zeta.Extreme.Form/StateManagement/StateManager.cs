@@ -281,7 +281,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 						return false;
 					}
 				}
-				if (!template.IgnorePeriodState) {
+				if (!template.IsPeriodOpen()) {
 					var periodstate = GetPeriodState(template.Year, template.Period);
 					if (periodstate == 0 && state == "0ISOPEN") {
 						cause = "Период " + Periods.Get(template.Period).Name + " " + template.Year + "г. закрыт для правки";

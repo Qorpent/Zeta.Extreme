@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Qorpent.IoC;
 using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.Model;
 
@@ -13,6 +14,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		private readonly Form _savedFormData;
 		private readonly FormState _savedLastState;
 		private readonly FormStateType _newState;
+		private readonly IContainer _container;
 
 		/// <summary>
 		/// ќсновной конструктор
@@ -22,12 +24,14 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <param name="savedFormData"></param>
 		/// <param name="savedLastState"></param>
 		/// <param name="newState"></param>
-		public StateValidationContext(IFormStateManager manager, IFormSession form, Form savedFormData, FormState savedLastState, FormStateType newState) {
+		/// <param name="container"></param>
+		public StateValidationContext(IFormStateManager manager, IFormSession form, Form savedFormData, FormState savedLastState, FormStateType newState,IContainer container) {
 			_manager = manager;
 			_form = form;
 			_savedFormData = savedFormData;
 			_savedLastState = savedLastState;
 			_newState = newState;
+			_container = container;
 			Options = new Dictionary<string, string>();
 		}
 
@@ -62,6 +66,14 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// </summary>
 		public FormStateType NewState {
 			get { return _newState; }
+		}
+
+		/// <summary>
+		/// —сылка на контейнер инверсии
+		/// </summary>
+		public IContainer Container
+		{
+			get { return _container; }
 		}
 
 		/// <summary>

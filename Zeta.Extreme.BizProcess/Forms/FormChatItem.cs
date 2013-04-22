@@ -9,6 +9,12 @@ namespace Zeta.Extreme.BizProcess.Forms {
 	[Serialize]
 	public class FormChatItem {
 		/// <summary>
+		/// 
+		/// </summary>
+		public FormChatItem() {
+			Userdata  = new Dictionary<string, object>();
+		}
+		/// <summary>
 		/// ”никальный идентификатор записи
 		/// </summary>
 		public string Id { get; set; }

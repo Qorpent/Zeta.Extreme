@@ -32,7 +32,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// </summary>
 		/// <returns></returns>
 		protected FormStateOperationResult GetResult() {
-			return new FormStateOperationResult{Allow = false, Reason = {Type=ReasonType,Message = Message,Error = Error}};
+			return new FormStateOperationResult{Allow = false, Reason = new FormStateOperationDenyReason {Type=ReasonType,Message = Message,Error = Error}};
 		}
 
 		/// <summary>

@@ -77,5 +77,9 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// Статус уже выставлен относительно формы
 		/// </summary>
 		AlreadySet =10,
+		/// <summary>
+		/// Проблема в целевом статусе
+		/// </summary>
+		InvalidTargetState =11
 	}
 }

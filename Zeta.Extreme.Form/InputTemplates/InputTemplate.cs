@@ -607,9 +607,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		public bool IgnorePeriodState {
 			get {
-				if (Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, "IGNOREPERIODSTATE", false)) {
-					return true;
-				}
+				
 				if (null != Thema) {
 					var y = Thema.GetParameter("firstyear").ToInt();
 					if (y > 0 && y > Year) {
@@ -926,6 +924,10 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// </summary>
 		/// <returns> </returns>
 		public bool IsPeriodOpen() {
+			if (Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, "IGNOREPERIODSTATE"))
+			{
+				return true;
+			}
 			if (IgnorePeriodState) {
 				return true;
 			}
@@ -1028,7 +1030,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 					}
 				}
 				if (state == "0ISOPEN") {
-					if (IgnorePeriodState || 0 == StateManager.GetPeriodState(Year, toperiod)) {
+					if (IsPeriodOpen() || 0 == StateManager.GetPeriodState(Year, toperiod)) {
 						continue;
 					}
 				}
