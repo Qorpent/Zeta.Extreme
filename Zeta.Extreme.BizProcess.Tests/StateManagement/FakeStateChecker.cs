@@ -14,10 +14,9 @@ namespace Zeta.Extreme.BizProcess.Tests.StateManagement {
 		FormStateType FromString(string type) {
 			return (FormStateType) Array.IndexOf(DefaultFormStateRepository.StateStrings, type);
 		}
-		public FormStateOperationResult GetCanSet(IFormStateManager manager, IFormSession form, Model.Form savedFormData,
-		                                          FormState savedLastState, FormStateType newState) {
-			var oldState = FromString(savedFormData.CurrentState);
-			if (oldState == newState) {
+		public FormStateOperationResult GetCanSet(StateValidationContext stateValidationContext) {
+			var oldState = FromString(stateValidationContext.SavedFormData.CurrentState);
+			if (oldState == stateValidationContext.NewState) {
 				return new FormStateOperationResult
 					{
 						Allow = false,
@@ -29,7 +28,7 @@ namespace Zeta.Extreme.BizProcess.Tests.StateManagement {
 								}
 					};
 			}
-			if (newState == FormStateType.Open) {
+			if (stateValidationContext.NewState == FormStateType.Open) {
 				if (oldState != FormStateType.Closed) {
 					return new FormStateOperationResult
 						{
@@ -44,7 +43,7 @@ namespace Zeta.Extreme.BizProcess.Tests.StateManagement {
 				}
 			}
 
-			if (newState == FormStateType.Closed)
+			if (stateValidationContext.NewState == FormStateType.Closed)
 			{
 				if (oldState != FormStateType.Open)
 				{
@@ -61,7 +60,7 @@ namespace Zeta.Extreme.BizProcess.Tests.StateManagement {
 				}
 			}
 
-			if (newState == FormStateType.Checked)
+			if (stateValidationContext.NewState == FormStateType.Checked)
 			{
 				if (oldState != FormStateType.Closed)
 				{

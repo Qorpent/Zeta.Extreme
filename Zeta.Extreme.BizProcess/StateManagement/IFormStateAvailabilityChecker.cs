@@ -20,9 +20,6 @@
 #endregion
 
 using Qorpent.Model;
-using Zeta.Extreme.BizProcess.Forms;
-using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Model;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
@@ -33,17 +30,9 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <summary>
 		///     Проверка возможности установки статуса
 		/// </summary>
-		/// <param name="manager">обратная ссылка на вызывающий менеджер</param>
-		/// <param name="form"></param>
-		/// <param name="savedFormData"></param>
-		/// <param name="savedLastState"></param>
-		/// <param name="newState"></param>
+		/// <param name="stateValidationContext"></param>
 		/// <returns>
 		/// </returns>
-		FormStateOperationResult GetCanSet(IFormStateManager manager,
-		                                   IFormSession form,
-		                                   Form savedFormData,
-		                                   FormState savedLastState,
-		                                   FormStateType newState);
+		FormStateOperationResult GetCanSet(StateValidationContext stateValidationContext);
 	}
 }

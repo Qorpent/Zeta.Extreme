@@ -55,6 +55,7 @@
     <Compile Include="StateManagement\PeriodStateRecord.cs" />
     <Compile Include="StateManagement\ScheduleOvertime.cs" />
     <Compile Include="StateManagement\ScheduleState.cs" />
+    <Compile Include="StateManagement\StateValidationContext.cs" />
     <Compile Include="Themas\ColumnDesc.cs" />
     <Compile Include="Themas\ColumnRowCheckCondition.cs" />
     <Compile Include="Themas\DimensionDescriptor.cs" />

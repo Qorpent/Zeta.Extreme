@@ -90,7 +90,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 				var formRecord = Repository.GetFormRecord(form);
 				var lastState = Repository.GetLastFormState(form);
 				foreach (var checker in StateAvailabilityCheckers) {
-					var checkerResult = checker.GetCanSet(this, form, formRecord, lastState, newStateType);
+					var checkerResult = checker.GetCanSet(new StateValidationContext(this, form, formRecord, lastState, newStateType));
 					
 					if ( null!= checkerResult  && !checkerResult.Allow) {
 						checkerResult.Reason = checkerResult.Reason ??
