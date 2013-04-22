@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.Model;
@@ -63,6 +64,18 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 			get { return _newState; }
 		}
 
+		/// <summary>
+		/// Текущий статус
+		/// </summary>
+		public FormStateType OldState {
+			
+			get {
+				if (null == SavedLastState) {
+					return FormStateType.Open;
+				}
+				return (FormStateType)Array.IndexOf(DefaultFormStateRepository.StateStrings, SavedLastState.State);
+			}
+		}
 
 		/// <summary>
 		/// Дополнительные настройки контекста

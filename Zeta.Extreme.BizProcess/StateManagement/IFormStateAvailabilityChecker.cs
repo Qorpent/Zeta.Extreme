@@ -19,6 +19,7 @@
 
 #endregion
 
+using System.Runtime.Remoting.Contexts;
 using Qorpent.Model;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {

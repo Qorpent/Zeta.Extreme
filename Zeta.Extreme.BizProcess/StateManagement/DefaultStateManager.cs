@@ -89,8 +89,17 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 				CheckCheckersOrder();
 				var formRecord = Repository.GetFormRecord(form);
 				var lastState = Repository.GetLastFormState(form);
+				var context = new StateValidationContext(this, form, formRecord, lastState, newStateType);
+				if (context.OldState == context.NewState) {
+					//если статус не меняется значит и нельзя выполнить эту операцию
+					return new FormStateOperationResult
+						{
+							Allow = false,
+							Reason = new FormStateOperationDenyReason {Type = FormStateOperationDenyReasonType.AlreadySet}
+						};
+				}
 				foreach (var checker in StateAvailabilityCheckers) {
-					var checkerResult = checker.GetCanSet(new StateValidationContext(this, form, formRecord, lastState, newStateType));
+					var checkerResult = checker.GetCanSet(context);
 					
 					if ( null!= checkerResult  && !checkerResult.Allow) {
 						checkerResult.Reason = checkerResult.Reason ??

@@ -54,7 +54,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <summary>
 		/// —троки приведени€ статусов к хранимым значени€м
 		/// </summary>
-		public static readonly string[] StateStrings = new[] {"0ISOPEN", "0ISBLOCK", "0ISCHECKED", "0ISACCEPTED", "RESERVED1", "RESERVED2", "RESERVED3"};
+		public static readonly string[] StateStrings = new[] {"NONE","0ISOPEN", "0ISBLOCK", "0ISCHECKED", "0ISACCEPTED", "RESERVED1", "RESERVED2", "RESERVED3"};
 
 		/// <summary>
 		///     ”станавливает новый статус дл€ формы

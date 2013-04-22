@@ -25,38 +25,46 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// </summary>
 	public enum FormStateType {
 		/// <summary>
+		/// Неопределенный статус
+		/// </summary>
+		None = 0,
+		/// <summary>
 		///     Открыта
 		/// </summary>
-		Open = 0,
+		Open = 1,
 
 		/// <summary>
 		///     Закрыта
 		/// </summary>
-		Closed = 1,
+		Closed = 2,
 
 		/// <summary>
 		///     Проверена
 		/// </summary>
-		Checked = 2,
+		Checked = 3,
 
 		/// <summary>
 		///     Принята (на вырост)
 		/// </summary>
-		Accepted = 3,
+		Accepted = 4,
 
 		/// <summary>
 		/// Зарезервированный статус
 		/// </summary>
-		Reserved1 = 4,
+		Reserved1 = 5,
 
 		/// <summary>
 		/// Зарезервированный статус
 		/// </summary>
 		
-		Reserved2 = 5,
+		Reserved2 = 6,
 		/// <summary>
 		/// Зарезервированный статус
 		/// </summary>
-		Reserved3 = 6
+		Reserved3 = 7,
+		/// <summary>
+		/// Неизвестный (при парсе)
+		/// </summary>
+		Unknown =-1
 	}
 }

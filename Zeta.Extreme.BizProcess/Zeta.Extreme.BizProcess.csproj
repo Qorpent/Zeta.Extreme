@@ -38,6 +38,7 @@
     <Compile Include="Reports\ParametersCollection.cs" />
     <Compile Include="StateManagement\DefaultFormStateRepository.cs" />
     <Compile Include="StateManagement\DefaultStateManager.cs" />
+    <Compile Include="StateManagement\FormStateAvailabilityCheckerBase.cs" />
     <Compile Include="StateManagement\FormStateOperationDenyReason.cs" />
     <Compile Include="StateManagement\FormStateType.cs" />
     <Compile Include="StateManagement\FormStateOperationDenyReasonType.cs" />

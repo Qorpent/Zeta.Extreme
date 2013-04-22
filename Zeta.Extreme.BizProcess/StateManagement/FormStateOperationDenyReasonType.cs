@@ -73,5 +73,9 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		///     ѕроблема в каком-то унаследованном статусе
 		/// </summary>
 		Parent = 9,
+		/// <summary>
+		/// —татус уже выставлен относительно формы
+		/// </summary>
+		AlreadySet =10,
 	}
 }
