@@ -120,6 +120,7 @@ namespace Zeta.Extreme {
 				return;
 			}
 			query.AssignedFormula = formula;
+			query.AssignedFormulaKey = key;
 			formula.Playback(query);
 		}
 

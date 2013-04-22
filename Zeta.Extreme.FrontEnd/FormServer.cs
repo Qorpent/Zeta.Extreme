@@ -213,7 +213,7 @@ namespace Zeta.Extreme.FrontEnd {
 						avgdatatime =
 							TimeSpan.FromMilliseconds(Sessions.Select(_ => _.OverallDataTime).Aggregate((a, x) => a + x).TotalMilliseconds/
 							                          Sessions.Select(_ => _.DataCollectionRequests).Sum()),
-						registry = Sessions.Select(_=>new {user=_.Usr,form=_.Template.Code, obj=_.Object.Id, year=_.Year,period=_.Period}).ToArray(),
+						registry = Sessions.Select(_=>new {user=_.Usr,form=_.Template.Code, obj=_.Object.Id, year=_.Year,period=_.Period, activations=_.Activations, datatime =_.OverallDataTime}).ToArray(),
 					};
 			}
 			return new
@@ -297,7 +297,7 @@ namespace Zeta.Extreme.FrontEnd {
 			lock (ReloadState) {
 
 					((IResetable) Application.Files).Reset(null);
-;					((IResetable) Application.Roles).Reset(null);
+					((IResetable) Application.Roles).Reset(null);
 					Sessions.Clear();
 
 					LoadThemas = new TaskWrapper(GetLoadThemasTask());

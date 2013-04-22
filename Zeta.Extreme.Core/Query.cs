@@ -215,7 +215,9 @@ namespace Zeta.Extreme {
 				}
 
 				if (EvaluationType == QueryEvaluationType.Formula && null == Result) {
-					return GetFormulaResult();
+					var result = GetFormulaResult();
+					FormulaStorage.Default.Return(AssignedFormulaKey,AssignedFormula);
+					return result;
 				}
 				WaitResult(timeout);
 				if (null != Result) {
@@ -255,6 +257,10 @@ namespace Zeta.Extreme {
 			return Result;
 		}
 
+		/// <summary>
+		/// Ключ формулы
+		/// </summary>
+		public string AssignedFormulaKey { get; set; }
 
 		/// <summary>
 		/// 	Позволяет синхронизировать запросы в подсессиях

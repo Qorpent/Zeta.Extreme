@@ -191,6 +191,21 @@ namespace Zeta.Extreme {
 
 
 		/// <summary>
+		/// Флаг использования синхронизированной подготовки запросов
+		/// </summary>
+		public bool UseSyncPreparation { get; set; }
+		/// <summary>
+		/// Синхронизированная подготовка запроса
+		/// </summary>
+		/// <param name="query"></param>
+		/// <returns></returns>
+		public void Prepare(IQuery query) {
+			var preparator = GetPreparator();
+			preparator.Prepare(query);
+			Return(preparator);
+		}
+
+		/// <summary>
 		///     Производит асинхронную подготовку запроса к выполнению использует ту же
 		///     агенду, что и регистрация
 		/// </summary>
@@ -198,7 +213,11 @@ namespace Zeta.Extreme {
 		/// <returns>
 		/// </returns>
 		public Task PrepareAsync(IQuery query) {
+			if (UseSyncPreparation) {
+				Prepare(query);
+			}
 			lock (thissync) {
+				
 				var id = _preEvalTaskCounter++;
 				var task = new Task(() =>
 					{

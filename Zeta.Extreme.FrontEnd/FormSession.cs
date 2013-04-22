@@ -1025,6 +1025,7 @@ namespace Zeta.Extreme.FrontEnd {
 
 		private void EnsureDataSession() {
 			DataSession = DataSession ?? ExtremeFactory.CreateSession(new SessionSetupInfo {CollectStatistics = true, PropertySource = new FormSessionDataSessionPropertySoruce(this)});
+			//DataSession.UseSyncPreparation = true;
 		}
 
 		#region Nested type: IdxCol
