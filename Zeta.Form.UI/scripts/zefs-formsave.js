@@ -4,7 +4,7 @@
 !function($) {
     var root = window.zeta = window.zeta || {};
     var zefsformsave = new root.Widget("zefsformsave", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 100 });
-    var b = $('<button class="btn btn-small btn-primary" title="Сохранить форму" />').html('<i class="icon-ok icon-white"/>').hide();
+    var b = $('<button class="btn btn-small" title="Сохранить форму" disabled/>').html('<i class="icon-ok"/>');
     var preloader = $('<div/>').css("padding", "1px 7px").append($('<img src="images/300.gif"/>')).hide();
     var backdrop = $('<div class="zefsbackdrop"/>');
     b.click(function(e) {
@@ -17,7 +17,10 @@
     });
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
         if (zefs.myform.lock.cansave || zefs.myform.lock.cansaveoverblock) {
-            b.show(); backdrop.hide();
+            backdrop.hide();
+            b.addClass("btn-primary");
+            b.find("i").addClass("icon-white");
+            b.removeAttr("disabled");
         }
         $('#consoleBody').append(backdrop.hide());
     });
