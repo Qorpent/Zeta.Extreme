@@ -294,6 +294,8 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Перезагрузка системы
 		/// </summary>
 		public void Reload() {
+            FormServersState.CurrentReloadOperationsIncrease();
+
 			lock (ReloadState) {
 
 					((IResetable) Application.Files).Reset(null);
@@ -314,6 +316,8 @@ namespace Zeta.Extreme.FrontEnd {
 				
 			
 			}
+
+            FormServersState.CurrentReloadOperationsDecrease();
 		}
 		/// <summary>
 		/// Объект синхронизации с перезагрузкой
