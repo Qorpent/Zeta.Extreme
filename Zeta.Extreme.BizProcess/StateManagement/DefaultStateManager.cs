@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Qorpent;
 using Qorpent.IoC;
+using Qorpent.Security;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
@@ -89,7 +90,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 				CheckCheckersOrder();
 				var formRecord = Repository.GetFormRecord(form);
 				var lastState = Repository.GetLastFormState(form);
-				var context = new StateValidationContext(this, form, formRecord, lastState, newStateType,Container);
+				var context = new StateValidationContext(this, form, formRecord, lastState, newStateType,Container, Application.Roles);
 				if (context.OldState == context.NewState) {
 					//если статус не меняется значит и нельзя выполнить эту операцию
 					return new FormStateOperationResult

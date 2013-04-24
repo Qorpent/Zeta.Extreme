@@ -1,11 +1,70 @@
 using System;
+using System.Linq;
 using Qorpent;
+using Zeta.Extreme.BizProcess.StateManagement.Attributes;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	/// Ѕазовый класс расширений анализа возможности установки статуса
 	/// </summary>
 	public abstract class FormStateAvailabilityCheckerBase : ServiceBase,IFormStateAvailabilityChecker {
+		/// <summary>
+		/// ƒанный конструктор настраивает объект исход€ из примененных атрибутов
+		/// </summary>
+		protected FormStateAvailabilityCheckerBase() {
+			var attributes = GetType().GetCustomAttributes(typeof (StateAttributeBase), true).OfType<StateAttributeBase>().ToArray();
+			foreach (var attribute in attributes) {
+				var errorMessage = attribute as ErrorMessageAttribute;
+				if (null != errorMessage) {
+					Message = errorMessage.Message;
+					continue;
+				}
+				var targetState = attribute as TargetStateAttribute;
+				if (null != targetState)
+				{
+					TargetFormState = targetState.Type;
+					continue;
+				}
+				var sourceState = attribute as SourceStateAttribute;
+				if (null != sourceState)
+				{
+					SourceFormState = sourceState.Type;
+					continue;
+				}
+				var checkIndex = attribute as CheckIndexAttribute;
+				if (null != checkIndex)
+				{
+					Index = checkIndex.Index;
+					continue;
+				}
+
+				var reasonType = attribute as ReasonTypeAttribute;
+				if (null != reasonType)
+				{
+					ReasonType = reasonType.Type;
+					continue;
+				}
+				var skipRole = attribute as SkipRoleAttribute;
+				if (null != skipRole)
+				{
+					SkipRole = skipRole.Role;
+					SkipRoleExact = skipRole.Exact;
+					continue;
+				}
+			}
+
+		}
+
+		/// <summary>
+		/// ѕризнак того что <see cref="SkipRole"/> должна быть €вно прив€зана к пользователю
+		/// </summary>
+		protected bool SkipRoleExact { get; set; }
+
+		/// <summary>
+		/// —истемна€ роль, игнорирующа€ данную проверку
+		/// </summary>
+		public string SkipRole { get; set; }
+
 		/// <summary>
 		/// User-defined order index
 		/// </summary>
@@ -64,6 +123,12 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 			if (FormStateType.None != SourceFormState)
 			{
 				if (Context.OldState != SourceFormState) return null;
+			}
+			if (!string.IsNullOrWhiteSpace(SkipRole)) {
+				var isInSkipRole = Context.RoleResolver.IsInRole(Context.Form.Usr, SkipRole, SkipRoleExact);
+				if (isInSkipRole) {
+					return null;
+				}
 			}
 
 			if (InternalIsValid()) {

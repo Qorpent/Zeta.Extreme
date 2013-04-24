@@ -36,6 +36,10 @@
     <Compile Include="Reports\ISavedReportParameter.cs" />
     <Compile Include="Reports\Parameter.cs" />
     <Compile Include="Reports\ParametersCollection.cs" />
+    <Compile Include="StateManagement\Attributes\CheckIndexAttribute.cs" />
+    <Compile Include="StateManagement\Attributes\ErrorMessageAttribute.cs" />
+    <Compile Include="StateManagement\Attributes\ReasonTypeAttribute.cs" />
+    <Compile Include="StateManagement\Attributes\StateAttributeBase.cs" />
     <Compile Include="StateManagement\DefaultFormStateRepository.cs" />
     <Compile Include="StateManagement\DefaultStateManager.cs" />
     <Compile Include="StateManagement\FormStateAvailabilityCheckerBase.cs" />
@@ -56,7 +60,10 @@
     <Compile Include="StateManagement\PeriodStateRecord.cs" />
     <Compile Include="StateManagement\ScheduleOvertime.cs" />
     <Compile Include="StateManagement\ScheduleState.cs" />
+    <Compile Include="StateManagement\Attributes\SkipRoleAttribute.cs" />
+    <Compile Include="StateManagement\Attributes\SourceStateAttribute.cs" />
     <Compile Include="StateManagement\StateValidationContext.cs" />
+    <Compile Include="StateManagement\Attributes\TargetStateAttribute.cs" />
     <Compile Include="Themas\ColumnDesc.cs" />
     <Compile Include="Themas\ColumnRowCheckCondition.cs" />
     <Compile Include="Themas\DimensionDescriptor.cs" />
