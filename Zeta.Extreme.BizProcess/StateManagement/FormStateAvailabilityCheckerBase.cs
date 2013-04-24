@@ -1,11 +1,87 @@
 using System;
+using System.Linq;
 using Qorpent;
+using Zeta.Extreme.BizProcess.StateManagement.Attributes;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	/// Базовый класс расширений анализа возможности установки статуса
 	/// </summary>
 	public abstract class FormStateAvailabilityCheckerBase : ServiceBase,IFormStateAvailabilityChecker {
+		/// <summary>
+		/// Данный конструктор настраивает объект исходя из примененных атрибутов
+		/// </summary>
+		protected FormStateAvailabilityCheckerBase() {
+			var attributes = GetType().GetCustomAttributes(typeof (StateAttributeBase), true).OfType<StateAttributeBase>().ToArray();
+			foreach (var attribute in attributes) {
+				var errorMessage = attribute as ErrorMessageAttribute;
+				if (null != errorMessage) {
+					Message = errorMessage.Message;
+					continue;
+				}
+				var targetState = attribute as TargetStateAttribute;
+				if (null != targetState)
+				{
+					TargetFormState = targetState.Type;
+					continue;
+				}
+				var sourceState = attribute as SourceStateAttribute;
+				if (null != sourceState)
+				{
+					SourceFormState = sourceState.Type;
+					continue;
+				}
+				var checkIndex = attribute as CheckIndexAttribute;
+				if (null != checkIndex)
+				{
+					Index = checkIndex.Index;
+					continue;
+				}
+
+				var reasonType = attribute as ReasonTypeAttribute;
+				if (null != reasonType)
+				{
+					ReasonType = reasonType.Type;
+					continue;
+				}
+				var skipRole = attribute as SkipRoleAttribute;
+				if (null != skipRole)
+				{
+					SkipRole = skipRole.Role;
+					SkipRoleExact = skipRole.Exact;
+					continue;
+				}
+
+				var defaultAllow = attribute as DefaultResultAttribte;
+				if (null != defaultAllow) {
+					UseDefaultResult = true;
+					DefaultResult = defaultAllow.Allow;
+					continue;
+
+				}
+			}
+
+		}
+		/// <summary>
+		/// Результат по умолчанию
+		/// </summary>
+		protected bool DefaultResult { get; set; }
+
+		/// <summary>
+		/// Признак использования результата по умолчанию
+		/// </summary>
+		protected bool UseDefaultResult { get; set; }
+
+		/// <summary>
+		/// Признак того что <see cref="SkipRole"/> должна быть явно привязана к пользователю
+		/// </summary>
+		protected bool SkipRoleExact { get; set; }
+
+		/// <summary>
+		/// Системная роль, игнорирующая данную проверку
+		/// </summary>
+		public string SkipRole { get; set; }
+
 		/// <summary>
 		/// User-defined order index
 		/// </summary>
@@ -65,8 +141,14 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 			{
 				if (Context.OldState != SourceFormState) return null;
 			}
-
-			if (InternalIsValid()) {
+			if (!string.IsNullOrWhiteSpace(SkipRole)) {
+				var isInSkipRole = Context.RoleResolver.IsInRole(Context.Form.Usr, SkipRole, SkipRoleExact);
+				if (isInSkipRole) {
+					return null;
+				}
+			}
+			var allow = UseDefaultResult ? DefaultResult : InternalIsValid();
+			if (allow) {
 				return null;
 			}
 			return GetResult();

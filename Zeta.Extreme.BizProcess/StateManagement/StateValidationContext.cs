@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Qorpent.IoC;
+using Qorpent.Security;
 using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.Model;
 
@@ -25,13 +26,18 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <param name="savedLastState"></param>
 		/// <param name="newState"></param>
 		/// <param name="container"></param>
-		public StateValidationContext(IFormStateManager manager, IFormSession form, Form savedFormData, FormState savedLastState, FormStateType newState,IContainer container) {
+		/// <param name="roleResolver"></param>
+		public StateValidationContext(IFormStateManager manager, IFormSession form, Form savedFormData, FormState savedLastState, FormStateType newState,IContainer container, IRoleResolver roleResolver) {
 			_manager = manager;
 			_form = form;
 			_savedFormData = savedFormData;
 			_savedLastState = savedLastState;
 			_newState = newState;
 			_container = container;
+			RoleResolver = roleResolver;
+			if (null == roleResolver && null!=container) {
+				RoleResolver = container.Get<IRoleResolver>();
+			}
 			Options = new Dictionary<string, string>();
 		}
 
@@ -93,5 +99,10 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// Дополнительные настройки контекста
 		/// </summary>
 		public  IDictionary<string,string> Options { get; private set; }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public IRoleResolver RoleResolver { get;  private set; }
 	}
 }
