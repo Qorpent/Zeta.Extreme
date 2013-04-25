@@ -10,13 +10,18 @@
     var checkbtn = $('<button class="btn btn-success btn-mini"/>').text("Утв.");
     var lockbtn = $('<button class="btn btn-warning btn-mini"/>').text("Заблок.");
     var unlockbtn = $('<button class="btn btn-danger btn-mini"/>').text("Разблок.");
-    var checkbtn2 = $('<button class="btn btn-success btn-small"/>').text("Утв.");
-    var lockbtn2 = $('<button class="btn btn-warning btn-small"/>').text("Заблок.");
-    var unlockbtn2 = $('<button class="btn btn-danger btn-small"/>').text("Разблок.");
+
+    var checkbtn2 = $('<button class="btn btn-small" disabled/>').text("Утв.");
+    var lockbtn2 = $('<button class="btn btn-small" disabled/>').text("Заблок.");
+    var unlockbtn2 = $('<button class="btn btn-small" disabled/>').text("Разблок.");
     var progress = $('<img src="images/300.gif"/>').css("margin-left", 3).hide();
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление блокировками"/>')
         .html('<i class="icon-lock"></i><span class="caret"/>');
     var controls = $('<li/>');
+
+    list2.append(lockbtn2);
+    list2.append(unlockbtn2);
+    list2.append(checkbtn2);
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
         var lock =  window.zefs.myform.lock;
         b.get(0).className = "btn btn-small dropdown-toggle";
@@ -31,12 +36,10 @@
         }
         $(b.find("i")).addClass("icon-white");
         controls.empty();
-        list2.empty();
         lockbtn.get(0).className = unlockbtn.get(0).className = checkbtn.get(0).className = "btn btn-mini";
         lockbtn2.get(0).className = unlockbtn2.get(0).className = checkbtn2.get(0).className = "btn btn-small";
         if (lock.haslockrole) {
             controls.append(lockbtn);
-            list2.append(lockbtn2);
             lockbtn.click(function() { window.zefs.myform.lockform(); progress.show(); });
             lockbtn2.click(function() { window.zefs.myform.lockform(); progress.show(); });
             if (lock.canblock) {
@@ -50,7 +53,6 @@
                 lockbtn2.attr("disabled", "disabled");
             }
             controls.append(unlockbtn);
-            list2.append(unlockbtn2);
             unlockbtn.click(function() { window.zefs.myform.unlockform(); progress.show(); });
             unlockbtn2.click(function() { window.zefs.myform.unlockform(); progress.show(); });
             if (lock.canopen) {
@@ -66,7 +68,6 @@
         }
         if (lock.hasholdlockrole) {
             controls.append(checkbtn);
-            list2.append(checkbtn2);
             checkbtn.click(function() { window.zefs.myform.checkform(); progress.show(); });
             checkbtn2.click(function() { window.zefs.myform.checkform(); progress.show(); });
             if (lock.cancheck) {

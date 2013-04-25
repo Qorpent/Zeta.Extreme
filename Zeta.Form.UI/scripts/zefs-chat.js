@@ -89,11 +89,13 @@
         },60000);
         var strong = $(b.find('strong'));
         if (strong.length != 0) {
-            strong.clear();
+            strong.empty();
+        } else {
+            strong = $('<strong/>');
+            b.append(strong);
         }
         if (parseInt(count) > 0) {
             b.addClass("hasunread");
-            strong.clear();
             strong.text(count);
         }
     });

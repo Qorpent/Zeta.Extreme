@@ -47,23 +47,19 @@ $.extend(root,{
 			if (session.NeedMeasure) {
 				thead.find("thead").append($('<th class="measure"/>').text("Ед. изм."));
 			}
-			$.each(session.structure.rows, function(rowidx,row) {
-				var tr = $("<tr/>").attr("level",row.level);
-				if (row.iscaption) tr.addClass("istitle");
+			$.each(session.structure.rows, function(i,row) {
+                var tr = $("<tr/>").attr("level",row.level);
+                if (row.iscaption) tr.addClass("istitle");
                 tr.append($('<td class="number"/>').attr("title", row.code).text(row.number || ""));
-				if (session.structure.rows.length > rowidx + 1) {
-                    if (row.level < session.structure.rows[rowidx + 1].level) {
-                        tr.addClass("haschild");
-                    }
-                }
+                if (row.childrens.length != 0) tr.addClass("haschild");
                 var td = $('<td class="name"/>').text(row.name);
-				if (row.iscaption) {
-					tr.append(td.attr("colspan", "100"));
-				} else {
-					tr.append(td);
-					if (session.NeedMeasure) {
-						tr.append($('<td class="measure"/>').text(row.measure));
-					}
+                if (row.iscaption) {
+                    tr.append(td.attr("colspan", "100"));
+                } else {
+                    tr.append(td);
+                    if (session.NeedMeasure) {
+                        tr.append($('<td class="measure"/>').text(row.measure));
+                    }
                     $.each(session.structure.cols, function(i,col) {
                         var td = $('<td class="data notloaded"/>').attr({
                             "id": row.idx + ":" + col.idx,
