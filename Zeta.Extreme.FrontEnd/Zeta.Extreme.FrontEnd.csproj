@@ -49,6 +49,7 @@
     <Compile Include="Actions\SessionProcessing\SaveReadyAction.cs" />
     <Compile Include="Actions\SessionProcessing\SaveStateAction.cs" />
     <Compile Include="Actions\Abstracts\SessionStartBase.cs" />
+    <Compile Include="Actions\ZefsServer\GetClusterNodeLoad.cs" />
     <Compile Include="DataStructures\AccessibleObjects.cs" />
     <Compile Include="DataStructures\DivisionRecord.cs" />
     <Compile Include="DataStructures\ObjectRecord.cs" />

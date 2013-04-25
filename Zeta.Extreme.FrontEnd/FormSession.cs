@@ -422,13 +422,14 @@ namespace Zeta.Extreme.FrontEnd {
 				}
 				Activations++;
 				var sw = Stopwatch.StartNew();
+                FormSessionsState.CurrentFormRenderingOperationsIncrease();
 				PrepareMetaSets();
 				sw.Stop();
 				TimeToPrepare = sw.Elapsed;
 				PrepareStructureTask = new TaskWrapper(
 					Task.Run(() => { RetrieveStructure(); })
 					);
-
+                FormSessionsState.CurrentFormRenderingOperationsDecrease();
 				StartCollectData();
 
 				IsStarted = true;
@@ -439,6 +440,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Метод прямого вызова повторного сбора данных
 		/// </summary>
 		protected internal void StartCollectData() {
+            FormSessionsState.CurrentFormLoadingOperationsIncrease();
 			lock (this) {
 				if (null != PrepareDataTask) {
 					return;
@@ -462,6 +464,8 @@ namespace Zeta.Extreme.FrontEnd {
 					Thread.Sleep(10);
 				}
 			}
+
+            FormSessionsState.CurrentFormLoadingOperationsDecrease();
 		}
 
 		private void RetrieveStructure() {
@@ -874,7 +878,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public bool BeginSaveData(XElement xmldata) {
 			lock (this) {
-				
+                FormSessionsState.DataSaveOperationsIncrease();
 				if (null != _currentSaveTask) {
 					if (!_currentSaveTask.IsFaulted) {
 						_currentSaveTask.Wait();
@@ -883,6 +887,9 @@ namespace Zeta.Extreme.FrontEnd {
 				CurrentSaver = CurrentSaver ?? (null == FormServer ? null : FormServer.GetSaver()) ?? new DefaultSessionDataSaver();
 				_currentSaveTask = CurrentSaver.BeginSave(this, xmldata, Application.Current.Principal.CurrentUser);
 				Logger.Info("save started");
+
+                FormSessionsState.DataSaveOperationsDecrease();
+
 				return true;
 			}
 		}
