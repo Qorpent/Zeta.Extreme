@@ -3,6 +3,12 @@ var root = window.zefs = window.zefs || {};
 var api = root.api = root.api || {};
 var Command = window.qweb.Command;
 
+api.siterootold = function(){
+    if (location.host.search('admin|corp|133|49') != -1 || location.port == '448' || location.port == '449') return '/ecot/';
+    //      else if (location.host.search('assoi') == 0 || location.port == '447') return '/eco/';
+    return '/eco/';
+};
+
 $.extend(api,(function(){
 	return {
 		server : {
@@ -47,7 +53,7 @@ $.extend(api,(function(){
                             o.level = o.level || 0;
                             o.exref = o.exref || false;
                             o.childrens = o.childrens || [];
-                            if (!!currentRow) {
+                            /*if (!!currentRow) {
                                 if (o.level > currentRow.level) {
                                     o.parent = currentRow;
                                     currentRow.childrens.push(o);
@@ -59,8 +65,8 @@ $.extend(api,(function(){
                             } else {
                                 currentRow = o;
                                 o.parent = result.rows;
-                                result.rows.push(o);
-                            }
+                            }*/
+                            result.rows.push(o);
                         }
                     });
                     result.rootrow = $($.map(result.rows, function(e) { if (e.level == 0) return e.code })).get(0);
@@ -251,6 +257,15 @@ $.extend(api,(function(){
                         if (o.ismyobj) myobjs.push(o);
                     });
                     $.extend(obj, { my: myobjs});
+                    return obj;
+                }
+            }),
+            getnews : $.extend(new Command({domain: "message", name: "getnews"}), {
+                url : document.location.protocol + "//" + document.location.host + api.siterootold() + "message/getnews.{DATATYPE}.qweb",
+                wrap : function(obj) {
+                    $.each(obj, function(i,o) {
+                        o.Date = eval(o.Version.substring(2));
+                    });
                     return obj;
                 }
             })

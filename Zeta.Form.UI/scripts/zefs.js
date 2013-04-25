@@ -53,10 +53,39 @@ root.init = root.init ||
         return result;
     };
 
-    api.siterootold = function(){
-        if (location.host.search('admin|corp|133|49') != -1 || location.port == '448' || location.port == '449') return '/ecot/';
-//      else if (location.host.search('assoi') == 0 || location.port == '447') return '/eco/';
-        return '/eco/';
+    var GetNews = function() {
+        $.ajax({
+            url : document.location.protocol + "//" + document.location.host + api.siterootold() + "message/getnews.json.qweb",
+            type : "GET",
+            datatype : "json"
+        }).success(function(data) {
+            if (!$.isEmptyObject(data)) {
+                var content = $('<div class="zefsnews"/>');
+                $.each(data, function(i, m) {
+                    var n = $('<div class="news-header"/>');
+                    var u = $('<span class="label label-info"/>').text(m.Sender);
+                    var archivebtn = $('<button class="btn btn-mini btn-success pull-right"/>')
+                        .attr("code", m.Code)
+                        .html('<i class="icon-white icon-ok"></i>Прочитать');
+                    var v = eval(m.Version.substring(2));
+                    n.append(u, $('<span class="label"/>').text(v.format("dd.mm.yyyy HH:MM:ss")), archivebtn);
+                    content.append($('<div/>').append(n, $('<div class="news-content"/>').html(m.Text)));
+                    u.zetauser();
+                });
+                $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                    title: "Непрочитанные новости",
+                    content: content, width: 820, height: 500, closebutton: false, backdrop: true
+                });
+            }
+        })
+    };
+
+    var ArchiveNews = function(code) {
+
+    };
+
+    var GetNewCount = function() {
+
     };
 
     var OpenForm = function(params, blank) {
@@ -482,8 +511,9 @@ root.init = root.init ||
             api.lock.history.execute({session: root.myform.sessionId});
         } else {
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
-                title: result.responseText.match(/<[h|H]1>([^<]+)/)[1].trim(),
-                text: result.responseText.match(/<i>([^<]+)/)[1].trim()
+                title: "Во время блокировки произошла ошибка",
+                content: $('<div/>').html(result.responseText),
+                width: 800
             });
         }
     });
@@ -571,7 +601,8 @@ root.init = root.init ||
         chatadd: ChatAdd,
         chatarchive: ChatArchive,
         chatread: ChatRead,
-        chatupdateds: ChatUpdateOnce
+        chatupdateds: ChatUpdateOnce,
+        getnews : GetNews
     });
 
     return root.myform;

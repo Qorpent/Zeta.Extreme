@@ -67,9 +67,15 @@
 		}
     };
 
-    $.extend(root.Command.prototype,{
+    $.extend(root.Command.prototype, {
         datatype : "json",
         getParameters : function() { return {} },
+        getPrimaryServer : function() {
+            return "";
+        },
+        getSecondaryServer : function() {
+            return "";
+        },
         getUrl:function(datatype) {
             datatype = datatype || this.datatype;
             return siteroot + this.url.replace('{DATATYPE}',datatype);
@@ -175,6 +181,8 @@
                         }
                         return x;
                     },
+                    /*xhrFields: { withCredentials: true },
+                    crossDomain: true,*/
                     cache: false,
                     contentType: false,
                     processData: false
@@ -184,14 +192,14 @@
                 .success(function(r){
                     myoptions.onsuccess(r,params);
                 })
-                .error(myoptions.onerror ||
+                .error(myoptions.onerror/* ||
                 function(error) {
                     log.W(new LogMessage({
                         code : error.status,
                         status : error.statusText,
                         innerException : JSON.parse(error.responseText)
                     }));
-                })
+                }*/)
                 .complete(function(r) {
                     self.triggerOnComplete(r)
                 });

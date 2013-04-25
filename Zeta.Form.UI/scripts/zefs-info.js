@@ -11,8 +11,10 @@
         function(e) {
             e.preventDefault();
             var formacode = zefs.myform.currentSession.FormInfo.Code.substring(0,zefs.myform.currentSession.FormInfo.Code.search(/[A|B]/));
-            var url = location.protocol + "//" + location.host + "/ecot/report/render.rails?tcode=themadocAa.out&tp.allstuff=true&tp.themacode=" + formacode;
-            window.open(url, "_blank");
+            var url = location.protocol + "//" + location.host + zefs.api.siterootold() + "wiki/get.rails?ajax=1&dialog=2&code=thema%2F" + formacode;
+            var iframe = $('<iframe id="debugResult"/>').css("height", 340).attr("src", url);
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, { title: "Справка по форме", content: iframe, width: 700, height: 350});
+            iframe = null;
         }
     )
     var m = $('<div class="btn-group"/>').append(

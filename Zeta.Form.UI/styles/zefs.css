@@ -13,6 +13,31 @@
     background: #cecece;
 }
 
+.zefsnews>div {
+    padding: 10px;
+    border-bottom: 1px dashed lightgray;
+}
+
+.zefsnews>div:nth-child(2n) {
+    background-color: #f0f0f0;
+}
+
+.zefsnews>div:nth-child(2n-1) {
+    background-color: #f9f9f9;
+}
+
+.news-header {
+    height: 25px;
+}
+
+.news-header .label {
+    margin-right: 3px;
+}
+
+.zefsnews .news-content {
+
+}
+
 .modal iframe {
     width: 100%;
     box-sizing: border-box;
