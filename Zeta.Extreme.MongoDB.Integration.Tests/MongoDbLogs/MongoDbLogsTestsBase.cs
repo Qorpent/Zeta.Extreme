@@ -99,7 +99,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             public int Period { get; private set; }
             public IZetaMainObject Object { get; private set; }
             public IInputTemplate Template { get; private set; }
-            public string Usr { get; private set; }
+            public string Usr { get; set; }
             public List<OutCell> Data { get; private set; }
             public IUserLog Logger { get; set; }
             public LockStateInfo GetStateInfo() {
