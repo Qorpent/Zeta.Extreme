@@ -6,7 +6,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.ZefsServer {
     /// <summary>
     ///     Возвращает JSON-строку, описывающую текущеее состояние загрузки сервера
     /// </summary>
-    [Action("zefs.nodeload")]
+    [Action("zefs.nodeload",Role="DEFAULT")]
     class GetClusterNodeLoad : ActionBase {
 
         /// <summary>
