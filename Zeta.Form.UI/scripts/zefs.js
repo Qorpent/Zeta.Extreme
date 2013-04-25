@@ -413,10 +413,7 @@ root.init = root.init ||
     });
 
     api.data.saveready.onSuccess(function(e, result) {
-        if(result.Uid != root.myform.sessionId) {
-            root.myform.sessionId = result.Uid;
-            root.myform.currentSession = result;
-        }
+        root.myform.sessionId = result.Uid;
         if ($.isEmptyObject(root.myform.datatosave)) return;
         $.each($('td.recalced'), function(i,e) {
             $(e).removeClass("recalced");
