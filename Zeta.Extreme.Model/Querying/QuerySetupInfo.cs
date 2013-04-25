@@ -29,6 +29,7 @@ namespace Zeta.Extreme.Model.Querying {
 			Col = ExtremeFactory.CreateColumnHandler();
 			Obj = ExtremeFactory.CreateObjHandler();
 			Time = ExtremeFactory.CreateTimeHandler();
+			Reference = ExtremeFactory.CreateReference();
 		}
 		/// <summary>
 		/// Описатель строки
@@ -50,5 +51,9 @@ namespace Zeta.Extreme.Model.Querying {
 		/// Описатель валюты
 		/// </summary>
 		public string Valuta { get; set; }
+		/// <summary>
+		/// Ссылочное измерение
+		/// </summary>
+		public IReferenceHandler Reference { get; set; }
 	}
 }

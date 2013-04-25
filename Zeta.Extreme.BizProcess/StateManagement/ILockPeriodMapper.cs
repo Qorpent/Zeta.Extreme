@@ -1,4 +1,5 @@
 ﻿#region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,19 +15,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.BizProcess/ILockPeriodMapper.cs
+// PROJECT ORIGIN: ILockPeriodMapper.cs
+
 #endregion
+
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
-	/// 	Интерфейс мапера блокировки периодов
+	///     Интерфейс мапера блокировки периодов
 	/// </summary>
 	public interface ILockPeriodMapper {
 		/// <summary>
-		/// 	Получить список блокированных периодов с командами блокировки
+		///     Получить список блокированных периодов с командами блокировки
 		/// </summary>
-		/// <param name="operation"> </param>
-		/// <param name="givenperiod"> </param>
-		/// <returns> </returns>
+		/// <param name="operation"></param>
+		/// <param name="givenperiod"></param>
+		/// <returns>
+		/// </returns>
 		int[] GetLockingPeriods(LockOperation operation, int givenperiod);
 	}
 }

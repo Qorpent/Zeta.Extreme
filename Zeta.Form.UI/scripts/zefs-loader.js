@@ -24,5 +24,6 @@ document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-objs" type="te
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-bizprocess" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-colmanager" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-lockmanager" type="text/javascript"></script>');
+document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-nullrows" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-alerter" type="text/javascript"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-report" type="text/javascript"></script>');

@@ -23,7 +23,7 @@ namespace Zeta.Extreme.Primary {
 	/// <summary>
 	/// 	Внутренняя конструкция для описания участка скрипта в терминах сочетания объкта-колонки
 	/// </summary>
-	internal struct ObjColQueryGeneratorStruct {
+	internal class ObjColQueryGeneratorStruct {
 		/// <summary>
 		/// 	Id колонки
 		/// </summary>
@@ -47,5 +47,11 @@ namespace Zeta.Extreme.Primary {
 		///  Фильтр по контрагенту
 		/// </summary>
 		public string af;
+
+		/// <summary>
+		/// 	Id объекта
+		/// </summary>
+		public string ids;
+
 	}
 }

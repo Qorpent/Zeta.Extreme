@@ -11,6 +11,11 @@
         position: static !important;
     }
 
+    .kurator.label,
+    .zefsextrapannel {
+        display: none !important;
+    }
+
     .zefsform {
         margin-top: 0 !important;
     }
@@ -25,13 +30,22 @@
         text-shadow: none;
     }
 
-    .editable {
+    td.editable {
         background-color: none !important;
     }
 
-    .active {
+    td.active {
         display: table-cell !important;
         position: static !important;
-        border: none !important;
+        border: 1px solid #ccc !important;
+    }
+
+    tr.preactive td.number,
+    tr.active td.number {
+        border-color: #cccccc !important;
+    }
+
+    td.active:after {
+        display: none !important;
     }
 }

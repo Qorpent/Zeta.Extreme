@@ -44,6 +44,7 @@ using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Model.SqlSupport;
+using FormState = Zeta.Extreme.Model.FormState;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
@@ -51,9 +52,9 @@ namespace Zeta.Extreme.FrontEnd {
 	/// </summary>
 	[Serialize]
 	public class FormSession :
-		IFormSession,
 		IFormDataSynchronize,
-		IFormSessionControlPointSource {
+		IFormSessionControlPointSource,
+        IFormSession {
 		/// <summary>
 		/// 	Создает сессию формы
 		/// </summary>
@@ -409,7 +410,7 @@ namespace Zeta.Extreme.FrontEnd {
 				if (IsStarted) {
 					return;
 				}
-
+				Activations++;
 				var sw = Stopwatch.StartNew();
 				PrepareMetaSets();
 				sw.Stop();
@@ -466,7 +467,7 @@ namespace Zeta.Extreme.FrontEnd {
 						 name = r.Name,
 						 idx = ri.Idx,
 						 iscaption = r.IsMarkSeted("0CAPTION"),
-						 isprimary = r.GetIsPrimary(),
+						 isprimary = ri.GetIsPrimary() ,
 						 level = ri.Level,
 						 number = r.OuterCode,
 						 measure = NeedMeasure ? r.ResolveMeasure() : "",
@@ -547,8 +548,9 @@ namespace Zeta.Extreme.FrontEnd {
 						{
 							Row = {Native = r.Native},
 							Col = ch,
-							Obj = {Native = r.AttachedObject ?? Object},
-							Time = {Year = c._.Year, Period = c._.Period}
+							Obj = { Native = r.AttachedObject ?? Object, DetailMode = r.SumObj ? DetailMode.SumObject : DetailMode.None },
+							Time = {Year = c._.Year, Period = c._.Period},
+							Reference = { Contragents = r.AltObjFilter }
 						});
 					q = DataSession.Register(q, key);
 
@@ -583,8 +585,10 @@ namespace Zeta.Extreme.FrontEnd {
 						{
 							Row = {Native = primaryrow.Native},
 							Col = {Native = primarycol._.Target},
-							Obj = { Native = primaryrow.AttachedObject ?? Object },
-							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
+							Obj = { Native = primaryrow.AttachedObject ?? Object, DetailMode = primaryrow.SumObj?DetailMode.SumObject : DetailMode.None},
+							Time = {Year = primarycol._.Year, Period = primarycol._.Period},
+							Reference = {Contragents = primaryrow.AltObjFilter}
+							
 						});
 					var key = primaryrow.Idx + ":" + primarycol.i;
 					queries[key] = (IQuery) DataSession.Register(q, key);
@@ -599,8 +603,9 @@ namespace Zeta.Extreme.FrontEnd {
 						{
 							Row = {Native = primaryrow.Native},
 							Col = {Native = primarycol._.Target},
-							Obj = { Native = primaryrow.AttachedObject ?? Object },
-							Time = {Year = primarycol._.Year, Period = primarycol._.Period}
+							Obj = { Native = primaryrow.AttachedObject ?? Object, DetailMode = primaryrow.SumObj?DetailMode.SumObject : DetailMode.None},
+							Time = {Year = primarycol._.Year, Period = primarycol._.Period},
+							Reference = { Contragents = primaryrow.AltObjFilter }
 						});
 					var key = primaryrow.Idx + ":" + primarycol.i;
 					queries[key] = DataSession.Register(q, key);
@@ -653,7 +658,7 @@ namespace Zeta.Extreme.FrontEnd {
 			InitializeColset();
 			primarycols = cols.Where(_ => _._.Editable && !_._.IsFormula).ToArray();
 			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
-			primaryrows = rows.Where(_ => !_.Native.IsFormula && 0 == _.Native.Children.Count && !_.Native.IsMarkSeted("0ISCAPTION")).ToArray();
+			primaryrows = rows.Where(_ => _.GetIsPrimary()).ToArray();
 		}
 
 		private void InitializeColset() {
@@ -729,6 +734,7 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 			foreach (var row in Template.Rows.Select(_ => _.Target)) {
 				if (IsRowMatch(row)) {
+					
 					AddRow(result, row, 0);
 				}
 			}
@@ -738,6 +744,9 @@ namespace Zeta.Extreme.FrontEnd {
 
 		private void AddRow(IList<FormStructureRow> result, IZetaRow row, int level, bool markreadonly= false) {
 			_ridx++;
+			if (PrepareByCustomGeneratorIfNeeded(result, row, level)) return;
+
+
 			bool mymarkreadonly = markreadonly;
 			var myrow = row;
 			if (myrow.RefTo != null) {
@@ -755,6 +764,31 @@ namespace Zeta.Extreme.FrontEnd {
 					AddRow(result, c, level + 1,mymarkreadonly);
 				}
 			}
+		}
+
+		private bool PrepareByCustomGeneratorIfNeeded(IList<FormStructureRow> result, IZetaRow row, int level) {
+			var specialView = TagHelper.Value(row.Tag, "specialformview");
+			if (!string.IsNullOrWhiteSpace(specialView)) {
+				var customRowPreparator =
+					Application.Current.Container.Get<IFormRowProvider>(specialView + ".special.row.preparator");
+				if (null == customRowPreparator) {
+					var stub = new Row
+						{
+							Code = "stub_" + row.Code,
+							Name = row.Name + " (строка не поддерживается - отсутствует расширение " + specialView + ")",
+							MarkCache = "/0CAPTION/"
+						};
+					result.Add(new FormStructureRow {Idx = _ridx, Level = level, Native = stub});
+				}
+				else {
+					foreach (var formStructureRow in customRowPreparator.GetRows(this, row,level)) {
+						formStructureRow.Idx = _ridx++;
+						result.Add(formStructureRow);
+					}
+				}
+				return true;
+			}
+			return false;
 		}
 
 		private bool IsRowMatch(IZetaRow row) {
@@ -868,8 +902,11 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public bool RestartData() {
 			lock (this) {
+				Activations++;
 				WaitData();
 				PrepareDataTask = null;
+				DataSession = null;
+				Data.Clear();
 				StartCollectData();
 				return true;
 			}
@@ -988,6 +1025,7 @@ namespace Zeta.Extreme.FrontEnd {
 
 		private void EnsureDataSession() {
 			DataSession = DataSession ?? ExtremeFactory.CreateSession(new SessionSetupInfo {CollectStatistics = true, PropertySource = new FormSessionDataSessionPropertySoruce(this)});
+			//DataSession.UseSyncPreparation = true;
 		}
 
 		#region Nested type: IdxCol

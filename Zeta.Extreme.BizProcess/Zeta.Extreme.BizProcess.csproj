@@ -16,7 +16,11 @@
     <Compile Include="Forms\AttachedFileType.cs" />
     <Compile Include="Forms\Attachment.cs" />
     <Compile Include="Forms\BufferedAttachmentStorageBase.cs" />
+    <Compile Include="Forms\Custom\ExtendedSplitStructureItem.cs" />
     <Compile Include="Forms\DataCollectionStream.cs" />
+    <Compile Include="Forms\Custom\ExtendedStructureExtensions.cs" />
+    <Compile Include="Forms\Custom\ExtendedStructureItem.cs" />
+    <Compile Include="Forms\Custom\ExtensionSqlBasedStarter.cs" />
     <Compile Include="Forms\FormAttachment.cs" />
     <Compile Include="Forms\FormAttachmentSource.cs" />
     <Compile Include="Forms\FormChatItem.cs" />
@@ -32,6 +36,16 @@
     <Compile Include="Reports\ISavedReportParameter.cs" />
     <Compile Include="Reports\Parameter.cs" />
     <Compile Include="Reports\ParametersCollection.cs" />
+    <Compile Include="StateManagement\DefaultFormStateRepository.cs" />
+    <Compile Include="StateManagement\DefaultStateManager.cs" />
+    <Compile Include="StateManagement\FormStateAvailabilityCheckerBase.cs" />
+    <Compile Include="StateManagement\FormStateOperationDenyReason.cs" />
+    <Compile Include="StateManagement\FormStateType.cs" />
+    <Compile Include="StateManagement\FormStateOperationDenyReasonType.cs" />
+    <Compile Include="StateManagement\FormStateOperationResult.cs" />
+    <Compile Include="StateManagement\IFormStateAvailabilityChecker.cs" />
+    <Compile Include="StateManagement\IFormStateManager.cs" />
+    <Compile Include="StateManagement\IFormStateRepository.cs" />
     <Compile Include="StateManagement\ILockPeriodMapper.cs" />
     <Compile Include="StateManagement\IPeriodStateManager.cs" />
     <Compile Include="StateManagement\IScheduleChecker.cs" />
@@ -42,6 +56,7 @@
     <Compile Include="StateManagement\PeriodStateRecord.cs" />
     <Compile Include="StateManagement\ScheduleOvertime.cs" />
     <Compile Include="StateManagement\ScheduleState.cs" />
+    <Compile Include="StateManagement\StateValidationContext.cs" />
     <Compile Include="Themas\ColumnDesc.cs" />
     <Compile Include="Themas\ColumnRowCheckCondition.cs" />
     <Compile Include="Themas\DimensionDescriptor.cs" />
@@ -70,6 +85,7 @@
     <Compile Include="Themas\TypedParameter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>

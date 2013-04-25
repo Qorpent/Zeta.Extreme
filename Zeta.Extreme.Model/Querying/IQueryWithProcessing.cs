@@ -78,6 +78,10 @@ namespace Zeta.Extreme.Model.Querying {
 		/// 	Тип вычисления запроса
 		/// </summary>
 		QueryEvaluationType EvaluationType { get; set; }
+		/// <summary>
+		/// Связанный ключ формулы
+		/// </summary>
+		string AssignedFormulaKey { get; set; }
 
 		/// <summary>
 		/// 	Позволяет синхронизировать запросы в подсессиях

@@ -11,16 +11,15 @@
 
     var ChangePeriod = function(e) {
         var type = $($(e.target).parents()[1]).attr("type");
-        if (type.search("Plan") != -1) location.hash = location.hash.replace(/[ABC].in/gi,'B.in');
-        else if (type == "Corrective") location.hash = location.hash.replace(/[ABC].in/gi,'C.in');
-        else location.hash = location.hash.replace(/[ABC].in/gi,'A.in');
-        location.hash = location.hash.replace(/period=\d+/gi,"period=" + $(e.target).attr("periodcode"));
-        location.reload();
+        var form = zefs.myform.currentSession.FormInfo.Code;
+        if (type.search("Plan") != -1) form = form.replace(/[ABC].in/gi,'B.in');
+        else if (type == "Corrective") form = form.replace(/[ABC].in/gi,'C.in');
+        else form = form.replace(/[ABC].in/gi,'A.in');
+        zefs.myform.openform({form: form, period: $(e.target).attr("periodcode")}, e.ctrlKey);
     };
 
     var ChangeYear = function(e) {
-        location.hash = location.hash.replace(/year=\d+/gi,"year=" + $(e.target).attr("periodcode"));
-        location.reload();
+        zefs.myform.openform({year: $(e.target).attr("periodcode")}, e.ctrlKey);
     };
 
     var GetPeriodGroupName = function(code) {

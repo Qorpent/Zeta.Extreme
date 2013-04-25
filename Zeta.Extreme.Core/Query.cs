@@ -23,9 +23,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
+using Zeta.Extreme.Primary;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -46,7 +48,7 @@ namespace Zeta.Extreme {
 			Col = new ColumnHandler();
 			Obj = new ObjHandler();
 			Reference = new ReferenceHandler();
-			Currency = "NONE";
+			Currency = PrimaryConstants.VALUTA_NONE;
 		}
 		/// <summary>
 		/// Простой конструктор типовых запросов
@@ -213,7 +215,9 @@ namespace Zeta.Extreme {
 				}
 
 				if (EvaluationType == QueryEvaluationType.Formula && null == Result) {
-					return GetFormulaResult();
+					var result = GetFormulaResult();
+					FormulaStorage.Default.Return(AssignedFormulaKey,AssignedFormula);
+					return result;
 				}
 				WaitResult(timeout);
 				if (null != Result) {
@@ -253,6 +257,10 @@ namespace Zeta.Extreme {
 			return Result;
 		}
 
+		/// <summary>
+		/// Ключ формулы
+		/// </summary>
+		public string AssignedFormulaKey { get; set; }
 
 		/// <summary>
 		/// 	Позволяет синхронизировать запросы в подсессиях
@@ -343,6 +351,13 @@ namespace Zeta.Extreme {
 			AdaptDetailModeForDetailBasedSubtrees();
 			AdaptExRefLinkSourceForColumns(session);
 			Reference.Normalize(this);
+			if (string.IsNullOrWhiteSpace(Currency)) {
+				Currency = PrimaryConstants.VALUTA_NONE;
+			}
+			//жесткая защита от референции на несуществующие строки
+			if (!IgnoreCheckPrimaryRowExistence && Row.IsPrimary() && Row.Native == null) {
+				Result = new QueryResult{IsComplete = false,Error = new Exception("В качестве первичной строки указан несуществующий код"+Row.Code)};
+			}
 			InvalidateCacheKey();
 		}
 
@@ -449,6 +464,11 @@ namespace Zeta.Extreme {
 		/// 	Автоматический код запроса, присваиваемый системой
 		/// </summary>
 		public long Uid { get; set; }
+
+		/// <summary>
+		/// Флаг отключения проверки наличия строки
+		/// </summary>
+		public bool IgnoreCheckPrimaryRowExistence;
 
 		private List<IQuery> _formulaDependency;
 

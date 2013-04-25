@@ -75,6 +75,7 @@
     <Compile Include="Helpers\PeriodCatalogHelper.cs" />
     <Compile Include="Helpers\SimpleUserInfo.cs" />
     <Compile Include="Helpers\UserInfoHelper.cs" />
+    <Compile Include="IFormServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web" />

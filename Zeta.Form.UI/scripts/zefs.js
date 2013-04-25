@@ -63,6 +63,9 @@ root.init = root.init ||
         params = params || {};
         params = $.extend(api.getParameters(), params);
         blank = blank || false;
+        if (params.form.search('.in') == -1) {
+            params.form += api.getParameters()["form"].match(/[A|B]\.in/)[0];
+        }
         var loc = document.location.protocol + "//" + document.location.host + siteroot + "zefs-test.html#" +
             "form=" + params.form + "|year=" + params.year + "|period=" + params.period + "|obj=" + params.obj;
         if (!blank) {
@@ -191,7 +194,7 @@ root.init = root.init ||
             return;
         }
         var obj = window.zefs.getChanges();
-        if (!$.isEmptyObject(obj) && !root.myform.lock) return;
+        if ($.isEmptyObject(obj)) return;
         root.myform.datatosave = obj;
         $(root).trigger(root.handlers.on_savestart);
         api.data.saveready.execute();
@@ -319,26 +322,34 @@ root.init = root.init ||
             ).hide();
             cellinfotoggle.click(function() { cellinfo.toggle() });
             var cellhistory = $('<table class="table table-bordered table-striped"/>');
+            var insertvalue = function(value) {
+                var zefsform = $('.zefsform').data("zefs");
+                zefsform.inputCell();
+                $($('.zefsform td.active input').first()).val(value);
+                zefsform.uninputCell();
+            }
             cellhistory.append(
                 $('<thead/>').append(
-                    $('<tr/>').append($('<th/>').text("Время"),$('<th/>').text("Пользователь"),$('<th/>').text("Значение"))
+                    $('<tr/>').append($('<th/>').text("Время"),$('<th/>').text("Пользователь"),$('<th/>').text("Значение"), $('<th/>'))
                 ), $('<tbody/>')
             );
             var u = $('<span class="label label-inverse"/>').text(result.cell.user);
             cellhistory.find('tbody').append(
                 $('<tr/>').append(
-                    $('<td/>').text(result.cell.Date.format("dd.mm.yyyy HH:MM:ss")), $('<td/>').append(u), $('<td/>').text(result.cell.value)
+                    $('<td/>').text(result.cell.Date.format("dd.mm.yyyy HH:MM:ss")), $('<td/>').append(u), $('<td/>').text(result.cell.value), $('<td/>')
                 )
             );
             u.zetauser();
             if (!$.isEmptyObject(result.history)) {
                 $.each(result.history, function(i, e) {
                     var user = $('<span class="label label-inverse"/>').text(e.user);
+                    var iv = $('<i class="icon icon-arrow-down"/>');
                     cellhistory.find('tbody').append(
                         $('<tr/>').append(
-                            $('<td/>').text(e.Date.format("dd.mm.yyyy HH:MM:ss")), $('<td/>').append(user), $('<td/>').text(e.value)
+                            $('<td/>').text(e.Date.format("dd.mm.yyyy HH:MM:ss")), $('<td/>').append(user), $('<td/>').append(e.value), $('<td/>').append(iv)
                         )
                     );
+                    iv.click(function() { insertvalue(e.value) });
                     user.zetauser();
                 });
             }
@@ -370,8 +381,8 @@ root.init = root.init ||
         api.lock.history.execute(sessiondata);
         api.file.list.execute(sessiondata);
         window.setTimeout(function(){
-                root.myform.currentSession.data = [];
-                api.data.start.execute($.extend(sessiondata, {startidx: 0}))}
+            root.myform.currentSession.data = [];
+            api.data.start.execute($.extend(sessiondata, {startidx: 0}))}
         ,1000); //первый запрос на данные
         $(root).trigger(root.handlers.on_sessionload);
     });
@@ -422,6 +433,14 @@ root.init = root.init ||
         });
     });
 
+    api.data.saveready.onError(function() {
+        $(root).trigger(root.handlers.on_savefinished);
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            title: "Сохранение формы не возможно",
+            text: "Обратитесь за помощью в службу поддержки"
+        });
+    });
+
     api.data.save.onSuccess(function() {
         root.myform.datatosave = {};
         api.data.savestate.execute({session: root.myform.sessionId});
@@ -466,7 +485,7 @@ root.init = root.init ||
             api.lock.history.execute({session: root.myform.sessionId});
         } else {
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
-                title: result.responseText.match(/<H1>([^<]+)/)[1].trim(),
+                title: result.responseText.match(/<[h|H]1>([^<]+)/)[1].trim(),
                 text: result.responseText.match(/<i>([^<]+)/)[1].trim()
             });
         }

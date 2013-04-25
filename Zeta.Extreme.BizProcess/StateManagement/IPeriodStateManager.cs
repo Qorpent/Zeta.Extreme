@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,41 +15,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.BizProcess/IPeriodStateManager.cs
+// PROJECT ORIGIN: IPeriodStateManager.cs
+
 #endregion
+
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
-	/// 	Интерфейс менеджера статуса периодов
+	///     Интерфейс менеджера статуса периодов
 	/// </summary>
 	public interface IPeriodStateManager {
 		/// <summary>
-		/// 	Система
+		///     Система
 		/// </summary>
 		string System { get; set; }
 
 		/// <summary>
-		/// 	БД
+		///     БД
 		/// </summary>
 		string Database { get; set; }
 
 		/// <summary>
-		/// 	Получить запись по году и периоду
+		///     Получить запись по году и периоду
 		/// </summary>
-		/// <param name="year"> </param>
-		/// <param name="period"> </param>
-		/// <returns> </returns>
+		/// <param name="year"></param>
+		/// <param name="period"></param>
+		/// <returns>
+		/// </returns>
 		PeriodStateRecord Get(int year, int period);
 
 		/// <summary>
-		/// 	Обновить дедлайн
+		///     Обновить дедлайн
 		/// </summary>
-		/// <param name="record"> </param>
+		/// <param name="record"></param>
 		void UpdateDeadline(PeriodStateRecord record);
 
 		/// <summary>
-		/// 	Обновить дедлайн по подписанию
+		///     Обновить дедлайн по подписанию
 		/// </summary>
-		/// <param name="record"> </param>
+		/// <param name="record"></param>
 		void UpdateUDeadline(PeriodStateRecord record);
 	}
 }

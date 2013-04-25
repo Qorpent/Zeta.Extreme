@@ -1,4 +1,5 @@
 ﻿#region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,20 +15,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.BizProcess/IScheduleChecker.cs
+// PROJECT ORIGIN: IScheduleChecker.cs
+
 #endregion
+
 using Zeta.Extreme.BizProcess.Themas;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
-	/// 	Интерфейс контроля расписаний
+	///     Интерфейс контроля расписаний
 	/// </summary>
 	public interface IScheduleChecker {
 		/// <summary>
-		/// 	вычисление соответствия расписанию
+		///     вычисление соответствия расписанию
 		/// </summary>
-		/// <param name="template"> </param>
-		/// <returns> </returns>
+		/// <param name="template"></param>
+		/// <returns>
+		/// </returns>
 		ScheduleState Evaluate(IInputTemplate template);
 	}
 }

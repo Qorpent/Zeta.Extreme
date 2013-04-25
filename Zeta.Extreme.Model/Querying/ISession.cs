@@ -68,5 +68,10 @@ namespace Zeta.Extreme.Model.Querying {
 		/// Источник дополнительных параметров
 		/// </summary>
 		ISessionPropertySource PropertySource { get; set; }
+
+		/// <summary>
+		/// Флаг использования синхронизированной подготовки запросов
+		/// </summary>
+		bool UseSyncPreparation { get; set; }
 	}
 }

@@ -27,7 +27,7 @@ namespace Zeta.Extreme.Core.Tests {
 			var q = new Query {Obj = {Id = 1, DetailMode = DetailMode.SafeSumObject}};
 			var p = q.GetPrototype();
 			Assert.True(p.UseSum);
-			Assert.True(p.RequireDetails);
+			//	Assert.True(p.RequireDetails); less strict due problems in mixed forms
 		}
 
 		[Test]
@@ -77,7 +77,7 @@ namespace Zeta.Extreme.Core.Tests {
 			var q = new Query { Obj = { Id = 1 },Row = {Native = new Row{Tag="/"+PrimaryConstants.TAG_USEDETAILS_PARAM+":"+PrimaryConstants.TAG_TRUE+"/"}}};
 			var p = q.GetPrototype();
 			Assert.True(p.UseSum);
-			Assert.True(p.RequireDetails);
+		//	Assert.True(p.RequireDetails); less strict due problems in mixed forms
 			Assert.False(p.PreserveDetails);
 		}
 	}

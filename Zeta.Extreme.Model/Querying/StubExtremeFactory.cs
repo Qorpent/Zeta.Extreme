@@ -70,5 +70,9 @@
 		public IFormulaStorage GetFormulaStorage() {
 			throw new System.NotImplementedException("it's stub factory implementation");
 		}
+
+		public IReferenceHandler CreateReference() {
+			throw new System.NotImplementedException("it's stub factory implementation");
+		}
 	}
 }
