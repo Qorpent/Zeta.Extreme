@@ -89,7 +89,7 @@
         },60000);
         var strong = $(b.find('strong'));
         if (strong.length != 0) {
-            strong.clear();
+            strong.empty();
         } else {
             strong = $('<strong/>');
             b.append(strong);
