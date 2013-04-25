@@ -18,10 +18,13 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -252,7 +255,26 @@ namespace Zeta.Extreme.Form.Themas {
 			catch (Exception ex) {
 				result.Error = ex;
 			}
+
+			ApplyBizProcessParameters(result);
+
 			return result;
+		}
+
+		private void ApplyBizProcessParameters(IThema thema) {
+			try {
+				var bizprocess = new NativeZetaReader().ReadBizProcesses("Code = '" + thema.Code + "'").FirstOrDefault();
+				if (null != bizprocess) {
+					thema.Parameters["bizprocess.object"] = bizprocess;
+					thema.Parameters["bizprocess.inprocess"] = bizprocess.InProcess;
+					thema.Parameters["bizprocess.process"] = bizprocess.Process;
+					thema.Parameters["bizporcess.isreport"] = TagHelper.Value(bizprocess.Tag, "report").ToBool();
+					thema.Parameters["bizporcess.isprimary"] = TagHelper.Value(bizprocess.Tag, "primary").ToBool();
+				}
+			}
+			catch (SqlException e) {
+				thema.Parameters["bizprocess.load.error"] = e;
+			}
 		}
 
 

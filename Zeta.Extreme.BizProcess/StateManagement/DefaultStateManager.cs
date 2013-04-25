@@ -90,7 +90,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 				CheckCheckersOrder();
 				var formRecord = Repository.GetFormRecord(form);
 				var lastState = Repository.GetLastFormState(form);
-				var context = new StateValidationContext(this, form, formRecord, lastState, newStateType,Container, Application.Roles);
+				var context = new StateValidationContext(this, form, formRecord, lastState, newStateType,Container, Container.Get<IRoleResolver>());
 				if (context.OldState == context.NewState) {
 					//если статус не меняется значит и нельзя выполнить эту операцию
 					return new FormStateOperationResult

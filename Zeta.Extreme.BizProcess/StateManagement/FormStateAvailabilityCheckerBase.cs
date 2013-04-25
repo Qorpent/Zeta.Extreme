@@ -158,7 +158,9 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// Проверяет соответствие контекста
 		/// </summary>
 		/// <returns></returns>
-		protected abstract bool InternalIsValid();
+		protected virtual bool InternalIsValid() {
+			return false;
+		}
 
 
 		/// <summary>

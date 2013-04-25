@@ -57,7 +57,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <summary>
 		/// 	Пользователь
 		/// </summary>
-		string Usr { get; }
+		string Usr { get; set; }
 
 		/// <summary>
 		/// 	Хранит уже подготовленные данные
