@@ -417,6 +417,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public void Start() {
 			lock (this) {
+                Qorpent.ServiceState.TotalSessionsHandledIncrease();
 				if (IsStarted) {
 					return;
 				}
