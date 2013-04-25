@@ -40,6 +40,7 @@
     <Compile Include="StateManagement\Attributes\DefaultResultAttribte.cs" />
     <Compile Include="StateManagement\Attributes\ErrorMessageAttribute.cs" />
     <Compile Include="StateManagement\Attributes\ReasonTypeAttribute.cs" />
+    <Compile Include="StateManagement\Attributes\ReglamentCodeAttribute.cs" />
     <Compile Include="StateManagement\Attributes\StateAttributeBase.cs" />
     <Compile Include="StateManagement\DefaultFormStateRepository.cs" />
     <Compile Include="StateManagement\DefaultStateManager.cs" />
