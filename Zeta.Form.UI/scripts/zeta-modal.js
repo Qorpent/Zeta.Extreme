@@ -15,8 +15,8 @@
             text: "",
             type: "",
             fade: false,
-            width: 0,
-            height: 0,
+            width: null,
+            height: null,
             backdrop: false,
             name : ""
         },p);
@@ -34,18 +34,18 @@
             height: "100%",
             top: 0
         });
-        var modal = $('<div class="modal" role="dialog" />').css("z-index", 10001);
+        var modal = $('<div class="modal" role="dialog" />').css({"z-index": 10001, marginLeft: (p.width || 560)/-2});
         if (p.name != "") {
             modal.addClass(p.name);
         }
-        if (p.width != 0) modal.css("width", p.width);
+        if (!!p.width) modal.css("width", p.width);
         var modalheader = $("<div/>", {"class":"modal-header"});
         if (p.closebutton) {
             modalheader.append($('<button type="button" class="close" data-dismiss="modal" aria-hidden="true" />').html("&times;"));
         }
         modalheader.append($('<h3/>').text(p.title));
         var modalbody = $('<div class="modal-body scrollable" />').append(p.content || p.text);
-        if (p.height != 0) modalbody.css("height", p.height);
+        if (!!p.height) modalbody.css("height", p.height);
         var modalfooter = $('<div class="modal-footer"/>');
         if (p.customButton != null) {
             modalfooter.append($('<a href="#" class="btn" />').addClass(p.customButton.class)
