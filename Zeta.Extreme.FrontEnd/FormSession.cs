@@ -55,6 +55,7 @@ namespace Zeta.Extreme.FrontEnd {
 		IFormDataSynchronize,
 		IFormSessionControlPointSource,
         IFormSession {
+
 		/// <summary>
 		/// 	Создает сессию формы
 		/// </summary>
@@ -63,6 +64,8 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="period"> </param>
 		/// <param name="obj"> </param>
 		public FormSession(IInputTemplate form, int year, int period, IZetaMainObject obj) {
+            FormSessionsState.CurrentSessionsIncrease();
+
 			Uid = Guid.NewGuid().ToString();
 			Object = obj;
 			Created = DateTime.Now;
@@ -109,6 +112,13 @@ namespace Zeta.Extreme.FrontEnd {
 			Logger = Application.Current.LogManager.GetLog("form.log", this);
 
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Dispose() {
+            FormSessionsState.CurrentSessionsDecrease();
+        }
 
 		private string GetHoldLogin(NativeZetaReader reader) {
 			int id = 0;
@@ -407,18 +417,20 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public void Start() {
 			lock (this) {
+                Qorpent.ServiceState.TotalSessionsHandledIncrease();
 				if (IsStarted) {
 					return;
 				}
 				Activations++;
 				var sw = Stopwatch.StartNew();
+                FormSessionsState.CurrentFormRenderingOperationsIncrease();
 				PrepareMetaSets();
 				sw.Stop();
 				TimeToPrepare = sw.Elapsed;
 				PrepareStructureTask = new TaskWrapper(
 					Task.Run(() => { RetrieveStructure(); })
 					);
-
+                FormSessionsState.CurrentFormRenderingOperationsDecrease();
 				StartCollectData();
 
 				IsStarted = true;
@@ -429,6 +441,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Метод прямого вызова повторного сбора данных
 		/// </summary>
 		protected internal void StartCollectData() {
+            FormSessionsState.CurrentFormLoadingOperationsIncrease();
 			lock (this) {
 				if (null != PrepareDataTask) {
 					return;
@@ -452,6 +465,8 @@ namespace Zeta.Extreme.FrontEnd {
 					Thread.Sleep(10);
 				}
 			}
+
+            FormSessionsState.CurrentFormLoadingOperationsDecrease();
 		}
 
 		private void RetrieveStructure() {
@@ -864,7 +879,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns> </returns>
 		public bool BeginSaveData(XElement xmldata) {
 			lock (this) {
-				
+                FormSessionsState.DataSaveOperationsIncrease();
 				if (null != _currentSaveTask) {
 					if (!_currentSaveTask.IsFaulted) {
 						_currentSaveTask.Wait();
@@ -873,6 +888,9 @@ namespace Zeta.Extreme.FrontEnd {
 				CurrentSaver = CurrentSaver ?? (null == FormServer ? null : FormServer.GetSaver()) ?? new DefaultSessionDataSaver();
 				_currentSaveTask = CurrentSaver.BeginSave(this, xmldata, Application.Current.Principal.CurrentUser);
 				Logger.Info("save started");
+
+                FormSessionsState.DataSaveOperationsDecrease();
+
 				return true;
 			}
 		}
@@ -930,11 +948,16 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns> </returns>
 		public bool DoLockForm() {
+		    FormSessionsState.LockFormOperationsIncrease();
+
 			var currentstate = GetStateInfo();
 			if (currentstate.canblock) {
 				Template.SetState(Object, null, "0ISBLOCK");
+                FormSessionsState.LockFormOperationsDecrease();
 				return true;
 			}
+
+            FormSessionsState.LockFormOperationsDecrease();
 			throw new SecurityException("try lock form without valid state or permission");
 		}
 
@@ -959,6 +982,8 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="uid"> </param>
 		/// <returns> </returns>
 		public FormAttachment AttachFile(HttpPostedFileBase datafile, string filename, string type, string uid) {
+            FormSessionsState.FileAttachOperationsIncrease();
+
 			var storage = GetFormAttachStorage();
 			var realfilename = filename;
 			if (string.IsNullOrWhiteSpace(realfilename)) {
@@ -966,6 +991,8 @@ namespace Zeta.Extreme.FrontEnd {
 				                             Periods.Get(Period).Name.Replace(".", ""));
 			}
 			var result = storage.AttachHttpFile(this, datafile, realfilename, type, uid);
+            FormSessionsState.FileAttachOperationsDecrease();
+
 			return result;
 		}
 

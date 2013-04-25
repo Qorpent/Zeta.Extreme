@@ -49,6 +49,9 @@
     <Compile Include="Actions\SessionProcessing\SaveReadyAction.cs" />
     <Compile Include="Actions\SessionProcessing\SaveStateAction.cs" />
     <Compile Include="Actions\Abstracts\SessionStartBase.cs" />
+    <Compile Include="Actions\ZefsServer\GetClusterNodeLoad.cs" />
+    <Compile Include="ClusterNodeLoadBuilder.cs" />
+    <Compile Include="ClusterNodeLoadPoints.cs" />
     <Compile Include="DataStructures\AccessibleObjects.cs" />
     <Compile Include="DataStructures\DivisionRecord.cs" />
     <Compile Include="DataStructures\ObjectRecord.cs" />
@@ -60,6 +63,7 @@
     <Compile Include="FormAttachmentStorageExtensions.cs" />
     <Compile Include="FormServer.cs" />
     <Compile Include="DataStructures\DataChunk.cs" />
+    <Compile Include="FormServersState.cs" />
     <Compile Include="FormSession.cs" />
     <Compile Include="Actions\SessionProcessing\StartAction.cs" />
     <Compile Include="Actions\ZefsServer\FormServerStateAction.cs" />
@@ -69,6 +73,7 @@
     <Compile Include="Actions\Info\FormSessionStatusAction.cs" />
     <Compile Include="DataStructures\StructureItem.cs" />
     <Compile Include="FormSessionDataSessionPropertySoruce.cs" />
+    <Compile Include="FormSessionsState.cs" />
     <Compile Include="Helpers\AccessibleObjectsHelper.cs" />
     <Compile Include="Helpers\BizProcessEnumerator.cs" />
     <Compile Include="Helpers\BizProcessRecord.cs" />
