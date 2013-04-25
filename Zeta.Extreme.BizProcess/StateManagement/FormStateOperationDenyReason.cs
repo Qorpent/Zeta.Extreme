@@ -51,5 +51,10 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		///     Ссылка на унаследованный результат
 		/// </summary>
 		public FormStateOperationResult ParentResult { get; set; }
+
+		/// <summary>
+		/// Код правила по регламенту
+		/// </summary>
+		public string ReglamentCode { get; set; }
 	}
 }

@@ -59,9 +59,21 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 					continue;
 
 				}
+
+				var regCode = attribute as ReglamentCodeAttribute;
+				if (null != regCode) {
+					ReglamentCode = regCode.Code;
+					continue;
+				}
 			}
 
 		}
+
+		/// <summary>
+		/// Код правила в регламенте
+		/// </summary>
+		public string ReglamentCode { get; set; }
+
 		/// <summary>
 		/// Результат по умолчанию
 		/// </summary>
@@ -108,7 +120,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// </summary>
 		/// <returns></returns>
 		protected FormStateOperationResult GetResult() {
-			return new FormStateOperationResult{Allow = false, Reason = new FormStateOperationDenyReason {Type=ReasonType,Message = Message,Error = Error}};
+			return new FormStateOperationResult{Allow = false,  Reason = new FormStateOperationDenyReason {Type=ReasonType,Message = Message,Error = Error,ReglamentCode = ReglamentCode}};
 		}
 
 		/// <summary>
