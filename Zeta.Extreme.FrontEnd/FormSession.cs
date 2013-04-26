@@ -837,6 +837,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns> </returns>
 		public LockStateInfo GetStateInfo() {
+			var roles = Application.Current.Roles;
 			var isopen = Template.IsOpen;
 			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
@@ -847,14 +848,23 @@ namespace Zeta.Extreme.FrontEnd {
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
 			var principal = Usr.toPrincipal();
 			
-			var haslockrole = Application.Current.Roles.IsInRole(principal, Template.UnderwriteRole);
-			var hasholdlockrole = Application.Current.Roles.IsInRole(principal, "HOLDUNDERWRITER");
-			var hasnocontrolpoointsrole = Application.Current.Roles.IsInRole(principal,"SYS_NOCONTROLPOINTS",true);
+			var haslockrole = roles.IsInRole(principal, Template.UnderwriteRole);
+			var hasholdlockrole = roles.IsInRole(principal, "HOLDUNDERWRITER",true);
+			var hasnocontrolpoointsrole = roles.IsInRole(principal,"SYS_NOCONTROLPOINTS",true);
 			var canblock = state == "0ISOPEN" && (string.IsNullOrWhiteSpace(message)||(message=="cpavoid"&&hasnocontrolpoointsrole)) && haslockrole;
 			var canopen = state != "0ISOPEN" && haslockrole && hasholdlockrole;
 			var cancheck = state == "0ISBLOCK" && haslockrole &&  hasholdlockrole;
-			var cansaveoverblock = Application.Current.Roles.IsInRole(principal, "NOBLOCK",true);
+			var cansaveoverblock = roles.IsInRole(principal, "NOBLOCK",true);
+			var periodstateoverride = false;
 			cansave = cansave || cansaveoverblock;
+			if (cansave) {
+				var periodStateManager = new PeriodStateManager();
+				var periodState = periodStateManager.Get(Year, Period);
+				if (!periodState.State) {
+					cansave = Template.IgnorePeriodState || roles.IsInRole(principal,"IGNOREPERIODSTATE",true);
+					periodstateoverride = cansave;
+				}
+			}
 			return new LockStateInfo
 				{
 					isopen = isopen,
@@ -868,7 +878,8 @@ namespace Zeta.Extreme.FrontEnd {
 					canopen = canopen,
 					cancheck  = cancheck,
 					cansaveoverblock = cansaveoverblock,
-					hasbadcontrolpoints = message=="cpavoid" || message.Contains("точк")
+					hasbadcontrolpoints = message=="cpavoid" || message.Contains("точк"),
+					periodstateoverride = periodstateoverride
 				};
 		}
 

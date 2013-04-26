@@ -83,5 +83,10 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		///     “екущий статус
 		/// </summary>
 		public string state;
+
+		/// <summary>
+		/// ѕризнак того что примен€етс€ сохранение поверх статуса периода
+		/// </summary>
+		public bool periodstateoverride;
 	}
 }
