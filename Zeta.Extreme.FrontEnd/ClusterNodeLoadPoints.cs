@@ -43,6 +43,6 @@ namespace Zeta.Extreme.FrontEnd {
         /// <summary>
         ///     Общее кол-во обработанных сессий - 10 баллов за каждую
         /// </summary>
-        public const Int64 POINT_PEP_HANDLED_SESSION = 10;
+        public const Int64 POINT_PER_HANDLED_SESSION = 10;
     }
 }
