@@ -11,10 +11,20 @@ namespace Zeta.Extreme.FrontEnd {
         public static Int64 CurrentReloadOperations;
 
         /// <summary>
+        /// 
+        /// </summary>
+        public static Int64 TotalReloadsCount { get; set; }
+
+        /// <summary>
+        ///     Count of total handled sessions
+        /// </summary>
+        public static Int64 TotalSessionsHandled { get; set; }
+
+        /// <summary>
         ///     Увеличить значение текущих операций перезагрузки
         /// </summary>
         public static void CurrentReloadOperationsIncrease() {
-            Qorpent.ServiceState.TotalServerReloadsIncrease();
+            TotalReloadsCount++;
             CurrentReloadOperations++;
         }
 
@@ -23,6 +33,13 @@ namespace Zeta.Extreme.FrontEnd {
         /// </summary>
         public static void CurrentReloadOperationsDecrease() {
             CurrentReloadOperations--;
+        }
+
+        /// <summary>
+        ///     Увеличивает счётчик количества обработанных сессий
+        /// </summary>
+        public static void TotalSessionsHandledIncrease() {
+            TotalSessionsHandled++;
         }
     }
 }
