@@ -93,12 +93,22 @@
         } else {
             strong = $('<strong/>');
             b.append(strong);
+            clearInterval(window.chatbtnanimation);
         }
         if (parseInt(count) > 0) {
             b.addClass("hasunread");
             strong.text(count);
+            if (!window.chatbtnanimation) {
+                window.chatbtnanimation == setInterval(function() { chatbtnanimate() }, 300);
+            }
         }
     });
+
+    var chatbtnanimate = function() {
+        var opacity = b.css("opacity") || "1";
+        opacity == "1" ? opacity = "0.2" : opacity = "1";
+        b.animate({ opacity: opacity }, { duration: 150});
+    };
     // Наполняем ленту сообщений
     $(zefs).on(zefs.handlers.on_chatlistload, function(e, cl) {
         progress.hide(); refresh.show();
