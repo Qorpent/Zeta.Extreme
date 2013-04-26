@@ -14,12 +14,20 @@ namespace Zeta.Extreme.FrontEnd.Actions.ZefsServer {
         /// </summary>
         /// <returns></returns>
         protected override object MainProcess() {
-            var ageInfo = new Qorpent.Mvc.Actions.GetClusterNodeLoad().Process() as Dictionary<string, Int64> ?? new Dictionary<string, long>();
+            Int64 age = 0;
 
-            ageInfo["TotalServerReloads"] = (FormServersState.TotalReloadsCount) * (ClusterNodeLoadPoints.POINT_PER_RELOAD);
-            ageInfo["TotalSesionsHandled"] = (FormServersState.TotalSessionsHandled) * (ClusterNodeLoadPoints.POINT_PEP_HANDLED_SESSION);
-            ageInfo["Age"] += (FormServersState.TotalReloadsCount)*(ClusterNodeLoadPoints.POINT_PER_RELOAD);
-            ageInfo["Age"] += (FormServersState.TotalSessionsHandled) * (ClusterNodeLoadPoints.POINT_PEP_HANDLED_SESSION);
+            age += (ServiceState.TotalQueriesHandled) * (Qorpent.Mvc.ClusterNodeLoadPoints.POINT_PER_HANDLED_QUERY);
+            age += (ServiceState.CpuMinutes) * (Qorpent.Mvc.ClusterNodeLoadPoints.POINT_PER_CPU_MINUTE);
+            age += (FormServersState.TotalReloadsCount) * (ClusterNodeLoadPoints.POINT_PER_RELOAD);
+            age += (FormServersState.TotalSessionsHandled) * (ClusterNodeLoadPoints.POINT_PER_HANDLED_SESSION);
+
+            var ageInfo = new Dictionary<string, Int64> {
+                {"TotalQueriesHandled", (ServiceState.TotalQueriesHandled) * (Qorpent.Mvc.ClusterNodeLoadPoints.POINT_PER_HANDLED_QUERY)},
+                {"TotalCpuTime", (ServiceState.CpuMinutes) * (Qorpent.Mvc.ClusterNodeLoadPoints.POINT_PER_CPU_MINUTE)},
+                {"TotalServerReloads", (FormServersState.TotalReloadsCount) * (ClusterNodeLoadPoints.POINT_PER_RELOAD)},
+                {"TotalSesionsHandled", (FormServersState.TotalSessionsHandled) * (ClusterNodeLoadPoints.POINT_PER_HANDLED_SESSION)},
+                {"Age", age}
+            };
 
             var load = ClusterNodeLoadBuilder.Build();
             ClusterNodeLoadBuilder.MergeWithAgeStat(load, ageInfo);
