@@ -96,7 +96,12 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
         private class TestFormSession : IFormSession {
             public string Uid { get; private set; }
             public int Year { get; private set; }
-            public int Period { get; private set; }
+	        int IFormSession.Period {
+		        get { return Period; }
+		        set { Period = value; }
+	        }
+
+	        public int Period { get; private set; }
             public IZetaMainObject Object { get; private set; }
             public IInputTemplate Template { get; private set; }
             public string Usr { get; set; }
@@ -106,7 +111,11 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
                 return new LockStateInfo();
             }
 
-            public TestFormSession(int year, int period) {
+	        public FormAttachment[] GetAttachedFiles() {
+		        throw new NotImplementedException();
+	        }
+
+	        public TestFormSession(int year, int period) {
                 Year = year;
                 Period = period;
                 Template = new InputTemplate();
