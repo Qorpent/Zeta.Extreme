@@ -116,6 +116,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 			}
 		}
 
+
 		/// <summary>
 		///     Устанавливает новый статус для формы
 		/// </summary>
@@ -123,12 +124,15 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <param name="newStateType"></param>
 		/// <param name="comment"></param>
 		/// <param name="parentId"></param>
+		/// <param name="skipValidation">режим без проверки валидности, прямое выставление статуса</param>
 		/// <returns>
 		/// </returns>
-		public FormStateOperationResult SetState(IFormSession form, FormStateType newStateType, string comment = "", int parentId = 0) {
+		public FormStateOperationResult SetState(IFormSession form, FormStateType newStateType, string comment = "", int parentId = 0, bool skipValidation =false)
+		{
 			try {
-				var canSetState = GetCanSet(form, newStateType);
-				if (canSetState.Allow) {
+				FormStateOperationResult canSetState =null;
+				if (skipValidation || (canSetState = GetCanSet(form, newStateType)).Allow)
+				{
 					Repository.SetState(form, newStateType,comment,parentId);
 				}
 				return canSetState;

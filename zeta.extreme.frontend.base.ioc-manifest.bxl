@@ -31,3 +31,5 @@ transient "securitymap.roles.extension"  BxlXmlRoleProvider : IRoleResolverExten
 transient "zetaroles.roles.extension" SimpleZetaRoleResolver : IRoleResolverExtension
 
 singleton "extreme.factory" DefaultExtremeFactory : IExtremeFactory
+
+transient "periodstate.manager" PeriodStateManager : IPeriodStateManager

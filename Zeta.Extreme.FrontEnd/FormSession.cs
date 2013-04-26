@@ -26,6 +26,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
+using Qorpent;
 using Qorpent.Applications;
 using Qorpent.Log;
 using Qorpent.Mvc;
@@ -52,10 +53,14 @@ namespace Zeta.Extreme.FrontEnd {
 	/// </summary>
 	[Serialize]
 	public class FormSession :
+		ServiceBase,
 		IFormDataSynchronize,
 		IFormSessionControlPointSource,
         IFormSession {
-
+		/// <summary>
+		/// Empty ctor for IoC match
+		/// </summary>
+		public FormSession(){}
 		/// <summary>
 		/// 	Создает сессию формы
 		/// </summary>
@@ -74,7 +79,7 @@ namespace Zeta.Extreme.FrontEnd {
 			Year = Template.Year;
 			Period = Template.Period;
 			Created = DateTime.Now;
-			Usr = Application.Current.Principal.CurrentUser.Identity.Name;
+			
 			IsStarted = false;
 			var reader = new NativeZetaReader();
 			var currency = Object.Currency;
@@ -83,7 +88,7 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 			decimal rate = 1;
 			if (currency != "RUB") {
-				rate = reader.GetCurrencyRate(Year, Period, currency, "RUB");
+				rate = reader.GetCurrencyRate(Year, Period, currency);
 			}
 			ObjInfo = new
 				{
@@ -109,16 +114,9 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 			NeedMeasure = Template.ShowMeasureColumn;
 			Activations = 1;
-			Logger = Application.Current.LogManager.GetLog("form.log", this);
+			
 
 		}
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Dispose() {
-            FormSessionsState.CurrentSessionsDecrease();
-        }
 
 		private string GetHoldLogin(NativeZetaReader reader) {
 			int id = 0;
@@ -134,7 +132,15 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// Журнал
 		/// </summary>
-		public IUserLog Logger { get; set; }
+		public IUserLog Logger {
+			get {
+				if (null == _logger) {
+					_logger = Application.LogManager.GetLog("form.log", this);		
+				}
+				return _logger;
+			}
+			set { _logger = value; }
+		}
 
 
 		/// <summary>
@@ -154,7 +160,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns></returns>
 		/// <exception cref="Exception"></exception>
 		public FormChatItem[] GetChatList() {
-			var provider = Application.Current.Container.Get<IFormChatProvider>();
+			var provider = Container.Get<IFormChatProvider>();
 			if (null == provider) {
 				throw new Exception("no form chat configured");
 			}
@@ -166,7 +172,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns></returns>
 		public FormChatItem AddChatMessage(string message) {
-			var provider = Application.Current.Container.Get<IFormChatProvider>();
+			var provider = Container.Get<IFormChatProvider>();
 			if (null == provider)
 			{
 				throw new Exception("no form chat configured");
@@ -334,7 +340,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// 	Период
 		/// </summary>
-		public int Period { get; private set; }
+		public int Period { get;  set; }
 
 		/// <summary>
 		/// 	Объект
@@ -349,7 +355,15 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// 	Пользователь
 		/// </summary>
-		public string Usr { get; set; }
+		public string Usr {
+			get {
+				if (string.IsNullOrWhiteSpace(_usr)) {
+					_usr = Application.Principal.CurrentUser.Identity.Name;
+				}
+				return _usr;
+			}
+			set { _usr = value; }
+		}
 
 		/// <summary>
 		/// 	Хранит уже подготовленные данные
@@ -730,7 +744,7 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void PrepareRows() {
-			var customRowPreparator = Application.Current.Container.Get<IFormRowProvider>(Template.Thema.Code+".row.preparator");
+			var customRowPreparator = Container.Get<IFormRowProvider>(Template.Thema.Code+".row.preparator");
 			if (null != customRowPreparator) {
 				rows = customRowPreparator.GetRows(this);
 			}
@@ -785,7 +799,7 @@ namespace Zeta.Extreme.FrontEnd {
 			var specialView = TagHelper.Value(row.Tag, "specialformview");
 			if (!string.IsNullOrWhiteSpace(specialView)) {
 				var customRowPreparator =
-					Application.Current.Container.Get<IFormRowProvider>(specialView + ".special.row.preparator");
+					Container.Get<IFormRowProvider>(specialView + ".special.row.preparator");
 				if (null == customRowPreparator) {
 					var stub = new Row
 						{
@@ -832,12 +846,13 @@ namespace Zeta.Extreme.FrontEnd {
 			return true;
 		}
 
+
 		/// <summary>
 		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
 		/// </summary>
 		/// <returns> </returns>
 		public LockStateInfo GetStateInfo() {
-			var roles = Application.Current.Roles;
+			var roles = Application.Roles;
 			var isopen = Template.IsOpen;
 			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
@@ -897,7 +912,7 @@ namespace Zeta.Extreme.FrontEnd {
 					}
 				}
 				CurrentSaver = CurrentSaver ?? (null == FormServer ? null : FormServer.GetSaver()) ?? new DefaultSessionDataSaver();
-				_currentSaveTask = CurrentSaver.BeginSave(this, xmldata, Application.Current.Principal.CurrentUser);
+				_currentSaveTask = CurrentSaver.BeginSave(this, xmldata, Application.Principal.CurrentUser);
 				Logger.Info("save started");
 
                 FormSessionsState.DataSaveOperationsDecrease();
@@ -1007,10 +1022,10 @@ namespace Zeta.Extreme.FrontEnd {
 			return result;
 		}
 
-		private static IFormAttachmentStorage GetFormAttachStorage() {
-			var result = Application.Current.Container.Get<IFormAttachmentStorage>();
+		private  IFormAttachmentStorage GetFormAttachStorage() {
+			var result = Container.Get<IFormAttachmentStorage>();
 			if (null == result) {
-				var basestorage = Application.Current.Container.Get<IAttachmentStorage>("attachment.source") ?? new DbfsAttachmentStorage();
+				var basestorage = Container.Get<IAttachmentStorage>("attachment.source") ?? new DbfsAttachmentStorage();
 				result = new FormAttachmentSource();
 				((FormAttachmentSource) result).SetStorage(basestorage);
 			}
@@ -1092,6 +1107,7 @@ namespace Zeta.Extreme.FrontEnd {
 		private IdxCol[] primarycols;
 		private FormStructureRow[] primaryrows;
 		private FormStructureRow[] rows;
-
+		private string _usr;
+		private IUserLog _logger;
 	}
 }

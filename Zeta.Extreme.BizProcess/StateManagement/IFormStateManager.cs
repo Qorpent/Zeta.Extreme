@@ -55,9 +55,10 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <param name="newStateType"></param>
 		/// <param name="comment"></param>
 		/// <param name="parentId"></param>
+		/// <param name="skipValidation">режим без проверки валидности, прямое выставление статуса</param>
 		/// <returns>
 		/// </returns>
-		FormStateOperationResult SetState(IFormSession form, FormStateType newStateType, string comment="", int parentId = 0);
+		FormStateOperationResult SetState(IFormSession form, FormStateType newStateType, string comment="", int parentId = 0, bool skipValidation = false);
 
 		/// <summary>
 		/// Быстрое получение текущего типа статуса формы
