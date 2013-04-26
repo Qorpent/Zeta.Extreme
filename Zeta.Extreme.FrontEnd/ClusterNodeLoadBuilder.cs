@@ -13,21 +13,29 @@ namespace Zeta.Extreme.FrontEnd {
             load += (FormServersState.CurrentReloadOperations) * (ClusterNodeLoadPoints.Reloading);
             load += (FormSessionsState.CurrentFormLoadingOperations) * (ClusterNodeLoadPoints.FormDataLoading);
             load += (FormSessionsState.CurrentFormRenderingOperations) * (ClusterNodeLoadPoints.FromStructureRendering);
-            load += (FormSessionsState.LockFormCurrentOperations) * (ClusterNodeLoadPoints.FormBlocking);
+            load += (FormSessionsState.CurrentLockFormOperations) * (ClusterNodeLoadPoints.FormBlocking);
             load += (FormSessionsState.CurrentAttachFileOperations) * (ClusterNodeLoadPoints.FileAttaching);
-            load += (FormSessionsState.DataSaveOperations) * (ClusterNodeLoadPoints.DataSave);
+            load += (FormSessionsState.CurrentDataSaveOperations) * (ClusterNodeLoadPoints.DataSave);
 
             var loadInfo = new Dictionary<string, Int64> {
                 {"CurrentReloadOperations", (FormServersState.CurrentReloadOperations) * (ClusterNodeLoadPoints.Reloading)},
                 {"CurrentFormLoadingOperations", (FormSessionsState.CurrentFormLoadingOperations) * (ClusterNodeLoadPoints.FormDataLoading)},
                 {"CurrentFormRenderingOperations", (FormSessionsState.CurrentFormRenderingOperations) * (ClusterNodeLoadPoints.FromStructureRendering)},
-                {"LockFormCurrentOperations", (FormSessionsState.LockFormCurrentOperations) * (ClusterNodeLoadPoints.FormBlocking)},
+                {"CurrentLockFormOperations", (FormSessionsState.CurrentLockFormOperations) * (ClusterNodeLoadPoints.FormBlocking)},
                 {"CurrentAttachFileOperations", (FormSessionsState.CurrentAttachFileOperations) * (ClusterNodeLoadPoints.FileAttaching)},
-                {"DataSaveOperations", (FormSessionsState.DataSaveOperations) * (ClusterNodeLoadPoints.DataSave)},
-                {"Summary", load}
+                {"CurrentDataSaveOperations", (FormSessionsState.CurrentDataSaveOperations) * (ClusterNodeLoadPoints.DataSave)},
+                {"Load", load}
             };
 
             return loadInfo;
+        }
+
+        public static void MergeWithAgeStat(IDictionary<string, long> load, Dictionary<string, long> ageInfo) {
+            load["TotalQueriesHandled"] = ageInfo["TotalQueriesHandled"];
+            load["TotalCpuTime"] = ageInfo["TotalCpuTime"];
+            load["TotalServerReloads"] = ageInfo["TotalServerReloads"];
+            load["TotalSesionsHandled"] = ageInfo["TotalSesionsHandled"];
+            load["Age"] = ageInfo["Age"];
         }
     }
 }

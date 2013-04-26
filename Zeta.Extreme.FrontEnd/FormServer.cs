@@ -43,7 +43,7 @@ namespace Zeta.Extreme.FrontEnd {
 	/// 	Выполняет стартовую настройку сервера форм
 	/// </summary>
 	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IApplicationStartup), Name = "extreme.form.start")]
-	public class FormServer : ServiceBase, IApplicationStartup {
+    public class FormServer : ServiceBase, IApplicationStartup, IFormServer {
 		/// <summary>
 		/// 	Конструктор по умолчанию
 		/// </summary>
@@ -299,10 +299,9 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Перезагрузка системы
 		/// </summary>
 		public void Reload() {
-            FormServersState.CurrentReloadOperationsIncrease();
-
-			lock (ReloadState) {
-
+            lock (ReloadState) {
+                FormSessionsState.CurrentSessionsFlush();
+                FormServersState.CurrentReloadOperationsIncrease();
 					((IResetable) Application.Files).Reset(null);
 					((IResetable) Application.Roles).Reset(null);
 					Sessions.Clear();
@@ -318,11 +317,9 @@ namespace Zeta.Extreme.FrontEnd {
 					CompileFormulas.Run();
 					LoadThemas.Run();
 					ReadyToServeForms.Run();
-				
-			
-			}
 
-            FormServersState.CurrentReloadOperationsDecrease();
+                    FormServersState.CurrentReloadOperationsDecrease();
+			}
 		}
 		/// <summary>
 		/// Объект синхронизации с перезагрузкой

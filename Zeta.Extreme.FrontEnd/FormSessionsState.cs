@@ -6,11 +6,6 @@ namespace Zeta.Extreme.FrontEnd {
     /// </summary>
     public static class FormSessionsState {
         /// <summary>
-        ///     Count of total handled sessions
-        /// </summary>
-        public static Int64 HandledSessions;
-
-        /// <summary>
         ///     Count of total current sessions
         /// </summary>
         public static Int64 CurrentSessions;
@@ -18,7 +13,7 @@ namespace Zeta.Extreme.FrontEnd {
         /// <summary>
         ///     DataSave method current invokings
         /// </summary>
-        public static Int64 DataSaveOperations;
+        public static Int64 CurrentDataSaveOperations;
 
         /// <summary>
         ///     AttachFile method current invokings
@@ -28,7 +23,7 @@ namespace Zeta.Extreme.FrontEnd {
         /// <summary>
         ///     Количество текущих операций проверки возможности блокирования формы
         /// </summary>
-        public static Int64 LockFormCurrentOperations;
+        public static Int64 CurrentLockFormOperations;
 
         /// <summary>
         ///     Count of current form reloading operations
@@ -44,14 +39,14 @@ namespace Zeta.Extreme.FrontEnd {
         ///     Increase count of invokings of the DataSave method
         /// </summary>
         public static void DataSaveOperationsIncrease() {
-            DataSaveOperations++;
+            CurrentDataSaveOperations++;
         }
 
         /// <summary>
         ///     Decrease count of invokings of the DataSave method
         /// </summary>
         public static void DataSaveOperationsDecrease() {
-            DataSaveOperations--;
+            CurrentDataSaveOperations--;
         }
 
         /// <summary>
@@ -72,7 +67,7 @@ namespace Zeta.Extreme.FrontEnd {
         ///     Increase count of current sessions
         /// </summary>
         public static void CurrentSessionsIncrease() {
-            HandledSessions++;
+            FormServersState.TotalSessionsHandledIncrease();
             CurrentSessions++;
         }
 
@@ -84,17 +79,24 @@ namespace Zeta.Extreme.FrontEnd {
         }
 
         /// <summary>
+        ///     сбрасывает счётчик количества запущенных сессий
+        /// </summary>
+        public static void CurrentSessionsFlush() {
+            CurrentSessions = 0;
+        }
+
+        /// <summary>
         ///     Increase count of current LockForm operations
         /// </summary>
         public static void LockFormOperationsIncrease() {
-            LockFormCurrentOperations++;
+            CurrentLockFormOperations++;
         }
 
         /// <summary>
         ///     Decrease count of current LockForm operations
         /// </summary>
         public static void LockFormOperationsDecrease() {
-            LockFormCurrentOperations--;
+            CurrentLockFormOperations--;
         }
 
         /// <summary>

@@ -69,8 +69,6 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="period"> </param>
 		/// <param name="obj"> </param>
 		public FormSession(IInputTemplate form, int year, int period, IZetaMainObject obj) {
-            FormSessionsState.CurrentSessionsIncrease();
-
 			Uid = Guid.NewGuid().ToString();
 			Object = obj;
 			Created = DateTime.Now;
@@ -431,20 +429,19 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public void Start() {
 			lock (this) {
-                Qorpent.ServiceState.TotalSessionsHandledIncrease();
+                FormSessionsState.CurrentSessionsIncrease();
+                FormServersState.TotalSessionsHandledIncrease();
 				if (IsStarted) {
 					return;
 				}
 				Activations++;
 				var sw = Stopwatch.StartNew();
-                FormSessionsState.CurrentFormRenderingOperationsIncrease();
 				PrepareMetaSets();
 				sw.Stop();
 				TimeToPrepare = sw.Elapsed;
 				PrepareStructureTask = new TaskWrapper(
 					Task.Run(() => { RetrieveStructure(); })
 					);
-                FormSessionsState.CurrentFormRenderingOperationsDecrease();
 				StartCollectData();
 
 				IsStarted = true;
@@ -455,7 +452,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Метод прямого вызова повторного сбора данных
 		/// </summary>
 		protected internal void StartCollectData() {
-            FormSessionsState.CurrentFormLoadingOperationsIncrease();
+            
 			lock (this) {
 				if (null != PrepareDataTask) {
 					return;
@@ -479,11 +476,10 @@ namespace Zeta.Extreme.FrontEnd {
 					Thread.Sleep(10);
 				}
 			}
-
-            FormSessionsState.CurrentFormLoadingOperationsDecrease();
 		}
 
 		private void RetrieveStructure() {
+            FormSessionsState.CurrentFormRenderingOperationsIncrease();
 			StructureInProcess = true;
 			var sw = Stopwatch.StartNew();
 			Structure =
@@ -524,10 +520,12 @@ namespace Zeta.Extreme.FrontEnd {
 			sw.Stop();
 			TimeToStructure = sw.Elapsed;
 			StructureInProcess = false;
+            FormSessionsState.CurrentFormRenderingOperationsDecrease();
 		}
 
 
 		private void RetrieveData() {
+            FormSessionsState.CurrentFormLoadingOperationsIncrease();
 			_controlpoints.Clear();
 			Data.Clear();
 			var sw = Stopwatch.StartNew();
@@ -556,6 +554,7 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 			InitSaveMode = false;
 			Logger.Info("data loaded");
+            FormSessionsState.CurrentFormLoadingOperationsDecrease();
 		}
 
 		private void LoadNoPrimary(IDictionary<string, IQuery> queries) {
