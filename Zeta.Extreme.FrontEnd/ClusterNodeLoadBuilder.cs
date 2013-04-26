@@ -7,7 +7,7 @@ namespace Zeta.Extreme.FrontEnd {
         ///     Подсчитывает текущую загрузку сервера исходя из балльной системы оценки
         /// </summary>
         /// <returns></returns>
-        public static IDictionary<string, Int64> Build() {
+        public static IDictionary<string, object> Build() {
             Int64 load = 0;
 
             load += (FormServersState.CurrentReloadOperations) * (ClusterNodeLoadPoints.Reloading);
@@ -17,7 +17,7 @@ namespace Zeta.Extreme.FrontEnd {
             load += (FormSessionsState.CurrentAttachFileOperations) * (ClusterNodeLoadPoints.FileAttaching);
             load += (FormSessionsState.CurrentDataSaveOperations) * (ClusterNodeLoadPoints.DataSave);
 
-            var loadInfo = new Dictionary<string, Int64> {
+            var loadInfo = new Dictionary<string, object> {
                 {"CurrentReloadOperations", (FormServersState.CurrentReloadOperations) * (ClusterNodeLoadPoints.Reloading)},
                 {"CurrentFormLoadingOperations", (FormSessionsState.CurrentFormLoadingOperations) * (ClusterNodeLoadPoints.FormDataLoading)},
                 {"CurrentFormRenderingOperations", (FormSessionsState.CurrentFormRenderingOperations) * (ClusterNodeLoadPoints.FromStructureRendering)},
@@ -26,11 +26,11 @@ namespace Zeta.Extreme.FrontEnd {
                 {"CurrentDataSaveOperations", (FormSessionsState.CurrentDataSaveOperations) * (ClusterNodeLoadPoints.DataSave)},
                 {"Load", load}
             };
-
+			
             return loadInfo;
         }
 
-        public static void MergeWithAgeStat(IDictionary<string, long> load, Dictionary<string, long> ageInfo) {
+        public static void MergeWithAgeStat(IDictionary<string, object> load, Dictionary<string, object> ageInfo) {
             load["TotalQueriesHandled"] = ageInfo["TotalQueriesHandled"];
             load["TotalCpuTime"] = ageInfo["TotalCpuTime"];
             load["TotalServerReloads"] = ageInfo["TotalServerReloads"];
