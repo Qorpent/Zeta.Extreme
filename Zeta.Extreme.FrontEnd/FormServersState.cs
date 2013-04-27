@@ -8,17 +8,17 @@ namespace Zeta.Extreme.FrontEnd {
         /// <summary>
         ///     Count of current reload operations
         /// </summary>
-        public static Int64 CurrentReloadOperations;
+        public static int CurrentReloadOperations;
 
         /// <summary>
         /// 
         /// </summary>
-        public static Int64 TotalReloadsCount { get; set; }
+        public static int TotalReloadsCount { get; set; }
 
         /// <summary>
         ///     Count of total handled sessions
         /// </summary>
-        public static Int64 TotalSessionsHandled { get; set; }
+        public static int TotalSessionsHandled { get; set; }
 
         /// <summary>
         ///     Увеличить значение текущих операций перезагрузки

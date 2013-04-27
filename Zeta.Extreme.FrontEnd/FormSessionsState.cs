@@ -8,32 +8,32 @@ namespace Zeta.Extreme.FrontEnd {
         /// <summary>
         ///     Count of total current sessions
         /// </summary>
-        public static Int64 CurrentSessions;
+        public static int CurrentSessions;
 
         /// <summary>
         ///     DataSave method current invokings
         /// </summary>
-        public static Int64 CurrentDataSaveOperations;
+        public static int CurrentDataSaveOperations;
 
         /// <summary>
         ///     AttachFile method current invokings
         /// </summary>
-        public static Int64 CurrentAttachFileOperations;
+        public static int CurrentAttachFileOperations;
 
         /// <summary>
         ///     Количество текущих операций проверки возможности блокирования формы
         /// </summary>
-        public static Int64 CurrentLockFormOperations;
+        public static int CurrentLockFormOperations;
 
         /// <summary>
         ///     Count of current form reloading operations
         /// </summary>
-        public static Int64 CurrentFormLoadingOperations;
+        public static int CurrentFormLoadingOperations;
 
         /// <summary>
         ///     Count of current form rendering operations
         /// </summary>
-        public static Int64 CurrentFormRenderingOperations;
+        public static int CurrentFormRenderingOperations;
 
         /// <summary>
         ///     Increase count of invokings of the DataSave method
