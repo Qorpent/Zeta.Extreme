@@ -525,6 +525,8 @@ namespace Zeta.Extreme.FrontEnd {
 
 
 		private void RetrieveData() {
+		    var startTime = DateTime.Now;
+
             FormSessionsState.CurrentFormLoadingOperationsIncrease();
 			_controlpoints.Clear();
 			Data.Clear();
@@ -555,6 +557,7 @@ namespace Zeta.Extreme.FrontEnd {
 			InitSaveMode = false;
 			Logger.Info("data loaded");
             FormSessionsState.CurrentFormLoadingOperationsDecrease();
+            FormServersState.TotalTimeToLoadDataIncrease(DateTime.Now - startTime);
 		}
 
 		private void LoadNoPrimary(IDictionary<string, IQuery> queries) {
