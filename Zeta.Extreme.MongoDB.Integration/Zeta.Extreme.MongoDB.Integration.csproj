@@ -52,5 +52,8 @@
       <Name>Zeta.Extreme.BizProcess</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="JavaScript\chat.js" />
+  </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>
