@@ -19,6 +19,9 @@
     b.click(function() {
         if ($(this).hasClass("hasunread")) {
             zefs.myform.chatread();
+            if (!!window.chatbtnanimation) {
+                clearInterval(window.chatbtnanimation);
+            }
             $(this).removeClass("hasunread");
             var html = $(this).html();
             $(this).empty();
@@ -93,14 +96,16 @@
         } else {
             strong = $('<strong/>');
             b.append(strong);
-            clearInterval(window.chatbtnanimation);
         }
         if (parseInt(count) > 0) {
             b.addClass("hasunread");
             strong.text(count);
             if (!window.chatbtnanimation) {
-                window.chatbtnanimation == setInterval(function() { chatbtnanimate() }, 300);
+                window.chatbtnanimation = setInterval(function() { chatbtnanimate() }, 300);
             }
+        } else {
+            b.removeClass("hasunread");
+            strong.empty();
         }
     });
 
