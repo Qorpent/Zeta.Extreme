@@ -478,6 +478,15 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 		}
 
+		/// <summary>
+		/// Признак предприятия, пригодного для правки
+		/// </summary>
+		/// <returns></returns>
+		[Serialize]
+		public bool ObjectIsEditable {
+			get { return Object.Start.Year <= Year && Object.Finish.Year > Year; }
+		}
+
 		private void RetrieveStructure() {
             FormSessionsState.CurrentFormRenderingOperationsIncrease();
 			StructureInProcess = true;
@@ -492,7 +501,7 @@ namespace Zeta.Extreme.FrontEnd {
 						 name = r.Name,
 						 idx = ri.Idx,
 						 iscaption = r.IsMarkSeted("0CAPTION"),
-						 isprimary = ri.GetIsPrimary() ,
+						 isprimary = ri.GetIsPrimary() && ObjectIsEditable,
 						 level = ri.Level,
 						 number = r.OuterCode,
 						 measure = NeedMeasure ? r.ResolveMeasure() : "",
@@ -510,7 +519,7 @@ namespace Zeta.Extreme.FrontEnd {
 								 code = c.Code,
 								 name = c.Title,
 								 idx = ci.i,
-								 isprimary = c.Editable && !c.IsFormula && !c.IsAuto,
+								 isprimary = c.Editable && !c.IsFormula && !c.IsAuto && ObjectIsEditable,
 								 year = c.Year,
 								 period = c.Period,
 								 controlpoint = c.ControlPoint,
@@ -648,6 +657,9 @@ namespace Zeta.Extreme.FrontEnd {
 				var reallycanbefilled = canbefilled;
 				if (_processed.ContainsKey(q_.Key)) {
 					continue;
+				}
+				if (reallycanbefilled) {
+					reallycanbefilled = reallycanbefilled && ObjectIsEditable;
 				}
 				if (reallycanbefilled) {
 					var r = q_.Value.Row.Native;
