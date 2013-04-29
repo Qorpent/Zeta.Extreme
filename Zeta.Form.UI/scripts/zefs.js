@@ -493,8 +493,8 @@ root.init = root.init ||
     });
 
     api.metadata.getnews.onSuccess(function(e, result) {
+        var content = $('.zefsnews');
         if (!$.isEmptyObject(result)) {
-            var content = $('.zefsnews');
             var exist = false;
             if (content.length != 0) {
                 content.empty();
@@ -523,6 +523,9 @@ root.init = root.init ||
                     content: content, width: 820, height: 500, closebutton: allowclose, backdrop: true
                 });
             }
+        }
+        if (content.length > 0) {
+            content.modal('hide');
         }
     });
 

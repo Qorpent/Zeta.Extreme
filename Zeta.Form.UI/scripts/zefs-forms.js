@@ -440,6 +440,7 @@
                     e.preventDefault();
                     $cell.text("");
                     $cell.data("previous", "");
+                    $cell.data("value", 0);
                     if ($cell.text() != $cell.data("history")) $cell.addClass("changed");
                 // S button
                 case 83 :
@@ -454,8 +455,12 @@
                     break;
                 default :
                     if (!printable || e.ctrlKey || e.altKey) return;
-                    if (!$cell.hasClass('editing')) {
-                        this.inputCell("replace");
+                    if ((k > 47 && k < 58) || (k > 95 && k < 106) || (k == 190 || k == 188 || k == 110 || k != 189)) {
+                        if (!$cell.hasClass('editing')) {
+                            this.inputCell("replace");
+                        }
+                    } else {
+                        return;
                     }
             }
         },this));
