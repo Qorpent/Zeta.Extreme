@@ -45,6 +45,7 @@ namespace Zeta.Extreme.FrontEnd {
 			attachment = storage.SaveAttachment(session, attachment);
 			//считываем через буфер исходный файл и пишем в поток
 			const int BUFFER_SIZE = 500;
+			file.InputStream.Position = 0;
 			using (var outstream = storage.Open(attachment, FileAccess.Write)) {
 				file.InputStream.CopyTo(outstream, BUFFER_SIZE);
 				outstream.Flush();
