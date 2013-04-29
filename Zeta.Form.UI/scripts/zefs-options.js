@@ -261,13 +261,16 @@ $.extend(api,(function(){
                 }
             }),
             getnews : $.extend(new Command({domain: "message", name: "getnews"}), {
-                url : document.location.protocol + "//" + document.location.host + api.siterootold() + "message/getnews.{DATATYPE}.qweb",
+                url : location.origin + api.siterootold() + "message/getnews.{DATATYPE}.qweb",
                 wrap : function(obj) {
                     $.each(obj, function(i,o) {
                         o.Date = eval(o.Version.substring(2));
                     });
                     return obj;
                 }
+            }),
+            archivenews : $.extend(new Command({domain: "message", name: "getnews"}), {
+                url : location.origin + api.siterootold() + "message/archive.rails"
             })
         },
 
