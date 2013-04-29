@@ -69,6 +69,11 @@ $.extend(root,{
                         if (col.controlpoint && row.controlpoint) td.addClass("control");
                         if (col.isprimary && row.isprimary) td.addClass("editable");
                         if (col.exref && row.exref) td.removeClass("editable");
+                        if (!$.isEmptyObject(row.activecols)) {
+                            if ($.map(row.activecols, function(e) { if (e == col.code) return e }).length == 0) {
+                                td.removeClass("editable");
+                            }
+                        }
                         if (col.format != null && col.format != "") td.data("format", col.format);
                         if (row.format != null && row.format != "") td.data("format", row.format);
                         tr.append(td);
