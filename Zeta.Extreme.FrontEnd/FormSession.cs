@@ -169,13 +169,13 @@ namespace Zeta.Extreme.FrontEnd {
 		/// Добавить сообщение в чат
 		/// </summary>
 		/// <returns></returns>
-		public FormChatItem AddChatMessage(string message) {
+		public FormChatItem AddChatMessage(string message, string target) {
 			var provider = Container.Get<IFormChatProvider>();
 			if (null == provider)
 			{
 				throw new Exception("no form chat configured");
 			}
-			return provider.AddMessage(this, message);
+			return provider.AddMessage(this, message,target);
 		}
 
 		/// <summary>
@@ -498,7 +498,8 @@ namespace Zeta.Extreme.FrontEnd {
 						 measure = NeedMeasure ? r.ResolveMeasure() : "",
 						 controlpoint = r.IsMarkSeted("CONTROLPOINT"),
 						 exref = null!=r.ExRefTo,
-						 format = r.ResolveTag("numberformat")
+						 format = r.ResolveTag("numberformat"),
+						 activecols = r.ResolveTag("activecol").SmartSplit().ToArray()
 					 })
 					.Union(
 						(from ci in cols
@@ -619,7 +620,7 @@ namespace Zeta.Extreme.FrontEnd {
 							
 						});
 					var key = primaryrow.Idx + ":" + primarycol.i;
-					queries[key] = (IQuery) DataSession.Register(q, key);
+					queries[key] = DataSession.Register(q, key);
 				}
 			}
 		}
@@ -642,9 +643,20 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void ProcessValues(IDictionary<string, IQuery> queries, bool canbefilled) {
+			
 			foreach (var q_ in queries.Where(_ => null != _.Value)) {
+				var reallycanbefilled = canbefilled;
 				if (_processed.ContainsKey(q_.Key)) {
 					continue;
+				}
+				if (reallycanbefilled) {
+					var r = q_.Value.Row.Native;
+					var c = q_.Value.Col;
+					var activecols = r.ResolveTag("activecol").SmartSplit().ToArray();
+					if (0 != activecols.Length && -1 == Array.IndexOf(activecols, c.Code)) {
+						reallycanbefilled = false;
+					}
+
 				}
 				_processed[q_.Key] = q_.Value;
 				var val = "";
@@ -655,13 +667,14 @@ namespace Zeta.Extreme.FrontEnd {
 					cellid = q_.Value.Result.CellId;
 				}
 				var realkey = "";
-				if (canbefilled) {
+				if (reallycanbefilled)
+				{
 					realkey = q_.Value.Row.Code + "_" + q_.Value.Col.Code + "_" + q_.Value.Time.Year + "_" + q_.Value.Time.Period;
 					if (q_.Value.Obj.Native != Object) {
 						realkey += q_.Value.Obj.Type + "_" + q_.Value.Obj.Id;
 					}
 				}
-				var cell = new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, ri = realkey};
+				var cell = new OutCell { i = q_.Key, c = cellid, v = val, canbefilled = reallycanbefilled, query = q_.Value, ri = realkey };
 				if (q_.Value.Result.Error != null) {
 					cell.iserror = true;
 					cell.error = q_.Value.Result.Error;

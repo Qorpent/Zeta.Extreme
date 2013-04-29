@@ -50,7 +50,10 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// Тип сообщения
 		/// </summary>
 		public string Type { get; set; }
-
+		/// <summary>
+		/// Целевая аудитория
+		/// </summary>
+		public string Target { get; set; }
 		/// <summary>
 		/// Дополнительные данные
 		/// </summary>
