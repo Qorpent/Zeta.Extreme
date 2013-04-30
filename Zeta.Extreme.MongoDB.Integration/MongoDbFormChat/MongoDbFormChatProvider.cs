@@ -97,15 +97,15 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// </summary>
 		/// <param name="session"></param>
 		/// <param name="message"></param>
-		/// <param name="target"></param>
+		/// <param name="type"></param>
 		/// <returns>
 		/// </returns>
-		public FormChatItem AddMessage(IFormSession session, string message, string target="") {
+		public FormChatItem AddMessage(IFormSession session, string message, string type="default") {
             SetupConnection();
-
+			type = type ?? "default";
 			var item = new FormChatItem {
 			    Text = message,
-				Target = target
+				Type = type
 			};
             
 			Connector.Collection.Save(

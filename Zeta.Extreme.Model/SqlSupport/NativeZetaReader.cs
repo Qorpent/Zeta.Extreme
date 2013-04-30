@@ -93,7 +93,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 			select Id, Version, Year, Period, RowId, ColId, ObjId, DetailId, DecimalValue, StringValue, Usr, Currency, ContragentId from zeta.normalcell
 		";
 
-		private const string UserThemaQueryBase = "select login from usm.Underwriter u join usm.usrthemamap um on u.id = um.usr where thema = '{0}' and object = {1}";
+		private const string UserThemaQueryBase = "select login from usm.Underwriter u join usm.usrthemamap um on u.id = um.usr where ('{0}' = '' or thema = '{0}') and object = {1}";
 
 		private const string GetCurrencyRateQueryBase =
 				"select value from usm.periodcourse where  year = {0}  and period = {1} and intype ='{2}' and outtype ='{3}'";
@@ -226,6 +226,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 			return GetScalar(UserThemaQueryBase, "", themacode, objid);
 
 		}
+
 
 		/// <summary>
 		/// Получение курса валюты на период

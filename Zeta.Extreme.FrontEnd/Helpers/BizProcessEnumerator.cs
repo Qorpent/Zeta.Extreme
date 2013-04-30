@@ -36,7 +36,8 @@ namespace Zeta.Extreme.FrontEnd.Helpers
 							Group = _.Group, 
 							Idx=_.Idx == 0?100:_.Idx, 
 							Parent = _.Parent, 
-							IsGroup = _.IsGroup
+							IsGroup = _.IsGroup,
+							Thema = _,
 						}).ToArray();
 
 			//для родительских тем, по которым в набор включены дочки выводим их тоже в под-группу

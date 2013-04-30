@@ -97,8 +97,8 @@ namespace Zeta.Extreme.FrontEnd {
 					Currency=currency,
 					CurrencyRate = rate,
 				};
-			
-			var holdlogin = GetHoldLogin(reader);
+
+			var holdlogin = Template.Thema.GetParameter("hold.responsibility");
 			if (null != Template.Thema) {
 				FormInfo = new
 					{
@@ -117,16 +117,7 @@ namespace Zeta.Extreme.FrontEnd {
 
 		}
 
-		private string GetHoldLogin(NativeZetaReader reader) {
-			int id = 0;
-			var holdlogin = "";
-			var holdobj = MetaCache.Default.Get<IZetaMainObject>("0CH");
-			if (holdobj != null) {
-				id = holdobj.Id;
-				holdlogin = reader.GetThemaResponsiveLogin(Template.Thema.Code, id);
-			}
-			return holdlogin;
-		}
+		
 
 		/// <summary>
 		/// Журнал
@@ -170,13 +161,13 @@ namespace Zeta.Extreme.FrontEnd {
 		/// Добавить сообщение в чат
 		/// </summary>
 		/// <returns></returns>
-		public FormChatItem AddChatMessage(string message, string target) {
+		public FormChatItem AddChatMessage(string message, string type) {
 			var provider = Container.Get<IFormChatProvider>();
 			if (null == provider)
 			{
 				throw new Exception("no form chat configured");
 			}
-			return provider.AddMessage(this, message,target);
+			return provider.AddMessage(this, message,type);
 		}
 
 		/// <summary>

@@ -1,4 +1,5 @@
 ﻿using Qorpent.Serialization;
+using Zeta.Extreme.BizProcess.Themas;
 
 namespace Zeta.Extreme.FrontEnd.Helpers {
 	/// <summary>
@@ -37,5 +38,11 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 		/// </summary>
 		[SerializeNotNullOnly]
 		public int Idx { get; set; }
+
+		/// <summary>
+		/// Back reference to thema
+		/// </summary>
+		[IgnoreSerialize]
+		public IThema Thema { get; set; }
 	}
 }

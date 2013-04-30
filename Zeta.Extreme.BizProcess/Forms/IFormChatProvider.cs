@@ -18,9 +18,9 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// </summary>
 		/// <param name="session"></param>
 		/// <param name="message"></param>
-		/// <param name="target"></param>
+		/// <param name="type"></param>
 		/// <returns></returns>
-		FormChatItem AddMessage(IFormSession session, string message, string target);
+		FormChatItem AddMessage(IFormSession session, string message, string type);
 
 		/// <summary>
 		/// ѕомечает сообщение с указанным идентификатором как прочтенное пользователем

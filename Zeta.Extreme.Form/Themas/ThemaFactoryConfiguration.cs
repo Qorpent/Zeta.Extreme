@@ -75,21 +75,7 @@ namespace Zeta.Extreme.Form.Themas {
 			}
 
 			foreach (var thema in result.Themas) {
-				//NOTE: пока с отчетами не работаем
-				/*
-                foreach (var r in thema.GetAllReports()){
-                    if (r is ZetaReportDefinitionBase){
-                        var zr = (ZetaReportDefinition) r;
-                        var c = zr.Configuration;
-                        if (c.Sources.Length != 0){
-                            foreach (var sourcecode in c.Sources){
-                                var lib = result.GetReport(sourcecode);
-                                zr.Sources.Add(lib);
-                            }
-                        }
-                    }
-                }
-				*/
+
 				foreach (var r in thema.GetAllForms()) {
 					var c = ((InputTemplate)r).Configuration;
 					if (c.Sources.Length != 0) {

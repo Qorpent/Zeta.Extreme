@@ -25,7 +25,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			document.Set("text", chatItem.Text);
 			document.Set("time", chatItem.Time);
 			document.Set("type", chatItem.Type);
-			document.Set("target", chatItem.Target);
+			
+			document.Set("target", chatItem.Target ?? "any") ;
 			return document;
 		}
 
