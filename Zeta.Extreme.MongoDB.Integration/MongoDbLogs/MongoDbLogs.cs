@@ -3,10 +3,9 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Driver.Builders;
 using Qorpent.Log;
-using Qorpent.Bxl;
 using Zeta.Extreme.BizProcess.Forms;
 
-namespace Zeta.Extreme.MongoDB.Integration {
+namespace Zeta.Extreme.MongoDB.Integration.MongoDbLogs {
     /// <summary>
     /// Logs on MongoDB implementation
     /// </summary>
@@ -26,7 +25,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
         private MongoDbConnector _connector;
 
-        private bool noRealWrite;
+        private bool _noRealWrite;
 
         /// <summary>
         ///     Connection marker
@@ -134,7 +133,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 document
             );
 
-            if (!noRealWrite) {
+            if (!_noRealWrite) {
                 _connector.Collection.Save(document);
                 UpdateStatisticsCollections(message);
             }
@@ -158,7 +157,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                     document.Remove("MvcContext");
                  break;
                 default:
-                    noRealWrite = true;
+                    _noRealWrite = true;
                  break;
             }
         }
