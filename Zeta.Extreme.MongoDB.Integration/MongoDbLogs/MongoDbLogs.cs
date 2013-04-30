@@ -142,6 +142,8 @@ namespace Zeta.Extreme.MongoDB.Integration.MongoDbLogs {
 
         private void RebuildLogMessageByLogLevel(LogLevel logLevel, BsonDocument document) {
             switch (logLevel) {
+                case LogLevel.All:
+                 break;
                 case LogLevel.Trace:
                     document.Remove("error");
                  break;

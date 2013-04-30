@@ -429,7 +429,7 @@ namespace Zeta.Extreme.FrontEnd {
                 logWriter.Write(
                     new LogMessage {
                         Message = "Session started",
-                        Level = LogLevel.Info,
+                        Level = LogLevel.All,
                         HostObject = this
                     }
                 );
