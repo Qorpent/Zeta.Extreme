@@ -102,6 +102,10 @@ namespace Zeta.Extreme.DbfsToMongo.Wrapper
         public Attachment GetNextAttachmentFromDbfs()
         {
             string uid = attNeedUpdate.FirstOrDefault();
+            if (uid == null) {
+                return null;
+            }
+
             attNeedUpdate.Remove(uid);
             var clause = new Attachment();
 
