@@ -21,8 +21,8 @@ namespace Zeta.Extreme.FrontEnd {
             public const int L = 3;
         }
 
-        public static int Age() {
-            return ServiceState.TotalQueriesHandled * Points.TotalQueriesHandled +
+        public static int Age(int queriesDivider = 1) {
+            return (ServiceState.TotalQueriesHandled * Points.TotalQueriesHandled) / queriesDivider +
                    Convert.ToInt32(ServiceState.CpuMinutes) * Points.TotalCpuMinute +
                    FormServersState.TotalReloadsCount * Points.TotalServerReloads +
                    FormServersState.TotalSessionsHandled * Points.TotalSessionsHandled;
@@ -45,7 +45,7 @@ namespace Zeta.Extreme.FrontEnd {
         }
 
         public static int Availability() {
-            return Points.A * Age() + Points.P * Power() + Points.L * Load();
+            return Points.A * Age(100) + Points.P * Power() + Points.L * Load();
         }
     }
 }
