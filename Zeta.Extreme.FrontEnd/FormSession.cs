@@ -28,6 +28,7 @@ using System.Web;
 using System.Xml.Linq;
 using Qorpent;
 using Qorpent.Applications;
+using Qorpent.IoC;
 using Qorpent.Log;
 using Qorpent.Mvc;
 using Qorpent.Serialization;
@@ -486,7 +487,11 @@ namespace Zeta.Extreme.FrontEnd {
 		public bool ObjectIsEditable {
 			get { return Object.Start.Year <= Year && Object.Finish.Year > Year; }
 		}
-
+		/// <summary>
+		/// Служба управления статусами
+		/// </summary>
+		[Inject]
+		public IFormStateManager FormStateManager { get; set; }
 		private void RetrieveStructure() {
             FormSessionsState.CurrentFormRenderingOperationsIncrease();
 			StructureInProcess = true;
@@ -880,9 +885,11 @@ namespace Zeta.Extreme.FrontEnd {
 			var isopen = Template.IsOpen;
 			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
+
 			if (string.IsNullOrWhiteSpace(state)) {
 				state = "0ISOPEN";
 			}
+
 			var cansave = state == "0ISOPEN";
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
 			var principal = Usr.toPrincipal();
@@ -895,6 +902,7 @@ namespace Zeta.Extreme.FrontEnd {
 			var cancheck = state == "0ISBLOCK" && haslockrole &&  hasholdlockrole;
 			var cansaveoverblock = roles.IsInRole(principal, "NOBLOCK",true);
 			var periodstateoverride = false;
+
 			cansave = cansave || cansaveoverblock;
 			if (cansave) {
 				var periodStateManager = new PeriodStateManager();
@@ -904,6 +912,17 @@ namespace Zeta.Extreme.FrontEnd {
 					periodstateoverride = cansave;
 				}
 			}
+
+			var newstates = Template.Thema.GetParameter("bizporcess.isprimary").ToBool();
+			FormStateOperationResult canblockresult = null;
+			FormStateOperationResult cancheckresult = null;
+			FormStateOperationResult canopenresult = null;
+			if (newstates) {
+				canblockresult = FormStateManager.GetCanSet(this, FormStateType.Closed);
+				cancheckresult = FormStateManager.GetCanSet(this, FormStateType.Checked);
+				canopenresult = FormStateManager.GetCanSet(this, FormStateType.Open);
+			}
+
 			return new LockStateInfo
 				{
 					isopen = isopen,
@@ -918,7 +937,11 @@ namespace Zeta.Extreme.FrontEnd {
 					cancheck  = cancheck,
 					cansaveoverblock = cansaveoverblock,
 					hasbadcontrolpoints = message=="cpavoid" || message.Contains("точк"),
-					periodstateoverride = periodstateoverride
+					periodstateoverride = periodstateoverride,
+					newstates = newstates,
+					canblockresult = canblockresult,
+					cancheckresult = cancheckresult,
+					canopenresult = canopenresult,
 				};
 		}
 
@@ -1133,5 +1156,14 @@ namespace Zeta.Extreme.FrontEnd {
 		private FormStructureRow[] rows;
 		private string _usr;
 		private IUserLog _logger;
+		/// <summary>
+		/// Установить статус текущей сессии
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="comment"></param>
+		/// <returns></returns>
+		public FormStateOperationResult SetState(FormStateType state, string comment) {
+			return FormStateManager.SetState(this, state,comment);
+		}
 	}
 }

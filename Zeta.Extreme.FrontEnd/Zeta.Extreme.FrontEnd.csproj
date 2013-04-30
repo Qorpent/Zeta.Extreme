@@ -42,7 +42,7 @@
     <Compile Include="Actions\Info\GetOjectsAction.cs" />
     <Compile Include="Actions\Info\GetPeriodsAction.cs" />
     <Compile Include="Actions\Info\GetUserInfoAction.cs" />
-    <Compile Include="Actions\States\LockFormAction.cs" />
+    <Compile Include="Actions\States\SetStateAction.cs" />
     <Compile Include="Actions\States\LockListAction.cs" />
     <Compile Include="Actions\SessionProcessing\ResetDataAction.cs" />
     <Compile Include="Actions\SessionProcessing\SaveDataAction.cs" />

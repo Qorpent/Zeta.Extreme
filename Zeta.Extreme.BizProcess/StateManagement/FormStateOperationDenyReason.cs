@@ -20,41 +20,63 @@
 #endregion
 
 using System;
+using Qorpent.Serialization;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	///     Описание причиныотказа
 	/// </summary>
+	[Serialize]
 	public class FormStateOperationDenyReason {
 		/// <summary>
 		///     Тип причины отказа
 		/// </summary>
+		[Serialize]
 		public FormStateOperationDenyReasonType Type { get; set; }
 
 		/// <summary>
 		///     Текстовое сообщение
 		/// </summary>
+		[Serialize]
 		public string Message { get; set; }
 
 		/// <summary>
 		///     Объект исключения
 		/// </summary>
+		[IgnoreSerialize]
 		public Exception Error { get; set; }
+
+		/// <summary>
+		/// Сообщение об ошибке
+		/// </summary>
+		[Serialize]
+		public string ErrorMessage {
+			get {
+				if (null == Error) {
+					return "";
+				}
+				return Error.ToString();
+			}
+		}
+
 
 		/// <summary>
 		///     Обратная ссылка на объект проверки статуса
 		/// </summary>
+		[IgnoreSerialize]
 		public IFormStateAvailabilityChecker Checker { get; set; }
 
 
 		/// <summary>
 		///     Ссылка на унаследованный результат
 		/// </summary>
+		[SerializeNotNullOnly]
 		public FormStateOperationResult ParentResult { get; set; }
 
 		/// <summary>
 		/// Код правила по регламенту
 		/// </summary>
+		[Serialize]
 		public string ReglamentCode { get; set; }
 	}
 }
