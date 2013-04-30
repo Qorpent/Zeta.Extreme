@@ -127,6 +127,20 @@ $.extend(api,(function(){
                     };
                 }
             }),
+            // Команда новый блокировки формы
+            setstatenew : $.extend(new Command({domain: "zefs", name: "setstate"}), {
+                getParameters: function() {
+                    var s = root.myform.currentSession;
+                    if ($.isEmptyObject(s)) return;
+                    return {
+                        session: root.myform.sessionId,
+                        obj: s.ObjInfo.Id,
+                        period: s.Period,
+                        year: s.Year,
+                        form: s.FormInfo.Code
+                    };
+                }
+            }),
             // Единая команда для получения статуса блокировок
             state : new Command({domain: "zefs", name: "getlockstate"}),
             // Команда получения текущего статуса блокировки

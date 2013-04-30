@@ -24,6 +24,8 @@ using System.Reflection;
 using System.Xml.Linq;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Form.Themas {
@@ -257,8 +259,28 @@ namespace Zeta.Extreme.Form.Themas {
 			}
 
 			ApplyBizProcessParameters(result);
+			ApplyHoldResponsibility(result);
 
 			return result;
+		}
+		static  int _0CHID = 0;
+		private void ApplyHoldResponsibility(Thema thema) {
+			try {
+				
+				var reader = new NativeZetaReader();
+				if (0 == _0CHID) {
+					_0CHID = reader.ReadObjects("Code = '0CH'").First().Id;
+				}
+				var login = reader.GetThemaResponsiveLogin(thema.Code, _0CHID);
+				if (!string.IsNullOrWhiteSpace(login)) {
+					thema.Parameters["hold.responsibility"] = login.ToLower();
+				}
+
+			}
+			catch (SqlException e)
+			{
+				thema.Parameters["bizprocess.load.error"] = e;
+			}
 		}
 
 		private void ApplyBizProcessParameters(IThema thema) {
