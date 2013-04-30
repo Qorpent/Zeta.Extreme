@@ -19,7 +19,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.ZefsServer {
                {
                    "Total", new Dictionary<string, object> {
                         {"QueriesHandled", ServiceState.TotalQueriesHandled},
-                        {"CpuTime", ServiceState.CpuTime.TotalMinutes},
+                        {"CpuTime", ServiceState.CpuMinutes},
                         {"ServerReloads", FormServersState.TotalReloadsCount},
                         {"SessionsHandled", FormServersState.TotalSessionsHandled}
                     }

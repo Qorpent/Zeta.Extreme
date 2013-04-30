@@ -23,7 +23,7 @@ namespace Zeta.Extreme.FrontEnd {
 
         public static int Age() {
             return ServiceState.TotalQueriesHandled * Points.TotalQueriesHandled +
-                   Convert.ToInt32(ServiceState.CpuTime.TotalMinutes) * Points.TotalCpuMinute +
+                   Convert.ToInt32(ServiceState.CpuMinutes) * Points.TotalCpuMinute +
                    FormServersState.TotalReloadsCount * Points.TotalServerReloads +
                    FormServersState.TotalSessionsHandled * Points.TotalSessionsHandled;
         }
@@ -38,8 +38,10 @@ namespace Zeta.Extreme.FrontEnd {
         }
     
         public static int Power() {
-            return (ServiceState.TotalQueriesHandled / (Convert.ToInt32(ServiceState.CpuTime.TotalMinutes) != 0 ? Convert.ToInt32(ServiceState.CpuTime.TotalMinutes) : 1)) +
-                   (FormServersState.TotalSessionsHandled / Convert.ToInt32(FormServersState.TotalTimeToLoadData));
+            var estimatedCpuMinutes = ServiceState.CpuMinutes > 0 ? ServiceState.CpuMinutes : 1;
+            var estimatedTimeToLoadData = FormServersState.TotalTimeToLoadData.TotalSeconds > 0 ? Convert.ToInt32(FormServersState.TotalTimeToLoadData.TotalSeconds) : 1;
+            return (ServiceState.TotalQueriesHandled / estimatedCpuMinutes) +
+                   (FormServersState.TotalSessionsHandled / estimatedTimeToLoadData);
         }
 
         public static int Availability() {
