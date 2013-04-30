@@ -35,6 +35,7 @@
     <Compile Include="Actions\SessionProcessing\DataLoadedAction.cs" />
     <Compile Include="Actions\Attachments\DeleteFileAction.cs" />
     <Compile Include="Actions\Abstracts\FormServerActionBase.cs" />
+    <Compile Include="Actions\States\GetReglamentAction.cs" />
     <Compile Include="Actions\ZefsServer\FormServerRestart.cs" />
     <Compile Include="Actions\Info\GetSessionDebugInfoAction.cs" />
     <Compile Include="Actions\Abstracts\FormSessionActionBase.cs" />

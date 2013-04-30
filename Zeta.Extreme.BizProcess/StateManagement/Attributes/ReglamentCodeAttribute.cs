@@ -17,5 +17,10 @@ namespace Zeta.Extreme.BizProcess.StateManagement.Attributes {
 		///     Код правила в регламенте
 		/// </summary>
 		public string Code { get; private set; }
+
+		/// <summary>
+		/// Описание текста регламента из документа
+		/// </summary>
+		public string Description { get; set; }
 	}
 }

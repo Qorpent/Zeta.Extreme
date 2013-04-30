@@ -20,6 +20,7 @@
 using System;
 using System.Linq;
 using Qorpent.Mvc;
+using Qorpent.Mvc.Binding;
 using Zeta.Extreme.BizProcess.StateManagement;
 
 namespace Zeta.Extreme.FrontEnd.Actions.States {
@@ -31,17 +32,17 @@ namespace Zeta.Extreme.FrontEnd.Actions.States {
 		/// <summary>
 		/// Новый статус
 		/// </summary>
-		public string NewState { get; set; }
+		[Bind]public string NewState { get; set; }
 
 		/// <summary>
 		/// Комментарий к блокировке
 		/// </summary>
-		public string Comment { get; set; }
+		[Bind]public string Comment { get; set; }
 
 		/// <summary>
 		/// Текущая сессия
 		/// </summary>
-		public string Session { get; set; }
+		[Bind]public string Session { get; set; }
 		FormStateType state;
 
 		/// <summary>

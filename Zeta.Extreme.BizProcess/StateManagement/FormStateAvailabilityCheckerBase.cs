@@ -1,12 +1,14 @@
 using System;
 using System.Linq;
 using Qorpent;
+using Qorpent.Serialization;
 using Zeta.Extreme.BizProcess.StateManagement.Attributes;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	/// Базовый класс расширений анализа возможности установки статуса
 	/// </summary>
+	[Serialize]
 	public abstract class FormStateAvailabilityCheckerBase : ServiceBase,IFormStateAvailabilityChecker {
 		/// <summary>
 		/// Данный конструктор настраивает объект исходя из примененных атрибутов
@@ -63,6 +65,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 				var regCode = attribute as ReglamentCodeAttribute;
 				if (null != regCode) {
 					ReglamentCode = regCode.Code;
+					ReglamentDescription = regCode.Description;
 					continue;
 				}
 			}
@@ -70,49 +73,61 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		}
 
 		/// <summary>
+		/// Описание, текст статьи регламента
+		/// </summary>
+		[Serialize]
+		public string ReglamentDescription { get; set; }
+
+		/// <summary>
 		/// Код правила в регламенте
 		/// </summary>
+		[Serialize]
 		public string ReglamentCode { get; set; }
 
 		/// <summary>
 		/// Результат по умолчанию
 		/// </summary>
-		protected bool DefaultResult { get; set; }
+		[Serialize] public bool DefaultResult { get; set; }
 
 		/// <summary>
 		/// Признак использования результата по умолчанию
 		/// </summary>
-		protected bool UseDefaultResult { get; set; }
+		[Serialize] public bool UseDefaultResult { get; set; }
 
 		/// <summary>
 		/// Признак того что <see cref="SkipRole"/> должна быть явно привязана к пользователю
 		/// </summary>
-		protected bool SkipRoleExact { get; set; }
+		[Serialize] public bool SkipRoleExact { get; set; }
 
 		/// <summary>
 		/// Системная роль, игнорирующая данную проверку
 		/// </summary>
+		[Serialize]
 		public string SkipRole { get; set; }
 
 		/// <summary>
 		/// User-defined order index
 		/// </summary>
+		[Serialize]
 		public int Index { get; set; }
 
 
 		/// <summary>
 		/// Позволяет установить тип возвращаемого сообщения об ошибке
 		/// </summary>
+		[Serialize]
 		public FormStateOperationDenyReasonType ReasonType { get; set; }
 
 		/// <summary>
 		/// Сообщение об ошибке
 		/// </summary>
+		[Serialize]
 		public string Message { get; set; }
 
 		/// <summary>
 		/// Ошибка при исключении
 		/// </summary>
+		[IgnoreSerialize]
 		protected Exception Error { get; set; }
 
 		/// <summary>
@@ -126,11 +141,13 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <summary>
 		/// Укажите в случае, если расширение предназначено для проверки только конкретного статуса
 		/// </summary>
+		[Serialize]
 		public FormStateType TargetFormState { get; set; }
 
 		/// <summary>
 		/// Укажите в случае, если расширение предназначено для проверки только конкретного входного статуса
 		/// </summary>
+		[Serialize]
 		public FormStateType SourceFormState { get; set; }
 
 		/// <summary>
@@ -178,6 +195,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <summary>
 		/// Текущий контекст обработки
 		/// </summary>
+		[IgnoreSerialize]
 		protected StateValidationContext Context { get; set; }
 	}
 }
