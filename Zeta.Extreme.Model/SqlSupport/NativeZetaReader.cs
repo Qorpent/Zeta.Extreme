@@ -51,6 +51,14 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				from zeta.normalcol
 		";
 
+		private const string Bizprocessquerybase = @"
+				select 
+					Id, Code, Name,Comment,Tag,
+					InProcess, Role, IsFinal, RootRows, Process
+				from zeta.normalbizprocess
+		";
+
+
 		private const string Rowquerybase = @"
 				select 
 					Id,			Version,	IsFormula,	Formula,	FormulaType,	-- 0 - 4
@@ -110,6 +118,18 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// <returns> </returns>
 		public IEnumerable<Period> ReadPeriods(string condition = "") {
 			return Read(condition, Peiodquerybase, ReaderToPeriod);
+		}
+
+
+		/// <summary>
+		/// 	Сериализует периоды
+		/// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+		/// </summary>
+		/// <param name="condition"> </param>
+		/// <returns> </returns>
+		public IEnumerable<BizProcess> ReadBizProcesses(string condition = "")
+		{
+			return Read(condition, Bizprocessquerybase, ReaderToBizProcess);
 		}
 
 		/// <summary>

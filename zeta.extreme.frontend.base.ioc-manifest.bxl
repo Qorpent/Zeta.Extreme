@@ -14,7 +14,9 @@ using Qorpent.Applications
 using Comdiv.Security
 using Qorpent.Security 
 using Zeta.Extreme.Model.Querying
+using Zeta.Extreme.BizProcess.Forms
 using Zeta.Extreme.BizProcess.StateManagement
+using Zeta.Extreme.Form.StateManagement
 
 mvc Zeta.Extreme.FrontEnd
 
@@ -31,3 +33,9 @@ transient "securitymap.roles.extension"  BxlXmlRoleProvider : IRoleResolverExten
 transient "zetaroles.roles.extension" SimpleZetaRoleResolver : IRoleResolverExtension
 
 singleton "extreme.factory" DefaultExtremeFactory : IExtremeFactory
+
+transient "periodstate.manager" PeriodStateManager : IPeriodStateManager
+
+transient "state.manager" DefaultStateManager : IFormStateManager
+
+transient "form.session" FormSession : IFormSession

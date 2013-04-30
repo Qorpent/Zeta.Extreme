@@ -3,6 +3,12 @@ var root = window.zefs = window.zefs || {};
 var api = root.api = root.api || {};
 var Command = window.qweb.Command;
 
+api.siterootold = function(){
+    if (location.host.search('admin|corp|133|49') != -1 || location.port == '448' || location.port == '449') return '/ecot/';
+    //      else if (location.host.search('assoi') == 0 || location.port == '447') return '/eco/';
+    return '/eco/';
+};
+
 $.extend(api,(function(){
 	return {
 		server : {
@@ -36,6 +42,7 @@ $.extend(api,(function(){
                         // массив колонок
                         cols : []
                     };
+                    var currentRow = null;
                     $.each(obj, function(i,o) {
                         if (o.type=="c") {
                             o.exref = o.exref || false;
@@ -45,6 +52,20 @@ $.extend(api,(function(){
                             o.measure = o.measure || "тыс. руб.";
                             o.level = o.level || 0;
                             o.exref = o.exref || false;
+                            o.childrens = o.childrens || [];
+                            /*if (!!currentRow) {
+                                if (o.level > currentRow.level) {
+                                    o.parent = currentRow;
+                                    currentRow.childrens.push(o);
+                                    currentRow = o;
+                                } else {
+                                    currentRow.parent.childrens.push(o);
+                                    currentRow = currentRow.parent;
+                                }
+                            } else {
+                                currentRow = o;
+                                o.parent = result.rows;
+                            }*/
                             result.rows.push(o);
                         }
                     });
@@ -238,6 +259,18 @@ $.extend(api,(function(){
                     $.extend(obj, { my: myobjs});
                     return obj;
                 }
+            }),
+            getnews : $.extend(new Command({domain: "message", name: "getnews"}), {
+                url : location.origin + api.siterootold() + "message/getnews.{DATATYPE}.qweb",
+                wrap : function(obj) {
+                    $.each(obj, function(i,o) {
+                        o.Date = eval(o.Version.substring(2));
+                    });
+                    return obj;
+                }
+            }),
+            archivenews : $.extend(new Command({domain: "message", name: "getnews"}), {
+                url : location.origin + api.siterootold() + "message/archive.rails"
             })
         },
 

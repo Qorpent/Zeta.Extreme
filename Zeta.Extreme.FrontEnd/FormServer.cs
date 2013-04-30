@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Principal;
@@ -30,6 +29,7 @@ using Qorpent.Applications;
 using Qorpent.Events;
 using Qorpent.IoC;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.Themas;
@@ -43,7 +43,7 @@ namespace Zeta.Extreme.FrontEnd {
 	/// 	Выполняет стартовую настройку сервера форм
 	/// </summary>
 	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IApplicationStartup), Name = "extreme.form.start")]
-	public class FormServer : ServiceBase, IApplicationStartup {
+    public class FormServer : ServiceBase, IApplicationStartup, IFormServer {
 		/// <summary>
 		/// 	Конструктор по умолчанию
 		/// </summary>
@@ -265,7 +265,12 @@ namespace Zeta.Extreme.FrontEnd {
 						_ =>
 						_.Usr == usr && _.Year == year && _.Period == period && _.Template.Code == template.Code && _.Object.Id == obj.Id);
 				if (null == existed) {
-					var session = new FormSession(template, year, period, obj);
+					var session = Container.Get<IFormSession>(null,template, year, period, obj) as FormSession;
+					if (null == session) {
+						session = new FormSession(template, year, period, obj);
+						session.SetApplication(Application);
+						session.SetContainerContext(Container,null);
+					}
 					session.FormServer = this;
 					session.InitSaveMode = initsavemode;
 					Sessions.Add(session);
@@ -294,8 +299,9 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Перезагрузка системы
 		/// </summary>
 		public void Reload() {
-			lock (ReloadState) {
-
+            lock (ReloadState) {
+                FormSessionsState.CurrentSessionsFlush();
+                FormServersState.CurrentReloadOperationsIncrease();
 					((IResetable) Application.Files).Reset(null);
 					((IResetable) Application.Roles).Reset(null);
 					Sessions.Clear();
@@ -311,8 +317,8 @@ namespace Zeta.Extreme.FrontEnd {
 					CompileFormulas.Run();
 					LoadThemas.Run();
 					ReadyToServeForms.Run();
-				
-			
+
+                    FormServersState.CurrentReloadOperationsDecrease();
 			}
 		}
 		/// <summary>

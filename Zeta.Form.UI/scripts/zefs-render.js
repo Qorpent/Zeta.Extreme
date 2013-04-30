@@ -47,23 +47,19 @@ $.extend(root,{
 			if (session.NeedMeasure) {
 				thead.find("thead").append($('<th class="measure"/>').text("Ед. изм."));
 			}
-			$.each(session.structure.rows, function(rowidx,row) {
-				var tr = $("<tr/>").attr("level",row.level);
-				if (row.iscaption) tr.addClass("istitle");
+			$.each(session.structure.rows, function(i,row) {
+                var tr = $("<tr/>").attr("level",row.level);
+                if (row.iscaption) tr.addClass("istitle");
                 tr.append($('<td class="number"/>').attr("title", row.code).text(row.number || ""));
-				if (session.structure.rows.length > rowidx + 1) {
-                    if (row.level < session.structure.rows[rowidx + 1].level) {
-                        tr.addClass("haschild");
-                    }
-                }
+                if (row.childrens.length != 0) tr.addClass("haschild");
                 var td = $('<td class="name"/>').text(row.name);
-				if (row.iscaption) {
-					tr.append(td.attr("colspan", "100"));
-				} else {
-					tr.append(td);
-					if (session.NeedMeasure) {
-						tr.append($('<td class="measure"/>').text(row.measure));
-					}
+                if (row.iscaption) {
+                    tr.append(td.attr("colspan", "100"));
+                } else {
+                    tr.append(td);
+                    if (session.NeedMeasure) {
+                        tr.append($('<td class="measure"/>').text(row.measure));
+                    }
                     $.each(session.structure.cols, function(i,col) {
                         var td = $('<td class="data notloaded"/>').attr({
                             "id": row.idx + ":" + col.idx,
@@ -73,6 +69,11 @@ $.extend(root,{
                         if (col.controlpoint && row.controlpoint) td.addClass("control");
                         if (col.isprimary && row.isprimary) td.addClass("editable");
                         if (col.exref && row.exref) td.removeClass("editable");
+                        if (!$.isEmptyObject(row.activecols)) {
+                            if ($.map(row.activecols, function(e) { if (e == col.code) return e }).length == 0) {
+                                td.removeClass("editable");
+                            }
+                        }
                         if (col.format != null && col.format != "") td.data("format", col.format);
                         if (row.format != null && row.format != "") td.data("format", row.format);
                         tr.append(td);

@@ -89,7 +89,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		}
 
 		/// <summary>
-		/// 	Сериализует строку из БД в объект строки
+		/// 	Сериализует строку из БД в объект колонки
 		/// </summary>
 		/// <param name="r"> </param>
 		/// <returns> </returns>
@@ -110,6 +110,32 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Currency = r.GetString(10),
 					Tag = r.GetString(11),
 				};
+
+
+			return x;
+		}
+
+
+		/// <summary>
+		/// 	Сериализует строку из БД в объект бизнес-процессак
+		/// </summary>
+		/// <param name="r"> </param>
+		/// <returns> </returns>
+		public static BizProcess ReaderToBizProcess(IDataRecord r)
+		{
+			var x = new BizProcess
+			{
+				Id = r.GetInt32(0),
+				Code = r.GetString(1),
+				Name = r.GetString(2),
+				Comment = r.GetString(3),
+				Tag = r.GetString(4),
+				InProcess =  r.GetString(5),
+				Role =  r.GetString(6),
+				IsFinal =  r.GetBoolean(7),
+				RootRows =  r.GetString(8),
+				Process =  r.GetString(9),
+			};
 
 
 			return x;

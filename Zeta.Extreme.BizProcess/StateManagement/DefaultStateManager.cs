@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Qorpent;
 using Qorpent.IoC;
+using Qorpent.Security;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
@@ -89,7 +90,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 				CheckCheckersOrder();
 				var formRecord = Repository.GetFormRecord(form);
 				var lastState = Repository.GetLastFormState(form);
-				var context = new StateValidationContext(this, form, formRecord, lastState, newStateType,Container);
+				var context = new StateValidationContext(this, form, formRecord, lastState, newStateType,Container, Container.Get<IRoleResolver>());
 				if (context.OldState == context.NewState) {
 					//если статус не меняется значит и нельзя выполнить эту операцию
 					return new FormStateOperationResult
@@ -115,6 +116,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 			}
 		}
 
+
 		/// <summary>
 		///     Устанавливает новый статус для формы
 		/// </summary>
@@ -122,12 +124,15 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <param name="newStateType"></param>
 		/// <param name="comment"></param>
 		/// <param name="parentId"></param>
+		/// <param name="skipValidation">режим без проверки валидности, прямое выставление статуса</param>
 		/// <returns>
 		/// </returns>
-		public FormStateOperationResult SetState(IFormSession form, FormStateType newStateType, string comment = "", int parentId = 0) {
+		public FormStateOperationResult SetState(IFormSession form, FormStateType newStateType, string comment = "", int parentId = 0, bool skipValidation =false)
+		{
 			try {
-				var canSetState = GetCanSet(form, newStateType);
-				if (canSetState.Allow) {
+				FormStateOperationResult canSetState =null;
+				if (skipValidation || (canSetState = GetCanSet(form, newStateType)).Allow)
+				{
 					Repository.SetState(form, newStateType,comment,parentId);
 				}
 				return canSetState;

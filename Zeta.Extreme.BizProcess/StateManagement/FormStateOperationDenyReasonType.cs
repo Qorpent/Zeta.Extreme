@@ -80,6 +80,10 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// <summary>
 		/// Проблема в целевом статусе
 		/// </summary>
-		InvalidTargetState =11
+		InvalidTargetState =11,
+		/// <summary>
+		/// Проблема в периоде
+		/// </summary>
+		Period=12,
 	}
 }

@@ -35,6 +35,7 @@
     <Compile Include="Actions\SessionProcessing\DataLoadedAction.cs" />
     <Compile Include="Actions\Attachments\DeleteFileAction.cs" />
     <Compile Include="Actions\Abstracts\FormServerActionBase.cs" />
+    <Compile Include="Actions\States\GetReglamentAction.cs" />
     <Compile Include="Actions\ZefsServer\FormServerRestart.cs" />
     <Compile Include="Actions\Info\GetSessionDebugInfoAction.cs" />
     <Compile Include="Actions\Abstracts\FormSessionActionBase.cs" />
@@ -42,13 +43,16 @@
     <Compile Include="Actions\Info\GetOjectsAction.cs" />
     <Compile Include="Actions\Info\GetPeriodsAction.cs" />
     <Compile Include="Actions\Info\GetUserInfoAction.cs" />
-    <Compile Include="Actions\States\LockFormAction.cs" />
+    <Compile Include="Actions\States\SetStateAction.cs" />
     <Compile Include="Actions\States\LockListAction.cs" />
     <Compile Include="Actions\SessionProcessing\ResetDataAction.cs" />
     <Compile Include="Actions\SessionProcessing\SaveDataAction.cs" />
     <Compile Include="Actions\SessionProcessing\SaveReadyAction.cs" />
     <Compile Include="Actions\SessionProcessing\SaveStateAction.cs" />
     <Compile Include="Actions\Abstracts\SessionStartBase.cs" />
+    <Compile Include="Actions\ZefsServer\GetClusterNodeLoad.cs" />
+    <Compile Include="ClusterNodeLoadBuilder.cs" />
+    <Compile Include="ClusterNodeLoadPoints.cs" />
     <Compile Include="DataStructures\AccessibleObjects.cs" />
     <Compile Include="DataStructures\DivisionRecord.cs" />
     <Compile Include="DataStructures\ObjectRecord.cs" />
@@ -60,6 +64,7 @@
     <Compile Include="FormAttachmentStorageExtensions.cs" />
     <Compile Include="FormServer.cs" />
     <Compile Include="DataStructures\DataChunk.cs" />
+    <Compile Include="FormServersState.cs" />
     <Compile Include="FormSession.cs" />
     <Compile Include="Actions\SessionProcessing\StartAction.cs" />
     <Compile Include="Actions\ZefsServer\FormServerStateAction.cs" />
@@ -69,6 +74,7 @@
     <Compile Include="Actions\Info\FormSessionStatusAction.cs" />
     <Compile Include="DataStructures\StructureItem.cs" />
     <Compile Include="FormSessionDataSessionPropertySoruce.cs" />
+    <Compile Include="FormSessionsState.cs" />
     <Compile Include="Helpers\AccessibleObjectsHelper.cs" />
     <Compile Include="Helpers\BizProcessEnumerator.cs" />
     <Compile Include="Helpers\BizProcessRecord.cs" />
@@ -81,6 +87,12 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Mvc\Qorpent.Mvc.csproj">
+      <Project>{96885c8f-ad20-41b4-86ee-bc9b3d47d9f9}</Project>
+      <Name>Qorpent.Mvc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

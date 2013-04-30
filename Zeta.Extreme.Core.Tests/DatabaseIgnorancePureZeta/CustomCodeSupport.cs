@@ -34,7 +34,7 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta {
 			//описыаваем реальные данные
 			Add(new Query { Row = { Code = "x" } , Col={Code="x"},Time={Year=2013,Period = 13}}, 5);	
 					
-			yield return new Query { IgnoreCheckPrimaryRowExistence= true, Row = { Code = "x"}, Time = {Year = 2014,Period = 1}, Col = {Formula = "@CUSTOM? * @CUSTOM?", FormulaType = "boo"}};
+			yield return new Query { IgnoreCheckPrimaryExistence= true, Row = { Code = "x"}, Time = {Year = 2014,Period = 1}, Col = {Formula = "@CUSTOM? * @CUSTOM?", FormulaType = "boo"}};
 		}
 
 		protected override void Examinate(Query query)

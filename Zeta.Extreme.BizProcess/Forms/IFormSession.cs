@@ -42,7 +42,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <summary>
 		/// 	Период
 		/// </summary>
-		int Period { get; }
+		int Period { get; set; }
 
 		/// <summary>
 		/// 	Объект
@@ -57,7 +57,7 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <summary>
 		/// 	Пользователь
 		/// </summary>
-		string Usr { get; }
+		string Usr { get; set; }
 
 		/// <summary>
 		/// 	Хранит уже подготовленные данные
@@ -74,5 +74,11 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// </summary>
 		/// <returns> </returns>
 		LockStateInfo GetStateInfo();
+
+		/// <summary>
+		/// 	Получает список связанных с сессией файлов
+		/// </summary>
+		/// <returns> </returns>
+		FormAttachment[] GetAttachedFiles();
 	}
 }

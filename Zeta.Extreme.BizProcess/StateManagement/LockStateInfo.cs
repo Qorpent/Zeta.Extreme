@@ -18,7 +18,7 @@
 // PROJECT ORIGIN: LockStateInfo.cs
 
 #endregion
-
+using  Qorpent.Serialization;
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	///     Информация о статусе закрытия формы
@@ -83,5 +83,32 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		///     Текущий статус
 		/// </summary>
 		public string state;
+
+		/// <summary>
+		/// Признак того что применяется сохранение поверх статуса периода
+		/// </summary>
+		public bool periodstateoverride;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[SerializeNotNullOnly]
+		public FormStateOperationResult canblockresult;
+		/// <summary>
+		/// 
+		/// </summary>
+		public bool newstates;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[SerializeNotNullOnly]
+		public FormStateOperationResult cancheckresult;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[SerializeNotNullOnly]
+		public FormStateOperationResult canopenresult;
 	}
 }

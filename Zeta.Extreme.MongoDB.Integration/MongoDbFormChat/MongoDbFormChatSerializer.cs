@@ -25,6 +25,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			document.Set("text", chatItem.Text);
 			document.Set("time", chatItem.Time);
 			document.Set("type", chatItem.Type);
+			document.Set("target", chatItem.Target);
 			return document;
 		}
 
@@ -43,6 +44,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			result.User = document["user"].AsString;
 			result.Text = document["text"].AsString;
 			result.Time = document["time"].ToLocalTime();
+			result.Target = "";
+			BsonElement targetElement = null;
+			if(document.TryGetElement("target",out targetElement)){
+				result.Target = targetElement.Value.AsString;
+			}
 			return result;
 		}
 		/// <summary>

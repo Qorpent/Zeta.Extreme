@@ -22,6 +22,11 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 		///     Текст сообщения
 		/// </summary>
 		[Bind] public string Text { get; set; }
+		/// <summary>
+		///     Текст сообщения
+		/// </summary>
+		[Bind]
+		public string Target { get; set; }
 
 		/// <summary>
 		///     processing of execution - main method of action
@@ -29,7 +34,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 		/// <returns>
 		/// </returns>
 		protected override object MainProcess() {
-			return MySession.AddChatMessage(Text);
+			return MySession.AddChatMessage(Text,Target);
 		}
 	}
 }

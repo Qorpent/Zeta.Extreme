@@ -92,5 +92,12 @@ namespace Zeta.Extreme.FrontEnd {
 		/// Формат числа
 		/// </summary>
 		public string format;
+
+		
+		/// <summary>
+		/// Признак активной колонки
+		/// </summary>
+		[SerializeNotNullOnly]
+		public string[] activecols;
 	}
 }

@@ -1,4 +1,5 @@
 #region LICENSE
+
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,22 +15,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.FrontEnd/LockFormAction.cs
-#endregion
-using Qorpent.Mvc;
+// PROJECT ORIGIN: TargetStateAttribute.cs
 
-namespace Zeta.Extreme.FrontEnd.Actions.States {
+#endregion
+
+using System;
+
+namespace Zeta.Extreme.BizProcess.StateManagement.Attributes {
 	/// <summary>
-	/// 	Возвращает текущий статус сохранения
+	///     Атрибут указания фильтрации по целевому статусу в расширениях управления
+	///     статусами
 	/// </summary>
-	[Action("zefs.lockform")]
-	public class LockFormAction : FormSessionActionBase {
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+	public class TargetStateAttribute : StateAttributeBase {
 		/// <summary>
-		/// 	processing of execution - main method of action
 		/// </summary>
-		/// <returns> </returns>
-		protected override object MainProcess() {
-			return MySession.DoLockForm();
+		/// <param name="type"></param>
+		public TargetStateAttribute(FormStateType type) {
+			Type = type;
 		}
+
+		/// <summary>
+		///     Фильтрующий тип для целевого статуса
+		/// </summary>
+		public FormStateType Type { get; private set; }
 	}
 }

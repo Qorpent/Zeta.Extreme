@@ -355,8 +355,12 @@ namespace Zeta.Extreme {
 				Currency = PrimaryConstants.VALUTA_NONE;
 			}
 			//жестка€ защита от референции на несуществующие строки
-			if (!IgnoreCheckPrimaryRowExistence && Row.IsPrimary() && Row.Native == null) {
+			if (!IgnoreCheckPrimaryExistence && Row.IsPrimary() && Row.Native == null) {
 				Result = new QueryResult{IsComplete = false,Error = new Exception("¬ качестве первичной строки указан несуществующий код"+Row.Code)};
+			}
+			if (!IgnoreCheckPrimaryExistence && Col.IsPrimary() && Col.Native == null)
+			{
+				Result = new QueryResult { IsComplete = false, Error = new Exception("¬ качестве первичной колонки указан несуществующий код" + Col.Code) };
 			}
 			InvalidateCacheKey();
 		}
@@ -468,7 +472,7 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// ‘лаг отключени€ проверки наличи€ строки
 		/// </summary>
-		public bool IgnoreCheckPrimaryRowExistence;
+		public bool IgnoreCheckPrimaryExistence;
 
 		private List<IQuery> _formulaDependency;
 
