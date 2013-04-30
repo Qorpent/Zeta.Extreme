@@ -9,6 +9,12 @@ $.extend(api,(function(){
             login : new Command({domain:"_sys", name:"login"}),
             logout : new Command({domain: "_sys", name: "logout"}),
             impersonate : new Command({domain: "_sys", name: "impersonate"}),
+            impersonateall : function(params) {
+                var apps = ["zefs","zefs1","zefs2","zefs3","zefs4"];
+                for (var i in apps) {
+                    $.ajax({ url: "/" + apps[i] + "/_sys/impersonate.qweb", data: params });
+                }
+            },
             whoami : $.extend(new Command({domain: "_sys", name: "whoami"}), {
                 wrap : function(obj) {
                     $.extend(obj,{

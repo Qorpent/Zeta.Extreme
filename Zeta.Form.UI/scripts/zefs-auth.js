@@ -21,7 +21,7 @@
     var implogin = $('<input class="input-small" type="text" placeholder="Войти от..."/>')
         .css("width", "120px")
         .change(function() {
-            root.console.impersonate(implogin.val());
+            root.console.impersonate({Target: implogin.val()});
             $(document).trigger('click.dropdown.data-api');
         });
     var deimp = $('<li/>').append($('<button class="btn btn-mini"/>')
@@ -49,16 +49,16 @@
     });
 
     $(window.zeta).on(window.zeta.handlers.on_deimpersonate, function() {
-//        window.zeta.console.whoami();
-//        deimp.hide();
-//        implogin.show();
+//      window.zeta.console.whoami();
+//      deimp.hide();
+//      implogin.show();
         location.reload();
     });
 
     $(window.zeta).on(window.zeta.handlers.on_impersonate, function() {
-//        window.zeta.console.whoami();
-//        implogin.hide();
-//        deimp.show();
+//      window.zeta.console.whoami();
+//      implogin.hide();
+//      deimp.show();
         location.reload();
     });
 
