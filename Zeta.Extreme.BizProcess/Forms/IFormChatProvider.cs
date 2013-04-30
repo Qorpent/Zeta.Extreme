@@ -12,13 +12,15 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// <param name="session"></param>
 		/// <returns></returns>
 		IEnumerable<FormChatItem> GetSessionItems(IFormSession session);
+
 		/// <summary>
 		/// ƒобавление нового сообщени€
 		/// </summary>
 		/// <param name="session"></param>
 		/// <param name="message"></param>
+		/// <param name="target"></param>
 		/// <returns></returns>
-		FormChatItem AddMessage(IFormSession session, string message);
+		FormChatItem AddMessage(IFormSession session, string message, string target);
 
 		/// <summary>
 		/// ѕомечает сообщение с указанным идентификатором как прочтенное пользователем

@@ -35,9 +35,9 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
         public void CanSaveItem()
         {
             var session = new FormSession(new InputTemplate { Code = "x" }, 2012, 1, new Obj { Id = 2 }) { Usr = "y" };
-            _provider.AddMessage(session, "test1");
-            _provider.AddMessage(session, "test2");
-            _provider.AddMessage(session, "test3");
+            _provider.AddMessage(session, "test1","");
+            _provider.AddMessage(session, "test2","");
+            _provider.AddMessage(session, "test3","");
             var all = _connector.Collection.FindAll().ToArray();
             Assert.AreEqual(3, all.Length);
             Assert.True(all.All(_ => _["year"].AsInt32 == 2012));

@@ -13,13 +13,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using MongoDB.Bson;
 using MongoDB.Driver; 
 using MongoDB.Driver.Builders;
-using MongoDB.Driver.Wrappers;
 using Qorpent;
 using Qorpent.IoC;
 using Zeta.Extreme.BizProcess.Forms;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.MongoDB.Integration {
 	/// <summary>
@@ -41,6 +42,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         public string CollectionName { get; set; }
 
+		private static bool __moduleInitialized;
         /// <summary>
         /// Reset connection
         /// </summary>
@@ -51,6 +53,12 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 DatabaseSettings = new MongoDatabaseSettings(),
                 CollectionName = CollectionName
             };
+			if (!__moduleInitialized) {
+				var moduleJavaScript = Assembly.GetExecutingAssembly().ReadManifestResource("chat.js");
+				var bsonJavaScript = new BsonJavaScript(moduleJavaScript);
+				Connector.Database.Eval(bsonJavaScript);
+				__moduleInitialized = true;
+			}
         }
 
         /// <summary>
@@ -89,13 +97,15 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// </summary>
 		/// <param name="session"></param>
 		/// <param name="message"></param>
+		/// <param name="target"></param>
 		/// <returns>
 		/// </returns>
-		public FormChatItem AddMessage(IFormSession session, string message) {
+		public FormChatItem AddMessage(IFormSession session, string message, string target="") {
             SetupConnection();
 
 			var item = new FormChatItem {
-			    Text = message
+			    Text = message,
+				Target = target
 			};
             
 			Connector.Collection.Save(

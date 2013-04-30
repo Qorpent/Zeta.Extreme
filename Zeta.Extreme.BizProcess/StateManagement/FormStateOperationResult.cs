@@ -19,6 +19,7 @@
 
 #endregion
 
+using Qorpent.Serialization;
 using Zeta.Extreme.Model;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
@@ -26,20 +27,24 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 	///      ласс, описывающий результат проверки возможности выставлени€ определенного
 	///     статуса целевой форме
 	/// </summary>
+	[Serialize]
 	public class FormStateOperationResult {
 		/// <summary>
 		///     ќбщий признак возможности установки статуса
 		/// </summary>
+		[Serialize]
 		public bool Allow { get; set; }
 
 		/// <summary>
 		/// ѕрисоединенна€ запись о статусе
 		/// </summary>
+		[Serialize]
 		public FormState AttachedFormState { get; set; }
 
 		/// <summary>
 		///     ѕричины запрета установки статуса
 		/// </summary>
+		[Serialize]
 		public FormStateOperationDenyReason Reason { get; set; }
 	}
 }

@@ -19,6 +19,9 @@
     b.click(function() {
         if ($(this).hasClass("hasunread")) {
             zefs.myform.chatread();
+            if (!!window.chatbtnanimation) {
+                clearInterval(window.chatbtnanimation);
+            }
             $(this).removeClass("hasunread");
             var html = $(this).html();
             $(this).empty();
@@ -97,8 +100,20 @@
         if (parseInt(count) > 0) {
             b.addClass("hasunread");
             strong.text(count);
+            if (!window.chatbtnanimation) {
+                window.chatbtnanimation = setInterval(function() { chatbtnanimate() }, 300);
+            }
+        } else {
+            b.removeClass("hasunread");
+            strong.empty();
         }
     });
+
+    var chatbtnanimate = function() {
+        var opacity = b.css("opacity") || "1";
+        opacity == "1" ? opacity = "0.2" : opacity = "1";
+        b.animate({ opacity: opacity }, { duration: 150});
+    };
     // Наполняем ленту сообщений
     $(zefs).on(zefs.handlers.on_chatlistload, function(e, cl) {
         progress.hide(); refresh.show();

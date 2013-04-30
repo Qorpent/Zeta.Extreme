@@ -28,6 +28,7 @@ using System.Web;
 using System.Xml.Linq;
 using Qorpent;
 using Qorpent.Applications;
+using Qorpent.IoC;
 using Qorpent.Log;
 using Qorpent.Mvc;
 using Qorpent.Serialization;
@@ -169,13 +170,13 @@ namespace Zeta.Extreme.FrontEnd {
 		/// Добавить сообщение в чат
 		/// </summary>
 		/// <returns></returns>
-		public FormChatItem AddChatMessage(string message) {
+		public FormChatItem AddChatMessage(string message, string target) {
 			var provider = Container.Get<IFormChatProvider>();
 			if (null == provider)
 			{
 				throw new Exception("no form chat configured");
 			}
-			return provider.AddMessage(this, message);
+			return provider.AddMessage(this, message,target);
 		}
 
 		/// <summary>
@@ -478,6 +479,19 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 		}
 
+		/// <summary>
+		/// Признак предприятия, пригодного для правки
+		/// </summary>
+		/// <returns></returns>
+		[Serialize]
+		public bool ObjectIsEditable {
+			get { return Object.Start.Year <= Year && Object.Finish.Year > Year; }
+		}
+		/// <summary>
+		/// Служба управления статусами
+		/// </summary>
+		[Inject]
+		public IFormStateManager FormStateManager { get; set; }
 		private void RetrieveStructure() {
             FormSessionsState.CurrentFormRenderingOperationsIncrease();
 			StructureInProcess = true;
@@ -492,13 +506,14 @@ namespace Zeta.Extreme.FrontEnd {
 						 name = r.Name,
 						 idx = ri.Idx,
 						 iscaption = r.IsMarkSeted("0CAPTION"),
-						 isprimary = ri.GetIsPrimary() ,
+						 isprimary = ri.GetIsPrimary() && ObjectIsEditable,
 						 level = ri.Level,
 						 number = r.OuterCode,
 						 measure = NeedMeasure ? r.ResolveMeasure() : "",
 						 controlpoint = r.IsMarkSeted("CONTROLPOINT"),
 						 exref = null!=r.ExRefTo,
-						 format = r.ResolveTag("numberformat")
+						 format = r.ResolveTag("numberformat"),
+						 activecols = r.ResolveTag("activecol").SmartSplit().ToArray()
 					 })
 					.Union(
 						(from ci in cols
@@ -509,7 +524,7 @@ namespace Zeta.Extreme.FrontEnd {
 								 code = c.Code,
 								 name = c.Title,
 								 idx = ci.i,
-								 isprimary = c.Editable && !c.IsFormula && !c.IsAuto,
+								 isprimary = c.Editable && !c.IsFormula && !c.IsAuto && ObjectIsEditable,
 								 year = c.Year,
 								 period = c.Period,
 								 controlpoint = c.ControlPoint,
@@ -622,7 +637,7 @@ namespace Zeta.Extreme.FrontEnd {
 							
 						});
 					var key = primaryrow.Idx + ":" + primarycol.i;
-					queries[key] = (IQuery) DataSession.Register(q, key);
+					queries[key] = DataSession.Register(q, key);
 				}
 			}
 		}
@@ -645,9 +660,23 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void ProcessValues(IDictionary<string, IQuery> queries, bool canbefilled) {
+			
 			foreach (var q_ in queries.Where(_ => null != _.Value)) {
+				var reallycanbefilled = canbefilled;
 				if (_processed.ContainsKey(q_.Key)) {
 					continue;
+				}
+				if (reallycanbefilled) {
+					reallycanbefilled = reallycanbefilled && ObjectIsEditable;
+				}
+				if (reallycanbefilled) {
+					var r = q_.Value.Row.Native;
+					var c = q_.Value.Col;
+					var activecols = r.ResolveTag("activecol").SmartSplit().ToArray();
+					if (0 != activecols.Length && -1 == Array.IndexOf(activecols, c.Code)) {
+						reallycanbefilled = false;
+					}
+
 				}
 				_processed[q_.Key] = q_.Value;
 				var val = "";
@@ -658,13 +687,14 @@ namespace Zeta.Extreme.FrontEnd {
 					cellid = q_.Value.Result.CellId;
 				}
 				var realkey = "";
-				if (canbefilled) {
+				if (reallycanbefilled)
+				{
 					realkey = q_.Value.Row.Code + "_" + q_.Value.Col.Code + "_" + q_.Value.Time.Year + "_" + q_.Value.Time.Period;
 					if (q_.Value.Obj.Native != Object) {
 						realkey += q_.Value.Obj.Type + "_" + q_.Value.Obj.Id;
 					}
 				}
-				var cell = new OutCell {i = q_.Key, c = cellid, v = val, canbefilled = canbefilled, query = q_.Value, ri = realkey};
+				var cell = new OutCell { i = q_.Key, c = cellid, v = val, canbefilled = reallycanbefilled, query = q_.Value, ri = realkey };
 				if (q_.Value.Result.Error != null) {
 					cell.iserror = true;
 					cell.error = q_.Value.Result.Error;
@@ -858,9 +888,11 @@ namespace Zeta.Extreme.FrontEnd {
 			var isopen = Template.IsOpen;
 			Template.CleanupStates();
 			var state = Template.GetState(Object, null);
+
 			if (string.IsNullOrWhiteSpace(state)) {
 				state = "0ISOPEN";
 			}
+
 			var cansave = state == "0ISOPEN";
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
 			var principal = Usr.toPrincipal();
@@ -873,6 +905,7 @@ namespace Zeta.Extreme.FrontEnd {
 			var cancheck = state == "0ISBLOCK" && haslockrole &&  hasholdlockrole;
 			var cansaveoverblock = roles.IsInRole(principal, "NOBLOCK",true);
 			var periodstateoverride = false;
+
 			cansave = cansave || cansaveoverblock;
 			if (cansave) {
 				var periodStateManager = new PeriodStateManager();
@@ -882,6 +915,17 @@ namespace Zeta.Extreme.FrontEnd {
 					periodstateoverride = cansave;
 				}
 			}
+
+			var newstates = Template.Thema.GetParameter("bizporcess.isprimary").ToBool();
+			FormStateOperationResult canblockresult = null;
+			FormStateOperationResult cancheckresult = null;
+			FormStateOperationResult canopenresult = null;
+			if (newstates) {
+				canblockresult = FormStateManager.GetCanSet(this, FormStateType.Closed);
+				cancheckresult = FormStateManager.GetCanSet(this, FormStateType.Checked);
+				canopenresult = FormStateManager.GetCanSet(this, FormStateType.Open);
+			}
+
 			return new LockStateInfo
 				{
 					isopen = isopen,
@@ -896,7 +940,11 @@ namespace Zeta.Extreme.FrontEnd {
 					cancheck  = cancheck,
 					cansaveoverblock = cansaveoverblock,
 					hasbadcontrolpoints = message=="cpavoid" || message.Contains("точк"),
-					periodstateoverride = periodstateoverride
+					periodstateoverride = periodstateoverride,
+					newstates = newstates,
+					canblockresult = canblockresult,
+					cancheckresult = cancheckresult,
+					canopenresult = canopenresult,
 				};
 		}
 
@@ -1111,5 +1159,14 @@ namespace Zeta.Extreme.FrontEnd {
 		private FormStructureRow[] rows;
 		private string _usr;
 		private IUserLog _logger;
+		/// <summary>
+		/// Установить статус текущей сессии
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="comment"></param>
+		/// <returns></returns>
+		public FormStateOperationResult SetState(FormStateType state, string comment) {
+			return FormStateManager.SetState(this, state,comment);
+		}
 	}
 }

@@ -53,13 +53,15 @@ namespace Zeta.Extreme.FrontEnd.Actions.Attachments {
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			try {
+			try
+			{
 				var dbfsAttacher = new DbfsAttachmentStorage();
-				var formattacher = new FormAttachmentSource {InternalStorage = dbfsAttacher};
+				var formattacher = new FormAttachmentSource { InternalStorage = dbfsAttacher };
 				formattacher.AttachHttpFile(MySession, _datafile, filename, type, uid);
 			}
-			catch {
-				
+			catch
+			{
+
 			}
 			return MySession.AttachFile(_datafile, filename, type, uid);
 

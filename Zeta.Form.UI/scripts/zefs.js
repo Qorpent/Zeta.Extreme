@@ -53,33 +53,6 @@ root.init = root.init ||
         return result;
     };
 
-    var GetNews = function() {
-        $.ajax({
-            url : document.location.protocol + "//" + document.location.host + api.siterootold() + "message/getnews.json.qweb",
-            type : "GET",
-            datatype : "json"
-        }).success(function(data) {
-            if (!$.isEmptyObject(data)) {
-                var content = $('<div class="zefsnews"/>');
-                $.each(data, function(i, m) {
-                    var n = $('<div class="news-header"/>');
-                    var u = $('<span class="label label-info"/>').text(m.Sender);
-                    var archivebtn = $('<button class="btn btn-mini btn-success pull-right"/>')
-                        .attr("code", m.Code)
-                        .html('<i class="icon-white icon-ok"></i>Прочитать');
-                    var v = eval(m.Version.substring(2));
-                    n.append(u, $('<span class="label"/>').text(v.format("dd.mm.yyyy HH:MM:ss")), archivebtn);
-                    content.append($('<div/>').append(n, $('<div class="news-content"/>').html(m.Text)));
-                    u.zetauser();
-                });
-                $(window.zeta).trigger(window.zeta.handlers.on_modal, {
-                    title: "Непрочитанные новости",
-                    content: content, width: 820, height: 500, closebutton: false, backdrop: true
-                });
-            }
-        })
-    };
-
     var ArchiveNews = function(code) {
 
     };
@@ -402,6 +375,7 @@ root.init = root.init ||
         api.metadata.getobjects.execute();
         api.metadata.getperiods.execute();
         api.metadata.getforms.execute();
+        api.metadata.getnews.execute();
         // получаем ленту сообщений формы
         api.chat.list.execute({session: root.myform.sessionId});
         // если админы, то получаем все ленты сообщений
@@ -518,6 +492,51 @@ root.init = root.init ||
         }
     });
 
+    api.metadata.getnews.onSuccess(function(e, result) {
+        var content = $('.zefsnews');
+        if (!$.isEmptyObject(result)) {
+            var exist = false;
+            if (content.length != 0) {
+                content.empty();
+                exist = true;
+            } else {
+                content = $('<div class="zefsnews"/>');
+            }
+            $.each(result, function(i, m) {
+                var n = $('<div class="news-header"/>');
+                var u = $('<span class="label label-info"/>').text(m.Sender);
+                var archivebtn = $('<button class="btn btn-mini btn-success pull-right"/>')
+                    .attr("code", m.Code)
+                    .html('<i class="icon-white icon-ok"></i>Прочитать');
+                var v = eval(m.Version.substring(2));
+                n.append(u, $('<span class="label"/>').text(v.format("dd.mm.yyyy HH:MM:ss")), archivebtn);
+                content.append($('<div/>').attr("code", m.Code).append(n, $('<div class="news-content"/>').html(m.Text)));
+                u.zetauser();
+                archivebtn.click(function(e) {
+                    api.metadata.archivenews.execute({ code : $(e.target).attr("code") });
+                });
+            });
+            var allowclose = zeta.user.getIsAdmin() || false;
+            if (!exist) {
+                $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                    title: "Непрочитанные новости",
+                    content: content, width: 820, height: 500, closebutton: allowclose, backdrop: true
+                });
+            }
+        }
+        if (content.length > 0) {
+            content.modal('hide');
+        }
+    });
+
+    api.metadata.archivenews.onSuccess(function(e, result) {
+        api.metadata.getnews.execute();
+    });
+
+    api.metadata.archivenews.onComplete(function(e, result) {
+        api.metadata.getnews.execute();
+    });
+
     api.lock.state.onSuccess(function(e, result) {
         root.myform.lock = result;
         $(root).trigger(root.handlers.on_getlockload);
@@ -601,8 +620,7 @@ root.init = root.init ||
         chatadd: ChatAdd,
         chatarchive: ChatArchive,
         chatread: ChatRead,
-        chatupdateds: ChatUpdateOnce,
-        getnews : GetNews
+        chatupdateds: ChatUpdateOnce
     });
 
     return root.myform;
