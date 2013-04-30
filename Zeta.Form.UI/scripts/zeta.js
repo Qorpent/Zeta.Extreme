@@ -88,8 +88,8 @@ root.handlers = $.extend(root.handlers, {
         root.api.security.logout.execute();
     };
 
-    Console.prototype.impersonate = function(l) {
-        root.api.security.impersonate.execute({ Target : l});
+    Console.prototype.impersonate = function(params) {
+        root.api.security.impersonateall(params);
     };
 
     root.Widget = function(n, p, f, o) {

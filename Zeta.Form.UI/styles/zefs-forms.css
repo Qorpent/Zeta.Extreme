@@ -325,6 +325,7 @@ table.data tr[level="7"] td.name {
 
 table.data td.number {
     text-align: right;
+    min-width: 25px;
 }
 
 .zefsbackdrop {

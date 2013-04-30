@@ -123,8 +123,8 @@ root.init = root.init ||
         }
     };
 
-    var ChatAdd = function(t) {
-        api.chat.add.execute({session: root.myform.sessionId, text: t});
+    var ChatAdd = function(m, t) {
+        api.chat.add.execute({session: root.myform.sessionId, text: m, type: t});
     };
 
     var ChatArchive = function(id) {
@@ -264,7 +264,7 @@ root.init = root.init ||
     };
 
     var Restart = function() {
-        api.server.restart.execute();
+        api.server.restartall();
     };
 
     // Обработчики событий
