@@ -46,6 +46,7 @@ using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Model.SqlSupport;
+using Zeta.Extreme.MongoDB.Integration;
 using FormState = Zeta.Extreme.Model.FormState;
 
 namespace Zeta.Extreme.FrontEnd {
@@ -432,6 +433,15 @@ namespace Zeta.Extreme.FrontEnd {
 			lock (this) {
                 FormSessionsState.CurrentSessionsIncrease();
                 FormServersState.TotalSessionsHandledIncrease();
+
+                var logWriter = Container.Get<ILogWriter>("logs.mongo.source") ?? new MongoDbLogs();
+                logWriter.Write(
+                    new LogMessage {
+                        Message = "Session started",
+                        Level = LogLevel.Info
+                    }
+                );
+
 				if (IsStarted) {
 					return;
 				}

@@ -29,7 +29,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="message">LogMessage instance</param>
         /// <param name="document">BsonDocument instance</param>
         public static void LogMessageToBsonDocument(LogMessage message, BsonDocument document) {
-            if(!string.IsNullOrEmpty(message.Name)) document.Set("name", message.Name);
+            /*if(!string.IsNullOrEmpty(message.Name)) document.Set("name", message.Name);
             
             document.Set("level", message.Level);
             
@@ -74,7 +74,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                     MvcContextToBsonDocument(message.MvcContext)
                 );
             }
-
+            */
             // set _id manually
             document.Set("_id", ObjectId.GenerateNewId());
         }

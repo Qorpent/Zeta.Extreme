@@ -126,8 +126,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (message.Level < Level) {
                 message.Level = Level;
             }
-
+            
             var document = MongoDbLogsSerializer.LogMessageToBsonDocument(message);
+
             RebuildLogMessageByLogLevel(
                 message.Level,
                 document
@@ -135,8 +136,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
             if (!noRealWrite) {
                 _connector.Collection.Save(document);
-                UpdateStatisticsCollections(message);
+                //UpdateStatisticsCollections(message);
             }
+            
         }
 
         private void RebuildLogMessageByLogLevel(LogLevel logLevel, BsonDocument document) {
