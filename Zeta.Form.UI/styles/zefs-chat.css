@@ -8,15 +8,17 @@
 }
 
 .chat-input textarea[type="text"] {
-    min-width: 315px;
-    max-width: 315px;
     line-height: 14px;
     font-size: 90%;
     min-height: 14px;
     margin: 0 0 5px 0;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
 }
 
-.chat-input button {
+.chat-buttons button {
     margin-left: 4px;
     vertical-align: top;
 }
