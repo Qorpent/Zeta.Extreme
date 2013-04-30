@@ -47,6 +47,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pkg", "Pkg", "{6233C2D9-906
 		assoibdx-eco-as-default.db-connection = assoibdx-eco-as-default.db-connection
 		build = build
 		install = install
+		LoadBalancer.txt = LoadBalancer.txt
 		manifest = manifest
 		mongodbattachmentsource.ioc-manifest.bxl = mongodbattachmentsource.ioc-manifest.bxl
 		..\deployconfig\temporalrolefix.rolemap.bxl = ..\deployconfig\temporalrolefix.rolemap.bxl
