@@ -15,6 +15,10 @@ namespace Zeta.Extreme.FrontEnd.Actions.ZefsServer {
         /// </summary>
         /// <returns></returns>
         protected override object MainProcess() {
+            var statistics = new NodeLoadingStatistics(
+                Application.Container.Get<INodeLoadingPoints>() ?? new NodeLoadingPoints()   
+            );
+
             return new Dictionary<string, object> {
                {
                    "Total", new Dictionary<string, object> {
@@ -35,16 +39,16 @@ namespace Zeta.Extreme.FrontEnd.Actions.ZefsServer {
                     }
                 },
                 {
-                    "Age", NodeLoadingStatistics.Age()
+                    "Age", statistics.Age(100)
                 },
                 {
-                    "Power", NodeLoadingStatistics.Power()
+                    "Power", statistics.Power()
                 },
                 {
-                    "Load", NodeLoadingStatistics.Load()
+                    "Load", statistics.Load()
                 },
                 {
-                    "Availability", NodeLoadingStatistics.Availability()
+                    "Availability", statistics.Availability()
                 }
             };
         }

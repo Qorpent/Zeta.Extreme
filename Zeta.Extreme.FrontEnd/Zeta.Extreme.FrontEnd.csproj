@@ -80,6 +80,8 @@
     <Compile Include="Helpers\SimpleUserInfo.cs" />
     <Compile Include="Helpers\UserInfoHelper.cs" />
     <Compile Include="IFormServer.cs" />
+    <Compile Include="INodeLoadingPoints.cs" />
+    <Compile Include="NodeLoadingPoints.cs" />
     <Compile Include="NodeLoadingStatistics.cs" />
   </ItemGroup>
   <ItemGroup>
