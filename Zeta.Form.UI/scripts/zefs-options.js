@@ -199,6 +199,20 @@ $.extend(api,(function(){
                     if ($.isEmptyObject(obj)) return obj;
                     $.each(obj, function(i,o) {
                         o.Date = eval(o.Time.substring(2));
+                        switch (o.Type) {
+                            case "default" :
+                                o.ReadableType = "Лента";
+                                break;
+                            case "formcurrator" :
+                                o.ReadableType = "Куратору формы";
+                                break;
+                            case "objcurrator" :
+                                o.ReadableType = "Куратору предприятия";
+                                break;
+                            case "support" :
+                                o.ReadableType = "Поддержка";
+                                break;
+                        }
                     });
                     return obj;
                 }
@@ -211,6 +225,20 @@ $.extend(api,(function(){
                     if ($.isEmptyObject(obj)) return obj;
                     $.each(obj, function(i,o) {
                         o.Date = eval(o.Time.substring(2));
+                        switch (o.Type) {
+                            case "default" :
+                                o.ReadableType = "Лента";
+                                break;
+                            case "formcurrator" :
+                                o.ReadableType = "Куратору формы";
+                                break;
+                            case "objcurrator" :
+                                o.ReadableType = "Куратору предприятия";
+                                break;
+                            case "support" :
+                                o.ReadableType = "Поддержка";
+                                break;
+                        }
                     });
                     return obj;
                 }

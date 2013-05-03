@@ -19,8 +19,12 @@
 }
 
 .chat-buttons button {
-    margin-left: 4px;
+    margin-right: 4px;
     vertical-align: top;
+}
+
+.chat-buttons {
+    margin-bottom: 5px;
 }
 
 .chat-list-header img {
