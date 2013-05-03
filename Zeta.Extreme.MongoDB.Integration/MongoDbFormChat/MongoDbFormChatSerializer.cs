@@ -45,6 +45,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			result.User = document["user"].AsString;
 			result.Text = document["text"].AsString;
 			result.Time = document["time"].ToLocalTime();
+			result.Type = document["type"].AsString;
 			result.Target = "";
 			BsonElement targetElement = null;
 			if(document.TryGetElement("target",out targetElement)){

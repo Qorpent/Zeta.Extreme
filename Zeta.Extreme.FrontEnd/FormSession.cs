@@ -885,7 +885,20 @@ namespace Zeta.Extreme.FrontEnd {
 			}
 			return true;
 		}
-
+		/// <summary>
+		///     Каталог периодов для форм с требованием на файлы
+		/// </summary>
+		private static readonly IDictionary<int, int> FileBasedPeriods = new Dictionary<int, int>
+			{
+				{13, 1},
+				{1, 13},
+				{16, 2},
+				{2, 16},
+				{19, 3},
+				{3, 19},
+				{112, 4},
+				{4, 112}
+			};
 
 		/// <summary>
 		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
@@ -935,6 +948,24 @@ namespace Zeta.Extreme.FrontEnd {
 				canopenresult = FormStateManager.GetCanSet(this, FormStateType.Open);
 				if (!string.IsNullOrWhiteSpace(canblockresult.DefaultMessageForState)) {
 					cpavoid = canblockresult.DefaultMessageForState.Contains("cpavoid");
+				}
+				canopen = canopenresult.Allow;
+				canblock = canblockresult.Allow;
+				cancheck = cancheckresult.Allow;
+			}
+
+			if (!newstates && canblock) {
+				if (FileBasedPeriods.ContainsKey(Period)) {
+					if (!string.IsNullOrWhiteSpace(Template.NeedFiles)) {
+						var types = Template.NeedFiles.SmartSplit().ToArray();
+						var attachs = GetAttachedFiles().Where(_=>_.Period==Period||_.Period==FileBasedPeriods[Period]).ToArray();
+						foreach (var type in types) {							
+							if (!attachs.Any(_ => _.Type == type)) {
+								canblock = false;
+								break;
+							}
+						}
+					}
 				}
 			}
 
