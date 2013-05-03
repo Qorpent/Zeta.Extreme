@@ -19,8 +19,12 @@
 }
 
 .chat-buttons button {
-    margin-left: 4px;
+    margin-right: 4px;
     vertical-align: top;
+}
+
+.chat-buttons {
+    margin-bottom: 5px;
 }
 
 .chat-list-header img {
@@ -30,6 +34,11 @@
 .adminchat.chat-list-header {
     padding-top: 4px;
     background-color: rgb(204, 255, 194);
+}
+
+.userchat.chat-list-header {
+    padding-top: 4px;
+    background-color: rgb(175, 226, 255);
 }
 
 .chat-list-body+.chat-list-header {

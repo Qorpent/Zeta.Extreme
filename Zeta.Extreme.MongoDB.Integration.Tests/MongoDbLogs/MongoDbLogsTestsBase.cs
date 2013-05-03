@@ -17,7 +17,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
     class MongoDbLogsTestsBase {
         protected const int WRITE_COMMITS_COUNT = 27;
 
-        protected MongoDbLogs _mongoDbLogs;
+        protected MongoDbLogs.MongoDbLogs _mongoDbLogs;
 
         private string _connectionString;
         private string _databaseName;
@@ -70,7 +70,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             
             mongoDatabase.Drop();
 
-            _mongoDbLogs = new MongoDbLogs {
+            _mongoDbLogs = new MongoDbLogs.MongoDbLogs {
                 MongoLogsConnectionString = ConnectionString,
                 MongoLogsDatabaseName = DatabaseName,
                 MongoLogsCollectionName = LogsCollectionName

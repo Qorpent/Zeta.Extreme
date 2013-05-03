@@ -44,7 +44,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             }
 
             if (!string.IsNullOrEmpty(message.User)) document.Set("user", message.User);
-
+            
             if (null != message.Error) {
                 document.Set(
                     "error",
@@ -56,17 +56,18 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (!string.IsNullOrEmpty(message.ApplicationName)) document.Set("applicationName", message.ApplicationName);
             
             document.Set("time", message.Time);
-            document.Set(
+
+            /*document.Set(
                 "LexInfo",
                 LexInfoToBsonDocument(message.LexInfo)
-            );
-
+            );*/
+            
             if (null != message.MvcCallInfo) {
                 document.Set(
                     "MvcCallInfo",
                     MvcCallInfoToBsonDocument(message.MvcCallInfo)
                 );
-            }
+            }/*
 
             if (null != message.MvcContext) {
                 document.Set(
@@ -74,7 +75,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                     MvcContextToBsonDocument(message.MvcContext)
                 );
             }
-
+            */
             // set _id manually
             document.Set("_id", ObjectId.GenerateNewId());
         }

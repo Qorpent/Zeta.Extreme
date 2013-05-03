@@ -69,7 +69,7 @@
     chatlist.append(
         $('<div class="userchat chat-list-header"/>').click(function() {
             $(chatlist.find('.userchat.chat-list-header')).toggleClass("collapsed");
-        }).append("Лента сообщений формы"),
+        }).append("Лента сообщений текущей формы"),
         $('<div class="userchat chat-list-body"/>')
     );
     var showarchive = $('<i class="icon pull-right" data-original-title="Показать/скрыть проченные"/>');
@@ -143,7 +143,7 @@
                 var tr = $('<div class="userchat chat-list-row"/>');
                 var u = $('<span class="label label-inverse"/>');
                 body.append(tr.append(
-                    $('<div class="userchat chat-list-cell username"/>').append(u.text(message.User)),
+                    $('<div class="userchat chat-list-cell username"/>').append(u.text(message.User), $('<span class="label label-info" style="margin-left: 4px;"/>').text(message.ReadableType)),
                     $('<div class="userchat chat-list-cell date"/>').text(message.Date.format("dd.mm.yyyy HH:MM")),
                     $('<div class="userchat chat-list-cell message"/>').text(message.Text)
                 ));
@@ -165,16 +165,33 @@
                 $(chatlist.find('.adminchat.chat-list-header')).toggleClass("collapsed");
             });
             header.append(showarchive);
-            chatlist.append(header.append("Все ваши сообщения"), body);
+            chatlist.append(header.append("Все ваши сообщения"));
         }
+        var filters = $(chatlist.find('.adminchat.chat-list-filter'));
+        if (filters.length == 0) {
+            filters = $('<div class="adminchat chat-list-filter"/>');
+            chatlist.append(filters);
+        }
+        chatlist.append(body);
         body.empty();
+        filters.empty();
         if (cl != null && !$.isEmptyObject(cl)) {
             b.addClass("btn-success");
             b.find("i").addClass("icon-white");
+            filters.append($('<button class="btn-link"/>').text("Все").click(function() {
+                $(".adminchat.chat-list-row").show();
+            }));
             $.each(cl, function(i,message) {
-                var tr = $('<div class="adminchat chat-list-row"/>');
+                var tr = $('<div class="adminchat chat-list-row"/>').addClass(message.Type);
                 var u = $('<span class="label label-inverse"/>');
                 var arch = $('<i class="icon icon-ok pull-right"/>');
+                var f = $(filters.find('button.' + message.Type));
+                if (f.length == 0) {
+                    filters.append($('<button class="btn-link"/>').text(message.ReadableType).click(function() {
+                        $(".adminchat.chat-list-row").hide();
+                        $(".adminchat.chat-list-row." + message.Type).show();
+                    }).addClass(message.Type));
+                }
                 arch.click(function() {
                     zefs.myform.chatarchive(message.Id);
                 });

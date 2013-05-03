@@ -3,10 +3,9 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Driver.Builders;
 using Qorpent.Log;
-using Qorpent.Bxl;
 using Zeta.Extreme.BizProcess.Forms;
 
-namespace Zeta.Extreme.MongoDB.Integration {
+namespace Zeta.Extreme.MongoDB.Integration.MongoDbLogs {
     /// <summary>
     /// Logs on MongoDB implementation
     /// </summary>
@@ -26,7 +25,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
         private MongoDbConnector _connector;
 
-        private bool noRealWrite;
+        private bool _noRealWrite;
 
         /// <summary>
         ///     Connection marker
@@ -126,26 +125,31 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (message.Level < Level) {
                 message.Level = Level;
             }
-
+            
             var document = MongoDbLogsSerializer.LogMessageToBsonDocument(message);
+
             RebuildLogMessageByLogLevel(
                 message.Level,
                 document
             );
 
-            if (!noRealWrite) {
+            if (!_noRealWrite) {
                 _connector.Collection.Save(document);
                 UpdateStatisticsCollections(message);
             }
+            
         }
 
         private void RebuildLogMessageByLogLevel(LogLevel logLevel, BsonDocument document) {
             switch (logLevel) {
+                case LogLevel.All:
+                 break;
                 case LogLevel.Trace:
-                    document.Remove("error");    
+                    document.Remove("error");
                  break;
                 case LogLevel.Info:
                     document.Remove("error");
+                    document.Remove("LexInfo");
                     document.Remove("MvcCallInfo");
                     document.Remove("MvcContext");        
                  break;
@@ -155,7 +159,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                     document.Remove("MvcContext");
                  break;
                 default:
-                    noRealWrite = false;
+                    _noRealWrite = true;
                  break;
             }
         }
@@ -206,14 +210,18 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="message">a message item</param>
         private void UpdateFormsCollection(LogMessage message) {
-            _mongoFormsCollection.Update(
-                GenerateStatisticsUpdateQuery(
-                    "form",
-                    ((IFormSession)message.HostObject).Template.Code
-                ),
-                GenerateStatisticsUpdateObject(),
-                UpdateFlags.Upsert
-            );
+            var formSession = message.HostObject as IFormSession;
+
+            if (formSession != null) {
+                _mongoFormsCollection.Update(
+                    GenerateStatisticsUpdateQuery(
+                        "form",
+                        formSession.Template.Code
+                    ),
+                    GenerateStatisticsUpdateObject(),
+                    UpdateFlags.Upsert
+                );
+            }
         }
 
         /// <summary>
@@ -221,14 +229,18 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="message">a message item</param>
         private void UpdateCompaniesCollection(LogMessage message) {
-            _mongoCompaniesCollection.Update(
-                GenerateStatisticsUpdateQuery(
-                    "company",
-                    ((IFormSession)message.HostObject).Object.Name
-                ),
-                GenerateStatisticsUpdateObject(),
-                UpdateFlags.Upsert
-            );
+            var formSession = message.HostObject as IFormSession;
+
+            if (formSession != null) {
+                _mongoCompaniesCollection.Update(
+                    GenerateStatisticsUpdateQuery(
+                        "company",
+                        ((IFormSession)message.HostObject).Object.Name
+                    ),
+                    GenerateStatisticsUpdateObject(),
+                    UpdateFlags.Upsert
+                );
+            }
         }
 
         /// <summary>
@@ -236,14 +248,18 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="message">a message item</param>
         private void UpdatePeriodsCollection(LogMessage message) {
-            _mongoPeriodsCollection.Update(
-                GenerateStatisticsUpdateQuery(
-                    "period",
-                    ((IFormSession)message.HostObject).Period
-                ),
-                GenerateStatisticsUpdateObject(),
-                UpdateFlags.Upsert
-            );
+            var formSession = message.HostObject as IFormSession;
+
+            if (formSession != null) {
+                _mongoPeriodsCollection.Update(
+                    GenerateStatisticsUpdateQuery(
+                        "period",
+                        ((IFormSession)message.HostObject).Period
+                    ),
+                    GenerateStatisticsUpdateObject(),
+                    UpdateFlags.Upsert
+                );
+            }
         }
 
         /// <summary>
