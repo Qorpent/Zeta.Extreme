@@ -470,6 +470,7 @@ root.init = root.init ||
         }
         $(root).trigger(root.handlers.on_message, { text: "Сохранение данных успешно завершено", autohide: 5000, type: "alert-success" });
         api.data.reset.execute({session: root.myform.sessionId});
+        api.lock.state.execute({session: root.myform.sessionId});
     });
 
     api.data.savestate.onError(function(e, result) {
