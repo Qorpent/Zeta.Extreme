@@ -16,9 +16,10 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Form/IFormSessionControlPointSource.cs
 #endregion
-using Zeta.Extreme.Form.StateManagement;
 
-namespace Zeta.Extreme.Form {
+using Zeta.Extreme.BizProcess.StateManagement;
+
+namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>
 	/// 	Интерфейс получения контрольных точек из сессии формы
 	/// </summary>

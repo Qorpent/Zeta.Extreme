@@ -16,7 +16,7 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Form/IFormDataSynchronize.cs
 #endregion
-namespace Zeta.Extreme.Form {
+namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>
 	/// 	Интерфейс синхронизации с загрузкой данных
 	/// </summary>

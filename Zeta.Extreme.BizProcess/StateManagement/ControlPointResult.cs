@@ -16,11 +16,12 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Form/ControlPointResult.cs
 #endregion
+
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
 
-namespace Zeta.Extreme.Form.StateManagement {
+namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	/// 	Результат сверки контрольной точки
 	/// </summary>

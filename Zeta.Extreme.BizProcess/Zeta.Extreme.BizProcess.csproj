@@ -28,7 +28,9 @@
     <Compile Include="Forms\IAttachmentStorage.cs" />
     <Compile Include="Forms\IFormAttachmentStorage.cs" />
     <Compile Include="Forms\IFormChatProvider.cs" />
+    <Compile Include="Forms\IFormDataSynchronize.cs" />
     <Compile Include="Forms\IFormRowProvider.cs" />
+    <Compile Include="Forms\IFormSessionControlPointSource.cs" />
     <Compile Include="Forms\OutCell.cs" />
     <Compile Include="Reports\IParameterConfigurator.cs" />
     <Compile Include="Reports\IReportDefinition.cs" />
@@ -43,6 +45,7 @@
     <Compile Include="StateManagement\Attributes\ReasonTypeAttribute.cs" />
     <Compile Include="StateManagement\Attributes\ReglamentCodeAttribute.cs" />
     <Compile Include="StateManagement\Attributes\StateAttributeBase.cs" />
+    <Compile Include="StateManagement\ControlPointResult.cs" />
     <Compile Include="StateManagement\DefaultFormStateRepository.cs" />
     <Compile Include="StateManagement\DefaultStateManager.cs" />
     <Compile Include="StateManagement\FormStateAvailabilityCheckerBase.cs" />

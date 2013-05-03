@@ -21,8 +21,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstracts\IFormDataSynchronize.cs" />
-    <Compile Include="Abstracts\IFormSessionControlPointSource.cs" />
     <Compile Include="DbfsAttachmentSource\DbfsAttachmentStorage.cs" />
     <Compile Include="InputTemplates\InputTemplateRequest.cs" />
     <Compile Include="Meta\UserOrgDataMapper.cs" />
@@ -33,7 +31,6 @@
     <Compile Include="SaveSupport\SaveStage.cs" />
     <Compile Include="SimpleZetaRoleResolver.cs" />
     <Compile Include="StateManagement\StateRule.cs" />
-    <Compile Include="StateManagement\ControlPointResult.cs" />
     <Compile Include="SaveSupport\IFormDataValidator.cs" />
     <Compile Include="InputTemplates\InputTemplate.cs" />
     <Compile Include="InputTemplates\InputTemplateXmlSerializer.cs" />
@@ -60,6 +57,8 @@
     <Compile Include="Themas\ThemaFactoryProvider.cs" />
     <Compile Include="Themas\ThemaLoaderOptionsHelper.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Abstracts\" />
+  </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

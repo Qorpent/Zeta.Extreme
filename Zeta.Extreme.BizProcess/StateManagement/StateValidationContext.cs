@@ -35,6 +35,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 			_newState = newState;
 			_container = container;
 			RoleResolver = roleResolver;
+			
 			if (null == roleResolver && null!=container) {
 				RoleResolver = container.Get<IRoleResolver>();
 			}
