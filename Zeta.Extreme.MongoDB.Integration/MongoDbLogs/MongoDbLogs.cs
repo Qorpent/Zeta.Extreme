@@ -120,9 +120,10 @@ namespace Zeta.Extreme.MongoDB.Integration.MongoDbLogs {
         /// </summary>
         /// <param name="message">a log message</param>
         public void Write(LogMessage message) {
-            ConnectionSetup();
-
-            if (message.Level < Level) {
+	        try {
+		        ConnectionSetup();
+	        
+	        if (message.Level < Level) {
                 message.Level = Level;
             }
             
@@ -137,6 +138,11 @@ namespace Zeta.Extreme.MongoDB.Integration.MongoDbLogs {
                 _connector.Collection.Save(document);
                 UpdateStatisticsCollections(message);
             }
+			}
+			catch
+			{
+				return;
+			}
             
         }
 

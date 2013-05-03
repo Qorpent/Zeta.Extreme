@@ -22,16 +22,15 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (attachment.MimeType != null) document.Set("contentType", attachment.MimeType);
             if (attachment.Hash != null) document.Set("md5", attachment.Hash);
             if (attachment.Size > 0) document.Set("length", attachment.Size);
-            if(attachment.Revision > 0) document.Set("revision", attachment.Revision);
-
+            if (attachment.Revision > 0) document.Set("revision", attachment.Revision);
+			
             if (attachment.Version.Year <= 1990) {
                 attachment.Version = DateTime.Now;
                 document.Set("uploadDate", attachment.Version);
             } else {
                 document.Set("uploadDate", attachment.Version);
             }
-            
-
+	        document.Set("type", attachment.Type);
             document.Set("metadata", new BsonDocument(attachment.Metadata));
             if (attachment.Extension != null) document.Set("extension", attachment.Extension);
 
@@ -66,7 +65,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (document.Contains("md5")) attachment.Hash = document["md5"].ToString();
             if (document.Contains("length")) attachment.Size = document["length"].ToInt64();
             if (document.Contains("revision")) attachment.Revision = document["revision"].ToInt32();
-            
+	        if (document.Contains("type")) attachment.Type = document["type"].ToString();
             foreach (var el in (BsonDocument)document["metadata"]) {
                 attachment.Metadata[el.Name] = el.Value;
             }
@@ -127,8 +126,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (attachment.Extension != null) {
                 document.Set("extension", attachment.Extension);
             }
-
-            document.Set("deleted", false);
+	        if (!string.IsNullOrWhiteSpace(attachment.Type)) {
+		        document.Set("type", attachment.Type);
+	        }
+	        document.Set("deleted", false);
 
             return document;
         }
