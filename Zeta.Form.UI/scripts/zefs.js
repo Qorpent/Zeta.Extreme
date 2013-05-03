@@ -153,10 +153,22 @@ root.init = root.init ||
         if (root.myform.sessionId != null && lockinfo != null) {
             if (lockinfo.canblock) {
                 if (lockinfo.newstates) {
-                    api.lock.set.execute({newstate: "Block"});
+                    api.lock.set.execute({newstate: "Closed"});
                 } else {
                     api.lock.setstateold.execute({state: "0ISBLOCK"});
                 }
+            } else {
+                var message = "";
+                if (!!lockinfo.canblockresult) {
+                    message = lockinfo.canblockresult.Reason.Message;
+                    if (!!lockinfo.canblockresult.Reason.ReglamentCode) {
+                        message += '<br/><strong>Регламент</strong>:<button class="btn-link">' + lockinfo.canblockresult.Reason.ReglamentCode + '</button>'
+                    }
+                }
+                $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                    title: "Форма не может быть заблокирована",
+                    content: $("<p/>").html(message)
+                });
             }
         }
         lockinfo = null;
@@ -165,12 +177,24 @@ root.init = root.init ||
     var UnlockForm = function() {
         var lockinfo = root.myform.lock;
         if (root.myform.sessionId != null && lockinfo != null) {
-            if (!lockinfo.isopen) {
+            if (lockinfo.canopen) {
                 if (lockinfo.newstates) {
                     api.lock.set.execute({newstate: "Open"});
                 } else {
                     api.lock.setstateold.execute({state: "0ISOPEN"});
                 }
+            } else {
+                var message = "";
+                if (!!lockinfo.canopenresult) {
+                    message = lockinfo.canopenresult.Reason.Message;
+                    if (!!lockinfo.canopenresult.Reason.ReglamentCode) {
+                        message += '<br/><strong>Регламент</strong>:<button class="btn-link">' + lockinfo.canopenresult.Reason.ReglamentCode + '</button>'
+                    }
+                }
+                $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                    title: "Форма не может быть открыта",
+                    content: $("<p/>").html(message)
+                });
             }
         }
         lockinfo = null;
@@ -179,12 +203,24 @@ root.init = root.init ||
     var CheckForm = function() {
         var lockinfo = root.myform.lock;
         if (root.myform.sessionId != null && lockinfo != null) {
-            if (!lockinfo.isopen) {
+            if (lockinfo.cancheck) {
                 if (lockinfo.newstates) {
                     api.lock.set.execute({newstate: "Checked"});
                 } else {
                     api.lock.setstateold.execute({state: "0ISCHECKED"});
                 }
+            } else {
+                var message = "";
+                if (!!lockinfo.cancheckresult) {
+                    message = lockinfo.cancheckresult.Reason.Message;
+                    if (!!lockinfo.cancheckresult.Reason.ReglamentCode && lockinfo.cancheckresult.Reason.ReglamentCode != "") {
+                        message += '<br/><strong>Регламент</strong>:<button class="btn-link">' + lockinfo.cancheckresult.Reason.ReglamentCode + '</button>'
+                    }
+                }
+                $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                    title: "Форма не может быть утверждена",
+                    content: $("<p/>").html(message)
+                });
             }
         }
         lockinfo = null;
