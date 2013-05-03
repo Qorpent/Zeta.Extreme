@@ -110,5 +110,11 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// </summary>
 		[SerializeNotNullOnly]
 		public FormStateOperationResult canopenresult;
+
+		/// <summary>
+		/// Признак обхода контрольных точек при блокировке
+		/// </summary>
+		[SerializeNotNullOnly]
+		public bool cpavoid;
 	}
 }

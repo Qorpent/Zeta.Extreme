@@ -20,7 +20,7 @@
 using System;
 using Qorpent.Serialization;
 using Zeta.Extreme.Model.Querying;
-
+using Qorpent.Utils.Extensions;
 namespace Zeta.Extreme.BizProcess.Forms {
 	/// <summary>
 	/// —труктура, дл€ представлени€ €чейки в форме ввода
@@ -69,5 +69,17 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		/// </summary>
 		[IgnoreSerialize]
 		public Exception error;
+
+		/// <summary>
+		/// ќпредел€ет - €вл€етс€ ли данна€ €чейка нулевой (пуста€ или 0-е значение или -)
+		/// </summary>
+		public bool IsZero {
+			get {
+				if (string.IsNullOrWhiteSpace(v)) return true;
+				if ("-" == v) return true;
+				if (v.ToDecimal() == 0) return true;
+				return false;
+			}
+		}
 	}
 }

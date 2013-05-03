@@ -98,8 +98,8 @@ namespace Zeta.Extreme.FrontEnd {
 					CurrencyRate = rate,
 				};
 
-			var holdlogin = Template.Thema.GetParameter("hold.responsibility");
 			if (null != Template.Thema) {
+				var holdlogin = Template.Thema.GetParameter("hold.responsibility");
 				FormInfo = new
 					{
 						Template.Code,
@@ -348,7 +348,7 @@ namespace Zeta.Extreme.FrontEnd {
 		public string Usr {
 			get {
 				if (string.IsNullOrWhiteSpace(_usr)) {
-					_usr = Application.Principal.CurrentUser.Identity.Name;
+					_usr = (Application ??Qorpent.Applications.Application.Current).Principal.CurrentUser.Identity.Name;
 				}
 				return _usr;
 			}
@@ -586,6 +586,9 @@ namespace Zeta.Extreme.FrontEnd {
 						ch.Formula = c._.Formula;
 						ch.FormulaType = c._.FormulaType;
 					}
+					if (c._.ControlPoint) {
+						ch.LocalProperties["controlpoint"] = true;
+					}
 					var q = ExtremeFactory.CreateQuery( new QuerySetupInfo
 						{
 							Row = {Native = r.Native},
@@ -713,14 +716,15 @@ namespace Zeta.Extreme.FrontEnd {
 		private void PrepareMetaSets() {
 			PrepareRows();
 			InitializeColset();
-			primarycols = cols.Where(_ => _._.Editable && !_._.IsFormula).ToArray();
-			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
-			primaryrows = rows.Where(_ => _.GetIsPrimary()).ToArray();
 			if (InitStateMode)
 			{
 				rows = rows.Where(_ => _.Native != null && _.Native.MarkCache.Contains("/CONTROLPOINT/")).ToArray();
 				cols = cols.Where(_ => _._.ControlPoint).ToArray();
 			}
+			primarycols = cols.Where(_ => _._.Editable && !_._.IsFormula).ToArray();
+			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
+			primaryrows = rows.Where(_ => _.GetIsPrimary()).ToArray();
+			
 		}
 
 		private void InitializeColset() {
@@ -924,10 +928,14 @@ namespace Zeta.Extreme.FrontEnd {
 			FormStateOperationResult canblockresult = null;
 			FormStateOperationResult cancheckresult = null;
 			FormStateOperationResult canopenresult = null;
+			bool cpavoid = false;
 			if (newstates) {
 				canblockresult = FormStateManager.GetCanSet(this, FormStateType.Closed);
 				cancheckresult = FormStateManager.GetCanSet(this, FormStateType.Checked);
 				canopenresult = FormStateManager.GetCanSet(this, FormStateType.Open);
+				if (!string.IsNullOrWhiteSpace(canblockresult.DefaultMessageForState)) {
+					cpavoid = canblockresult.DefaultMessageForState.Contains("cpavoid");
+				}
 			}
 
 			return new LockStateInfo
@@ -949,6 +957,7 @@ namespace Zeta.Extreme.FrontEnd {
 					canblockresult = canblockresult,
 					cancheckresult = cancheckresult,
 					canopenresult = canopenresult,
+					cpavoid = cpavoid,
 				};
 		}
 

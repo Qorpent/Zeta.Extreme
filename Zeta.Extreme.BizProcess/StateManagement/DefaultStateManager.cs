@@ -145,7 +145,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 				FormStateOperationResult canSetState =null;
 				if (skipValidation || (canSetState = GetCanSet(form, newStateType)).Allow)
 				{
-					if (!string.IsNullOrWhiteSpace(canSetState.DefaultMessageForState)) {
+					if (null!=canSetState && !string.IsNullOrWhiteSpace(canSetState.DefaultMessageForState)) {
 						if (string.IsNullOrWhiteSpace(comment)) {
 							comment = canSetState.DefaultMessageForState;
 						}
