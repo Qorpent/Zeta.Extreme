@@ -9,12 +9,16 @@
             zefs.api.chat.updatecount.execute();
         }});
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Лента сообщений"/>').html('<i class="icon-comment"></i>'),
-        menu = $('<div class="dropdown-menu"/>').css({"padding": 5, "width": 400}),
+        menu = $('<div class="dropdown-menu"/>').css({"padding": 5, "width": 600}),
         progress = $('<img src="images/300.gif"/>').hide(),
         refresh = $('<button class="btn btn-mini"/>').append($('<i class="icon-repeat"/>')),
         chatform = $('<form method="post"/>'),
         chatinput = $('<textarea type="text" name="text" placeholder="Текст сообщения..." class="input-small"/>').css("height", 32),
-        chatadd = $('<button class="btn btn-mini btn-primary"/>').append($('<i class="icon-white icon-pencil"/>')),
+        lentaadd = $('<button class="btn btn-mini" data-original-title="Будет видимо в текущей форме"/>').text("В ленту"),
+        formkuratoradd = $('<button class="btn btn-mini" data-original-title="Отправляется куратору формы"/>').text("Куратору формы"),
+        objkuratoradd = $('<button class="btn btn-mini" data-original-title="Отправляется куратору предприятия"/>').text("Куратору предприятия"),
+        supportadd = $('<button class="btn btn-mini" data-original-title="Отправляется поддержке"/>').text("В поддержку"),
+        addhelp = $('<button class="btn btn-primary btn-mini"/>').html('<i class="icon-asterisk"></i>'),
         chatlist = $('<div class="chat-list scrollable"/>');
     b.click(function() {
         if ($(this).hasClass("hasunread")) {
@@ -32,17 +36,30 @@
     chatinput.keydown(function(e) {
         if (e.keyCode == 13 && e.ctrlKey) chatform.trigger("submit");
     });
-    chatadd.click(function() {
-        chatform.trigger("submit");
-    });
-    chatform.append($('<div class="chat-input"/>').append(chatinput, chatadd, refresh, progress));
-    chatform.submit(function(e) {
-        e.preventDefault();
+    lentaadd.tooltip({placement: 'bottom'});
+    formkuratoradd.tooltip({placement: 'bottom'});
+    objkuratoradd.tooltip({placement: 'bottom'});
+    supportadd.tooltip({placement: 'bottom'});
+    chatform.append($('<div class="chat-input"/>').append(chatinput), $('<div class="chat-buttons"/>')
+        .append(lentaadd, objkuratoradd, formkuratoradd, supportadd, refresh, progress));
+    var chatadd = function(type) {
         if (chatinput.val() != "") {
-            zefs.myform.chatadd(chatinput.val());
+            zefs.myform.chatadd(chatinput.val(), type);
             refresh.hide(); progress.show();
             chatinput.val("");
         }
+    };
+    lentaadd.click(function() {
+        chatadd("default");
+    });
+    formkuratoradd.click(function() {
+        chatadd("formcurrator");
+    });
+    objkuratoradd.click(function() {
+        chatadd("objcurrator");
+    });
+    supportadd.click(function() {
+        chatadd("support");
     });
     refresh.click(function() {
         zefs.myform.chatlist();
