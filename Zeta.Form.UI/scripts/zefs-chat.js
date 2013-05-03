@@ -18,6 +18,7 @@
         formkuratoradd = $('<button class="btn btn-mini" data-original-title="Отправляется куратору формы"/>').text("Куратору формы"),
         objkuratoradd = $('<button class="btn btn-mini" data-original-title="Отправляется куратору предприятия"/>').text("Куратору предприятия"),
         supportadd = $('<button class="btn btn-mini" data-original-title="Отправляется поддержке"/>').text("В поддержку"),
+        addhelp = $('<button class="btn btn-primary btn-mini"/>').html('<i class="icon-asterisk"></i>'),
         chatlist = $('<div class="chat-list scrollable"/>');
     b.click(function() {
         if ($(this).hasClass("hasunread")) {
@@ -40,7 +41,7 @@
     objkuratoradd.tooltip({placement: 'bottom'});
     supportadd.tooltip({placement: 'bottom'});
     chatform.append($('<div class="chat-input"/>').append(chatinput), $('<div class="chat-buttons"/>')
-        .append(lentaadd, formkuratoradd, objkuratoradd, supportadd, refresh, progress));
+        .append(lentaadd, objkuratoradd, formkuratoradd, supportadd, refresh, progress));
     var chatadd = function(type) {
         if (chatinput.val() != "") {
             zefs.myform.chatadd(chatinput.val(), type);
