@@ -15,7 +15,8 @@ $.extend(api,(function(){
             start : function(){ this.ready.execute() },
             state : new Command({domain:"zefs",name:"server",title:"Статус сервера"}),
             restart : new Command({domain:"zefs",name:"restart",title:"Перезапуск сервера"}),
-            restartall : function() {
+            restartall: function () {
+                $.ajax({ url: "zefs/restart.qweb" });
                 var apps = ["zefs","zefs1","zefs2","zefs3","zefs4"];
                 for (var i in apps) {
                     var url = "/" + apps[i] + "/zefs/restart.qweb";
