@@ -16,6 +16,7 @@ $.extend(api,(function(){
             state : new Command({domain:"zefs",name:"server",title:"Статус сервера"}),
             restart : new Command({domain:"zefs",name:"restart",title:"Перезапуск сервера"}),
             restartall : function() {
+                $.ajax({ url: "zefs/restart.qweb", data: params });
                 var apps = ["zefs","zefs1","zefs2","zefs3","zefs4"];
                 for (var i in apps) {
                     var url = "/" + apps[i] + "/zefs/restart.qweb";
@@ -117,7 +118,7 @@ $.extend(api,(function(){
 
         lock : {
             // Команда блокировки формы
-            set : $.extend(new Command({domain: "zefs", name: "lockform"}), {
+            setstateold : $.extend(new Command({domain: "zefs", name: "lockform"}), {
                 getUrl: function() {
                     if (location.host.search('admin|corp|133|49') != -1 || location.port == '448' || location.port == '449') return '/ecot/form/setstate.rails';
                     return '/eco/form/setstate.rails';
@@ -135,7 +136,7 @@ $.extend(api,(function(){
                 }
             }),
             // Команда новый блокировки формы
-            setstatenew : $.extend(new Command({domain: "zefs", name: "setstate"}), {
+            set : $.extend(new Command({domain: "zefs", name: "setstate"}), {
                 getParameters: function() {
                     var s = root.myform.currentSession;
                     if ($.isEmptyObject(s)) return;

@@ -149,27 +149,45 @@ root.init = root.init ||
     };
 
     var LockForm = function() {
-        if (root.myform.sessionId != null && root.myform.lock != null) {
-//            if (root.myform.lockinfo.canblock) {
-                api.lock.set.execute({state: "0ISBLOCK"});
-//            }
+        var lockinfo = root.myform.lock;
+        if (root.myform.sessionId != null && lockinfo != null) {
+            if (lockinfo.canblock) {
+                if (lockinfo.newstates) {
+                    api.lock.set.execute({newstate: "Block"});
+                } else {
+                    api.lock.setstateold.execute({state: "0ISBLOCK"});
+                }
+            }
         }
+        lockinfo = null;
     };
 
     var UnlockForm = function() {
-        if (root.myform.sessionId != null && root.myform.lock != null) {
-            if (!root.myform.lock.isopen) {
-                api.lock.set.execute({state: "0ISOPEN"});
+        var lockinfo = root.myform.lock;
+        if (root.myform.sessionId != null && lockinfo != null) {
+            if (!lockinfo.isopen) {
+                if (lockinfo.newstates) {
+                    api.lock.set.execute({newstate: "Open"});
+                } else {
+                    api.lock.setstateold.execute({state: "0ISOPEN"});
+                }
             }
         }
+        lockinfo = null;
     };
 
     var CheckForm = function() {
-        if (root.myform.sessionId != null && root.myform.lock != null) {
-            if (!root.myform.lock.isopen) {
-                api.lock.set.execute({state: "0ISCHECKED"});
+        var lockinfo = root.myform.lock;
+        if (root.myform.sessionId != null && lockinfo != null) {
+            if (!lockinfo.isopen) {
+                if (lockinfo.newstates) {
+                    api.lock.set.execute({newstate: "Checked"});
+                } else {
+                    api.lock.setstateold.execute({state: "0ISCHECKED"});
+                }
             }
         }
+        lockinfo = null;
     };
 
     var CellHistory = function(cell) {
