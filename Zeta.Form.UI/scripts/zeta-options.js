@@ -10,6 +10,7 @@ $.extend(api,(function(){
             logout : new Command({domain: "_sys", name: "logout"}),
             impersonate : new Command({domain: "_sys", name: "impersonate"}),
             impersonateall : function(params) {
+                $.ajax({ url: "_sys/impersonate.qweb", data: params });
                 var apps = ["zefs","zefs1","zefs2","zefs3","zefs4"];
                 for (var i in apps) {
                     $.ajax({ url: "/" + apps[i] + "/_sys/impersonate.qweb", data: params });
