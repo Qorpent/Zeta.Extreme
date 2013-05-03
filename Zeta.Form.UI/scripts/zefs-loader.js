@@ -18,7 +18,7 @@ document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-info"></script
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-extrapannel"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-table"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-attacher"></script>');
-//document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-chat"></script>');
+document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-chat"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-periods"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-objs"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-bizprocess"></script>');
@@ -40,7 +40,7 @@ document.write('<script src="scripts/zefs-formheader.js"></script>');
 document.write('<script src="scripts/zefs-extrapannel.js"></script>');
 document.write('<script src="scripts/zefs-table.js"></script>');
 document.write('<script src="scripts/zefs-attacher.js"></script>');
-document.write('<script src="scripts/zefs-chat.js"></script>');
+//document.write('<script src="scripts/zefs-chat.js"></script>');
 document.write('<script src="scripts/zefs-periods.js"></script>');
 document.write('<script src="scripts/zefs-objs.js"></script>');
 document.write('<script src="scripts/zefs-bizprocess.js"></script>');
