@@ -542,9 +542,10 @@ root.init = root.init ||
                     content: content, width: 820, height: 500, closebutton: allowclose, backdrop: true
                 });
             }
-        }
-        if (content.length > 0) {
-            content.modal('hide');
+        } else {
+            if (content.length > 0) {
+                content.modal('hide');
+            }
         }
     });
 
