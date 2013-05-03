@@ -483,6 +483,11 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		[Inject]
 		public IFormStateManager FormStateManager { get; set; }
+		/// <summary>
+		/// Режим для смены статусов
+		/// </summary>
+		public bool InitStateMode { get; set; }
+
 		private void RetrieveStructure() {
             FormSessionsState.CurrentFormRenderingOperationsIncrease();
 			StructureInProcess = true;
@@ -711,6 +716,11 @@ namespace Zeta.Extreme.FrontEnd {
 			primarycols = cols.Where(_ => _._.Editable && !_._.IsFormula).ToArray();
 			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
 			primaryrows = rows.Where(_ => _.GetIsPrimary()).ToArray();
+			if (InitStateMode)
+			{
+				rows = rows.Where(_ => _.Native != null && _.Native.MarkCache.Contains("/CONTROLPOINT/")).ToArray();
+				cols = cols.Where(_ => _._.ControlPoint).ToArray();
+			}
 		}
 
 		private void InitializeColset() {
@@ -770,10 +780,12 @@ namespace Zeta.Extreme.FrontEnd {
 			var customRowPreparator = Container.Get<IFormRowProvider>(Template.Thema.Code+".row.preparator");
 			if (null != customRowPreparator) {
 				rows = customRowPreparator.GetRows(this);
+				
 			}
 			else {
 				DefaultPrepareRows();
 			}
+			
 		}
 
 		private void DefaultPrepareRows() {
@@ -790,8 +802,9 @@ namespace Zeta.Extreme.FrontEnd {
 					AddRow(result, row, 0);
 				}
 			}
-
+			
 			rows = result.ToArray();
+			
 		}
 
 		private void AddRow(IList<FormStructureRow> result, IZetaRow row, int level, bool markreadonly= false) {

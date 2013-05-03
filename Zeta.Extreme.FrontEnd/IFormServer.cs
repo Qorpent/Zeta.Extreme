@@ -47,21 +47,23 @@ namespace Zeta.Extreme.FrontEnd {
         /// <returns></returns>
         object GetServerStateInfo();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="template"></param>
-        /// <param name="obj"></param>
-        /// <param name="year"></param>
-        /// <param name="period"></param>
-        /// <param name="initsavemode"></param>
-        /// <returns></returns>
-        FormSession Start(
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    /// <param name="template"></param>
+	    /// <param name="obj"></param>
+	    /// <param name="year"></param>
+	    /// <param name="period"></param>
+	    /// <param name="initsavemode"></param>
+	    /// <param name="initstatemode"></param>
+	    /// <returns></returns>
+	    FormSession Start(
             IInputTemplate template,
             IZetaMainObject obj,
             int year,
             int period,
-            bool initsavemode = false
+            bool initsavemode = false,
+			bool initstatemode = false
         );
 
         /// <summary>

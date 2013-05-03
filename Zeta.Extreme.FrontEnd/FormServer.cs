@@ -256,8 +256,9 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="year"> </param>
 		/// <param name="period"> </param>
 		/// <param name="initsavemode"> пред-открытие для сохранения </param>
+		/// <param name="initstatemode">закачка данных для контрольных точек</param>
 		/// <returns> </returns>
-		public FormSession Start(IInputTemplate template, IZetaMainObject obj, int year, int period, bool initsavemode = false) {
+		public FormSession Start(IInputTemplate template, IZetaMainObject obj, int year, int period, bool initsavemode = false, bool initstatemode = false) {
 			lock (ReloadState) {
 				var usr = Application.Principal.CurrentUser.Identity.Name;
 				var existed =
@@ -265,14 +266,9 @@ namespace Zeta.Extreme.FrontEnd {
 						_ =>
 						_.Usr == usr && _.Year == year && _.Period == period && _.Template.Code == template.Code && _.Object.Id == obj.Id);
 				if (null == existed) {
-					var session = Container.Get<IFormSession>(null,template, year, period, obj) as FormSession;
-					if (null == session) {
-						session = new FormSession(template, year, period, obj);
-						session.SetApplication(Application);
-						session.SetContainerContext(Container,null);
-					}
-					session.FormServer = this;
+					var session = CreateSession(template, obj, year, period);
 					session.InitSaveMode = initsavemode;
+					session.InitStateMode = initstatemode;
 					Sessions.Add(session);
 					session.Start();
 					return session;
@@ -293,6 +289,25 @@ namespace Zeta.Extreme.FrontEnd {
 					return existed;
 				}
 			}
+		}
+
+		/// <summary>
+		/// Создает пустую сессию, присоединенную к данному сереверу (без регистрации в реестре и запуска расчета)
+		/// </summary>
+		/// <param name="template"></param>
+		/// <param name="obj"></param>
+		/// <param name="year"></param>
+		/// <param name="period"></param>
+		/// <returns></returns>
+		public FormSession CreateSession(IInputTemplate template, IZetaMainObject obj, int year, int period) {
+			var session = Container.Get<IFormSession>(null, template, year, period, obj) as FormSession;
+			if (null == session) {
+				session = new FormSession(template, year, period, obj);
+				session.SetApplication(Application);
+				session.SetContainerContext(Container, null);
+			}
+			session.FormServer = this;
+			return session;
 		}
 
 		/// <summary>
@@ -396,5 +411,7 @@ namespace Zeta.Extreme.FrontEnd {
 		private readonly bool _doNotRun;
 		private TimeSpan _formulaRegisterTime;
 		private int _index = -100;
+
+	
 	}
 }

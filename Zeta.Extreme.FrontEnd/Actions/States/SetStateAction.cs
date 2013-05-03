@@ -61,10 +61,13 @@ namespace Zeta.Extreme.FrontEnd.Actions.States {
 		/// <returns> </returns>
 		protected override object MainProcess() {
 			MyFormServer.ReadyToServeForms.Wait();
-			var mysession = MyFormServer.Sessions.FirstOrDefault(_ => _.Uid == Session);
-			if (null == mysession) {
-				mysession = MyFormServer.Start(_realform, _realobj, year, period);
+			FormSession mysession;
+			if (state == FormStateType.Closed) {
+				mysession = MyFormServer.Start(_realform, _realobj, year, period, false, true);
 				mysession.WaitData();
+			}
+			else {
+				mysession = MyFormServer.CreateSession(_realform, _realobj, year, period);
 			}
 			return mysession.SetState(state,Comment);
 		}

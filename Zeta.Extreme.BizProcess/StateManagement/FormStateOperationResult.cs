@@ -42,6 +42,12 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		public FormState AttachedFormState { get; set; }
 
 		/// <summary>
+		/// —ообщение дл€ положительного статуса по умолчанию
+		/// </summary>
+		[SerializeNotNullOnly]
+		public string DefaultMessageForState { get; set; }
+
+		/// <summary>
 		///     ѕричины запрета установки статуса
 		/// </summary>
 		[Serialize]

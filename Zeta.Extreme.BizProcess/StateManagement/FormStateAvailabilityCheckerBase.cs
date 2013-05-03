@@ -68,9 +68,22 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 					ReglamentDescription = regCode.Description;
 					continue;
 				}
+
+				var defMessage = attribute as DefaultMessageAttribute;
+				if (null != defMessage)
+				{
+					DefaultMessage = defMessage.Message;
+					continue;
+				}
+
 			}
 
 		}
+		/// <summary>
+		/// Дефолтное сообщение при положительном статусе
+		/// </summary>
+		[SerializeNotNullOnly]
+		public string DefaultMessage { get; set; }
 
 		/// <summary>
 		/// Описание, текст статьи регламента
@@ -134,7 +147,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// Шоткат генерации результата при ошибке
 		/// </summary>
 		/// <returns></returns>
-		protected FormStateOperationResult GetResult() {
+		protected FormStateOperationResult GetErrorResult() {
 			return new FormStateOperationResult{Allow = false,  Reason = new FormStateOperationDenyReason {Type=ReasonType,Message = Message,Error = Error,ReglamentCode = ReglamentCode}};
 		}
 
@@ -161,26 +174,34 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 			if (null != Component) {
 				var basename = Component.Name.Replace(".state.checker", "");
 				var ignoreparameter = basename + "_ignore";
-				if (Context.Options.ContainsKey(ignoreparameter) && Context.Options[ignoreparameter] == "1") return null;
+				if (Context.Options.ContainsKey(ignoreparameter) && Context.Options[ignoreparameter] == "1") return GetValidResult();
 			}
 			if (FormStateType.None != TargetFormState) {
-				if (Context.NewState != TargetFormState) return null;
+				if (Context.NewState != TargetFormState) return GetValidResult();
 			}
 			if (FormStateType.None != SourceFormState)
 			{
-				if (Context.OldState != SourceFormState) return null;
+				if (Context.OldState != SourceFormState) return GetValidResult();
 			}
 			if (!string.IsNullOrWhiteSpace(SkipRole)) {
 				var isInSkipRole = Context.RoleResolver.IsInRole(Context.Form.Usr, SkipRole, SkipRoleExact);
 				if (isInSkipRole) {
-					return null;
+					return GetValidResult();
 				}
 			}
 			var allow = UseDefaultResult ? DefaultResult : InternalIsValid();
 			if (allow) {
-				return null;
+				return GetValidResult();
 			}
-			return GetResult();
+			return GetErrorResult();
+		}
+
+		/// <summary>
+		/// </summary>
+		/// <returns></returns>
+		protected FormStateOperationResult GetValidResult() {
+			if (string.IsNullOrWhiteSpace(DefaultMessage)) return null;
+			return new FormStateOperationResult {Allow = true, DefaultMessageForState = DefaultMessage};
 		}
 
 		/// <summary>

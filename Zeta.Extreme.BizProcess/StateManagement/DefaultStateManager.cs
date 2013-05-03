@@ -96,11 +96,23 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 					return new FormStateOperationResult
 						{
 							Allow = false,
-							Reason = new FormStateOperationDenyReason {Type = FormStateOperationDenyReasonType.AlreadySet}
+							Reason = new FormStateOperationDenyReason {Type = FormStateOperationDenyReasonType.AlreadySet},
+							DefaultMessageForState = "",
 						};
 				}
+				string currentMessage = "";
 				foreach (var checker in StateAvailabilityCheckers) {
 					var checkerResult = checker.GetCanSet(context);
+					
+					if (null != checkerResult && checkerResult.Allow &&
+					    !string.IsNullOrWhiteSpace(checkerResult.DefaultMessageForState)) {
+						if (string.IsNullOrWhiteSpace(currentMessage)) {
+							currentMessage = checkerResult.DefaultMessageForState;
+						}
+						else {
+							currentMessage += Environment.NewLine + checkerResult.DefaultMessageForState;
+						}
+					}
 					
 					if ( null!= checkerResult  && !checkerResult.Allow) {
 						checkerResult.Reason = checkerResult.Reason ??
@@ -109,7 +121,7 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 						return checkerResult;
 					}
 				}
-				return new FormStateOperationResult {Allow = true};
+				return new FormStateOperationResult {Allow = true,DefaultMessageForState = currentMessage};
 			}
 			catch (Exception ex) {
 				return ThrowCanSetResult(ex);
@@ -133,6 +145,14 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 				FormStateOperationResult canSetState =null;
 				if (skipValidation || (canSetState = GetCanSet(form, newStateType)).Allow)
 				{
+					if (!string.IsNullOrWhiteSpace(canSetState.DefaultMessageForState)) {
+						if (string.IsNullOrWhiteSpace(comment)) {
+							comment = canSetState.DefaultMessageForState;
+						}
+						else {
+							comment += Environment.NewLine + canSetState.DefaultMessageForState;
+						}
+					}
 					Repository.SetState(form, newStateType,comment,parentId);
 				}
 				return canSetState;

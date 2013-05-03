@@ -37,6 +37,7 @@
     <Compile Include="Reports\Parameter.cs" />
     <Compile Include="Reports\ParametersCollection.cs" />
     <Compile Include="StateManagement\Attributes\CheckIndexAttribute.cs" />
+    <Compile Include="StateManagement\Attributes\DefaultMessageAttribute.cs" />
     <Compile Include="StateManagement\Attributes\DefaultResultAttribte.cs" />
     <Compile Include="StateManagement\Attributes\ErrorMessageAttribute.cs" />
     <Compile Include="StateManagement\Attributes\ReasonTypeAttribute.cs" />
