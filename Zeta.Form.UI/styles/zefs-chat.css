@@ -36,6 +36,11 @@
     background-color: rgb(204, 255, 194);
 }
 
+.userchat.chat-list-header {
+    padding-top: 4px;
+    background-color: rgb(175, 226, 255);
+}
+
 .chat-list-body+.chat-list-header {
     border-top: 1px solid #DDD;
 }

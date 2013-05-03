@@ -69,7 +69,7 @@
     chatlist.append(
         $('<div class="userchat chat-list-header"/>').click(function() {
             $(chatlist.find('.userchat.chat-list-header')).toggleClass("collapsed");
-        }).append("Лента сообщений формы"),
+        }).append("Лента сообщений текущей формы"),
         $('<div class="userchat chat-list-body"/>')
     );
     var showarchive = $('<i class="icon pull-right" data-original-title="Показать/скрыть проченные"/>');
@@ -175,12 +175,12 @@
         chatlist.append(body);
         body.empty();
         filters.empty();
-        filters.append($('<button class="btn-link"/>').text("Все").click(function() {
-            $(".adminchat.chat-list-row").show();
-        }));
         if (cl != null && !$.isEmptyObject(cl)) {
             b.addClass("btn-success");
             b.find("i").addClass("icon-white");
+            filters.append($('<button class="btn-link"/>').text("Все").click(function() {
+                $(".adminchat.chat-list-row").show();
+            }));
             $.each(cl, function(i,message) {
                 var tr = $('<div class="adminchat chat-list-row"/>').addClass(message.Type);
                 var u = $('<span class="label label-inverse"/>');
