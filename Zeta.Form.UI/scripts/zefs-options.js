@@ -310,6 +310,8 @@ $.extend(api,(function(){
                     return obj;
                 }
             }),
+            //команда которая возвращающает регламент по блокировкам
+            getreglament : new Command({domain: "zefs", name: "getreglament"}),
             getnews : $.extend(new Command({domain: "message", name: "getnews"}), {
                 url : location.origin + api.siterootold() + "message/getnews.{DATATYPE}.qweb",
                 wrap : function(obj) {

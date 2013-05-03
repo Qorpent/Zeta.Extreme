@@ -13,6 +13,7 @@ window.zefs.handlers = $.extend(window.zefs.handlers, {
     // Other handlers:
     on_formsload : "formsload", on_periodsload : "periodsload", on_periodsfaild : "periodsfailed",
     on_objectsload : "objectsload", on_objectsfaild : "objectsfailed", on_attachmentload : "attachmentload",
+    on_reglamentload : "reglamentload",
     // Message handlers:
     on_message : "message",
     // File handlers:
@@ -162,7 +163,10 @@ root.init = root.init ||
                 if (!!lockinfo.canblockresult) {
                     message = lockinfo.canblockresult.Reason.Message;
                     if (!!lockinfo.canblockresult.Reason.ReglamentCode) {
-                        message += '<br/><strong>Регламент</strong>:<button class="btn-link">' + lockinfo.canblockresult.Reason.ReglamentCode + '</button>'
+                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.cancheckresult.Reason.ReglamentCode) return r });
+                        if (reglament.length > 0) {
+                            message += '<br/><h4>' + reglament[0].Message + '</h4>' + '<p>' + reglament[0].ReglamentDescription + '</p>';
+                        }
                     }
                 }
                 $(window.zeta).trigger(window.zeta.handlers.on_modal, {
@@ -188,7 +192,10 @@ root.init = root.init ||
                 if (!!lockinfo.canopenresult) {
                     message = lockinfo.canopenresult.Reason.Message;
                     if (!!lockinfo.canopenresult.Reason.ReglamentCode) {
-                        message += '<br/><strong>Регламент</strong>:<button class="btn-link">' + lockinfo.canopenresult.Reason.ReglamentCode + '</button>'
+                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.cancheckresult.Reason.ReglamentCode) return r });
+                        if (reglament.length > 0) {
+                            message += '<br/><h4>' + reglament[0].Message + '</h4>' + '<p>' + reglament[0].ReglamentDescription + '</p>';
+                        }
                     }
                 }
                 $(window.zeta).trigger(window.zeta.handlers.on_modal, {
@@ -214,7 +221,10 @@ root.init = root.init ||
                 if (!!lockinfo.cancheckresult) {
                     message = lockinfo.cancheckresult.Reason.Message;
                     if (!!lockinfo.cancheckresult.Reason.ReglamentCode && lockinfo.cancheckresult.Reason.ReglamentCode != "") {
-                        message += '<br/><strong>Регламент</strong>:<button class="btn-link">' + lockinfo.cancheckresult.Reason.ReglamentCode + '</button>'
+                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.cancheckresult.Reason.ReglamentCode) return r });
+                        if (reglament.length > 0) {
+                            message += '<br/><h4>' + reglament[0].Message + '</h4>' + '<p>' + reglament[0].ReglamentDescription + '</p>';
+                        }
                     }
                 }
                 $(window.zeta).trigger(window.zeta.handlers.on_modal, {
@@ -339,6 +349,11 @@ root.init = root.init ||
         $(root).trigger(root.handlers.on_objectsload);
     });
 
+    api.metadata.getreglament.onSuccess(function(e, result) {
+        root.reglament = result || {};
+        $(root).trigger(root.handlers.on_reglamentload);
+    });
+
     api.metadata.getperiods.onSuccess(function(e, result) {
         if($.isEmptyObject(root.periods)) {
             root.periods = result;
@@ -429,6 +444,7 @@ root.init = root.init ||
         api.metadata.getobjects.execute();
         api.metadata.getperiods.execute();
         api.metadata.getforms.execute();
+        api.metadata.getreglament.execute();
         api.metadata.getnews.execute();
         // получаем ленту сообщений формы
         api.chat.list.execute({session: root.myform.sessionId});

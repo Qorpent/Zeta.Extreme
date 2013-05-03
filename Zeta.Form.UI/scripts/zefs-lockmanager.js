@@ -84,6 +84,9 @@
     window.zefs.api.lock.set.onComplete(function() {
         progress.hide();
     });
+    window.zefs.api.lock.setstateold.onComplete(function() {
+        progress.hide();
+    });
     window.zefs.api.lock.history.onSuccess(function(e, result) {
         if(!$.isEmptyObject(result)) {
             window.zefs.lockhistory = result;
