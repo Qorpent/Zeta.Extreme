@@ -36,7 +36,18 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		public Thema() {
 			Visible = true;
+			IncomeLinks = new List<ThemaLink>();
+			OutcomeLinks = new List<ThemaLink>();
 		}
+		/// <summary>
+		/// Входящие ссылки
+		/// </summary>
+		public IList<ThemaLink> IncomeLinks { get; private set; }
+		/// <summary>
+		/// Исходящие ссылки
+		/// </summary>
+		public IList<ThemaLink> OutcomeLinks { get; private set; } 
+
 
 		/// <summary>
 		/// 	Период (темповый для копий)
@@ -372,44 +383,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <returns> </returns>
 		public IThema Personalize(IPrincipal usr) {
 			throw new NotSupportedException("Персонализация на данный момент не поддерживается");
-			/*var result = Clone(false) as Thema;
-			foreach (var form in result.Forms.Values.ToArray()) {
-				if (!acl.get(form, null, null, usr, false)) {
-					result.Forms.Remove(form.Code);
-				}
-			}
-			foreach (var report in result.Reports.Values.ToArray()) {
-				if (!acl.get(report, null, null, usr, false)) {
-					result.Reports.Remove(report.Code);
-				}
-			}
-
-			foreach (var report in result.Reports.Values.ToArray()) {
-				report.CleanupParameters(usr);
-			}
-
-			foreach (var doc in result.Documents.Values.ToArray()) {
-				if (!acl.get(doc, null, null, usr, false)) {
-					result.Documents.Remove(doc.Code);
-				}
-			}
-
-			foreach (var cmd in result.Commands.Values.ToArray()) {
-				if (!acl.get(cmd, null, null, usr, false)) {
-					result.Commands.Remove(cmd.Code);
-				}
-			}
-
-
-			var personalizedThemas = result.GroupMembers.Select(x => x.Personalize(usr)).ToArray();
-			result.GroupMembers.Clear();
-			foreach (var thema in personalizedThemas) {
-				if (thema.IsActive(usr)) {
-					result.GroupMembers.Add(thema);
-				}
-			}
-
-			return result;*/
+			
 		}
 
 		/// <summary>

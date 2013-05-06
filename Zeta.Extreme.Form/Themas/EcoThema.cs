@@ -18,6 +18,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Principal;
 using Qorpent.Applications;
@@ -26,6 +27,7 @@ using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Form.Themas {
 	/// <summary>
@@ -104,6 +106,7 @@ namespace Zeta.Extreme.Form.Themas {
 			get { return Parameters.SafeGet("detailclasses", ""); }
 			set { Parameters["detailclasses"] = value; }
 		}
+	
 
 		/// <summary>
 		/// 	Корневая строка

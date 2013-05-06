@@ -94,6 +94,7 @@
     <Compile Include="Themas\IThemaHelper.cs" />
     <Compile Include="Themas\IUsrThemaMapRepository.cs" />
     <Compile Include="Themas\RowDescriptor.cs" />
+    <Compile Include="Themas\ThemaLink.cs" />
     <Compile Include="Themas\ThemaLoaderOptions.cs" />
     <Compile Include="Themas\TypedParameter.cs" />
   </ItemGroup>

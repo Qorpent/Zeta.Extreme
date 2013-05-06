@@ -95,6 +95,16 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		Exception Error { get; set; }
 
 		/// <summary>
+		/// Входящие ссылки
+		/// </summary>
+		IList<ThemaLink> IncomeLinks { get; }
+
+		/// <summary>
+		/// Исходящие ссылки
+		/// </summary>
+		IList<ThemaLink> OutcomeLinks { get; }
+
+		/// <summary>
 		/// 	Получить все формы
 		/// </summary>
 		/// <returns> </returns>

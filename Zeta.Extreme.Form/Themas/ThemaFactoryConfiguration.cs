@@ -52,56 +52,25 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		/// <returns> </returns>
 		public IThemaFactory Configure() {
-			var result = new ThemaFactory();
-			
-			result.Version = Version;
-			result.SrcXml = SrcXml.ToString();
-			foreach (var thcfg in _configurations) {
-				if (thcfg.Active) {
-					// myapp.files.Write("~/tmp/themas/" + thcfg.Code + ".xml",((ThemaConfiguration)thcfg).SrcXml.ToString());
-					var thema = thcfg.Configure();
-					//  thema.Factory = result;
-					result.Themas.Add(thema);
-				}
-			}
-			var allthemas = result.Themas.ToArray();
-			foreach (var thema in allthemas) {
-				if (thema.Group.IsNotEmpty()) {
-					var grp = allthemas.FirstOrDefault(x => x.Code == thema.Group);
-					if (null != grp) {
-						((Thema) grp).GroupMembers.Add(thema);
-					}
-				}
-			}
+			var result = new ThemaFactory {Version = Version, SrcXml = SrcXml.ToString()};
+			ConfigureStandaloneThemas(result);
+			ConfigureGroups(result);
+			ConfigureLibraries(result);
+			ConfigureXmlSourceForForms(result);
+			ConfigureExtendedXml(result);
+			ConfigureBiztranDependency(result);
+			return result;
+		}
 
-			foreach (var thema in result.Themas) {
+		private void ConfigureBiztranDependency(ThemaFactory result) {
+			var bizprocessDefs =
+				result.Themas.Select(_ => new {thema = _, bp = _.GetParameter("bizprocess.object", (Model.BizProcess) null)})
+				      .Where(_ => null != _.bp)
+				      .ToArray();
 
-				foreach (var r in thema.GetAllForms()) {
-					var c = ((InputTemplate)r).Configuration;
-					if (c.Sources.Length != 0) {
-						foreach (var sourcecode in c.Sources) {
-							var lib = result.GetForm(sourcecode);
-							r.Sources.Add(lib);
-						}
-					}
-				}
-			}
+		}
 
-			foreach (Thema thema in result.Themas) {
-				thema.Configuration = null;
-				//NOTE: пока с отчетами не работаем
-				/*
-                foreach (ZetaReportDefinition rd in thema.Reports.Values){
-                    rd.Configuration = null;
-                }
-				 */
-				foreach (var it in thema.Forms.Values) {
-					((InputTemplate)it).Configuration = null;
-				}
-				foreach (var document in thema.Forms.Values) {
-					document.SourceXmlConfiguration = null;
-				}
-			}
+		private void ConfigureExtendedXml(ThemaFactory result) {
 			var newx = new XElement("root");
 			foreach (var e in SrcXml) {
 				foreach (var x in e.XPathSelectElements("//*[@preservexml]")) {
@@ -111,8 +80,53 @@ namespace Zeta.Extreme.Form.Themas {
 
 
 			result.SrcXml = newx.ToString();
+		}
 
-			return result;
+		private static void ConfigureXmlSourceForForms(ThemaFactory result) {
+			foreach (Thema thema in result.Themas) {
+				thema.Configuration = null;
+				foreach (var it in thema.Forms.Values) {
+					((InputTemplate) it).Configuration = null;
+				}
+				foreach (var document in thema.Forms.Values) {
+					document.SourceXmlConfiguration = null;
+				}
+			}
+		}
+
+		private static void ConfigureLibraries(ThemaFactory result) {
+			foreach (var thema in result.Themas) {
+				foreach (var r in thema.GetAllForms()) {
+					var c = ((InputTemplate) r).Configuration;
+					if (c.Sources.Length != 0) {
+						foreach (var sourcecode in c.Sources) {
+							var lib = result.GetForm(sourcecode);
+							r.Sources.Add(lib);
+						}
+					}
+				}
+			}
+		}
+
+		private static void ConfigureGroups(ThemaFactory result) {
+			var allthemas = result.Themas.ToArray();
+			foreach (var thema in allthemas) {
+				if (thema.Group.IsNotEmpty()) {
+					var grp = allthemas.FirstOrDefault(x => x.Code == thema.Group);
+					if (null != grp) {
+						((Thema) grp).GroupMembers.Add(thema);
+					}
+				}
+			}
+		}
+
+		private void ConfigureStandaloneThemas(ThemaFactory result) {
+			foreach (var thcfg in _configurations) {
+				if (thcfg.Active) {
+					var thema = thcfg.Configure();
+					result.Themas.Add(thema);
+				}
+			}
 		}
 
 		private readonly IList<IThemaConfiguration> _configurations = new List<IThemaConfiguration>();
