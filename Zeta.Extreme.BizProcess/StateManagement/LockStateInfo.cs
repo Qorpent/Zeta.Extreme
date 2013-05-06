@@ -116,5 +116,10 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// </summary>
 		[SerializeNotNullOnly]
 		public bool cpavoid;
+		/// <summary>
+		/// Признак отсутствия необходимого привязанного файла
+		/// </summary>
+		[Serialize]
+		public bool noattachedfiles;
 	}
 }

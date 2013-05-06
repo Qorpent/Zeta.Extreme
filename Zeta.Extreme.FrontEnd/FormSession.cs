@@ -937,7 +937,7 @@ namespace Zeta.Extreme.FrontEnd {
 			var cancheck = state == "0ISBLOCK" && haslockrole &&  hasholdlockrole;
 			var cansaveoverblock = roles.IsInRole(principal, "NOBLOCK",true);
 			var periodstateoverride = false;
-
+			var noattachedfiles = false;
 			cansave = cansave || cansaveoverblock;
 			if (cansave) {
 				var periodStateManager = new PeriodStateManager();
@@ -973,6 +973,7 @@ namespace Zeta.Extreme.FrontEnd {
 						foreach (var type in types) {							
 							if (!attachs.Any(_ => _.Type == type)) {
 								canblock = false;
+								noattachedfiles = true;
 								break;
 							}
 						}
@@ -999,6 +1000,7 @@ namespace Zeta.Extreme.FrontEnd {
 					canblockresult = canblockresult,
 					cancheckresult = cancheckresult,
 					canopenresult = canopenresult,
+					noattachedfiles = noattachedfiles,
 					cpavoid = cpavoid,
 				};
 		}
