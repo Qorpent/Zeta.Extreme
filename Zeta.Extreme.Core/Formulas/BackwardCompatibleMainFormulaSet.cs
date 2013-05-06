@@ -51,6 +51,20 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// Проверяет соответствие значения лимиту по модулю, если укладывается, то возвращается 0
+		/// </summary>
+		/// <param name="limitSize"></param>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public decimal checklimit(decimal limitSize, decimal value) {
+			var modvalue = Math.Abs(value);
+			if (modvalue <= limitSize) {
+				return 0;
+			}
+			return value;
+		}
+
+		/// <summary>
 		/// 	Расчет месяцев в периоде
 		/// </summary>
 		/// <param name="period"> </param>
