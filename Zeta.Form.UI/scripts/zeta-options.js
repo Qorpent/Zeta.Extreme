@@ -31,6 +31,7 @@ $.extend(api,(function(){
                         getLogonName : function(){return this.impersonation != null ? this.impersonation : this.logonname},
                         // признак того, что пользователь является администратором
                         getIsAdmin : function(){return this.impadmin != null ? this.impadmin : this.logonadmin},
+                        getIsBudget : function(){return this.impbudget != null ? this.impbudget : this.logonbudget},
                         // признак того, что пользователь является разработчиком
                         getIsDeveloper : function(){return this.impdeveloper != null ? this.impdeveloper : this.logondeveloper},
                         // признак того, что пользователь является администратором данных
