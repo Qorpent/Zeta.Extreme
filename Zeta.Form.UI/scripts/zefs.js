@@ -550,7 +550,20 @@ root.init = root.init ||
         });
     });
 
-    api.lock.set.onComplete(function(e, result) {
+    api.lock.set.onSuccess(function(e, result) {
+        api.lock.state.execute({session: root.myform.sessionId});
+        api.lock.history.execute({session: root.myform.sessionId});
+    });
+
+    api.lock.set.onError(function(e, result) {
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            title: "Во время блокировки произошла ошибка",
+            content: $('<div/>').html(result.responseText),
+            width: 800
+        });
+    });
+
+    api.lock.setstateold.onComplete(function(e, result) {
         if (result.status == 200) {
             api.lock.state.execute({session: root.myform.sessionId});
             api.lock.history.execute({session: root.myform.sessionId});
