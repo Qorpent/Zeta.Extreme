@@ -10,10 +10,39 @@ $.extend(api,(function(){
             logout : new Command({domain: "_sys", name: "logout"}),
             impersonate : new Command({domain: "_sys", name: "impersonate"}),
             impersonateall : function(params) {
+                var status = {
+                    success : [],
+                    faild : [],
+                    count : 0
+                };
                 $.ajax({ url: "_sys/impersonate.qweb", data: params });
                 var apps = ["zefs","zefs1","zefs2","zefs3","zefs4"];
                 for (var i in apps) {
-                    $.ajax({ url: "/" + apps[i] + "/_sys/impersonate.qweb", data: params });
+                    var url = "/" + apps[i] + "/_sys/impersonate.qweb";
+                    var ajax = $.ajax({ url: url, data: params });
+                    ajax.success(function() {
+                        status.success.push(apps[i]);
+                    });
+                    ajax.error(function() {
+                        status.faild.push(apps[i]);
+                    });
+                    ajax.complete(function() {
+                        status.count++;
+                        if (status.count == apps.length) {
+                            if (status.faild.length != 0) {
+                                var content = "<p>Имперсонация не выполнена на след. серверах:</p></br>";
+                                for (var s in status.faild) {
+                                    content += '<strong>' + status.faild[s] + '</strong></br>';
+                                }
+                                $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                                    title: "Имперсонация на серверах zefs",
+                                    content: $("<p/>").html(content)
+                                });
+                            } else {
+                                location.reload();
+                            }
+                        }
+                    });
                 }
             },
             whoami : $.extend(new Command({domain: "_sys", name: "whoami"}), {
