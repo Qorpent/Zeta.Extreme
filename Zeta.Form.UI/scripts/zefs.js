@@ -169,6 +169,9 @@ root.init = root.init ||
                         }
                     }
                 }
+                if (lockinfo.noattachedfiles) {
+                    message += "<p>Для блокировки формы необходимо прикрепить файлы.</p>"
+                }
                 $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                     title: "Форма не может быть заблокирована",
                     content: $("<p/>").html(message)
@@ -313,6 +316,16 @@ root.init = root.init ||
             window.open(api.siterootold() + "report/render.rails?notemplate=1&tcode=" + s.FormInfo.Code.replace('.in','b.out') +
                 "&tp.currentObject=" + s.ObjInfo.Id + "&tp.currentDetail=&tp.year=" + s.Year +
                 "&tp.period=" + s.Period, '_blank');
+            s = null;
+        }
+    };
+
+    var OpenOldForm = function() {
+        if (!!root.myform.currentSession) {
+            var s = root.myform.currentSession;
+            window.open(api.siterootold() + "form/fill.rails?template=" + s.FormInfo.Code +
+                "&object=" + s.ObjInfo.Id + "&detail=&year=" + s.Year +
+                "&period=" + s.Period, '_blank');
             s = null;
         }
     };
@@ -697,6 +710,7 @@ root.init = root.init ||
         deletefile: DeleteFile,
         downloadfile: DownloadFile,
         openreport: OpenReport,
+        openoldform: OpenOldForm,
         setupform: SetupForm,
         cellhistory: CellHistory,
         celldebug: CellDebug,

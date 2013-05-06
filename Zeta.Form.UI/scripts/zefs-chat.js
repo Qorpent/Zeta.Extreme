@@ -25,6 +25,7 @@
             zefs.myform.chatread();
             if (!!window.chatbtnanimation) {
                 clearInterval(window.chatbtnanimation);
+                b.css("opacity", "1");
             }
             $(this).removeClass("hasunread");
             var html = $(this).html();
@@ -117,6 +118,7 @@
         if (parseInt(count) > 0) {
             b.addClass("hasunread");
             strong.text(count);
+            zefs.myform.chatlist();
             if (!window.chatbtnanimation) {
                 window.chatbtnanimation = setInterval(function() { chatbtnanimate() }, 300);
             }
