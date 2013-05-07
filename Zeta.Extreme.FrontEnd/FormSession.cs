@@ -573,7 +573,7 @@ namespace Zeta.Extreme.FrontEnd {
 				OverallDataTime = OverallDataTime + sw.Elapsed;
 				foreach (var controlPointResult in _controlpoints) {
 					controlPointResult.Value = controlPointResult.Query.Result.NumericResult;
-					controlPointResult.Query = null;
+				//	controlPointResult.Query = null;
 				}
 			}
 			InitSaveMode = false;
@@ -916,6 +916,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns> </returns>
 		public LockStateInfo GetStateInfo() {
+			WaitData();
 			var roles = Application.Roles;
 			var isopen = Template.IsOpen;
 			Template.CleanupStates();
