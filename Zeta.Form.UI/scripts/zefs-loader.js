@@ -1,9 +1,16 @@
+if(useStatic == true) {
+	document.write('<script src="scripts/zefs-options"></script>');
+	document.write('<script src="scripts/zefs-render"></script>');
+	document.write('<script src="scripts/zefs"></script>');
+	document.write('<script src="scripts/zefs-forms"></script>');
+} else {
+	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-options"></script>');
+	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-render"></script>');
+	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs"></script>');
+	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-forms"></script>');
+}
 
 
-document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-options"></script>');
-document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-render"></script>');
-document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs"></script>');
-document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-forms"></script>');
 document.write('<script src="zeta/getperiods.embedjson.qweb"></script>');
 document.write('<script src="zeta/getobjects.embedjson.qweb"></script>');
 document.write('<script src="zefs/bizprocesslist.embedjson.qweb"></script>');
