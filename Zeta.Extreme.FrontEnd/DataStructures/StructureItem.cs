@@ -17,6 +17,7 @@
 // PROJECT ORIGIN: Zeta.Extreme.FrontEnd/StructureItem.cs
 #endregion
 using Qorpent.Serialization;
+using Zeta.Extreme.BizProcess.Themas;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>
@@ -99,5 +100,11 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		[SerializeNotNullOnly]
 		public string[] activecols;
+
+		/// <summary>
+		/// Условное форматирование
+		/// </summary>
+		[SerializeNotNullOnly]
+		public ColumnRowCheckCondition[] rules;
 	}
 }

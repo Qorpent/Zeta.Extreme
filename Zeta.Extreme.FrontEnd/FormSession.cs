@@ -536,7 +536,8 @@ namespace Zeta.Extreme.FrontEnd {
 								 period = c.Period,
 								 controlpoint = c.ControlPoint,
 								 exref = null!=c.Target && c.Target.IsMarkSeted("DOEXREF"),
-								 format = c.NumberFormat
+								 format = c.NumberFormat,
+								 rules = c.RowCheckConditions,
 							 })
 					).ToArray();
 			sw.Stop();

@@ -16,50 +16,64 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.BizProcess/ColumnRowCheckCondition.cs
 #endregion
+
+using Qorpent.Serialization;
+
 namespace Zeta.Extreme.BizProcess.Themas {
     /// <summary>
     /// Правило сопоставления колонок
     /// </summary>
-    public class ColumnRowCheckCondition {
+    [Serialize]
+	public class ColumnRowCheckCondition {
 		/// <summary>
 		/// Действие
 		/// </summary>
-        public string Action { get; set; }
+        [Serialize]
+		public string Action { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public decimal Value { get; set; }
+		[SerializeNotNullOnly]
+		public decimal Value { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public decimal Value2 { get; set; }
+		[SerializeNotNullOnly]
+		public decimal Value2 { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public bool DenyBlock { get; set; }
+		[SerializeNotNullOnly]
+		public bool DenyBlock { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string RowTag { get; set; }
+		[SerializeNotNullOnly]
+		public string RowTag { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string RowClass { get; set; }
+		[SerializeNotNullOnly]
+		public string RowClass { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string RowStyle { get; set; }
+		[SerializeNotNullOnly]
+		public string RowStyle { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string CellClass { get; set; }
+		[SerializeNotNullOnly]
+		public string CellClass { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string CellStyle { get; set; }
+		[SerializeNotNullOnly]
+		public string CellStyle { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string Comment { get; set; }
+		[SerializeNotNullOnly]
+		public string Comment { get; set; }
     }
 }
