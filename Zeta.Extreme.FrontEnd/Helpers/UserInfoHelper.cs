@@ -18,6 +18,9 @@
 #endregion
 using System;
 using System.Linq;
+using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.FrontEnd.Helpers {
@@ -39,6 +42,17 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 			if (null == usr) {
 				return new SimpleUserInfo {Login = login, Name = "NOT REGISTERED IN DB"};
 			}
+			var result = GetUserInfo(usr);
+			return result;
+		}
+
+		/// <summary>
+		/// Конвертирует существующий логин в запись
+		/// </summary>
+		/// <param name="usr"></param>
+		/// <param name="fullData"></param>
+		/// <returns></returns>
+		public  SimpleUserInfo GetUserInfo(IZetaUser usr,bool fullData = false) {
 			var result = new SimpleUserInfo
 				{
 					Active = usr.Active,
@@ -47,11 +61,19 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 					Email = usr.Comment,
 					IsObjAdmin = usr.IsLocalAdmin,
 					Login = usr.Login,
-					Name = usr.Name
+					Name = usr.Name,
 				};
 			if (null != usr.Object) {
 				result.ObjId = usr.Object.Id;
 				result.ObjName = usr.Object.Name;
+			}
+			if (fullData) {
+				result.Slots = usr.Slots.ToArray();
+				var allroles = usr.Roles.SmartSplit();
+				var objroles = allroles.Where(_ => _.EndsWith("_OPERATOR") || _.EndsWith("_UNDERWRITER") || _.EndsWith("_ANALYTIC")).ToArray();
+				var sysroles = allroles.Where(_ =>!( _.EndsWith("_OPERATOR") || _.EndsWith("_UNDERWRITER") || _.EndsWith("_ANALYTIC"))).ToArray();
+				result.ObjRoles = objroles;
+				result.SysRoles = sysroles;
 			}
 			return result;
 		}

@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using Qorpent.Model;
+using Qorpent.Serialization;
 
 namespace Zeta.Extreme.Model.Inerfaces {
 	/// <summary>
@@ -58,7 +59,6 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		 /// <summary>
 		 /// marks that user is local admin
 		 /// </summary>
-		 [Obsolete("need be replaced with special role")]
 		 bool IsLocalAdmin { get; set; }
 		 /// <summary>
 		 /// Occupation of user
@@ -68,5 +68,7 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		/// Contact info
 		/// </summary>
 		string Contact { get; set; }
+
+
 	}
 }

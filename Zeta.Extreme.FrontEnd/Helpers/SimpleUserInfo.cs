@@ -16,6 +16,9 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.FrontEnd/SimpleUserInfo.cs
 #endregion
+
+using Qorpent.Serialization;
+
 namespace Zeta.Extreme.FrontEnd.Helpers {
 	/// <summary>
 	/// 	Упрощенный описатель пользователя
@@ -65,5 +68,19 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 		/// 	Признак активности пользователя
 		/// </summary>
 		public bool Active { get; set; }
+		/// <summary>
+		/// Список слотов
+		/// </summary>
+		[SerializeNotNullOnly]
+		public string[] Slots { get; set; }
+
+		/// <summary>
+		/// Перечень ролей объекта
+		/// </summary>
+		public string[] ObjRoles { get; set; }
+		/// <summary>
+		/// Перечень системных ролей
+		/// </summary>
+		public string[] SysRoles { get; set; }
 	}
 }

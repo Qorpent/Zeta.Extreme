@@ -28,6 +28,7 @@ using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Form.Meta{
     /// <summary>
@@ -132,7 +133,7 @@ namespace Zeta.Extreme.Form.Meta{
                     return false;
                 }
 
-                foreach (var org in GetAvailOrgs(user)){
+                foreach (var org in GetObjectsForUser(user)){
                     if (org.Id == obj.Id){
                         return true;
                     }
@@ -190,9 +191,9 @@ namespace Zeta.Extreme.Form.Meta{
         /// 
         /// </summary>
         /// <returns></returns>
-        public static IZetaMainObject[] GetAvailOrgs(){
+        public static IZetaMainObject[] GetObjectsForUser(){
             lock (sync){
-                return GetAvailOrgs(DefaultUser, null);
+                return GetObjectsForUser(DefaultUser, null);
             }
         }
 
@@ -201,9 +202,9 @@ namespace Zeta.Extreme.Form.Meta{
         /// </summary>
         /// <param name="principal"></param>
         /// <returns></returns>
-        public static IZetaMainObject[] GetAvailOrgs(IPrincipal principal){
+        public static IZetaMainObject[] GetObjectsForUser(IPrincipal principal){
             lock (sync){
-                return GetAvailOrgs(principal, null);
+                return GetObjectsForUser(principal, null);
             }
         }
 
@@ -213,8 +214,8 @@ namespace Zeta.Extreme.Form.Meta{
         /// <param name="principal"></param>
         /// <param name="like"></param>
         /// <returns></returns>
-        public static IZetaMainObject[] GetAvailOrgs(IPrincipal principal, string like){
-            return GetAvailOrgs(principal, like, false);
+        public static IZetaMainObject[] GetObjectsForUser(IPrincipal principal, string like){
+            return GetObjectsForUser(principal, like, false);
         }
 
         /// <summary>
@@ -222,9 +223,37 @@ namespace Zeta.Extreme.Form.Meta{
         /// </summary>
         /// <param name="start"></param>
         /// <returns></returns>
-        public static IZetaMainObject[] GetAvailOrgs(bool start){
-            return GetAvailOrgs(Application.Current.Principal.CurrentUser, "", start);
+        public static IZetaMainObject[] GetObjectsForUser(bool start){
+            return GetObjectsForUser(Application.Current.Principal.CurrentUser, "", start);
         }
+
+		/// <summary>
+		/// Метод получения списка пользователей для текущего предприятия
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <returns></returns>
+		public static IZetaUser[] GetUsersForObject(IZetaMainObject obj) {
+			var logins = new List<string>();
+			using (var c = getConnection())
+			{
+				c.Open();
+				var cmd = c.CreateCommand();
+				cmd.CommandText = "select distinct usrname from zeta.usrobjmap where isnull(usrname,'')!='' allobj = 0 and obj = "+obj.Id;
+
+				using (var r = cmd.ExecuteReader())
+				{
+					while (r.Read())
+					{
+						var login = r.GetString(0);
+						logins.Add("'"+login+"'");
+					}
+				}
+			}
+
+			var incondition = string.Join(",", logins);
+			var result = new NativeZetaReader().ReadUsers("Login in (" + incondition + ")").ToArray();
+			return result;
+		}
 
 	    /// <summary>
 	    /// 
@@ -233,7 +262,7 @@ namespace Zeta.Extreme.Form.Meta{
 	    /// <param name="like"></param>
 	    /// <param name="start"></param>
 	    /// <returns></returns>
-	    public static IZetaMainObject[] GetAvailOrgs(IPrincipal principal, string like, bool start) {
+	    public static IZetaMainObject[] GetObjectsForUser(IPrincipal principal, string like, bool start) {
 	        like = like ?? "";
             lock (sync){
 				var name = principal.Identity.Name;
@@ -285,7 +314,7 @@ namespace Zeta.Extreme.Form.Meta{
         /// <returns></returns>
         public static int GetAvailOrgCount(IPrincipal principal){
             lock (sync){
-                return GetAvailOrgs(principal).Count();
+                return GetObjectsForUser(principal).Count();
             }
         }
     }

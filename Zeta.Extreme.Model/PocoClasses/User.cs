@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using Qorpent.Model;
+using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
@@ -29,6 +30,7 @@ namespace Zeta.Extreme.Model {
 	/// <summary>
 	/// Zeta user implementation
 	/// </summary>
+	[Serialize]
 	public partial class User : Entity, IZetaUser {
 		/// <summary>
 		/// reference to container object
@@ -38,26 +40,31 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		/// Main login
 		/// </summary>
+		[Serialize]
 		public virtual string Login { get; set; }
 
 		/// <summary>
 		/// 	True - объект активен
 		/// </summary>
+		[Serialize]
 		public virtual bool Active { get; set; }
 
 		/// <summary>
 		/// marks that user is local admin
 		/// </summary>
+		[Serialize]
 		public virtual bool IsLocalAdmin { get; set; }
 
 
 		/// <summary>
 		/// Occupation of user
 		/// </summary>
+		[Serialize]
 		public virtual string Occupation { get; set; }
 		/// <summary>
 		/// Contact info
 		/// </summary>
+		[Serialize]
 		public virtual string Contact { get; set; }
 
 
@@ -70,16 +77,19 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		/// s-list of roles given to user
 		/// </summary>
+		[Serialize]
 		public virtual string Roles { get; set; }
 
 		/// <summary>
 		/// Alt login
 		/// </summary>
+		[IgnoreSerialize]
 		public virtual string Login2 { get; set; }
 
 		/// <summary>
 		/// s-list of slots of underwrite docxs
 		/// </summary>
+		[Serialize]
 		public virtual string SlotList {
 			get { return _slotList; }
 			set {
@@ -91,6 +101,7 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		/// Normalized lost of slots
 		/// </summary>
+		[IgnoreSerialize]
 		public virtual IList<string> Slots {
 			get { return _slots ?? (_slots = SlotList.SmartSplit()); }
 		}
@@ -101,11 +112,13 @@ namespace Zeta.Extreme.Model {
 		/// <summary>
 		/// 	Дата начала
 		/// </summary>
+		[Serialize]
 		public DateTime Start { get; set; }
 
 		/// <summary>
 		/// 	Дата окончания
 		/// </summary>
+		[Serialize]
 		public DateTime Finish { get; set; }
 	}
 }
