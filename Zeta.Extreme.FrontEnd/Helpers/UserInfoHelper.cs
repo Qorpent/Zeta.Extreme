@@ -70,8 +70,15 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 			if (fullData) {
 				result.Slots = usr.Slots.ToArray();
 				var allroles = usr.Roles.SmartSplit();
-				var objroles = allroles.Where(_ => _.EndsWith("_OPERATOR") || _.EndsWith("_UNDERWRITER") || _.EndsWith("_ANALYTIC")).ToArray();
-				var sysroles = allroles.Where(_ =>!( _.EndsWith("_OPERATOR") || _.EndsWith("_UNDERWRITER") || _.EndsWith("_ANALYTIC"))).ToArray();
+				var objroles = allroles.Where(_ => 
+					_.EndsWith("_OPERATOR") || 
+					_.EndsWith("_UNDERWRITER") || 
+					_.EndsWith("_ANALYTIC") ||
+					_.EndsWith("_POPERATOR") ||
+					_.EndsWith("_PUNDERWRITER") ||
+					_.EndsWith("_PANALYTIC") 
+					).ToArray();
+				var sysroles = allroles.Except(objroles).ToArray();
 				result.ObjRoles = objroles;
 				result.SysRoles = sysroles;
 			}

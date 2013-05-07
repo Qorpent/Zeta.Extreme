@@ -238,7 +238,7 @@ namespace Zeta.Extreme.Form.Meta{
 			{
 				c.Open();
 				var cmd = c.CreateCommand();
-				cmd.CommandText = "select distinct usrname from zeta.usrobjmap where isnull(usrname,'')!='' allobj = 0 and obj = "+obj.Id;
+				cmd.CommandText = "select distinct usrname from zeta.usrobjmap where isnull(usrname,'')!='' and allobj = 0 and obj = "+obj.Id;
 
 				using (var r = cmd.ExecuteReader())
 				{
