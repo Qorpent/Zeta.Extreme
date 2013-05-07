@@ -1,4 +1,4 @@
-set /p comment="Comment: "
+rem set /p comment="Comment: "
 git add --a
-git commit -m "%comment%"
+git commit -m "autocommit"
 git push origin uidev
