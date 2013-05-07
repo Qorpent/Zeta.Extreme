@@ -41,7 +41,18 @@ $.extend(window.zeta.handlers, {
             $('<tr/>').append($('<td/>').text("Email"), $('<td/>').text(this.details.Email)),
             $('<tr/>').append($('<td/>').text("Предприятие"), $('<td/>').text(this.details.ObjName))
         );
-        $(window.zeta).trigger(window.zeta.handlers.on_modal, { title: "Информация о пользователе", content: details, width: 450 });
+        var params = { title: "Информация о пользователе", content: details, width: 450 };
+        var login = this.details.Login;
+        if (zeta.user.getRealIsAdmin()) {
+            params["customButton"] = {
+                class : "btn-warning",
+                text : "Вход от имени",
+                click : function() {
+                    if (!!login && login != "") zeta.api.security.impersonateall({Target: login});
+                }
+            }
+        }
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, params);
     };
 
     ZetaUser.prototype.getDetails = function() {
