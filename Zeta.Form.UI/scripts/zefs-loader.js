@@ -29,6 +29,7 @@ document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-chat"></script
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-nullrows"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-alerter"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-report"></script>');
+document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-logo"></script>');
 document.write('<script src="scripts/zefs-debug.js"></script>');
 document.write('<script src="scripts/zefs-restart.js"></script>');
 document.write('<script src="scripts/zefs-auth.js"></script>');
