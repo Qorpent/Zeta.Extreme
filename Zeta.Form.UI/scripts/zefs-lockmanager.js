@@ -10,7 +10,6 @@
     var checkbtn = $('<button class="btn btn-success btn-mini"/>').text("Утв.");
     var lockbtn = $('<button class="btn btn-warning btn-mini"/>').text("Заблок.");
     var unlockbtn = $('<button class="btn btn-danger btn-mini"/>').text("Разблок.");
-
     var checkbtn2 = $('<button class="btn btn-small" />').text("Утв.");
     var lockbtn2 = $('<button class="btn btn-small" />').text("Заблок.");
     var unlockbtn2 = $('<button class="btn btn-small" />').text("Разблок.");
@@ -110,12 +109,22 @@
                     else if (h.State == "0ISBLOCK") lockstate.text("Заблок.").addClass("state-block");
                     else if (h.State == "0ISCHECKED") lockstate.text("Пров.").addClass("state-check");
                     var u = $('<span class="label label-inverse"/>').text(h.User);
-                    body.append($('<tr/>').append(
+                    var tr = $('<tr/>').append(
                         $('<td/>').text(h.Date.format("dd.mm.yyyy HH:MM:ss")),
                         $('<td/>').html(lockstate),
                         $('<td/>').append(u)
-//                      $('<td/>').append($('<span class="label label-inverse"/>').text(h.getUser())),
-                    ));
+                    );
+                    var c = $('<td/>');
+                    if (!!h.Comment) {
+                        c.append('<i class="icon icon-comment"/>');
+                        c.click(function() {
+                            $(window.zeta).trigger(window.zeta.handlers.on_modal,
+                                { title: "Комментарий", text: h.Comment, width: 450 });
+                        });
+                    }
+                    tr.append(c);
+                    body.append(tr);
+
                     u.zetauser();
                     lockstate = null;
                 });
