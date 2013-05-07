@@ -1,8 +1,8 @@
-if(useStatic == true) {
-	document.write('<script src="scripts/zefs-options"></script>');
-	document.write('<script src="scripts/zefs-render"></script>');
-	document.write('<script src="scripts/zefs"></script>');
-	document.write('<script src="scripts/zefs-forms"></script>');
+if((window.useStatic !== undefined) && (window.useStatic == true)) {
+	document.write('<script src="scripts/zefs-options.js"></script>');
+	document.write('<script src="scripts/zefs-render.js"></script>');
+	document.write('<script src="scripts/zefs.js"></script>');
+	document.write('<script src="scripts/zefs-forms.js"></script>');
 } else {
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-options"></script>');
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-render"></script>');
@@ -20,8 +20,8 @@ document.write('<script src="zefs/bizprocesslist.embedjson.qweb"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-authinfo"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-formsave"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-feedback"></script>');
-if(useStatic == true) {
-	document.write('<script src="scripts/zefs-info"></script>');
+if((window.useStatic !== undefined) && (window.useStatic == true)) {
+	document.write('<script src="scripts/zefs-info.js"></script>');
 } else {
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-info"></script>');
 }
@@ -31,8 +31,8 @@ if(useStatic == true) {
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-extrapannel"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-table"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-attacher"></script>');
-if(useStatic == true) {
-	document.write('<script src="scripts/zefs-chat"></script>');
+if((window.useStatic !== undefined) && (window.useStatic == true)) {
+	document.write('<script src="scripts/zefs-chat.js"></script>');
 } else {
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-chat"></script>');
 }
