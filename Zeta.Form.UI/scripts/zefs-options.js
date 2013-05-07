@@ -338,6 +338,8 @@ $.extend(api,(function(){
             }),
             //команда которая возвращающает регламент по блокировкам
             getreglament : new Command({domain: "zefs", name: "getreglament"}),
+            //команда, позволяющая получить список пользователей предприятия, имеющих доступ к данной форме
+            getformusers : new Command({domain: "zefs", name: "responsibleusers"}),
             getnews : $.extend(new Command({domain: "message", name: "getnews"}), {
                 url : location.origin + api.siterootold() + "message/getnews.{DATATYPE}.qweb",
                 wrap : function(obj) {

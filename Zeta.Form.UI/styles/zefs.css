@@ -114,7 +114,7 @@ div.open>.tooltip {
     background: url('../images/users.png') center no-repeat;
 }
 
-.zefsreport, .zefsrestart, .zefshotkeys,
+.zefsreport,.zefsoldform, .zefsrestart, .zefshotkeys,
 .impersonator,.information, .zefsfaq,
 .zefsdebug, .feedback {
     margin-top: 4px;

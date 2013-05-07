@@ -13,7 +13,7 @@ window.zefs.handlers = $.extend(window.zefs.handlers, {
     // Other handlers:
     on_formsload : "formsload", on_periodsload : "periodsload", on_periodsfaild : "periodsfailed",
     on_objectsload : "objectsload", on_objectsfaild : "objectsfailed", on_attachmentload : "attachmentload",
-    on_reglamentload : "reglamentload",
+    on_reglamentload : "reglamentload", on_formusersload : "formusersload",
     // Message handlers:
     on_message : "message",
     // File handlers:
@@ -36,9 +36,10 @@ root.init = root.init ||
         currentSession : null,
         lock : null,
         lockhistory : null,
-        attachment : null
+        attachment : null,
+        users : null
     };
-    var render = root.getRender();
+    var render = root.render;
     api.getParameters = function(){
         // Парсим параметры из хэша
         var p = {};
@@ -393,6 +394,11 @@ root.init = root.init ||
         });
     });
 
+    api.metadata.getformusers.onSuccess(function(e, result) {
+        root.myform.users = result;
+        $(root).trigger(root.handlers.on_formusersload);
+    });
+
     api.metadata.cellhistory.onSuccess(function(e, result) {
         if(!$.isEmptyObject(result)) {
             var cellinfotoggle = $('<button class="btn-link"/>').text("Показать/Спрятать полную информацию о ячейке");
@@ -459,6 +465,7 @@ root.init = root.init ||
         api.metadata.getforms.execute();
         api.metadata.getreglament.execute();
         api.metadata.getnews.execute();
+        api.metadata.getformusers.execute(sessiondata);
         // получаем ленту сообщений формы
         api.chat.list.execute({session: root.myform.sessionId});
         // если админы, то получаем все ленты сообщений
