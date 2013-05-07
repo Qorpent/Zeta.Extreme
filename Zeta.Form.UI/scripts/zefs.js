@@ -39,7 +39,7 @@ root.init = root.init ||
         attachment : null,
         users : null
     };
-    var render = root.getRender();
+    var render = root.render;
     api.getParameters = function(){
         // Парсим параметры из хэша
         var p = {};
