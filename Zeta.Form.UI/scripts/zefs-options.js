@@ -15,12 +15,38 @@ $.extend(api,(function(){
             start : function(){ this.ready.execute() },
             state : new Command({domain:"zefs",name:"server",title:"Статус сервера"}),
             restart : new Command({domain:"zefs",name:"restart",title:"Перезапуск сервера"}),
-            restartall: function () {
+            restartall : function() {
                 $.ajax({ url: "zefs/restart.qweb" });
                 var apps = ["zefs","zefs1","zefs2","zefs3","zefs4"];
+                var status = {
+                    success : [],
+                    faild : [],
+                    count : 0
+                };
                 for (var i in apps) {
                     var url = "/" + apps[i] + "/zefs/restart.qweb";
-                    $.ajax({ url: url });
+                    var ajax = $.ajax({ url: url });
+                    ajax.success(function() {
+                        status.success.push(apps[i]);
+                    });
+                    ajax.error(function() {
+                        status.faild.push(apps[i]);
+                    });
+                    ajax.complete(function() {
+                        status.count++;
+                        if (status.count == apps.length) {
+                            var content = status.faild.length == 0
+                                ? "<p>Все сервера успешно перезапущены</p>"
+                                : "<p>С перезагрузкой некоторых серверов возникли проблемы</p></br>";
+                            for (var s in status.faild) {
+                                content += '<strong>' + status.faild[s] + '</strong></br>';
+                            }
+                            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                                title: "Перезапуск серверов zefs",
+                                content: $("<p/>").html(content)
+                            });
+                        }
+                    });
                 }
             },
             ready : new Command({domain:"zefs",name:"ready",title:"Проверка доступности сервера", timeout:10000})
@@ -118,7 +144,7 @@ $.extend(api,(function(){
 
         lock : {
             // Команда блокировки формы
-            set : $.extend(new Command({domain: "zefs", name: "lockform"}), {
+            setstateold : $.extend(new Command({domain: "zefs", name: "lockform"}), {
                 getUrl: function() {
                     if (location.host.search('admin|corp|133|49') != -1 || location.port == '448' || location.port == '449') return '/ecot/form/setstate.rails';
                     return '/eco/form/setstate.rails';
@@ -136,7 +162,7 @@ $.extend(api,(function(){
                 }
             }),
             // Команда новый блокировки формы
-            setstatenew : $.extend(new Command({domain: "zefs", name: "setstate"}), {
+            set : $.extend(new Command({domain: "zefs", name: "setstate"}), {
                 getParameters: function() {
                     var s = root.myform.currentSession;
                     if ($.isEmptyObject(s)) return;
@@ -310,6 +336,8 @@ $.extend(api,(function(){
                     return obj;
                 }
             }),
+            //команда которая возвращающает регламент по блокировкам
+            getreglament : new Command({domain: "zefs", name: "getreglament"}),
             getnews : $.extend(new Command({domain: "message", name: "getnews"}), {
                 url : location.origin + api.siterootold() + "message/getnews.{DATATYPE}.qweb",
                 wrap : function(obj) {

@@ -11,9 +11,9 @@
     var lockbtn = $('<button class="btn btn-warning btn-mini"/>').text("Заблок.");
     var unlockbtn = $('<button class="btn btn-danger btn-mini"/>').text("Разблок.");
 
-    var checkbtn2 = $('<button class="btn btn-small" disabled/>').text("Утв.");
-    var lockbtn2 = $('<button class="btn btn-small" disabled/>').text("Заблок.");
-    var unlockbtn2 = $('<button class="btn btn-small" disabled/>').text("Разблок.");
+    var checkbtn2 = $('<button class="btn btn-small" />').text("Утв.");
+    var lockbtn2 = $('<button class="btn btn-small" />').text("Заблок.");
+    var unlockbtn2 = $('<button class="btn btn-small" />').text("Разблок.");
     var progress = $('<img src="images/300.gif"/>').css("margin-left", 3).hide();
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление блокировками"/>')
         .html('<i class="icon-lock"></i><span class="caret"/>');
@@ -40,50 +40,32 @@
         lockbtn2.get(0).className = unlockbtn2.get(0).className = checkbtn2.get(0).className = "btn btn-small";
         if (lock.haslockrole) {
             controls.append(lockbtn);
-            lockbtn.click(function() { window.zefs.myform.lockform(); progress.show(); });
-            lockbtn2.click(function() { window.zefs.myform.lockform(); progress.show(); });
             if (lock.canblock) {
                 lockbtn.addClass("btn-warning");
                 lockbtn2.addClass("btn-warning");
-                lockbtn.removeAttr("disabled");
-                lockbtn2.removeAttr("disabled");
-            }
-            else {
-                lockbtn.attr("disabled", "disabled");
-                lockbtn2.attr("disabled", "disabled");
             }
             controls.append(unlockbtn);
-            unlockbtn.click(function() { window.zefs.myform.unlockform(); progress.show(); });
-            unlockbtn2.click(function() { window.zefs.myform.unlockform(); progress.show(); });
             if (lock.canopen) {
                 unlockbtn.addClass("btn-danger");
                 unlockbtn2.addClass("btn-danger");
-                unlockbtn.removeAttr("disabled");
-                unlockbtn2.removeAttr("disabled");
-            }
-            else {
-                unlockbtn.attr("disabled", "disabled");
-                unlockbtn2.attr("disabled", "disabled");
             }
         }
         if (lock.hasholdlockrole) {
             controls.append(checkbtn);
-            checkbtn.click(function() { window.zefs.myform.checkform(); progress.show(); });
-            checkbtn2.click(function() { window.zefs.myform.checkform(); progress.show(); });
             if (lock.cancheck) {
                 checkbtn.addClass("btn-success");
                 checkbtn2.addClass("btn-success");
-                checkbtn.removeAttr("disabled");
-                checkbtn2.removeAttr("disabled");
-            }
-            else {
-                checkbtn.attr("disabled", "disabled");
-                checkbtn2.attr("disabled", "disabled");
             }
         }
         if (!lock.haslockrole && !lock.hasholdlockrole) {
             controls.append($('<span style="margin: 0 7px;" class="label label-warning"/>').text("Вы не можете управлять блокировками"));
         }
+        lockbtn.click(function() { window.zefs.myform.lockform(); progress.show(); });
+        lockbtn2.click(function() { window.zefs.myform.lockform(); progress.show(); });
+        unlockbtn.click(function() { window.zefs.myform.unlockform(); progress.show(); });
+        unlockbtn2.click(function() { window.zefs.myform.unlockform(); progress.show(); });
+        checkbtn.click(function() { window.zefs.myform.checkform(); progress.show(); });
+        checkbtn2.click(function() { window.zefs.myform.checkform(); progress.show(); });
         progress.hide();
         controls.append(progress);
         menu.prepend(controls);
@@ -100,6 +82,9 @@
         e.stopPropagation();
     });
     window.zefs.api.lock.set.onComplete(function() {
+        progress.hide();
+    });
+    window.zefs.api.lock.setstateold.onComplete(function() {
         progress.hide();
     });
     window.zefs.api.lock.history.onSuccess(function(e, result) {

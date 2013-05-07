@@ -13,6 +13,7 @@ window.zefs.handlers = $.extend(window.zefs.handlers, {
     // Other handlers:
     on_formsload : "formsload", on_periodsload : "periodsload", on_periodsfaild : "periodsfailed",
     on_objectsload : "objectsload", on_objectsfaild : "objectsfailed", on_attachmentload : "attachmentload",
+    on_reglamentload : "reglamentload",
     // Message handlers:
     on_message : "message",
     // File handlers:
@@ -149,27 +150,93 @@ root.init = root.init ||
     };
 
     var LockForm = function() {
-        if (root.myform.sessionId != null && root.myform.lock != null) {
-//            if (root.myform.lockinfo.canblock) {
-                api.lock.set.execute({state: "0ISBLOCK"});
-//            }
+        var lockinfo = root.myform.lock;
+        if (root.myform.sessionId != null && lockinfo != null) {
+            if (lockinfo.canblock) {
+                if (lockinfo.newstates) {
+                    api.lock.set.execute({newstate: "Closed"});
+                } else {
+                    api.lock.setstateold.execute({state: "0ISBLOCK"});
+                }
+            } else {
+                var message = "";
+                if (!!lockinfo.canblockresult) {
+                    message = lockinfo.canblockresult.Reason.Message;
+                    if (!!lockinfo.canblockresult.Reason.ReglamentCode) {
+                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.cancheckresult.Reason.ReglamentCode) return r });
+                        if (reglament.length > 0) {
+                            message += '<br/><h4>' + reglament[0].Message + '</h4>' + '<p>' + reglament[0].ReglamentDescription + '</p>';
+                        }
+                    }
+                }
+                if (lockinfo.noattachedfiles) {
+                    message += "<p>Для блокировки формы необходимо прикрепить файлы.</p>"
+                }
+                $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                    title: "Форма не может быть заблокирована",
+                    content: $("<p/>").html(message)
+                });
+            }
         }
+        lockinfo = null;
     };
 
     var UnlockForm = function() {
-        if (root.myform.sessionId != null && root.myform.lock != null) {
-            if (!root.myform.lock.isopen) {
-                api.lock.set.execute({state: "0ISOPEN"});
+        var lockinfo = root.myform.lock;
+        if (root.myform.sessionId != null && lockinfo != null) {
+            if (lockinfo.canopen) {
+                if (lockinfo.newstates) {
+                    api.lock.set.execute({newstate: "Open"});
+                } else {
+                    api.lock.setstateold.execute({state: "0ISOPEN"});
+                }
+            } else {
+                var message = "";
+                if (!!lockinfo.canopenresult) {
+                    message = lockinfo.canopenresult.Reason.Message;
+                    if (!!lockinfo.canopenresult.Reason.ReglamentCode) {
+                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.cancheckresult.Reason.ReglamentCode) return r });
+                        if (reglament.length > 0) {
+                            message += '<br/><h4>' + reglament[0].Message + '</h4>' + '<p>' + reglament[0].ReglamentDescription + '</p>';
+                        }
+                    }
+                }
+                $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                    title: "Форма не может быть открыта",
+                    content: $("<p/>").html(message)
+                });
             }
         }
+        lockinfo = null;
     };
 
     var CheckForm = function() {
-        if (root.myform.sessionId != null && root.myform.lock != null) {
-            if (!root.myform.lock.isopen) {
-                api.lock.set.execute({state: "0ISCHECKED"});
+        var lockinfo = root.myform.lock;
+        if (root.myform.sessionId != null && lockinfo != null) {
+            if (lockinfo.cancheck) {
+                if (lockinfo.newstates) {
+                    api.lock.set.execute({newstate: "Checked"});
+                } else {
+                    api.lock.setstateold.execute({state: "0ISCHECKED"});
+                }
+            } else {
+                var message = "";
+                if (!!lockinfo.cancheckresult) {
+                    message = lockinfo.cancheckresult.Reason.Message;
+                    if (!!lockinfo.cancheckresult.Reason.ReglamentCode && lockinfo.cancheckresult.Reason.ReglamentCode != "") {
+                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.cancheckresult.Reason.ReglamentCode) return r });
+                        if (reglament.length > 0) {
+                            message += '<br/><h4>' + reglament[0].Message + '</h4>' + '<p>' + reglament[0].ReglamentDescription + '</p>';
+                        }
+                    }
+                }
+                $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                    title: "Форма не может быть утверждена",
+                    content: $("<p/>").html(message)
+                });
             }
         }
+        lockinfo = null;
     };
 
     var CellHistory = function(cell) {
@@ -253,6 +320,16 @@ root.init = root.init ||
         }
     };
 
+    var OpenOldForm = function() {
+        if (!!root.myform.currentSession) {
+            var s = root.myform.currentSession;
+            window.open(api.siterootold() + "form/fill.rails?template=" + s.FormInfo.Code +
+                "&object=" + s.ObjInfo.Id + "&detail=&year=" + s.Year +
+                "&period=" + s.Period, '_blank');
+            s = null;
+        }
+    };
+
     var OpenFormulaDebuger = function() {
         window.open(api.siterootold() + "zeta/debug/index.rails?asworkspace=1", '_blank');
     };
@@ -283,6 +360,11 @@ root.init = root.init ||
         root.objects = result.objs || {};
         root.myobjs = result.my || {};
         $(root).trigger(root.handlers.on_objectsload);
+    });
+
+    api.metadata.getreglament.onSuccess(function(e, result) {
+        root.reglament = result || {};
+        $(root).trigger(root.handlers.on_reglamentload);
     });
 
     api.metadata.getperiods.onSuccess(function(e, result) {
@@ -375,6 +457,7 @@ root.init = root.init ||
         api.metadata.getobjects.execute();
         api.metadata.getperiods.execute();
         api.metadata.getforms.execute();
+        api.metadata.getreglament.execute();
         api.metadata.getnews.execute();
         // получаем ленту сообщений формы
         api.chat.list.execute({session: root.myform.sessionId});
@@ -480,7 +563,20 @@ root.init = root.init ||
         });
     });
 
-    api.lock.set.onComplete(function(e, result) {
+    api.lock.set.onSuccess(function(e, result) {
+        api.lock.state.execute({session: root.myform.sessionId});
+        api.lock.history.execute({session: root.myform.sessionId});
+    });
+
+    api.lock.set.onError(function(e, result) {
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            title: "Во время блокировки произошла ошибка",
+            content: $('<div/>').html(result.responseText),
+            width: 800
+        });
+    });
+
+    api.lock.setstateold.onComplete(function(e, result) {
         if (result.status == 200) {
             api.lock.state.execute({session: root.myform.sessionId});
             api.lock.history.execute({session: root.myform.sessionId});
@@ -524,9 +620,10 @@ root.init = root.init ||
                     content: content, width: 820, height: 500, closebutton: allowclose, backdrop: true
                 });
             }
-        }
-        if (content.length > 0) {
-            content.modal('hide');
+        } else {
+            if (content.length > 0) {
+                content.modal('hide');
+            }
         }
     });
 
@@ -613,6 +710,7 @@ root.init = root.init ||
         deletefile: DeleteFile,
         downloadfile: DownloadFile,
         openreport: OpenReport,
+        openoldform: OpenOldForm,
         setupform: SetupForm,
         cellhistory: CellHistory,
         celldebug: CellDebug,
