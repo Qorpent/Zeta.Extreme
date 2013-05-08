@@ -134,22 +134,99 @@ $.extend(root.render, {
 		return session;
 	},
 
-    checkCondition : function() {
-        $.each($('.hasdata'), function(i,cell) {
-            var $c = $(cell);
-            var col = null;
-            var rules = null;
-            if (!!zefs.myform.currentSession) {
-                if (!!zefs.myform.currentSession.structure) {
-                    col = zefs.myform.currentSession.structure.cols[parseInt($c.attr("idx"))];
-                    rules = col.rules;
-                }
-            }
-            if (null != rules && $.isEmptyObject(rules)) {
+    checkValue : function(rule, value) {
+        switch (rule.Action) {
+            case "<>":
+                return value != rule.Value;
+            case "!=":
+                return value != rule.Value;
+            case "=":
+                return value == rule.Value;
+            case "==":
+                return value == rule.Value;
 
+            case "|<>|":
+                return Math.abs(value) != Math.abs(rule.Value);
+            case "|!=|":
+                return Math.abs(value) != Math.abs(rule.Value);
+            case "|=|":
+                return Math.abs(value) == Math.abs(rule.Value);
+            case "|==|":
+                return Math.abs(value) == Math.abs(rule.Value);
+
+            case "~<>":
+                return Math.abs((((rule.Value - value)/rule.Value))*100) > 5;
+            case "~!=":
+                return Math.abs((((rule.Value - value)/rule.Value))*100) > 5;
+            case "~=":
+                return Math.abs((((rule.Value - value) / rule.Value)) * 100) <= 5;
+            case "~==":
+                return Math.abs((((rule.Value - value) / rule.Value)) * 100) <= 5;
+
+            case "~|<>|":
+                return Math.abs((((Math.abs(rule.Value) - Math.abs(value)) / Math.abs(rule.Value))) * 100) > 5;
+            case "~|!=|":
+                return Math.abs((((Math.abs(rule.Value) - Math.abs(value)) / Math.abs(rule.Value))) * 100) > 5;
+            case "~|=|":
+                return Math.abs((((Math.abs(rule.Value) - Math.abs(value)) / Math.abs(rule.Value))) * 100) <= 5;
+            case "~|==|":
+                return Math.abs((((Math.abs(rule.Value) - Math.abs(value)) / Math.abs(rule.Value))) * 100) <= 5;
+
+            case ">=":
+                return value >= rule.Value;
+            case ">":
+                return value > rule.Value;
+            case "<=":
+                return value <= rule.Value;
+            case "<":
+                return value < rule.Value;
+
+            case "|>=|":
+                return Math.abs(value) >= Math.abs(rule.Value);
+            case "|>|":
+                return Math.abs(value) > Math.abs(rule.Value);
+            case "|<|":
+                return Math.abs(value) < Math.abs(rule.Value);
+            case "|<=|":
+                return Math.abs(value) <= Math.abs(rule.Value);
+
+            case "<->":
+                return value > rule.Value && value < rule.Value2;
+            case "<=->":
+                return value >= rule.Value && value < rule.Value2;
+            case "<=-=>":
+                return value >= rule.Value && value <= rule.Value2;
+            case "<-=>":
+                return value > rule.Value && value <= rule.Value2;
+
+            case "|<->|":
+                return Math.abs(value) > Math.abs(rule.Value) && Math.abs(value) < Math.abs(rule.Value2);
+            case "|<=->|":
+                return Math.abs(value) >= Math.abs(rule.Value) && Math.abs(value) < Math.abs(rule.Value2);
+            case "|<=-=>|":
+                return Math.abs(value) >= Math.abs(rule.Value) && Math.abs(value) <= Math.abs(rule.Value2);
+            case "|<-=>|":
+                return Math.abs(value) > Math.abs(rule.Value) && Math.abs(value) <= Math.abs(rule.Value2);
+        }
+        return false;
+    },
+
+    checkConditions : function() {
+//      $.map(zefs.myform.currentSession.structure.cols, function(e) { if (e.idx == 3) return e })
+        var cols = zefs.myform.currentSession.structure.cols;
+        $.each(cols, function(i, col) {
+            if (!$.isEmptyObject(col.rules)) {
+                $.each($('td[idx="' + col.idx + '"].hasdata'), function(i,cell) {
+                    var $c = $(cell);
+                    $.each(col.rules, function(i, rule) {
+                        if (root.render.checkValue(rule, $c.text())) {
+                            if (!!rule.CellStyle) $c.attr("style", rule.CellStyle);
+                            if (!!rule.RowStyle) $c.parent().attr("style", rule.RowStyle);
+                        }
+                    });
+                });
             }
         });
     }
-
 	});
 })();

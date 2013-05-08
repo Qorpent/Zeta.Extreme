@@ -4,7 +4,7 @@
 !function($) {
     var root = window.zeta = window.zeta || {};
     var information = new root.Widget("information", root.console.layout.position.layoutHeader, "right", { authonly: true, priority: 85 });
-    var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Информация"/>').html('<i class="icon-book"></i><span class="caret"></span>');
+    var b = $('<button class="btn btn-small dropdown-toggle" data-original-title="Информация"/>').html('<i class="icon-book"></i><span class="caret"></span>');
     var support = $('<a/>').css("background-color", "#FFE1E1").text("Где я, кто я?");
     support.click(function() { WhatTheHellAndWhoAmI() });
     var formdoc = $('<a/>').text("Справка по форме").click(
@@ -27,6 +27,7 @@
             $('<li/>').html('<a>О программе</a>')
         ));
     b.tooltip({placement: 'bottom'});
+    b.dropdownHover({delay: 100});
     var RequestToSupport = function() {
         var email = "support.assoi@ugmk.com";
         var subject = "Проблема при работе в АССОИ";
