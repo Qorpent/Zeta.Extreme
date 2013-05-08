@@ -16,9 +16,11 @@
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSource.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceSerializer.cs" />
     <Compile Include="MongoDbConnector.cs" />
+    <Compile Include="MongoBasedServiceBase.cs" />
     <Compile Include="MongoDbFormChat\MongoDbFormChatProvider.cs" />
     <Compile Include="MongoDbFormChat\MongoDbFormChatSerializer.cs" />
     <Compile Include="MongoDbLayoutSpecification.cs" />
+    <Compile Include="MongoDbLogs\MongoClientStatisticsRegistry.cs" />
     <Compile Include="MongoDbLogs\MongoDbLogs.cs" />
     <Compile Include="MongoDbLogs\MongoDbLogsSerializer.cs" />
   </ItemGroup>

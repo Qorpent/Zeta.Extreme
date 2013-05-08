@@ -43,9 +43,6 @@
     <Reference Include="Zeta.Extreme.Form">
       <HintPath>..\..\.build\bin\Zeta.Extreme.Form.Debug\Zeta.Extreme.Form.dll</HintPath>
     </Reference>
-    <Reference Include="Zeta.Extreme.FrontEnd">
-      <HintPath>..\..\.build\bin\Zeta.Extreme.FrontEnd.Debug\Zeta.Extreme.FrontEnd.dll</HintPath>
-    </Reference>
     <Reference Include="Zeta.Extreme.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9b7e542f177f0300, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\.build\bin\Zeta.Extreme.Model.Debug\Zeta.Extreme.Model.dll</HintPath>
@@ -112,6 +109,10 @@
     <ProjectReference Include="..\Zeta.Extreme.Form\Zeta.Extreme.Form.csproj">
       <Project>{fbd09f91-b185-4207-b05d-6051505ca868}</Project>
       <Name>Zeta.Extreme.Form</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.FrontEnd\Zeta.Extreme.FrontEnd.csproj">
+      <Project>{75e74ded-91cc-4090-b3b2-2e8ae3c085e8}</Project>
+      <Name>Zeta.Extreme.FrontEnd</Name>
     </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.FrontEnd\Zeta.Extreme.FrontEnd.csproj">
       <Project>{75e74ded-91cc-4090-b3b2-2e8ae3c085e8}</Project>

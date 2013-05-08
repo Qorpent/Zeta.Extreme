@@ -4,6 +4,7 @@ ref Zeta.Extreme.MongoDB.Integration
 
 using Zeta.Extreme.BizProcess.Forms
 using Zeta.Extreme.MongoDB.Integration 
+using Zeta.Extreme.MongoDB.Integration.MongoDbLogs
 
 
 transient "attachment.source"  MongoDbAttachmentSource : IAttachmentStorage
@@ -16,7 +17,12 @@ transient "form.chat.source"  MongoDbFormChatProvider : IFormChatProvider
 	DatabaseName = "formdata"
 	CollectionName = "chat"
 
-transient "logs.mongo.source"  MongoDbLogs : ILogWriter
-	ConnectionString = "mongodb://localhost"
+transient "server.form.logger"  MongoDbLogs : ILogWriter
+	ConnectionString = "mongodb://ugmk-as2:28017,ugmk-econ:28017,ugmk-as5:28017/?connect=replicaset"
 	DatabaseName = "logs"
-	CollectionName = "global"
+	CollectionName = "serverform"
+
+transient "client.form.stats"  MongoClientStatisticsRegistry : IClientStatisticsRegistry
+	ConnectionString = "mongodb://ugmk-as2:28017,ugmk-econ:28017,ugmk-as5:28017/?connect=replicaset"
+	DatabaseName = "logs"
+	CollectionName = "clientform"

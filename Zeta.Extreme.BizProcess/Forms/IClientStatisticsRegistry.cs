@@ -1,4 +1,4 @@
-#region LICENSE
+п»ї#region LICENSE
 // Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
 // Supported by Media Technology LTD 
 //  
@@ -14,23 +14,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// PROJECT ORIGIN: Zeta.Extreme.FrontEnd/ReadyToServeAction.cs
+// PROJECT ORIGIN: Zeta.Extreme.Form/StateRule.cs
 #endregion
-
-using Qorpent.Mvc;
-
-namespace Zeta.Extreme.FrontEnd.Actions.ZefsServer {
-	///<summary>
-	///	Определяет доступность сервера форм
-	///</summary>
-	[Action("zefs.ready")]
-	public class ReadyToServeAction : ActionBase {
+namespace Zeta.Extreme.BizProcess.Forms {
+	/// <summary>
+	/// РРЅС‚РµСЂС„РµР№СЃ СЂРµРіРёСЃС‚СЂР°С‚РѕСЂР° РєР»РёРµРЅС‚СЃРєРѕР№ РёРЅС„РѕСЂРјР°С†РёРё
+	/// </summary>
+	public interface IClientStatisticsRegistry {
 		/// <summary>
-		/// 	Возвращает статус готовности сервера форм к обработке запросов
+		/// Р РµРіРёСЃС‚СЂРёСЂСѓРµС‚ РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРѕР№ СЃРµСЃСЃРёРё
 		/// </summary>
-		/// <returns> </returns>
-		protected override object MainProcess() {
-			return FormServer.Default.IsOk;
-		}
+		/// <param name="clientJson"></param>
+		/// <param name="srchost"></param>
+		/// <param name="usragent"></param>
+		void RegisterClientStatistics(string clientJson, string srchost, string usragent);
 	}
 }

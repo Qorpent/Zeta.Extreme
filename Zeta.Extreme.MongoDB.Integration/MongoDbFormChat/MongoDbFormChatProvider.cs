@@ -1,71 +1,37 @@
 ﻿#region LICENSE
-
-// Copyright 2012-2013 Fagim Sadykov
-// Project: Zeta.Extreme.MongoDB.Integration
-// Original file :MongoDbFormChatProvider.cs
-// Branch: ZEUS
-// This code is produced especially for ZEUS PROJECT and
-// can be used only with agreement from Fagim Sadykov
-// and ZEUS PROJECTS'S owner
-
+// Copyright 2007-2013 Qorpent Team - http://github.com/Qorpent
+// Supported by Media Technology LTD 
+//  
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//  
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// PROJECT ORIGIN: Zeta.Extreme.Form/StateRule.cs
 #endregion
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using MongoDB.Bson;
 using MongoDB.Driver; 
 using MongoDB.Driver.Builders;
-using Qorpent;
 using Qorpent.IoC;
 using Zeta.Extreme.BizProcess.Forms;
-using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.MongoDB.Integration {
 	/// <summary>
 	///     Mongo - реализация чата формы
 	/// </summary>
 	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IFormChatProvider))]
-	public class MongoDbFormChatProvider : ServiceBase, IFormChatProvider {
-
-        /// <summary>
-        /// Conneciton string for mongo
-        /// </summary>
-        public string ConnectionString { get; set; }
-        /// <summary>
-        /// Database in mongo
-        /// </summary>
-        public string DatabaseName { get; set; }
-        /// <summary>
-        /// Collection in mongo
-        /// </summary>
-        public string CollectionName { get; set; }
-
-		private static bool __moduleInitialized;
-        /// <summary>
-        /// Reset connection
-        /// </summary>
-        public void SetupConnection() {
-            Connector = new MongoDbConnector {
-                ConnectionString = ConnectionString,
-                DatabaseName = DatabaseName,
-                DatabaseSettings = new MongoDatabaseSettings(),
-                CollectionName = CollectionName
-            };
-			if (!__moduleInitialized) {
-				var moduleJavaScript = Assembly.GetExecutingAssembly().ReadManifestResource("chat.js");
-				var bsonJavaScript = new BsonJavaScript(moduleJavaScript);
-				Connector.Database.Eval(bsonJavaScript);
-				__moduleInitialized = true;
-			}
-        }
-
-        /// <summary>
-        ///     Connector to MongoDB
-        /// </summary>
-	    public MongoDbConnector Connector;
-
+	public class MongoDbFormChatProvider : MongoBasedServiceBase, IFormChatProvider {
 		/// <summary>
 		/// </summary>
         public MongoDbFormChatProvider() {

@@ -26,6 +26,7 @@
     <Compile Include="Forms\FormChatItem.cs" />
     <Compile Include="Forms\FormStructureRow.cs" />
     <Compile Include="Forms\IAttachmentStorage.cs" />
+    <Compile Include="Forms\IClientStatisticsRegistry.cs" />
     <Compile Include="Forms\IFormAttachmentStorage.cs" />
     <Compile Include="Forms\IFormChatProvider.cs" />
     <Compile Include="Forms\IFormDataSynchronize.cs" />
