@@ -99,8 +99,17 @@ namespace Zeta.Extreme.Form.SaveSupport {
 				currency = cell.linkedcell.query.Obj.ObjRef.Currency;
 				
 			}
-			if (!string.IsNullOrWhiteSpace(cell.linkedcell.query.Row.Native.Currency)) {
-				currency = cell.linkedcell.query.Row.Native.Currency;
+			if (!string.IsNullOrWhiteSpace(cell.linkedcell.query.Col.Native.Currency)) {
+				var colcurrency = cell.linkedcell.query.Col.Native.Currency;
+				if ("NONE" != colcurrency) {
+					currency = colcurrency;
+				}
+			}
+			if (!string.IsNullOrWhiteSpace(cell.linkedcell.query.Row.Native.Currency) ) {
+				var rowcurrency = cell.linkedcell.query.Row.Native.Currency;
+				if ("NONE" != rowcurrency) {
+					currency = rowcurrency;
+				}
 			}
 			if (string.IsNullOrWhiteSpace(currency)) {
 				currency = "RUB";

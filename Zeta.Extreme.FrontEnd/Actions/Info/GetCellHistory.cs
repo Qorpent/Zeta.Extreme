@@ -69,6 +69,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 							value = _cell.NumericValue,
 							user = _cell.User,
 							version = _cell.Version,
+							currency = _cell.Currency,
 						},
 					history = _history.Select(
 						_=>new
