@@ -520,7 +520,8 @@ namespace Zeta.Extreme.FrontEnd {
 						 controlpoint = r.IsMarkSeted("CONTROLPOINT"),
 						 exref = null!=r.ExRefTo,
 						 format = r.ResolveTag("numberformat"),
-						 activecols = r.ResolveTag("activecol").SmartSplit().ToArray()
+						 activecols = r.ResolveTag("activecol").SmartSplit().ToArray(),
+						 
 					 })
 					.Union(
 						(from ci in cols
@@ -538,6 +539,7 @@ namespace Zeta.Extreme.FrontEnd {
 								 exref = null!=c.Target && c.Target.IsMarkSeted("DOEXREF"),
 								 format = c.NumberFormat,
 								 rules = c.RowCheckConditions,
+								 validate = c.Validation
 							 })
 					).ToArray();
 			sw.Stop();

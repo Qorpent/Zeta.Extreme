@@ -106,5 +106,10 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		[SerializeNotNullOnly]
 		public ColumnRowCheckCondition[] rules;
+		/// <summary>
+		/// Имя валидации
+		/// </summary>
+		[SerializeNotNullOnly]
+		public string validate;
 	}
 }
