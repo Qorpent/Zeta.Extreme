@@ -167,6 +167,7 @@
 
     Zefs.prototype.activateCell = function($cell) {
         var $cell = $($cell);
+        if ($(".dataedit:invalid").length > 0) return;
         if (!$cell.hasClass("editable")) return $cell;
         if ($cell.hasClass("active")) return $cell;
         var isoutofview = this.isCellOutScreen($cell);
@@ -209,6 +210,7 @@
 
     Zefs.prototype.deactivateCell = function(e) {
         var $cell = this.getActiveCell();
+        if ($(".dataedit:invalid").length > 0) return;
         if (e != "esc" && $cell.hasClass('editing')) {
             this.uninputCell();
         }
@@ -229,7 +231,11 @@
             $val = $old;
         }
         $cell.text("");
-        var $input = $('<input class="dataedit"/>').attr("placeholder", $old).css("width", $cell.width()).val($val);
+        var $input = $('<input class="dataedit"/>').css("width", $cell.width()).val($val);
+        $input.attr("placeholder", $old);
+        if ($cell.attr("pattern") != "") {
+            $input.attr("pattern", $cell.attr("pattern"));
+        }
         $cell.append($input);
         $input.focus();
         $cell.addClass("editing");
@@ -238,6 +244,7 @@
 
     Zefs.prototype.uninputCell = function(e) {
         var $cell = this.getActiveCell();
+        if ($(".dataedit:invalid").length > 0) return;
         var $input = $($cell.find('input').first());
         if ($input.length != 0){
             // преобразование запятой в точку
