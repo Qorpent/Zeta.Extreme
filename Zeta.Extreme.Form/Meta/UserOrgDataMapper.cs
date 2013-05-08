@@ -234,24 +234,40 @@ namespace Zeta.Extreme.Form.Meta{
 		/// <returns></returns>
 		public static IZetaUser[] GetUsersForObject(IZetaMainObject obj) {
 			var logins = new List<string>();
+			var domains = new List<string>();
 			using (var c = getConnection())
 			{
 				c.Open();
 				var cmd = c.CreateCommand();
-				cmd.CommandText = "select distinct usrname from zeta.usrobjmap where isnull(usrname,'')!='' and allobj = 0 and obj = "+obj.Id;
+				cmd.CommandText = "select distinct usrname,domain from zeta.usrobjmap where isnull(usrname+domain,'')!=''  and allobj = 0 and obj = "+obj.Id;
 
 				using (var r = cmd.ExecuteReader())
 				{
 					while (r.Read())
 					{
 						var login = r.GetString(0);
-						logins.Add("'"+login+"'");
+						var domain = r.GetString(1);
+						if (!string.IsNullOrWhiteSpace(login)) {
+							logins.Add("'" + login + "'");
+						}
+						if (!string.IsNullOrWhiteSpace(domain)) {
+							domains.Add(" Login like '"+domain+"\\%' ");
+						}
 					}
 				}
 			}
 
 			var incondition = string.Join(",", logins);
-			var result = new NativeZetaReader().ReadUsers("Login in (" + incondition + ")").ToArray();
+			var domaincondition = string.Join(" or ", domains);
+			var condition = incondition;
+			if (!string.IsNullOrWhiteSpace(condition)) {
+				condition = "Login in (" + condition + ") ";
+			}
+			if (!string.IsNullOrWhiteSpace(condition) && !string.IsNullOrWhiteSpace(domaincondition)) {
+				condition += " or ";
+			}
+			condition += domaincondition;
+			var result = new NativeZetaReader().ReadUsers(condition).ToArray();
 			return result;
 		}
 
