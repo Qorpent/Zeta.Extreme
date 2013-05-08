@@ -81,6 +81,14 @@ $.extend(api,(function(){
                         if (o.type=="c") {
                             o.exref = o.exref || false;
                             result.cols.push(o);
+                            if (!!o.validate) {
+                                switch (o.validate) {
+                                    case "validate-int-cell-number" :
+                                        o.validate = "[0-9]+"; break;
+                                    default :
+                                        break;
+                                }
+                            }
                         }
                         if (o.type=="r") {
                             o.measure = o.measure || "тыс. руб.";

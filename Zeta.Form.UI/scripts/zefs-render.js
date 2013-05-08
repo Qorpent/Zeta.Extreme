@@ -66,7 +66,12 @@ $.extend(root.render, {
                         "visible": "visible"
                     });
                     if (col.controlpoint && row.controlpoint) td.addClass("control");
-                    if (col.isprimary && row.isprimary) td.addClass("editable");
+                    if (col.isprimary && row.isprimary) {
+                        td.addClass("editable");
+                        if (!!col.validate) {
+                            td.attr("pattern", col.validate);
+                        }
+                    }
                     if (col.exref && row.exref) td.removeClass("editable");
                     if (!$.isEmptyObject(row.activecols)) {
                         if ($.map(row.activecols, function(e) { if (e == col.code) return e }).length == 0) {
