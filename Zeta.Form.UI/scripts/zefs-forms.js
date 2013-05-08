@@ -167,7 +167,6 @@
 
     Zefs.prototype.activateCell = function($cell) {
         var $cell = $($cell);
-        if ($(".dataedit:invalid").length > 0) return;
         if (!$cell.hasClass("editable")) return $cell;
         if ($cell.hasClass("active")) return $cell;
         var isoutofview = this.isCellOutScreen($cell);
@@ -210,7 +209,6 @@
 
     Zefs.prototype.deactivateCell = function(e) {
         var $cell = this.getActiveCell();
-        if ($(".dataedit:invalid").length > 0) return;
         if (e != "esc" && $cell.hasClass('editing')) {
             this.uninputCell();
         }
@@ -233,9 +231,7 @@
         $cell.text("");
         var $input = $('<input class="dataedit"/>').css("width", $cell.width()).val($val);
         $input.attr("placeholder", $old);
-        if ($cell.attr("pattern") != "") {
-            $input.attr("pattern", $cell.attr("pattern"));
-        }
+        if ($cell.attr("pattern"))
         $cell.append($input);
         $input.focus();
         $cell.addClass("editing");
@@ -244,7 +240,6 @@
 
     Zefs.prototype.uninputCell = function(e) {
         var $cell = this.getActiveCell();
-        if ($(".dataedit:invalid").length > 0) return;
         var $input = $($cell.find('input').first());
         if ($input.length != 0){
             // преобразование запятой в точку
@@ -462,12 +457,12 @@
                     break;
                 default :
                     if (!printable || e.ctrlKey || e.altKey) return;
-                    if ((k > 47 && k < 58) || (k > 95 && k < 106) || (k == 190 || k == 188 || k == 110 || k != 189)) {
+                    if (/[0-9-\.,]+/.test(String.fromCharCode(e.which)) || (k > 187 && k < 191)) {
                         if (!$cell.hasClass('editing')) {
                             this.inputCell("replace");
                         }
                     } else {
-                        return;
+                        e.preventDefault();
                     }
             }
         },this));

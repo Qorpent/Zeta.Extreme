@@ -9,6 +9,21 @@ api.siterootold = function(){
     return '/eco/';
 };
 
+api.getParameters = function(){
+    // Парсим параметры из хэша
+    var p = {};
+    var result = {};
+    if (location.hash == "") return null;
+    $.each(location.hash.substring(1).split("|"), function(i,e) {
+        p[e.split("=")[0]] = e.split("=")[1];
+    });
+    result["form"] = p["form"];
+    result["obj"] = p["obj"];
+    result["period"] = p["period"];
+    result["year"] = p["year"];
+    return result;
+};
+
 $.extend(api,(function(){
 	return {
 		server : {
@@ -84,7 +99,7 @@ $.extend(api,(function(){
                             if (!!o.validate) {
                                 switch (o.validate) {
                                     case "validate-int-cell-number" :
-                                        o.validate = "[0-9]+"; break;
+                                        o.validate = "-?[0-9]+"; break;
                                     default :
                                         break;
                                 }

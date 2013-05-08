@@ -3,11 +3,13 @@ if((window.useStatic !== undefined) && (window.useStatic == true)) {
 	document.write('<script src="scripts/zefs-render.js"></script>');
 	document.write('<script src="scripts/zefs.js"></script>');
 	document.write('<script src="scripts/zefs-forms.js"></script>');
+	document.write('<script src="scripts/zefs-statistic.js"></script>');
 } else {
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-options"></script>');
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-render"></script>');
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs"></script>');
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-forms"></script>');
+    document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-statistic"></script>');
 }
 
 
@@ -44,7 +46,8 @@ if((window.useStatic !== undefined) && (window.useStatic == true)) {
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-nullrows"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-alerter"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-report"></script>');
-document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-logo"></script>');
+document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-report"></script>');
+document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-formheader"></script>');
 document.write('<script src="scripts/zefs-debug.js"></script>');
 document.write('<script src="scripts/zefs-restart.js"></script>');
 document.write('<script src="scripts/zefs-auth.js"></script>');
@@ -54,7 +57,7 @@ document.write('<script src="scripts/zefs-feedback.js"></script>');
 //document.write('<script src="scripts/zefs-info.js"></script>');
 document.write('<script src="scripts/zefs-hotkeys.js"></script>');
 document.write('<script src="scripts/zefs-faq.js"></script>');
-document.write('<script src="scripts/zefs-formheader.js"></script>');
+//document.write('<script src="scripts/zefs-formheader.js"></script>');
 document.write('<script src="scripts/zefs-extrapannel.js"></script>');
 document.write('<script src="scripts/zefs-table.js"></script>');
 document.write('<script src="scripts/zefs-attacher.js"></script>');

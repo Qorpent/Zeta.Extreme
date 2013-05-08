@@ -40,20 +40,6 @@ root.init = root.init ||
         users : null
     };
     var render = root.render;
-    api.getParameters = function(){
-        // Парсим параметры из хэша
-        var p = {};
-        var result = {};
-        if (location.hash == "") return null;
-        $.each(location.hash.substring(1).split("|"), function(i,e) {
-            p[e.split("=")[0]] = e.split("=")[1];
-        });
-        result["form"] = p["form"];
-        result["obj"] = p["obj"];
-        result["period"] = p["period"];
-        result["year"] = p["year"];
-        return result;
-    };
 
     var ArchiveNews = function(code) {
 
