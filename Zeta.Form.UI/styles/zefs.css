@@ -65,6 +65,32 @@ div.open>.tooltip {
     width: 100%;
 }
 
+.formuserstable {
+    table-layout: fixed;
+}
+
+.formuserstable td {
+    padding: 4px 5px;
+}
+
+.formuserstable th:first-child {
+    width: 150px;
+}
+
+.formuserstable th:nth-child(3) {
+    width: 120px;
+}
+
+.formuserstable th:nth-child(4) {
+    width: 60px;
+}
+
+.formuserstable td.dolzh {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .zefsextrapannel {
     position: fixed;
     top: 37px;
