@@ -54,30 +54,35 @@ namespace Zeta.Extreme.BizProcess.Forms.Custom {
 		/// </summary>
 		/// <param name="connectionString"></param>
 		protected void ExecuteScripts(string connectionString) {
-			var myassembly = GetType().Assembly;
-			var resourceNames = myassembly.GetManifestResourceNames().Where(_ => _.EndsWith(".sql"));
-			using (var c = new SqlConnection(connectionString)) {
-				c.Open();
-				foreach (var resourceName in resourceNames) {
-					using (var sreader = new StreamReader(
-						myassembly.GetManifestResourceStream(resourceName), Encoding.UTF8)
-						) {
-						var commands = sreader.ReadToEnd().Replace(" GO ", "~").Split('~');
-						foreach (var command in commands) {
-							var cmd = c.CreateCommand();
-							cmd.CommandText = command;
-							try {
-								cmd.ExecuteNonQuery();
-							}
-							catch (SqlException e) {
-								//hide recreate object errors
-								if (!e.Message.Contains("There is already")) {
-									throw;
+			try {
+				var myassembly = GetType().Assembly;
+				var resourceNames = myassembly.GetManifestResourceNames().Where(_ => _.EndsWith(".sql"));
+				using (var c = new SqlConnection(connectionString)) {
+					c.Open();
+					foreach (var resourceName in resourceNames) {
+						using (var sreader = new StreamReader(
+							myassembly.GetManifestResourceStream(resourceName), Encoding.UTF8)
+							) {
+							var commands = sreader.ReadToEnd().Replace(" GO ", "~").Split('~');
+							foreach (var command in commands) {
+								var cmd = c.CreateCommand();
+								cmd.CommandText = command;
+								try {
+									cmd.ExecuteNonQuery();
+								}
+								catch (SqlException e) {
+									//hide recreate object errors
+									if (!e.Message.Contains("There is already")) {
+										throw;
+									}
 								}
 							}
 						}
 					}
 				}
+			}
+			catch {
+				
 			}
 		}
 	}
