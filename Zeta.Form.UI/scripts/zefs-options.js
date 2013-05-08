@@ -230,6 +230,18 @@ $.extend(api,(function(){
 
         chat : {
             list : $.extend(new Command({ domain: "zefs", name: "chatlist" }), {
+                getParameters: function() {
+                    var s = root.myform.currentSession;
+                    if ($.isEmptyObject(s)) return;
+                    return {
+                        session: root.myform.sessionId,
+                        obj: s.ObjInfo.Id,
+                        period: s.Period,
+                        year: s.Year,
+                        form: s.FormInfo.Code
+                    };
+                },
+
                 wrap : function(obj) {
                     if ($.isEmptyObject(obj)) return obj;
                     $.each(obj, function(i,o) {
@@ -252,7 +264,19 @@ $.extend(api,(function(){
                     return obj;
                 }
             }),
-            add : new Command({domain: "zefs", name: "chatadd" }),
+            add : $.extend(new Command({domain: "zefs", name: "chatadd" }), {
+                getParameters: function() {
+                    var s = root.myform.currentSession;
+                    if ($.isEmptyObject(s)) return;
+                    return {
+                        session: root.myform.sessionId,
+                        obj: s.ObjInfo.Id,
+                        period: s.Period,
+                        year: s.Year,
+                        form: s.FormInfo.Code
+                    };
+                }
+            }),
             // возвращает список сообщений
             // from : date (DEFAULT LAST 30 DAY), showarchived : bool (DEFAULT false), typefilter : string (DEFAULT NULL)
             get : $.extend(new Command({domain: "zecl", name: "get"}), {
