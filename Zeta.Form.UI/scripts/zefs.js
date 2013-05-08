@@ -416,6 +416,9 @@ root.init = root.init ||
                 $('<tr/>').append($('<td/>').text("Строка"), $('<td/>').text("(" + result.cell.rowcode + ") " + result.cell.rowname)),
                 $('<tr/>').append($('<td/>').text("Период"), $('<td/>').text("(" + result.cell.period + ") " + window.zefs.getperiodbyid(result.cell.period)))
             ).hide();
+            if (!!result.cell.currency) {
+                cellinfo.append($('<tr/>').append($('<td/>').text("Валюта"), $('<td/>').text(result.cell.currency)));
+            }
             cellinfotoggle.click(function() { cellinfo.toggle() });
             var cellhistory = $('<table class="table table-bordered table-striped"/>');
             var insertvalue = function(value) {
