@@ -14,10 +14,9 @@
     var lockbtn2 = $('<button class="btn btn-small" />').text("Заблок.");
     var unlockbtn2 = $('<button class="btn btn-small" />').text("Разблок.");
     var progress = $('<img src="images/300.gif"/>').css("margin-left", 3).hide();
-    var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Управление блокировками"/>')
+    var b = $('<button class="btn btn-small dropdown-toggle" data-original-title="Управление блокировками"/>')
         .html('<i class="icon-lock"></i><span class="caret"/>');
     var controls = $('<li/>');
-
     list2.append(lockbtn2);
     list2.append(unlockbtn2);
     list2.append(checkbtn2);
@@ -77,6 +76,7 @@
     );
     h.css({"margin":"0 5px", "width": 210});
     list.append(b,menu);
+    b.dropdownHover({delay: 100});
     $(document).on('click.dropdown.data-api', '.zefsblockmanager li', function (e) {
         e.stopPropagation();
     });

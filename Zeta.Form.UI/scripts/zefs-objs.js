@@ -5,9 +5,10 @@
     var root = window.zeta = window.zeta || {};
     var zefsobjselector = new root.Widget("objselector", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 95 });
     var list = $('<div class="btn-group"/>');
-    var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Предприятие"/>').html('<i class="icon-map-marker"></i><span class="caret"/>');
+    var b = $('<button class="btn btn-small dropdown-toggle" data-original-title="Предприятие"/>').html('<i class="icon-map-marker"></i><span class="caret"/>');
     var menu = $('<ul class="dropdown-menu"/>');
     list.append(b,menu);
+    b.dropdownHover({delay: 100});
     b.tooltip({placement: 'bottom'});
     var ChangeObject = function(e) {
         zefs.myform.openform({obj: $(e.target).attr("objcode")}, e.ctrlKey);

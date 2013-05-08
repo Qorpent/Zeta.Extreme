@@ -95,6 +95,7 @@ root.init = root.init ||
 
 	var Render = render.renderStructure; //вынес в рендер - отдельный скрипт
 	var FillBatch = render.updateCells; //вынес в рендер - zefs-render.js
+    var CheckConditions = render.checkConditions;
 
     var AttachFile = function(form) {
         var fd = new FormData();
@@ -494,6 +495,7 @@ root.init = root.init ||
             // Это штука для перерисовки шапки
             $(window).trigger("resize");
             $(root).trigger(root.handlers.on_dataload);
+            CheckConditions();
         } else {
             var idx = !$.isEmptyObject(result.data) ? result.ei+1 : result.si;
             window.setTimeout(function(){api.data.start.execute({session: root.myform.sessionId,startidx: idx})},500);
