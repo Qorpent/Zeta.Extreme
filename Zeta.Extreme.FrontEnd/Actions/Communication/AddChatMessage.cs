@@ -17,7 +17,8 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 	/// <summary>
 	/// </summary>
 	[Action("zefs.chatadd")]
-	public class AddChatMessage : FormSessionActionBase {
+	public class AddChatMessage : SessionStartBase
+	{
 		/// <summary>
 		///     Текст сообщения
 		/// </summary>
@@ -28,13 +29,15 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 		[Bind]
 		public string Type { get; set; }
 
+
 		/// <summary>
 		///     processing of execution - main method of action
 		/// </summary>
 		/// <returns>
 		/// </returns>
 		protected override object MainProcess() {
-			return MySession.AddChatMessage(Text,Type);
+			var session = MyFormServer.CreateSession(_realform, _realobj, year, period);
+			return session.AddChatMessage(Text,Type);
 		}
 	}
 }
