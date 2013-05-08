@@ -174,6 +174,11 @@ root.init = root.init ||
                 if (lockinfo.noattachedfiles) {
                     message += "<p>Для блокировки формы необходимо прикрепить файлы.</p>"
                 }
+                if (!!lockinfo.message) {
+                    if (lockinfo.message == "cpavoid") {
+                        message += "<p>Контрольные точки не сходятся</p>";
+                    }
+                }
                 $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                     title: "Форма не может быть заблокирована",
                     content: $("<p/>").html(message)
