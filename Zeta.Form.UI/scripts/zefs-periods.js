@@ -4,11 +4,11 @@
 !function($) {
     var zefsperiodselector = new root.Widget("periodselector", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 96 });
     var list = $('<div class="btn-group"/>');
-    var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Период"/>').html('<i class="icon-calendar"></i><span class="caret"/>');
+    var b = $('<button class="btn btn-small dropdown-toggle" data-original-title="Период"/>').html('<i class="icon-calendar"></i><span class="caret"/>');
     var menu = $('<ul class="dropdown-menu"/>');
     list.append(b,menu);
     b.tooltip({placement: 'bottom'});
-
+    b.dropdownHover({delay: 100});
     var ChangePeriod = function(e) {
         var type = $($(e.target).parents()[1]).attr("type");
         var form = zefs.myform.currentSession.FormInfo.Code;

@@ -27,7 +27,7 @@
     var canlock = $('<a id="canlockInfo"/>')
         .click(function() { Debug("zefs/canlockstate.json.qweb?session=" + sid, "Возможность блокировки") })
         .html('<i class="icon-lock"></i> Возможность блокровки');
-    var b = $('<button class="btn btn-small dropdown-toggle" data-original-title="Отладка" data-toggle="dropdown"/>')
+    var b = $('<button class="btn btn-small dropdown-toggle" data-original-title="Отладка"/>')
         .html('<i class="icon-eye-close"></i><span class="caret"></span>');
     var btngroup = $('<div class="btn-group pull-right"/>').append(
         b, $('<ul class="dropdown-menu"/>').append(
@@ -37,6 +37,7 @@
         )
     );
     b.tooltip({placement: 'bottom'});
+    b.dropdownHover({delay: 100});
     var Debug = function(command, title) {
         var url =  command;
         var title = title;

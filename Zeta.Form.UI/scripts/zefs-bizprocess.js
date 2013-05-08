@@ -5,9 +5,10 @@
     var root = window.zeta = window.zeta || {};
     var zefsbizprocess = new root.Widget("zefsbizprocess", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 94 });
     var list = $('<div class="btn-group"/>');
-    var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Список форм"/>').html('<i class="icon-list-alt"></i><span class="caret"/>');
+    var b = $('<button class="btn btn-small dropdown-toggle" data-original-title="Список форм"/>').html('<i class="icon-list-alt"></i><span class="caret"/>');
     var menu = $('<ul class="dropdown-menu"/>');
     list.append(b,menu);
+    b.dropdownHover({delay: 100});
     b.tooltip({placement: 'bottom'});
     var ChangeForm = function(a, blank) {
         blank = blank || false;

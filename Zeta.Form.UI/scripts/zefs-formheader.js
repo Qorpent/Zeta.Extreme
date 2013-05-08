@@ -54,7 +54,7 @@
             if (zeta.user.getRealIsAdmin()) {
                 header.append($('<th/>').text(""));
             }
-            var content = $('<table class="table-bordered table" />').append(
+            var content = $('<table class="table-bordered table formuserstable" />').append(
                 $('<thead/>').append(header)
             );
             var body = $('<tbody/>');
@@ -62,9 +62,9 @@
             $.each(zefs.myform.users, function(i, e) {
                 var u = $('<span class="label label-info"/>').text(e.Login);
                 var tr = $('<tr/>').append(
-                    $('<td/>').append(u),
-                    $('<td/>').text(e.Dolzh),
-                    $('<td/>').text(e.Contact)
+                    $('<td class="username"/>').append(u),
+                    $('<td class="dolzh"/>').text(e.Dolzh),
+                    $('<td class="contacts"/>').text(e.Contact)
                 );
                 if (zeta.user.getRealIsAdmin()) {
                     var l = $('<button class="btn btn-mini"/>').text("Войти от");
