@@ -229,7 +229,9 @@
             $val = $old;
         }
         $cell.text("");
-        var $input = $('<input class="dataedit"/>').attr("placeholder", $old).css("width", $cell.width()).val($val);
+        var $input = $('<input class="dataedit"/>').css("width", $cell.width()).val($val);
+        $input.attr("placeholder", $old);
+        if ($cell.attr("pattern"))
         $cell.append($input);
         $input.focus();
         $cell.addClass("editing");
@@ -455,12 +457,12 @@
                     break;
                 default :
                     if (!printable || e.ctrlKey || e.altKey) return;
-                    if ((k > 47 && k < 58) || (k > 95 && k < 106) || (k == 190 || k == 188 || k == 110 || k != 189)) {
+                    if (/[0-9-\.,]+/.test(String.fromCharCode(e.which)) || (k > 187 && k < 191)) {
                         if (!$cell.hasClass('editing')) {
                             this.inputCell("replace");
                         }
                     } else {
-                        return;
+                        e.preventDefault();
                     }
             }
         },this));

@@ -328,6 +328,11 @@ table.data td.number {
     min-width: 25px;
 }
 
+.dataedit:invalid {
+    color: red;
+    font-weight: bold;
+}
+
 .zefsbackdrop {
     width: 100%;
     height: 100%;

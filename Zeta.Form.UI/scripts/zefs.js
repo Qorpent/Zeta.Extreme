@@ -40,20 +40,6 @@ root.init = root.init ||
         users : null
     };
     var render = root.render;
-    api.getParameters = function(){
-        // Парсим параметры из хэша
-        var p = {};
-        var result = {};
-        if (location.hash == "") return null;
-        $.each(location.hash.substring(1).split("|"), function(i,e) {
-            p[e.split("=")[0]] = e.split("=")[1];
-        });
-        result["form"] = p["form"];
-        result["obj"] = p["obj"];
-        result["period"] = p["period"];
-        result["year"] = p["year"];
-        return result;
-    };
 
     var ArchiveNews = function(code) {
 
@@ -173,6 +159,11 @@ root.init = root.init ||
                 }
                 if (lockinfo.noattachedfiles) {
                     message += "<p>Для блокировки формы необходимо прикрепить файлы.</p>"
+                }
+                if (!!lockinfo.message) {
+                    if (lockinfo.message == "cpavoid") {
+                        message += "<p>Контрольные точки не сходятся</p>";
+                    }
                 }
                 $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                     title: "Форма не может быть заблокирована",
@@ -411,6 +402,9 @@ root.init = root.init ||
                 $('<tr/>').append($('<td/>').text("Строка"), $('<td/>').text("(" + result.cell.rowcode + ") " + result.cell.rowname)),
                 $('<tr/>').append($('<td/>').text("Период"), $('<td/>').text("(" + result.cell.period + ") " + window.zefs.getperiodbyid(result.cell.period)))
             ).hide();
+            if (!!result.cell.currency) {
+                cellinfo.append($('<tr/>').append($('<td/>').text("Валюта"), $('<td/>').text(result.cell.currency)));
+            }
             cellinfotoggle.click(function() { cellinfo.toggle() });
             var cellhistory = $('<table class="table table-bordered table-striped"/>');
             var insertvalue = function(value) {
