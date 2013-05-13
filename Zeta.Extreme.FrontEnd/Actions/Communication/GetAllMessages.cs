@@ -39,7 +39,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 				var myobjs = GetMyOwnObjects();
 				if (0 != myobjs.Length) {
 					items = _provider.FindAll(Context.User.Identity.Name, From, myobjs,
-					                          new[] {"objcurrator"},
+					                          new[] {"objcurrator","locks"},
 					                          includeArchived: ShowArchived).OrderByDescending(_ => _.Time).ToArray();
 				}
 
@@ -58,6 +58,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 				}
 			}
 
+
 			else if (!IsInRole("ADMIN") && !IsInRole("SYS_ALLOBJECTS"))
 			{
 				var myobjs = GetMyAccesibleObjects();
@@ -65,7 +66,14 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 				items = _provider.FindAll(Context.User.Identity.Name, From, myobjs, forms: myforms, includeArchived:ShowArchived).OrderByDescending(_=>_.Time).ToArray();
 			}
 
-			
+			if (IsInRole("SYS_NOCONTROLPOINTS", true)) {
+				var supportitems = _provider.FindAll(Context.User.Identity.Name, From, null,
+													 new[] { "locks" }, null, ShowArchived).OrderByDescending(_ => _.Time).ToArray();
+				if (supportitems.Any())
+				{
+					items = items.Union(supportitems.Where(_=>!items.Any(__=>__.Id==_.Id))).OrderByDescending(_ => _.Time).ToArray();
+				}
+			}
 
 			if (IsInRole("SUPPORT", true)) {
 				var supportitems = _provider.FindAll(Context.User.Identity.Name, From, null,
