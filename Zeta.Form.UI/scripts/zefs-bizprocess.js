@@ -12,7 +12,21 @@
     b.tooltip({placement: 'bottom'});
     var ChangeForm = function(a, blank) {
         blank = blank || false;
-        zefs.myform.openform({form: $(a).attr("formcode")}, blank);
+        var form = $(a).attr("formcode");
+        if (form.search(".in") == -1) {
+            var hashparams = zefs.api.getParameters();
+            if (!!hashparams) {
+                if (!!hashparams.form) {
+                    if (hashparams.form.search('.in') != -1) {
+                        form += hashparams["form"].match(/[A|B]\.in/)[0];
+                    }
+                }
+            }
+        }
+        if (form.search(".in") == -1) {
+            form += "A.in";
+        }
+        zefs.myform.openform({form: form}, blank);
     };
     var GetReadableGroupName = function(code) {
         switch (code) {
@@ -54,9 +68,7 @@
         }
     };
     $(window.zefs).on(window.zefs.handlers.on_formsload, function() {
-        var forms = window.zefs.forms;
-        var current = window.zefs.myform.currentSession.FormInfo.Code || "";
-        $.each(forms, function(i,f) {
+        $.each(zefs.forms, function(i,f) {
             var groupname = GetReadableGroupName(f.Group);
             var parentgroupname = GetReadableParentName(f.Parent);
             var ul = menu.find('ul[code="' + f.Group + '"]');
@@ -85,7 +97,10 @@
                 ChangeForm(this, e.ctrlKey);
             }});
         });
-        $('a[formcode="' + current.replace(/[A|B].in/, "") + '"]').parents('li').addClass("current");
+        if (null == zefs.myform.startError) {
+            var current = window.zefs.myform.currentSession.FormInfo.Code || "";
+            $('a[formcode="' + current.replace(/[A|B].in/, "") + '"]').parents('li').addClass("current");
+        }
     });
     zefsbizprocess.body = $('<div/>').append(list);
     root.console.RegisterWidget(zefsbizprocess);

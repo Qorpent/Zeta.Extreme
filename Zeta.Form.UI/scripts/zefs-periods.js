@@ -11,11 +11,24 @@
     b.dropdownHover({delay: 100});
     var ChangePeriod = function(e) {
         var type = $($(e.target).parents()[1]).attr("type");
-        var form = zefs.myform.currentSession.FormInfo.Code;
-        if (type.search("Plan") != -1) form = form.replace(/[ABC].in/gi,'B.in');
-        else if (type == "Corrective") form = form.replace(/[ABC].in/gi,'C.in');
-        else form = form.replace(/[ABC].in/gi,'A.in');
-        zefs.myform.openform({form: form, period: $(e.target).attr("periodcode")}, e.ctrlKey);
+        var params = {
+            period: $(e.target).attr("periodcode")
+        };
+        var hashparams = zefs.api.getParameters();
+        if (hashparams != null) {
+            if (hashparams.form != null) {
+                var form = hashparams.form;
+                if (form.search(".in") != -1) {
+                    if (type.search("Plan") != -1) form = form.replace(/[ABC].in/gi,'B.in');
+                    else if (type == "Corrective") form = form.replace(/[ABC].in/gi,'C.in');
+                    else form = form.replace(/[ABC].in/gi,'A.in');
+                } else {
+                    form += "A.in";
+                }
+                params.form = form;
+            }
+        }
+        zefs.myform.openform(params, e.ctrlKey);
     };
 
     var ChangeYear = function(e) {
@@ -36,10 +49,8 @@
          }
     };
 
-    window.zefs.api.metadata.getperiods.onSuccess(function(e, result) {
-        var currentPeriod = window.zefs.myform.currentSession.Period || "";
-        var currentYear = window.zefs.myform.currentSession.Year || "";
-        $.each(result, function(i,group) {
+    $(zefs).on(zefs.handlers.on_periodsload, function() {
+        $.each(zefs.periods, function(i,group) {
             if (group.type == "InYear") return;
             var li = $('<li class="dropdown-submenu"/>');
             var ul = $('<ul class="dropdown-menu"/>').attr("type", group.type);
@@ -53,8 +64,10 @@
             });
             menu.append(li);
         });
-        $('a[periodcode="' + currentPeriod + '"]').parents('li').addClass("current");
-        $('a[periodcode="' + currentYear + '"]').parents('li').addClass("current");
+        if (null == zefs.myform.startError) {
+            $('a[periodcode="' + window.zefs.myform.currentSession.Period + '"]').parents('li').addClass("current");
+            $('a[periodcode="' + window.zefs.myform.currentSession.Year + '"]').parents('li').addClass("current");
+        }
     });
 
     zefsperiodselector.body = $('<div/>').append(list);

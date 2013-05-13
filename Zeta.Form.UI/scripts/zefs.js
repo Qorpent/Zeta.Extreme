@@ -34,6 +34,7 @@ root.init = root.init ||
     root.myform = root.myform ||  {
         sessionId : null,
         currentSession : null,
+        startError : null,
         lock : null,
         lockhistory : null,
         attachment : null,
@@ -51,15 +52,22 @@ root.init = root.init ||
 
     var OpenForm = function(params, blank) {
         params = params || {};
-        params = $.extend(api.getParameters(), params);
         blank = blank || false;
-        if (params.form.search('.in') == -1) {
-            params.form += api.getParameters()["form"].match(/[A|B]\.in/)[0];
+        var hashparams = api.getParameters();
+        params = $.extend(hashparams, params);
+        var loc = document.location.protocol + "//" + document.location.host + siteroot + "zefs-test.html#";
+        loc += "form=" + (params.form || "");
+        loc += "|year=" + (params.year || "");
+        loc += "|period=" + (params.period || "");
+        loc += "|obj=" + (params.obj || "");
+        if (!blank) document.location.href = loc;
+        if ((typeof params.form == "undefined" || params.form == "") ||
+            (typeof params.year == "undefined" || params.year == "") ||
+            (typeof params.period  == "undefined" || params.period == "") ||
+            (typeof params.obj == "undefined" || params.obj == "")) {
+            return;
         }
-        var loc = document.location.protocol + "//" + document.location.host + siteroot + "zefs-test.html#" +
-            "form=" + params.form + "|year=" + params.year + "|period=" + params.period + "|obj=" + params.obj;
         if (!blank) {
-            document.location.href = loc;
             document.location.reload();
         } else {
             window.open(loc, "_blank");
@@ -455,11 +463,6 @@ root.init = root.init ||
         var sessiondata = {session: root.myform.sessionId};
         document.title = result.FormInfo.Name;
         api.session.structure.execute(sessiondata);
-        api.metadata.getobjects.execute();
-        api.metadata.getperiods.execute();
-        api.metadata.getforms.execute();
-        api.metadata.getreglament.execute();
-        api.metadata.getnews.execute();
         api.metadata.getformusers.execute(sessiondata);
         // получаем ленту сообщений формы
         api.chat.list.execute({session: root.myform.sessionId});
@@ -473,6 +476,18 @@ root.init = root.init ||
             api.data.start.execute($.extend(sessiondata, {startidx: 0}))}
         ,1000); //первый запрос на данные
         $(root).trigger(root.handlers.on_sessionload);
+    });
+
+    api.session.start.onError(function(e, result) {
+        root.myform.startError = JSON.parse(result.responseText);
+    });
+
+    api.session.start.onComplete(function() {
+        api.metadata.getobjects.execute();
+        api.metadata.getperiods.execute();
+        api.metadata.getforms.execute();
+        api.metadata.getreglament.execute();
+        api.metadata.getnews.execute();
     });
 
     api.session.structure.onSuccess(function(e, result) {
@@ -596,7 +611,7 @@ root.init = root.init ||
         var content = $('.zefsnews');
         if (!$.isEmptyObject(result)) {
             var exist = false;
-            if (content.length != 0) {
+            if (content.length > 0) {
                 content.empty();
                 exist = true;
             } else {
@@ -625,7 +640,7 @@ root.init = root.init ||
             }
         } else {
             if (content.length > 0) {
-                content.modal('hide');
+                $(content).modal("hide");
             }
         }
     });
