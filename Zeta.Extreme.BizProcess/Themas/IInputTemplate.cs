@@ -535,5 +535,12 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// <param name="obj"> </param>
 		/// <returns> </returns>
 		Task StartCanSetAsync(IZetaMainObject obj);
+
+		/// <summary>
+		/// Возвращает рабочий колсет
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <returns></returns>
+		IList<ColumnDesc> GetWorkingColset(IZetaMainObject obj);
 	}
 }

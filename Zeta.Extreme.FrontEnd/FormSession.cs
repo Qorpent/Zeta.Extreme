@@ -62,7 +62,15 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// Empty ctor for IoC match
 		/// </summary>
-		public FormSession(){}
+		public FormSession() {
+			Parameters = new Dictionary<string, object>();
+		}
+
+		/// <summary>
+		/// Расширенные параметры сессии
+		/// </summary>
+		public IDictionary<string,object> Parameters { get;  private  set; } 
+
 		/// <summary>
 		/// 	Создает сессию формы
 		/// </summary>
@@ -555,9 +563,12 @@ namespace Zeta.Extreme.FrontEnd {
             FormSessionsState.CurrentFormLoadingOperationsIncrease();
 			_controlpoints.Clear();
 			Data.Clear();
-			var customDataRetriever = Container.Get<IFormDataRetriever>(Template.Thema.Code + ".data.retriever");
+			var customDataRetriever = 
+				Container.Get<IFormDataRetriever>(Template.Thema.Code + ".data.retriever")
+				??
+				Container.Get<IFormDataRetriever>(Template.Thema.GetParameter("extension", "") + ".data.retriever");
 			if (null != customDataRetriever) {
-				customDataRetriever.RetrieveData();
+				customDataRetriever.RetrieveData(this);
 			}
 			else {
 				DefaultRetrieveData();
@@ -738,6 +749,7 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void PrepareMetaSets() {
+			ExecutePreData();
 			PrepareRows();
 			InitializeColset();
 			if (InitStateMode)
@@ -749,6 +761,16 @@ namespace Zeta.Extreme.FrontEnd {
 			neditprimarycols = cols.Where(_ => !_._.Editable && !_._.IsFormula).ToArray();
 			primaryrows = rows.Where(_ => _.GetIsPrimary()).ToArray();
 			
+		}
+
+		private void ExecutePreData() {
+			var customPreData =
+				Container.Get<ISessionPreDataExtension>(Template.Thema.Code + ".pre.data")
+				??
+				Container.Get<ISessionPreDataExtension>(Template.Thema.GetParameter("extension", "") + ".pre.data");
+			if (null != customPreData) {
+				customPreData.Prepare(this);
+			}
 		}
 
 		private void InitializeColset() {
@@ -805,7 +827,10 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void PrepareRows() {
-			var customRowPreparator = Container.Get<IFormRowProvider>(Template.Thema.Code+".row.preparator");
+			var customRowPreparator = 
+				Container.Get<IFormRowProvider>(Template.Thema.Code+".row.preparator")
+				??
+				Container.Get<IFormRowProvider>(Template.Thema.GetParameter("extension","") + ".row.preparator");
 			if (null != customRowPreparator) {
 				rows = customRowPreparator.GetRows(this);
 				

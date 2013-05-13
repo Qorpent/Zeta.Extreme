@@ -258,6 +258,36 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		}
 
 		/// <summary>
+		/// Возвращает рабочий колсет
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <returns></returns>
+		public IList<ColumnDesc> GetWorkingColset(IZetaMainObject obj)
+		{
+			var values = GetAllColumns().Where(
+				v =>
+				v.Visible &&
+				v.GetIsVisible(obj) &&
+				((this.GetColGroup().IsEmpty() && v.Group.IsEmpty()) ||
+				 v.Group == this.GetColGroup()
+				)
+				).ToList();
+			//var th = this.Thema as EcoThema;
+			//if (null != th)
+			//{
+				//var rc = this.Thema.GetParameter("redirectcolset", "");
+				//if (rc.IsNotEmpty())
+				//{
+				//	values = ColumnDesc.RedirectColset(rc, values);
+				//}
+
+
+			//}
+			return values;
+		}
+
+
+		/// <summary>
 		/// 	Метод получения реального рабочего объекта
 		/// </summary>
 		/// <param name="obj"> </param>

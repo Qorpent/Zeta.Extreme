@@ -107,7 +107,9 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             public string Usr { get; set; }
             public List<OutCell> Data { get; private set; }
             public IUserLog Logger { get; set; }
-            public LockStateInfo GetStateInfo() {
+	        public IDictionary<string, object> Parameters { get; private set; }
+
+	        public LockStateInfo GetStateInfo() {
                 return new LockStateInfo();
             }
 

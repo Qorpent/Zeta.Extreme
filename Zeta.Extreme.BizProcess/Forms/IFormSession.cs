@@ -70,6 +70,11 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		IUserLog Logger { get; set; }
 
 		/// <summary>
+		/// Расширенные параметры сессии
+		/// </summary>
+		IDictionary<string, object> Parameters { get; }
+
+		/// <summary>
 		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
 		/// </summary>
 		/// <returns> </returns>
