@@ -231,7 +231,9 @@
         $cell.text("");
         var $input = $('<input class="dataedit"/>').css("width", $cell.width()).val($val);
         $input.attr("placeholder", $old);
-        if ($cell.attr("pattern"))
+        if ($cell.attr("pattern")) {
+            $input.attr("pattern", $cell.attr("pattern"));
+        }
         $cell.append($input);
         $input.focus();
         $cell.addClass("editing");
@@ -437,13 +439,6 @@
                     e.preventDefault();
                     this.uninputCell("esc");
                     break;
-                // Del button
-                case 46 :
-                    e.preventDefault();
-                    $cell.text("");
-                    $cell.data("previous", "");
-                    $cell.data("value", 0);
-                    if ($cell.text() != $cell.data("history")) $cell.addClass("changed");
                 // S button
                 case 83 :
                     e.preventDefault();
@@ -455,9 +450,17 @@
                         zefs.myform.save();
                     }
                     break;
+                // Del button
+                case 46 :
+                    e.preventDefault();
+                    $cell.text("");
+                    $cell.data("previous", "");
+                    $cell.data("value", 0);
+                    if ($cell.text() != $cell.data("history")) $cell.addClass("changed");
+                    break;
                 default :
                     if (!printable || e.ctrlKey || e.altKey) return;
-                    if (/[0-9-\.,]+/.test(String.fromCharCode(e.which)) || (k > 187 && k < 191)) {
+                    if ((k > 47 && k < 58) || (k > 95 && k < 106) || (k == 190 || k == 188 || k == 110 || k != 189)) {
                         if (!$cell.hasClass('editing')) {
                             this.inputCell("replace");
                         }
