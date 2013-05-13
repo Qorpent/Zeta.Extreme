@@ -25,13 +25,14 @@ using Zeta.Extreme.Form.Themas;
 namespace Zeta.Extreme.Form.Tests
 {
 	[TestFixture]
+	[Explicit]
 	public class ExtremeFormProviderTests
 	{
 		private ExtremeFormProvider _efp;
 
 		[TestFixtureSetUp]
 		public void FixtureSetup() {
-			_efp = new ExtremeFormProvider(@"c:\apps\eco\tmp\compiled_themas");
+			_efp = new ExtremeFormProvider(@"c:\apps\eco\tmp\compiled_themas","");
 
 		}
 		[TestCase("prib2011A.in",true)]

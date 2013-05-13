@@ -387,7 +387,7 @@ namespace Zeta.Extreme.FrontEnd {
 			return new Task(() =>
 				{
 					//Debugger.Break();
-					FormProvider = new ExtremeFormProvider(ThemaRootDirectory);
+					FormProvider = new ExtremeFormProvider(ThemaRootDirectory,"");
 					var _f = ((ExtremeFormProvider) FormProvider).Factory; //force reload
 					Application.Container.Register(new BasicComponentDefinition
 						{

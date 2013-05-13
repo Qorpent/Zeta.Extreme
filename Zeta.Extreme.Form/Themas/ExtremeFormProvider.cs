@@ -36,14 +36,21 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		public ExtremeFormProvider() {}
 
+
 		/// <summary>
 		/// 	Провайдер с указанной папкой для загрузки, загрузка начинается асинхронно
 		/// </summary>
 		/// <param name="rootdir"> </param>
-		public ExtremeFormProvider(string rootdir) {
+		/// <param name="connectionString">Дополнительная строка для проверки интеграции с БД</param>
+		public ExtremeFormProvider(string rootdir, string connectionString="") {
 			_rootdir = rootdir;
+			ConnectionString = connectionString;
 			_loadTask = Task.Run(() => DoLoad());
 		}
+		/// <summary>
+		/// Дополнительная строка для проверки интеграции с БД
+		/// </summary>
+		public string ConnectionString { get; set; }
 
 		/// <summary>
 		/// 	Провайдер с прямым набором тем, или с директорией, опционально источник расширений, загрузка должна вызываться синхронно (по сути тестовый режим)
@@ -51,8 +58,9 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="rootdir"></param>
 		/// <param name="directdefs"></param>
 		/// <param name="propertysoruces"></param>
-		public ExtremeFormProvider(string rootdir=null,IEnumerable<XElement> directdefs=null, IEnumerable<IBizCasePropertySource> propertysoruces =null )
-		{
+		/// <param name="connectionString"></param>
+		public ExtremeFormProvider(string rootdir=null,IEnumerable<XElement> directdefs=null, IEnumerable<IBizCasePropertySource> propertysoruces =null, string connectionString = "" ) {
+			ConnectionString = connectionString;
 			if(null!=directdefs)_directdefs = directdefs.ToArray();
 			_rootdir = rootdir;
 			if(null!=propertysoruces)_propertysoruces = propertysoruces.ToArray();
@@ -120,7 +128,7 @@ namespace Zeta.Extreme.Form.Themas {
 				var options = ThemaLoaderOptionsHelper.GetExtremeFormOptions(_rootdir);
 				options.DirectThemaConfigurations = _directdefs;
 				options.PropertySources = _propertysoruces;
-				var configurator = new ThemaConfigurationProvider(options);
+				var configurator = new ThemaConfigurationProvider(options){ConnectionString = ConnectionString};
 				var themaFactoryProvider = new ThemaFactoryProvider {ConfigurationProvider = configurator};
 				_factory = themaFactoryProvider.Get();
 			}

@@ -19,6 +19,7 @@
     <Compile Include="ExtremeFormProviderTests.cs" />
     <Compile Include="FormBehavior\Zc482PeriodRedirectTest.cs" />
     <Compile Include="ThemaLoader\AF400CanApplyRowsToThemaTest.cs" />
+    <Compile Include="ThemaLoader\CanLoadBizDependencyTests.cs" />
     <Compile Include="ZC371TestBench\BenchMarkTools.cs" />
     <Compile Include="ZC371TestBench\ConditionMatcherBase.cs" />
     <Compile Include="ZC371TestBench\ConditionSetGenerator.cs" />

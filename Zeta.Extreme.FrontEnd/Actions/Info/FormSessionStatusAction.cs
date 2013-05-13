@@ -16,20 +16,22 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.FrontEnd/GetSessionInfoAction.cs
 #endregion
+
+using System;
 using Qorpent.Mvc;
 
 namespace Zeta.Extreme.FrontEnd.Actions.Info {
 	/// <summary>
 	/// 	Возвращает информацию о сессии
 	/// </summary>
-	[Action("zefs.session")]
-	public class FormSessionStatusAction : FormSessionActionBase {
+	[Action("zefs.formdetails")]
+	public class FormSessionStatusAction : FormServerActionBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			return MySession;
+			throw new NotImplementedException();
 		}
 	}
 }

@@ -41,7 +41,13 @@ namespace Zeta.Extreme.Form.Themas {
 			Visible = true;
 			Parameters = new Dictionary<string, TypedParameter>();
 			Imports = new List<IThemaConfiguration>();
+			
 		}
+
+		/// <summary>
+		/// Дополнительная строка соединения для БД (чтобы облегчить тестирование интеграции с БД)
+		/// </summary>
+		public string ConnectionString { get; set; }
 
 		/// <summary>
 		/// 	Признак абстрактности
@@ -266,8 +272,8 @@ namespace Zeta.Extreme.Form.Themas {
 		static  int _0CHID = 0;
 		private void ApplyHoldResponsibility(Thema thema) {
 			try {
-				
-				var reader = new NativeZetaReader();
+
+				var reader = new NativeZetaReader { ConnectionString = ConnectionString };
 				if (0 == _0CHID) {
 					_0CHID = reader.ReadObjects("Code = '0CH'").First().Id;
 				}
@@ -285,7 +291,7 @@ namespace Zeta.Extreme.Form.Themas {
 
 		private void ApplyBizProcessParameters(IThema thema) {
 			try {
-				var bizprocess = new NativeZetaReader().ReadBizProcesses("Code = '" + thema.Code + "'").FirstOrDefault();
+				var bizprocess = new NativeZetaReader{ConnectionString = ConnectionString}.ReadBizProcesses("Code = '" + thema.Code + "'").FirstOrDefault();
 				if (null != bizprocess) {
 					thema.Parameters["bizprocess.object"] = bizprocess;
 					thema.Parameters["bizprocess.inprocess"] = bizprocess.InProcess;

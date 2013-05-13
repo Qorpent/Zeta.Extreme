@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using Qorpent.Applications;
 using Zeta.Extreme.Model.MetaCaches;
 
@@ -85,8 +86,14 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		}
 
 		private IDbConnection getConnection() {
+			if (!string.IsNullOrWhiteSpace(ConnectionString)) {
+				return new SqlConnection(ConnectionString);
+			}
 			return Application.Current.DatabaseConnections.GetConnection("Default");
 		}
+
+
+		public string ConnectionString { get; set; }
 
 		/// <summary>
 		/// 	Сериализует строку из БД в объект колонки

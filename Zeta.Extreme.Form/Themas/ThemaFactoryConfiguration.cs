@@ -47,6 +47,12 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		public XElement[] SrcXml { get; set; }
 
+
+		/// <summary>
+		/// Опции загрузки тем
+		/// </summary>
+		public ThemaLoaderOptions Options { get; set; }
+
 		/// <summary>
 		/// 	Вызов метода конфигурации фабрики
 		/// </summary>
@@ -58,16 +64,52 @@ namespace Zeta.Extreme.Form.Themas {
 			ConfigureLibraries(result);
 			ConfigureXmlSourceForForms(result);
 			ConfigureExtendedXml(result);
-			ConfigureBiztranDependency(result);
+			ConfigureBizprocessDependency(result);
 			return result;
 		}
 
-		private void ConfigureBiztranDependency(ThemaFactory result) {
+		private void ConfigureBizprocessDependency(ThemaFactory result) {
 			var bizprocessDefs =
 				result.Themas.Select(_ => new {thema = _, bp = _.GetParameter("bizprocess.object", (Model.BizProcess) null)})
 				      .Where(_ => null != _.bp)
 				      .ToArray();
+			var allthemas = result.Themas.ToDictionary(_ => _.Code);
+			var outprocesses =
+				bizprocessDefs.Where(_ => !string.IsNullOrWhiteSpace(_.bp.Process))
+				              .ToLookup(_ => _.bp.Process)
+				              .ToDictionary(_ => _.Key, _ => _.Select(__ => __.thema).ToArray());
 
+			foreach (var bizprocessDef in bizprocessDefs) {
+				var targetThema = bizprocessDef.thema;
+				var inporcessCodes = bizprocessDef.bp.InProcess.SmartSplit();
+				foreach (var inporcessCode in inporcessCodes) {
+					if (outprocesses.ContainsKey(inporcessCode)) {
+						var srcThemas = outprocesses[inporcessCode];
+						foreach (var srcThema in srcThemas) {
+							BindDependency(srcThema,targetThema);
+						}
+					}
+					else {
+						if (allthemas.ContainsKey(inporcessCode)) {
+							var sourceThema = allthemas[inporcessCode];
+							BindDependency(sourceThema, targetThema);
+						}
+						else {
+							if (Options.CheckBizLinksConsistentry) {
+								throw new Exception("cannot resolve dependency with code " + inporcessCode +
+								                    " not thema or process with such code found");
+							}
+							targetThema.IncomeLinks.Add(new ThemaLink{Target = targetThema,Source = null,Type = "biz.dep.orphan",Value = inporcessCode});
+						}
+					}
+				}
+			}
+		}
+
+		private static void BindDependency(IThema sourceThema, IThema targetThema) {
+			var link = new ThemaLink {Source = sourceThema, Target = targetThema, Type = "biz.dep", Value = "1"};
+			sourceThema.OutcomeLinks.Add(link);
+			targetThema.IncomeLinks.Add(link);
 		}
 
 		private void ConfigureExtendedXml(ThemaFactory result) {

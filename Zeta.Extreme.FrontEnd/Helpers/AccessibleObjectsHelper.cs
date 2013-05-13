@@ -48,4 +48,11 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 			return new AccessibleObjects {divs = divs, objs = objs};
 		}
 	}
+
+	/// <summary>
+	/// Вспомогательный класс для подготовки паспорта формы
+	/// </summary>
+	public class BizProcessDetailHelper {
+		
+	}
 }

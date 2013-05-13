@@ -129,6 +129,7 @@ namespace Zeta.Extreme.Form.Themas {
 			readAll(configurations2, compiledxml);
 			applyRenames(configurations2);
 			var result = new ThemaFactoryConfiguration();
+			result.Options = this.Options;
 			foreach (var themaConfiguration in configurations2.Values) {
 				result.Configurations.Add(themaConfiguration);
 			}
@@ -482,6 +483,11 @@ namespace Zeta.Extreme.Form.Themas {
 			return p;
 		}
 
+		/// <summary>
+		/// Дополнительная строка соединения для тестирования интеграции с БД
+		/// </summary>
+		public string ConnectionString { get; set; }
+
 		private void prepareEmpty(IDictionary<string, ThemaConfiguration> configurations, XElement[] themas) {
 			foreach (var thema in themas) {
 				var desc = new ThemaConfiguration
@@ -494,6 +500,7 @@ namespace Zeta.Extreme.Form.Themas {
 						Abstract = thema.Attr("abst").ToBool(),
 						Index = thema.Attr("idx").ToInt(),
 						SrcXml = thema,
+						ConnectionString = ConnectionString
 					};
 				thema.Apply(desc, "id", "name", "code", "active", "autoimport", "layout", "abst", "idx");
 				if (desc.Abstract) {

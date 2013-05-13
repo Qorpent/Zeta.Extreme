@@ -71,6 +71,11 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		public bool LoadLibraries = true;
 
 		/// <summary>
+		/// Флаг проверки целостности ссылок зависимостей
+		/// </summary>
+		public bool CheckBizLinksConsistentry = false;
+
+		/// <summary>
 		/// 	Папка для загрузки тем
 		/// </summary>
 		public string RootDirectory = "~/tmp/compiled_themas";
