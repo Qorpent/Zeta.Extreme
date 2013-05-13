@@ -69,7 +69,7 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 			if (id >= 31 && id <= 34) {
 				return PeriodType.Corrective;
 			}
-			if ((id >= 401 && id <= 419) || (id == 4110 || id == 4111 || id == 4112)) {
+			if ((id >= 401 && id <= 419) || (id==444) || (id == 4110 || id == 4111 || id == 4112)) {
 				return PeriodType.Awaited;
 			}
 			if ((id >= 22 && id <= 29) || (id == 210 || id == 211 || id == 212)) {
