@@ -274,6 +274,9 @@ $.extend(api,(function(){
                             case "support" :
                                 o.ReadableType = "Поддержка";
                                 break;
+                            case "locks" :
+                                o.ReadableType = "По блокировкам";
+                                break;
                         }
                     });
                     return obj;

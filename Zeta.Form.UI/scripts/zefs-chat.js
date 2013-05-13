@@ -18,6 +18,7 @@
         formkuratoradd = $('<button class="btn btn-mini" data-original-title="Отправляется куратору формы"/>').text("Куратору формы"),
         objkuratoradd = $('<button class="btn btn-mini" data-original-title="Отправляется куратору предприятия"/>').text("Куратору предприятия"),
         supportadd = $('<button class="btn btn-mini" data-original-title="Отправляется поддержке"/>').text("В поддержку"),
+        locksadd = $('<button class="btn btn-mini" data-original-title="В канал блокировок"/>').text("По блокировкам"),
         addhelp = $('<button class="btn btn-primary btn-mini"/>').html('<i class="icon-asterisk"></i>'),
         chatlist = $('<div class="chat-list scrollable"/>');
     b.click(function() {
@@ -61,6 +62,9 @@
     });
     supportadd.click(function() {
         chatadd("support");
+    });
+    locksadd.click(function() {
+        chatadd("locks");
     });
     refresh.click(function() {
         zefs.myform.chatlist();
