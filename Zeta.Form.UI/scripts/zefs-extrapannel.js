@@ -21,7 +21,22 @@
                 l.text(r != null ? r[1] : name);
                 l.click(function() { ChangeObject(obj.id) });
                 extrapannel.body.append(l);
-                l = null;
+                $.ajax({
+                    url:"zefs/getcurratorlockstate.json.qweb",
+                    data : { session : zefs.myform.sessionId, objid: obj.id }
+                }).success(function(s) {
+                    switch (s) {
+                        case "0ISCHECKED" :
+                            l.addClass("label-success");
+                            break;
+                        case "0ISOPEN" :
+                            l.addClass("label-important");
+                            break;
+                        case "0ISBLOCK" :
+                            l.addClass("label-warning");
+                            break;
+                    }
+                });
             });
             extrapannel.body.show();
         }

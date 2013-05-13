@@ -214,7 +214,9 @@ $.extend(api,(function(){
                     });
                     return obj;
                 }
-            })
+            }),
+            // Команда запроса статуса по предприятиям куратора
+            curatorstate : new Command({domain: "zefs", name: "getcurratorlockstate"})
         },
 
         file : {
@@ -273,6 +275,9 @@ $.extend(api,(function(){
                                 break;
                             case "support" :
                                 o.ReadableType = "Поддержка";
+                                break;
+                            case "locks" :
+                                o.ReadableType = "По блокировкам";
                                 break;
                         }
                     });
@@ -388,7 +393,7 @@ $.extend(api,(function(){
             //команда, позволяющая получить список пользователей предприятия, имеющих доступ к данной форме
             getformusers : new Command({domain: "zefs", name: "responsibleusers"}),
             getnews : $.extend(new Command({domain: "message", name: "getnews"}), {
-                url : location.origin + api.siterootold() + "message/getnews.{DATATYPE}.qweb",
+                url : location.protocol + "//" + location.host + api.siterootold() + "message/getnews.{DATATYPE}.qweb",
                 wrap : function(obj) {
                     $.each(obj, function(i,o) {
                         o.Date = eval(o.Version.substring(2));
@@ -397,7 +402,7 @@ $.extend(api,(function(){
                 }
             }),
             archivenews : $.extend(new Command({domain: "message", name: "getnews"}), {
-                url : location.origin + api.siterootold() + "message/archive.rails"
+                url : location.protocol + "//" + location.host + api.siterootold() + "message/archive.rails"
             })
         },
 

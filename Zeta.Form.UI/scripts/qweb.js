@@ -192,14 +192,9 @@
                 .success(function(r){
                     myoptions.onsuccess(r,params);
                 })
-                .error(myoptions.onerror/* ||
-                function(error) {
-                    log.W(new LogMessage({
-                        code : error.status,
-                        status : error.statusText,
-                        innerException : JSON.parse(error.responseText)
-                    }));
-                }*/)
+                .error(function(r) {
+                    self.triggerOnError(r)
+                })
                 .complete(function(r) {
                     self.triggerOnComplete(r)
                 });
