@@ -19,6 +19,7 @@
 using System.Linq;
 using System.Security.Principal;
 using Qorpent.Applications;
+using Qorpent.Model;
 using Zeta.Extreme.Form.Meta;
 
 namespace Zeta.Extreme.FrontEnd.Helpers {
@@ -47,12 +48,5 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 					.ToArray();
 			return new AccessibleObjects {divs = divs, objs = objs};
 		}
-	}
-
-	/// <summary>
-	/// Вспомогательный класс для подготовки паспорта формы
-	/// </summary>
-	public class BizProcessDetailHelper {
-		
 	}
 }

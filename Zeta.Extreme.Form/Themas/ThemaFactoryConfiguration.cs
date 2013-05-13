@@ -103,7 +103,21 @@ namespace Zeta.Extreme.Form.Themas {
 						}
 					}
 				}
+
+				foreach (var thema in allthemas.Values) {
+					if (IsDependent(thema, thema, new List<IThema>())) {
+						throw new Exception("circular dependency on "+thema.Code);
+					}
+				}
 			}
+		}
+
+		private bool IsDependent(IThema thema, IThema otherthema,IList<IThema> visited) {
+			if (visited.Contains(thema)) return false;
+			if (thema.IncomeLinks.Any(_ => _.Source == otherthema)) return true;
+			visited.Add(thema);
+			if (0 == thema.IncomeLinks.Count) return false;
+			return thema.IncomeLinks.Where(_=>_.Type=="biz.dep").Select(_ => _.Source).Any(_ => IsDependent(_, otherthema,visited));
 		}
 
 		private static void BindDependency(IThema sourceThema, IThema targetThema) {

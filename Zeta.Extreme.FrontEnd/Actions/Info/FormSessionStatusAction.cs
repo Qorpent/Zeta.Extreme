@@ -24,14 +24,14 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 	/// <summary>
 	/// 	Возвращает информацию о сессии
 	/// </summary>
-	[Action("zefs.formdetails")]
-	public class FormSessionStatusAction : FormServerActionBase {
+	[Action("zefs.session")]
+	public class FormSessionStatusAction : FormSessionActionBase {
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			throw new NotImplementedException();
+			return MySession;
 		}
 	}
 }
