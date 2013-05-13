@@ -7,7 +7,8 @@
     var h = $('<h3/>');
     zefsformheader.body = $('<div/>').append(h);
     var InsertPeriod = function() {
-        var s = window.zefs.myform.currentSession;
+        if (null != zefs.myform.startError) return;
+        var s = window.zefs.myform.currentSession || {};
         $(h.find('span').first()).text(zefs.getperiodbyid(s.Period));
         if (!!s.FormInfo.HoldResponsibility) {
             var u = $('<span class="label label-success" style="display: none;"/>').text(s.FormInfo.HoldResponsibility).css("margin-left", 3);
@@ -35,12 +36,14 @@
         }
     });
     $(window.zefs).on(window.zefs.handlers.on_periodsload, function() {
-        h.html(
-            zefs.myform.currentSession.FormInfo.Name + " " +
-            zefs.myform.currentSession.ObjInfo.Name + " за <span></span>, " +
-            // zefs.myform.currentSession.getPeriod() + ", " +
-            zefs.myform.currentSession.Year + " год"
-        );
+        if (null == zefs.myform.startError) {
+            h.html(
+                zefs.myform.currentSession.FormInfo.Name + " " +
+                zefs.myform.currentSession.ObjInfo.Name + " за <span></span>, " +
+                // zefs.myform.currentSession.getPeriod() + ", " +
+                zefs.myform.currentSession.Year + " год"
+            );
+        }
         InsertPeriod();
     });
     $(window.zefs).on(window.zefs.handlers.on_formusersload, function() {
@@ -81,12 +84,6 @@
                 $(window.zeta).trigger(window.zeta.handlers.on_modal, params);
             });
             h.append(b);
-        }
-    });
-    window.zefs.api.metadata.getperiods.onSuccess(function(e, result) {
-        if($.isEmptyObject(window.zefs.periods)) {
-            window.zefs.periods = result;
-            $(window.zefs).trigger(window.zefs.handlers.on_periodsload);
         }
     });
     root.console.RegisterWidget(zefsformheader);

@@ -43,7 +43,7 @@
     objkuratoradd.tooltip({placement: 'bottom'});
     supportadd.tooltip({placement: 'bottom'});
     chatform.append($('<div class="chat-input"/>').append(chatinput), $('<div class="chat-buttons"/>')
-        .append(lentaadd, objkuratoradd, formkuratoradd, supportadd, refresh, progress));
+        .append(lentaadd, objkuratoradd, formkuratoradd, supportadd, locksadd, refresh, progress));
     var chatadd = function(type) {
         if (chatinput.val() != "") {
             zefs.myform.chatadd(chatinput.val(), type);
