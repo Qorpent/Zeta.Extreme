@@ -29,6 +29,7 @@
     <Compile Include="Forms\IClientStatisticsRegistry.cs" />
     <Compile Include="Forms\IFormAttachmentStorage.cs" />
     <Compile Include="Forms\IFormChatProvider.cs" />
+    <Compile Include="Forms\IFormDataRetriever.cs" />
     <Compile Include="Forms\IFormDataSynchronize.cs" />
     <Compile Include="Forms\IFormRowProvider.cs" />
     <Compile Include="Forms\IFormSessionControlPointSource.cs" />

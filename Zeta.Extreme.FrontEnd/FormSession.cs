@@ -555,6 +555,19 @@ namespace Zeta.Extreme.FrontEnd {
             FormSessionsState.CurrentFormLoadingOperationsIncrease();
 			_controlpoints.Clear();
 			Data.Clear();
+			var customDataRetriever = Container.Get<IFormDataRetriever>(Template.Thema.Code + ".data.retriever");
+			if (null != customDataRetriever) {
+				customDataRetriever.RetrieveData();
+			}
+			else {
+				DefaultRetrieveData();
+			}
+			Logger.Info("data loaded");
+            FormSessionsState.CurrentFormLoadingOperationsDecrease();
+            FormServersState.TotalTimeToLoadDataIncrease(DateTime.Now - startTime);
+		}
+
+		private void DefaultRetrieveData() {
 			var sw = Stopwatch.StartNew();
 			IDictionary<string, IQuery> queries = new Dictionary<string, IQuery>();
 			LoadEditablePrimaryData(queries);
@@ -576,13 +589,10 @@ namespace Zeta.Extreme.FrontEnd {
 				OverallDataTime = OverallDataTime + sw.Elapsed;
 				foreach (var controlPointResult in _controlpoints) {
 					controlPointResult.Value = controlPointResult.Query.Result.NumericResult;
-				//	controlPointResult.Query = null;
+					//	controlPointResult.Query = null;
 				}
 			}
 			InitSaveMode = false;
-			Logger.Info("data loaded");
-            FormSessionsState.CurrentFormLoadingOperationsDecrease();
-            FormServersState.TotalTimeToLoadDataIncrease(DateTime.Now - startTime);
 		}
 
 		private void LoadNoPrimary(IDictionary<string, IQuery> queries) {
@@ -1201,8 +1211,12 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		private void EnsureDataSession() {
-			DataSession = DataSession ?? ExtremeFactory.CreateSession(new SessionSetupInfo {CollectStatistics = true, PropertySource = new FormSessionDataSessionPropertySoruce(this)});
+			DataSession = DataSession ?? PrepareDataSession();
 			//DataSession.UseSyncPreparation = true;
+		}
+
+		private ISession PrepareDataSession() {
+			return ExtremeFactory.CreateSession(new SessionSetupInfo {CollectStatistics = true, PropertySource = new FormSessionDataSessionPropertySoruce(this)});
 		}
 
 		#region Nested type: IdxCol
