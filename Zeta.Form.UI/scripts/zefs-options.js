@@ -214,7 +214,9 @@ $.extend(api,(function(){
                     });
                     return obj;
                 }
-            })
+            }),
+            // Команда запроса статуса по предприятиям куратора
+            curatorstate : new Command({domain: "zefs", name: "getcurratorlockstate"})
         },
 
         file : {
