@@ -915,6 +915,19 @@ namespace Zeta.Extreme.FrontEnd {
 			};
 
 		/// <summary>
+		/// Возвращает просто статус формы, без расширенных данных
+		/// </summary>
+		/// <param name="objid"></param>
+		/// <returns></returns>
+		public string GetSimpleLockState(int objid = 0) {
+			if (0 == objid) {
+				objid = this.Object.Id;
+			}
+			var obj = MetaCache.Default.Get<IZetaMainObject>(objid);
+			return Template.GetState(obj, null);
+		}
+
+		/// <summary>
 		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
 		/// </summary>
 		/// <returns> </returns>

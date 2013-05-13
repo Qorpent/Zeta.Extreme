@@ -19,6 +19,7 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 					code = thema.Code,
 					name = thema.Name,
 					process = thema.GetParameter("bizprocess.process", ""),
+					type = thema.GetParameter("bizprocess.type"),
 					dependOn =withIns?  thema.IncomeLinks.Where(_ => _.Type == "biz.dep").Select(_ => GetDetails(_.Source,true,false)).ToArray() :null,
 					requiredFor =withOuts? thema.OutcomeLinks.Where(_ => _.Type == "biz.dep").Select(_ => GetDetails(_.Target,false,true)).ToArray():null ,
 				};

@@ -16,6 +16,7 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.FrontEnd/CanLockStateAction.cs
 #endregion
+
 using Qorpent.Mvc;
 
 namespace Zeta.Extreme.FrontEnd.Actions.States {
@@ -25,6 +26,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.States {
 	[Action("zefs.getlockstate")]
 	public class GetLockStateAction : FormSessionActionBase
 	{
+		
 		/// <summary>
 		/// 	¬озвращает статус формы по блокировке
 		/// </summary>

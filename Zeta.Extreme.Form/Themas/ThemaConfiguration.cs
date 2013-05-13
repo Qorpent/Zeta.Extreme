@@ -287,20 +287,38 @@ namespace Zeta.Extreme.Form.Themas {
 			{
 				thema.Parameters["bizprocess.load.error"] = e;
 			}
+			catch (NullReferenceException e)
+			{
+				thema.Parameters["bizprocess.load.error"] = e;
+			}
 		}
 
+		private static string[] bizprocessTypes = new[] {"report", "primary", "extension", "mix"};
 		private void ApplyBizProcessParameters(IThema thema) {
 			try {
-				var bizprocess = new NativeZetaReader{ConnectionString = ConnectionString}.ReadBizProcesses("Code = '" + thema.Code + "'").FirstOrDefault();
+				var bizprocess =
+					new NativeZetaReader {ConnectionString = ConnectionString}.ReadBizProcesses("Code = '" + thema.Code + "'")
+					                                                          .FirstOrDefault();
 				if (null != bizprocess) {
 					thema.Parameters["bizprocess.object"] = bizprocess;
 					thema.Parameters["bizprocess.inprocess"] = bizprocess.InProcess;
 					thema.Parameters["bizprocess.process"] = bizprocess.Process;
 					thema.Parameters["bizporcess.isreport"] = TagHelper.Value(bizprocess.Tag, "report").ToBool();
 					thema.Parameters["bizporcess.isprimary"] = TagHelper.Value(bizprocess.Tag, "primary").ToBool();
+					thema.Parameters["bizporcess.isextension"] = TagHelper.Value(bizprocess.Tag, "primary").ToBool();
+					thema.Parameters["bizporcess.ismix"] = TagHelper.Value(bizprocess.Tag, "primary").ToBool();
+
+					thema.Parameters["bizprocess.type"] =
+						bizprocessTypes.FirstOrDefault(
+							_ => (bool) thema.Parameters["bizporcess.is" + _]
+							) ?? "mix";
 				}
 			}
 			catch (SqlException e) {
+				thema.Parameters["bizprocess.load.error"] = e;
+			}
+			//in no conigured connection case
+			catch (NullReferenceException e) {
 				thema.Parameters["bizprocess.load.error"] = e;
 			}
 		}
