@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
+using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.FrontEnd.Helpers;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
@@ -21,6 +22,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		protected string Key;
 
 		private IQueryWithProcessing _myquery;
+		private OutCell _cell;
 
 		/// <summary>
 		/// 	4 part of execution - all internal context is ready - authorize it with custom logic
@@ -41,7 +43,10 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		protected override void Prepare()
 		{
 			base.Prepare();
-			_myquery =(IQueryWithProcessing) MySession.Data.First(_ => _.i == Key).query;
+			_cell = MySession.Data.FirstOrDefault(_ => _.i == Key);
+			if (null != _cell) {
+				_myquery = (IQueryWithProcessing)_cell.query;
+			}
 		}
 
 		/// <summary>
@@ -49,10 +54,16 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
+			if (null == _cell) {
+				return "Данная ячейка сформирована с использованием нестандартного механизма, скорее всего из семейства " + MySession.Template.Thema.GetParameter("extension", "") + ", отладка не доступна";
+			}
 			return ConvertToStackInfo(_myquery);
 		}
 
 		private object ConvertToStackInfo( IQueryWithProcessing myquery,decimal mult=1) {
+			if (null == myquery) {
+				return "Данная ячейка сформирована с использованием нестандартного механизма, скорее всего из семейства "+MySession.Template.Thema.GetParameter("extension","")+", отладка не доступна";
+			}
 			return new
 				{
 					key = myquery.Uid,

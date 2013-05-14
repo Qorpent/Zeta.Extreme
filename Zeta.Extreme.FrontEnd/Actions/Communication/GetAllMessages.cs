@@ -85,6 +85,19 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 				
 			}
 
+			if (IsInRole("ADMIN"))
+			{
+				var supportitems = _provider.FindAll(Context.User.Identity.Name, From, null,
+													 new[] { "admin" }, null, ShowArchived).OrderByDescending(_ => _.Time).ToArray();
+				if (supportitems.Any())
+				{
+					items = items.Union(supportitems).OrderByDescending(_ => _.Time).ToArray();
+				}
+
+			}
+
+
+
 			foreach (var chatitem in items) {
 				if (chatitem.Time > lastread) {
 					chatitem.Userdata["isnew"] = true;
