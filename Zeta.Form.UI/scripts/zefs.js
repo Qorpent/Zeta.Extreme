@@ -504,7 +504,10 @@ root.init = root.init ||
             // Это штука для перерисовки шапки
             var notloaded = $('td.notloaded');
             notloaded.data({"history": "", "previous": "", "value": ""});
+<<<<<<< HEAD
             notloaded.removeClass("notloaded");
+=======
+>>>>>>> 42a0291681289ff91cdbb817c12ac9996fa5d9af
             $(window).trigger("resize");
             $(root).trigger(root.handlers.on_dataload);
             CheckConditions();
