@@ -841,7 +841,9 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <param name="detail"> </param>
 		/// <returns> </returns>
 		public string GetState(IZetaMainObject obj, IZetaDetailObject detail) {
-			return GetState(obj, detail, null);
+			lock (this) {
+				return GetState(obj, detail, null);
+			}
 		}
 
 		/// <summary>
@@ -855,10 +857,11 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			if (!IsActualOnYear) {
 				return "0ISBLOCK";
 			}
-			if (null == cachedState) {
-				cachedState = internalGetState(obj, detail, statecache);
-			}
-			return cachedState;
+			return internalGetState(obj, detail, statecache);
+			//if (null == cachedState) {
+			//	cachedState = internalGetState(obj, detail, statecache);
+			//}
+			//return cachedState;
 		}
 		
 

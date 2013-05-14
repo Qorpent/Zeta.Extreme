@@ -26,14 +26,16 @@ namespace Zeta.Extreme.FrontEnd.Actions.States {
 				throw new SecurityException("not allowed object for currator lock checking");
 			}
 		}
+		
 		/// <summary>
 		/// 	¬озвращает статус формы по блокировке
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess()
 		{
-			
-			return MySession.GetSimpleLockState(ObjId);
+
+				return MySession.GetSimpleLockState(ObjId);
+
 		}
 	}
 }

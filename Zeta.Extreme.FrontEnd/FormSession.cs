@@ -955,11 +955,13 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="objid"></param>
 		/// <returns></returns>
 		public string GetSimpleLockState(int objid = 0) {
-			if (0 == objid) {
-				objid = this.Object.Id;
+			lock (this) {
+				if (0 == objid) {
+					objid = this.Object.Id;
+				}
+				var obj = MetaCache.Default.Get<IZetaMainObject>(objid);
+				return Template.GetState(obj, null);
 			}
-			var obj = MetaCache.Default.Get<IZetaMainObject>(objid);
-			return Template.GetState(obj, null);
 		}
 
 		/// <summary>
