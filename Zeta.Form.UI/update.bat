@@ -4,3 +4,4 @@ xcopy "images\*.*" "%app%\images\" /s/d/y
 xcopy "scripts\*.*" "%app%\scripts\" /s/d/y
 xcopy "styles\*.*" "%app%\styles\" /s/d/y
 xcopy "zefs-test.html" "%app%\" /s/d/y
+xcopy "zefs-formdetails.html" "%app%\" /s/d/y
