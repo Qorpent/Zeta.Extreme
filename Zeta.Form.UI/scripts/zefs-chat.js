@@ -9,9 +9,9 @@
             zefs.api.chat.updatecount.execute();
         }});
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Лента сообщений"/>').html('<i class="icon-comment"></i>'),
-        menu = $('<div class="dropdown-menu"/>').css({"padding": 5, "width": 600}),
+        menu = $('<div class="dropdown-menu"/>').css({"padding": 5, "width": 650}),
         progress = $('<img src="images/300.gif"/>').hide(),
-        refresh = $('<button class="btn btn-mini"/>').append($('<i class="icon-repeat"/>')),
+        refresh = $('<button class="btn btn-mini refresh-btn"/>').append($('<i class="icon-repeat"/>')),
         chatform = $('<form method="post"/>'),
         chatinput = $('<textarea type="text" name="text" placeholder="Текст сообщения..." class="input-small"/>').css("height", 32),
         lentaadd = $('<button class="btn btn-mini" data-original-title="Будет видимо в текущей форме"/>').text("В ленту"),
@@ -19,7 +19,8 @@
         objkuratoradd = $('<button class="btn btn-mini" data-original-title="Отправляется куратору предприятия"/>').text("Куратору предприятия"),
         supportadd = $('<button class="btn btn-mini" data-original-title="Отправляется поддержке"/>').text("В поддержку"),
         locksadd = $('<button class="btn btn-mini" data-original-title="В канал блокировок"/>').text("По блокировкам"),
-        addhelp = $('<button class="btn btn-primary btn-mini"/>').html('<i class="icon-asterisk"></i>'),
+        adminadd = $('<button class="btn btn-mini" data-original-title="Админам"/>').text("Админам"),
+        addhelp = $('<button class="btn btn-warning btn-mini help-btn"/>').html('<i class="icon-white icon-asterisk"></i>'),
         chatlist = $('<div class="chat-list scrollable"/>');
     b.click(function() {
         if ($(this).hasClass("hasunread")) {
@@ -42,8 +43,14 @@
     formkuratoradd.tooltip({placement: 'bottom'});
     objkuratoradd.tooltip({placement: 'bottom'});
     supportadd.tooltip({placement: 'bottom'});
-    chatform.append($('<div class="chat-input"/>').append(chatinput), $('<div class="chat-buttons"/>')
-        .append(lentaadd, objkuratoradd, formkuratoradd, supportadd, locksadd, refresh, progress));
+    var chatbuttons = $('<div class="chat-buttons"/>')
+        .append(lentaadd, objkuratoradd, formkuratoradd, supportadd, locksadd, refresh, progress, addhelp);
+    chatform.append($('<div class="chat-input"/>').append(chatinput), chatbuttons);
+    $(zeta).on(zeta.handlers.on_getuserinfo, function() {
+        if (zeta.user.getIsAdmin()) {
+            chatbuttons.append(adminadd);
+        }
+    });
     var chatadd = function(type) {
         if (chatinput.val() != "") {
             zefs.myform.chatadd(chatinput.val(), type);
@@ -51,21 +58,12 @@
             chatinput.val("");
         }
     };
-    lentaadd.click(function() {
-        chatadd("default");
-    });
-    formkuratoradd.click(function() {
-        chatadd("formcurrator");
-    });
-    objkuratoradd.click(function() {
-        chatadd("objcurrator");
-    });
-    supportadd.click(function() {
-        chatadd("support");
-    });
-    locksadd.click(function() {
-        chatadd("locks");
-    });
+    lentaadd.click(function() { chatadd("default") });
+    formkuratoradd.click(function() { chatadd("formcurrator") });
+    objkuratoradd.click(function() { chatadd("objcurrator") });
+    supportadd.click(function() { chatadd("support") });
+    locksadd.click(function() { chatadd("locks") });
+    adminadd.click(function() { chatadd("admin") });
     refresh.click(function() {
         zefs.myform.chatlist();
         refresh.hide();
@@ -148,8 +146,14 @@
             $.each(cl, function(i,message) {
                 var tr = $('<div class="userchat chat-list-row"/>');
                 var u = $('<span class="label label-inverse"/>');
+                var ch = $('<span class="label" style="margin-left: 4px;"/>').text(message.ReadableType);
+                if (message.Type != "admin") {
+                    ch.addClass("label-info");
+                } else {
+                    ch.addClass("label-important");
+                }
                 body.append(tr.append(
-                    $('<div class="userchat chat-list-cell username"/>').append(u.text(message.User), $('<span class="label label-info" style="margin-left: 4px;"/>').text(message.ReadableType)),
+                    $('<div class="userchat chat-list-cell username"/>').append(u.text(message.User), ch),
                     $('<div class="userchat chat-list-cell date"/>').text(message.Date.format("dd.mm.yyyy HH:MM")),
                     $('<div class="userchat chat-list-cell message"/>').text(message.Text)
                 ));
@@ -184,7 +188,9 @@
         if (cl != null && !$.isEmptyObject(cl)) {
             b.addClass("btn-success");
             b.find("i").addClass("icon-white");
-            filters.append($('<button class="btn-link"/>').text("Все").click(function() {
+            filters.append($('<button class="btn-link active"/>').text("Все").click(function(e) {
+                filters.children().removeClass("active");
+                $(e.target).addClass("active");
                 $(".adminchat.chat-list-row").show();
             }));
             $.each(cl, function(i,message) {
@@ -193,7 +199,9 @@
                 var arch = $('<i class="icon icon-ok pull-right"/>');
                 var f = $(filters.find('button.' + message.Type));
                 if (f.length == 0) {
-                    filters.append($('<button class="btn-link"/>').text(message.ReadableType).click(function() {
+                    filters.append($('<button class="btn-link"/>').text(message.ReadableType).click(function(e) {
+                        filters.children().removeClass("active");
+                        $(e.target).addClass("active");
                         $(".adminchat.chat-list-row").hide();
                         $(".adminchat.chat-list-row." + message.Type).show();
                     }).addClass(message.Type));
