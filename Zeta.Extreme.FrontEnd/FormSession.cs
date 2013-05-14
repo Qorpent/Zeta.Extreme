@@ -79,6 +79,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="period"> </param>
 		/// <param name="obj"> </param>
 		public FormSession(IInputTemplate form, int year, int period, IZetaMainObject obj) {
+			Parameters = new Dictionary<string, object>();
 			Uid = Guid.NewGuid().ToString();
 			Object = obj;
 			Created = DateTime.Now;
@@ -188,7 +189,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Признак завершения обработки сессии
 		/// </summary>
 		public bool IsFinished {
-			get { return PrepareDataTask.IsCompleted && PrepareStructureTask.IsCompleted; }
+			get { return (null!=PrepareStructureTask && null!=PrepareDataTask) && (PrepareDataTask.IsCompleted && PrepareStructureTask.IsCompleted); }
 		}
 
 		/// <summary>
@@ -406,7 +407,7 @@ namespace Zeta.Extreme.FrontEnd {
 							ei = max,
 							state = state,
 							e = ErrorMessage,
-							data = Data.Skip(startidx).Take(cnt).ToArray()
+							data = Data.Skip(startidx).Take(cnt).Where(_=>!_.IsZero || _.c!=0).ToArray()
 						};
 			}
 		}
@@ -1106,15 +1107,30 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns> </returns>
 		public bool RestartData() {
+			
 			lock (this) {
 				Activations++;
 				WaitData();
 				PrepareDataTask = null;
 				DataSession = null;
 				Data.Clear();
+				if (NeedForceRestart()) {
+					return ForceRestart();
+				}				
 				StartCollectData();
 				return true;
 			}
+		}
+
+		private bool NeedForceRestart() {
+			return !string.IsNullOrWhiteSpace(Template.Thema.GetParameter("extension", ""));
+		}
+
+		private bool ForceRestart() {
+			IsStarted = false;
+			Start();
+			PrepareStructureTask.Wait();
+			return true;
 		}
 
 		/// <summary>

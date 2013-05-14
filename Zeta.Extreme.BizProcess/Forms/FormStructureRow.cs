@@ -41,10 +41,16 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		/// <returns></returns>
 		public bool GetIsPrimary() {
+			if (Fixed) return false;
 			if (!Native.GetIsPrimary()) return false;
 			if (SumObj) return false;
 			if (!string.IsNullOrWhiteSpace(AltObjFilter)) return false;
+			
 			return true;
 		}
+		/// <summary>
+		/// Признак фиксированного элемента
+		/// </summary>
+		public bool Fixed { get; set; }
 	}
 }
