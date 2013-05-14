@@ -502,13 +502,9 @@ root.init = root.init ||
         Fill(root.myform.currentSession);
         if(result.state != "w"){
             // Это штука для перерисовки шапки
-<<<<<<< HEAD
             var notloaded = $('td.notloaded');
-            notloaded.removeClass("notloaded");
             notloaded.data({"history": "", "previous": "", "value": ""});
-=======
-            $('td.notloaded').removeClass("notloaded");
->>>>>>> cae43a77a8760a1520548bb08aa2092266c6e2cb
+            notloaded.removeClass("notloaded");
             $(window).trigger("resize");
             $(root).trigger(root.handlers.on_dataload);
             CheckConditions();
