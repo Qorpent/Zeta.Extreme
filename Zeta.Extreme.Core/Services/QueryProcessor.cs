@@ -64,6 +64,7 @@ namespace Zeta.Extreme {
 			else {
 				var mostpriority = GetMostPriorityNoPrimarySource(processableQuery);
 				if (_sumh.IsSum(mostpriority)) {
+					
 					ExpandSum(processableQuery, mostpriority);
 				}
 				else {
@@ -144,6 +145,11 @@ namespace Zeta.Extreme {
 		}
 
 		private void ExpandSum(IQuery query, IZetaQueryDimension mostpriority) {
+			if (IsNoCalcSum(query)) {
+					query.Result = new QueryResult{IsComplete = true,NumericResult = 0};
+				return;
+			}
+
 			var processablequery = query as IQueryWithProcessing;
 			if(null==processablequery)return;
 			processablequery.EvaluationType = QueryEvaluationType.Summa;
@@ -160,6 +166,11 @@ namespace Zeta.Extreme {
 			if (processablequery.SummaDependency.Count == 0) {
 				processablequery.Result = new QueryResult {IsComplete = true, NumericResult = 0m};
 			}
+		}
+
+		private static bool IsNoCalcSum(IQuery query) {
+			return query.Col.Native != null && query.Row.Native != null && query.Col.Native.IsMarkSeted("NOCALCSUM") &&
+			       query.Row.Native.IsMarkSeted("0SA") && !query.Row.Native.IsMarkSeted("CALCSUM");
 		}
 
 		/// <summary>

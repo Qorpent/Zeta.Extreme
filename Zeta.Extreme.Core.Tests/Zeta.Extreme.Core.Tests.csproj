@@ -15,6 +15,7 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseIgnorancePureZeta\NoCalcSumSupport.cs" />
     <Compile Include="FeatureAndBugFix\CanCalculateDetails.cs" />
     <Compile Include="FeatureAndBugFix\CanCalculateValuta.cs" />
     <Compile Include="CheckKnownData.cs" />
