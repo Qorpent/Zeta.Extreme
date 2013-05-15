@@ -171,7 +171,7 @@ namespace Zeta.Extreme.Form.SaveSupport {
 			result.SaveCells =
 				savedata.Elements().Select(_ => new OutCell { v = _.Attribute("value").Value, i = _.Attribute("id").Value, ri =_.Attr("ri")}).ToArray();
 			foreach (var  sc in result.SaveCells) {
-				sc.linkedcell = session.Data.FirstOrDefault(_ => (string.IsNullOrWhiteSpace(sc.ri) &&_.i == sc.i) || (sc.ri==_.ri));
+				sc.linkedcell = session.Data.FirstOrDefault(_ => (string.IsNullOrWhiteSpace(sc.ri) && _.i == sc.i) || (!string.IsNullOrWhiteSpace(sc.ri) && sc.i == _.i));
 			}
 		}
 
