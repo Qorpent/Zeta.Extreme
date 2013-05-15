@@ -6,6 +6,7 @@
     var zefsformheader = new root.Widget("zefsformheader", root.console.layout.position.layoutBodyMain, null, { authonly: true, priority: 100 });
     var h = $('<h3/>');
     zefsformheader.body = $('<div/>').append(h);
+    var b = $('<span class="label label-warning dropdown-toggle pull-right" data-toggle="dropdown"/>').text('Пользователи');
     var InsertPeriod = function() {
         if (null != zefs.myform.startError) return;
         var s = window.zefs.myform.currentSession || {};
@@ -24,7 +25,8 @@
                 h.append($('<span class="label label-info"/>').text("Валюта: " + s.ObjInfo.Currency + ", Курс для периода: " + s.ObjInfo.CurrencyRate));
             }
         }
-        var t = $('<span class="label tree"/>').html('<i class="icon icon-white"/>');
+        h.append(b.hide());
+        var t = $('<span class="label-tree pull-right"/>');
         t.click(function() {
             var iframe = $('<iframe/>').css("height", 340).attr("src", "zefs-formdetails.html#" + zefs.myform.currentSession.FormInfo.CodeOnly);
             $(window.zeta).trigger(window.zeta.handlers.on_modal, { title: "Дерево зависимостей формы", content: iframe, width: 700, height: 350});
@@ -55,7 +57,7 @@
     });
     $(window.zefs).on(window.zefs.handlers.on_formusersload, function() {
         if (!!zefs.myform.users) {
-            var b = $('<span class="label label-warning dropdown-toggle pull-right" data-toggle="dropdown"/>').text('Пользователи');
+            b.show();
             var header = $('<tr/>').append(
                 $('<th/>').text("Пользователь"),
                 $('<th/>').text("Должность"),
@@ -90,7 +92,6 @@
                 var params = { title: "Cписок пользователей данной формы", content: content, width: 800 };
                 $(window.zeta).trigger(window.zeta.handlers.on_modal, params);
             });
-            h.append(b);
         }
     });
     root.console.RegisterWidget(zefsformheader);
