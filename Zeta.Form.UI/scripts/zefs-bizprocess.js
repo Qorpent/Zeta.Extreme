@@ -13,17 +13,17 @@
     var ChangeForm = function(a, blank) {
         blank = blank || false;
         var form = $(a).attr("formcode");
-        if (form.search(".in") == -1) {
+        if (form.search(/\.in/) == -1) {
             var hashparams = zefs.api.getParameters();
             if (!!hashparams) {
                 if (!!hashparams.form) {
-                    if (hashparams.form.search('.in') != -1) {
+                    if (hashparams.form.search(/\.in/) != -1) {
                         form += hashparams["form"].match(/[A|B]\.in/)[0];
                     }
                 }
             }
         }
-        if (form.search(".in") == -1) {
+        if (form.search(/\.in/) == -1) {
             form += "A.in";
         }
         zefs.myform.openform({form: form}, blank);

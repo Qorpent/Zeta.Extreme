@@ -24,6 +24,13 @@
                 h.append($('<span class="label label-info"/>').text("Валюта: " + s.ObjInfo.Currency + ", Курс для периода: " + s.ObjInfo.CurrencyRate));
             }
         }
+        var t = $('<span class="label tree"/>').html('<i class="icon icon-white"/>');
+        t.click(function() {
+            var iframe = $('<iframe/>').css("height", 340).attr("src", "zefs-formdetails.html#" + zefs.myform.currentSession.FormInfo.CodeOnly);
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, { title: "Дерево зависимостей формы", content: iframe, width: 700, height: 350});
+            iframe = null;
+        });
+        h.append(t);
         s = null;
     };
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {

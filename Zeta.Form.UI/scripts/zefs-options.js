@@ -79,6 +79,7 @@ $.extend(api,(function(){
                         // контейнер для ячеек с данными
                         data : []
                     });
+                    obj.FormInfo.CodeOnly = obj.FormInfo.Code.replace(/[A|B]\.in/, '');
                     return obj;
                 }
             }),
@@ -279,6 +280,9 @@ $.extend(api,(function(){
                             case "locks" :
                                 o.ReadableType = "По блокировкам";
                                 break;
+                            case "admin" :
+                                o.ReadableType = "Админам";
+                                break;
                         }
                     });
                     return obj;
@@ -316,6 +320,12 @@ $.extend(api,(function(){
                                 break;
                             case "support" :
                                 o.ReadableType = "Поддержка";
+                                break;
+                            case "locks" :
+                                o.ReadableType = "По блокировкам";
+                                break;
+                            case "admin" :
+                                o.ReadableType = "Админам";
                                 break;
                         }
                     });
