@@ -36,7 +36,6 @@ using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.BizProcess.StateManagement;
 using Zeta.Extreme.BizProcess.Themas;
-using Zeta.Extreme.Form;
 using Zeta.Extreme.Form.DbfsAttachmentSource;
 using Zeta.Extreme.Form.SaveSupport;
 using Zeta.Extreme.Form.StateManagement;
@@ -755,7 +754,7 @@ namespace Zeta.Extreme.FrontEnd {
 			InitializeColset();
 			if (InitStateMode)
 			{
-				rows = rows.Where(_ => _.Native != null && _.Native.MarkCache.Contains("/CONTROLPOINT/")).ToArray();
+				rows = rows.Where(_ => _.Native != null && _.Native.IsMarkSeted("CONTROLPOINT")).ToArray();
 				cols = cols.Where(_ => _._.ControlPoint).ToArray();
 			}
 			primarycols = cols.Where(_ => _._.Editable && !_._.IsFormula).ToArray();
