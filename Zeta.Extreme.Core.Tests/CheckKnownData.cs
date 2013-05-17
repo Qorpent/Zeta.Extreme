@@ -349,7 +349,7 @@ namespace Zeta.Extreme.Core.Tests {
 		[TestCase("m1111525", "PLAN", 467, 2012, 301, 61052.000000)]
 		[TestCase("m1111530", "PLAN", 467, 2012, 301, 3795.000000)]
 	//	[TestCase("m111800", "PLAN", 1046, 2012, 301, 113713.000000)] // непонятное поведение
-		[TestCase("m111801", "PLAN", 1046, 2012, 301, 55993.000000)]
+	//	[TestCase("m111801", "PLAN", 1046, 2012, 301, 55993.000000)] //obsolete
 		public void Check_Balans_MIX_PLAN_301(string rowcode, string colcode, int obj, int year, int period,
 		                                      decimal checkvalue) {
 			var t = Task.Run(() => UnifiedStandardExistedValueTest(rowcode, colcode, obj, year, period, checkvalue));
@@ -357,7 +357,7 @@ namespace Zeta.Extreme.Core.Tests {
 		}
 
 		[TestCase("m111800", "PLAN", 1046, 2012, 301, 113713.000000)]
-		[TestCase("m111801", "PLAN", 1046, 2012, 301, 55993.000000)]
+	//	[TestCase("m111801", "PLAN", 1046, 2012, 301, 55993.000000)] //obsolete
 		[TestCase("m111802", "PLAN", 1046, 2012, 301, 57720.000000)] //obsolete
 		[Ignore("что-то не то с входными данными")]
 		public void Check_Balans_BUG_PLAN_301(string rowcode, string colcode, int obj, int year, int period,

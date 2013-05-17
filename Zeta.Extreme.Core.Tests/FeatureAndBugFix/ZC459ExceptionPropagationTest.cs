@@ -24,7 +24,7 @@ namespace Zeta.Extreme.Core.Tests
 		[Test]
 		public void FormulasCanPropagateErrors()
 		{
-			var q = new Query { Row = { Code = "r2" } };
+			var q = new Query { Row = { Code = "r2" }, IgnoreCheckPrimaryExistence = true };
 			var result = session.AsSerial().Eval(q);
 			Assert.False(result.IsComplete);
 			Assert.NotNull(result.Error);
@@ -62,8 +62,8 @@ namespace Zeta.Extreme.Core.Tests
 
 		[Test]
 		public void FormulasCanPropagateErrors2() {
-			
-			var q = new Query {Row = {Code = "r3"}};
+
+			var q = new Query { Row = { Code = "r3" }, IgnoreCheckPrimaryExistence = true };
 			var result = session.AsSerial().Eval(q);
 			Assert.False(result.IsComplete);
 			Assert.NotNull(result.Error);
@@ -75,7 +75,7 @@ namespace Zeta.Extreme.Core.Tests
 		public void CompileTimeErrorPropagated()
 		{
 
-			var q = new Query { Row = { Code = "r4" } };
+			var q = new Query { Row = { Code = "r4" }, IgnoreCheckPrimaryExistence = true };
 			var result = session.AsSerial().Eval(q);
 			Assert.False(result.IsComplete);
 			Assert.NotNull(result.Error);
@@ -83,7 +83,7 @@ namespace Zeta.Extreme.Core.Tests
 
 		[Test]
 		public void SumsPropagatesErrors() {
-			var q = new Query { Row = { Code = "r5" } };
+			var q = new Query { Row = { Code = "r5" }, IgnoreCheckPrimaryExistence = true };
 			q = (Query) session.Register(q);
 			var result = session.AsSerial().Eval(q);
 
@@ -95,7 +95,7 @@ namespace Zeta.Extreme.Core.Tests
 		[Test]
 		public void CanPreventAndPropagateCircularFormula()
 		{
-			var q = new Query { Row = { Code = "r7" } };
+			var q = new Query { Row = { Code = "r7" }, IgnoreCheckPrimaryExistence = true };
 			q = (Query) session.Register(q);
 			var result = session.AsSerial().Eval(q);
 			Assert.False(result.IsComplete);
@@ -106,7 +106,7 @@ namespace Zeta.Extreme.Core.Tests
 		[Test]
 		public void CanPreventAndPropagateCircularSumma()
 		{
-			var q = new Query { Row = { Code = "r9" } };
+			var q = new Query { Row = { Code = "r9" },IgnoreCheckPrimaryExistence = true};
 			q = (Query)session.Register(q);
 			var result = session.AsSerial().Eval(q);
 			Assert.False(result.IsComplete);

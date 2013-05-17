@@ -39,7 +39,7 @@ namespace Zeta.Extreme.Core.Tests {
 		[TestCase("r1STagAndSource", 120)]
 		[TestCase("r1RefSource", 20)]
 		public void CanEvaluate(string code, int value) {
-			var q = new Query {Row = {Code = code}};
+			var q = new Query { Row = { Code = code }, IgnoreCheckPrimaryExistence = true };
 			q = (Query) _session.Register(q);
 			_session.WaitPreparation();
 			var result = _session.AsSerial().Eval(q);

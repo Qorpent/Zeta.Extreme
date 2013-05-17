@@ -34,7 +34,7 @@ namespace Zeta.Extreme.FrontEnd.Tests {
 
 			var session = new FormSession(new InputTemplate {Code = "balans2011A.in"}, 2012, 13, new Obj {Id = 352});
 			var attachs = session.GetAttachedFiles();
-			Assert.AreEqual(2,attachs.Length);
+			Assert.AreEqual(7,attachs.Length);
 
 		}
 
@@ -43,7 +43,7 @@ namespace Zeta.Extreme.FrontEnd.Tests {
 			var action = new GetAttachmentListAction();
 			action.MySession = new FormSession(new InputTemplate { Code = "balans2011A.in" }, 2012, 13, new Obj { Id = 352 });
 			var result =(FormAttachment[]) action.Process();
-			Assert.AreEqual(2, result.Length);
+			Assert.AreEqual(7, result.Length);
 		}
 
 		[Test]

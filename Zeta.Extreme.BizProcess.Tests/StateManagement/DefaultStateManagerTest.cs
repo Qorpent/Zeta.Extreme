@@ -78,7 +78,7 @@ namespace Zeta.Extreme.BizProcess.Tests.StateManagement
 			var result = manager.GetCanSet(session, FormStateType.Open);
 			Assert.False(result.Allow);
 			Console.WriteLine(result.Reason.Message);
-			Assert.AreEqual(FormStateOperationDenyReasonType.InvalidBaseState, result.Reason.Type);
+			Assert.AreEqual(FormStateOperationDenyReasonType.AlreadySet, result.Reason.Type);
 		}
 	}
 }

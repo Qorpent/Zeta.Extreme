@@ -56,6 +56,7 @@ namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta
 		/// <param name="queries"></param>
 		protected virtual IEnumerable<Query> Execute(IQuery[] queries ) {
 			foreach (var query in queries) {
+				((Query) query).IgnoreCheckPrimaryExistence = true;
 				var _q = (Query)_session.Register(query);
 				_q.Result = _serial.Eval(_q);
 				yield return _q;

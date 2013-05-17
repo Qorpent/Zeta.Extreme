@@ -72,7 +72,7 @@ namespace Zeta.Extreme.Core.Tests {
 			query.WaitPrepare();
 			Assert.AreEqual(1, query.FormulaDependency.Count);
 			Assert.AreEqual("m2601311", query.FormulaDependency[0].Row.Code);
-			Assert.AreEqual("PLAN", query.FormulaDependency[0].Col.Code);
+			Assert.AreEqual("Á1", query.FormulaDependency[0].Col.Code);
 			Assert.AreEqual(303, query.FormulaDependency[0].Time.Period);
 			Assert.AreEqual(2012, query.FormulaDependency[0].Time.Year);
 		}
@@ -147,7 +147,7 @@ namespace Zeta.Extreme.Core.Tests {
 			query.WaitPrepare();
 			Assert.AreEqual(1, query.FormulaDependency.Count);
 			Assert.AreEqual("m2601311", query.FormulaDependency[0].Row.Code);
-			Assert.AreEqual("PLAN", query.FormulaDependency[0].Col.Code);
+			Assert.AreEqual("Á1", query.FormulaDependency[0].Col.Code);
 			Assert.AreEqual(303, query.FormulaDependency[0].Time.Period);
 			Assert.AreEqual(2012, query.FormulaDependency[0].Time.Year);
 

@@ -30,6 +30,7 @@ using Zeta.Extreme.Form.DbfsAttachmentSource;
 namespace Zeta.Extreme.Form.Tests
 {
 	[TestFixture]
+	[Ignore("DBFS on SQL not more supported")]
 	public class DbfsStorageTest
 	{
 		private DbfsAttachmentStorage _dbfs;

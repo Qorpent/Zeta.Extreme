@@ -30,7 +30,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
             } else {
                 document.Set("uploadDate", attachment.Version);
             }
-	        document.Set("type", attachment.Type);
+		
+	        document.Set("type", attachment.Type??"default");
             document.Set("metadata", new BsonDocument(attachment.Metadata));
             if (attachment.Extension != null) document.Set("extension", attachment.Extension);
 

@@ -105,6 +105,8 @@ namespace Zeta.Extreme.FrontEnd.Tests
             app.Container.Register(new ComponentDefinition<IFileService, FileService>());
             app.Container.Register(new ComponentDefinition<IRoleResolver, DefaultRoleResolver>());
             app.Container.Register(new ComponentDefinition<IFormRowProvider, FormRowProvider>(Lifestyle.Default, "test.row.preparator"));
+			
+	        
         }
 
         [Test]
@@ -140,14 +142,14 @@ namespace Zeta.Extreme.FrontEnd.Tests
         }
 
         [Test]
-        public void CanStartFormSessionFromContainer()
+        public void FormServerCanCreateFormSessionFromContainer()
         {
             var formServer = app.Container.Get<IFormServer>();
             Assert.IsNotNull(formServer);
 
             formServer.Execute(app);
 
-            var formSession = formServer.Start(
+            var formSession = ((FormServer)formServer).CreateSession(
                 new InputTemplate {
                     Thema = new Thema {
                         Code = "test"

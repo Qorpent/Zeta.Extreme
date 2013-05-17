@@ -167,7 +167,7 @@ namespace Zeta.Extreme.Core.Tests {
 			var result = session.AsSerial().Eval(query);
 			Assert.AreEqual(QueryEvaluationType.Formula, query.EvaluationType);
 			Assert.AreEqual(2, query.FormulaDependency.Count);
-			Assert.True(query.FormulaDependency.Any(_ => _.Col.Code == "PLAN"));
+			Assert.True(query.FormulaDependency.Any(_ => _.Col.Code == "Á1"));
 			Assert.True(query.FormulaDependency.Any(_ => _.Col.Code == "NDSLINK"));
 			Assert.AreEqual("140", result.NumericResult.ToString().Substring(0,3));
 		}

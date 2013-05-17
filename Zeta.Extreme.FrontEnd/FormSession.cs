@@ -63,6 +63,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public FormSession() {
 			Parameters = new Dictionary<string, object>();
+			_controlpoints = new List<ControlPointResult>();
 		}
 
 		/// <summary>
@@ -78,6 +79,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="period"> </param>
 		/// <param name="obj"> </param>
 		public FormSession(IInputTemplate form, int year, int period, IZetaMainObject obj) {
+			_controlpoints = new List<ControlPointResult>();
 			Parameters = new Dictionary<string, object>();
 			Uid = Guid.NewGuid().ToString();
 			Object = obj;
@@ -125,7 +127,7 @@ namespace Zeta.Extreme.FrontEnd {
 			
 
 		}
-
+			
 		
 
 		/// <summary>
@@ -323,7 +325,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Метод для ожидания окончания данных
 		/// </summary>
 		public void WaitData() {
-			PrepareDataTask.Wait();
+			if(null!=PrepareDataTask)PrepareDataTask.Wait();
 		}
 
 		/// <summary>
@@ -1273,8 +1275,10 @@ namespace Zeta.Extreme.FrontEnd {
 		#region Nested type: IdxRow
 
 		#endregion
-
-		private readonly IList<ControlPointResult> _controlpoints = new List<ControlPointResult>();
+		/// <summary>
+		/// Хранилище контрольных точек
+		/// </summary>
+		internal protected readonly IList<ControlPointResult> _controlpoints = new List<ControlPointResult>();
 
 		private readonly IDictionary<string, IQuery> _processed = new Dictionary<string, IQuery>();
 		private IFormSessionDataSaver CurrentSaver;
