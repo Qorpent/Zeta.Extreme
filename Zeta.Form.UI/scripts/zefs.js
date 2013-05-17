@@ -42,13 +42,16 @@ root.init = root.init ||
     };
     var render = root.render;
 
-    var ArchiveNews = function(code) {
+    var GetWiki = function(code) {
+        api.wiki.get.execute({code: code});
+    }
 
-    };
-
-    var GetNewCount = function() {
-
-    };
+    var SaveWiki = function(code, text, params) {
+        // с параметрами уточнить как слать
+        if (zeta.user.getIsDocWriter()) {
+            api.wiki.save.execute({code: code, text: text});
+        }
+    }
 
     var OpenForm = function(params, blank) {
         params = params || {};
@@ -348,6 +351,8 @@ root.init = root.init ||
     // Обработчики событий
     $(window.zefs).on(window.zefs.handlers.on_renderfinished, function(e, table) {
         ZefsIt(table);
+        var rowcodes = $.map(zefs.myform.currentSession.structure.rows, function(r) { return '/row/' + r.code + '/default' }).join(',');
+        api.wiki.exists.execute({ code: rowcodes });
     });
 
     api.server.ready.onSuccess(function(e, result) {
@@ -449,6 +454,79 @@ root.init = root.init ||
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                 title: "История ячейки",
                 content: $('<div/>').append(cellinfotoggle, cellinfo, cellhistory)
+            });
+        }
+    });
+
+    api.wiki.exists.onSuccess(function(e, result) {
+        $.each(result, function(i, w) {
+            $('#wiki_' + w.Code.replace(/\//g, '_')).removeClass("notexist");
+        });
+    });
+
+    api.wiki.get.onSuccess(function(e, result) {
+        if (!$.isEmptyObject(result)) {
+            var content = $('<div/>');
+            $.each(result, function(i, w) {
+                var wikiarticle = $('<div class="wikiarticle"/>');
+                var wikititle = $('<div class="wikititle"/>').text(w.Title || w.Code);
+                var wikitext = $('<div class="wikitext"/>').html(wiky.process(w.Text));
+                var wikiinfo = $('<div class="wikiinfo"/>').text("Последняя правка: ");
+                if (!!w.Date) {
+                    wikiinfo.text(wikiinfo.text() + w.Date.format("dd.mm.yyyy HH:MM:ss"));
+                }
+                var user = $('<span class="label label-info"/>').text(w.Editor);
+                wikiinfo.append(user);
+                user.zetauser();
+                if (zeta.user.getIsDocWriter()) {
+                    var wikiedit = $('<textarea class="wikiedit"/>').val(w.Text);
+                    var wikititleedit = $('<input type="text" class="wikititleedit"/>').val(w.Title || w.Code);
+                    wikiedit.hide();
+                    wikititleedit.hide();
+                    var wikicontrols = $('<div class="wikicontrols"/>');
+                    var wikieditbtn = $('<button class="btn btn-mini"/>').text("Править");
+                    var wikisavebtn = $('<button class="btn btn-mini btn-success"/>').html('<i class="icon-white icon-ok"/>');
+                    wikisavebtn.hide();
+                    wikicontrols.append(wikieditbtn, wikisavebtn);
+                    wikiedit.keyup(function() {
+                        wikitext.html(wiky.process(wikiedit.val()));
+                    });
+                    wikititleedit.keyup(function() {
+                        wikititle.text(wikititleedit.val());
+                    });
+                    wikieditbtn.click(function() {
+                        wikieditbtn.hide();
+                        wikiedit.show();
+                        wikititleedit.show();
+                        wikisavebtn.show();
+                    });
+                    wikisavebtn.click(function() {
+                        wikiedit.hide();
+                        wikititleedit.hide();
+                        wikisavebtn.hide();
+                        var save = $.ajax({
+                            url: "wiki/save.json.qweb",
+                            type: "POST",
+                            data: { code: w.Code, text: wikiedit.val(), title: wikititleedit.val() }
+                        });
+                        save.success(function(r) {
+                            wikititle.text(r.Title || r.Code);
+                            var v = eval(r.LastWriteTime.substring(2));
+                            wikiinfo.text("Сохранено: " + v.format("dd.mm.yyyy HH:MM:ss"));
+                            var user = $('<span class="label label-info"/>').text(r.Editor);
+                            wikiinfo.append(user);
+                            user.zetauser();
+                        });
+                        wikieditbtn.show();
+                    });
+                    wikiarticle.append(wikititleedit, wikiedit, wikicontrols);
+                }
+                wikiarticle.append(wikititle, wikitext, wikiinfo);
+                content.append(wikiarticle);
+            });
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "База знаний", width: 800,
+                content: $('<div/>').append(content)
             });
         }
     });
@@ -740,7 +818,9 @@ root.init = root.init ||
         chatadd: ChatAdd,
         chatarchive: ChatArchive,
         chatread: ChatRead,
-        chatupdateds: ChatUpdateOnce
+        chatupdateds: ChatUpdateOnce,
+        wikiget: GetWiki,
+        wikisave: SaveWiki
     });
 
     return root.myform;

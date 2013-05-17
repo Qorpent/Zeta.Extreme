@@ -1,0 +1,48 @@
+.wikiarticle {
+    position: relative;
+}
+
+.wikicontrols {
+    position: absolute;
+    right: 0;
+    display: inline;
+    bottom: 0;
+}
+
+.wikicontrols button {
+    margin-left: 4px;
+}
+
+.wikiedit {
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    font-size: 90%;
+    line-height: 16px;
+    margin-top: 4px;
+}
+
+.wikititleedit {
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    font-size: 90%;
+    line-height: 16px;
+    margin-top: 4px;
+    height: 30px !important;
+}
+
+.wikiinfo {
+    font-size: 13px;
+    color: grey;
+}
+
+.wikiinfo .label {
+    margin-left: 4px;
+}
+
+.wikititle {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}

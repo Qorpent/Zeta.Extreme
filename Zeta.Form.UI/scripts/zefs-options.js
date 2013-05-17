@@ -354,6 +354,29 @@ $.extend(api,(function(){
             haveread : new Command({domain: "zecl", name: "haveread"})
         },
 
+        wiki : {
+            // Запрашивает статью с кодом [code]
+            get : $.extend(new Command({ domain: "wiki", name: "get" }), {
+                wrap : function(obj) {
+                    if ($.isEmptyObject(obj)) return obj;
+                    $.each(obj, function(i, o) {
+                        o.Code = o.Code || "";
+                        o.Date = eval(o.LastWriteTime? o.LastWriteTime.substring(2):"");
+                        o.Existed = o.Existed || false;
+                        o.Propeties = o.Propeties || {};
+                        o.Text = o.Text || "";
+                        o.Title = o.Title || "";
+                        o.Editor = o.Editor || "";
+                    });
+                    return obj;
+                }
+            }),
+            // Сохраняет или добавляет параметры
+            save : new Command({ domain: "wiki", name: "save" }),
+            // Проверяет наличие статьи с кодом [code]
+            exists : new Command({ domain: "wiki", name: "exists" })
+        },
+
         metadata : {
             celldebug : new Command({ domain: "zefs", name: "evalstack" }),
             cellhistory : $.extend(new Command({domain: "zefs", name: "cellhistory"}), {

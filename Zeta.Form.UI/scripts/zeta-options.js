@@ -61,6 +61,7 @@ $.extend(api,(function(){
                         // признак того, что пользователь является администратором
                         getIsAdmin : function(){return this.impadmin != null ? this.impadmin : this.logonadmin},
                         getIsBudget : function(){return this.impbudget != null ? this.impbudget : this.logonbudget},
+                        getIsDocWriter : function(){return this.impdocwriter != null ? this.impdocwriter : this.logondocwriter},
                         // признак того, что пользователь является разработчиком
                         getIsDeveloper : function(){return this.impdeveloper != null ? this.impdeveloper : this.logondeveloper},
                         // признак того, что пользователь является администратором данных
