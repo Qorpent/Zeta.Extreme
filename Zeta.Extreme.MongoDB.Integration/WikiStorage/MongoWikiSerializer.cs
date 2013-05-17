@@ -25,7 +25,8 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 					LastWriteTime = doc["ver"].ToLocalTime(),
 					Owner = doc["owner"].AsString,
 					Editor = doc["editor"].AsString,
-					Title = doc["title"].AsString
+					Title = doc["title"].AsString,
+					Existed = true,
 				};
 			foreach (var e in doc) {
 				if (e.Name == "_id") continue;
