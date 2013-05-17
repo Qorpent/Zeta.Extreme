@@ -18,18 +18,22 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		/// <param name="doc"></param>
 		/// <returns></returns>
 		public WikiPage ToPage(BsonDocument doc) {
-			var result = new WikiPage();
-			result.Code = doc["_id"].AsString;
-			result.Text = doc["text"].AsString;
-			result.LastWriteTime = doc["ver"].ToLocalTime();
-			result.Owner = doc["owner"].AsString;
-			result.Editor = doc["editor"].AsString;
+			var result = new WikiPage
+				{
+					Code = doc["_id"].AsString,
+					Text = doc["text"].AsString,
+					LastWriteTime = doc["ver"].ToLocalTime(),
+					Owner = doc["owner"].AsString,
+					Editor = doc["editor"].AsString,
+					Title = doc["title"].AsString
+				};
 			foreach (var e in doc) {
 				if (e.Name == "_id") continue;
 				if (e.Name == "text") continue;
 				if (e.Name == "ver") continue;
 				if (e.Name == "owner") continue;
 				if (e.Name == "editor") continue;
+				if(e.Name=="title")continue;
 				result.Propeties[e.Name] = e.Value.AsString;
 			}
 			return result;
@@ -59,6 +63,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 			result["ver"] = DateTime.Now;
 			result["owner"] = Application.Current.Principal.CurrentUser.Identity.Name;
 			result["editor"] = Application.Current.Principal.CurrentUser.Identity.Name;
+			result["title"] = page.Title;
 			foreach (var propety in page.Propeties) {
 				result[propety.Key] = propety.Value ?? "";
 			}
@@ -74,6 +79,10 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 			var updateBuilder = new UpdateBuilder();
 			if (!string.IsNullOrEmpty(page.Text)) {
 				updateBuilder.Set("text", page.Text);
+			}
+			if (!string.IsNullOrEmpty(page.Title))
+			{
+				updateBuilder.Set("title", page.Title);
 			}
 			updateBuilder.Set("ver", DateTime.Now);
 			updateBuilder.Set("editor", Application.Current.Principal.CurrentUser.Identity.Name);
