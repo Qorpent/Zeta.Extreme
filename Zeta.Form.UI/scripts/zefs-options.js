@@ -126,6 +126,28 @@ $.extend(api,(function(){
                             }*/
                             result.rows.push(o);
                         }
+                        var decimalLength = 0;
+                        var decimalSeporator = " ";
+                        if (o.format != null && o.format != "") {
+                            switch (o.format) {
+                                case "#.#" :
+                                    decimalLength = 1;
+                                    break;
+                                case "#.##" :
+                                    decimalLength = 2;
+                                    break;
+                                case "#,#" :
+                                    decimalLength = 0;
+                                    break;
+                                case "#.###" :
+                                    decimalLength = 3;
+                                    break;
+                            }
+                            // gs - group seporator
+                            // ds - decimal seporator
+                            // dl - decimal length
+                            o.format = { gs: decimalSeporator, ds: ".", dl: decimalLength };
+                        }
                     });
                     result.rootrow = $($.map(result.rows, function(e) { if (e.level == 0) return e.code })).get(0);
                     return result;
