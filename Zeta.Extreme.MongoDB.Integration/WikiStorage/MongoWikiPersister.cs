@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using Qorpent.Wiki;
 
 namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
@@ -29,16 +31,25 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		/// <param name="codes"></param>
 		/// <returns></returns>
 		public IEnumerable<WikiPage> Get(params string[] codes) {
-			throw new NotImplementedException();
+			SetupConnection();			
+			var qdoc = Serializer.GetQueryFromCodes(codes);
+			foreach (var doc in Connector.Collection.Find(qdoc)) {
+				yield return Serializer.ToPage(doc);
+			}
 		}
 
+		
 		/// <summary>
 		/// Возвращает страницы, только с загруженным признаком хранения в БД
 		/// </summary>
 		/// <param name="codes"></param>
 		/// <returns></returns>
 		public IEnumerable<WikiPage> Exists(params string[] codes) {
-			throw new NotImplementedException();
+			SetupConnection();
+			var qdoc = Serializer.GetQueryFromCodes(codes);
+			foreach (var doc in Connector.Collection.Find(qdoc).SetFields("_id")) {
+				yield return new WikiPage {Code = doc["_id"].AsString};
+			}
 		}
 
 		/// <summary>
@@ -46,7 +57,20 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		/// </summary>
 		/// <param name="pages"></param>
 		public void Save(params WikiPage[] pages) {
-			throw new NotImplementedException();
+			SetupConnection();
+			foreach (var page in pages) {
+				
+				var existsQuery = Serializer.GetQueryFromCodes(new[] {page.Code});
+				var exists = Connector.Collection.Find(existsQuery).Count() != 0;
+				if (exists) {
+					var update = Serializer.UpdateFromPage(page);
+					Connector.Collection.Update(existsQuery, update);
+				}
+				else {
+					var doc = Serializer.NewFormPage(page);
+					Connector.Collection.Insert(doc);
+				}
+			}
 		}
 	}
 }

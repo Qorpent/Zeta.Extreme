@@ -1,10 +1,12 @@
-﻿
+﻿ref Qorpent.Core
 ref Zeta.Extreme.BizProcess
 ref Zeta.Extreme.MongoDB.Integration
 
+using Qorpent.Wiki
 using Zeta.Extreme.BizProcess.Forms
 using Zeta.Extreme.MongoDB.Integration 
 using Zeta.Extreme.MongoDB.Integration.MongoDbLogs
+using Zeta.Extreme.MongoDB.Integration.WikiStorage
 
 define MONGO_CONNECTION : "mongodb://ugmk-as2:28017,ugmk-econ:28017,ugmk-as5:28017/?connect=replicaset"
 define MONGO_FORMDATA_DB : formdata
