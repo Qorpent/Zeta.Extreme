@@ -53,10 +53,20 @@ $.extend(root.render, {
             var td = $('<td class="name"/>');
             if (row.haschilds) {
                 tr.addClass("haschilds");
-                td.html('<span class="collapser"/>' + row.name);
-            } else {
-                td.html(row.name);
+                td.html('<span class="collapser"/>');
             }
+            td.html(td.html() + row.name);
+
+            // Zefs Wiki button
+            var wikibtn = $('<span class="wikirowhelp notexist"/>');
+            var wikicode = '/row/' + row.code + '/default';
+            wikibtn.click(function() {
+                zefs.myform.wikiget(wikicode);
+            });
+            wikibtn.attr("id", "wiki_" + wikicode.replace(/\//g, '_'));
+            td.append(wikibtn);
+
+
             if (row.iscaption) {
                 tr.append(td.attr("colspan", "100"));
             } else {
@@ -90,6 +100,7 @@ $.extend(root.render, {
             }
 			body.append(tr);
 		});
+
 		table.append(body);
 
         $(root).trigger(root.handlers.on_renderfinished, table);
