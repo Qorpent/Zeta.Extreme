@@ -20,6 +20,7 @@ var root = window.formdetails || $.extend(window.formdetails, {
         var d = root.dependings;
         var b = $('body');
         b.append($('<h1/>').text(d.name));
+        b.append($('<h3/>').css({margin: "10px 0"}).text("Зависимые формы"));
         $.each(d.requiredFor, function(i1, r1) {
             var c1 = $('<div/>');
             c1.append($('<div class="level1"/>').text(r1.name));

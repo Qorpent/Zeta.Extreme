@@ -324,7 +324,7 @@ table.data tr[level="7"] td.name {
 }
 
 table.data td.number {
-    text-align: right;
+    text-align: left;
     min-width: 25px;
 }
 

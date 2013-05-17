@@ -20,7 +20,7 @@
         supportadd = $('<button class="btn btn-mini" data-original-title="Отправляется поддержке"/>').text("В поддержку"),
         locksadd = $('<button class="btn btn-mini" data-original-title="В канал блокировок"/>').text("По блокировкам"),
         adminadd = $('<button class="btn btn-mini" data-original-title="Админам"/>').text("Админам"),
-        addhelp = $('<button class="btn btn-warning btn-mini help-btn"/>').html('<i class="icon-white icon-asterisk"></i>'),
+        addhelp = $('<button class="btn btn-warning btn-mini help-btn" data-original-title="Справка по каналам"/>').html('<i class="icon-white icon-asterisk"></i>'),
         chatlist = $('<div class="chat-list scrollable"/>');
     b.click(function() {
         if ($(this).hasClass("hasunread")) {
@@ -43,6 +43,9 @@
     formkuratoradd.tooltip({placement: 'bottom'});
     objkuratoradd.tooltip({placement: 'bottom'});
     supportadd.tooltip({placement: 'bottom'});
+    locksadd.tooltip({placement: 'bottom'});
+    adminadd.tooltip({placement: 'bottom'});
+    addhelp.tooltip({placement: 'bottom'});
     var chatbuttons = $('<div class="chat-buttons"/>')
         .append(lentaadd, objkuratoradd, formkuratoradd, supportadd, locksadd, refresh, progress, addhelp);
     chatform.append($('<div class="chat-input"/>').append(chatinput), chatbuttons);
