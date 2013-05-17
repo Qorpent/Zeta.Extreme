@@ -408,7 +408,7 @@ namespace Zeta.Extreme.FrontEnd {
 							ei = max,
 							state = state,
 							e = ErrorMessage,
-							data = Data.Skip(startidx).Take(cnt).Where(_=>!_.IsZero || _.c!=0).ToArray()
+							data = Data.Skip(startidx).Take(cnt).Where(_=>!_.IsZero || _.c!=0 || _.iserror).ToArray()
 						};
 			}
 		}
