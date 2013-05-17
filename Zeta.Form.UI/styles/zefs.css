@@ -144,11 +144,12 @@ div.open>.tooltip {
     background: url('../images/users.png') center no-repeat;
 }
 
-.tree.label i {
-    background: url('../images/leaf-plant.png') center no-repeat;
+.label-tree {
+    background: url('../images/document-tree.png') center no-repeat;
     width: 16px;
     height: 16px;
-    margin: 0;
+    margin: 11px 2px;
+    cursor: pointer;
 }
 
 .zefsreport,.zefsoldform, .zefsrestart, .zefshotkeys,

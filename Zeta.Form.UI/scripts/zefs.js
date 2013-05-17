@@ -157,9 +157,9 @@ root.init = root.init ||
             } else {
                 var message = "";
                 if (!!lockinfo.canblockresult) {
-                    message = lockinfo.canblockresult.Reason.Message;
+                    message = lockinfo.canblockresult.Reason.Message || lockinfo.canblockresult.Reason.ErrorMessage;
                     if (!!lockinfo.canblockresult.Reason.ReglamentCode) {
-                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.cancheckresult.Reason.ReglamentCode) return r });
+                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.canblockresult.Reason.ReglamentCode) return r });
                         if (reglament.length > 0) {
                             message += '<br/><h4>' + reglament[0].Message + '</h4>' + '<p>' + reglament[0].ReglamentDescription + '</p>';
                         }
@@ -194,9 +194,9 @@ root.init = root.init ||
             } else {
                 var message = "";
                 if (!!lockinfo.canopenresult) {
-                    message = lockinfo.canopenresult.Reason.Message;
+                    message = lockinfo.canopenresult.Reason.Message || lockinfo.canopenresult.Reason.ErrorMessage;
                     if (!!lockinfo.canopenresult.Reason.ReglamentCode) {
-                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.cancheckresult.Reason.ReglamentCode) return r });
+                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.canopenresult.Reason.ReglamentCode) return r });
                         if (reglament.length > 0) {
                             message += '<br/><h4>' + reglament[0].Message + '</h4>' + '<p>' + reglament[0].ReglamentDescription + '</p>';
                         }
@@ -223,7 +223,7 @@ root.init = root.init ||
             } else {
                 var message = "";
                 if (!!lockinfo.cancheckresult) {
-                    message = lockinfo.cancheckresult.Reason.Message;
+                    message = lockinfo.cancheckresult.Reason.Message || lockinfo.cancheckresult.Reason.ErrorMessage;
                     if (!!lockinfo.cancheckresult.Reason.ReglamentCode && lockinfo.cancheckresult.Reason.ReglamentCode != "") {
                         var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.cancheckresult.Reason.ReglamentCode) return r });
                         if (reglament.length > 0) {

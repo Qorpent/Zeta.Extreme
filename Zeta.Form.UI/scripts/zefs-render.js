@@ -50,8 +50,13 @@ $.extend(root.render, {
             var tr = $("<tr/>").attr("level",row.level);
             if (row.iscaption) tr.addClass("istitle");
             tr.append($('<td class="number"/>').attr("title", row.code).text(row.number || ""));
-            if (row.childrens.length != 0) tr.addClass("haschild");
-            var td = $('<td class="name"/>').text(row.name);
+            var td = $('<td class="name"/>');
+            if (row.haschilds) {
+                tr.addClass("haschilds");
+                td.html('<span class="collapser"/>' + row.name);
+            } else {
+                td.html(row.name);
+            }
             if (row.iscaption) {
                 tr.append(td.attr("colspan", "100"));
             } else {
@@ -100,26 +105,26 @@ $.extend(root.render, {
             var $cell = $("td[id='" + b.i +  "']");
             var val = b.v || "";
             // сколько знаков после запятой
-            var d = 0;
+            var f = { gs: " ", ds: ".", dl: 0 };
             if (!!$cell.data("format")) {
-                var format = $cell.data("format");
-                d = format.substring(format.indexOf('.') > 0 ? format.indexOf('.') + 1 : format.length).length;
+                f = $cell.data("format");
             }
-            $cell.number($cell.text(),d,'.','');
-            if (parseFloat($cell.text()) != parseFloat(val).toFixed(d) && !!$cell.data("history")) {
+            $cell.number($cell.text(), f.dl, f.ds, '');
+            if (parseFloat($cell.text()) != parseFloat(val).toFixed(f.dl) && !!$cell.data("history")) {
                 $cell.addClass("recalced");
             }
+            $cell.number(val, f.dl, f.ds, '');
+            $cell.data("history", $cell.text());
+            $cell.data("previous", $cell.text());
+            // реальное число без форматов, которое должно сохраняться в базу
+            $cell.data("value", val);
             if (val == "0") {
                 if (b.c == undefined || !$cell.hasClass("editable")) val = "";
                 $cell.text(val);
             } else {
-                $cell.number(val,d,'.',' ');
+                $cell.number(val, f.dl, f.ds, f.gs);
             }
             $cell.removeClass("notloaded");
-            $cell.data("history", val);
-            $cell.data("previous", val);
-            // реальное число без форматов, которое должно сохраняться в базу
-            $cell.data("value", val);
             // если в ячейке произошла ошибка
             if (!!b.iserror) {
                 $cell.text("");
