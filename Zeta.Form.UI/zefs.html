@@ -33,25 +33,51 @@
             var global = this;
             var serversMap = [
                 {
-                    'host' : 'ugmk-as2',
-                    'protocol' : 'https:',
-                    'load' : new Object()
+                    'host' : 'ugmk-as2.ugmk.com',
+                    'protocol' : 'https',
+                    'load' : {
+                        'sys' : undefined,
+                        'zefs' : undefined
+                    }
                 },
 
                 {
-                    'host' : 'ugmk-as5',
-                    'protocol' : 'https:',
-                    'load' : new Object()
+                    'host' : 'ugmk-as5.ugmk.com',
+                    'protocol' : 'https',
+                    'load' : {
+                        'sys' : undefined,
+                        'zefs' : undefined
+                    }
                 },
 
                 {
-                    'host' : 'ugmk-sccm2',
-                    'protocol' : 'https:',
-                    'load' : new Object()
+                    'host' : 'ugmk-sccm2.ugmk.com',
+                    'protocol' : 'https',
+                    'load' : {
+                        'sys' : undefined,
+                        'zefs' : undefined
+                    }
                 }
             ];
 
             this.getMostFreeServer = function() {
+                for(i = 0; i < serversMap.length; i++) {
+                    zefsNodeloadUrl = serversMap[i].protocol + '://' + serversMap[i].host + '/zefs/zefs/nodeload.json.qweb';
+                    alert(zefsNodeloadUrl);
+
+                    $.ajax(
+                        {
+                            url : zefsNodeloadUrl,
+                            type : 'GET',
+                            dataType : 'JSON'
+                        }
+                    ).done(
+                        function(json) {
+                            alert(json);
+                        }
+                    );
+                }
+
                 return serversMap[Math.floor(Math.random()*serversMap.length) - 1];
             };
 
@@ -59,10 +85,6 @@
                 function() {
                     var server = global.getMostFreeServer();
 
-                    var currentUrl = location.href;
-                    var redirectUrl = location.href.replace(window.location.hostname, server.host);
-                    redirectUrl.protocol = server.protocol;
-                    location.href = redirectUrl;
                 }
             );
         })();
