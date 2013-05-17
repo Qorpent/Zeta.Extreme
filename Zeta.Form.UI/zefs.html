@@ -7,16 +7,43 @@
     <script type="text/javascript">
         var useStatic = true;
 
-        if (location.href.search(/\/(corp\-assoi|assoi|admin\-assoi)\./) != -1 && location.href.search('redirected') == -1 && location.pathname.search("zefst") == -1) {
-            var oldurl = location.href;
-            var newurl = location.href.replace(/zefs[1|2|3|4]?/, ["zefs", "zefs1", "zefs2", "zefs3", "zefs4"][Math.floor(Math.random()*5)]);
-            if (oldurl != newurl) {
-                newurl+="|redirected";
-                location.href = newurl;
-            }
-        } else {
-            location.hash = location.hash.replace('|redirected', '');
-        }
+        (function() {
+            var global = this;
+            var serversMap = [
+                {
+                    'host' : 'ugmk-as2',
+                    'protocol' : 'https:',
+                    'load' : new Object()
+                },
+
+                {
+                    'host' : 'ugmk-as5',
+                    'protocol' : 'https:',
+                    'load' : new Object()
+                },
+
+                {
+                    'host' : 'ugmk-sccm2',
+                    'protocol' : 'https:',
+                    'load' : new Object()
+                }
+            ];
+
+            this.getMostFreeServer = function() {
+                return serversMap[Math.floor(Math.random()*serversMap.length) - 1];
+            },
+
+            this.bootstrap = function() {
+                var server = global.getMostFreeServer();
+
+                var currentUrl = location.href;
+                var redirectUrl = location.href.replace(window.location.hostname, server.host);
+                redirectUrl.protocol = server.protocol;
+                location.href = redirectUrl;
+            };
+
+            this.bootstrap();
+        })();
     </script>
 
     <script src="scripts/dateformat.js" type="text/javascript"></script>
