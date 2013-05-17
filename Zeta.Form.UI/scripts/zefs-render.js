@@ -50,8 +50,13 @@ $.extend(root.render, {
             var tr = $("<tr/>").attr("level",row.level);
             if (row.iscaption) tr.addClass("istitle");
             tr.append($('<td class="number"/>').attr("title", row.code).text(row.number || ""));
-            if (row.childrens.length != 0) tr.addClass("haschild");
-            var td = $('<td class="name"/>').html(row.name);
+            var td = $('<td class="name"/>');
+            if (row.haschilds) {
+                tr.addClass("haschilds");
+                td.html('<span class="collapser"/>' + row.name);
+            } else {
+                td.html(row.name);
+            }
             if (row.iscaption) {
                 tr.append(td.attr("colspan", "100"));
             } else {

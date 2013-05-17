@@ -28,8 +28,8 @@
         $(zefs).on(zefs.handlers.on_savefinished, $.proxy(function() {
             this.applyChanges();
         },this));
-        this.table.delegate('td.name', "click", $.proxy(function(e) {
-            this.toggleChildRows($(e.target).parent());
+        this.table.delegate('span.collapser', "click", $.proxy(function(e) {
+            this.toggleChildRows($(e.target).parent().parent());
         }, this));
     };
 

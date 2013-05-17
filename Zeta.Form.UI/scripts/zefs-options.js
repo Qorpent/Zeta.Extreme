@@ -92,7 +92,7 @@ $.extend(api,(function(){
                         // массив колонок
                         cols : []
                     };
-                    var currentRow = null;
+                    var prevrow = { level: -1 };
                     $.each(obj, function(i,o) {
                         if (o.type=="c") {
                             o.exref = o.exref || false;
@@ -110,21 +110,11 @@ $.extend(api,(function(){
                             o.measure = o.measure || "тыс. руб.";
                             o.level = o.level || 0;
                             o.exref = o.exref || false;
-                            o.childrens = o.childrens || [];
-                            /*if (!!currentRow) {
-                                if (o.level > currentRow.level) {
-                                    o.parent = currentRow;
-                                    currentRow.childrens.push(o);
-                                    currentRow = o;
-                                } else {
-                                    currentRow.parent.childrens.push(o);
-                                    currentRow = currentRow.parent;
-                                }
-                            } else {
-                                currentRow = o;
-                                o.parent = result.rows;
-                            }*/
+                            if (prevrow.level< o.level) {
+                                prevrow.haschilds = true;
+                            }
                             result.rows.push(o);
+                            prevrow = o;
                         }
                         var decimalLength = 0;
                         var decimalSeporator = " ";
