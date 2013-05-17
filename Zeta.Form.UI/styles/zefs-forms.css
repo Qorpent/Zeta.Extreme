@@ -254,11 +254,25 @@ tr.haschilds td.name .collapser {
     cursor: pointer;
     width: 9px;
     height: 9px;
-    padding: 2px;
+    padding: 1px;
+    margin-right: 2px;
     background-image: url("../images/hide.png");
     background-position: center;
     background-repeat: no-repeat;
     display: inline-block;
+}
+
+td.name .wikirowhelp {
+    cursor: pointer;
+    width: 10px;
+    height: 10px;
+    margin-left: 3px;
+    display: inline-block;
+    background: url("../images/question-small-white.png") no-repeat center;
+}
+
+td.name .wikirowhelp.notexist {
+    opacity: .5;
 }
 
 tr.haschilds.collapsed td.name .collapser {
