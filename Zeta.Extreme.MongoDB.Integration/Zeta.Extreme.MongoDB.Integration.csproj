@@ -23,6 +23,8 @@
     <Compile Include="MongoDbLogs\MongoClientStatisticsRegistry.cs" />
     <Compile Include="MongoDbLogs\MongoDbLogs.cs" />
     <Compile Include="MongoDbLogs\MongoDbLogsSerializer.cs" />
+    <Compile Include="WikiStorage\MongoWikiPersister.cs" />
+    <Compile Include="WikiStorage\MongoWikiSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MongoDB.Bson, Version=0.0.0.0, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
@@ -57,5 +59,6 @@
   <ItemGroup>
     <EmbeddedResource Include="JavaScript\chat.js" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

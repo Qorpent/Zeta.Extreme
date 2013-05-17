@@ -6,23 +6,33 @@ using Zeta.Extreme.BizProcess.Forms
 using Zeta.Extreme.MongoDB.Integration 
 using Zeta.Extreme.MongoDB.Integration.MongoDbLogs
 
+define MONGO_CONNECTION : "mongodb://ugmk-as2:28017,ugmk-econ:28017,ugmk-as5:28017/?connect=replicaset"
+define MONGO_FORMDATA_DB : formdata
+define MONGO_LOGS_DB : logs
+define MONGO_WIKI_DB : wiki
+
 
 transient "attachment.source"  MongoDbAttachmentSource : IAttachmentStorage
-	ConnectionString = "mongodb://ugmk-as2:28017,ugmk-econ:28017,ugmk-as5:28017/?connect=replicaset"
-	Database = "formdata"
+	ConnectionString = @MONGO_CONNECTION
+	Database =  @MONGO_FORMDATA_DB
 	Collection = "attachments"
 
 transient "form.chat.source"  MongoDbFormChatProvider : IFormChatProvider
-	ConnectionString = "mongodb://ugmk-as2:28017,ugmk-econ:28017,ugmk-as5:28017/?connect=replicaset"
-	DatabaseName = "formdata"
+	ConnectionString = @MONGO_CONNECTION
+	DatabaseName = @MONGO_FORMDATA_DB
 	CollectionName = "chat"
 
 transient "server.form.logger"  MongoDbLogs : ILogWriter
-	ConnectionString = "mongodb://ugmk-as2:28017,ugmk-econ:28017,ugmk-as5:28017/?connect=replicaset"
-	DatabaseName = "logs"
+	ConnectionString = @MONGO_CONNECTION
+	DatabaseName = @MONGO_LOGS_DB
 	CollectionName = "serverform"
 
 transient "client.form.stats"  MongoClientStatisticsRegistry : IClientStatisticsRegistry
-	ConnectionString = "mongodb://ugmk-as2:28017,ugmk-econ:28017,ugmk-as5:28017/?connect=replicaset"
-	DatabaseName = "logs"
+	ConnectionString = @MONGO_CONNECTION
+	DatabaseName = @MONGO_LOGS_DB
 	CollectionName = "clientform"
+
+transient "wiki.mongo.persister"  MongoWikiPersister : IWikiPersister
+	ConnectionString = @MONGO_CONNECTION
+	DatabaseName = @MONGO_WIKI_DB
+	CollectionName = "main"
