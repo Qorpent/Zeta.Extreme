@@ -30,61 +30,59 @@
         var useStatic = true;
 
         (function() {
-            var global = this;
+            var global = window.loadBalancer = this;
             var serversMap = [
                 {
                     'host' : 'ugmk-as2.ugmk.com',
                     'protocol' : 'https',
-                    'load' : {
-                        'sys' : undefined,
-                        'zefs' : undefined
-                    }
+                    'load' : undefined
                 },
 
                 {
                     'host' : 'ugmk-as5.ugmk.com',
                     'protocol' : 'https',
-                    'load' : {
-                        'sys' : undefined,
-                        'zefs' : undefined
-                    }
+                    'load' : undefined
                 },
 
                 {
                     'host' : 'ugmk-sccm2.ugmk.com',
                     'protocol' : 'https',
-                    'load' : {
-                        'sys' : undefined,
-                        'zefs' : undefined
-                    }
+                    'load' : undefined
                 }
             ];
 
             this.getMostFreeServer = function() {
+                var sa = new Array();
+
                 for(i = 0; i < serversMap.length; i++) {
                     zefsNodeloadUrl = serversMap[i].protocol + '://' + serversMap[i].host + '/zefs/zefs/nodeload.json.qweb';
-                    alert(zefsNodeloadUrl);
 
                     $.ajax(
                         {
                             url : zefsNodeloadUrl,
                             type : 'GET',
-                            dataType : 'JSON'
+                            dataType: 'json',
+                            timeout : 20000,
+                            success : function(json) {
+                                serversMap[i].load.zefs = json;
+                                sa[i] = json.Availability;
+                            }
                         }
-                    ).done(
-                        function(json) {
-                            alert(json);
+                    ).error(
+                        function() {
+
                         }
                     );
                 }
 
-                return serversMap[Math.floor(Math.random()*serversMap.length) - 1];
+
+               // return serversMap[sa.indexOf(sa.max())];
             };
 
             $(document).ready(
                 function() {
-                    var server = global.getMostFreeServer();
-
+                    global.getMostFreeServer();
+                    
                 }
             );
         })();
