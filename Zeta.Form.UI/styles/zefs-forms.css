@@ -268,11 +268,13 @@ td.name .wikirowhelp {
     height: 10px;
     margin-left: 3px;
     display: inline-block;
-    background: url("../images/question-small-white.png") no-repeat center;
+    background-image: url("../images/question-small-white.png");
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 td.name .wikirowhelp.notexist {
-    opacity: .5;
+    background-image: url("../images/pencil-small.png");
 }
 
 tr.haschilds.collapsed td.name .collapser {

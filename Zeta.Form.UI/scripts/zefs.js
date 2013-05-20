@@ -460,8 +460,34 @@ root.init = root.init ||
 
     api.wiki.exists.onSuccess(function(e, result) {
         $.each(result, function(i, w) {
-            $('#wiki_' + w.Code.replace(/\//g, '_')).removeClass("notexist");
+            var wikibtn = $('#wiki_' + w.Code.replace(/\//g, '_'));
+            wikibtn.removeClass("notexist");
+            wikibtn.click(function() {
+                clearTimeout(window.wikitimer);
+            });
+            wikibtn.mouseenter(function() {
+                window.wikitimer = setTimeout(function() {
+                var req = $.ajax({url : "wiki/get.json.qweb", data: {code: wikibtn.attr("code")}});
+                req.success(function(result) {
+                    if (!!result[0]) {
+                        wikibtn.popover({selector: 'body', placement: "right", trigger: "hover", html: true, content: wiky.process(result[0].Text)});
+                        wikibtn.popover("show");
+                    }});
+                }, 500)
+            });
+            wikibtn.mouseleave(function() {
+                clearTimeout(window.wikitimer);
+                if (!!wikibtn.data('popover')) {
+                    wikibtn.popover('destroy');
+                    wikibtn.removeAttr("data-original-title");
+                    wikibtn.removeAttr("title");
+                }
+            });
         });
+        if (!zeta.user.getIsDocWriter() && !zeta.user.getIsAdmin()) {
+            $('.wikirowhelp.notexist').remove();
+        }
+        $('.wikirowhelp').show();
     });
 
     api.wiki.get.onSuccess(function(e, result) {
