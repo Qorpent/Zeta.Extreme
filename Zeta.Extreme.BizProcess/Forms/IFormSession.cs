@@ -75,6 +75,11 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		IDictionary<string, object> Parameters { get; }
 
 		/// <summary>
+		/// Текущий рабочий объект
+		/// </summary>
+		IZetaMainObject WorkingObject { get; }
+
+		/// <summary>
 		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
 		/// </summary>
 		/// <returns> </returns>

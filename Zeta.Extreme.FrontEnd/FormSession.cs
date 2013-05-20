@@ -69,7 +69,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// Расширенные параметры сессии
 		/// </summary>
-		public IDictionary<string,object> Parameters { get;  private  set; } 
+		public IDictionary<string,object> Parameters { get;  private  set; }
 
 		/// <summary>
 		/// 	Создает сессию формы
@@ -78,11 +78,16 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="year"> </param>
 		/// <param name="period"> </param>
 		/// <param name="obj"> </param>
-		public FormSession(IInputTemplate form, int year, int period, IZetaMainObject obj) {
+		/// <param name="subobj"></param>
+		public FormSession(IInputTemplate form, int year, int period, IZetaMainObject obj,IZetaMainObject subobj = null) {
 			_controlpoints = new List<ControlPointResult>();
 			Parameters = new Dictionary<string, object>();
 			Uid = Guid.NewGuid().ToString();
 			Object = obj;
+			if (null != subobj) {
+				SubObject = subobj;
+			}
+			
 			Created = DateTime.Now;
 			Template = form.PrepareForPeriod(year, period, new DateTime(1900, 1, 1), Object);
 			Template.AttachedSession = this;
@@ -99,6 +104,10 @@ namespace Zeta.Extreme.FrontEnd {
 			decimal rate = 1;
 			if (currency != "RUB") {
 				rate = reader.GetCurrencyRate(Year, Period, currency);
+			}
+			if (!string.IsNullOrWhiteSpace(form.Thema.GetParameter("splittoobj", "")))
+			{
+				PrepareSubObjects();
 			}
 			ObjInfo = new
 				{
@@ -122,13 +131,63 @@ namespace Zeta.Extreme.FrontEnd {
 						RolePrefix = Template.Thema.GetParameter("roleprefix", ""),
 					};
 			}
+
+
+			if (RequireSubObjects) {
+				if(0==splitobjects.Length)throw new Exception("Данная форма не может быть открыта для данного предприятия, так как нет соответствующих подобъектов");
+				SubObjInfo = new
+				{
+					SubObject.Id,
+					SubObject.Code,
+					SubObject.Name,
+					SubCurrency = currency,
+					SubCurrencyRate = rate,
+				};
+			}
+
 			NeedMeasure = Template.ShowMeasureColumn;
+
+			
+
 			Activations = 1;
 			
 
 		}
-			
-		
+
+		private void PrepareSubObjects() {
+			var zr = new NativeZetaReader();
+			this.RequireSubObjects = true;
+			var splittoobj = Template.Thema.GetParameter("splittoobj", "");
+			var inconditions = string.Join(",", splittoobj.SmartSplit().Select(_ => "'" + _ + "'"));
+			splitobjects = zr.ReadObjectsWithTypes(string.Format("o.Id != {0} Path like  '%/{0}/%' and (t.Code in ({1}) or c.Code in ({1}) ) ",  Object.Id,inconditions)).ToArray();
+			SplitObjInfo = splitobjects.Select(_ =>
+#pragma warning disable 612,618
+			                                        new
+				                                        {
+					                                        _.Id,
+					                                        _.Name,
+					                                        TypeCode = _.ObjType.Code,
+					                                        TypeName = _.ObjType.Name,
+					                                        ClassCode = _.ObjType.Class.Code,
+					                                        ClassName = _.ObjType.Class.Name
+				                                        }
+#pragma warning restore 612,618
+				).ToArray();
+			if (null == SubObject) {
+				SubObject = splitobjects.FirstOrDefault();
+			}
+		}
+		/// <summary>
+		/// Признак требования обязательного наличия подобъектов
+		/// </summary>
+		[SerializeNotNullOnly]
+		public bool RequireSubObjects { get; set; }
+
+		/// <summary>
+		/// Внешняя информация по объектам сплита
+		/// </summary>
+		public object[] SplitObjInfo { get; set; }
+
 
 		/// <summary>
 		/// Журнал
@@ -247,6 +306,12 @@ namespace Zeta.Extreme.FrontEnd {
 		[Serialize] public object ObjInfo { get; private set; }
 
 		/// <summary>
+		/// 	Информация о подобъекте
+		/// </summary>
+		[Serialize] public object SubObjInfo { get; private set; }
+
+
+		/// <summary>
 		/// 	Информация о форме ввода
 		/// </summary>
 		[Serialize] public object FormInfo { get; private set; }
@@ -347,6 +412,12 @@ namespace Zeta.Extreme.FrontEnd {
 		/// 	Объект
 		/// </summary>
 		[IgnoreSerialize] public IZetaMainObject Object { get; private set; }
+
+
+		/// <summary>
+		/// Подъобъект для составных форм
+		/// </summary>
+		[IgnoreSerialize] public IZetaMainObject SubObject { get; private set; }
 
 		/// <summary>
 		/// 	Шаблон
@@ -630,7 +701,7 @@ namespace Zeta.Extreme.FrontEnd {
 						{
 							Row = {Native = r.Native},
 							Col = ch,
-							Obj = { Native = r.AttachedObject ?? Object, DetailMode = r.SumObj ? DetailMode.SumObject : DetailMode.None },
+							Obj = { Native = r.AttachedObject ?? WorkingObject, DetailMode = r.SumObj ? DetailMode.SumObject : DetailMode.None },
 							Time = {Year = c._.Year, Period = c._.Period},
 							Reference = { Contragents = r.AltObjFilter }
 						});
@@ -667,7 +738,7 @@ namespace Zeta.Extreme.FrontEnd {
 						{
 							Row = {Native = primaryrow.Native},
 							Col = {Native = primarycol._.Target},
-							Obj = { Native = primaryrow.AttachedObject ?? Object, DetailMode = primaryrow.SumObj?DetailMode.SumObject : DetailMode.None},
+							Obj = { Native = primaryrow.AttachedObject ?? WorkingObject, DetailMode = primaryrow.SumObj?DetailMode.SumObject : DetailMode.None},
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period},
 							Reference = {Contragents = primaryrow.AltObjFilter}
 							
@@ -685,7 +756,7 @@ namespace Zeta.Extreme.FrontEnd {
 						{
 							Row = {Native = primaryrow.Native},
 							Col = {Native = primarycol._.Target},
-							Obj = { Native = primaryrow.AttachedObject ?? Object, DetailMode = primaryrow.SumObj?DetailMode.SumObject : DetailMode.None},
+							Obj = { Native = primaryrow.AttachedObject ?? WorkingObject, DetailMode = primaryrow.SumObj?DetailMode.SumObject : DetailMode.None},
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period},
 							Reference = { Contragents = primaryrow.AltObjFilter }
 						});
@@ -726,7 +797,7 @@ namespace Zeta.Extreme.FrontEnd {
 				if (reallycanbefilled)
 				{
 					realkey = q_.Value.Row.Code + "_" + q_.Value.Col.Code + "_" + q_.Value.Time.Year + "_" + q_.Value.Time.Period;
-					if (q_.Value.Obj.Native != Object) {
+					if (q_.Value.Obj.Native != WorkingObject) {
 						realkey += q_.Value.Obj.Type + "_" + q_.Value.Obj.Id;
 					}
 				}
@@ -740,6 +811,14 @@ namespace Zeta.Extreme.FrontEnd {
 					Data.Add(cell);
 				}
 			}
+		}
+
+		
+		/// <summary>
+		/// Текущий рабочий объект
+		/// </summary>
+		public IZetaMainObject WorkingObject {
+			get { return SubObject ?? Object; }
 		}
 
 		/// <summary>
@@ -921,7 +1000,7 @@ namespace Zeta.Extreme.FrontEnd {
 				return false;
 			}
 #pragma warning disable 612,618
-			if (null != row.Object && row.Object.Id != Object.Id) {
+			if (null != row.Object && row.Object.Id != WorkingObject.Id) {
 #pragma warning restore 612,618
 				return false;
 			}
@@ -1293,6 +1372,8 @@ namespace Zeta.Extreme.FrontEnd {
 		private FormStructureRow[] rows;
 		private string _usr;
 		private IUserLog _logger;
+		private IZetaMainObject[] splitobjects;
+
 		/// <summary>
 		/// Установить статус текущей сессии
 		/// </summary>

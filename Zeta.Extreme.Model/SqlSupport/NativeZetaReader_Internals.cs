@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Qorpent.Applications;
+using Zeta.Extreme.Model.Deprecated;
 using Zeta.Extreme.Model.MetaCaches;
 
 namespace Zeta.Extreme.Model.SqlSupport {
@@ -212,6 +213,27 @@ namespace Zeta.Extreme.Model.SqlSupport {
 			}
 			if (!r.IsDBNull(13)) {
 				x.ObjTypeId = r.GetInt32(13);
+			}
+
+			return x;
+		}
+
+
+		/// <summary>
+		/// 	Сериализует строку из БД в объект строки
+		/// </summary>
+		/// <param name="r"> </param>
+		/// <returns> </returns>
+		public static Obj ReaderToObjWithTypes(IDataRecord r) {
+			var x = ReaderToObj(r);
+			if (x.ObjTypeId.HasValue && 0!=x.ObjTypeId.Value) {
+				var type = new ObjectType {Id = x.ObjTypeId.Value, Code = r.GetString(25), Name = r.GetString(26)};
+#pragma warning disable 612,618
+				var cls = new ObjectClass {Id = r.GetInt32(27), Code = r.GetString(28), Name = r.GetString(29)};
+				type.Class = cls;
+				x.ObjType = type;
+#pragma warning restore 612,618
+
 			}
 			return x;
 		}

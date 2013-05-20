@@ -210,12 +210,12 @@ namespace Zeta.Extreme.FrontEnd {
 						users = Sessions.Select(_ => _.Usr).Distinct().Count(),
 						activations = Sessions.Select(_ => _.Activations).Sum(),
 						uniqueforms =
-							Sessions.Select(_ => new {y = _.Year, p = _.Period, o = _.Object.Id, f = _.Template.Code}).Distinct().Count(),
+							Sessions.Select(_ => new {y = _.Year, p = _.Period, o = _.WorkingObject.Id, f = _.Template.Code}).Distinct().Count(),
 						totaldatatime = Sessions.Select(_ => _.OverallDataTime).Aggregate((a, x) => a + x),
 						avgdatatime =
 							TimeSpan.FromMilliseconds(Sessions.Select(_ => _.OverallDataTime).Aggregate((a, x) => a + x).TotalMilliseconds/
 							                          Sessions.Select(_ => _.DataCollectionRequests).Sum()),
-						registry = Sessions.Select(_=>new {user=_.Usr,form=_.Template.Code, obj=_.Object.Id, year=_.Year,period=_.Period, activations=_.Activations, datatime =_.OverallDataTime}).ToArray(),
+						registry = Sessions.Select(_=>new {user=_.Usr,form=_.Template.Code, obj=_.WorkingObject.Id, year=_.Year,period=_.Period, activations=_.Activations, datatime =_.OverallDataTime}).ToArray(),
 					};
 			}
 			return new
@@ -259,14 +259,20 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="period"> </param>
 		/// <param name="initsavemode"> пред-открытие для сохранения </param>
 		/// <param name="initstatemode">закачка данных для контрольных точек</param>
+		/// <param name="subobj"></param>
 		/// <returns> </returns>
-		public FormSession Start(IInputTemplate template, IZetaMainObject obj, int year, int period, bool initsavemode = false, bool initstatemode = false) {
+		public FormSession Start(IInputTemplate template, IZetaMainObject obj, int year, int period, bool initsavemode = false, bool initstatemode = false,IZetaMainObject subobj = null) {
 			lock (ReloadState) {
 				var usr = Application.Principal.CurrentUser.Identity.Name;
 				var existed =
 					Sessions.FirstOrDefault(
 						_ =>
-						_.Usr == usr && _.Year == year && _.Period == period && _.Template.Code == template.Code && _.Object.Id == obj.Id);
+						_.Usr == usr && _.Year == year && _.Period == period && _.Template.Code == template.Code && _.Object.Id == obj.Id  
+							&& (
+							    	(subobj==null && _.SubObject==null) 
+									|| 
+									(_.SubObject!=null  && subobj!=null &&  subobj.Id==_.SubObject.Id ))
+								);
 				if (null == existed) {
 					var session = CreateSession(template, obj, year, period);
 					session.InitSaveMode = initsavemode;

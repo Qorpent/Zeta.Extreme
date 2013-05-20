@@ -43,6 +43,20 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				from zeta.normalobj
 		";
 
+		private const string ObjAndTypequerybase = @"
+				select 
+					o.Id,			o.Code,			o.Name,	o.Comment,	o.Version,  -- 0 - 4
+					ShortName,	OuterCode,		ZoneId,	ObjRoleId,	ObjDivId, -- 5 - 9
+					Main,		ParentId,		Path,	TypeId,		IsFormula, -- 10 - 14
+					Formula,	FormulaType,	o.Tag,	GroupCache,	Valuta,  -- 15 - 19
+					Role,		Active,			Start,	Finish,		IsInner, -- 20 - 24
+
+					t.Code as TypeCode, t.Name as TypeName, t.Class as ClassId,
+					c.Code as ClassCode, c.Name as ClassName
+
+				from zeta.normalobj o join zeta.normalobjtype t on t.Id = o.TypeId join zeta.normalobjclass c on c.Id = t.ClassId
+		";
+
 		private const string Colquerybase = @"
 				select 
 					Id,				Version,	DataType,	IsFormula,	Formula,  --0 - 4
@@ -171,6 +185,17 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		/// <returns> </returns>
 		public IEnumerable<Obj> ReadObjects(string condition = "") {
 			return Read(condition, Objquerybase, ReaderToObj);
+		}
+
+		/// <summary>
+		/// 	Сериализует объекты
+		/// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+		/// </summary>
+		/// <param name="condition"> </param>
+		/// <returns> </returns>
+		public IEnumerable<Obj> ReadObjectsWithTypes(string condition = "")
+		{
+			return Read(condition, ObjAndTypequerybase, ReaderToObjWithTypes);
 		}
 
 		/// <summary>
