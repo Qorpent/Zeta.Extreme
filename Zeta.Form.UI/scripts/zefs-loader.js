@@ -49,12 +49,11 @@ if((window.useStatic !== undefined) && (window.useStatic == true)) {
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-formheader"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-logo"></script>');
 
+document.write('<script src="scripts/zefs-formsubobj.js"></script>');
 document.write('<script src="scripts/zefs-formdependence.js"></script>');
 document.write('<script src="scripts/zefs-formkurator.js"></script>');
 document.write('<script src="scripts/zefs-formusers.js"></script>');
 document.write('<script src="scripts/zefs-formvaluta.js"></script>');
-
-
 
 document.write('<script src="scripts/zefs-debug.js"></script>');
 document.write('<script src="scripts/zefs-restart.js"></script>');
