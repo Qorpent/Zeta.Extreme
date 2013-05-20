@@ -57,14 +57,6 @@ div.open>.tooltip {
     display: none !important;
 }
 
-.zefsformheader {
-    position: fixed;
-    top: 37px;
-    z-index: 995;
-    background-color: white;
-    width: 100%;
-}
-
 .formuserstable {
     table-layout: fixed;
 }
@@ -91,65 +83,46 @@ div.open>.tooltip {
     white-space: nowrap;
 }
 
-.zefsextrapannel {
-    position: fixed;
-    top: 37px;
-    z-index: 994;
-    background-color: #F0F0F0;
-    width: 100%;
-    height: 23px;
-    padding-left: 3px;
-}
-
 .zefsextrapannel .label {
     margin-right: 3px;
 }
 
-.zefsformheader h3 {
-    font-size: 11pt;
-    padding-left: 20px;
-    margin: 0;
-    display: inline;
-}
-
-.zefsformheader.isblock {
-    background-color: #FDFDBD;
-}
-
-.zefsformheader.ischecked {
-    background-color: #c1eab4;
-}
-
-.zefsformheader h6 {
-    display: inline;
-    margin-left: 10px;
-}
-
-.zefsformheader .label {
-    cursor: pointer;
-    margin-left: 3px;
+.zefsformusers {
     margin-top: 10px;
 }
 
-.zefsformheader .kurator {
-    margin-right: 20px;
-    float: right;
+.zefsformheader h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #002a80;
 }
 
-.zefsformheader .tree {
-    float: right;
+.zefsformsubobj {
+    margin-top: 8px;
 }
 
-.kurator.label i {
+.zefsformsubobj button {
+    margin-left: 5px;
+}
+
+.zefsformkurator .label {
+    margin-top: 9px;
+    margin-left: 3px;
+}
+
+.zefsformkurator .label i {
     background: url('../images/users.png') center no-repeat;
 }
 
-.label-tree {
+.zefsformdependence .label-tree {
     background: url('../images/document-tree.png') center no-repeat;
     width: 16px;
     height: 16px;
     margin: 11px 2px;
     cursor: pointer;
+    display: inline-block;
 }
 
 .zefsreport,.zefsoldform, .zefsrestart, .zefshotkeys,
@@ -269,12 +242,6 @@ li.current>a:hover {
 
 .zefsalerter .alert {
     padding: 5px 35px 5px 14px;
-}
-
-.zefsformheader {
-    font-size: 16px;
-    font-weight: bold;
-    color: #002a80;
 }
 
 .zetauserinfo td:first-child,
