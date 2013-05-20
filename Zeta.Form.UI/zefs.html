@@ -4,21 +4,6 @@
     <title>...</title>
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="shortcut icon" href="favicon.png" type="image/png">
-    <script type="text/javascript">
-        var useStatic = true;
-
-        if (location.href.search(/\/(corp\-assoi|assoi|admin\-assoi)\./) != -1 && location.href.search('redirected') == -1 && location.pathname.search("zefst") == -1) {
-            var oldurl = location.href;
-            var newurl = location.href.replace(/zefs[1|2|3|4]?/, ["zefs", "zefs1", "zefs2", "zefs3", "zefs4"][Math.floor(Math.random()*5)]);
-            if (oldurl != newurl) {
-                newurl+="|redirected";
-                location.href = newurl;
-            }
-        } else {
-            location.hash = location.hash.replace('|redirected', '');
-        }
-    </script>
-
     <script src="scripts/dateformat.js" type="text/javascript"></script>
     <script src="scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
     <script src="scripts/jquery-ui.min.js" type="text/javascript"></script>
@@ -40,6 +25,68 @@
     <script src="scripts/loaders.js" type="text/javascript"></script>
     <script src="scripts/jsonformatter.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="styles/jsformatter.css">
+
+    <script type="text/javascript">
+        var useStatic = true;
+
+        (function() {
+            var global = window.loadBalancer = this;
+            var serversMap = [
+                {
+                    'host' : 'ugmk-as2.ugmk.com',
+                    'protocol' : 'https',
+                    'load' : undefined
+                },
+
+                {
+                    'host' : 'ugmk-as5.ugmk.com',
+                    'protocol' : 'https',
+                    'load' : undefined
+                },
+
+                {
+                    'host' : 'ugmk-sccm2.ugmk.com',
+                    'protocol' : 'https',
+                    'load' : undefined
+                }
+            ];
+
+            this.getMostFreeServer = function() {
+                var sa = new Array();
+
+                for(i = 0; i < serversMap.length; i++) {
+                    zefsNodeloadUrl = serversMap[i].protocol + '://' + serversMap[i].host + '/zefs/zefs/nodeload.json.qweb';
+
+                    $.ajax(
+                        {
+                            url : zefsNodeloadUrl,
+                            type : 'GET',
+                            dataType: 'json',
+                            timeout : 20000,
+                            success : function(json) {
+                                serversMap[i].load.zefs = json;
+                                sa[i] = json.Availability;
+                            }
+                        }
+                    ).error(
+                        function() {
+
+                        }
+                    );
+                }
+
+
+               // return serversMap[sa.indexOf(sa.max())];
+            };
+
+            $(document).ready(
+                function() {
+                    global.getMostFreeServer();
+                    
+                }
+            );
+        })();
+    </script>
 </head>
 <body>
 </body>
