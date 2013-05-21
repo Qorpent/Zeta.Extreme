@@ -92,11 +92,20 @@ div.open>.tooltip {
 }
 
 .zefsformheader h3 {
+    display: inline;
     margin: 0;
     padding: 0;
     font-size: 16px;
     font-weight: bold;
     color: #002a80;
+}
+
+.zefsformheader .formname {
+    max-width: 700px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
 }
 
 .zefsformsubobj {
