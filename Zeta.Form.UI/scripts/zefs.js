@@ -94,6 +94,7 @@ root.init = root.init ||
 
 	var Render = render.renderStructure; //вынес в рендер - отдельный скрипт
 	var FillBatch = render.updateCells; //вынес в рендер - zefs-render.js
+	var FillOther = render.updateNullCells;
     var CheckConditions = render.checkConditions;
 
     var AttachFile = function(form) {
@@ -608,11 +609,9 @@ root.init = root.init ||
         Fill(root.myform.currentSession);
         if(result.state != "w"){
             // Это штука для перерисовки шапки
-            var notloaded = $('td.notloaded');
-            notloaded.data({"history": "", "previous": "", "value": ""});
-            notloaded.removeClass("notloaded");
             $(window).trigger("resize");
             $(root).trigger(root.handlers.on_dataload);
+            FillOther();
             CheckConditions();
         } else {
             var idx = !$.isEmptyObject(result.data) ? result.ei+1 : result.si;
@@ -622,6 +621,7 @@ root.init = root.init ||
 
     api.data.reset.onSuccess(function() {
         root.myform.currentSession.data = [];
+        $('td.data').addClass("notloaded");
         api.data.start.execute({session: root.myform.sessionId, startidx: 0});
     });
 
