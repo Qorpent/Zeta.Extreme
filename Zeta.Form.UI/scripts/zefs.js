@@ -63,6 +63,7 @@ root.init = root.init ||
         loc += "|year=" + (params.year || "");
         loc += "|period=" + (params.period || "");
         loc += "|obj=" + (params.obj || "");
+        if (!!params.subobj) loc += "|subobj=" + params.subobj;
         if (!blank) document.location.href = loc;
         if ((typeof params.form == "undefined" || params.form == "") ||
             (typeof params.year == "undefined" || params.year == "") ||

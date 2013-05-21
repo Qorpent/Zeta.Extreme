@@ -21,6 +21,7 @@ api.getParameters = function(){
     result["obj"] = p["obj"];
     result["period"] = p["period"];
     result["year"] = p["year"];
+    if (!!p.subobj) result["subobj"] = p["subobj"];
     return result;
 };
 
