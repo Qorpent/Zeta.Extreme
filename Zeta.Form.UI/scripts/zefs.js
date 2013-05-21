@@ -56,6 +56,7 @@ root.init = root.init ||
     var OpenForm = function(params, blank) {
         params = params || {};
         blank = blank || false;
+        location.hash = location.hash.replace(/\|subobj=\d+/, '');
         var hashparams = api.getParameters();
         params = $.extend(hashparams, params);
         var loc = document.location.protocol + "//" + document.location.host + siteroot + "zefs-test.html#";

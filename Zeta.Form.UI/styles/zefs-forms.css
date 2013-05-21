@@ -137,7 +137,7 @@ table.data thead.fixed {
 @-moz-document url-prefix() {
      table.data thead.fixed {
         position: fixed;
-        z-index: 996;
+        z-index: 995;
         margin-left: -1px;
     }
 }

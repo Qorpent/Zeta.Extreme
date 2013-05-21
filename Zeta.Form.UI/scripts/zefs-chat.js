@@ -214,9 +214,16 @@
                 });
                 var form = $.map(zefs.forms, function(i) { if (i.Code == message.FormCode.replace(/[A|B]\.in/,'')) return i });
                 var obj = $.map(zefs.objects, function(o) { if (o.id == message.ObjId) return o });
-                var formname = $('<span class="adminchat chat-list-cell formname"/>')
-                    .text($(form).get(0).Name + " " + $(obj).get(0).name + " за " + zefs.getperiodbyid(message.Period) + ", " + message.Year + " год");
-                formname.hover(function() { $(this).toggleClass("hovering") });
+                var formname = $('<span class="adminchat chat-list-cell formname"/>');
+                if (form.length > 0) {
+                    formname.text($(form).get(0).Name + " " + $(obj).get(0).name + " за " + zefs.getperiodbyid(message.Period) + ", " + message.Year + " год");
+                    formname.hover(function() { $(this).toggleClass("hovering") });
+                    formname.click(function(e) {
+                        var m = $(this).parents('.chat-list-row').data();
+                        e.preventDefault();
+                        zefs.myform.openform({form: m.FormCode, period: m.Period, obj: m.ObjId, year: m.Year}, true);
+                    });
+                }
                 body.append(tr.append(
                     arch,
                     $('<div class="adminchat chat-list-cell username"/>').append(
@@ -226,11 +233,6 @@
                     ),
                     $('<div class="adminchat chat-list-cell message"/>').text(message.Text)
                 ));
-                formname.click(function(e) {
-                    var m = $(this).parents('.chat-list-row').data();
-                    e.preventDefault();
-                    zefs.myform.openform({form: m.FormCode, period: m.Period, obj: m.ObjId, year: m.Year}, true);
-                });
                 // помечаем прочитанным
                 if (!!message.Userdata) {
                     if (message.Userdata.archive) tr.addClass("archived");
