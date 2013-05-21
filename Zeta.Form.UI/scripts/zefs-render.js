@@ -115,34 +115,14 @@ $.extend(root.render, {
         var div = $('<div/>'); // Это контейнер для форматирования чисел :)
 		$.each(batch.data, function(i,b) {
             var $cell = $("td[id='" + b.i +  "']");
+            if (!!b.c) $cell.data("cellid", b.c);
             var val = b.v || "";
-            // сколько знаков после запятой
-            var f = { gs: " ", ds: ".", dl: 0 };
-            if (!!$cell.data("format")) {
-                f = $cell.data("format");
-            }
-            $cell.number($cell.text(), f.dl, f.ds, '');
-            if (parseFloat($cell.text()) != parseFloat(val).toFixed(f.dl) && !!$cell.data("history")) {
-                $cell.addClass("recalced");
-            }
-            $cell.number(val, f.dl, f.ds, '');
-            $cell.data("history", $cell.text());
-            $cell.data("previous", $cell.text());
-            // реальное число без форматов, которое должно сохраняться в базу
-            $cell.data("value", val);
-            if (val == "0") {
-                if (b.c == undefined || !$cell.hasClass("editable")) val = "";
-                $cell.text(val);
-            } else {
-                $cell.number(val, f.dl, f.ds, f.gs);
-            }
-            $cell.removeClass("notloaded");
+            root.render.updateData($cell, val);
             // если в ячейке произошла ошибка
             if (!!b.iserror) {
                 $cell.text("");
                 $cell.addClass("errordata");
             }
-            if (!!b.c) $cell.data("cellid", b.c);
             $cell.attr("ri", b.ri);
             if (val.search(/\./) != -1 && val.search("error") == -1) {
                 $cell.addClass("rounded");
@@ -155,6 +135,40 @@ $.extend(root.render, {
 		batch.wasFilled = true;
 		return session;
 	},
+
+    updateData : function(cell, val) {
+        var $cell = $(cell);
+        // сколько знаков после запятой
+        var f = { gs: " ", ds: ".", dl: 0 };
+        if (!!$cell.data) {
+            if (!!$cell.data("format")) {
+                f = $cell.data("format");
+            }
+        }
+        $cell.number($cell.text(), f.dl, f.ds, '');
+        if (parseFloat($cell.text()) != parseFloat(val).toFixed(f.dl) && !!$cell.data("history")) {
+            $cell.addClass("recalced");
+        }
+        $cell.number(val, f.dl, f.ds, '');
+        $cell.data("history", $cell.text());
+        $cell.data("previous", $cell.text());
+        // реальное число без форматов, которое должно сохраняться в базу
+        $cell.data("value", val);
+        if (val == "0") {
+            if (!$cell.data("cellid") || !$cell.hasClass("editable")) val = "";
+            $cell.text(val);
+        } else {
+            $cell.number(val, f.dl, f.ds, f.gs);
+        }
+        $cell.removeClass("notloaded");
+    },
+
+    updateNullCells : function() {
+        var notloaded = $('td.notloaded');
+        $.each(notloaded, function(i,cell) {
+            root.render.updateData(cell, "0");
+        });
+    },
 
     checkValue : function(rule, value) {
         switch (rule.Action) {

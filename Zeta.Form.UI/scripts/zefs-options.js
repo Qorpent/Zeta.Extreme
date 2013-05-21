@@ -21,6 +21,7 @@ api.getParameters = function(){
     result["obj"] = p["obj"];
     result["period"] = p["period"];
     result["year"] = p["year"];
+    if (!!p.subobj) result["subobj"] = p["subobj"];
     return result;
 };
 
@@ -131,6 +132,9 @@ $.extend(api,(function(){
                                     break;
                                 case "#.###" :
                                     decimalLength = 3;
+                                    break;
+                                case "#.####" :
+                                    decimalLength = 4;
                                     break;
                             }
                             // gs - group seporator

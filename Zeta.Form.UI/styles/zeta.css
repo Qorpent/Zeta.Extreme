@@ -40,7 +40,7 @@ a.btn {
 #consolePageHeader {
     position: fixed;
     top: 60px;
-    z-index: 995;
+    z-index: 996;
     background-color: white;
     width: 100%;
     padding: 0 20px;
@@ -48,11 +48,11 @@ a.btn {
     -moz-box-sizing: border-box;
 }
 
-.consolePageHeader.isblock {
+#consolePageHeader.isblock {
     background-color: #FDFDBD;
 }
 
-.consolePageHeader.ischecked {
+#consolePageHeader.ischecked {
     background-color: #c1eab4;
 }
 

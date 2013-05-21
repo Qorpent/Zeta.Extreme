@@ -12,6 +12,8 @@ if((window.useStatic !== undefined) && (window.useStatic == true)) {
     document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-statistic"></script>');
 }
 
+document.write('<link rel="stylesheet" type="text/css" href="_sys/getcss.file.qweb?stylename=zefs">');
+document.write('<link rel="stylesheet" type="text/css" href="_sys/getcss.file.qweb?stylename=zefs-forms">');
 
 document.write('<script src="zeta/getperiods.embedjson.qweb"></script>');
 document.write('<script src="zeta/getobjects.embedjson.qweb"></script>');

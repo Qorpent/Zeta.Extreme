@@ -56,6 +56,7 @@ root.init = root.init ||
     var OpenForm = function(params, blank) {
         params = params || {};
         blank = blank || false;
+        location.hash = location.hash.replace(/\|subobj=\d+/, '');
         var hashparams = api.getParameters();
         params = $.extend(hashparams, params);
         var loc = document.location.protocol + "//" + document.location.host + siteroot + "zefs-test.html#";
@@ -63,6 +64,7 @@ root.init = root.init ||
         loc += "|year=" + (params.year || "");
         loc += "|period=" + (params.period || "");
         loc += "|obj=" + (params.obj || "");
+        if (!!params.subobj) loc += "|subobj=" + params.subobj;
         if (!blank) document.location.href = loc;
         if ((typeof params.form == "undefined" || params.form == "") ||
             (typeof params.year == "undefined" || params.year == "") ||
@@ -92,6 +94,7 @@ root.init = root.init ||
 
 	var Render = render.renderStructure; //вынес в рендер - отдельный скрипт
 	var FillBatch = render.updateCells; //вынес в рендер - zefs-render.js
+	var FillOther = render.updateNullCells;
     var CheckConditions = render.checkConditions;
 
     var AttachFile = function(form) {
@@ -293,8 +296,8 @@ root.init = root.init ||
 
     var ZefsIt = function(table) {
         if (!$.isEmptyObject(root.objects))  {
-            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 100 });
-            else $('table.data').zefs();
+//            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 100 }); else
+             $('table.data').zefs();
         } else {
             window.setTimeout(function(){ ZefsIt(table) },100);
         }
@@ -606,11 +609,9 @@ root.init = root.init ||
         Fill(root.myform.currentSession);
         if(result.state != "w"){
             // Это штука для перерисовки шапки
-            var notloaded = $('td.notloaded');
-            notloaded.data({"history": "", "previous": "", "value": ""});
-            notloaded.removeClass("notloaded");
             $(window).trigger("resize");
             $(root).trigger(root.handlers.on_dataload);
+            FillOther();
             CheckConditions();
         } else {
             var idx = !$.isEmptyObject(result.data) ? result.ei+1 : result.si;
@@ -620,6 +621,7 @@ root.init = root.init ||
 
     api.data.reset.onSuccess(function() {
         root.myform.currentSession.data = [];
+        $('td.data').addClass("notloaded");
         api.data.start.execute({session: root.myform.sessionId, startidx: 0});
     });
 

@@ -103,8 +103,11 @@ div.open>.tooltip {
     margin-top: 8px;
 }
 
-.zefsformsubobj button {
+.zefsformsubobj .btn-group {
     margin-left: 5px;
+}
+.zefsformsubobj .caret {
+    margin-left: 3px;
 }
 
 .zefsformkurator .label {
