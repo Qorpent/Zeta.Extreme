@@ -29,7 +29,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.SessionProcessing {
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			var session = MyFormServer.Start(_realform, _realobj, year, period, true);
+			var session = MyFormServer.Start(_realform, _realobj, year, period, true,false,_realsubobj);
 			session.WaitData();
 			return session;
 		}

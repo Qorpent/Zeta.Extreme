@@ -56,6 +56,7 @@ namespace Zeta.Extreme.FrontEnd {
 	    /// <param name="period"></param>
 	    /// <param name="initsavemode"></param>
 	    /// <param name="initstatemode"></param>
+	    /// <param name="subobject"></param>
 	    /// <returns></returns>
 	    FormSession Start(
             IInputTemplate template,
@@ -63,7 +64,8 @@ namespace Zeta.Extreme.FrontEnd {
             int year,
             int period,
             bool initsavemode = false,
-			bool initstatemode = false
+			bool initstatemode = false,
+			IZetaMainObject subobject =null
         );
 
         /// <summary>

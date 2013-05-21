@@ -159,7 +159,7 @@ namespace Zeta.Extreme.FrontEnd {
 			this.RequireSubObjects = true;
 			var splittoobj = Template.Thema.GetParameter("splittoobj", "");
 			var inconditions = string.Join(",", splittoobj.SmartSplit().Select(_ => "'" + _ + "'"));
-			splitobjects = zr.ReadObjectsWithTypes(string.Format("o.Id != {0} Path like  '%/{0}/%' and (t.Code in ({1}) or c.Code in ({1}) ) ",  Object.Id,inconditions)).ToArray();
+			splitobjects = zr.ReadObjectsWithTypes(string.Format("o.Id != {0} and Path like  '%/{0}/%' and (t.Code in ({1}) or c.Code in ({1}) ) ",  Object.Id,inconditions)).ToArray();
 			SplitObjInfo = splitobjects.Select(_ =>
 #pragma warning disable 612,618
 			                                        new

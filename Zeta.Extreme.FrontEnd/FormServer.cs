@@ -274,7 +274,7 @@ namespace Zeta.Extreme.FrontEnd {
 									(_.SubObject!=null  && subobj!=null &&  subobj.Id==_.SubObject.Id ))
 								);
 				if (null == existed) {
-					var session = CreateSession(template, obj, year, period);
+					var session = CreateSession(template, obj, year, period,subobj);
 					session.InitSaveMode = initsavemode;
 					session.InitStateMode = initstatemode;
 					Sessions.Add(session);
@@ -306,11 +306,12 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="obj"></param>
 		/// <param name="year"></param>
 		/// <param name="period"></param>
+		/// <param name="subobj"></param>
 		/// <returns></returns>
-		public FormSession CreateSession(IInputTemplate template, IZetaMainObject obj, int year, int period) {
-			var session = Container.Get<IFormSession>(null, template, year, period, obj) as FormSession;
+		public FormSession CreateSession(IInputTemplate template, IZetaMainObject obj, int year, int period,IZetaMainObject subobj) {
+			var session = Container.Get<IFormSession>(null, template, year, period, obj,subobj) as FormSession;
 			if (null == session) {
-				session = new FormSession(template, year, period, obj);
+				session = new FormSession(template, year, period, obj,subobj);
 				session.SetApplication(Application);
 				session.SetContainerContext(Container, null);
 			}

@@ -51,7 +51,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Formula,	FormulaType,	o.Tag,	GroupCache,	Valuta,  -- 15 - 19
 					Role,		Active,			Start,	Finish,		IsInner, -- 20 - 24
 
-					t.Code as TypeCode, t.Name as TypeName, t.Class as ClassId,
+					t.Code as TypeCode, t.Name as TypeName, t.ClassId as ClassId,
 					c.Code as ClassCode, c.Name as ClassName
 
 				from zeta.normalobj o join zeta.normalobjtype t on t.Id = o.TypeId join zeta.normalobjclass c on c.Id = t.ClassId

@@ -155,10 +155,12 @@ namespace Zeta.Extreme.FrontEnd.Tests
                         Code = "test"
                     }
                 },
-                new Obj(), 2012, 2
+                new Obj(), 2012, 2,null
             );
 
             Assert.IsNotNull(formSession);
         }
+
+		
     }
 }

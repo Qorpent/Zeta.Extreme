@@ -25,7 +25,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Communication {
 		/// <returns>
 		/// </returns>
 		protected override object MainProcess() {
-			var session = MyFormServer.CreateSession(_realform, _realobj, year, period);
+			var session = MyFormServer.CreateSession(_realform, _realobj, year, period,null);
 			var result = session.GetChatList().OrderByDescending(_ => _.Time).ToArray();
 			if (!Roles.IsInRole(User, "ADMIN")) {
 				result = result.Where(_ => _.Type != "admin").ToArray();

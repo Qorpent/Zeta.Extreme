@@ -48,6 +48,9 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 			if (null == _realobj) {
 				throw new Exception("obj not found");
 			}
+			if (subobj != 0) {
+				_realsubobj = MetaCache.Default.Get<IZetaMainObject>(subobj);
+			}
 		}
 
 		/// <summary>
@@ -93,5 +96,15 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 		/// 	Год
 		/// </summary>
 		[Bind(Required = true)] protected int year = 0;
+
+		/// <summary>
+		/// 	Подобъект
+		/// </summary>
+		[Bind(Required = false)] protected int subobj = 0;
+
+		/// <summary>
+		/// Реальный подобъект
+		/// </summary>
+		protected IZetaMainObject _realsubobj;
 	}
 }
