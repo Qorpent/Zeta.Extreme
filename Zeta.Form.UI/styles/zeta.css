@@ -48,11 +48,11 @@ a.btn {
     -moz-box-sizing: border-box;
 }
 
-.consolePageHeader.isblock {
+#consolePageHeader.isblock {
     background-color: #FDFDBD;
 }
 
-.consolePageHeader.ischecked {
+#consolePageHeader.ischecked {
     background-color: #c1eab4;
 }
 
