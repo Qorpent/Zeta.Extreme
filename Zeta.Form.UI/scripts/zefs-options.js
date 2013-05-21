@@ -133,6 +133,9 @@ $.extend(api,(function(){
                                 case "#.###" :
                                     decimalLength = 3;
                                     break;
+                                case "#.####" :
+                                    decimalLength = 4;
+                                    break;
                             }
                             // gs - group seporator
                             // ds - decimal seporator
