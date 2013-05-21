@@ -293,8 +293,8 @@ root.init = root.init ||
 
     var ZefsIt = function(table) {
         if (!$.isEmptyObject(root.objects))  {
-            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 100 });
-            else $('table.data').zefs();
+//            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 100 }); else
+             $('table.data').zefs();
         } else {
             window.setTimeout(function(){ ZefsIt(table) },100);
         }

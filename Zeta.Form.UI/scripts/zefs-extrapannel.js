@@ -25,8 +25,6 @@
     };
     $(window.zefs).on(window.zefs.handlers.on_objectsload, function() {
         if (!$.isEmptyObject(window.zefs.myobjs)) {
-            $('.zefsformheader').first().css("top", 60);
-            $('.zefsalerter').first().css("top", 64);
             var currentObj = zefs.api.getParameters()["obj"] || -1;
             $.each(window.zefs.myobjs, function(i, obj) {
                 var name = obj.shortname || obj.name || "";

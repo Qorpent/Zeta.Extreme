@@ -531,7 +531,7 @@
 
     $.fn.zefs.defaults = {
         jumpNoneditable : true, // Перепрыгивать через нередактируемые ячейки по нажатию на UP, DOWN, LEFT, RIGHT
-        fixHeaderX : 77 // Позиция по Х на которой фиксируется шапка
+        fixHeaderX : 100 // Позиция по Х на которой фиксируется шапка
     };
 })(jQuery);
 
