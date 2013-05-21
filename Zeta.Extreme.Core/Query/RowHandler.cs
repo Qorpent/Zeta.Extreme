@@ -81,7 +81,7 @@ namespace Zeta.Extreme {
 				//try load native
 				Native = MetaCache.Get<IZetaRow>(0 == Id ? (object)Code : Id);
 			}
-			NormalizeReferencedRows(query.Session, query.Col);
+			NormalizeReferencedRows(query.Session, query.Col,query);
 		}
 
 		/// <summary>
@@ -106,7 +106,7 @@ namespace Zeta.Extreme {
 		}
 
 
-		private void NormalizeReferencedRows(ISession session, IColumnHandler column) {
+		private void NormalizeReferencedRows(ISession session, IColumnHandler column,IQuery query) {
 			var initialcode = Code;
 			var proceed = true;
 			while (proceed) {
@@ -114,21 +114,21 @@ namespace Zeta.Extreme {
 				if (null != column.Native) {
 					Native = Native.ResolveExRef(column.Native);
 				}
-				proceed = ResolveSingleRowFormula(session);
+				proceed = ResolveSingleRowFormula(session,query);
 			}
 			if (initialcode != Code && session is Session) {
 				session.StatIncRowRedirections();
 			}
 		}
 
-		private bool ResolveSingleRowFormula(ISession session) {
+		private bool ResolveSingleRowFormula(ISession session,IQuery query) {
 			var cache = session == null ? Model.MetaCache.Default : session.GetMetaCache();
 			if (IsFormula && (FormulaType == "boo" || FormulaType == "cs")) {
 				var match = Regex.Match(Formula.Trim(), @"^\$([\w\d]+)\?$", RegexOptions.Compiled);
 				if (match.Success) {
 					var code = match.Groups[1].Value;
 					if (code.StartsWith("__")) {
-						code = session.ResolveRealCode(this, code.Substring(2));
+						code = session.ResolveRealCode(query, code.Substring(2));
 					}
 					var reference = cache.Get<IZetaRow>(code);
 					Native = reference;

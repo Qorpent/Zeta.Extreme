@@ -51,18 +51,18 @@ namespace Zeta.Extreme {
 				//try load native
 				Native = MetaCache.Get<IZetaColumn>(0 == Id ? (object)Code : Id);
 			}
-			ResolveSingleColFormula(query.Session,query.Row);
+			ResolveSingleColFormula(query.Session,query);
 		}
 
 
-		private void ResolveSingleColFormula(ISession session, IRowHandler row) {
+		private void ResolveSingleColFormula(ISession session, IQuery query) {
 			if (IsFormula && (FormulaType == "boo" || FormulaType == "cs")) {
 				var formula = Formula;
 				var code = GetCodeFrom(formula);
 				if (null != code) {
 					if (code.StartsWith("__"))
 					{
-						code = session.ResolveRealCode(row, code.Substring(2));
+						code = session.ResolveRealCode(query, code.Substring(2));
 					}
 					var reference = ColumnCache.get(code);
 					Native = reference;

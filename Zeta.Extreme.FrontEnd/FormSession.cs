@@ -173,7 +173,7 @@ namespace Zeta.Extreme.FrontEnd {
 				                                        }
 #pragma warning restore 612,618
 				).ToArray();
-			if (null == SubObject) {
+			if (null == SubObject || splitobjects.All(_=>_.Id!=SubObject.Id)) {
 				SubObject = splitobjects.FirstOrDefault();
 			}
 		}

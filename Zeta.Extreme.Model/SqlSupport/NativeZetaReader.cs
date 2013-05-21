@@ -52,7 +52,8 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Role,		Active,			Start,	Finish,		IsInner, -- 20 - 24
 
 					t.Code as TypeCode, t.Name as TypeName, t.ClassId as ClassId,
-					c.Code as ClassCode, c.Name as ClassName
+					c.Code as ClassCode, c.Name as ClassName,
+					t.Tag as TypeTag, c.Tag as ClassTag
 
 				from zeta.normalobj o join zeta.normalobjtype t on t.Id = o.TypeId join zeta.normalobjclass c on c.Id = t.ClassId
 		";

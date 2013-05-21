@@ -19,8 +19,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Model.Querying {
 
@@ -73,12 +76,45 @@ namespace Zeta.Extreme.Model.Querying {
 			var session = query.Session;
 			var rowhandler = query.Row;
 			
-				return ResolveRealCode(session, rowhandler, pseudocode);
+				return ResolveRealCode(session, query, pseudocode);
 			}
 			throw new Exception("cannot resolve " + pseudocode + " from " + query);
 		}
+		/// <summary>
+		/// Резольвит реальный код для строк и прочего
+		/// </summary>
+		/// <param name="session"></param>
+		/// <param name="rowhandler"></param>
+		/// <param name="pseudocode"></param>
+		/// <returns></returns>
+		public static string ResolveRealCode(this ISession session, IQuery query, string pseudocode) {
+			var rowhandler = query.Row;
+			var code = ResolveRealCode(session, rowhandler, pseudocode);
+			if (!string.IsNullOrWhiteSpace(code)) {
+				return code;
+			}
 
-		public static string ResolveRealCode(this ISession session, IRowHandler rowhandler, string pseudocode) {
+			if (query.Obj.Native is IZetaMainObject) {
+				var obj = query.Obj.ObjRef;
+				if (null == obj.ObjType && 0!=obj.ObjTypeId) {
+					obj = new NativeZetaReader().ReadObjectsWithTypes("o.Id = " + obj.Id).First();
+				}
+				code = obj.ResolveTag(pseudocode);
+				if (!string.IsNullOrWhiteSpace(code)) {
+					return code;
+				}
+			}
+
+			return null;
+		}
+		/// <summary>
+		/// Резольвит реальный код для строк только - совместимость
+		/// </summary>
+		/// <param name="session"></param>
+		/// <param name="rowhandler"></param>
+		/// <param name="pseudocode"></param>
+		/// <returns></returns>
+		private static string ResolveRealCode(ISession session, IRowHandler rowhandler, string pseudocode) {
 			if (session != null && session.PropertySource != null) {
 				var code = session.PropertySource.Get(pseudocode).ToStr();
 				if (!string.IsNullOrWhiteSpace(code)) {

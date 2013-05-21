@@ -60,7 +60,10 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			return ConvertToStackInfo(_myquery);
 		}
 
-		private object ConvertToStackInfo( IQueryWithProcessing myquery,decimal mult=1) {
+		private object ConvertToStackInfo( IQueryWithProcessing myquery,decimal mult=1, int level = 0) {
+			if (level >= 10) {
+				return "÷иркул€рна€ зависимость формулы";
+			}
 			if (null == myquery) {
 				return "ƒанна€ €чейка сформирована с использованием нестандартного механизма, скорее всего из семейства "+MySession.Template.Thema.GetParameter("extension","")+", отладка не доступна";
 			}
@@ -90,7 +93,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 					iserror = null!=myquery.Result.Error,
 					error = GetErrorObject(myquery.Result.Error),
 					mult,
-					subqueries = GetSubQueries(myquery)
+					subqueries = GetSubQueries(myquery, level)
 				};
 		}
 
@@ -114,17 +117,17 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		}
 
 		/// <exception cref="Exception"></exception>
-		private IEnumerable<object> GetSubQueries(IQueryWithProcessing myquery) {
+		private IEnumerable<object> GetSubQueries(IQueryWithProcessing myquery, int level) {
 			if(myquery.EvaluationType==QueryEvaluationType.Primary ||  myquery.EvaluationType==QueryEvaluationType.Unknown)yield break;
 			if (myquery.EvaluationType == QueryEvaluationType.Formula) {
 				foreach (var query in myquery.FormulaDependency) {
-					yield return  ConvertToStackInfo((IQueryWithProcessing) query,1);
+					yield return  ConvertToStackInfo((IQueryWithProcessing) query,1,level:level+1);
 				}
 				
 			}
 			else if (myquery.EvaluationType == QueryEvaluationType.Summa) {
 				foreach (var query in myquery.SummaDependency) {
-					yield return ConvertToStackInfo((IQueryWithProcessing) query.Item2, query.Item1);
+					yield return ConvertToStackInfo((IQueryWithProcessing) query.Item2, query.Item1,level:level+1);
 				}
 			}
 			else throw new Exception("unknown query type "+myquery.EvaluationType);
