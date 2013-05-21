@@ -30,14 +30,18 @@ root.handlers = $.extend(root.handlers, {
         layout : {
             position : {
                 layoutHeader : "header",
+                layoutTools : "tools",
 //              layoutBodyLeft : "body-left",
-                layoutBodyMain : "body-main"
+                layoutBodyMain : "body-main",
+                layoutPageHeader : "pageheader"
             },
             header : $('<div id="consoleHeader"/>').append(
                 $('<div class="navbar"/>').append(
                     $('<div class="navbar-inner"/>')
                 )
             ),
+            tools : $('<div id="consoleTools" class="console-tools"/>'),
+            pageheader : $('<div id="consolePageHeader" class="console-pageheader"/>'),
             body : $('<div id="consoleBody" class="console-body"/>'),
             footer : $('<div id="consoleFooter"/>'),
             add : function(e) {
@@ -45,11 +49,13 @@ root.handlers = $.extend(root.handlers, {
                 if (e.float != "none") $(e.body).addClass("pull-" + e.float);
                 if (e.pos == this.position.layoutHeader) $('#consoleHeader > .navbar > .navbar-inner').append(e.body);
                 if (e.pos == this.position.layoutBodyMain) $('#consoleBody').append(e.body);
+                if (e.pos == this.position.layoutTools) $('#consoleTools').append(e.body);
+                if (e.pos == this.position.layoutPageHeader) $('#consolePageHeader').append(e.body);
             }
         },
 
         Setup : function() {
-            $('body').append(this.layout.header,this.layout.body,this.layout.footer);
+            $('body').append(this.layout.header,this.layout.tools,this.layout.pageheader, this.layout.body,this.layout.footer);
             $.each(this.widgets.sort(function(a,b) { return b.options.priority - a.options.priority }),
                 $.proxy(function(i, e) {
                     if ((root.user != null && root.user.getLogonName() != "" ) || !e.options.authonly) {

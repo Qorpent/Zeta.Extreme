@@ -355,6 +355,12 @@ $.extend(api,(function(){
         },
 
         wiki : {
+            gettext : $.extend(new Command({ domain: "wiki", name: "get" }), {
+                wrap : function(obj) {
+                    if ($.isEmptyObject(obj)) return obj;
+                    return $.map(obj, function(o) { return o.Text || "" });
+                }
+            }),
             // Запрашивает статью с кодом [code]
             get : $.extend(new Command({ domain: "wiki", name: "get" }), {
                 wrap : function(obj) {

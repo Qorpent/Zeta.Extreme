@@ -58,12 +58,13 @@ $.extend(root.render, {
             td.html(td.html() + row.name);
 
             // Zefs Wiki button
-            var wikibtn = $('<span class="wikirowhelp notexist"/>');
+            var wikibtn = $('<span class="wikirowhelp notexist"/>').hide();
             var wikicode = '/row/' + row.code + '/default';
             wikibtn.click(function() {
-                zefs.myform.wikiget(wikicode);
+                zefs.myform.wikiget(wikibtn.attr("code"));
             });
-            wikibtn.attr("id", "wiki_" + wikicode.replace(/\//g, '_'));
+            wikibtn.attr("id", 'wiki__row_' + row.code + '_default');
+            wikibtn.attr("code", wikicode);
             td.append(wikibtn);
 
 
