@@ -146,7 +146,9 @@ $.extend(api,(function(){
                     result.rootrow = $($.map(result.rows, function(e) { if (e.level == 0) return e.code })).get(0);
                     return result;
                 }
-            })
+            }),
+
+            details : new Command({domain: "zefs", name: "formdetails"})
         },
 
         data : {

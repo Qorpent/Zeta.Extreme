@@ -13,7 +13,8 @@ window.zefs.handlers = $.extend(window.zefs.handlers, {
     // Other handlers:
     on_formsload : "formsload", on_periodsload : "periodsload", on_periodsfaild : "periodsfailed",
     on_objectsload : "objectsload", on_objectsfaild : "objectsfailed", on_attachmentload : "attachmentload",
-    on_reglamentload : "reglamentload", on_formusersload : "formusersload",
+    on_reglamentload : "reglamentload", on_formusersload : "formusersload", on_detailsload: "detailsload",
+    on_documentationload : "documentationload",
     // Message handlers:
     on_message : "message",
     // File handlers:
@@ -462,6 +463,8 @@ root.init = root.init ||
     });
 
     api.wiki.exists.onSuccess(function(e, result) {
+        root.myform.documentation = result;
+        $(root).trigger(root.handlers.on_documentationload);
         $.each(result, function(i, w) {
             var wikibtn = $('#wiki_' + w.Code.replace(/\//g, '_'));
             wikibtn.removeClass("notexist");
@@ -599,9 +602,15 @@ root.init = root.init ||
 
     api.session.structure.onSuccess(function(e, result) {
         root.myform.currentSession.structure = result;
+        api.session.details.execute({form: root.myform.currentSession.FormInfo.CodeOnly});
         Render(root.myform.currentSession);
         Fill(root.myform.currentSession);
         $(root).trigger(root.handlers.on_structureload);
+    });
+
+    api.session.details.onSuccess(function(e, result) {
+        root.myform.details = result;
+        $(root).trigger(root.handlers.on_detailsload);
     });
 
     api.data.start.onSuccess(function(e, result) {

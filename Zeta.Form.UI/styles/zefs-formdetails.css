@@ -1,0 +1,36 @@
+div.level1 { margin-left: 0; }
+div.level2 { margin-left: 30px; }
+div.level3 { margin-left: 60px; }
+div.level4 { margin-left: 90px; }
+div.level5 { margin-left: 120px; }
+
+.haschildrens>div:first-child>span{
+    width: 10px;
+    height: 12px;
+    display: inline-block;
+    background: url('../images/hide.png') center no-repeat;
+    margin-right: 3px;
+    cursor: pointer;
+}
+
+.haschildrens.collapsed>div:first-child>span {
+    background: url('../images/show.png') center no-repeat;
+}
+
+table.formdetails tr td:first-child {
+    font-weight: bold;
+}
+
+.zefsformdocumentation .btn-link {
+    max-width: 500px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+
+.zefsformdocumentation .hint {
+    font-size: 11px;
+    font-weight: normal;
+    opacity: .5;
+}
