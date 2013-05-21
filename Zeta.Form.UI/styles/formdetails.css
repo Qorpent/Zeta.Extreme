@@ -1,0 +1,26 @@
+body {
+    padding: 10px;
+}
+
+.level1 { margin-left: 0; }
+.level2 { margin-left: 30px; }
+.level3 { margin-left: 60px; }
+.level4 { margin-left: 90px; }
+.level5 { margin-left: 120px; }
+
+.haschildrens>div:first-child>span{
+    width: 10px;
+    height: 12px;
+    display: inline-block;
+    background: url('../images/hide.png') center no-repeat;
+    margin-right: 3px;
+    cursor: pointer;
+}
+
+.haschildrens.hidden>div:first-child>span {
+    background: url('../images/show.png') center no-repeat;
+}
+
+table.table tr td:first-child {
+    font-weight: bold;
+}

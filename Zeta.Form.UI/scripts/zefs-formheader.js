@@ -4,13 +4,10 @@
 !function($) {
     var root = window.zeta = window.zeta || {};
     var zefsformheader = new root.Widget("zefsformheader", root.console.layout.position.layoutPageHeader, "left", { authonly: true, priority: 100 });
-    var h = $('<h3/>');
-    var InsertPeriod = function() {
-        if (null != zefs.myform.startError) return;
-        var s = window.zefs.myform.currentSession || {};
-        $(h.find('span').first()).text(zefs.getperiodbyid(s.Period));
-        s = null;
-    };
+    var formname = $('<h3 class="formname"/>');
+    var formperiod = $('<h3/>');
+    var formyear = $('<h3/>');
+    var period = 999;
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
         var zetaheader = $('#consolePageHeader');
         var lock =  window.zefs.myform.lock;
@@ -23,15 +20,16 @@
     });
     $(window.zefs).on(window.zefs.handlers.on_periodsload, function() {
         if (null == zefs.myform.startError) {
-            h.html(
-                zefs.myform.currentSession.FormInfo.Name + " " +
-                zefs.myform.currentSession.ObjInfo.Name + " за <span></span>, " +
-                // zefs.myform.currentSession.getPeriod() + ", " +
-                zefs.myform.currentSession.Year + " год"
-            );
+            formperiod.text(zefs.getperiodbyid(period) + " ");
         }
-        InsertPeriod();
     });
-    zefsformheader.body = $('<div/>').append(h);
+    $(window.zefs).on(window.zefs.handlers.on_sessionload, function() {
+        if (null == zefs.myform.startError) {
+            period = window.zefs.myform.currentSession.Period;
+            formname.text(zefs.myform.currentSession.FormInfo.Name + " " + zefs.myform.currentSession.ObjInfo.Name + " за ");
+            formyear.text(zefs.myform.currentSession.Year + " год");
+        }
+    });
+    zefsformheader.body = $('<div/>').append(formname, formperiod, formyear);
     root.console.RegisterWidget(zefsformheader);
 }(window.jQuery);
