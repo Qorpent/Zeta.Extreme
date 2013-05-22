@@ -15,12 +15,23 @@
             zefs.myform.save();
         }
     });
+    var EnableBtn = function() {
+        backdrop.hide();
+        b.addClass("btn-primary");
+        b.find("i").addClass("icon-white");
+        b.removeAttr("disabled");
+    };
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
-        if (zefs.myform.lock.cansave || zefs.myform.lock.cansaveoverblock) {
-            backdrop.hide();
-            b.addClass("btn-primary");
-            b.find("i").addClass("icon-white");
-            b.removeAttr("disabled");
+        var l = zefs.myform.lock;
+        if (l.state == "0ISOPEN") {
+            if (l.cansave || l.periodstateoverride) {
+                EnableBtn();
+            }
+        }
+        else {
+            if (l.cansaveoverblock) {
+                EnableBtn();
+            }
         }
         $('#consoleBody').append(backdrop.hide());
     });
