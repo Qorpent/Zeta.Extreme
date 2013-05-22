@@ -98,7 +98,6 @@
     };
 
     var RenderDocumentation = function() {
-        var d = zefs.myform.documentation;
         var codes = $.map(zefs.myform.documentation, function(w) { return w.Code }).join(',');
         if (codes.length > 0) {
             $.ajax({
@@ -123,6 +122,8 @@
                 });
                 formdocumentation.append(doc);
             });
+        } else {
+            formdocumentation.append($('<p class="hint non-printable"/>').text("Для данной формы пока нет документации"));
         }
     };
 
