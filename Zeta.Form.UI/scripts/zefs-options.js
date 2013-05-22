@@ -119,24 +119,12 @@ $.extend(api,(function(){
                         }
                         var decimalLength = 0;
                         var decimalSeporator = " ";
-                        if (o.format != null && o.format != "") {
-                            switch (o.format) {
-                                case "#.#" :
-                                    decimalLength = 1;
-                                    break;
-                                case "#.##" :
-                                    decimalLength = 2;
-                                    break;
-                                case "#,#" :
-                                    decimalLength = 0;
-                                    break;
-                                case "#.###" :
-                                    decimalLength = 3;
-                                    break;
-                                case "#.####" :
-                                    decimalLength = 4;
-                                    break;
-                            }
+                        var f = o.format;
+                        if (f != null && f != "") {
+                            if (f == "#.#" || f == "#,#.#") decimalLength = 1;
+                            else if (f == "#.##" || f == "#,#.##") decimalLength = 2;
+                            else if (f == "#.###" || f == "#,#.###") decimalLength = 3;
+                            else if (f == "#.####" || f == "#,#.####") decimalLength = 4;
                             // gs - group seporator
                             // ds - decimal seporator
                             // dl - decimal length
