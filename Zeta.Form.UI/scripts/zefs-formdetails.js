@@ -14,7 +14,7 @@
         docprint = $('<button class="btn btn-mini non-printable">Печать</button>');
     formdocumentation.children().append(docprint);
     docprint.click(function() {
-        formdocumentation.printelement();
+        $('#zefsFormDoc').printelement();
     });
     var t = $('<span class="label-tree"/>');
     content.append(formdetails, formdependence, formdocumentation);
@@ -109,14 +109,14 @@
                     usage : "formhelp"
                 }
             }).success(function(result) {
-                formdocumentation.append($('<h2 style="display: none;"/>').text("Справка по форме: " + zefs.myform.currentSession.FormInfo.Name));
                 var hint = "";
                 if (!$.isEmptyObject(result)) {
                     hint = "(нажмите по ссылке для получения справки по отдельной строке)";
                 }
                 var doc = $('<div id="zefsFormDoc"/>');
+                doc.append($('<h2 style="display: none;"/>').text("Справка по форме: " + zefs.myform.currentSession.FormInfo.Name));
                 doc.append($('<p class="hint non-printable"/>').text(hint));
-                $.each(doc, function(i, w) {
+                $.each(result, function(i, w) {
                     var title = $('<h4 class="btn-link"/>').text(w.Title);
                     doc.append(title, $('<p/>').html(wiky.process(w.Text)).hide());
                 });
