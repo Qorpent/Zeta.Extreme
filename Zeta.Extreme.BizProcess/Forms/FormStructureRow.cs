@@ -35,6 +35,11 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public string AltObjFilter;
 
+		/// <summary>
+		/// Дополнительный фильтр по конто/типу детали
+		/// </summary>
+		public string ContoFilter;
+
 
 		/// <summary>
 		/// Дополнительный расчет первичности строки
@@ -45,6 +50,7 @@ namespace Zeta.Extreme.FrontEnd {
 			if (!Native.GetIsPrimary()) return false;
 			if (SumObj) return false;
 			if (!string.IsNullOrWhiteSpace(AltObjFilter)) return false;
+			if (!string.IsNullOrWhiteSpace(ContoFilter)) return false;
 			
 			return true;
 		}
