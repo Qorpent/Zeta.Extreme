@@ -53,6 +53,11 @@ namespace Zeta.Extreme.Model {
 		public IZetaRow TemporalParent { get; set; }
 
 		/// <summary>
+		/// Целевой объект смещения для запроса (используется в сценариях с динамическим деревом)
+		/// </summary>
+		public IZetaObject TargetObject { get; set; }
+
+		/// <summary>
 		///     s-list of groups
 		/// </summary>
 		public virtual string GroupCache { get; set; }

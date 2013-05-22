@@ -117,6 +117,10 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		///     presentation for example)
 		/// </summary>
 		IZetaRow TemporalParent { get; set; }
+		/// <summary>
+		/// Целевой объект смещения для запроса (используется в сценариях с динамическим деревом)
+		/// </summary>
+		IZetaObject TargetObject { get; set; }
 
 		/// <summary>
 		///     NEED INVESTIGATION

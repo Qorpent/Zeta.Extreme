@@ -58,7 +58,15 @@ namespace Zeta.Extreme {
 		/// <summary>
 		/// Явное смещение строки по объекту, используется на начальной стадии нормализации запроса, явно смещает объект
 		/// </summary>
-		public IZetaObject TargetObject { get; set; }
+		public IZetaObject TargetObject {
+			get {
+				if (null != Native) {
+					if (null != Native.TargetObject) return Native.TargetObject;
+				}
+				return _targetObject;
+			}
+			set { _targetObject = value; }
+		}
 
 		/// <summary>
 		/// 	Проверяем еще суммовые разделы
@@ -104,10 +112,11 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <returns> </returns>
 		protected override string EvalCacheKey() {
+			var tobj = (null == TargetObject ? "" : ("~"+TargetObject.GetType().Name + ":" + TargetObject.Id));
 			if (TreeUsage != RowTreeUsage.None && !string.IsNullOrWhiteSpace(Code)) {
-				return "TREE:" + Code + "~" + TreeUsage;
+				return "TREE:" + Code + "~" + TreeUsage+tobj;
 			}
-			return base.EvalCacheKey();
+			return base.EvalCacheKey()+tobj;
 		}
 
 
@@ -151,5 +160,6 @@ namespace Zeta.Extreme {
 		}
 
 		private RowTreeUsage _treeUsage;
+		private IZetaObject _targetObject;
 	}
 }

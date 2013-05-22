@@ -18,7 +18,8 @@
 #endregion
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
-using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Core.Tests {
@@ -38,4 +39,6 @@ namespace Zeta.Extreme.Core.Tests {
 			Assert.AreEqual(93.89m, result.NumericResult);
 		}
 	}
+
+	
 }
