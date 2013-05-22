@@ -342,12 +342,21 @@ namespace Zeta.Extreme {
 		/// </summary>
 		public void Normalize(ISession session = null) {
 			Session = session;
-			var objt = Task.Run(() => Obj.Normalize(this)); //объекты зачастую из БД догружаются
+			Task objt=null; //объекты зачастую из БД догружаются
+			if (null == Row.TargetObject) {
+				
+				objt = Task.Run(() => Obj.Normalize(this));
+			}
+			else {
+				Obj.Native = Row.TargetObject;
+			}
 			Time.Normalize(this);
 			Col.Normalize(this);
 			ResolveTemporalCustomCodeBasedColumns(session);
-			Row.Normalize(this); //тут формулы парсим простые как рефы			
-			objt.Wait();
+			Row.Normalize(this); //тут формулы парсим простые как рефы		
+			if (null == Row.TargetObject && null!=objt) {
+				objt.Wait();
+			}
 			AdaptDetailModeForDetailBasedSubtrees();
 			AdaptExRefLinkSourceForColumns(session);
 			Reference.Normalize(this);

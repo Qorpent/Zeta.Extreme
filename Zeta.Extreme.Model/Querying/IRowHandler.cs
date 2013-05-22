@@ -36,6 +36,11 @@ namespace Zeta.Extreme.Model.Querying {
 		bool IsSum { get; }
 
 		/// <summary>
+		/// Явное смещение строки по объекту, используется на начальной стадии нормализации запроса, явно смещает объект
+		/// </summary>
+		IZetaObject TargetObject { get; set; }
+
+		/// <summary>
 		/// 	Простая копия условия на строку
 		/// </summary>
 		/// <returns> </returns>

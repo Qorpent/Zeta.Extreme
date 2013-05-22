@@ -56,6 +56,11 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// Явное смещение строки по объекту, используется на начальной стадии нормализации запроса, явно смещает объект
+		/// </summary>
+		public IZetaObject TargetObject { get; set; }
+
+		/// <summary>
 		/// 	Проверяем еще суммовые разделы
 		/// </summary>
 		/// <returns> </returns>
