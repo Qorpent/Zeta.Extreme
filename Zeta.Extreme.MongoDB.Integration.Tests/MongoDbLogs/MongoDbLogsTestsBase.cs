@@ -101,6 +101,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 		        set { Period = value; }
 	        }
 
+	        public string[] RowCodeFilter { get; set; }
 	        public int Period { get; private set; }
             public IZetaMainObject Object { get; private set; }
             public IInputTemplate Template { get; private set; }
@@ -126,7 +127,9 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             }
         }
 
-        public static LogMessage GetNewLogInstance(string unicString = "", bool noUnic = false) {
+	    
+
+	    public static LogMessage GetNewLogInstance(string unicString = "", bool noUnic = false) {
             var logInstance = new LogMessage();
 
             if (string.IsNullOrEmpty(unicString)) {

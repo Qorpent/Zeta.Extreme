@@ -80,6 +80,11 @@ namespace Zeta.Extreme.BizProcess.Forms {
 		IZetaMainObject WorkingObject { get; }
 
 		/// <summary>
+		/// Позволяет установить фильтр для идентификаторов входны строк для структуры по умолчанию
+		/// </summary>
+		string[] RowCodeFilter { get; set; }
+
+		/// <summary>
 		/// 	Возвращает статусную информацию по форме с поддержкой признака "доступа" блокировки
 		/// </summary>
 		/// <returns> </returns>

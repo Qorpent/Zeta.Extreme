@@ -33,6 +33,7 @@
     <Compile Include="Forms\IFormDataSynchronize.cs" />
     <Compile Include="Forms\IFormRowProvider.cs" />
     <Compile Include="Forms\IFormSessionControlPointSource.cs" />
+    <Compile Include="Forms\ISessionCommonPreDataExtension.cs" />
     <Compile Include="Forms\ISessionPreDataExtension.cs" />
     <Compile Include="Forms\OutCell.cs" />
     <Compile Include="Reports\IParameterConfigurator.cs" />
