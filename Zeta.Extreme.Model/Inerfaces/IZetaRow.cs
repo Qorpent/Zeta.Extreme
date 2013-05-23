@@ -123,6 +123,11 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		IZetaObject TargetObject { get; set; }
 
 		/// <summary>
+		/// Реальный код строки для виртуальных деревьев
+		/// </summary>
+		string RealCode { get; set; }
+
+		/// <summary>
 		///     NEED INVESTIGATION
 		/// </summary>
 		/// <param name="incode"></param>

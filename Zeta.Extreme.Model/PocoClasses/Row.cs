@@ -502,6 +502,10 @@ namespace Zeta.Extreme.Model {
 		///     Дата окончания
 		/// </summary>
 		public DateTime Finish { get; set; }
+		/// <summary>
+		/// Реальный код строки для виртуальных деревьев
+		/// </summary>
+		public string RealCode { get; set; }
 
 		/// <summary>
 		///     <see cref="Uri.Check" /> that old-style mark is seted
