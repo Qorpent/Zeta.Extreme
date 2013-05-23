@@ -852,7 +852,16 @@ namespace Zeta.Extreme.FrontEnd {
 			if (null != customPreData) {
 				customPreData.Prepare(this);
 			}
+			var commonpreparators = Container.All<ISessionCommonPreDataExtension>();
+			foreach (var sessionCommonPreDataExtension in commonpreparators) {
+				sessionCommonPreDataExtension.Prepare(this);
+			}
+
 		}
+		/// <summary>
+		/// Позволяет установить фильтр для идентификаторов входны строк для структуры по умолчанию
+		/// </summary>
+		public int[] RowIdFilter { get; set; }
 
 		private void InitializeColset() {
 			EnsureDataSession();
@@ -1010,6 +1019,11 @@ namespace Zeta.Extreme.FrontEnd {
 			var viewforgroup = row.ResolveTag("viewforgroup");
 			if (!string.IsNullOrWhiteSpace(viewforgroup)) {
 				if (!Object.IsMatchAliases(viewforgroup)) {
+					return false;
+				}
+			}
+			if (null != RowIdFilter) {
+				if (-1 == Array.IndexOf(RowIdFilter, row.Id)) {
 					return false;
 				}
 			}
