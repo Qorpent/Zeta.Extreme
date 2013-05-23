@@ -2,7 +2,6 @@
  * Виджет nerublevoi valuti
  */
 !function($) {
-    var root = window.zefs = window.zefs || {};
     var formusers = new zeta.Widget("zefsformusers", zeta.console.layout.position.layoutPageHeader, "right", { authonly: true, priority: 90 });
     var b = $('<span class="label label-warning dropdown-toggle pull-right" data-toggle="dropdown"/>').text('Пользователи');
     $(window.zefs).on(window.zefs.handlers.on_formusersload, function() {
@@ -28,6 +27,13 @@
                     $('<td class="dolzh"/>').text(e.Dolzh),
                     $('<td class="contacts"/>').text(e.Contact)
                 );
+                if (!!zefs.myform.currentSession) {
+                    if (e.Login == zefs.myform.currentSession.FormInfo.ObjectResponsibility) {
+                        tr.addClass("responsible");
+                        u.removeClass("label-info");
+                        u.addClass("label-important");
+                    }
+                }
                 if (zeta.user.getRealIsAdmin()) {
                     var l = $('<button class="btn btn-mini"/>').text("Войти от");
                     tr.append($('<td/>').append(l));

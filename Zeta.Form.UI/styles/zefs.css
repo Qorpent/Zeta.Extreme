@@ -61,6 +61,10 @@ div.open>.tooltip {
     table-layout: fixed;
 }
 
+.formuserstable tr.responsible td {
+    background-color: #FFD7D7;
+}
+
 .formuserstable td {
     padding: 4px 5px;
 }
