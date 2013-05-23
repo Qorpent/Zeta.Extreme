@@ -53,7 +53,7 @@
     <Compile Include="Query\QueryDelta.cs" />
     <Compile Include="Primary\PrimaryQueryGroup.cs" />
     <Compile Include="Primary\PrimaryQueryPrototype.cs" />
-    <Compile Include="Services\QueryProcessor.cs" />
+    <Compile Include="Services\QueryPreparator.cs" />
     <Compile Include="Query\ColumnHandler.cs" />
     <Compile Include="Query\DefaultPeriodEvaluator.cs" />
     <Compile Include="Query\IPeriodEvaluator.cs" />

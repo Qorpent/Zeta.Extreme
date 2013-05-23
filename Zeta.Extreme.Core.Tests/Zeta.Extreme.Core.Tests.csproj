@@ -17,6 +17,7 @@
   <ItemGroup>
     <Compile Include="DatabaseIgnorancePureZeta\CanCalculateWithTargetedObjects.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\NoCalcSumSupport.cs" />
+    <Compile Include="DatabaseIgnorancePureZeta\SumObjSupport.cs" />
     <Compile Include="FeatureAndBugFix\CanCalculateDetails.cs" />
     <Compile Include="FeatureAndBugFix\CanCalculateValuta.cs" />
     <Compile Include="CheckKnownData.cs" />

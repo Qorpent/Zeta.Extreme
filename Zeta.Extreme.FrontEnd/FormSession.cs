@@ -568,7 +568,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <returns></returns>
 		[Serialize]
 		public bool ObjectIsEditable {
-			get { return Object.Start.Year <= Year && Object.Finish.Year > Year; }
+			get { return WorkingObject.Start.Year <= Year && WorkingObject.Finish.Year > Year && !WorkingObject.IsFormula; }
 		}
 		/// <summary>
 		/// Служба управления статусами

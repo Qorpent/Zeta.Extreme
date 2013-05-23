@@ -33,12 +33,12 @@ namespace Zeta.Extreme {
 	/// 	в том, что запрос полностью нормализован,
 	/// 	уникален и прописан во всех требуемых списках
 	/// </remarks>
-	public class QueryProcessor : IQueryPreparator {
+	public class QueryPreparator : IQueryPreparator {
 		/// <summary>
 		/// 	Основной конструктор, связывает с сессией
 		/// </summary>
 		/// <param name="session"> </param>
-		public QueryProcessor(Session session) {
+		public QueryPreparator(Session session) {
 			_session = session;
 			_sumh = new StrongSumProvider();
 		}

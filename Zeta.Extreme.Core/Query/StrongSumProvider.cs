@@ -39,6 +39,17 @@ namespace Zeta.Extreme {
 		/// <param name="r"> </param>
 		/// <returns> </returns>
 		public bool IsSum(IZetaQueryDimension r) {
+			IZetaQueryDimension native = null;
+			if (r is ObjHandler) {
+				native = ((ObjHandler) r).Native as IZetaMainObject;
+			}
+			if (r is RowHandler) {
+				native = ((RowHandler) r).Native;
+			}
+			if (r is ColumnHandler) {
+				native = ((ColumnHandler)r).Native;
+			}
+			r = native ?? r;
 			if (null == r) {
 				return false;
 			}
@@ -70,6 +81,13 @@ namespace Zeta.Extreme {
 			var row = item as IZetaRow;
 			if (null != row) {
 				if (row.IsMarkSeted("0SA")) {
+					return true;
+				}
+			}
+			var obj = item as IZetaMainObject;
+			if (null != obj) {
+				if (obj.IsFormula && (string.IsNullOrWhiteSpace(obj.FormulaType) || obj.FormulaType == "sum") &&
+				    !string.IsNullOrWhiteSpace(obj.Formula)) {
 					return true;
 				}
 			}
@@ -125,7 +143,13 @@ namespace Zeta.Extreme {
 			if (!IsSum(item)) {
 				yield break;
 			}
-			if (item is IZetaRow) {
+			if (item is IZetaMainObject) {
+				var ids = item.Formula.SmartSplit().Select(_ => _.ToInt()).ToArray();
+				foreach (var id in ids) {
+					yield return new QueryDelta {ObjId = id};
+				}
+			}
+			else if (item is IZetaRow) {
 				var row = item as IZetaRow;
 				if (row.IsMarkSeted("0SA")) {
 					if (string.IsNullOrWhiteSpace(((IZetaFormsSupport) row).GroupCache)) {

@@ -277,7 +277,7 @@ namespace Zeta.Extreme {
 			if (null != CustomPreparatorClass) {
 				return Activator.CreateInstance(CustomPreparatorClass, this) as IQueryPreparator;
 			}
-			return new QueryProcessor(this);
+			return new QueryPreparator(this);
 			//}
 		}
 
