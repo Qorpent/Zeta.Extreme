@@ -81,7 +81,7 @@ $.extend(api,(function(){
             userinfo : $.extend(new Command({domain: "zeta", name: "getuserinfo"}), {
                 wrap : function(obj) {
                     var getShortName = function() {
-                        var n = obj.Name.trim().split(" ");
+                        var n = obj.Name.trim().replace(/\s+/g, " ").split(" ");
                         if (obj.Name != "NOT REGISTERED IN DB" && n.length == 3) {
                             return n[0] + " " + n[1].substring(0,1) + ". " + n[2].substring(0,1) + ".";
                         } else {
