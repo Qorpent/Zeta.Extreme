@@ -20,13 +20,13 @@
     });
     $(window.zefs).on(window.zefs.handlers.on_periodsload, function() {
         if (null == zefs.myform.startError) {
-            formperiod.text(zefs.getperiodbyid(period) + " ");
+            formperiod.text(zefs.getperiodbyid(period));
         }
     });
     $(window.zefs).on(window.zefs.handlers.on_sessionload, function() {
         if (null == zefs.myform.startError) {
             period = window.zefs.myform.currentSession.Period;
-            formname.text(zefs.myform.currentSession.FormInfo.Name + " " + zefs.myform.currentSession.ObjInfo.Name + " за ");
+            formname.text(zefs.myform.currentSession.FormInfo.Name + " " + zefs.myform.currentSession.ObjInfo.Name + " за");
             formyear.text(zefs.myform.currentSession.Year + " год");
         }
     });

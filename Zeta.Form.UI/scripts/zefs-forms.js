@@ -75,14 +75,15 @@
 
     Zefs.prototype.restoreLastState = function() {
         var ts = zeta.temporarystorage.Get();
-        if (!!ts["activecell"]) {
+        // Бредовое поведение detected
+        if (!!ts.activecell && !!ts.pageoffset) {
             if (ts.pageoffset.session == zefs.myform.sessionId) {
                 this.activateCell($('td.data[id="' + ts.activecell + '"]'));
             } else {
                 this.nextCell();
             }
         }
-        if (!!ts["pageoffset"]) {
+        if (!!ts.pageoffset) {
             if (ts.pageoffset.session == zefs.myform.sessionId) {
                 $(window).scrollTop(ts.pageoffset.offset);
             }

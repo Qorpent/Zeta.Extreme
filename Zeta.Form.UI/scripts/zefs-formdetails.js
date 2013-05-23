@@ -3,15 +3,21 @@
  */
 !function($) {
     var root = window.zefs = window.zefs || {};
-    var formdependence = new zeta.Widget("zefsformdependence", zeta.console.layout.position.layoutPageHeader, "right", { authonly: true, priority: 80 });
-    var t = $('<span class="label-tree"/>');
+    var zefsforminfo = new zeta.Widget("zefsforminfo", zeta.console.layout.position.layoutPageHeader, "right", { authonly: true, priority: 80 });
     var content = $('<div/>'),
         formdetails = $('<div class="zefsformdetails"/>'),
+        formdependence  = $('<div class="zefsformdependence"/>'),
         formdocumentation = $('<div class="zefsformdocumentation"/>').append(
-            $('<h5/>').css("margin", 0).text("Документация"),
-            $('<p class="hint"/>').text("(нажмите по ссылке, для получения справки по отдельной строке)")
-        );
-    content.append(formdetails, formdocumentation);
+            $('<h5 class="btn-link non-printable"/>').css("margin-bottom", 0)
+                .html('Документация<span class="caret"/>')
+        ),
+        docprint = $('<button class="btn btn-mini non-printable">Печать</button>');
+    formdocumentation.children().append(docprint);
+    docprint.click(function() {
+        $('#zefsFormDoc').printelement();
+    });
+    var t = $('<span class="label-tree"/>');
+    content.append(formdetails, formdependence, formdocumentation);
 
     var GetFormType = function(type) {
         switch (type) {
@@ -31,9 +37,11 @@
                 $('<tr/>').append($('<td/>').text("Тип"), $('<td/>').text(GetFormType(d.type)))
             )
         );
-        formdetails.append($('<h3/>').text(d.name));
-        formdetails.append(t);
-        formdetails.append($('<h5/>').css({margin: "10px 0"}).text("Зависимые формы"));
+        var detailstitle = $('<h5 class="btn-link"/>').html('Техническая информация<span class="caret"/>');
+        formdetails.append(detailstitle);
+        formdetails.append(t.hide());
+        var dependancetitle = $('<h5 class="btn-link"/>').html('Зависимые формы<span class="caret"/>');
+        formdependence.append(dependancetitle);
         $.each(d.requiredFor, function(i1, r1) {
             if (r1.code == "controlpointall") return;
             var c1 = $('<div/>');
@@ -70,9 +78,9 @@
                 });
                 c1.append(c2.hide());
             });
-            formdetails.append(c1);
+            formdependence.append(c1);
         });
-        $.each(formdetails.find(".haschildrens"), function(i, e) {
+        $.each(formdependence.find(".haschildrens"), function(i, e) {
             var t = $(e);
             if (t.children().length < 2) return;
             var c = $('<span/>');
@@ -90,24 +98,33 @@
     };
 
     var RenderDocumentation = function() {
-        var d = zefs.myform.documentation;
         var codes = $.map(zefs.myform.documentation, function(w) { return w.Code }).join(',');
-        $.ajax({
-            url : "wiki/get.json.qweb",
-            type : "POST",
-            dataType : "json",
-            data : { code : codes }
-        }).success(function(doc) {
-            $.each(doc, function(i, w) {
-                var title = $('<span class="btn-link"/>').text(w.Title);
-                title.click(function(e) {
-                   $(e.target).next().toggle();
+        if (codes.length > 0) {
+            $.ajax({
+                url : "wiki/get.json.qweb",
+                type : "POST",
+                dataType : "json",
+                data : {
+                    code : codes,
+                    usage : "formhelp"
+                }
+            }).success(function(result) {
+                var hint = "";
+                if (!$.isEmptyObject(result)) {
+                    hint = "(нажмите по ссылке для получения справки по отдельной строке)";
+                }
+                var doc = $('<div id="zefsFormDoc"/>');
+                doc.append($('<h2 style="display: none;"/>').text("Справка по форме: " + zefs.myform.currentSession.FormInfo.Name));
+                doc.append($('<p class="hint non-printable"/>').text(hint));
+                $.each(result, function(i, w) {
+                    var title = $('<h4 class="btn-link"/>').text(w.Title);
+                    doc.append(title, $('<p/>').html(wiky.process(w.Text)).hide());
                 });
-                formdocumentation.append(title,
-                    $('<p/>').html(wiky.process(w.Text)).hide()
-                );
-            })
-        });
+                formdocumentation.append(doc);
+            });
+        } else {
+            formdocumentation.append($('<p class="hint non-printable"/>').text("Для данной формы пока нет документации"));
+        }
     };
 
     $(root).on(root.handlers.on_detailsload, function() {
@@ -124,8 +141,17 @@
             content: content,
             width: 700, height: 350
         });
+        formdocumentation.delegate("h5", "click", function(e) {
+            $('#zefsFormDoc').toggle();
+        });
+        formdetails.delegate("h5", "click", function(e) {
+            $(e.target).nextAll().toggle();
+        });
+        formdependence.delegate("h5", "click", function(e) {
+            $(e.target).nextAll().toggle();
+        });
     });
 
-    formdependence.body = $('<div/>').append(t);
-    zeta.console.RegisterWidget(formdependence);
+    zefsforminfo.body = $('<div/>').append(t);
+    zeta.console.RegisterWidget(zefsforminfo);
 }(window.jQuery);

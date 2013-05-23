@@ -623,7 +623,20 @@ root.init = root.init ||
             FillOther();
             CheckConditions();
         } else {
-            var idx = !$.isEmptyObject(result.data) ? result.ei+1 : result.si;
+            var idx = 0;
+            if (!$.isEmptyObject(result)) {
+                if (!!result.ei) {
+                    idx = result.ei+1;
+                }
+                else if (!!result.si) {
+                    idx = result.si;
+                }
+                else {
+                    // если нет ни того ни другого, наверное, надо брать
+                    // из последнего батча
+                }
+            };
+//          var idx = !$.isEmptyObject(result.data) ? result.ei+1 : result.si;
             window.setTimeout(function(){api.data.start.execute({session: root.myform.sessionId,startidx: idx})},500);
         }
     });
