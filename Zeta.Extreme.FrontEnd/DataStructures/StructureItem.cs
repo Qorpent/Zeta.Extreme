@@ -111,5 +111,11 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		[SerializeNotNullOnly]
 		public string validate;
+
+		/// <summary>
+		/// Комментарий к строке
+		/// </summary>
+		[SerializeNotNullOnly]
+		public string comment;
 	}
 }

@@ -602,6 +602,7 @@ namespace Zeta.Extreme.FrontEnd {
 						 exref = null!=r.ExRefTo,
 						 format = r.ResolveTag("numberformat"),
 						 activecols = r.ResolveTag("activecol").SmartSplit().ToArray(),
+						 comment = r.Comment,
 						 
 					 })
 					.Union(
@@ -620,7 +621,8 @@ namespace Zeta.Extreme.FrontEnd {
 								 exref = null!=c.Target && c.Target.IsMarkSeted("DOEXREF"),
 								 format = c.NumberFormat,
 								 rules = c.RowCheckConditions,
-								 validate = c.Validation
+								 validate = c.Validation,
+								 comment =  c.Comment
 							 })
 					).ToArray();
 			sw.Stop();
