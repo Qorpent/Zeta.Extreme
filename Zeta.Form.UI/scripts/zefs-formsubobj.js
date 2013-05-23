@@ -10,7 +10,7 @@
             var bg = $('<div class="btn-group"/>');
             var b = $('<button class="btn btn-mini dropdown-toggle"/>');
             var list = $('<ul class="dropdown-menu"/>');
-            b.html(s.SubObjInfo.Name + '<span class="caret"/>');
+            b.html('<strong>' + s.SubObjInfo.Name + '</strong><span class="caret"/>');
             $.each(s.SplitObjInfo, function(i, o) {
                 var li = $('<li/>');
                 var a = $('<a/>').text(o.Name);
