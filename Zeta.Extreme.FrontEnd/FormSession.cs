@@ -861,7 +861,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <summary>
 		/// Позволяет установить фильтр для идентификаторов входны строк для структуры по умолчанию
 		/// </summary>
-		public int[] RowIdFilter { get; set; }
+		public string[] RowCodeFilter { get; set; }
 
 		private void InitializeColset() {
 			EnsureDataSession();
@@ -1022,8 +1022,8 @@ namespace Zeta.Extreme.FrontEnd {
 					return false;
 				}
 			}
-			if (null != RowIdFilter) {
-				if (-1 == Array.IndexOf(RowIdFilter, row.Id)) {
+			if (null != RowCodeFilter) {
+				if (-1 == Array.IndexOf(RowCodeFilter, row.Code)) {
 					return false;
 				}
 			}
