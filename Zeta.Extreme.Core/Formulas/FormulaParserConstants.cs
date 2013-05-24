@@ -72,6 +72,11 @@ namespace Zeta.Extreme {
 		public const string PeriodsPattern = @"((\.P\((?<pds>[\d,]+)\))?)";
 
 		/// <summary>
+		/// 	Паттерн на несколько периодов
+		/// </summary>
+		public const string TypesPattern = @"(\.conto\([""']?(?<t>[^\)""']+)[""']\))?";
+
+		/// <summary>
 		/// 	Паттерн смещения по строке
 		/// </summary>
 		public const string ColOrRowPattern = "((" + RowPattern + ")|(" + ColPattern + "))";
@@ -107,7 +112,8 @@ namespace Zeta.Extreme {
 			ObjPattern +
 			AltObjFilterPattern +
 			YearPattern +
-			PeriodOrPeriodsPattern;
+			PeriodOrPeriodsPattern+
+			TypesPattern;
 			
 		/// <summary>
 		/// 	Общий паттерн выражения дельты (с защитой от параметрических переходов)
@@ -118,7 +124,8 @@ namespace Zeta.Extreme {
 			ObjPattern +
 			AltObjFilterPattern +
 			YearPattern +
-			PeriodOrPeriodsPattern;
+			PeriodOrPeriodsPattern+
+			TypesPattern;
 
 		/// <summary>
 		/// 	Шаблон вызова дельты
