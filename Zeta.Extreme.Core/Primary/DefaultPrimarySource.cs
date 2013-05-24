@@ -236,7 +236,7 @@ namespace Zeta.Extreme.Primary {
 			return 
 				from prototypegroup in myrequests.GroupBy(_ => _.GetPrototype(), _ => _)
 				from dgroup in prototypegroup.GroupBy(_ => _.Obj.DetailMode, _ => _) 
-				from altobjgroup in dgroup.GroupBy(_ => _.Reference.Contragents)  
+				from altobjgroup in dgroup.GroupBy(_ => _.Reference.Contragents+_.Reference.Types)  
 				select new PrimaryQueryGroup
 					{
 						Queries = altobjgroup.ToArray(), 

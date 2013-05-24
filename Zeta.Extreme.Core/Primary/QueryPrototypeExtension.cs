@@ -21,6 +21,9 @@ namespace Zeta.Extreme.Primary
 			CheckZetaEvalUsage(query, ref result);
 			CheckAggregateEvalUsage(query,ref result);
 			CheckDetailModeUsage(query, ref result);
+			if (!string.IsNullOrWhiteSpace(query.Reference.Types)) {
+				result.UseViewInsteadOfTable = true;
+			}
 			return result;
 		}
 
@@ -42,6 +45,10 @@ namespace Zeta.Extreme.Primary
 				
 				return;
 			} 
+			if (!string.IsNullOrWhiteSpace(query.Reference.Contragents) || !string.IsNullOrWhiteSpace(query.Reference.Types)) {
+				result.RequireDetails = true;
+				result.PreserveDetails = false;
+			}
 			if (TagHelper.Value(query.Row.Tag, "allowdetails").ToBool()) {
 				result.PreserveDetails = false;
 			}

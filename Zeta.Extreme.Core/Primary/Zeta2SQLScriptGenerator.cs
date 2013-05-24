@@ -22,6 +22,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Primary {
@@ -94,7 +95,8 @@ namespace Zeta.Extreme.Primary {
 							c = _.First().Col.Id,
 							t = _.First().Obj.Type,
 							m = _.First().Obj.DetailMode,
-							af = _.First().Reference.Contragents
+							af = _.First().Reference.Contragents,
+							Types = _.First().Reference.Types,
 						}).Distinct().
 				        ToArray();
 			return colobj;
@@ -129,6 +131,7 @@ namespace Zeta.Extreme.Primary {
 		                            PrimaryQueryPrototype prototype) {
 			var objfld = GetObjectField(cobj);
 			var contragentCondition = GetContragentCondition(cobj);
+			var typescondition = GetTypesCondition(cobj);
 			var detailCondition = GetDetailCondition(cobj, prototype);
 			var colcondition = " col = " + cobj.c;
 			if (!string.IsNullOrWhiteSpace(colids)) {
@@ -141,12 +144,21 @@ namespace Zeta.Extreme.Primary {
 
 			if (string.IsNullOrWhiteSpace(time.ps)) {
 				return string.Format(
-					@" WHERE period={0} and year={1} and {2} and {5} and row in ({4}){6}{7}  ",
-					time.p, time.y, colcondition, cobj.o, rowids, objcondition, detailCondition, contragentCondition);
+					@" WHERE period={0} and year={1} and {2} and {5} and row in ({4}){6}{7}{8}",
+					time.p, time.y, colcondition, cobj.o, rowids, objcondition, detailCondition, contragentCondition,typescondition);
 			}
 			return string.Format(
-				" WHERE period in ({0}) and year={1} and {2} and  {5} and row in ({4}){6}{7} ",
-				time.ps, time.y, colcondition, cobj.o, rowids, objcondition, detailCondition, contragentCondition);
+				" WHERE period in ({0}) and year={1} and {2} and  {5} and row in ({4}){6}{7}{8}",
+				time.ps, time.y, colcondition, cobj.o, rowids, objcondition, detailCondition, contragentCondition,typescondition);
+		}
+
+		private string GetTypesCondition(ObjColQueryGeneratorStruct cobj) {
+			var dtypecond = "";
+			if (!string.IsNullOrWhiteSpace(cobj.Types)) {
+				var types = string.Join(",", cobj.Types.SmartSplit().Select(_ => "'" + _ + "'"));
+				dtypecond = " and dtype in ( " + types + " )";
+			}
+			return dtypecond;
 		}
 
 		private static string GetContragentCondition(ObjColQueryGeneratorStruct cobj) {

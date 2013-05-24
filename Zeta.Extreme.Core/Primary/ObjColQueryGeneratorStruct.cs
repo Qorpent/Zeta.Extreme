@@ -53,5 +53,9 @@ namespace Zeta.Extreme.Primary {
 		/// </summary>
 		public string ids;
 
+		/// <summary>
+		/// Типы контрагентов
+		/// </summary>
+		public string Types;
 	}
 }
