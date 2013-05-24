@@ -705,7 +705,7 @@ namespace Zeta.Extreme.FrontEnd {
 							Col = ch,
 							Obj = { Native = r.AttachedObject ?? WorkingObject, DetailMode = r.SumObj ? DetailMode.SumObject : DetailMode.None },
 							Time = {Year = c._.Year, Period = c._.Period},
-							Reference = { Contragents = r.AltObjFilter, Accounts = r.ContoFilter }
+							Reference = { Contragents = r.AltObjFilter, Types = r.ContoFilter }
 						});
 					q = DataSession.Register(q, key);
 
@@ -742,7 +742,7 @@ namespace Zeta.Extreme.FrontEnd {
 							Col = {Native = primarycol._.Target},
 							Obj = { Native = primaryrow.AttachedObject ?? WorkingObject, DetailMode = primaryrow.SumObj?DetailMode.SumObject : DetailMode.None},
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period},
-							Reference = {Contragents = primaryrow.AltObjFilter, Accounts = primaryrow.ContoFilter}
+							Reference = {Contragents = primaryrow.AltObjFilter, Types = primaryrow.ContoFilter}
 							
 						});
 					var key = primaryrow.Idx + ":" + primarycol.i;
@@ -760,7 +760,7 @@ namespace Zeta.Extreme.FrontEnd {
 							Col = {Native = primarycol._.Target},
 							Obj = { Native = primaryrow.AttachedObject ?? WorkingObject, DetailMode = primaryrow.SumObj?DetailMode.SumObject : DetailMode.None},
 							Time = {Year = primarycol._.Year, Period = primarycol._.Period},
-							Reference = { Contragents = primaryrow.AltObjFilter, Accounts = primaryrow.ContoFilter }
+							Reference = { Contragents = primaryrow.AltObjFilter, Types = primaryrow.ContoFilter }
 						});
 					var key = primaryrow.Idx + ":" + primarycol.i;
 					queries[key] = DataSession.Register(q, key);

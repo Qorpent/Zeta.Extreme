@@ -10,14 +10,14 @@ namespace Zeta.Extreme {
 	/// </summary>
 	public sealed class ReferenceHandler : CacheKeyGeneratorBase, IReferenceHandler  {
 		private string _contragents;
-		private string _accounts;
+		private string _types;
 
 		/// <summary>
 		/// 	Функция непосредственного вычисления кэшевой строки
 		/// </summary>
 		/// <returns> </returns>
 		protected override string EvalCacheKey() {
-			return "ca:" + Contragents + ":" + Accounts;
+			return "ca:" + Contragents + ":" + Types;
 		}
 		/// <summary>
 		/// Фильтр запроса по контрагентам
@@ -37,12 +37,12 @@ namespace Zeta.Extreme {
 		/// Фильтр по счетам
 		/// </summary>
 		
-		public string Accounts
+		public string Types
 		{
-			get { return _accounts; }
+			get { return _types; }
 			set
 			{
-				_accounts = value;
+				_types = value;
 				InvalidateCacheKey();
 			}
 		}

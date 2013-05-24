@@ -48,6 +48,7 @@ namespace Zeta.Extreme {
 			MoveObj(result);
 			MoveTime(result);
 			MoveContragent(result);
+			MoveAccounts(result);
 			result.InvalidateCacheKey();
 			return result;
 		}
@@ -56,6 +57,15 @@ namespace Zeta.Extreme {
 			if (!string.IsNullOrWhiteSpace(Contragents)) {
 				result.Reference = result.Reference.Copy();
 				result.Reference.Contragents = Contragents;
+			}
+		}
+
+		private void MoveAccounts(IQuery result)
+		{
+			if (!string.IsNullOrWhiteSpace(Types))
+			{
+				result.Reference = result.Reference.Copy();
+				result.Reference.Types = Types;
 			}
 		}
 
@@ -71,6 +81,7 @@ namespace Zeta.Extreme {
 			var c = match.Groups["c"].Value;
 			var o = match.Groups["o"].Value.ToInt();
 			var y = match.Groups["y"].Value.ToInt();
+			var t = match.Groups["t"].Value;
 			var aof = match.Groups["aof"].Value.ToStr(); //ZC-248 AltObjFilter
 			var ys = match.Groups["ys"].Value != "-";
 			if (!ys) {
@@ -114,6 +125,10 @@ namespace Zeta.Extreme {
 			//ZC-248
 			if (!string.IsNullOrWhiteSpace(aof)) {
 				delta.Contragents = aof;
+			}
+
+			if (!string.IsNullOrWhiteSpace(t)) {
+				delta.Types = t;
 			}
 			return delta;
 		}
@@ -324,6 +339,10 @@ namespace Zeta.Extreme {
 			if (0 != Year && Year != target.Time.Year) {
 				return false;
 			}
+
+			if (!string.IsNullOrWhiteSpace(Types) && target.Reference.Types != Types) {
+				return false;
+			}
 			return true;
 		}
 
@@ -371,5 +390,10 @@ namespace Zeta.Extreme {
 		/// 	Прямое или дельтированое указание года
 		/// </summary>
 		public int Year;
+
+		/// <summary>
+		///  Поддержка счетов
+		/// </summary>
+		public string Types;
 	}
 }

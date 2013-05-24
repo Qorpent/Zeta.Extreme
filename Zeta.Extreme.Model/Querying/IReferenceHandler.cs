@@ -12,7 +12,7 @@ namespace Zeta.Extreme.Model.Querying {
 		/// <summary>
 		/// Фильтр по счетам
 		/// </summary>
-		string Accounts { get; set; }
+		string Types { get; set; }
 
 		/// <summary>
 		/// Копирование при копировании запроса
