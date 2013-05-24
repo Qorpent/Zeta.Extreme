@@ -102,6 +102,37 @@ namespace Zeta.Extreme.Core.Tests.SubQuery {
 					.Trim(), request.PreprocessedFormula.Trim());
 		}
 
+		[Test]
+		public void Can_Use_Conto_In_Formulas_Deltas()
+		{
+			var storage = new FormulaStorage();
+			var request = new FormulaRequest
+			{
+				Language = "boo",
+				Formula =
+					@"$X@Y.conto('Z')"
+			};
+			storage.Preprocess(request);
+
+			Console.WriteLine(request.PreprocessedFormula);
+			Assert.AreEqual(
+				@"new QueryDelta{ RowCode = ""X"", ColCode = ""Y"", Types = ""Z"", }"
+					.Trim(), request.PreprocessedFormula.Trim());
+		}
+
+
+
+		[Test]
+		public void TypesMove()
+		{
+			var q = new Query { Reference = { Types = "X" } };
+			var d = new QueryDelta { Types = "Y" };
+			var dq = d.Apply(q);
+			Assert.AreNotSame(q, dq);
+			Assert.AreSame(q.Row, dq.Row);
+			Assert.AreNotSame(q.Reference, dq.Reference);
+			Assert.AreEqual("Y", dq.Reference.Types);
+		}
 
 		[Test]
 		public void ColMove() {

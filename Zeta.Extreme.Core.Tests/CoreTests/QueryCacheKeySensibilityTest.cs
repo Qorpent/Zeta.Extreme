@@ -109,6 +109,14 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			Assert.AreNotEqual(q1.GetCacheKey(),q2.GetCacheKey());
 		}
 
+		[Test]
+		public void TypesObjFilterIsUsedInCache()
+		{
+			var q1 = new Query { Reference = { Types = "1" } };
+			var q2 = new Query { Reference = { Types = "2" } };
+			Assert.AreNotEqual(q1.GetCacheKey(), q2.GetCacheKey());
+		}
+
 
 		[Test]
 		[Combinatorial]

@@ -182,6 +182,10 @@ namespace Zeta.Extreme {
 			if (!string.IsNullOrWhiteSpace(Contragents)) {
 				s.Append("Contragents = \"" + Contragents + "\", ");
 			}
+			if (!string.IsNullOrWhiteSpace(Types))
+			{
+				s.Append("Types = \"" + Types + "\", ");
+			}
 			s.Append("}");
 			if (!string.IsNullOrWhiteSpace(infunctionName)) {
 				s.Append(")");
