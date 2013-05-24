@@ -19,7 +19,6 @@
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 using Zeta.Extreme.Model;
-using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 
@@ -33,13 +32,12 @@ namespace Zeta.Extreme.Core.Tests {
 			//need uppercase code for RowCache propose
 			RowCache.Bycode["R1"] = new Row {Id = -123, Code = "r1", IsFormula = true, Formula = "f1", FormulaType = "mock"};
 			RowCache.Bycode["R2"] = new Row {Id = -124, Code = "r2", IsFormula = true, Formula = "f2", FormulaType = "mock"};
-			_mquery = new Query {Row = {Code = "r1"}};
-			_mquery_ss = new Query
-				{Row = {Code = "r2"}, Col = {Code = "PLAN"}, Obj = {Id = 352}, Time = {Year = 2012, Period = 301}};
+			_mquery = new Query {Row = {Code = "r1"},IgnoreCheckPrimaryExistence = true};
+			_mquerySs = new Query {Row = {Code = "r2"}, Col = {Code = "PLAN"}, Obj = {Id = 352}, Time = {Year = 2012, Period = 301},IgnoreCheckPrimaryExistence = true};
 		}
 
 		private IQuery _mquery;
-		private IQuery _mquery_ss;
+		private IQuery _mquerySs;
 
 		public class MockFormula : IFormula {
 			/// <summary>

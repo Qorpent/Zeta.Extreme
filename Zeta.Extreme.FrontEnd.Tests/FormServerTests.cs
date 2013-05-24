@@ -125,7 +125,8 @@ namespace Zeta.Extreme.FrontEnd.Tests
                     new InputTemplate(),
                     2013,
                     2,
-                    new Obj()
+                    new Obj(),
+					null
                 }
             );
 

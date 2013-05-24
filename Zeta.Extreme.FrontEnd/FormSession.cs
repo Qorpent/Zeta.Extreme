@@ -105,7 +105,7 @@ namespace Zeta.Extreme.FrontEnd {
 			if (currency != "RUB") {
 				rate = reader.GetCurrencyRate(Year, Period, currency);
 			}
-			if (!string.IsNullOrWhiteSpace(form.Thema.GetParameter("splittoobj", "")))
+			if (null!=form.Thema && !string.IsNullOrWhiteSpace(form.Thema.GetParameter("splittoobj", "")))
 			{
 				PrepareSubObjects();
 			}
