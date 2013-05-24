@@ -30,18 +30,14 @@ root.handlers = $.extend(root.handlers, {
         layout : {
             position : {
                 layoutHeader : "header",
-                layoutTools : "tools",
 //              layoutBodyLeft : "body-left",
-                layoutBodyMain : "body-main",
-                layoutPageHeader : "pageheader"
+                layoutBodyMain : "body-main"
             },
             header : $('<div id="consoleHeader"/>').append(
                 $('<div class="navbar"/>').append(
                     $('<div class="navbar-inner"/>')
                 )
             ),
-            tools : $('<div id="consoleTools" class="console-tools"/>'),
-            pageheader : $('<div id="consolePageHeader" class="console-pageheader"/>'),
             body : $('<div id="consoleBody" class="console-body"/>'),
             footer : $('<div id="consoleFooter"/>'),
             add : function(e) {
@@ -49,13 +45,11 @@ root.handlers = $.extend(root.handlers, {
                 if (e.float != "none") $(e.body).addClass("pull-" + e.float);
                 if (e.pos == this.position.layoutHeader) $('#consoleHeader > .navbar > .navbar-inner').append(e.body);
                 if (e.pos == this.position.layoutBodyMain) $('#consoleBody').append(e.body);
-                if (e.pos == this.position.layoutTools) $('#consoleTools').append(e.body);
-                if (e.pos == this.position.layoutPageHeader) $('#consolePageHeader').append(e.body);
             }
         },
 
         Setup : function() {
-            $('body').append(this.layout.header,this.layout.tools,this.layout.pageheader, this.layout.body,this.layout.footer);
+            $('body').append(this.layout.header,this.layout.body,this.layout.footer);
             $.each(this.widgets.sort(function(a,b) { return b.options.priority - a.options.priority }),
                 $.proxy(function(i, e) {
                     if ((root.user != null && root.user.getLogonName() != "" ) || !e.options.authonly) {
@@ -137,29 +131,4 @@ root.handlers = $.extend(root.handlers, {
 
 (function($) {
     $(window).load(function() { window.zeta.console.whoami() });
-})(jQuery);
-
-(function ($) {
-    $.fn.printelement = function () {
-        return this.each(function () {
-            var container = $(this);
-            var hidden_IFrame = $('<iframe></iframe>').attr({
-                width: '1px',
-                height: '1px',
-                display: 'none'
-            }).appendTo(container);
-            var myIframe = hidden_IFrame.get(0);
-            var script_tag = myIframe.contentWindow.document.createElement("script");
-            var style_tag = myIframe.contentWindow.document.createElement("style");
-            style_tag.innerText = "@media print{.non-printable{display: none !important;}.printable{display: inherit !important;}}";
-            script_tag.type = "text/javascript";
-            var script = myIframe.contentWindow.document.createTextNode('function Print(){ window.print(); }');
-            script_tag.appendChild(script);
-            myIframe.contentWindow.document.body.innerHTML = container.html().replace(/display:\s?none;/g, '');
-            myIframe.contentWindow.document.body.appendChild(script_tag);
-            myIframe.contentWindow.document.body.appendChild(style_tag);
-            myIframe.contentWindow.Print();
-            hidden_IFrame.remove();
-        });
-    };
 })(jQuery);
