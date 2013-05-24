@@ -8,6 +8,9 @@ namespace Zeta.Extreme.Core.Tests.PrimaryTests
 	[TestFixture]
 	public class ZC248AltObjToSqlTest
 	{
+
+		
+
 		[Test]
 		public void QueryWithAltObjWillBeParsedWell() {
 			var query = new Query{Row={Id=1},Col={Id=1},Time={Year = 2012,Period = 1},Obj={Id=1}, Reference = {Contragents = "1,2,3"}};

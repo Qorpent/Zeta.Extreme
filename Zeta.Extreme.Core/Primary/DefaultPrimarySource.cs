@@ -193,12 +193,12 @@ namespace Zeta.Extreme.Primary {
 						var period = r.GetInt32(5);
 						var value = r.GetDecimal(6);
 						var otype = r.GetInt32(7);
-						var altobj = r.GetString(8);
+						var reference = r.GetString(8);
 						var target =
 							_grouped[row].FirstOrDefault(
 								_ =>
 								_.Col.Id == col && _.Obj.Id == obj && (int) _.Obj.Type == otype && _.Time.Year == year &&
-								_.Time.Period == period && (_.Reference.Contragents??"")==altobj);
+								_.Time.Period == period && ((_.Reference.Contragents??"")+":"+(_.Reference.Types??""))==reference);
 						if (null != target) {
 							_session.StatIncPrimaryAffected();
 							target.HavePrimary = true;

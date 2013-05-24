@@ -18,6 +18,7 @@
     <Compile Include="DatabaseIgnorancePureZeta\CanCalculateWithTargetedObjects.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\NoCalcSumSupport.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\SumObjSupport.cs" />
+    <Compile Include="FeatureAndBugFix\Af575ContoSupport.cs" />
     <Compile Include="FeatureAndBugFix\CanCalculateDetails.cs" />
     <Compile Include="FeatureAndBugFix\CanCalculateValuta.cs" />
     <Compile Include="CheckKnownData.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="NativeMaping\CanReadFormState.cs" />
     <Compile Include="NativeMaping\ZC438NativeCellReading.cs" />
     <Compile Include="NativeMaping\ZC439NativeCellHistoryReading.cs" />
+    <Compile Include="PrimaryTests\AF575TypeToSqlTest.cs" />
     <Compile Include="PrimaryTests\ZC248AltObjToSqlTest.cs" />
     <Compile Include="SerialAcessTest.cs" />
     <Compile Include="SubQuery\ExistedFormulasParsingTest.cs" />

@@ -79,7 +79,8 @@ namespace Zeta.Extreme.Primary {
 						t = _.First().Obj.Type,
 						m = _.First().Obj.DetailMode,
 						ids = string.Join(",",_.Select(__=>__.Obj.Id).Distinct().OrderBy(___=>___)),
-						af = _.First().Reference.Contragents
+						af = _.First().Reference.Contragents,
+						Types = _.First().Reference.Types
 					}).Distinct().
 						ToArray();
 			return objtypes;
@@ -156,7 +157,7 @@ namespace Zeta.Extreme.Primary {
 			var dtypecond = "";
 			if (!string.IsNullOrWhiteSpace(cobj.Types)) {
 				var types = string.Join(",", cobj.Types.SmartSplit().Select(_ => "'" + _ + "'"));
-				dtypecond = " and dtype in ( " + types + " )";
+				dtypecond = " and dtypecode in ( " + types + " )";
 			}
 			return dtypecond;
 		}
@@ -187,8 +188,8 @@ namespace Zeta.Extreme.Primary {
 			var objfld = GetObjectField(cobj);
 			var valuereference = GetValueReference(prototype);
 			var idfld = prototype.UseSum ? "0" : "id";
-			return string.Format("\r\nSELECT {0},col,row,{1},year,{2}, {3} , {4} ,'{5}'  ", idfld, objfld, time.p, valuereference,
-			                     (int) cobj.t, cobj.af);
+			return string.Format("\r\nSELECT {0},col,row,{1},year,{2}, {3} , {4} ,'{5}:{6}'  ", idfld, objfld, time.p, valuereference,
+			                     (int) cobj.t, cobj.af,cobj.Types);
 		}
 
 		private string GetGroupByPart(ObjColQueryGeneratorStruct cobj, PrimaryQueryPrototype prototype) {
