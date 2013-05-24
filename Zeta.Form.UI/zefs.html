@@ -28,61 +28,101 @@
 
     <script type="text/javascript">
         var useStatic = true;
+        var serversState = new Object();
 
         (function() {
             var global = window.loadBalancer = this;
+            
             var serversMap = [
                 {
-                    'host' : 'ugmk-as2.ugmk.com',
+                    'host' : 'corp-assoi.ugmk.com',
                     'protocol' : 'https',
-                    'load' : undefined
+                    'apps' : [
+                        'zefs',
+                        'zefs1',
+                        'zefs2',
+                        'zefs3',
+                        'zefs4'
+                    ]
                 },
 
                 {
-                    'host' : 'ugmk-as5.ugmk.com',
+                    'host' : 'admin-assoi.ugmk.com',
                     'protocol' : 'https',
-                    'load' : undefined
-                },
-
-                {
-                    'host' : 'ugmk-sccm2.ugmk.com',
-                    'protocol' : 'https',
-                    'load' : undefined
+                    'apps' : [
+                        'zefs',
+                        'zefs1',
+                        'zefs2',
+                        'zefs3',
+                        'zefs4'
+                    ]
                 }
             ];
 
             this.getMostFreeServer = function() {
-                var sa = new Array();
-
-                for(i = 0; i < serversMap.length; i++) {
-                    zefsNodeloadUrl = serversMap[i].protocol + '://' + serversMap[i].host + '/zefs/zefs/nodeload.json.qweb';
-
+                this.getStatistics = function(
+                    protocol,
+                    host,
+                    application
+                ) {         
                     $.ajax(
                         {
-                            url : zefsNodeloadUrl,
-                            type : 'GET',
-                            dataType: 'json',
-                            timeout : 20000,
-                            success : function(json) {
-                                serversMap[i].load.zefs = json;
-                                sa[i] = json.Availability;
-                            }
+                            url : protocol + '://' + host + '/zefs/' + application + '/nodeload.json.qweb',
+                            xhrFields: {
+                                withCredentials: true
+                            },
+                            crossDomain : true,
+                            dataType : 'json',
+                            success: function(json) {
+                                serversState[host].appHandled++;
+                                serversState[host][application] = json.Availability;
+                            },
+                            timeout : 500
                         }
                     ).error(
                         function() {
-
+                            serversState[host].appHandled++;
+                            serversState[host][application] = 0;
                         }
                     );
+                },
+                
+                this.waitForComplete = function() {
+                    for(i = 0; i < serversMap.length; i++) {
+                        if(serversState[serversMap[i].host]) {
+                            if(
+                                serversState[serversMap[i].host].appHandled != serversMap[i].apps.length
+                            ) {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                    }
+                    
+                    return true;
+                };
+            
+                for(i = 0; i < serversMap.length; i++) {
+                    serversState[serversMap[i].host] = new Object();
+                    serversState[serversMap[i].host].appHandled = 0;
+                
+                    for(k = 0; k < serversMap[i].apps.length; k++) {
+                        this.getStatistics(
+                            serversMap[i].protocol,
+                            serversMap[i].host,
+                            serversMap[i].apps[k]
+                        );
+                    }
                 }
-
-
+                
+                setTimeout(this.waitForComplete, 2000);
                // return serversMap[sa.indexOf(sa.max())];
             };
 
             $(document).ready(
                 function() {
                     global.getMostFreeServer();
-                    
                 }
             );
         })();
