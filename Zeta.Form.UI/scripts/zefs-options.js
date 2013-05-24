@@ -114,6 +114,9 @@ $.extend(api,(function(){
                             if (prevrow.level< o.level) {
                                 prevrow.haschilds = true;
                             }
+                            if (!!o.comment) {
+                                o.hasHelp = true;
+                            }
                             result.rows.push(o);
                             prevrow = o;
                         }

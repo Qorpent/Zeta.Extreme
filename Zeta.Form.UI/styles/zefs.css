@@ -57,6 +57,23 @@ div.open>.tooltip {
     display: none !important;
 }
 
+.popover-content {
+    font-style: normal;
+}
+
+.popover-comment {
+    font-style: italic;
+    margin: 5px 0 0 0;
+    border-top: 1px solid lightgray;
+    padding-top: 5px;
+}
+
+.popover-comment:only-of-type {
+    border-top: none;
+    margin: 0;
+    padding: 0;
+}
+
 .formuserstable {
     table-layout: fixed;
 }

@@ -463,23 +463,39 @@ root.init = root.init ||
     });
 
     api.wiki.exists.onSuccess(function(e, result) {
-        root.myform.documentation = result;
+        zefs.myform.documentation = result;
+        $.each(result, function(i, c) {
+            var code = c.Code.match(/row\/([^\/]+)/);
+            var ifexist = $.map(zefs.myform.currentSession.structure.rows, function(r, i) { if (r.code == code[1] && !r.hasHelp) return i; });
+            if (ifexist.length > 0) {
+                zefs.myform.currentSession.structure.rows[ifexist[0]].hasHelp = true;
+            }
+        });
         $(root).trigger(root.handlers.on_documentationload);
-        $.each(result, function(i, w) {
-            var wikibtn = $('#wiki_' + w.Code.replace(/\//g, '_'));
+        var withhelp = $.map(zefs.myform.currentSession.structure.rows, function(r) { if (r.hasHelp) return r; });
+        $.each(withhelp, function(i, row) {
+            var helpcode = '/row/' + row.code + '/default';
+            var wikibtn = $('#wiki_' + helpcode.replace(/\//g, '_'));
             wikibtn.removeClass("notexist");
             wikibtn.click(function() {
                 clearTimeout(window.wikitimer);
             });
             wikibtn.mouseenter(function() {
                 window.wikitimer = setTimeout(function() {
-                var req = $.ajax({url : "wiki/get.json.qweb", data: {code: wikibtn.attr("code")}});
-                req.success(function(result) {
-                    if (!!result[0]) {
-                        wikibtn.popover({selector: 'body', placement: "right", trigger: "hover", html: true, content: wiky.process(result[0].Text)});
+                    var content = "";
+                    if (!!row.comment && row.comment != "") {
+                        content = '<p class="popover-comment">' + row.comment.replace(/\s*\r\n/g,'</br>') + '</p>';
+                    }
+                    var req = $.ajax({url : "wiki/get.json.qweb", data: {code: wikibtn.attr("code")}});
+                    req.success(function(result) {
+                        if (!!result[0]) {
+                            content = wiky.process(result[0].Text) + content;
+                        }
+                        wikibtn.popover({selector: 'body', placement: "right", trigger: "hover", html: true, content: content });
                         wikibtn.popover("show");
-                    }});
-                }, 500)
+                        content = null;
+                    });
+                }, 500);
             });
             wikibtn.mouseleave(function() {
                 clearTimeout(window.wikitimer);
