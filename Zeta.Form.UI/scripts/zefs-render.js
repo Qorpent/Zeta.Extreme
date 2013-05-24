@@ -150,16 +150,17 @@ $.extend(root.render, {
             $cell.addClass("recalced");
         }
         $cell.number(val, f.dl, f.ds, '');
-        $cell.data("history", $cell.text());
-        $cell.data("previous", $cell.text());
-        // реальное число без форматов, которое должно сохраняться в базу
-        $cell.data("value", val);
         if (val == "0") {
             if (!$cell.data("cellid") || !$cell.hasClass("editable")) val = "";
             $cell.text(val);
         } else {
             $cell.number(val, f.dl, f.ds, f.gs);
         }
+        $cell.data("history", $cell.text());
+        $cell.data("previous", $cell.text());
+        // реальное число без форматов, которое должно сохраняться в базу
+        $cell.data("value", val);
+
         $cell.removeClass("notloaded");
     },
 
