@@ -30,7 +30,7 @@
                 b.css("opacity", "1");
             }
             $(this).removeClass("hasunread");
-            var html = $(this).html();
+            var html = $(this).text();
             $(this).empty();
             $(this).html(html);
             html = null;
