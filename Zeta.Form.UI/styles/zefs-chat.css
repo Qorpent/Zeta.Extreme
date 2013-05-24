@@ -27,19 +27,6 @@
     vertical-align: top;
 }
 
-.refresh-btn,
-.help-btn {
-    position: absolute;
-}
-
-.refresh-btn {
-    right: 0;
-}
-
-.help-btn {
-    right: 34px;
-}
-
 .chat-buttons {
     margin-bottom: 5px;
 }
