@@ -144,6 +144,9 @@
         formdocumentation.delegate("h5", "click", function(e) {
             $('#zefsFormDoc').toggle();
         });
+        formdocumentation.delegate("h4", "click", function(e) {
+            $(e.target).next().toggle();
+        });
         formdetails.delegate("h5", "click", function(e) {
             $(e.target).nextAll().toggle();
         });

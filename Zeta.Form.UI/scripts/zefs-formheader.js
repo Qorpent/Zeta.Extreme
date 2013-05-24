@@ -25,9 +25,14 @@
     });
     $(window.zefs).on(window.zefs.handlers.on_sessionload, function() {
         if (null == zefs.myform.startError) {
-            period = window.zefs.myform.currentSession.Period;
-            formname.text(zefs.myform.currentSession.FormInfo.Name + " " + zefs.myform.currentSession.ObjInfo.Name + " за");
-            formyear.text(zefs.myform.currentSession.Year + " год");
+            var s = zefs.myform.currentSession;
+            var period = "";
+            if (s.FormInfo.Name.search(/(план|факт)/) == -1) {
+                if (s.FormInfo.Code.search(/A\.in/) != -1) period = " (факт)";
+                else if (s.FormInfo.Code.search(/B\.in/) != -1) period = " (план)";
+            }
+            formname.text(s.FormInfo.Name + " " + s.ObjInfo.Name + period + " за");
+            formyear.text(s.Year + " год");
         }
     });
     zefsformheader.body = $('<div/>').append(formname, formperiod, formyear);
