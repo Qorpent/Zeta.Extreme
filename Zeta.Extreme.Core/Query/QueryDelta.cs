@@ -25,6 +25,7 @@ using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -48,8 +49,30 @@ namespace Zeta.Extreme {
 			MoveTime(result);
 			MoveContragent(result);
 			MoveAccounts(result);
+			MoveConsobj(result);
 			result.InvalidateCacheKey();
 			return result;
+		}
+
+		private void MoveConsobj(IQuery query) {
+			if (UseConsolidateObject) {
+				var nzr = new NativeZetaReader();
+				var filter = string.IsNullOrWhiteSpace(ConsolidateObjectFilter)
+					             ? ""
+					             : ("/" + ConsolidateObjectFilter.Replace(",", "/") + "/");
+				int[] ids = null;
+				if (string.IsNullOrWhiteSpace(filter)) {
+					ids = nzr.ReadObjects("Path like '%/" + query.Obj.Id + "/%'").Select(_ => _.Id).ToArray();
+				}
+				else {
+					ids =
+						nzr.ReadObjectsWithTypes(
+							string.Format("Path like '%/{0}/%' and ('{1}' like '%/'+t.Code+'/%' or '{1}' like '%/'+c.Code+'/%')",
+							              query.Obj.Code, filter)).Select(_ => _.Id).ToArray();
+				}
+				var formula = string.Join(",", ids);
+				query.Obj = new ObjHandler {Native = new Obj {IsFormula = true, Formula = formula}};
+			}
 		}
 
 		private void MoveContragent(IQuery result) {
@@ -81,6 +104,8 @@ namespace Zeta.Extreme {
 			var o = match.Groups["o"].Value.ToInt();
 			var y = match.Groups["y"].Value.ToInt();
 			var t = match.Groups["t"].Value;
+			var co = !string.IsNullOrWhiteSpace(match.Groups["co"].Value);
+			var cov = match.Groups["cov"].Value;
 			var aof = match.Groups["aof"].Value.ToStr(); //ZC-248 AltObjFilter
 			var ys = match.Groups["ys"].Value != "-";
 			if (!ys) {
@@ -129,8 +154,22 @@ namespace Zeta.Extreme {
 			if (!string.IsNullOrWhiteSpace(t)) {
 				delta.Types = t;
 			}
+
+			if (co) {
+				delta.UseConsolidateObject = true;
+				delta.ConsolidateObjectFilter = cov;
+			}
 			return delta;
 		}
+		/// <summary>
+		/// Фильтр типов для консолидации объекта
+		/// </summary>
+		public string ConsolidateObjectFilter { get; set; }
+
+		/// <summary>
+		/// Признак использования консолидации
+		/// </summary>
+		public bool UseConsolidateObject { get; set; }
 
 		/// <summary>
 		/// Фильтр по контрагенту
@@ -344,6 +383,9 @@ namespace Zeta.Extreme {
 			}
 
 			if (!string.IsNullOrWhiteSpace(Types) && target.Reference.Types != Types) {
+				return false;
+			}
+			if (UseConsolidateObject) {
 				return false;
 			}
 			return true;

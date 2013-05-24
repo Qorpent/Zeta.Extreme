@@ -75,6 +75,10 @@ namespace Zeta.Extreme {
 		/// 	Паттерн на несколько периодов
 		/// </summary>
 		public const string TypesPattern = @"(\.conto\([""']?(?<t>[^\)""']+)[""']\))?";
+		/// <summary>
+		/// 	Паттерн консолидации объекта
+		/// </summary>
+		public const string ConsolidateObjectPattern = @"(\.(?<co>consobj)\(([""']?(?<cov>[^\)""']+)[""'])?\))?";
 
 		/// <summary>
 		/// 	Паттерн смещения по строке
@@ -113,7 +117,8 @@ namespace Zeta.Extreme {
 			AltObjFilterPattern +
 			YearPattern +
 			PeriodOrPeriodsPattern+
-			TypesPattern;
+			TypesPattern +
+			ConsolidateObjectPattern;
 			
 		/// <summary>
 		/// 	Общий паттерн выражения дельты (с защитой от параметрических переходов)
@@ -125,7 +130,8 @@ namespace Zeta.Extreme {
 			AltObjFilterPattern +
 			YearPattern +
 			PeriodOrPeriodsPattern+
-			TypesPattern;
+			TypesPattern +
+			ConsolidateObjectPattern;
 
 		/// <summary>
 		/// 	Шаблон вызова дельты
