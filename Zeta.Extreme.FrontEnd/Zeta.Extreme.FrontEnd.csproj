@@ -32,6 +32,7 @@
     <Compile Include="Actions\Info\GetBizProcessList.cs" />
     <Compile Include="Actions\Info\GetCellHistory.cs" />
     <Compile Include="Actions\Info\GetEvalStack.cs" />
+    <Compile Include="Actions\Info\GetFormulaDependencyAction.cs" />
     <Compile Include="Actions\Info\GetResponsibleUsersAction.cs" />
     <Compile Include="Actions\States\GetCurratorLockStateAction.cs" />
     <Compile Include="Actions\States\GetLockStateAction.cs" />

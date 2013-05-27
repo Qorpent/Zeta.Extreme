@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Qorpent;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
@@ -55,9 +56,9 @@ namespace Zeta.Extreme {
 
 		private IEnumerable<string> GetBaseAssembliesFileNames() {
 			//reference to Zeta.Extreme.Model
-			yield return Assembly.GetAssembly(typeof (IZetaCell)).CodeBase.Replace("file:///", "");
+			yield return Assembly.GetAssembly(typeof (IZetaCell)).CodeBase.Replace(EnvironmentInfo.FULL_FILE_NAME_START, "");
 			//reference to Zeta.Extreme.Core
-			yield return Assembly.GetAssembly(typeof(Query)).CodeBase.Replace("file:///", "");
+			yield return Assembly.GetAssembly(typeof(Query)).CodeBase.Replace(EnvironmentInfo.FULL_FILE_NAME_START, "");
 		} 
 
 		/// <summary>
