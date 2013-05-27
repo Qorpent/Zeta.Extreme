@@ -117,5 +117,11 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		[SerializeNotNullOnly]
 		public string comment;
+
+		/// <summary>
+		/// Признак формульной строки
+		/// </summary>
+		[SerializeNotNullOnly]
+		public bool isformula;
 	}
 }

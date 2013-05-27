@@ -603,6 +603,7 @@ namespace Zeta.Extreme.FrontEnd {
 						 format = r.ResolveTag("numberformat"),
 						 activecols = r.ResolveTag("activecol").SmartSplit().ToArray(),
 						 comment = r.Comment,
+						 isformula = r.IsFormula,
 						 
 					 })
 					.Union(
