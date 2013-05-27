@@ -225,6 +225,14 @@ namespace Zeta.Extreme {
 			{
 				s.Append("Types = \"" + Types + "\", ");
 			}
+			if (UseConsolidateObject)
+			{
+				s.Append("UseConsolidateObject = true, ");
+			}
+			if (!string.IsNullOrWhiteSpace(ConsolidateObjectFilter))
+			{
+				s.Append("ConsolidateObjectFilter = \"" + ConsolidateObjectFilter + "\", ");
+			}
 			s.Append("}");
 			if (!string.IsNullOrWhiteSpace(infunctionName)) {
 				s.Append(")");

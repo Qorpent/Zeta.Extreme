@@ -172,6 +172,9 @@ namespace Zeta.Extreme {
 			{
 				prefix += "d:" + (int) DetailMode + "/";
 			}
+			if (IsFormula) {
+				prefix += "f:" + Formula;
+			}
 			return prefix + base.EvalCacheKey();
 		}
 

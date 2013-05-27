@@ -48,7 +48,15 @@ namespace Zeta.Extreme {
 			AutoBatchCompile = true;
 			_cache = new FormulaAssemblyCache();
 		}
-
+		/// <summary>
+		/// Возвращает запрос по коду
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns></returns>
+		public FormulaRequest GetRequest(string code) {
+			if (_registry.ContainsKey(code)) return _registry[code];
+			return null;
+		}
 		
 
 		/// <summary>

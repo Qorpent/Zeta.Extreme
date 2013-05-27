@@ -94,5 +94,12 @@ namespace Zeta.Extreme.Model.Querying {
 		/// </summary>
 		/// <param name="rootDirectory"></param>
 		void LoadDefaultFormulas(string rootDirectory);
+
+		/// <summary>
+		/// Возвращает запрос по коду
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns></returns>
+		FormulaRequest GetRequest(string code);
 	}
 }
