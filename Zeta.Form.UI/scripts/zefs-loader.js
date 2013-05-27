@@ -1,4 +1,4 @@
-if((window.useStatic !== undefined) && (window.useStatic == true)) {
+if((window.useStatic !== undefined) && (window.useStatic == true )) {
 	document.write('<script src="scripts/zefs-options.js"></script>');
 	document.write('<script src="scripts/zefs-render.js"></script>');
 	document.write('<script src="scripts/zefs.js"></script>');
@@ -12,10 +12,15 @@ if((window.useStatic !== undefined) && (window.useStatic == true)) {
     document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-statistic"></script>');
 }
 
-document.write('<link rel="stylesheet" type="text/css" href="_sys/getcss.file.qweb?stylename=zefs">');
-document.write('<link rel="stylesheet" type="text/css" href="_sys/getcss.file.qweb?stylename=zefs-forms">');
-document.write('<link rel="stylesheet" type="text/css" href="_sys/getcss.file.qweb?stylename=zefs-formdetails">');
-
+if((window.useStatic !== undefined) && (window.useStatic == true )) {
+	document.write('<link rel="stylesheet" type="text/css" href="styles/zefs.css">');
+	document.write('<link rel="stylesheet" type="text/css" href="styles/zefs-forms.css">');
+	document.write('<link rel="stylesheet" type="text/css" href="styles/zefs-formdetails.css">');
+} else {
+	document.write('<link rel="stylesheet" type="text/css" href="_sys/getcss.file.qweb?stylename=zefs">');
+	document.write('<link rel="stylesheet" type="text/css" href="_sys/getcss.file.qweb?stylename=zefs-forms">');
+	document.write('<link rel="stylesheet" type="text/css" href="_sys/getcss.file.qweb?stylename=zefs-formdetails">');
+}
 document.write('<script src="zeta/getperiods.embedjson.qweb"></script>');
 document.write('<script src="zeta/getobjects.embedjson.qweb"></script>');
 document.write('<script src="zefs/bizprocesslist.embedjson.qweb"></script>');
@@ -49,11 +54,21 @@ if((window.useStatic !== undefined) && (window.useStatic == true)) {
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-nullrows"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-alerter"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-report"></script>');
-document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-formheader"></script>');
+if((window.useStatic !== undefined) && (window.useStatic == true)) {
+	document.write('<script src="scripts/zefs-formheader.js"></script>');
+} else {
+	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-formheader"></script>');
+}
+
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-logo"></script>');
 
 document.write('<script src="scripts/zefs-formsubobj.js"></script>');
-document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-formdetails"></script>');
+if((window.useStatic !== undefined) && (window.useStatic == true)) {
+	document.write('<script src="scripts/zefs-formdetails.js"></script>');
+} else {
+	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-formdetails"></script>');
+}
+
 //document.write('<script src="scripts/zefs-formdependence.js"></script>');
 document.write('<script src="scripts/zefs-formkurator.js"></script>');
 document.write('<script src="scripts/zefs-formusers.js"></script>');
@@ -70,7 +85,12 @@ document.write('<script src="scripts/zefs-hotkeys.js"></script>');
 document.write('<script src="scripts/zefs-faq.js"></script>');
 //document.write('<script src="scripts/zefs-formheader.js"></script>');
 //document.write('<script src="scripts/zefs-extrapannel.js"></script>');
-document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-extrapannel"></script>');
+if((window.useStatic !== undefined) && (window.useStatic == true )) {
+	document.write('<link rel="stylesheet" type="text/css" href="scripts/zefs-extrapannel.js">');
+} else {
+	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-extrapannel"></script>');
+}
+
 document.write('<script src="scripts/zefs-table.js"></script>');
 document.write('<script src="scripts/zefs-attacher.js"></script>');
 //document.write('<script src="scripts/zefs-chat.js"></script>');

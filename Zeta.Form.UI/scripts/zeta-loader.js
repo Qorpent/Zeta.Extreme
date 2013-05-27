@@ -1,4 +1,4 @@
-if((window.useStatic !== undefined) && (window.useStatic == true)) {
+if(window.useStatic == true) {
 	document.write('<script src="scripts/zeta-options.js" type="text/javascript"></script>');
 	document.write('<script src="scripts/zeta.js" type="text/javascript"></script>');
 	document.write('<script src="scripts/zeta-modal.js" type="text/javascript"></script>');

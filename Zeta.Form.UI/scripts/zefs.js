@@ -1,5 +1,5 @@
 (function(){
-var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
+
 window.zefs.handlers = $.extend(window.zefs.handlers, {
     // Zefs handlers:
     on_zefsready : "zefsready", on_zefsstarting : "zefsstarting", on_zefsfailed : "zefsfailed",
@@ -846,7 +846,23 @@ root.init = root.init ||
     });
 
     api.chat.get.onSuccess(function(e, result) {
+        if (!$.isEmptyObject(root.myform.adminchat)) {
+            var notread = $.map(result, function(i) { if ($.map(zefs.myform.adminchat, function(j) { if(i.Id == j.Id) return j }).length == 0) return i });
+            $.each(notread, function(i, o) {
+                o.notread = true;
+            });
+        }
+        root.myform.adminchat = result;
         $(root).trigger(root.handlers.on_adminchatlistload, result);
+    });
+
+    api.chat.haveread.onSuccess(function() {
+        if (!$.isEmptyObject(root.myform.adminchat)) {
+            var notread = $.map(root.myform.adminchat, function(m) { if (m.notread) return m });
+            $.each(notread, function(i, o) {
+                o.notread = false;
+            });
+        }
     });
 
     api.chat.archive.onSuccess(function(e, result) {

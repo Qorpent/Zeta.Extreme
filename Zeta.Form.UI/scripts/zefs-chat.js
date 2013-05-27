@@ -11,7 +11,7 @@
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Лента сообщений"/>').html('<i class="icon-comment"></i>'),
         menu = $('<div class="dropdown-menu"/>').css({"padding": 5, "width": 650}),
         progress = $('<img src="images/300.gif"/>').hide(),
-        refresh = $('<button class="btn btn-mini refresh-btn"/>').append($('<i class="icon-repeat"/>')),
+        refresh = $('<button class="btn btn-mini refresh-btn pull-right"/>').append($('<i class="icon-repeat"/>')),
         chatform = $('<form method="post"/>'),
         chatinput = $('<textarea type="text" name="text" placeholder="Текст сообщения..." class="input-small"/>').css("height", 32),
         lentaadd = $('<button class="btn btn-mini" data-original-title="Будет видимо в текущей форме"/>').text("В ленту"),
@@ -20,7 +20,7 @@
         supportadd = $('<button class="btn btn-mini" data-original-title="Отправляется поддержке"/>').text("В поддержку"),
         locksadd = $('<button class="btn btn-mini" data-original-title="В канал блокировок"/>').text("По блокировкам"),
         adminadd = $('<button class="btn btn-mini" data-original-title="Админам"/>').text("Админам"),
-        addhelp = $('<button class="btn btn-warning btn-mini help-btn" data-original-title="Справка по каналам"/>').html('<i class="icon-white icon-asterisk"></i>'),
+        addhelp = $('<button class="btn btn-warning btn-mini help-btn pull-right" data-original-title="Справка по каналам"/>').html('<i class="icon-white icon-asterisk"></i>'),
         chatlist = $('<div class="chat-list scrollable"/>');
     b.click(function() {
         if ($(this).hasClass("hasunread")) {
@@ -30,7 +30,7 @@
                 b.css("opacity", "1");
             }
             $(this).removeClass("hasunread");
-            var html = $(this).html();
+            var html = $(this).text();
             $(this).empty();
             $(this).html(html);
             html = null;
@@ -47,12 +47,13 @@
     adminadd.tooltip({placement: 'bottom'});
     addhelp.tooltip({placement: 'bottom'});
     var chatbuttons = $('<div class="chat-buttons"/>')
-        .append(lentaadd, objkuratoradd, formkuratoradd, supportadd, locksadd, refresh, progress, addhelp);
+        .append(lentaadd, objkuratoradd, formkuratoradd, supportadd, locksadd);
     chatform.append($('<div class="chat-input"/>').append(chatinput), chatbuttons);
     $(zeta).on(zeta.handlers.on_getuserinfo, function() {
         if (zeta.user.getIsAdmin()) {
             chatbuttons.append(adminadd);
         }
+        chatbuttons.append(addhelp, refresh);
     });
     var chatadd = function(type) {
         if (chatinput.val() != "") {
