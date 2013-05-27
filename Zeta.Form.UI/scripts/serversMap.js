@@ -9,7 +9,7 @@ var serversMap = [
             'zefs4'
         ]
     },
-
+/*
     {
         'host' : 'admin-assoi.ugmk.com',
         'protocol' : 'https',
@@ -20,7 +20,7 @@ var serversMap = [
             'zefs4'
         ]
     },
-	
+	*/
 	{
 		'host' : 'assoi.ugmk.com',
 		'protocol' : 'https',
