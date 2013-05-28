@@ -44,6 +44,7 @@
         if (typeof(options)=="string"){
             options = {name:options};
         }
+        if (!!options.async) options.async = true;
         $.extend(this,options);
         if(!this.url){
             var domain = this.domain || "_sys";
@@ -172,6 +173,7 @@
                 dataType: myoptions.datatype,
                 data : params || {}
             };
+            ajaxinfo.async = this.async;
             if(this.useProgress){
                 $.extend(ajaxinfo,{
                     xhr: function() {

@@ -43,8 +43,10 @@ root.init = root.init ||
     };
     var render = root.render;
 
-    var GetWiki = function(code) {
-        api.wiki.get.execute({code: code});
+    var GetWiki = function(rowcode) {
+        var wikicode = '/row/' + rowcode + '/default';
+        api.wiki.getsync.execute({code: wikicode});
+        api.metadata.getformuladependency.execute({code: rowcode});
     }
 
     var SaveWiki = function(code, text, params) {
@@ -512,20 +514,49 @@ root.init = root.init ||
         $('.wikirowhelp').show();
     });
 
-    api.wiki.get.onSuccess(function(e, result) {
+    api.metadata.getformuladependency.onSuccess(function(e, result) {
+        var code = result.code || "";
+        var article = $('<div class="detailsarticle"/>').attr("id", "detailsarticle_" + code);
+        article.insertAfter($("#wikiarticle__row_" + code + "_default"));
+        var title = $('<div class="wikititle"/>').text("Зависимости формулы");
+        article.append(title);
+        var tbody = $('<tbody/>');
+        var table = $('<table class="table table-bordered"/>').append(
+            $('<thead/>').append($('<tr/>').append(
+                $('<th/>').text("Код."),
+                $('<th/>').text("Вн.код"),
+                $('<th/>').text("Форма"),
+                $('<th/>').text("Наименование")
+            )), tbody
+        )
+        $.each(result.dependency, function(i1, d1) {
+            tbody.append($('<tr/>').append(
+                $('<td/>').text(d1.outercode),
+                $('<td/>').text(d1.code),
+                $('<td/>').text(d1.form),
+                $('<td/>').text(d1.name)
+            ));
+        });
+        article.append(table);
+    }),
+
+    api.wiki.getsync.onSuccess(function(e, result) {
         if (!$.isEmptyObject(result)) {
             var content = $('<div/>');
             $.each(result, function(i, w) {
                 var wikiarticle = $('<div class="wikiarticle"/>');
+                wikiarticle.attr("id", "wikiarticle_" + w.Code.replace(/\//g, "_"));
                 var wikititle = $('<div class="wikititle"/>').text(w.Title || w.Code);
                 var wikitext = $('<div class="wikitext"/>').html(wiky.process(w.Text));
                 var wikiinfo = $('<div class="wikiinfo"/>').text("Последняя правка: ");
                 if (!!w.Date) {
                     wikiinfo.text(wikiinfo.text() + w.Date.format("dd.mm.yyyy HH:MM:ss"));
                 }
-                var user = $('<span class="label label-info"/>').text(w.Editor);
-                wikiinfo.append(user);
-                user.zetauser();
+                if (!!w.Editor) {
+                    var user = $('<span class="label label-info"/>').text(w.Editor);
+                    wikiinfo.append(user);
+                    user.zetauser();
+                }
                 if (zeta.user.getIsDocWriter()) {
                     var wikiedit = $('<textarea class="wikiedit"/>').val(w.Text);
                     var wikititleedit = $('<input type="text" class="wikititleedit"/>').val(w.Title || w.Code);
@@ -561,9 +592,11 @@ root.init = root.init ||
                             wikititle.text(r.Title || r.Code);
                             var v = eval(r.LastWriteTime.substring(2));
                             wikiinfo.text("Сохранено: " + v.format("dd.mm.yyyy HH:MM:ss"));
-                            var user = $('<span class="label label-info"/>').text(r.Editor);
-                            wikiinfo.append(user);
-                            user.zetauser();
+                            if (!!r.Editor) {
+                                var user = $('<span class="label label-info"/>').text(r.Editor);
+                                wikiinfo.append(user);
+                                user.zetauser();
+                            }
                         });
                         wikieditbtn.show();
                     });
