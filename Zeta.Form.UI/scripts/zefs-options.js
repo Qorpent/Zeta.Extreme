@@ -114,7 +114,7 @@ $.extend(api,(function(){
                             if (prevrow.level< o.level) {
                                 prevrow.haschilds = true;
                             }
-                            if (!!o.comment) {
+                            if (!!o.comment || !!o.isformula) {
                                 o.hasHelp = true;
                             }
                             result.rows.push(o);
@@ -374,6 +374,21 @@ $.extend(api,(function(){
                     return obj;
                 }
             }),
+            getsync : $.extend(new Command({ domain: "wiki", name: "get", async: false }), {
+                wrap : function(obj) {
+                    if ($.isEmptyObject(obj)) return obj;
+                    $.each(obj, function(i, o) {
+                        o.Code = o.Code || "";
+                        o.Date = eval(o.LastWriteTime? o.LastWriteTime.substring(2):"");
+                        o.Existed = o.Existed || false;
+                        o.Propeties = o.Propeties || {};
+                        o.Text = o.Text || "";
+                        o.Title = o.Title || "";
+                        o.Editor = o.Editor || "";
+                    });
+                    return obj;
+                }
+            }),
             // Сохраняет или добавляет параметры
             save : new Command({ domain: "wiki", name: "save" }),
             // Проверяет наличие статьи с кодом [code]
@@ -451,6 +466,9 @@ $.extend(api,(function(){
             }),
             archivenews : $.extend(new Command({domain: "message", name: "getnews"}), {
                 url : location.protocol + "//" + location.host + api.siterootold() + "message/archive.rails"
+            }),
+            getformuladependency : $.extend(new Command({domain: "zeta", name: "getrowformuladependency"}), {
+
             })
         },
 

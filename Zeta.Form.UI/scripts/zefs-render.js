@@ -61,7 +61,7 @@ $.extend(root.render, {
             var wikibtn = $('<span class="wikirowhelp notexist"/>').hide();
             var wikicode = '/row/' + row.code + '/default';
             wikibtn.click(function() {
-                zefs.myform.wikiget(wikibtn.attr("code"));
+                zefs.myform.wikiget(row.code);
             });
             wikibtn.attr("id", 'wiki__row_' + row.code + '_default');
             wikibtn.attr("code", wikicode);
