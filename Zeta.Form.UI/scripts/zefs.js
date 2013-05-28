@@ -46,7 +46,7 @@ root.init = root.init ||
     var GetWiki = function(rowcode) {
         var wikicode = '/row/' + rowcode + '/default';
         api.wiki.getsync.execute({code: wikicode});
-        var row = $.map(zefs.myform.currentSession.structure.rows, function(r) { if (r.code == rowcode) return r; });
+        var row = $.map(zefs.myform.currentSession.structure.rows, function(r) { if (r.code == rowcode && !!r.comment) return r; });
         if (row.length > 0) {
             var commentarticle = $('<div class="commentarticle"/>').attr("id", "commentarticle_" + rowcode);
             commentarticle.insertAfter($("#wikiarticle__row_" + rowcode + "_default"));
