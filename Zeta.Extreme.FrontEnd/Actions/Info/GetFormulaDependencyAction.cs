@@ -30,21 +30,11 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		}
 
 		/// <summary>
-		/// </summary>
-		/// <exception cref="Exception"></exception>
-		protected override void Validate()
-		{
-			base.Validate();
-			if (null == row) {
-				throw new Exception("Строка отсутствует в БД");
-			}
-		}
-
-		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
+			if (null == row) return null;
 			return GetRowDependencies(row,false);
 		}
 
