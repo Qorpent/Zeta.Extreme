@@ -128,9 +128,11 @@
     <Compile Include="Extensions\IWithFormulaExtensions.cs" />
     <Compile Include="Security\AccountCard.cs" />
     <Compile Include="Security\Account.cs" />
+    <Compile Include="Security\ISecurityStorage.cs" />
     <Compile Include="Security\ISecurityManager.cs" />
     <Compile Include="Security\ISecurityPolicyChecker.cs" />
     <Compile Include="Security\ISecurityScriptExecutor.cs" />
+    <Compile Include="Security\NativeSqlSecuritySerializer.cs" />
     <Compile Include="Security\PermissionLevel.cs" />
     <Compile Include="Security\PolicyRequest.cs" />
     <Compile Include="Security\PolicyResult.cs" />

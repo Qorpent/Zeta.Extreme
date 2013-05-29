@@ -5,9 +5,8 @@ namespace Zeta.Extreme.Model.Security
 	/// <summary>
 	/// Низкоуровневый менеджер 
 	/// </summary>
-	public class NativeZetaSecurityStorage:ISecurityStorage
-	{
-		public const string CreateUserQueryTemplate = ""
+	public class NativeZetaSecurityStorage:ISecurityStorage {
+		public const string CreateUserQueryTemplate = "";
 
 		/// <summary>
 		/// 	Создает нового пользователя с указанным контекстом по умолчанию
@@ -16,7 +15,7 @@ namespace Zeta.Extreme.Model.Security
 		/// <param name="objectContextId"> Предприятия - хост карты по умолчанию </param>
 		public User CreateUser(string login) {
 			if(CheckUser(login))throw new ZetaSecurityException("try to recreate existed user");
-
+			throw new System.NotImplementedException();
 		}
 
 		/// <summary>
