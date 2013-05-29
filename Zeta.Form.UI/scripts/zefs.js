@@ -529,13 +529,22 @@ root.init = root.init ||
         article.insertAfter($("#wikiarticle__row_" + code + "_default"));
         var title = $('<div class="wikititle"/>').text("Зависимости формулы");
         article.append(title);
+        var getReadableType = function(type) {
+            switch (type) {
+                case "formula" : return "Формула";
+                case "ref" : return "Ссылка";
+                case "exref" : return "Вн.ссылка";
+                default : return type;
+            }
+        }
         var tbody = $('<tbody/>');
         var table = $('<table class="table table-bordered"/>').append(
             $('<thead/>').append($('<tr/>').append(
                 $('<th/>').text("Код."),
                 $('<th/>').text("Вн.код"),
                 $('<th/>').text("Форма"),
-                $('<th/>').text("Наименование")
+                $('<th/>').text("Наименование"),
+                $('<th/>').text("Тип")
             )), tbody
         )
         $.each(result.dependency, function(i1, d1) {
@@ -543,7 +552,8 @@ root.init = root.init ||
                 $('<td/>').text(d1.outercode),
                 $('<td/>').text(d1.code),
                 $('<td/>').text(d1.form),
-                $('<td/>').text(d1.name)
+                $('<td/>').text(d1.name),
+                $('<td/>').text(getReadableType(d1.type))
             ));
         });
         article.append(table);
