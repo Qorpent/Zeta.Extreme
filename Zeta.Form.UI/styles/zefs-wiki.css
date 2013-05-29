@@ -50,3 +50,7 @@
 .detailsarticle {
     margin-top: 10px;
 }
+
+.detailsarticle table {
+    font-size: 90%;
+}

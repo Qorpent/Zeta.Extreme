@@ -72,6 +72,11 @@ root.init = root.init ||
         var hashparams = api.getParameters();
         params = $.extend(hashparams, params);
         var loc = document.location.protocol + "//" + document.location.host + siteroot + "zefs-test.html#";
+        if (!!params.form) {
+            if (params.form.search(/[A|B]\.in/) == -1) {
+                params.form += $(location.hash.match(/[A|B]\.in/)).get(0) || "";
+            }
+        }
         loc += "form=" + (params.form || "");
         loc += "|year=" + (params.year || "");
         loc += "|period=" + (params.period || "");
@@ -544,19 +549,30 @@ root.init = root.init ||
                 $('<th/>').text("Вн.код"),
                 $('<th/>').text("Форма"),
                 $('<th/>').text("Наименование"),
-                $('<th/>').text("Тип")
+                $('<th/>').text("Зав-ть")
             )), tbody
         )
         $.each(result.dependency, function(i1, d1) {
             tbody.append($('<tr/>').append(
                 $('<td/>').text(d1.outercode),
                 $('<td/>').text(d1.code),
-                $('<td/>').text(d1.form),
+                $('<td/>').append(d1.form),
                 $('<td/>').text(d1.name),
                 $('<td/>').text(getReadableType(d1.type))
             ));
         });
         article.append(table);
+        if (!!result.forms) {
+            article.append($('<div class="wikititle"/>').text("Формы, содержащие исходные данные"));
+            $.each(result.forms, function(i, f) {
+                if (zefs.myform.currentSession.FormInfo.Code.search(f.code) != -1) return;
+                var a = $('<button class="btn-link"/>').text(f.name);
+                if (f.allow) {
+                    a.click(function() { OpenForm({form: f.code}, true) });
+                }
+                article.append(a, $('<br/>'));
+            });
+        }
     }),
 
     api.wiki.getsync.onSuccess(function(e, result) {
@@ -625,7 +641,7 @@ root.init = root.init ||
                 content.append(wikiarticle);
             });
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
-                title: "База знаний", width: 800,
+                title: "База знаний", width: 900,
                 content: $('<div/>').append(content)
             });
         }
