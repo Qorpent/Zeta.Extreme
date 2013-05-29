@@ -570,11 +570,7 @@ root.init = root.init ||
                 if (f.allow) {
                     a.click(function() { OpenForm({form: f.code}, true) });
                 }
-<<<<<<< HEAD
                 article.append(a);
-=======
-                article.append(a, $('<br/>'));
->>>>>>> 7a4cdf088fc6e0fb2606b1749b428088ea150d30
             });
         }
     }),
