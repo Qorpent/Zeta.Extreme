@@ -39,10 +39,75 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		}
 
 		private object GetRowDependencies(IZetaRow r, bool child) {
-			if (!r.IsFormula) {
+			if (!(r.IsFormula || null!=r.RefTo || null!=r.ExRefTo)) {
 				if (child) return null;
 				return "Строка не является формулой";
 			}
+
+			if (r.IsFormula) {
+
+				return GetFormulaDependency(r, child);
+			}
+
+			if (r.RefTo != null) {
+				return GetRefDependency(r, child);
+			}
+
+			if (r.ExRefTo != null)
+			{
+				return GetExRefDependency(r, child);
+			}
+
+			return null;
+		}
+
+		private object GetExRefDependency(IZetaRow r, bool child)
+		{
+			IList<string> codes = new List<string>();
+			codes.Add(r.ExRefTo.Code);
+			var myForm = GetFormName(r);
+			var depinfo = codes.Select(_ => MetaCache.Default.Get<IZetaRow>(_)).Select(_ => ConvertToDependency(_, "exref"));
+			if (child)
+			{
+				return depinfo;
+			}
+			return new
+			{
+				code = r.Code,
+				name = r.Name,
+				formula = r.Formula,
+				form = myForm,
+				outercode = r.OuterCode,
+				type = "exref",
+				dependency = depinfo,
+				
+			};
+		}
+
+		private object GetRefDependency(IZetaRow r, bool child)
+		{
+			IList<string> codes = new List<string>();
+			codes.Add(r.RefTo.Code);
+			var myForm = GetFormName(r);
+			var depinfo = codes.Select(_ => MetaCache.Default.Get<IZetaRow>(_)).Select(_ => ConvertToDependency(_, "ref"));
+			if (child)
+			{
+				return depinfo;
+			}
+			return new
+			{
+				code = r.Code,
+				name = r.Name,
+				formula = r.Formula,
+				form = myForm,
+				outercode = r.OuterCode,
+				type = "ref",
+				dependency = depinfo,
+				
+			};
+		}
+
+		private object GetFormulaDependency(IZetaRow r, bool child) {
 			var foreignRowCodes = Regex.Matches(r.Formula, @"\$([\w\d_]+)");
 			IList<string> codes = new List<string>();
 			foreach (Match codeMatches in foreignRowCodes) {
@@ -52,7 +117,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 				}
 			}
 			var myForm = GetFormName(r);
-			var depinfo = codes.Select(_ => MetaCache.Default.Get<IZetaRow>(_)).Select(ConvertToDependency);
+			var depinfo = codes.Select(_ => MetaCache.Default.Get<IZetaRow>(_)).Select(_=>ConvertToDependency(_,"formula"));
 			if (child) {
 				return depinfo;
 			}
@@ -63,17 +128,19 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 					formula = r.Formula,
 					form = myForm,
 					outercode = r.OuterCode,
+					type = "formula",
 					dependency = depinfo,
+					
 				};
 		}
 
-		private object ConvertToDependency(IZetaRow r) {
+		private object ConvertToDependency(IZetaRow r,string type) {
 			return new
 				{
 					code = r.Code,
 					name = r.Name,
 					outercode = r.OuterCode,
-					form = GetFormName(r),
+					form = GetFormName(r), type,
 					dependency = GetRowDependencies(r,true)
 				};
 

@@ -580,7 +580,8 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		public bool InitStateMode { get; set; }
 
-		private void RetrieveStructure() {
+		private void 
+		RetrieveStructure() {
             FormSessionsState.CurrentFormRenderingOperationsIncrease();
 			StructureInProcess = true;
 			var sw = Stopwatch.StartNew();
@@ -603,7 +604,7 @@ namespace Zeta.Extreme.FrontEnd {
 						 format = r.ResolveTag("numberformat"),
 						 activecols = r.ResolveTag("activecol").SmartSplit().ToArray(),
 						 comment = r.Comment,
-						 isformula = r.IsFormula,
+						 isformula = r.IsFormula || (null!=r.RefTo) || (null!=r.ExRefTo),
 						 
 					 })
 					.Union(
