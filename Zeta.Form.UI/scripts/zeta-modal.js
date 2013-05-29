@@ -45,6 +45,7 @@
         }
         modalheader.append($('<h3/>').text(p.title));
         var modalbody = $('<div class="modal-body scrollable" />').append(p.content || p.text);
+        modalbody.css("max-height", $(window).height() - 220);
         if (!!p.height) modalbody.css("height", p.height);
         var modalfooter = $('<div class="modal-footer"/>');
         if (p.customButton != null) {
