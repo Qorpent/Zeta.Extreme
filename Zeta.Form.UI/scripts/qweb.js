@@ -185,8 +185,6 @@
                         }
                         return x;
                     },
-                    xhrFields: { withCredentials: true },
-                    crossDomain: true,
                     cache: false,
                     contentType: false,
                     processData: false
