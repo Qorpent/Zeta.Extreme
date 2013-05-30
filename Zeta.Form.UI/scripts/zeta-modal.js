@@ -65,7 +65,10 @@
                 $('<a href="#" class="closebtn btn btn-primary" data-dismiss="modal" />')
                     .text("Закрыть"));
         }
-        modal.append(modalheader, modalbody, modalfooter);
+        if (p.title != "") {
+            modal.append(modalheader);
+        }
+        modal.append(modalbody, modalfooter);
         if (p.backdrop) {
             $('body').append(backdrop);
         }
