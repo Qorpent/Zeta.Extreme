@@ -46,7 +46,7 @@ root.init = root.init ||
     var GetWiki = function(rowcode) {
         var wikicode = '/row/' + rowcode + '/default';
         api.wiki.getsync.execute({code: wikicode});
-        var row = $.map(zefs.myform.currentSession.structure.rows, function(r) { if (r.code == rowcode) return r; });
+        var row = $.map(zefs.myform.currentSession.structure.rows, function(r) { if (r.code == rowcode && !!r.comment) return r; });
         if (row.length > 0) {
             var commentarticle = $('<div class="commentarticle"/>').attr("id", "commentarticle_" + rowcode);
             commentarticle.insertAfter($("#wikiarticle__row_" + rowcode + "_default"));
@@ -72,6 +72,11 @@ root.init = root.init ||
         var hashparams = api.getParameters();
         params = $.extend(hashparams, params);
         var loc = document.location.protocol + "//" + document.location.host + siteroot + "zefs-test.html#";
+        if (!!params.form) {
+            if (params.form.search(/[A|B]\.in/) == -1) {
+                params.form += $(location.hash.match(/[A|B]\.in/)).get(0) || "";
+            }
+        }
         loc += "form=" + (params.form || "");
         loc += "|year=" + (params.year || "");
         loc += "|period=" + (params.period || "");
@@ -529,24 +534,47 @@ root.init = root.init ||
         article.insertAfter($("#wikiarticle__row_" + code + "_default"));
         var title = $('<div class="wikititle"/>').text("Зависимости формулы");
         article.append(title);
+        var getReadableType = function(type) {
+            switch (type) {
+                case "formula" : return "Формула";
+                case "ref" : return "Ссылка";
+                case "exref" : return "Вн.ссылка";
+                default : return type;
+            }
+        }
         var tbody = $('<tbody/>');
         var table = $('<table class="table table-bordered"/>').append(
             $('<thead/>').append($('<tr/>').append(
                 $('<th/>').text("Код."),
                 $('<th/>').text("Вн.код"),
                 $('<th/>').text("Форма"),
-                $('<th/>').text("Наименование")
+                $('<th/>').text("Наименование"),
+                $('<th/>').text("Зав-ть")
             )), tbody
         )
         $.each(result.dependency, function(i1, d1) {
             tbody.append($('<tr/>').append(
                 $('<td/>').text(d1.outercode),
                 $('<td/>').text(d1.code),
-                $('<td/>').text(d1.form),
-                $('<td/>').text(d1.name)
+                $('<td/>').append(d1.form),
+                $('<td/>').text(d1.name),
+                $('<td/>').text(getReadableType(d1.type))
             ));
         });
         article.append(table);
+        if (!!result.forms) {
+            var formstitle = $('<div class="wikititle"/>').text("Формы, содержащие исходные данные");
+            article.append(formstitle);
+            $.each(result.forms, function(i, f) {
+                if (zefs.myform.currentSession.FormInfo.Code.search(f.code) != -1) return;
+                var a = $('<button class="btn-link"/>').text(f.name);
+                if (f.allow) {
+                    a.click(function() { OpenForm({form: f.code}, true) });
+                }
+                article.append(a);
+            });
+            if (formstitle.next().length == 0) formstitle.remove();
+        }
     }),
 
     api.wiki.getsync.onSuccess(function(e, result) {
@@ -615,7 +643,7 @@ root.init = root.init ||
                 content.append(wikiarticle);
             });
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
-                title: "База знаний", width: 800,
+                title: "База знаний", width: 900,
                 content: $('<div/>').append(content)
             });
         }

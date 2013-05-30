@@ -50,3 +50,11 @@
 .detailsarticle {
     margin-top: 10px;
 }
+
+.detailsarticle table {
+    font-size: 90%;
+}
+
+.detailsarticle .btn-link {
+    display: block;
+}
