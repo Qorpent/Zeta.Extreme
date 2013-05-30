@@ -15,7 +15,7 @@ var serversMap = [
 			'staticOnly' : false
 		}
     },
-
+/*
     {
         'host' : 'admin-assoi.ugmk.com',
         'protocol' : 'https',
@@ -32,7 +32,7 @@ var serversMap = [
 			'staticOnly' : false
 		}
     },
-	
+	*/
 	{
 		'host' : 'assoi.ugmk.com',
 		'protocol' : 'https',

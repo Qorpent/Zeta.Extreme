@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: White;
+}
+
+button,
+a.btn {
+    cursor: pointer !important;
+}
+
+.navbar-inner {
+    min-height: 35px;
+    border-radius: 0;
+    padding: 0;
+}
+
+#consoleHeader {
+    height: 37px;
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    top: 0;
+}
+
+#consoleBody {
+    margin-top: 37px;
+}
+
+input, button {
+    margin-top: 0;
+    margin-bottom: 0 !important;
+}
+
+.navbar .btn, .navbar .btn-group, .navbar input {
+    margin-top: 0;
+}
+
+li a {
+    cursor: pointer;
+}
+
+.label, .badge {
+    cursor: pointer;
+}
+
+.authorizer input,
+.authorizer button {
+
+}
+
+.authorizer .preloader {
+    width: 22px;
+    height: 22px;
+    margin-top: 4px;
+    margin-left: 10px;
+}
+
+.login-form {
+    margin-top: 2px;
+}
+
+.login-info {
+    margin-top: 2px;
+}
+
+.login-user {
+    margin-right: 2px;
+    cursor: pointer;
+}
+
+.login-form .preloader {
+    width: 25px;
+    height: 25px;
+    margin: 3px;
+}
+
+.login-permissions {
+    list-style-type : none;
+    margin: 0;
+    text-align: left;
+}
+
+.login-permissions > li > span {
+    color: green;
+    padding-left: 3px;
+    font-weight: bolder;
+}
