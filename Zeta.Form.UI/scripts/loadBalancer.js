@@ -7,7 +7,11 @@
 				{
 					'url' : target.protocol + '://' + target.host + '/' + target.app + '/zefs/' + 'nodeload.json.qweb',
 					'dataType' : 'json',
-					'timeout' : 1200
+					'timeout' : 1200,
+					'xhrFields': {
+						'withCredentials' : true
+					},
+                    'crossDomain' : true,
 				}
 			).done(done).error(error);
 		},
