@@ -171,7 +171,9 @@
                 url: myoptions.url,
                 type : !params ? "GET" : "POST",
                 dataType: myoptions.datatype,
-                data : params || {}
+                data : params || {},
+                xhrFields: { withCredentials: true },
+                crossDomain: true
             };
             ajaxinfo.async = this.async;
             if(this.useProgress){
@@ -183,8 +185,8 @@
                         }
                         return x;
                     },
-                    /*xhrFields: { withCredentials: true },
-                    crossDomain: true,*/
+                    xhrFields: { withCredentials: true },
+                    crossDomain: true,
                     cache: false,
                     contentType: false,
                     processData: false
