@@ -563,7 +563,8 @@ root.init = root.init ||
         });
         article.append(table);
         if (!!result.forms) {
-            article.append($('<div class="wikititle"/>').text("Формы, содержащие исходные данные"));
+            var formstitle = $('<div class="wikititle"/>').text("Формы, содержащие исходные данные");
+            article.append(formstitle);
             $.each(result.forms, function(i, f) {
                 if (zefs.myform.currentSession.FormInfo.Code.search(f.code) != -1) return;
                 var a = $('<button class="btn-link"/>').text(f.name);
@@ -572,6 +573,7 @@ root.init = root.init ||
                 }
                 article.append(a);
             });
+            if (formstitle.next().length == 0) formstitle.remove();
         }
     }),
 

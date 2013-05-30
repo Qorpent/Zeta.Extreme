@@ -5,6 +5,7 @@
 
 .chat-list i {
     cursor: pointer;
+    padding: 2px 5px 2px 0;
 }
 
 .btn-link.active {
@@ -23,11 +24,19 @@
 }
 
 .chat-buttons button {
+    display: block;
+    float: left;
     margin-right: 4px;
     vertical-align: top;
 }
 
+.chat-buttons .help-btn,
+.chat-buttons .refresh-btn {
+    float: right;
+}
+
 .chat-buttons {
+    height: 30px;
     margin-bottom: 5px;
 }
 
