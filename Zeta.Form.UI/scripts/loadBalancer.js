@@ -1,75 +1,132 @@
-var sa;
-
 (function() {    
-    var global = window.loadBalancer = window.psychosis = this; // let the name is psychosis
+    var global = window.loadBalancer = window.psychosis = this;
 	
-	this.pollApp = function(target, done, error) {
-		$.ajax(
-			{
-				'url' : target.protocol + '://' + target.host + '/' + target.app + '/zefs/' + 'nodeload.json.qweb',
-				'crossDomain' : true,
-				'dataType' : 'json',
-				'timeout' : 600,
-				'xhrFields' : {
-					'withCredentials' : true
-				}
-			}
-		).done(done).error(error);
-	},
-
-	this.pollServer = function(target, callback) {
-		var serverStat = {
-			stat : new Object(),
-			total : 0
-		};
-	
-		for(app = 0; app < target.apps.length; app++) {
-			(function(s, i) {
-				global.pollApp(
-					{
-						protocol : target.protocol,
-						host : target.host,
-						app : target.apps[i]
-					},
-						
-					function(json) {
-						s.stat[target.apps[i]] = json.Availability;
-						if(++s.total == target.apps.length) callback(s.stat);
-					},
-						
-					function() {
-						s.stat[target.apps[i]] = 0;
-						if(++s.total == target.apps.length) callback(s.stat);
+	this.poll = {
+		app : function(target, done, error) {
+			$.ajax(
+				{
+					'url' : target.protocol + '://' + target.host + '/' + target.app + '/zefs/' + 'nodeload.json.qweb',
+					'crossDomain' : true,
+					'dataType' : 'json',
+					'timeout' : 1200,
+					'xhrFields' : {
+						'withCredentials' : true
 					}
-				);
-			})(serverStat, app);
+				}
+			).done(done).error(error);
+		},
+
+		server : function(target, callback) {
+			var serverStat = {
+				stat : new Object(),
+				total : 0
+			};
+		
+			for(app = 0; app < target.apps.length; app++) {
+				(function(s, i) {
+					global.poll.app(
+						{
+							protocol : target.protocol,
+							host : target.host,
+							app : target.apps[i]
+						},
+							
+						function(json) {
+							s.stat[target.apps[i]] = json.Availability;
+							
+							if(++s.total == target.apps.length) {
+								callback(s.stat);
+							}
+						},
+							
+						function() {
+							s.stat[target.apps[i]] = 0;
+							
+							if(++s.total == target.apps.length) {
+								callback(s.stat);
+							}
+						}
+					);
+				})(serverStat, app);
+			}
+		},
+		
+		cloud : function(cloudMap, callback) {
+			var cloudStats = {
+				stat : new Object(),
+				total : 0
+			};
+
+			for(srv = 0; srv < cloudMap.length; srv++) {
+				(function(s, i) {
+					global.poll.server(
+						cloudMap[i],
+						
+						function(r) {
+							s.stat[cloudMap[i].host] = r;
+							
+							if(++s.total == cloudMap.length) {
+								callback(s.stat);
+							}
+						}
+					);
+				})(cloudStats, srv);
+			}
 		}
 	},
 	
-	this.pollCloud = function(cloudMap, callback) {
-		var cloudStats = {
-			stat : new Array(),
-			total : 0
-		};
-
-		for(srv = 0; srv < cloudMap.length; srv++) {
-			(function(s, i) {
-				global.pollServer(
-					cloudMap[i],
-					
-					function(r) {
-						s.stat[i] = r;
-							
-						if(++s.total == cloudMap.length) {
-							callback(s.stat);
+	this.sort = {
+		getMostFreeApp : function(stat) {
+			var appLeaders = new Object();
+			var appLeader = {
+				'host' : undefined,
+				'app' : undefined,
+				'av' : 0
+			};
+		
+			$.each(
+				stat,
+				function(host, obj) {
+					appLeaders[host] = {
+						'av' : 0,
+						'app' : undefined
+					};
+				
+					$.each(
+						obj,
+						function(app, av) {
+							if(appLeaders[host].av < av) {
+								appLeaders[host].av = av;
+								appLeaders[host].app = app;
+							}
 						}
+					);
+				}
+			);
+			
+			$.each(
+				appLeaders,
+				function(host, obj) {
+					if(appLeader.av < obj.av) {
+						appLeader.av = obj.av;
+						appLeader.host = host;
+						appLeader.app = obj.app;
 					}
-				);
-			})(cloudStats, srv);
+				}
+			);
+			
+			return appLeader;
 		}
 	},
 	
     this.getMostFreeServer = function(callback) {	
-		global.pollCloud(serversMap, function(cs) {sa = cs});
+		global.poll.cloud(
+			serversMap,
+			function(cs) {
+				callback(
+					global.sort.getMostFreeApp(cs)
+				);
+			}
+		);
     };
 })();
