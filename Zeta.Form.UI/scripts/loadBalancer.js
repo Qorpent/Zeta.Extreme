@@ -6,12 +6,8 @@
 			$.ajax(
 				{
 					'url' : target.protocol + '://' + target.host + '/' + target.app + '/zefs/' + 'nodeload.json.qweb',
-					'crossDomain' : true,
 					'dataType' : 'json',
-					'timeout' : 1200,
-					'xhrFields' : {
-						'withCredentials' : true
-					}
+					'timeout' : 1200
 				}
 			).done(done).error(error);
 		},
@@ -123,7 +119,6 @@
 		global.poll.cloud(
 			serversMap,
 			function(cs) {
-<<<<<<< HEAD
 				var i = global.sort.getMostFreeApp(cs);
 				
 				while(i.av == 0) {
@@ -131,11 +126,6 @@
 				}
 			
 				callback(i);
-=======
-				callback(
-					global.sort.getMostFreeApp(cs)
-				);
->>>>>>> b2e83e9e8d4e74b29bf7bfab6bbf91c516cbbef0
 			}
 		);
     };
