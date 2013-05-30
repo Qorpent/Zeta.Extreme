@@ -1468,7 +1468,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			var command =
 				conn.CreateCommand(
 					"exec usm.state_after_change @row=@row,@obj=@obj,@year=@year,@period=@period, @newstate=@newstate,@trow=@trow, @template = @template",
-					parameters);
+					parameters, TODO);
 			//Application.Current.Container.GetSession().Transaction.Enlist(command);
 			command.ExecuteNonQuery();
 			//if (state == "0ISCHECKED") {

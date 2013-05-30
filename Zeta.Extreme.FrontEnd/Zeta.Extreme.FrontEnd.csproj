@@ -80,6 +80,7 @@
     <Compile Include="FormSessionsState.cs" />
     <Compile Include="FormSessionTestsExtension.cs" />
     <Compile Include="Helpers\AccessibleObjectsHelper.cs" />
+    <Compile Include="Helpers\AuthorizeHelper.cs" />
     <Compile Include="Helpers\BizProcessDetailHelper.cs" />
     <Compile Include="Helpers\BizProcessEnumerator.cs" />
     <Compile Include="Helpers\BizProcessRecord.cs" />

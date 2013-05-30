@@ -82,8 +82,9 @@ namespace Zeta.Extreme.Form.StateManagement {
 			indatabase(
 				c =>
 				c.ExecuteNonQuery(
-					"exec usm.set_period_state @year=" + record.Year + ",@period=" + record.Period + ",@state=" +
-					(record.State ? 1 : 0), (IParametersProvider) null));
+					"UNICALL usm.set_period_state | year=~,period=~,state=",
+					new {year=record.Year, period=record.Period,state=record.State?1:0}
+					));
 		}
 
 		/// <summary>
@@ -94,8 +95,8 @@ namespace Zeta.Extreme.Form.StateManagement {
 			indatabase(
 				c =>
 				c.ExecuteNonQuery(
-					@"exec usm.set_period_deadline @year=" + record.Year + ",@period=" + record.Period + ",@deadline=@date",
-					new Dictionary<string, object> {{"@date", record.DeadLine}}
+					@"UNICALL usm.set_period_deadline | year=~ , period=~, deadline=~",
+					new {year = record.Year,period =record.Period,deadline = record.DeadLine}
 					));
 		}
 

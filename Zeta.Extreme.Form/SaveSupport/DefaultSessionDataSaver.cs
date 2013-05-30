@@ -39,21 +39,14 @@ namespace Zeta.Extreme.Form.SaveSupport {
 		protected override void AfterSave(IFormSession session, XElement savedata, SaveResult result, IPrincipal user) {
 			using (var c = GetConnection()) {
 				c.Open();
-				c.ExecuteNonQuery(
-					@"
-					exec usm.after_save_trigger 
-                            @form=@form,
-                            @obj=@obj,
-                            @year=@year,
-                            @period=@period,
-                            @usr=@usr",
-					new Dictionary<string, object>
+				c.ExecuteNonQuery(@"usm.after_save_trigger | form=~, obj=~, year=~, period=~, usr=~",
+					new 
 						{
-							{"@form", session.Template.Code},
-							{"@obj", session.Object.Id},
-							{"@year", session.Year},
-							{"@period", session.Period},
-							{"@usr", Application.Principal.CurrentUser.Identity.Name}
+							form= session.Template.Code,
+							obj= session.Object.Id,
+							year= session.Year,
+							period= session.Period,
+							usr= Application.Principal.CurrentUser.Identity.Name
 						}, 5000);
 				result.AfterSaveCalled = true;
 			}

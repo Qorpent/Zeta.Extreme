@@ -20,6 +20,7 @@ using System;
 using System.Linq;
 using System.Security;
 using Qorpent.Mvc.Binding;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.FrontEnd.Helpers;
 using Zeta.Extreme.Model;
@@ -53,6 +54,8 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 			}
 		}
 
+		AuthorizeHelper authhelper = new AuthorizeHelper();
+
 		/// <summary>
 		/// 	Авторизует предприятие и форму
 		/// </summary>
@@ -62,8 +65,8 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 			if (!acessobject.objs.Any(_ => _.id == _realobj.Id)) {
 				throw new SecurityException("try access not allowed object");
 			}
-			if (!Application.Roles.IsInRole(Application.Principal.CurrentUser, _realform.Role)) {
-				throw new SecurityException("try access not allowed form");
+			if (!authhelper.IsAllowed(_realform)) {
+				throw new SecurityException("form is not allowed");
 			}
 		}
 
