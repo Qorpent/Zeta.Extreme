@@ -7,7 +7,7 @@
 				{
 					'url' : target.protocol + '://' + target.host + '/' + target.app + '/zefs/' + 'nodeload.json.qweb',
 					'dataType' : 'json',
-					'timeout' : 1200,
+					'timeout' : 200,
 					'xhrFields': {
 						'withCredentials' : true
 					},
@@ -125,11 +125,11 @@
 			function(cs) {
 				var i = global.sort.getMostFreeApp(cs);
 				
-				while(i.av == 0) {
-					i = global.sort.getMostFreeApp(cs);
+				if(i.av == 0) {
+					global.getMostFreeServer(callback);
+				} else {
+					callback(i);
 				}
-			
-				callback(i);
 			}
 		);
     };
