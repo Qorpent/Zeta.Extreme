@@ -1,5 +1,5 @@
 (function(){
-var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
+
 window.zefs.handlers = $.extend(window.zefs.handlers, {
     // Zefs handlers:
     on_zefsready : "zefsready", on_zefsstarting : "zefsstarting", on_zefsfailed : "zefsfailed",
@@ -13,7 +13,8 @@ window.zefs.handlers = $.extend(window.zefs.handlers, {
     // Other handlers:
     on_formsload : "formsload", on_periodsload : "periodsload", on_periodsfaild : "periodsfailed",
     on_objectsload : "objectsload", on_objectsfaild : "objectsfailed", on_attachmentload : "attachmentload",
-    on_reglamentload : "reglamentload", on_formusersload : "formusersload",
+    on_reglamentload : "reglamentload", on_formusersload : "formusersload", on_detailsload: "detailsload",
+    on_documentationload : "documentationload",
     // Message handlers:
     on_message : "message",
     // File handlers:
@@ -34,46 +35,45 @@ root.init = root.init ||
     root.myform = root.myform ||  {
         sessionId : null,
         currentSession : null,
+        startError : null,
         lock : null,
         lockhistory : null,
         attachment : null,
         users : null
     };
     var render = root.render;
-    api.getParameters = function(){
-        // Парсим параметры из хэша
-        var p = {};
-        var result = {};
-        if (location.hash == "") return null;
-        $.each(location.hash.substring(1).split("|"), function(i,e) {
-            p[e.split("=")[0]] = e.split("=")[1];
-        });
-        result["form"] = p["form"];
-        result["obj"] = p["obj"];
-        result["period"] = p["period"];
-        result["year"] = p["year"];
-        return result;
-    };
 
-    var ArchiveNews = function(code) {
+    var GetWiki = function(code) {
+        api.wiki.get.execute({code: code});
+    }
 
-    };
-
-    var GetNewCount = function() {
-
-    };
+    var SaveWiki = function(code, text, params) {
+        // с параметрами уточнить как слать
+        if (zeta.user.getIsDocWriter()) {
+            api.wiki.save.execute({code: code, text: text});
+        }
+    }
 
     var OpenForm = function(params, blank) {
         params = params || {};
-        params = $.extend(api.getParameters(), params);
         blank = blank || false;
-        if (params.form.search('.in') == -1) {
-            params.form += api.getParameters()["form"].match(/[A|B]\.in/)[0];
+        location.hash = location.hash.replace(/\|subobj=\d+/, '');
+        var hashparams = api.getParameters();
+        params = $.extend(hashparams, params);
+        var loc = document.location.protocol + "//" + document.location.host + siteroot + "zefs-test.html#";
+        loc += "form=" + (params.form || "");
+        loc += "|year=" + (params.year || "");
+        loc += "|period=" + (params.period || "");
+        loc += "|obj=" + (params.obj || "");
+        if (!!params.subobj) loc += "|subobj=" + params.subobj;
+        if (!blank) document.location.href = loc;
+        if ((typeof params.form == "undefined" || params.form == "") ||
+            (typeof params.year == "undefined" || params.year == "") ||
+            (typeof params.period  == "undefined" || params.period == "") ||
+            (typeof params.obj == "undefined" || params.obj == "")) {
+            return;
         }
-        var loc = document.location.protocol + "//" + document.location.host + siteroot + "zefs-test.html#" +
-            "form=" + params.form + "|year=" + params.year + "|period=" + params.period + "|obj=" + params.obj;
         if (!blank) {
-            document.location.href = loc;
             document.location.reload();
         } else {
             window.open(loc, "_blank");
@@ -95,6 +95,8 @@ root.init = root.init ||
 
 	var Render = render.renderStructure; //вынес в рендер - отдельный скрипт
 	var FillBatch = render.updateCells; //вынес в рендер - zefs-render.js
+	var FillOther = render.updateNullCells;
+    var CheckConditions = render.checkConditions;
 
     var AttachFile = function(form) {
         var fd = new FormData();
@@ -162,9 +164,9 @@ root.init = root.init ||
             } else {
                 var message = "";
                 if (!!lockinfo.canblockresult) {
-                    message = lockinfo.canblockresult.Reason.Message;
+                    message = lockinfo.canblockresult.Reason.Message || lockinfo.canblockresult.Reason.ErrorMessage;
                     if (!!lockinfo.canblockresult.Reason.ReglamentCode) {
-                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.cancheckresult.Reason.ReglamentCode) return r });
+                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.canblockresult.Reason.ReglamentCode) return r });
                         if (reglament.length > 0) {
                             message += '<br/><h4>' + reglament[0].Message + '</h4>' + '<p>' + reglament[0].ReglamentDescription + '</p>';
                         }
@@ -172,6 +174,11 @@ root.init = root.init ||
                 }
                 if (lockinfo.noattachedfiles) {
                     message += "<p>Для блокировки формы необходимо прикрепить файлы.</p>"
+                }
+                if (!!lockinfo.message) {
+                    if (lockinfo.message == "cpavoid") {
+                        message += "<p>Контрольные точки не сходятся</p>";
+                    }
                 }
                 $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                     title: "Форма не может быть заблокирована",
@@ -194,9 +201,9 @@ root.init = root.init ||
             } else {
                 var message = "";
                 if (!!lockinfo.canopenresult) {
-                    message = lockinfo.canopenresult.Reason.Message;
+                    message = lockinfo.canopenresult.Reason.Message || lockinfo.canopenresult.Reason.ErrorMessage;
                     if (!!lockinfo.canopenresult.Reason.ReglamentCode) {
-                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.cancheckresult.Reason.ReglamentCode) return r });
+                        var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.canopenresult.Reason.ReglamentCode) return r });
                         if (reglament.length > 0) {
                             message += '<br/><h4>' + reglament[0].Message + '</h4>' + '<p>' + reglament[0].ReglamentDescription + '</p>';
                         }
@@ -223,7 +230,7 @@ root.init = root.init ||
             } else {
                 var message = "";
                 if (!!lockinfo.cancheckresult) {
-                    message = lockinfo.cancheckresult.Reason.Message;
+                    message = lockinfo.cancheckresult.Reason.Message || lockinfo.cancheckresult.Reason.ErrorMessage;
                     if (!!lockinfo.cancheckresult.Reason.ReglamentCode && lockinfo.cancheckresult.Reason.ReglamentCode != "") {
                         var reglament = $.map(zefs.reglament, function(r) { if (r.ReglamentCode == lockinfo.cancheckresult.Reason.ReglamentCode) return r });
                         if (reglament.length > 0) {
@@ -290,8 +297,8 @@ root.init = root.init ||
 
     var ZefsIt = function(table) {
         if (!$.isEmptyObject(root.objects))  {
-            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 100 });
-            else $('table.data').zefs();
+//            if (!$.isEmptyObject(root.myobjs)) $('table.data').zefs({ fixHeaderX : 100 }); else
+             $('table.data').zefs();
         } else {
             window.setTimeout(function(){ ZefsIt(table) },100);
         }
@@ -348,6 +355,8 @@ root.init = root.init ||
     // Обработчики событий
     $(window.zefs).on(window.zefs.handlers.on_renderfinished, function(e, table) {
         ZefsIt(table);
+        var rowcodes = $.map(zefs.myform.currentSession.structure.rows, function(r) { return '/row/' + r.code + '/default' }).join(',');
+        api.wiki.exists.execute({ code: rowcodes });
     });
 
     api.server.ready.onSuccess(function(e, result) {
@@ -410,6 +419,9 @@ root.init = root.init ||
                 $('<tr/>').append($('<td/>').text("Строка"), $('<td/>').text("(" + result.cell.rowcode + ") " + result.cell.rowname)),
                 $('<tr/>').append($('<td/>').text("Период"), $('<td/>').text("(" + result.cell.period + ") " + window.zefs.getperiodbyid(result.cell.period)))
             ).hide();
+            if (!!result.cell.currency) {
+                cellinfo.append($('<tr/>').append($('<td/>').text("Валюта"), $('<td/>').text(result.cell.currency)));
+            }
             cellinfotoggle.click(function() { cellinfo.toggle() });
             var cellhistory = $('<table class="table table-bordered table-striped"/>');
             var insertvalue = function(value) {
@@ -450,6 +462,123 @@ root.init = root.init ||
         }
     });
 
+    api.wiki.exists.onSuccess(function(e, result) {
+        zefs.myform.documentation = result;
+        $.each(result, function(i, c) {
+            var code = c.Code.match(/row\/([^\/]+)/);
+            var ifexist = $.map(zefs.myform.currentSession.structure.rows, function(r, i) { if (r.code == code[1] && !r.hasHelp) return i; });
+            if (ifexist.length > 0) {
+                zefs.myform.currentSession.structure.rows[ifexist[0]].hasHelp = true;
+            }
+        });
+        $(root).trigger(root.handlers.on_documentationload);
+        var withhelp = $.map(zefs.myform.currentSession.structure.rows, function(r) { if (r.hasHelp) return r; });
+        $.each(withhelp, function(i, row) {
+            var helpcode = '/row/' + row.code + '/default';
+            var wikibtn = $('#wiki_' + helpcode.replace(/\//g, '_'));
+            wikibtn.removeClass("notexist");
+            wikibtn.click(function() {
+                clearTimeout(window.wikitimer);
+            });
+            wikibtn.mouseenter(function() {
+                window.wikitimer = setTimeout(function() {
+                    var content = "";
+                    if (!!row.comment && row.comment != "") {
+                        content = '<p class="popover-comment">' + row.comment.replace(/\s*\r\n/g,'</br>') + '</p>';
+                    }
+                    var req = $.ajax({url : "wiki/get.json.qweb", data: {code: wikibtn.attr("code")}});
+                    req.success(function(result) {
+                        if (!!result[0]) {
+                            content = wiky.process(result[0].Text) + content;
+                        }
+                        wikibtn.popover({selector: 'body', placement: "right", trigger: "hover", html: true, content: content });
+                        wikibtn.popover("show");
+                        content = null;
+                    });
+                }, 500);
+            });
+            wikibtn.mouseleave(function() {
+                clearTimeout(window.wikitimer);
+                if (!!wikibtn.data('popover')) {
+                    wikibtn.popover('destroy');
+                    wikibtn.removeAttr("data-original-title");
+                    wikibtn.removeAttr("title");
+                }
+            });
+        });
+        if (!zeta.user.getIsDocWriter() && !zeta.user.getIsAdmin()) {
+            $('.wikirowhelp.notexist').remove();
+        }
+        $('.wikirowhelp').show();
+    });
+
+    api.wiki.get.onSuccess(function(e, result) {
+        if (!$.isEmptyObject(result)) {
+            var content = $('<div/>');
+            $.each(result, function(i, w) {
+                var wikiarticle = $('<div class="wikiarticle"/>');
+                var wikititle = $('<div class="wikititle"/>').text(w.Title || w.Code);
+                var wikitext = $('<div class="wikitext"/>').html(wiky.process(w.Text));
+                var wikiinfo = $('<div class="wikiinfo"/>').text("Последняя правка: ");
+                if (!!w.Date) {
+                    wikiinfo.text(wikiinfo.text() + w.Date.format("dd.mm.yyyy HH:MM:ss"));
+                }
+                var user = $('<span class="label label-info"/>').text(w.Editor);
+                wikiinfo.append(user);
+                user.zetauser();
+                if (zeta.user.getIsDocWriter()) {
+                    var wikiedit = $('<textarea class="wikiedit"/>').val(w.Text);
+                    var wikititleedit = $('<input type="text" class="wikititleedit"/>').val(w.Title || w.Code);
+                    wikiedit.hide();
+                    wikititleedit.hide();
+                    var wikicontrols = $('<div class="wikicontrols"/>');
+                    var wikieditbtn = $('<button class="btn btn-mini"/>').text("Править");
+                    var wikisavebtn = $('<button class="btn btn-mini btn-success"/>').html('<i class="icon-white icon-ok"/>');
+                    wikisavebtn.hide();
+                    wikicontrols.append(wikieditbtn, wikisavebtn);
+                    wikiedit.keyup(function() {
+                        wikitext.html(wiky.process(wikiedit.val()));
+                    });
+                    wikititleedit.keyup(function() {
+                        wikititle.text(wikititleedit.val());
+                    });
+                    wikieditbtn.click(function() {
+                        wikieditbtn.hide();
+                        wikiedit.show();
+                        wikititleedit.show();
+                        wikisavebtn.show();
+                    });
+                    wikisavebtn.click(function() {
+                        wikiedit.hide();
+                        wikititleedit.hide();
+                        wikisavebtn.hide();
+                        var save = $.ajax({
+                            url: "wiki/save.json.qweb",
+                            type: "POST",
+                            data: { code: w.Code, text: wikiedit.val(), title: wikititleedit.val() }
+                        });
+                        save.success(function(r) {
+                            wikititle.text(r.Title || r.Code);
+                            var v = eval(r.LastWriteTime.substring(2));
+                            wikiinfo.text("Сохранено: " + v.format("dd.mm.yyyy HH:MM:ss"));
+                            var user = $('<span class="label label-info"/>').text(r.Editor);
+                            wikiinfo.append(user);
+                            user.zetauser();
+                        });
+                        wikieditbtn.show();
+                    });
+                    wikiarticle.append(wikititleedit, wikiedit, wikicontrols);
+                }
+                wikiarticle.append(wikititle, wikitext, wikiinfo);
+                content.append(wikiarticle);
+            });
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "База знаний", width: 800,
+                content: $('<div/>').append(content)
+            });
+        }
+    });
+
     api.server.restart.onSuccess(function() {
         $(window.zeta).trigger(window.zeta.handlers.on_modal, { title: "Сервер был перезапущен" });
     });
@@ -460,11 +589,6 @@ root.init = root.init ||
         var sessiondata = {session: root.myform.sessionId};
         document.title = result.FormInfo.Name;
         api.session.structure.execute(sessiondata);
-        api.metadata.getobjects.execute();
-        api.metadata.getperiods.execute();
-        api.metadata.getforms.execute();
-        api.metadata.getreglament.execute();
-        api.metadata.getnews.execute();
         api.metadata.getformusers.execute(sessiondata);
         // получаем ленту сообщений формы
         api.chat.list.execute({session: root.myform.sessionId});
@@ -480,11 +604,29 @@ root.init = root.init ||
         $(root).trigger(root.handlers.on_sessionload);
     });
 
+    api.session.start.onError(function(e, result) {
+        root.myform.startError = JSON.parse(result.responseText);
+    });
+
+    api.session.start.onComplete(function() {
+        api.metadata.getobjects.execute();
+        api.metadata.getperiods.execute();
+        api.metadata.getforms.execute();
+        api.metadata.getreglament.execute();
+        api.metadata.getnews.execute();
+    });
+
     api.session.structure.onSuccess(function(e, result) {
         root.myform.currentSession.structure = result;
+        api.session.details.execute({form: root.myform.currentSession.FormInfo.CodeOnly});
         Render(root.myform.currentSession);
         Fill(root.myform.currentSession);
         $(root).trigger(root.handlers.on_structureload);
+    });
+
+    api.session.details.onSuccess(function(e, result) {
+        root.myform.details = result;
+        $(root).trigger(root.handlers.on_detailsload);
     });
 
     api.data.start.onSuccess(function(e, result) {
@@ -494,14 +636,30 @@ root.init = root.init ||
             // Это штука для перерисовки шапки
             $(window).trigger("resize");
             $(root).trigger(root.handlers.on_dataload);
+            FillOther();
+            CheckConditions();
         } else {
-            var idx = !$.isEmptyObject(result.data) ? result.ei+1 : result.si;
+            var idx = 0;
+            if (!$.isEmptyObject(result)) {
+                if (!!result.ei) {
+                    idx = result.ei+1;
+                }
+                else if (!!result.si) {
+                    idx = result.si;
+                }
+                else {
+                    // если нет ни того ни другого, наверное, надо брать
+                    // из последнего батча
+                }
+            };
+//          var idx = !$.isEmptyObject(result.data) ? result.ei+1 : result.si;
             window.setTimeout(function(){api.data.start.execute({session: root.myform.sessionId,startidx: idx})},500);
         }
     });
 
     api.data.reset.onSuccess(function() {
         root.myform.currentSession.data = [];
+        $('td.data').addClass("notloaded");
         api.data.start.execute({session: root.myform.sessionId, startidx: 0});
     });
 
@@ -600,7 +758,7 @@ root.init = root.init ||
         var content = $('.zefsnews');
         if (!$.isEmptyObject(result)) {
             var exist = false;
-            if (content.length != 0) {
+            if (content.length > 0) {
                 content.empty();
                 exist = true;
             } else {
@@ -629,7 +787,7 @@ root.init = root.init ||
             }
         } else {
             if (content.length > 0) {
-                content.modal('hide');
+                $(content).modal("hide");
             }
         }
     });
@@ -688,7 +846,23 @@ root.init = root.init ||
     });
 
     api.chat.get.onSuccess(function(e, result) {
+        if (!$.isEmptyObject(root.myform.adminchat)) {
+            var notread = $.map(result, function(i) { if ($.map(zefs.myform.adminchat, function(j) { if(i.Id == j.Id) return j }).length == 0) return i });
+            $.each(notread, function(i, o) {
+                o.notread = true;
+            });
+        }
+        root.myform.adminchat = result;
         $(root).trigger(root.handlers.on_adminchatlistload, result);
+    });
+
+    api.chat.haveread.onSuccess(function() {
+        if (!$.isEmptyObject(root.myform.adminchat)) {
+            var notread = $.map(root.myform.adminchat, function(m) { if (m.notread) return m });
+            $.each(notread, function(i, o) {
+                o.notread = false;
+            });
+        }
     });
 
     api.chat.archive.onSuccess(function(e, result) {
@@ -726,7 +900,9 @@ root.init = root.init ||
         chatadd: ChatAdd,
         chatarchive: ChatArchive,
         chatread: ChatRead,
-        chatupdateds: ChatUpdateOnce
+        chatupdateds: ChatUpdateOnce,
+        wikiget: GetWiki,
+        wikisave: SaveWiki
     });
 
     return root.myform;

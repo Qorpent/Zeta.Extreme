@@ -29,7 +29,13 @@
             this.applyChanges();
         },this));
         this.table.delegate('span.collapser', "click", $.proxy(function(e) {
-            this.toggleChildRows($(e.target).parent().parent());
+            var $c = $(e.target);
+            if (e.ctrlKey) {
+                var l = $c.parents('tr').attr("level");
+                $('tr[level="' + l + '"] .collapser').trigger('click');
+            } else {
+                this.toggleChildRows($c.parent().parent());
+            }
         }, this));
     };
 

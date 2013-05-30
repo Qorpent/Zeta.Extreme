@@ -1,36 +1,39 @@
-if((window.useStatic !== undefined) && (window.useStatic == true)) {
+if(isStatic() == true) {
 	document.write('<script src="scripts/zefs-options.js"></script>');
 	document.write('<script src="scripts/zefs-render.js"></script>');
 	document.write('<script src="scripts/zefs.js"></script>');
 	document.write('<script src="scripts/zefs-forms.js"></script>');
 	document.write('<script src="scripts/zefs-statistic.js"></script>');
-	document.write('<link rel="stylesheet" type="text/css" href="styles/zefs.css">');
-	document.write('<link rel="stylesheet" type="text/css" href="styles/zefs-forms.css">');
-	document.write('<link rel="stylesheet" type="text/css" href="styles/zefs-formdetails.css">');
 } else {
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-options"></script>');
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-render"></script>');
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs"></script>');
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-forms"></script>');
     document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-statistic"></script>');
+}
+
+if(isStatic() == true) {
+	document.write('<link rel="stylesheet" type="text/css" href="styles/zefs.css">');
+	document.write('<link rel="stylesheet" type="text/css" href="styles/zefs-forms.css">');
+	document.write('<link rel="stylesheet" type="text/css" href="styles/zefs-formdetails.css">');
+} else {
 	document.write('<link rel="stylesheet" type="text/css" href="_sys/getcss.file.qweb?stylename=zefs">');
 	document.write('<link rel="stylesheet" type="text/css" href="_sys/getcss.file.qweb?stylename=zefs-forms">');
 	document.write('<link rel="stylesheet" type="text/css" href="_sys/getcss.file.qweb?stylename=zefs-formdetails">');
 }
 
-
-
-
-document.write('<script src="zeta/getperiods.embedjson.qweb"></script>');
-document.write('<script src="zeta/getobjects.embedjson.qweb"></script>');
-document.write('<script src="zefs/bizprocesslist.embedjson.qweb"></script>');
+if(isStatic() == false) {
+	document.write('<script src="zeta/getperiods.embedjson.qweb"></script>');
+	document.write('<script src="zeta/getobjects.embedjson.qweb"></script>');
+	document.write('<script src="zefs/bizprocesslist.embedjson.qweb"></script>');
+}
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-debug"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-restart"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-auth"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-authinfo"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-formsave"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-feedback"></script>');
-if((window.useStatic !== undefined) && (window.useStatic == true)) {
+if(isStatic() == true) {
 	document.write('<script src="scripts/zefs-info.js"></script>');
 } else {
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-info"></script>');
@@ -41,7 +44,7 @@ if((window.useStatic !== undefined) && (window.useStatic == true)) {
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-extrapannel"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-table"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-attacher"></script>');
-if((window.useStatic !== undefined) && (window.useStatic == true)) {
+if(isStatic() == true) {
 	document.write('<script src="scripts/zefs-chat.js"></script>');
 } else {
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-chat"></script>');
@@ -54,7 +57,7 @@ if((window.useStatic !== undefined) && (window.useStatic == true)) {
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-nullrows"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-alerter"></script>');
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-report"></script>');
-if((window.useStatic !== undefined) && (window.useStatic == true)) {
+if(isStatic() == true) {
 	document.write('<script src="scripts/zefs-formheader.js"></script>');
 } else {
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-formheader"></script>');
@@ -63,7 +66,7 @@ if((window.useStatic !== undefined) && (window.useStatic == true)) {
 //document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-logo"></script>');
 
 document.write('<script src="scripts/zefs-formsubobj.js"></script>');
-if((window.useStatic !== undefined) && (window.useStatic == true)) {
+if(isStatic() == true) {
 	document.write('<script src="scripts/zefs-formdetails.js"></script>');
 } else {
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-formdetails"></script>');
@@ -85,12 +88,12 @@ document.write('<script src="scripts/zefs-hotkeys.js"></script>');
 document.write('<script src="scripts/zefs-faq.js"></script>');
 //document.write('<script src="scripts/zefs-formheader.js"></script>');
 //document.write('<script src="scripts/zefs-extrapannel.js"></script>');
-
-if((window.useStatic !== undefined) && (window.useStatic == true)) {
-	document.write('<script src="scripts/zefs-extrapannel.js"></script>');
+if(isStatic() == true) {
+	document.write('<link rel="stylesheet" type="text/css" href="scripts/zefs-extrapannel.js">');
 } else {
 	document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-extrapannel"></script>');
 }
+
 document.write('<script src="scripts/zefs-table.js"></script>');
 document.write('<script src="scripts/zefs-attacher.js"></script>');
 //document.write('<script src="scripts/zefs-chat.js"></script>');

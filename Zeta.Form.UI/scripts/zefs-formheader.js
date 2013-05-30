@@ -7,7 +7,7 @@
     var formname = $('<h3 class="formname"/>');
     var formperiod = $('<h3/>');
     var formyear = $('<h3/>');
-    var period = 999;
+    var period = null;
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
         var zetaheader = $('#consolePageHeader');
         var lock =  window.zefs.myform.lock;
@@ -25,9 +25,15 @@
     });
     $(window.zefs).on(window.zefs.handlers.on_sessionload, function() {
         if (null == zefs.myform.startError) {
-            period = window.zefs.myform.currentSession.Period;
-            formname.text(zefs.myform.currentSession.FormInfo.Name + " " + zefs.myform.currentSession.ObjInfo.Name + " за");
-            formyear.text(zefs.myform.currentSession.Year + " год");
+            var s = zefs.myform.currentSession;
+            if (period == null) period = s.Period;
+            var periodtype = "";
+            if (s.FormInfo.Name.search(/(план|факт)/) == -1) {
+                if (s.FormInfo.Code.search(/A\.in/) != -1) periodtype = " (факт)";
+                else if (s.FormInfo.Code.search(/B\.in/) != -1) periodtype = " (план)";
+            }
+            formname.text(s.FormInfo.Name + " " + s.ObjInfo.Name + periodtype + " за");
+            formyear.text(s.Year + " год");
         }
     });
     zefsformheader.body = $('<div/>').append(formname, formperiod, formyear);
