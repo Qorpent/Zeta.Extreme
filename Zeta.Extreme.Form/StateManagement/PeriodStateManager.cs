@@ -82,7 +82,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 			indatabase(
 				c =>
 				c.ExecuteNonQuery(
-					"UNICALL usm.set_period_state | year=~,period=~,state=",
+					"UNICALL usm.set_period_state | year=~,period=~,state=~",
 					new {year=record.Year, period=record.Period,state=record.State?1:0}
 					));
 		}
