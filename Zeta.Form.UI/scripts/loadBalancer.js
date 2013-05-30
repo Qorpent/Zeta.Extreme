@@ -11,7 +11,7 @@
 					'xhrFields': {
 						'withCredentials' : true
 					},
-                    'crossDomain' : true,
+                    'crossDomain' : true
 				}
 			).done(done).error(error);
 		},

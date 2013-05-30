@@ -169,7 +169,11 @@
                 url: myoptions.url,
                 type : !params ? "GET" : "POST",
                 dataType: myoptions.datatype,
-                data : params || {}
+                data : params || {},
+				xhrFields: {
+					withCredentials: true
+				},
+				crossDomain: true
             };
             if(this.useProgress){
                 $.extend(ajaxinfo,{
