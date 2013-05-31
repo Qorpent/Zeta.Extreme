@@ -64,7 +64,7 @@
             });
             menu.append(li);
         });
-        if (null == zefs.myform.startError) {
+        if (zefs.api.getParameters() != null) {
             $('a[periodcode="' + window.zefs.myform.currentSession.Period + '"]').parents('li').addClass("current");
             $('a[periodcode="' + window.zefs.myform.currentSession.Year + '"]').parents('li').addClass("current");
         }

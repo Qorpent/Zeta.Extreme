@@ -396,10 +396,13 @@ root.init = root.init ||
     });
 
     api.server.ready.onSuccess(function(e, result) {
-        if (!!result) {
+        if (!!result && api.getParameters() != null) {
             api.session.start.execute();
+            ShowFormPreloader();
         }
-        ShowFormPreloader();
+        api.metadata.getobjects.execute();
+        api.metadata.getperiods.execute();
+        api.metadata.getforms.execute();
     });
 
     api.metadata.getobjects.onSuccess(function(e, result) {
@@ -705,9 +708,9 @@ root.init = root.init ||
     });
 
     api.session.start.onComplete(function() {
-        api.metadata.getobjects.execute();
-        api.metadata.getperiods.execute();
-        api.metadata.getforms.execute();
+//        api.metadata.getobjects.execute();
+//        api.metadata.getperiods.execute();
+//        api.metadata.getforms.execute();
         api.metadata.getreglament.execute();
         api.metadata.getnews.execute();
     });
