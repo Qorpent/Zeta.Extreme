@@ -16,12 +16,13 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Form/DefaultSessionDataSaver.cs
 #endregion
-using System.Collections.Generic;
+
 using System.Data;
 using System.Security.Principal;
 using System.Xml.Linq;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Forms;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Form.SaveSupport {
@@ -39,7 +40,7 @@ namespace Zeta.Extreme.Form.SaveSupport {
 		protected override void AfterSave(IFormSession session, XElement savedata, SaveResult result, IPrincipal user) {
 			using (var c = GetConnection()) {
 				c.Open();
-				c.ExecuteNonQuery(@"UNICALL usm.after_save_trigger | form=~, obj=~, year=~, period=~, usr=~",
+				c.ExecuteNonQuery(ZetaClassicConst.AfterSaveTriggerQuery,
 					new 
 						{
 							form= session.Template.Code,
@@ -109,7 +110,7 @@ namespace Zeta.Extreme.Form.SaveSupport {
 			}
 			if (cell.linkedcell.query.Obj.Type == ZoneType.Obj) {
 				return string.Format(@"
-insert usm.insertdata(year,period,obj,row,col,decimalvalue,stringvalue,valuta,usr,op)
+insert into usm.insertdata(year,period,obj,row,col,decimalvalue,stringvalue,valuta,usr,op)
 values ({0},{1},{2},{3},{4},{5},{5},'{6}','{7}','=')
 ",
 				                     cell.linkedcell.query.Time.Year,
@@ -124,7 +125,7 @@ values ({0},{1},{2},{3},{4},{5},{5},'{6}','{7}','=')
 			}
 			else { //details
 				return string.Format(@"
-insert usm.insertdata(year,period,detail,row,col,decimalvalue,stringvalue,valuta,usr,op)
+insert into usm.insertdata(year,period,detail,row,col,decimalvalue,stringvalue,valuta,usr,op)
 values ({0},{1},{2},{3},{4},{5},{5},'{6}','{7}','=')
 ",
 									 cell.linkedcell.query.Time.Year,

@@ -609,6 +609,7 @@ namespace Zeta.Extreme.FrontEnd {
 					 })
 					.Union(
 						(from ci in cols
+						where CheckIsOuterVisible(ci)
 						 let c = ci._
 						 select new StructureItem
 							 {
@@ -631,6 +632,12 @@ namespace Zeta.Extreme.FrontEnd {
 			TimeToStructure = sw.Elapsed;
 			StructureInProcess = false;
             FormSessionsState.CurrentFormRenderingOperationsDecrease();
+		}
+
+		private bool CheckIsOuterVisible(IdxCol ci) {
+			if (ci._.Title == "hide") return false;
+			return true;
+
 		}
 
 
