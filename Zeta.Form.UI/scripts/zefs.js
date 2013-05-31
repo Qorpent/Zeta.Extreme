@@ -65,13 +65,6 @@ root.init = root.init ||
         }
     }
 
-    var GetWikiHelp = function() {
-        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
-            title: "Cинтаксис Wiki",
-            content: ""
-        });
-    };
-
     var OpenForm = function(params, blank) {
         params = params || {};
         blank = blank || false;
@@ -631,9 +624,10 @@ root.init = root.init ||
                     var wikiedit = $('<textarea class="wikiedit"/>').val(w.Text);
                     var wikititleedit = $('<input type="text" class="wikititleedit"/>').val(w.Title || w.Code);
                     var wikihelp = $('<button class="btn-link btn-mini pull-right"/>').css("padding", 0).text("Как писать документацию?");
-                    wikiedit.hide();
-                    wikititleedit.hide();
-                    wikihelp.hide();
+                    wikihelp.click(function() {
+                        api.wiki.getsync.execute({code: "/wiki/wikimarkup/default"});
+                    });
+                    wikiedit.hide(); wikititleedit.hide(); wikihelp.hide();
                     var wikicontrols = $('<div class="wikicontrols"/>');
                     var wikieditbtn = $('<button class="btn btn-mini"/>').text("Править");
                     var wikisavebtn = $('<button class="btn btn-mini btn-success"/>').html('<i class="icon-white icon-ok"/>');
