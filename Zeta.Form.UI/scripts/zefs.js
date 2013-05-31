@@ -553,6 +553,7 @@ root.init = root.init ||
     });
 
     api.metadata.getformuladependency.onSuccess(function(e, result) {
+        if (typeof result == "string") return;
         var code = result.code || "";
         var article = $('<div class="detailsarticle"/>').attr("id", "detailsarticle_" + code);
         article.insertAfter($("#wikiarticle__row_" + code + "_default"));
@@ -599,7 +600,7 @@ root.init = root.init ||
             });
             if (formstitle.next().length == 0) formstitle.remove();
         }
-    }),
+    });
 
     api.wiki.getsync.onSuccess(function(e, result) {
         if (!$.isEmptyObject(result)) {
@@ -608,6 +609,7 @@ root.init = root.init ||
                 var wikiarticle = $('<div class="wikiarticle"/>');
                 wikiarticle.attr("id", "wikiarticle_" + w.Code.replace(/\//g, "_"));
                 var wikititle = $('<div class="wikititle"/>').text(w.Title || w.Code);
+                wikititle.attr("title", w.Code);
                 var wikitext = $('<div class="wikitext"/>').html(wiky.process(w.Text));
                 var wikiinfo = $('<div class="wikiinfo"/>').text("Последняя правка: ");
                 if (!!w.Date) {
