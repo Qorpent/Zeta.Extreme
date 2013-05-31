@@ -30,7 +30,7 @@
             }
             $.each(window.zefs.myobjs, function(i, obj) {
                 var name = obj.shortname || obj.name || "";
-                var l = $('<span class="label"/>');
+                var l = $('<span class="label kuratorobj"/>');
                 l.attr("value", obj.id);
                 if (obj.id == currentObj) {
                     l.addClass("currentobj");
@@ -39,16 +39,22 @@
                 l.text(r != null ? r[1] : name);
                 l.click(function() { ChangeObject(obj.id) });
                 extrapannel.body.append(l);
-                $.ajax({
-                    url:"zefs/getcurratorlockstate.json.qweb",
-                    data : { session : zefs.myform.sessionId, objid: obj.id }
-                }).success(function(s) {
-                    ChangeState(l, s);
-                });
             });
             extrapannel.body.show();
         }
     });
+
+    $(zefs).on(zefs.handlers.on_sessionload, function() {
+        $.each($('.kuratorobj'), function(i, kuratorobj) {
+            $.ajax({
+                url:"zefs/getcurratorlockstate.json.qweb",
+                data : { session : zefs.myform.sessionId, objid: $(kuratorobj).attr("value") }
+            }).success(function(s) {
+                ChangeState($(kuratorobj), s);
+            });
+        });
+    })
+
     $(zefs).on(zefs.handlers.on_getlockload, function() {
         var current = $("span.currentobj");
         if (current.length > 0) {
