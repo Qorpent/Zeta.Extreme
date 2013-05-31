@@ -354,6 +354,26 @@ root.init = root.init ||
         }
     };
 
+    var ShowFormPreloader = function() {
+        if (zefs.api.getParameters() != null && $('.zefsdatapreloader').length == 0) {
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "",
+                name: "zefsdatapreloader",
+                content: $('<div/>').append($('<div class="zefspreloader"/>'), $('<p/>').text("Идет загрузка формы...").append($('<span id="formLoadTime"/>').text("0"))),
+                width: 300
+            });
+            window.formloadtimer = setInterval(function() {
+                $('#formLoadTime').text(parseInt($('#formLoadTime').text())+1);
+            }, 1000);
+        }
+    };
+
+    var HideFormPreloader = function() {
+        // Закрываем окно с прелоадером
+        $('.zefsdatapreloader').modal('hide');
+        clearInterval(window.formloadtimer);
+    };
+
     var OpenFormulaDebuger = function() {
         window.open(api.siterootold() + "zeta/debug/index.rails?asworkspace=1", '_blank');
     };
@@ -379,15 +399,7 @@ root.init = root.init ||
         if (!!result) {
             api.session.start.execute();
         }
-        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
-            title: "",
-            name: "zefsdatapreloader",
-            content: $('<div/>').append($('<div class="zefspreloader"/>'), $('<p/>').text("Идет загрузка формы...").append($('<span id="formLoadTime"/>').text("0"))),
-            width: 300
-        });
-        window.formloadtimer = setInterval(function() {
-            $('#formLoadTime').text(parseInt($('#formLoadTime').text())+1);
-        }, 1000);
+        ShowFormPreloader();
     });
 
     api.metadata.getobjects.onSuccess(function(e, result) {
@@ -685,6 +697,11 @@ root.init = root.init ||
 
     api.session.start.onError(function(e, result) {
         root.myform.startError = JSON.parse(result.responseText);
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            title: "Ошибка при старте приложения",
+            text: root.myform.startError
+        });
+        HideFormPreloader();
     });
 
     api.session.start.onComplete(function() {
@@ -712,9 +729,7 @@ root.init = root.init ||
         root.myform.currentSession.data.push(result);
         Fill(root.myform.currentSession);
         if(result.state != "w"){
-            // Закрываем окно с прелоадером
-            $('.zefsdatapreloader').modal('hide');
-            clearInterval(window.formloadtimer);
+            HideFormPreloader();
             // Это штука для перерисовки шапки
             $(window).trigger("resize");
             $(root).trigger(root.handlers.on_dataload);
