@@ -25,7 +25,9 @@
     };
     $(window.zefs).on(window.zefs.handlers.on_objectsload, function() {
         if (!$.isEmptyObject(window.zefs.myobjs)) {
-            var currentObj = zefs.api.getParameters()["obj"] || -1;
+            if (zefs.api.getParameters() != null) {
+                var currentObj = zefs.api.getParameters()["obj"] || -1;
+            }
             $.each(window.zefs.myobjs, function(i, obj) {
                 var name = obj.shortname || obj.name || "";
                 var l = $('<span class="label"/>');
