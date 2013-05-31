@@ -64,10 +64,11 @@
             });
             menu.append(li);
         });
-        if (null == zefs.myform.startError) {
-            $('a[periodcode="' + window.zefs.myform.currentSession.Period + '"]').parents('li').addClass("current");
-            $('a[periodcode="' + window.zefs.myform.currentSession.Year + '"]').parents('li').addClass("current");
-        }
+    });
+
+    $(zefs).on(zefs.handlers.on_sessionload, function() {
+        $('a[periodcode="' + window.zefs.myform.currentSession.Period + '"]').parents('li').addClass("current");
+        $('a[periodcode="' + window.zefs.myform.currentSession.Year + '"]').parents('li').addClass("current");
     });
 
     zefsperiodselector.body = $('<div/>').append(list);

@@ -354,6 +354,26 @@ root.init = root.init ||
         }
     };
 
+    var ShowFormPreloader = function() {
+        if (zefs.api.getParameters() != null && $('.zefsdatapreloader').length == 0) {
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "",
+                name: "zefsdatapreloader",
+                content: $('<div/>').append($('<div class="zefspreloader"/>'), $('<p/>').text("Идет загрузка формы...").append($('<span id="formLoadTime"/>').text("0"))),
+                width: 300
+            });
+            window.formloadtimer = setInterval(function() {
+                $('#formLoadTime').text(parseInt($('#formLoadTime').text())+1);
+            }, 1000);
+        }
+    };
+
+    var HideFormPreloader = function() {
+        // Закрываем окно с прелоадером
+        $('.zefsdatapreloader').modal('hide');
+        clearInterval(window.formloadtimer);
+    };
+
     var OpenFormulaDebuger = function() {
         window.open(api.siterootold() + "zeta/debug/index.rails?asworkspace=1", '_blank');
     };
@@ -376,9 +396,13 @@ root.init = root.init ||
     });
 
     api.server.ready.onSuccess(function(e, result) {
-        if (!!result) {
+        if (!!result && api.getParameters() != null) {
             api.session.start.execute();
+            ShowFormPreloader();
         }
+        api.metadata.getobjects.execute();
+        api.metadata.getperiods.execute();
+        api.metadata.getforms.execute();
     });
 
     api.metadata.getobjects.onSuccess(function(e, result) {
@@ -505,7 +529,7 @@ root.init = root.init ||
                     var req = $.ajax({url : "wiki/get.json.qweb", data: {code: wikibtn.attr("code")}});
                     req.success(function(result) {
                         if (!!result[0]) {
-                            content = wiky.process(result[0].Text) + content;
+                            content = result[0].Text.wiki2html() + content;
                         }
                         wikibtn.popover({selector: 'body', placement: "right", trigger: "hover", html: true, content: content });
                         wikibtn.popover("show");
@@ -529,6 +553,7 @@ root.init = root.init ||
     });
 
     api.metadata.getformuladependency.onSuccess(function(e, result) {
+        if (typeof result == "string") return;
         var code = result.code || "";
         var article = $('<div class="detailsarticle"/>').attr("id", "detailsarticle_" + code);
         article.insertAfter($("#wikiarticle__row_" + code + "_default"));
@@ -575,7 +600,7 @@ root.init = root.init ||
             });
             if (formstitle.next().length == 0) formstitle.remove();
         }
-    }),
+    });
 
     api.wiki.getsync.onSuccess(function(e, result) {
         if (!$.isEmptyObject(result)) {
@@ -584,7 +609,8 @@ root.init = root.init ||
                 var wikiarticle = $('<div class="wikiarticle"/>');
                 wikiarticle.attr("id", "wikiarticle_" + w.Code.replace(/\//g, "_"));
                 var wikititle = $('<div class="wikititle"/>').text(w.Title || w.Code);
-                var wikitext = $('<div class="wikitext"/>').html(wiky.process(w.Text));
+                wikititle.attr("title", w.Code);
+                var wikitext = $('<div class="wikitext"/>').html(w.Text.wiki2html());
                 var wikiinfo = $('<div class="wikiinfo"/>').text("Последняя правка: ");
                 if (!!w.Date) {
                     wikiinfo.text(wikiinfo.text() + w.Date.format("dd.mm.yyyy HH:MM:ss"));
@@ -597,29 +623,27 @@ root.init = root.init ||
                 if (zeta.user.getIsDocWriter()) {
                     var wikiedit = $('<textarea class="wikiedit"/>').val(w.Text);
                     var wikititleedit = $('<input type="text" class="wikititleedit"/>').val(w.Title || w.Code);
-                    wikiedit.hide();
-                    wikititleedit.hide();
+                    var wikihelp = $('<button class="btn-link btn-mini pull-right"/>').css("padding", 0).text("Как писать документацию?");
+                    wikihelp.click(function() {
+                        api.wiki.getsync.execute({code: "/wiki/wikimarkup/default"});
+                    });
+                    wikiedit.hide(); wikititleedit.hide(); wikihelp.hide();
                     var wikicontrols = $('<div class="wikicontrols"/>');
                     var wikieditbtn = $('<button class="btn btn-mini"/>').text("Править");
                     var wikisavebtn = $('<button class="btn btn-mini btn-success"/>').html('<i class="icon-white icon-ok"/>');
                     wikisavebtn.hide();
                     wikicontrols.append(wikieditbtn, wikisavebtn);
                     wikiedit.keyup(function() {
-                        wikitext.html(wiky.process(wikiedit.val()));
+                        wikitext.html(wikiedit.val().wiki2html());
                     });
                     wikititleedit.keyup(function() {
                         wikititle.text(wikititleedit.val());
                     });
                     wikieditbtn.click(function() {
-                        wikieditbtn.hide();
-                        wikiedit.show();
-                        wikititleedit.show();
-                        wikisavebtn.show();
+                        wikieditbtn.hide(); wikiedit.show(); wikihelp.show(); wikititleedit.show(); wikisavebtn.show();
                     });
                     wikisavebtn.click(function() {
-                        wikiedit.hide();
-                        wikititleedit.hide();
-                        wikisavebtn.hide();
+                        wikiedit.hide(); wikititleedit.hide(); wikihelp.hide(); wikisavebtn.hide();
                         var save = $.ajax({
                             url: "wiki/save.json.qweb",
                             type: "POST",
@@ -637,7 +661,7 @@ root.init = root.init ||
                         });
                         wikieditbtn.show();
                     });
-                    wikiarticle.append(wikititleedit, wikiedit, wikicontrols);
+                    wikiarticle.append(wikititleedit, wikiedit, wikihelp, wikicontrols);
                 }
                 wikiarticle.append(wikititle, wikitext, wikiinfo);
                 content.append(wikiarticle);
@@ -676,12 +700,17 @@ root.init = root.init ||
 
     api.session.start.onError(function(e, result) {
         root.myform.startError = JSON.parse(result.responseText);
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            title: "Ошибка при старте приложения",
+            text: root.myform.startError
+        });
+        HideFormPreloader();
     });
 
     api.session.start.onComplete(function() {
-        api.metadata.getobjects.execute();
-        api.metadata.getperiods.execute();
-        api.metadata.getforms.execute();
+//        api.metadata.getobjects.execute();
+//        api.metadata.getperiods.execute();
+//        api.metadata.getforms.execute();
         api.metadata.getreglament.execute();
         api.metadata.getnews.execute();
     });
@@ -703,6 +732,7 @@ root.init = root.init ||
         root.myform.currentSession.data.push(result);
         Fill(root.myform.currentSession);
         if(result.state != "w"){
+            HideFormPreloader();
             // Это штука для перерисовки шапки
             $(window).trigger("resize");
             $(root).trigger(root.handlers.on_dataload);

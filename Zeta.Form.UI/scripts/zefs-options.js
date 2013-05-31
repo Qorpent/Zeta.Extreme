@@ -374,6 +374,7 @@ $.extend(api,(function(){
                     return obj;
                 }
             }),
+            // то же самое что get, только
             getsync : $.extend(new Command({ domain: "wiki", name: "get", async: false }), {
                 wrap : function(obj) {
                     if ($.isEmptyObject(obj)) return obj;

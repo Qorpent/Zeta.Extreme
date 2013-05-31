@@ -118,7 +118,7 @@
                 doc.append($('<p class="hint non-printable"/>').text(hint));
                 $.each(result, function(i, w) {
                     var title = $('<h4 class="btn-link"/>').text(w.Title);
-                    doc.append(title, $('<p/>').html(wiky.process(w.Text)).hide());
+                    doc.append(title, $('<p/>').html(w.Text.wiki2html()).hide());
                 });
                 formdocumentation.append(doc);
             });

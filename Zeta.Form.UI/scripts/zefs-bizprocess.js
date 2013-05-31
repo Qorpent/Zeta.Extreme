@@ -97,11 +97,15 @@
                 ChangeForm(this, e.ctrlKey);
             }});
         });
+    });
+
+    $(zefs).on(zefs.handlers.on_sessionload, function() {
         if (null == zefs.myform.startError) {
             var current = window.zefs.myform.currentSession.FormInfo.Code || "";
             $('a[formcode="' + current.replace(/[A|B].in/, "") + '"]').parents('li').addClass("current");
         }
     });
+
     zefsbizprocess.body = $('<div/>').append(list);
     root.console.RegisterWidget(zefsbizprocess);
 }(window.jQuery);

@@ -188,7 +188,32 @@ div.open>.tooltip {
 }
 
 .logininfo .label {
-   display: inline;
+    display: inline;
+}
+
+.zefsdatapreloader p {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.zefsdatapreloader #formLoadTime {
+    display: inline;
+}
+
+#formLoadTime:after {
+    content: "сек.";
+    margin-left: 3px;
+    display: inline;
+}
+
+.zefspreloader {
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 50px;
+    background: url("../images/zefs-form-preloader.gif") center no-repeat;
 }
 
 .zefsstatus, .zefsformsave, .zefsbizprocess,
@@ -196,6 +221,10 @@ div.open>.tooltip {
 .zefscolmanager, .zefsblockmanager, .zefsnullrows {
     margin-top: 4px;
     margin-left: 3px;
+}
+
+.zefsformsave .btn:first-child {
+   margin-right: 3px;
 }
 
 .dropdown-menu li.primary {

@@ -172,10 +172,12 @@
                 type : !params ? "GET" : "POST",
                 dataType: myoptions.datatype,
                 data : params || {},
-                xhrFields: { withCredentials: true },
                 crossDomain: true
             };
             ajaxinfo.async = this.async;
+            if (this.async) {
+                ajaxinfo.xhrFields = { withCredentials: true };
+            }
             if(this.useProgress){
                 $.extend(ajaxinfo,{
                     xhr: function() {

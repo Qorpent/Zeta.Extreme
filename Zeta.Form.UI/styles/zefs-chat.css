@@ -6,6 +6,7 @@
 .chat-list i {
     cursor: pointer;
     padding: 2px 5px 2px 0;
+    margin-left: 5px;
 }
 
 .btn-link.active {

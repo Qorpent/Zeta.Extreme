@@ -20,6 +20,9 @@
     });
     $(window.zefs).on(window.zefs.handlers.on_periodsload, function() {
         if (null == zefs.myform.startError) {
+            if (period == null) {
+                period = zefs.api.getParameters()["period"];
+            }
             formperiod.text(zefs.getperiodbyid(period));
         }
     });
