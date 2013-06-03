@@ -635,7 +635,8 @@ root.init = root.init ||
                     var wikieditbtn = $('<button class="btn btn-mini"/>').text("Править");
                     var wikisavebtn = $('<button class="btn btn-mini btn-success"/>').html('<i class="icon-white icon-ok"/>').hide();
                     var wikicancelbtn = $('<button class="btn btn-mini btn-danger"/>').html('<i class="icon-white icon-remove"/>').hide();
-                    wikicontrols.append(wikieditbtn, wikicancelbtn, wikisavebtn);
+                    var wikiprintbtn = $('<button class="btn btn-mini"/>').html('<i class="icon-print"/>');
+                    wikicontrols.append(wikiprintbtn, wikieditbtn, wikicancelbtn, wikisavebtn);
                     wikiedit.keyup(function() {
                         wikitext.html(qwiki.toHTML(wikiedit.val()));
                     });
@@ -644,6 +645,9 @@ root.init = root.init ||
                     });
                     wikieditbtn.click(function() {
                         wikieditbtn.hide(); wikiedit.show(); wikititleedit.show(); wikisavebtn.show(); wikicancelbtn.show();
+                    });
+                    wikiprintbtn.click(function() {
+                        wikitext.printelement();
                     });
                     wikicancelbtn.click(function() {
                         if (!!wikitext.data("history")) {
