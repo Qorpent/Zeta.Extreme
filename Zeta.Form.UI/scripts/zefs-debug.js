@@ -29,13 +29,49 @@
         .html('<i class="icon-lock"></i> Возможность блокровки');
     var b = $('<button class="btn btn-small dropdown-toggle" data-original-title="Отладка"/>')
         .html('<i class="icon-eye-close"></i><span class="caret"></span>');
-    var btngroup = $('<div class="btn-group pull-right"/>').append(
-        b, $('<ul class="dropdown-menu"/>').append(
-            $('<li/>').append(setup),$('<li/>').append(formuladebuger),$('<li class="divider"/>'),
-            $('<li/>').append(lock),$('<li/>').append(canlock),$('<li/>').append(session),$('<li/>').append(debuginfo),$('<li class="divider"/>'),
-            $('<li/>').append(serverstatus)
-        )
+    var list = $('<ul class="dropdown-menu"/>').append(
+        $('<li/>').append(setup),$('<li/>').append(formuladebuger),$('<li class="divider"/>'),
+        $('<li/>').append(lock),$('<li/>').append(canlock),$('<li/>').append(session),$('<li/>').append(debuginfo),$('<li class="divider"/>'),
+        $('<li/>').append(serverstatus)
     );
+
+
+
+
+    var implogin = $('<input class="input-small" type="text" placeholder="Войти от..."/>')
+        .css({"width": 120, "margin": "2px 40px"})
+        .change(function() {
+            root.console.impersonate({Target: implogin.val()});
+            $(document).trigger('click.dropdown.data-api');
+        });
+    var deimp = $('<li/>').append($('<button class="btn btn-mini"/>')
+            .text("Вернуться в свой логин"))
+        .css("margin", "2px 40px")
+        .click(function() {
+            root.console.impersonate();
+            implogin.val("");
+        }).hide();
+
+    $(zeta).on(window.zeta.handlers.on_getuserinfo, function() {
+        if (zeta.user.getLogonName() != "") {
+            if (zeta.user.getImpersonation()) {
+                deimp.show();
+                implogin.hide();
+            }
+        }
+    });
+
+
+
+    list.append($('<li class="divider"/>'));
+    list.append($('<li/>').append(implogin));
+    list.append($('<li/>').append(deimp));
+    list.append($('<li/>').append(
+        $('<button class="btn btn-mini"/>').click(function() { root.console.unauthorize() })
+            .css("margin", "2px 40px")
+            .text("Выйти из системы")
+    ));
+    var btngroup = $('<div class="btn-group pull-right"/>').append(b, list);
     b.tooltip({placement: 'bottom'});
     b.dropdownHover({delay: 100});
     var Debug = function(command, title) {
@@ -49,6 +85,15 @@
         $(window.zeta).trigger(window.zeta.handlers.on_modal, { title: title, content: iframe, width: 700, height: 350});
         iframe = null;
     };
+    $(window.zeta).on(root.handlers.on_getuserinfo, function() {
+        if (zeta.user.getIsBudget()) {
+            var oldform = $('<a/>').html('<i class="icon-th-large"></i> Открыть старую форму');
+            list.prepend($('<li/>').append(oldform));
+            oldform.click(function() {
+                window.zefs.myform.openoldform();
+            });
+        }
+    });
     $(window.zefs).on(window.zefs.handlers.on_sessionload, function() {
         sid = zefs.myform.sessionId;
     });
