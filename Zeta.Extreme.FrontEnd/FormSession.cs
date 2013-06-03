@@ -916,10 +916,10 @@ namespace Zeta.Extreme.FrontEnd {
 			cols = Template.GetAllColumns().Where(
 				_ => _.GetIsVisible(Object)).Select((_, i) => new IdxCol {i = i, _ = _}
 				);
+			var firstyear = Template.Thema.GetParameter("firstyear", 0);
 			cols = (
 				       from col in cols
-				       let firstyear = TagHelper.Value(col._.Tag, "firstyear").ToInt()
-				       let ishistory = col._.Group == "HISTORY"
+					   let ishistory = col._.Group == "HISTORY"
 				       let include = (firstyear <= Year && !ishistory) || (firstyear > Year && ishistory)
 				       where include
 				       select col

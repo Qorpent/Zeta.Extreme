@@ -147,6 +147,7 @@
     <Compile Include="MetaCaches\Periods.cs" />
     <Compile Include="MetaCaches\RowCache.cs" />
     <Compile Include="Extensions\RowExtensions.cs" />
+    <Compile Include="ZetaClassicConst.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="qorpent.sys.base.import" />
