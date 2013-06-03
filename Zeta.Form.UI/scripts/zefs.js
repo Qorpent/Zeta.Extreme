@@ -362,8 +362,10 @@ root.init = root.init ||
                 content: $('<div/>').append($('<div class="zefspreloader"/>'), $('<p/>').text("Идет загрузка формы...").append($('<span id="formLoadTime"/>').text("0"))),
                 width: 300
             });
+            zefs.myform.loadtimercount = 0;
             window.formloadtimer = setInterval(function() {
-                $('#formLoadTime').text(parseInt($('#formLoadTime').text())+1);
+                zefs.myform.loadtimercount++;
+                $('#formLoadTime').text(zefs.myform.loadtimercount);
             }, 1000);
         }
     };
@@ -529,7 +531,7 @@ root.init = root.init ||
                     var req = $.ajax({url : "wiki/get.json.qweb", data: {code: wikibtn.attr("code")}});
                     req.success(function(result) {
                         if (!!result[0]) {
-                            content = result[0].Text.wiki2html() + content;
+                            content = qwiki.toHTML(result[0].Text) + content;
                         }
                         wikibtn.popover({selector: 'body', placement: "right", trigger: "hover", html: true, content: content });
                         wikibtn.popover("show");
@@ -610,7 +612,12 @@ root.init = root.init ||
                 wikiarticle.attr("id", "wikiarticle_" + w.Code.replace(/\//g, "_"));
                 var wikititle = $('<div class="wikititle"/>').text(w.Title || w.Code);
                 wikititle.attr("title", w.Code);
-                var wikitext = $('<div class="wikitext"/>').html(w.Text.wiki2html());
+                wikititle.data("history", w.Title || w.Code);
+                var wikitext = $('<div class="wikitext"/>');
+                if (w.Text != "") {
+                    wikitext.html(qwiki.toHTML(w.Text));
+                    wikitext.data("history", qwiki.toHTML(w.Text));
+                }
                 var wikiinfo = $('<div class="wikiinfo"/>').text("Последняя правка: ");
                 if (!!w.Date) {
                     wikiinfo.text(wikiinfo.text() + w.Date.format("dd.mm.yyyy HH:MM:ss"));
@@ -623,27 +630,34 @@ root.init = root.init ||
                 if (zeta.user.getIsDocWriter()) {
                     var wikiedit = $('<textarea class="wikiedit"/>').val(w.Text);
                     var wikititleedit = $('<input type="text" class="wikititleedit"/>').val(w.Title || w.Code);
-                    var wikihelp = $('<button class="btn-link btn-mini pull-right"/>').css("padding", 0).text("Как писать документацию?");
-                    wikihelp.click(function() {
-                        api.wiki.getsync.execute({code: "/wiki/wikimarkup/default"});
-                    });
-                    wikiedit.hide(); wikititleedit.hide(); wikihelp.hide();
+                    wikiedit.hide(); wikititleedit.hide();
                     var wikicontrols = $('<div class="wikicontrols"/>');
                     var wikieditbtn = $('<button class="btn btn-mini"/>').text("Править");
-                    var wikisavebtn = $('<button class="btn btn-mini btn-success"/>').html('<i class="icon-white icon-ok"/>');
-                    wikisavebtn.hide();
-                    wikicontrols.append(wikieditbtn, wikisavebtn);
+                    var wikisavebtn = $('<button class="btn btn-mini btn-success"/>').html('<i class="icon-white icon-ok"/>').hide();
+                    var wikicancelbtn = $('<button class="btn btn-mini btn-danger"/>').html('<i class="icon-white icon-remove"/>').hide();
+                    var wikiprintbtn = $('<button class="btn btn-mini"/>').html('<i class="icon-print"/>');
+                    wikicontrols.append(wikiprintbtn, wikieditbtn, wikicancelbtn, wikisavebtn);
                     wikiedit.keyup(function() {
-                        wikitext.html(wikiedit.val().wiki2html());
+                        wikitext.html(qwiki.toHTML(wikiedit.val()));
                     });
                     wikititleedit.keyup(function() {
                         wikititle.text(wikititleedit.val());
                     });
                     wikieditbtn.click(function() {
-                        wikieditbtn.hide(); wikiedit.show(); wikihelp.show(); wikititleedit.show(); wikisavebtn.show();
+                        wikieditbtn.hide(); wikiedit.show(); wikititleedit.show(); wikisavebtn.show(); wikicancelbtn.show();
+                    });
+                    wikiprintbtn.click(function() {
+                        wikitext.printelement();
+                    });
+                    wikicancelbtn.click(function() {
+                        if (!!wikitext.data("history")) {
+                            wikitext.text(qwiki.toHTML(wikitext.data("history")));
+                        }
+                        wikititle.text(wikititle.data("history"));
+                        wikiedit.hide(); wikititleedit.hide(); wikisavebtn.hide(); wikicancelbtn.hide(); wikieditbtn.show();
                     });
                     wikisavebtn.click(function() {
-                        wikiedit.hide(); wikititleedit.hide(); wikihelp.hide(); wikisavebtn.hide();
+                        wikiedit.hide(); wikititleedit.hide(); wikisavebtn.hide(); wikicancelbtn.hide();
                         var save = $.ajax({
                             url: "wiki/save.json.qweb",
                             type: "POST",
@@ -661,14 +675,19 @@ root.init = root.init ||
                         });
                         wikieditbtn.show();
                     });
-                    wikiarticle.append(wikititleedit, wikiedit, wikihelp, wikicontrols);
+                    wikiarticle.append(wikititleedit, wikiedit, wikicontrols);
                 }
                 wikiarticle.append(wikititle, wikitext, wikiinfo);
                 content.append(wikiarticle);
             });
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                 title: "База знаний", width: 900,
-                content: $('<div/>').append(content)
+                content: $('<div/>').append(content),
+                customButton: {
+                    class : "btn-warning",
+                    text : "Справка",
+                    click : function() { api.wiki.getsync.execute({code: "/wiki/wikimarkup/default"}); }
+                }
             });
         }
     });

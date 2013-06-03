@@ -53,7 +53,6 @@
                 .click(function(e) {
                     e.preventDefault();
                     p.customButton.click();
-                    $(modal).modal("hide");
                 })
                 .html(p.customButton.text));
             if (p.customButton.class == "btn-primary") {
