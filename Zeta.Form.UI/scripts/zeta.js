@@ -128,8 +128,9 @@ root.handlers = $.extend(root.handlers, {
         $(root).trigger(result.authenticated ? root.handlers.on_loginsuccess : root.handlers.on_loginfaild);
     });
 
-    root.api.security.logout.onSuccess(function(e, result){
+    root.api.security.logout.onSuccess(function(){
         $(root).trigger(root.handlers.on_logout);
+        location.reload();
     });
 
     root.console = new Console();
