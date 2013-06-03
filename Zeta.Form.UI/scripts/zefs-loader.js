@@ -67,7 +67,7 @@ document.write('<script src="scripts/zefs-formsave.js"></script>');
 document.write('<script src="scripts/zefs-feedback.js"></script>');
 //document.write('<script src="scripts/zefs-info.js"></script>');
 document.write('<script src="scripts/zefs-hotkeys.js"></script>');
-document.write('<script src="scripts/zefs-faq.js"></script>');
+//document.write('<script src="scripts/zefs-faq.js"></script>');
 //document.write('<script src="scripts/zefs-formheader.js"></script>');
 //document.write('<script src="scripts/zefs-extrapannel.js"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-extrapannel"></script>');
