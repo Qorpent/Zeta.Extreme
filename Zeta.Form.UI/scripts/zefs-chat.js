@@ -23,17 +23,15 @@
         addhelp = $('<button class="btn btn-warning btn-mini help-btn pull-right" data-original-title="Справка по каналам"/>').html('<i class="icon-white icon-asterisk"></i>'),
         chatlist = $('<div class="chat-list scrollable"/>');
     b.click(function() {
-        if ($(this).hasClass("hasunread")) {
+        if (b.hasClass("hasunread")) {
             zefs.myform.chatread();
             if (!!window.chatbtnanimation) {
                 clearInterval(window.chatbtnanimation);
                 b.css("opacity", "1");
             }
-            $(this).removeClass("hasunread");
-            var html = $(this).text();
-            $(this).empty();
-            $(this).html(html);
-            html = null;
+            b.removeClass("hasunread");
+            b.empty();
+            b.html('<i class="icon-comment"></i>');
         }
     });
     chatinput.keydown(function(e) {

@@ -362,8 +362,10 @@ root.init = root.init ||
                 content: $('<div/>').append($('<div class="zefspreloader"/>'), $('<p/>').text("Идет загрузка формы...").append($('<span id="formLoadTime"/>').text("0"))),
                 width: 300
             });
+            zefs.myform.loadtimercount = 0;
             window.formloadtimer = setInterval(function() {
-                $('#formLoadTime').text(parseInt($('#formLoadTime').text())+1);
+                zefs.myform.loadtimercount++;
+                $('#formLoadTime').text(zefs.myform.loadtimercount);
             }, 1000);
         }
     };
