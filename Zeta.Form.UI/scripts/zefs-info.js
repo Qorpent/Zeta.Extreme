@@ -4,12 +4,18 @@
 !function($) {
     var root = window.zeta = window.zeta || {};
     var information = new root.Widget("information", root.console.layout.position.layoutHeader, "right", { authonly: true, priority: 85 });
-    var b = $('<button class="btn btn-small dropdown-toggle" data-original-title="Информация"/>').html('<i class="icon-book"></i><span class="caret"></span>');
-    var support = $('<a/>').css("background-color", "#FFE1E1").text("Где я, кто я?");
-    support.click(function() { WhatTheHellAndWhoAmI() });
+    var b = $('<button class="btn btn-small dropdown-toggle" data-original-title="Помощь"/>').html('<i class="icon-book"></i><span class="caret"></span>');
+    var whoami = $('<a/>').css("background-color", "#FFE1E1").text("Где я, кто я?");
+    var hotkeys = $('<a/>').text("Горячие клавиши");
+    var faq = $('<a/>').text("Часто задаваемые вопросы");
+    whoami.click(function() { WhatTheHellAndWhoAmI() });
+    hotkeys.click(function() { zefs.api.wiki.getsync.execute({code: "/form/shortcuts"}); });
+    faq.click(function() { zefs.api.wiki.getsync.execute({code: "/common/faq"}); });
     var m = $('<div class="btn-group"/>').append(
         b, $('<ul class="dropdown-menu pull-right"/>').append(
-            $('<li/>').append(support),
+            $('<li/>').append(whoami),
+            $('<li/>').append(hotkeys),
+            $('<li/>').append(faq),
             $('<li/>').html('<a>Инструкция пользователя</a>'),
             $('<li class="divider"/>'),
             $('<li/>').html('<a>О программе</a>')
