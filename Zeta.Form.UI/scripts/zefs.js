@@ -612,7 +612,12 @@ root.init = root.init ||
                 wikiarticle.attr("id", "wikiarticle_" + w.Code.replace(/\//g, "_"));
                 var wikititle = $('<div class="wikititle"/>').text(w.Title || w.Code);
                 wikititle.attr("title", w.Code);
-                var wikitext = $('<div class="wikitext"/>').html(qwiki.toHTML(w.Text));
+                wikititle.data("history", w.Title || w.Code);
+                var wikitext = $('<div class="wikitext"/>');
+                if (w.Text != "") {
+                    wikitext.html(qwiki.toHTML(w.Text));
+                    wikitext.data("history", qwiki.toHTML(w.Text));
+                }
                 var wikiinfo = $('<div class="wikiinfo"/>').text("Последняя правка: ");
                 if (!!w.Date) {
                     wikiinfo.text(wikiinfo.text() + w.Date.format("dd.mm.yyyy HH:MM:ss"));
@@ -628,9 +633,9 @@ root.init = root.init ||
                     wikiedit.hide(); wikititleedit.hide();
                     var wikicontrols = $('<div class="wikicontrols"/>');
                     var wikieditbtn = $('<button class="btn btn-mini"/>').text("Править");
-                    var wikisavebtn = $('<button class="btn btn-mini btn-success"/>').html('<i class="icon-white icon-ok"/>');
-                    wikisavebtn.hide();
-                    wikicontrols.append(wikieditbtn, wikisavebtn);
+                    var wikisavebtn = $('<button class="btn btn-mini btn-success"/>').html('<i class="icon-white icon-ok"/>').hide();
+                    var wikicancelbtn = $('<button class="btn btn-mini btn-danger"/>').html('<i class="icon-white icon-remove"/>').hide();
+                    wikicontrols.append(wikieditbtn, wikicancelbtn, wikisavebtn);
                     wikiedit.keyup(function() {
                         wikitext.html(qwiki.toHTML(wikiedit.val()));
                     });
@@ -638,10 +643,17 @@ root.init = root.init ||
                         wikititle.text(wikititleedit.val());
                     });
                     wikieditbtn.click(function() {
-                        wikieditbtn.hide(); wikiedit.show();wikititleedit.show(); wikisavebtn.show();
+                        wikieditbtn.hide(); wikiedit.show(); wikititleedit.show(); wikisavebtn.show(); wikicancelbtn.show();
+                    });
+                    wikicancelbtn.click(function() {
+                        if (!!wikitext.data("history")) {
+                            wikitext.text(qwiki.toHTML(wikitext.data("history")));
+                        }
+                        wikititle.text(wikititle.data("history"));
+                        wikiedit.hide(); wikititleedit.hide(); wikisavebtn.hide(); wikicancelbtn.hide(); wikieditbtn.show();
                     });
                     wikisavebtn.click(function() {
-                        wikiedit.hide(); wikititleedit.hide(); wikisavebtn.hide();
+                        wikiedit.hide(); wikititleedit.hide(); wikisavebtn.hide(); wikicancelbtn.hide();
                         var save = $.ajax({
                             url: "wiki/save.json.qweb",
                             type: "POST",
