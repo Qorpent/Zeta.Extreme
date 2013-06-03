@@ -118,7 +118,7 @@
                 doc.append($('<p class="hint non-printable"/>').text(hint));
                 $.each(result, function(i, w) {
                     var title = $('<h4 class="btn-link"/>').text(w.Title);
-                    doc.append(title, $('<p/>').html(w.Text.wiki2html()).hide());
+                    doc.append(title, $('<p/>').html(qwiki.toHTML(w.Text)).hide());
                 });
                 formdocumentation.append(doc);
             });
@@ -138,7 +138,7 @@
     t.click(function() {
         $(zeta).trigger(window.zeta.handlers.on_modal, {
             title: "Справка по форме",
-            content: content,
+            content: content.clone(),
             width: 700, height: 350
         });
         formdocumentation.delegate("h5", "click", function(e) {

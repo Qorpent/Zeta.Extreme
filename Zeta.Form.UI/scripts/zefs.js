@@ -531,7 +531,7 @@ root.init = root.init ||
                     var req = $.ajax({url : "wiki/get.json.qweb", data: {code: wikibtn.attr("code")}});
                     req.success(function(result) {
                         if (!!result[0]) {
-                            content = result[0].Text.wiki2html() + content;
+                            content = qwiki.toHTML(result[0].Text) + content;
                         }
                         wikibtn.popover({selector: 'body', placement: "right", trigger: "hover", html: true, content: content });
                         wikibtn.popover("show");
@@ -612,7 +612,7 @@ root.init = root.init ||
                 wikiarticle.attr("id", "wikiarticle_" + w.Code.replace(/\//g, "_"));
                 var wikititle = $('<div class="wikititle"/>').text(w.Title || w.Code);
                 wikititle.attr("title", w.Code);
-                var wikitext = $('<div class="wikitext"/>').html(w.Text.wiki2html());
+                var wikitext = $('<div class="wikitext"/>').html(qwiki.toHTML(w.Text));
                 var wikiinfo = $('<div class="wikiinfo"/>').text("Последняя правка: ");
                 if (!!w.Date) {
                     wikiinfo.text(wikiinfo.text() + w.Date.format("dd.mm.yyyy HH:MM:ss"));
@@ -636,7 +636,7 @@ root.init = root.init ||
                     wikisavebtn.hide();
                     wikicontrols.append(wikieditbtn, wikisavebtn);
                     wikiedit.keyup(function() {
-                        wikitext.html(wikiedit.val().wiki2html());
+                        wikitext.html(qwiki.toHTML(wikiedit.val()));
                     });
                     wikititleedit.keyup(function() {
                         wikititle.text(wikititleedit.val());
