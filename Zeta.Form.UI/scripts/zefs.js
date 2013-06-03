@@ -670,7 +670,12 @@ root.init = root.init ||
             });
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                 title: "База знаний", width: 900,
-                content: $('<div/>').append(content)
+                content: $('<div/>').append(content),
+                cusomButton: {
+                    class : "btn-primary",
+                    text : "OK",
+                    click : function() {}
+                }
             });
         }
     });

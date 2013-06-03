@@ -136,23 +136,26 @@
     });
 
     t.click(function() {
-        $(zeta).trigger(window.zeta.handlers.on_modal, {
-            title: "Справка по форме",
-            content: content.clone(),
-            width: 700, height: 350
-        });
-        formdocumentation.delegate("h5", "click", function(e) {
-            $('#zefsFormDoc').toggle();
-        });
-        formdocumentation.delegate("h4", "click", function(e) {
-            $(e.target).next().toggle();
-        });
-        formdetails.delegate("h5", "click", function(e) {
-            $(e.target).nextAll().toggle();
-        });
-        formdependence.delegate("h5", "click", function(e) {
-            $(e.target).nextAll().toggle();
-        });
+        if ($('.formdocumentationmodal').length == 0) {
+            $(zeta).trigger(window.zeta.handlers.on_modal, {
+                name: "formdocumentationmodal",
+                title: "Справка по форме",
+                content: content,
+                width: 700, height: 350
+            });
+            formdocumentation.delegate("h5", "click", function(e) {
+                $('#zefsFormDoc').toggle();
+            });
+            formdocumentation.delegate("h4", "click", function(e) {
+                $(e.target).next().toggle();
+            });
+            formdetails.delegate("h5", "click", function(e) {
+                $(e.target).nextAll().toggle();
+            });
+            formdependence.delegate("h5", "click", function(e) {
+                $(e.target).nextAll().toggle();
+            });
+        }
     });
 
     zefsforminfo.body = $('<div/>').append(t);
