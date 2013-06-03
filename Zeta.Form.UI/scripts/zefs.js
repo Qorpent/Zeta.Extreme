@@ -625,11 +625,7 @@ root.init = root.init ||
                 if (zeta.user.getIsDocWriter()) {
                     var wikiedit = $('<textarea class="wikiedit"/>').val(w.Text);
                     var wikititleedit = $('<input type="text" class="wikititleedit"/>').val(w.Title || w.Code);
-                    var wikihelp = $('<button class="btn-link btn-mini pull-right"/>').css("padding", 0).text("Как писать документацию?");
-                    wikihelp.click(function() {
-                        api.wiki.getsync.execute({code: "/wiki/wikimarkup/default"});
-                    });
-                    wikiedit.hide(); wikititleedit.hide(); wikihelp.hide();
+                    wikiedit.hide(); wikititleedit.hide();
                     var wikicontrols = $('<div class="wikicontrols"/>');
                     var wikieditbtn = $('<button class="btn btn-mini"/>').text("Править");
                     var wikisavebtn = $('<button class="btn btn-mini btn-success"/>').html('<i class="icon-white icon-ok"/>');
@@ -642,10 +638,10 @@ root.init = root.init ||
                         wikititle.text(wikititleedit.val());
                     });
                     wikieditbtn.click(function() {
-                        wikieditbtn.hide(); wikiedit.show(); wikihelp.show(); wikititleedit.show(); wikisavebtn.show();
+                        wikieditbtn.hide(); wikiedit.show();wikititleedit.show(); wikisavebtn.show();
                     });
                     wikisavebtn.click(function() {
-                        wikiedit.hide(); wikititleedit.hide(); wikihelp.hide(); wikisavebtn.hide();
+                        wikiedit.hide(); wikititleedit.hide(); wikisavebtn.hide();
                         var save = $.ajax({
                             url: "wiki/save.json.qweb",
                             type: "POST",
@@ -663,7 +659,7 @@ root.init = root.init ||
                         });
                         wikieditbtn.show();
                     });
-                    wikiarticle.append(wikititleedit, wikiedit, wikihelp, wikicontrols);
+                    wikiarticle.append(wikititleedit, wikiedit, wikicontrols);
                 }
                 wikiarticle.append(wikititle, wikitext, wikiinfo);
                 content.append(wikiarticle);
@@ -671,10 +667,10 @@ root.init = root.init ||
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                 title: "База знаний", width: 900,
                 content: $('<div/>').append(content),
-                cusomButton: {
-                    class : "btn-primary",
-                    text : "OK",
-                    click : function() {}
+                customButton: {
+                    class : "btn-warning",
+                    text : "Справка",
+                    click : function() { api.wiki.getsync.execute({code: "/wiki/wikimarkup/default"}); }
                 }
             });
         }

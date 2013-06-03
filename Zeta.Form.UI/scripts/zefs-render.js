@@ -156,8 +156,8 @@ $.extend(root.render, {
         } else {
             $cell.number(val, f.dl, f.ds, f.gs);
         }
-        $cell.data("history", $cell.text());
-        $cell.data("previous", $cell.text());
+        $cell.data("history", val);
+        $cell.data("previous", val);
         // реальное число без форматов, которое должно сохраняться в базу
         $cell.data("value", val);
 

@@ -8,17 +8,21 @@
     var whoami = $('<a/>').css("background-color", "#FFE1E1").text("Где я, кто я?");
     var hotkeys = $('<a/>').text("Горячие клавиши");
     var faq = $('<a/>').text("Часто задаваемые вопросы");
+    var instructions = $('<a/>').text("Инструкция пользователя");
+    var about = $('<a/>').text("О программе");
     whoami.click(function() { WhatTheHellAndWhoAmI() });
     hotkeys.click(function() { zefs.api.wiki.getsync.execute({code: "/form/shortcuts"}); });
     faq.click(function() { zefs.api.wiki.getsync.execute({code: "/common/faq"}); });
+    instructions.click(function() { zefs.api.wiki.getsync.execute({code: "/common/instructions"}); });
+    about.click(function() { zefs.api.wiki.getsync.execute({code: "/common/about"}); });
     var m = $('<div class="btn-group"/>').append(
         b, $('<ul class="dropdown-menu pull-right"/>').append(
             $('<li/>').append(whoami),
             $('<li/>').append(hotkeys),
             $('<li/>').append(faq),
-            $('<li/>').html('<a>Инструкция пользователя</a>'),
+            $('<li/>').append(instructions),
             $('<li class="divider"/>'),
-            $('<li/>').html('<a>О программе</a>')
+            $('<li/>').append(about)
         ));
     b.tooltip({placement: 'bottom'});
     b.dropdownHover({delay: 100});
