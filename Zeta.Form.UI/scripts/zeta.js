@@ -124,11 +124,12 @@ root.handlers = $.extend(root.handlers, {
     });
 
     root.api.security.login.onSuccess(function(e, result){
+        location.reload();
         root.auth = result;
         $(root).trigger(result.authenticated ? root.handlers.on_loginsuccess : root.handlers.on_loginfaild);
     });
 
-    root.api.security.logout.onSuccess(function(){
+    root.api.security.logout.onComplete(function(){
         $(root).trigger(root.handlers.on_logout);
         location.reload();
     });
