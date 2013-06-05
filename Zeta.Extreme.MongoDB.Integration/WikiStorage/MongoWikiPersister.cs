@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 using Qorpent.Wiki;
 
 namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
@@ -71,6 +72,68 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 					Connector.Collection.Insert(doc);
 				}
 			}
+		}
+
+		/// <summary>
+		/// Сохраняет в Wiki файл с указанным кодом
+		/// </summary>
+		public void SaveBinary(WikiBinary binary) {
+			using (var s = CreateStream(binary)) {
+				s.Write(binary.Data,0,binary.Data.Length);
+				s.Flush();
+			}
+		}
+
+		private MongoGridFSStream CreateStream(WikiBinary binary) {
+			if (!Connector.GridFs.ExistsById(binary.Code)) {
+				var md = new BsonDocument();
+				md["title"] = binary.Title;
+				md["editor"] = Application.Principal.CurrentUser.Identity.Name;
+				md["owner"] = Application.Principal.CurrentUser.Identity.Name;
+				return Connector.GridFs.Create(
+					binary.Code,
+					new MongoGridFSCreateOptions
+						{
+							Id = binary.Code,
+							Metadata = md,
+							UploadDate = DateTime.Now,
+							ContentType = binary.MimeType,
+						}
+					);
+			}
+			var info = Connector.GridFs.FindOne(binary.Code);
+			info.Metadata["editor"] = Application.Principal.CurrentUser.Identity.Name;
+			Connector.GridFs.SetMetadata(info,info.Metadata);
+			return info.OpenWrite();
+
+		}
+
+		/// <summary>
+		/// Загружает бинарный контент
+		/// </summary>
+		/// <param name="code"></param>
+		/// <param name="withData">Флаг, что требуется подгрузка бинарных данных</param>
+		/// <returns></returns>
+		public WikiBinary LoadBinary(string code, bool withData = true) {
+			if (!Connector.GridFs.ExistsById(code)) return null;
+			var info = Connector.GridFs.FindOne(code);
+			byte[] data = null;
+			if (withData) {
+				data = new byte[info.Length];
+				using (var s = info.OpenRead()) {
+					s.Read(data, 0, (int)s.Length);
+				}
+			}
+			var result = new WikiBinary();
+			result.Code = code;
+			if (withData) result.Data = data;
+			result.MimeType = info.ContentType;
+			result.Size = info.Length;
+			result.Title = info.Metadata["title"].AsString;
+			result.Owner = info.Metadata["owner"].AsString;
+			result.Editor = info.Metadata["editor"].AsString;
+			result.LastWriteTime = info.UploadDate;
+			return result;
 		}
 	}
 }
