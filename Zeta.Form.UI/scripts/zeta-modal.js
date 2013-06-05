@@ -34,7 +34,7 @@
             height: "100%",
             top: 0
         });
-        var modal = $('<div class="modal" role="dialog" />').css({"z-index": 10001, marginLeft: (p.width || 560)/-2});
+        var modal = $('<div class="modal" role="dialog" />').css({"z-index": 10001, marginLeft: (p.width || 560)/-2, "top" : 50});
         if (p.name != "") {
             modal.addClass(p.name);
         }
@@ -45,7 +45,7 @@
         }
         modalheader.append($('<h3/>').text(p.title));
         var modalbody = $('<div class="modal-body scrollable" />').append(p.content || p.text);
-        modalbody.css("max-height", $(window).height() - 220);
+        modalbody.css("max-height", $(window).height() - 236);
         if (!!p.height) modalbody.css("height", p.height);
         var modalfooter = $('<div class="modal-footer"/>');
         if (p.customButton != null) {

@@ -34,8 +34,14 @@
         $('<li/>').append(lock),$('<li/>').append(canlock),$('<li/>').append(session),$('<li/>').append(debuginfo),$('<li class="divider"/>'),
         $('<li/>').append(serverstatus)
     );
-
-
+    var addwikibtn = $('<button class="btn btn-small"/>').html('<i class="icon icon-arrow-right"></i>');
+    var addwikicode = $('<input type="text" class="input-small" placeholder="Код вики"/>')
+        .css({"margin": "0 3px 0 40px", "padding": "3px 6px"});
+    addwikibtn.click(function() {
+        zefs.api.wiki.getsync.execute({code: addwikicode.val()});
+    });
+    list.append($('<li class="divider"/>'));
+    list.append($('<li/>').append(addwikicode, addwikibtn));
 
 
     var implogin = $('<input class="input-small" type="text" placeholder="Войти от..."/>')
