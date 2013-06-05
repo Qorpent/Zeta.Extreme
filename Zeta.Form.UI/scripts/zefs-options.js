@@ -390,10 +390,12 @@ $.extend(api,(function(){
                     return obj;
                 }
             }),
+            getmenu : $.extend(new Command({ domain: "wiki", name: "get", async: false }), {}),
             // Сохраняет или добавляет параметры
             save : new Command({ domain: "wiki", name: "save" }),
             // Проверяет наличие статьи с кодом [code]
-            exists : new Command({ domain: "wiki", name: "exists" })
+            exists : new Command({ domain: "wiki", name: "exists" }),
+            savefile : new Command({ domain: "wiki", name: "savefile", useProgress:true })
         },
 
         metadata : {

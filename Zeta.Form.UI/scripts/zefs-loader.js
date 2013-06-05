@@ -1,3 +1,4 @@
+document.write('<script src="scripts/qwiki-menu.js"></script>');
 if((window.useStatic !== undefined) && (window.useStatic == true )) {
 	document.write('<script src="scripts/zefs-options.js"></script>');
 	document.write('<script src="scripts/zefs-render.js"></script>');

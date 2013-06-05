@@ -29,18 +29,18 @@ var api = root.api;
 root.periods =  root.periods || {};
 root.divs =  root.divs || [];
 root.objects =  root.objects || {};
+root.myform = root.myform ||  {
+    execute : function(){api.server.start()},
+    sessionId : null,
+    currentSession : null,
+    startError : null,
+    lock : null,
+    lockhistory : null,
+    attachment : null,
+    users : null
+};
 root.init = root.init ||
 (function ($) {
-    if (root.myform) return root.myform;
-    root.myform = root.myform ||  {
-        sessionId : null,
-        currentSession : null,
-        startError : null,
-        lock : null,
-        lockhistory : null,
-        attachment : null,
-        users : null
-    };
     var render = root.render;
 
     var GetWiki = function(rowcode) {
@@ -56,14 +56,23 @@ root.init = root.init ||
             );
         }
         api.metadata.getformuladependency.execute({code: rowcode});
-    }
+    };
 
     var SaveWiki = function(code, text, params) {
         // с параметрами уточнить как слать
         if (zeta.user.getIsDocWriter()) {
             api.wiki.save.execute({code: code, text: text});
         }
-    }
+    };
+
+    var WikiAttachFile = function(form) {
+        var fd = new FormData();
+        fd.append("code", form.find('input[name="code"]').val());
+        fd.append("title", form.find('input[name="title"]').val());
+        fd.append("datafile", form.find('input[name="datafile"]').get(0).files[0]);
+//      $(root).trigger(root.handlers.on_fileloadstart);
+        api.wiki.savefile.execute(fd);
+    };
 
     var OpenForm = function(params, blank) {
         params = params || {};
@@ -636,7 +645,29 @@ root.init = root.init ||
                     var wikisavebtn = $('<button class="btn btn-mini btn-success"/>').html('<i class="icon-white icon-ok"/>').hide();
                     var wikicancelbtn = $('<button class="btn btn-mini btn-danger"/>').html('<i class="icon-white icon-remove"/>').hide();
                     var wikiprintbtn = $('<button class="btn btn-mini"/>').html('<i class="icon-print"/>');
-                    wikicontrols.append(wikiprintbtn, wikieditbtn, wikicancelbtn, wikisavebtn);
+
+
+                    var progress = $('<div class="progress progress-striped active"/>').append($('<div class="bar" style="width:1%;"/>'));
+                    var uploadform = $('<form method="post"/>').css("display", "inline-block");
+                    var uploadbtn = $('<button type="submit" class="btn btn-mini btn-primary"/>').text("Прикрепить");
+                    var selectbtn = $('<button type="button" class="btn btn-mini"/>').text("Выбрать файл").css("margin-right", 3);
+                    selectbtn.click(function() { file.trigger("click") });
+                    // Поле с файлом
+                    var file = $('<input type="file" name="datafile"/>').hide();
+                    var code = $('<input name="code" type="text" placeholder="Код" class="input-mini"/>').css({"padding": "0px 6px", "margin-right" : 3});
+                    var filename = $('<input type="text" name="title" placeholder="Название" class="input-small"/>').css("padding", "0px 6px");
+                    var uid = $('<input type="hidden" name="uid"/>');
+                    selectbtn.click(function() { file.trigger("click") });
+                    uploadform.append(selectbtn,file,code,filename,uploadbtn);
+                    uploadform.submit(function(e) {
+                        e.preventDefault();
+                        if (file.get(0).files.length == 0) return;
+                        WikiAttachFile($(e.target));
+                    });
+
+
+
+                    wikicontrols.append(uploadform, wikiprintbtn, wikieditbtn, wikicancelbtn, wikisavebtn);
                     wikiedit.keyup(function() {
                         wikitext.html(qwiki.toHTML(wikiedit.val()));
                     });
@@ -997,7 +1028,6 @@ root.init = root.init ||
     });
 
     $.extend(root.myform, {
-        execute : function(){api.server.start()},
         openform: OpenForm,
         save : Save,
         restart : Restart,
