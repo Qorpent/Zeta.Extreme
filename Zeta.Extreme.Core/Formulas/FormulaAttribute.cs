@@ -34,6 +34,31 @@ namespace Zeta.Extreme {
 		}
 
 		/// <summary>
+		/// </summary>
+		/// <param name="key"> </param>
+		/// <param name="version"> </param>
+		/// <param name="srcformula"></param>
+		/// <param name="generatedCode"></param>
+		public FormulaAttribute(string key, string version, string srcformula,string generatedCode)
+		{
+			Key = key;
+			Version = version;
+			SourceFormula = srcformula;
+			GeneratedCode = generatedCode;
+		}
+
+		/// <summary>
+		/// Сгенерированный код
+		/// </summary>
+		public string GeneratedCode { get; set; }
+
+		/// <summary>
+		/// Исходная формула
+		/// </summary>
+		public string SourceFormula { get; set; }
+
+
+		/// <summary>
 		/// 	Ключ формулы для обратного соотнесения с запросами
 		/// </summary>
 		public string Key { get; private set; }
