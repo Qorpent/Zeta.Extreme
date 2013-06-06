@@ -34,7 +34,7 @@
             height: "100%",
             top: 0
         });
-        var modal = $('<div class="modal" role="dialog" />').css({"z-index": 10001, marginLeft: (p.width || 560)/-2, "top" : 50});
+        var modal = $('<div class="modal" role="dialog" />').css({"z-index": 10000, marginLeft: (p.width || 560)/-2, "top" : 50});
         if (p.name != "") {
             modal.attr("id", p.id);
         }
@@ -78,6 +78,10 @@
         $(modal).on('hidden', function() {
             $(this).remove();
             backdrop.remove()
+        });
+        modal.click(function() {
+            $('.modal').css("z-index", 10000);
+            modal.css("z-index", 10001);
         });
         $(modal).draggable({ handle: ".modal-header", containment: "window"});
     };
