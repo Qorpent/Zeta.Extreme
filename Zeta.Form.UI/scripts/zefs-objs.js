@@ -15,10 +15,6 @@
     };
     $(window.zefs).on(window.zefs.handlers.on_objectsload, function(e) {
         var divs = $.map(window.zefs.divs, function(d){ return d });
-        var current = 0;
-        if (!!zefs.myform.currentSession) {
-            current = window.zefs.myform.currentSession.ObjInfo.Id;
-        }
         $.each(divs.sort(function(a,b) { return a.idx - b.idx }), function(i,div) {
             var ul = $('<ul class="dropdown-menu"/>').attr("code", div.code);
             menu.append($('<li class="dropdown-submenu"/>')
@@ -43,7 +39,10 @@
             }, ul));
             ul = objs = null;
         });
-        if (current != 0) {
+    });
+    $(zefs).on(zefs.handlers.on_sessionload, function() {
+        if (null == zefs.myform.startError) {
+            var current = window.zefs.myform.currentSession.ObjInfo.Id || "";
             $('a[objcode="' + current + '"]').parents('li').addClass("current");
         }
     });
