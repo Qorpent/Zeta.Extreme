@@ -651,7 +651,6 @@ root.init = root.init ||
                     var uploadform = $('<form method="post"/>').css("display", "inline-block");
                     var uploadbtn = $('<button type="submit" class="btn btn-mini btn-primary"/>').text("Прикрепить");
                     var selectbtn = $('<button type="button" class="btn btn-mini"/>').text("Выбрать файл").css("margin-right", 3);
-                    selectbtn.click(function() { file.trigger("click") });
                     // Поле с файлом
                     var file = $('<input type="file" name="datafile"/>').hide();
                     var code = $('<input name="code" type="text" placeholder="Код" class="input-mini"/>').css({"padding": "0px 6px", "margin-right" : 3});
