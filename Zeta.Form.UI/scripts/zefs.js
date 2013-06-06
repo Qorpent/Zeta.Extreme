@@ -334,7 +334,7 @@ root.myform = root.myform ||  {
         if (zefs.api.getParameters() != null && $('.zefsdatapreloader').length == 0) {
             $(window.zeta).trigger(window.zeta.handlers.on_modal, {
                 title: "",
-                name: "zefsdatapreloader",
+                id: "zefsdatapreloader",
                 content: $('<div/>').append($('<div class="zefspreloader"/>'), $('<p/>').text("Идет загрузка формы...").append($('<span id="formLoadTime"/>').text("0"))),
                 width: 300
             });
@@ -348,7 +348,7 @@ root.myform = root.myform ||  {
 
     var HideFormPreloader = function() {
         // Закрываем окно с прелоадером
-        $('.zefsdatapreloader').modal('hide');
+        $('#zefsdatapreloader').modal('hide');
         clearInterval(window.formloadtimer);
     };
 

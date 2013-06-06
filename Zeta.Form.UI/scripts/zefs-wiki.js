@@ -12,7 +12,8 @@
         on_wikifileloaderror : "wikifileloaderror"
     });
 
-    var GetWiki = function(rowcode) {
+    var GetRowWiki = function(rowcode) {
+        if ($("#wiki_dialog___row_" + rowcode + "_default").length > 0) return;
         var wikicode = '/row/' + rowcode + '/default';
         api.wiki.getsync.execute({code: wikicode});
         var row = $.map(zefs.myform.currentSession.structure.rows, function(r) { if (r.code == rowcode && !!r.comment) return r; });
@@ -47,7 +48,9 @@
     api.wiki.getsync.onSuccess(function(e, result) {
         if (!$.isEmptyObject(result)) {
             var content = $('<div/>');
+            var id = "";
             $.each(result, function(i, w) {
+                id += w.Code;
                 var wikiarticle = $('<div class="wikiarticle"/>');
                 wikiarticle.attr("id", "wikiarticle_" + w.Code.replace(/\//g, "_"));
                 var wikititle = $('<div class="wikititle"/>').text(w.Title || w.Code);
@@ -168,15 +171,18 @@
                 wikiarticle.append(wikititle, wikitext, wikiinfo);
                 content.append(wikiarticle);
             });
-            $(zeta).trigger(zeta.handlers.on_modal, {
-                title: "База знаний", width: 900,
-                content: $('<div/>').append(content),
-                customButton: {
-                    class : "btn-warning",
-                    text : "Справка",
-                    click : function() { api.wiki.getsync.execute({code: "/wiki/wikimarkup/default"}); }
-                }
-            });
+            if ($("#wiki_dialog__" + id.replace(/\//g, "_")).length == 0) {
+                $(zeta).trigger(zeta.handlers.on_modal, {
+                    title: "База знаний", width: 900,
+                    content: $('<div/>').append(content),
+                    id: "wiki_dialog__" + id.replace(/\//g, "_"),
+                    customButton: {
+                        class : "btn-warning",
+                        text : "Справка",
+                        click : function() { api.wiki.getsync.execute({code: "/wiki/wikimarkup/default"}); }
+                    }
+                });
+            }
         }
     });
 
@@ -207,7 +213,9 @@
                     var req = $.ajax({url : "wiki/get.json.qweb", data: {code: wikibtn.attr("code")}});
                     req.success(function(result) {
                         if (!!result[0]) {
-                            content = qwiki.toHTML(result[0].Text) + content;
+                            if (!!result[0].Text) {
+                                content = qwiki.toHTML(result[0].Text) + content;
+                            }
                         }
                         wikibtn.popover({selector: 'body', placement: "right", trigger: "hover", html: true, content: content });
                         wikibtn.popover("show");
@@ -293,7 +301,7 @@
     });
 
     $.extend(zefs.myform, {
-        wikiget: GetWiki,
+        wikiget: GetRowWiki,
         wikisave: SaveWiki
     });
 })(jQuery)

@@ -18,7 +18,7 @@
             width: null,
             height: null,
             backdrop: false,
-            name : ""
+            id : ""
         },p);
         $.extend({
             class : "btn-primary",
@@ -36,7 +36,7 @@
         });
         var modal = $('<div class="modal" role="dialog" />').css({"z-index": 10001, marginLeft: (p.width || 560)/-2, "top" : 50});
         if (p.name != "") {
-            modal.addClass(p.name);
+            modal.attr("id", p.id);
         }
         if (!!p.width) modal.css("width", p.width);
         var modalheader = $("<div/>", {"class":"modal-header"});
