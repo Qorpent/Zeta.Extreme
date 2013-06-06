@@ -128,6 +128,9 @@ $.extend(api,(function(){
                             else if (f == "#.##" || f == "#,#.##") decimalLength = 2;
                             else if (f == "#.###" || f == "#,#.###") decimalLength = 3;
                             else if (f == "#.####" || f == "#,#.####") decimalLength = 4;
+                            else if (f == "#,0.0") decimalLength = 1;
+                            else if (f == "#,0.00") decimalLength = 2;
+                            else if (f == "#,0.000") decimalLength = 3;
                             // gs - group seporator
                             // ds - decimal seporator
                             // dl - decimal length

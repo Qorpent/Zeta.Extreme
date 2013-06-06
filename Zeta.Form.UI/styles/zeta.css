@@ -120,3 +120,21 @@ li a {
     padding-left: 3px;
     font-weight: bolder;
 }
+
+.widget {
+    position: relative;
+}
+
+.widget>.wikirowhelp {
+    position: absolute;
+    right: -3px;
+    bottom: -3px;
+    cursor: pointer;
+    width: 10px;
+    height: 10px;
+    margin-left: 3px;
+    display: block;
+    background-image: url("../images/question-small-white.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}

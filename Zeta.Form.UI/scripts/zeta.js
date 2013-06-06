@@ -44,18 +44,34 @@ root.handlers = $.extend(root.handlers, {
             pageheader : $('<div id="consolePageHeader" class="console-pageheader"/>'),
             body : $('<div id="consoleBody" class="console-body"/>'),
             footer : $('<div id="consoleFooter"/>'),
-            add : function(e) {
-                $(e.body).addClass(e.name);
-                if (e.float != "none") $(e.body).addClass("pull-" + e.float);
-                if (e.pos == this.position.layoutHeader) $('#consoleHeader > .navbar > .navbar-inner').append(e.body);
-                if (e.pos == this.position.layoutBodyMain) $('#consoleBody').append(e.body);
-                if (e.pos == this.position.layoutTools) $('#consoleTools').append(e.body);
-                if (e.pos == this.position.layoutPageHeader) $('#consolePageHeader').append(e.body);
+            add : function(w) {
+                $(w.body).addClass(w.name);
+                if (w.float != "none") $(w.body).addClass("pull-" + w.float);
+                if (!!zeta.widgethelp[w.name]) {
+                    $(w.body).addClass("widget");
+                    $(w.body).append($('<span class="wikirowhelp"/>').click(function(e) { e.stopPropagation(); zefs.api.wiki.getsync.execute({code: zeta.widgethelp[w.name]}); }));
+                }
+                if (w.pos == this.position.layoutHeader) $('#consoleHeader > .navbar > .navbar-inner').append(w.body);
+                if (w.pos == this.position.layoutBodyMain) $('#consoleBody').append(w.body);
+                if (w.pos == this.position.layoutTools) $('#consoleTools').append(w.body);
+                if (w.pos == this.position.layoutPageHeader) $('#consolePageHeader').append(w.body);
             }
         },
 
         Setup : function() {
             $('body').append(this.layout.header,this.layout.tools,this.layout.pageheader, this.layout.body,this.layout.footer);
+            if (zeta.user.logonname != "") {
+                root.api.wiki.getsync.execute({code: "/form/widgets"}, {
+                    onsuccess: function(result) {
+                        if (!result[0]) return;
+                        if (!result[0].Text || result[0].Text == "") return;
+                        zeta.widgethelp = {};
+                        $.each(result[0].Text.split(/,\s+/), function(i,k) {
+                            zeta.widgethelp[k.split(':')[0]] = k.split(':')[1];
+                        })
+                    }
+                });
+            }
             $.each(this.widgets.sort(function(a,b) { return b.options.priority - a.options.priority }),
                 $.proxy(function(i, e) {
                     if ((root.user != null && root.user.getLogonName() != "" ) || !e.options.authonly) {
@@ -106,6 +122,7 @@ root.handlers = $.extend(root.handlers, {
             priority: 0,
             authonly: true,
             adminonly: false,
+            help: null,
             // Функция которая вызывается после того как виджет добавлен
             ready: null
         }, o);
