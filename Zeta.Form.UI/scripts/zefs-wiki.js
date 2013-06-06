@@ -5,6 +5,13 @@
     if ($.isEmptyObject(zefs)) return;
     if ($.isEmptyObject(api)) return;
 
+    $.extend(zefs.handlers, {
+        on_wikifileloadstart : "wikifileloadstart",
+        on_wikifileloadfinish : "wikifileloadfinish",
+        on_wikifileloadprocess : "wikifileloadprocess",
+        on_wikifileloaderror : "wikifileloaderror"
+    });
+
     var GetWiki = function(rowcode) {
         var wikicode = '/row/' + rowcode + '/default';
         api.wiki.getsync.execute({code: wikicode});
@@ -34,6 +41,7 @@
         fd.append("datafile", form.find('input[name="datafile"]').get(0).files[0]);
 //      $(root).trigger(root.handlers.on_fileloadstart);
         api.wiki.savefile.execute(fd);
+        $(zefs).trigger(zefs.handlers.on_wikifileloadstart);
     };
 
     api.wiki.getsync.onSuccess(function(e, result) {
@@ -68,28 +76,32 @@
                     var wikisavebtn = $('<button class="btn btn-mini btn-success"/>').html('<i class="icon-white icon-ok"/>').hide();
                     var wikicancelbtn = $('<button class="btn btn-mini btn-danger"/>').html('<i class="icon-white icon-remove"/>').hide();
                     var wikiprintbtn = $('<button class="btn btn-mini"/>').html('<i class="icon-print"/>');
-
-
                     var progress = $('<div class="progress progress-striped active"/>').append($('<div class="bar" style="width:1%;"/>'));
                     var uploadform = $('<form method="post"/>').css("display", "inline-block");
                     var uploadbtn = $('<button type="submit" class="btn btn-mini btn-primary"/>').text("Прикрепить");
                     var selectbtn = $('<button type="button" class="btn btn-mini"/>').text("Выбрать файл").css("margin-right", 3);
                     // Поле с файлом
                     var file = $('<input type="file" name="datafile"/>').hide();
-                    var code = $('<input name="code" type="text" placeholder="Код" class="input-mini"/>').css({"padding": "0px 6px", "margin-right" : 3});
-                    var filename = $('<input type="text" name="title" placeholder="Название" class="input-small"/>').css("padding", "0px 6px");
+                    var code = $('<input name="code" type="text" placeholder="Код" class="input-small"/>').css({"padding": "0px 6px", "margin-right" : 3});
+                    var filename = $('<input type="text" name="title" placeholder="Название" class="input-normal"/>').css("padding", "0px 6px");
                     var uid = $('<input type="hidden" name="uid"/>');
+                    var message = $('<div/>').css({
+                        position: "absolute",
+                        fontSize: "8pt",
+                        color: "grey",
+                        right: 0
+                    })
+                    file.change(function() {
+                        uploadbtn.text("Прикрепить " + this.files[0].name);
+                    });
                     selectbtn.click(function() { file.trigger("click") });
-                    uploadform.append(selectbtn,file,code,filename,uploadbtn);
+                    uploadform.append(selectbtn,file,code,filename,uploadbtn, message);
                     uploadform.submit(function(e) {
                         e.preventDefault();
                         if (file.get(0).files.length == 0) return;
                         WikiAttachFile($(e.target));
                     });
-
-
-
-                    wikicontrols.append(uploadform, wikiprintbtn, wikieditbtn, wikicancelbtn, wikisavebtn);
+                    wikicontrols.append(uploadform, progress.hide(), wikiprintbtn, wikieditbtn, wikicancelbtn, wikisavebtn);
                     wikiedit.keyup(function() {
                         wikitext.html(qwiki.toHTML(wikiedit.val()));
                     });
@@ -129,6 +141,29 @@
                         wikieditbtn.show();
                     });
                     wikiarticle.append(wikititleedit, wikiedit, wikicontrols);
+                    $(zefs).on(zefs.handlers.on_wikifileloadstart, function() {
+                        uploadform.hide(); progress.show();
+                        message.text("");
+                    });
+                    $(zefs).on(zefs.handlers.on_wikifileloadfinish, function() {
+                        progress.hide(); uploadform.show();
+                        message.text("Файл с кодом " + code.val() + " был прикреплен");
+                        code.val("");
+                        filename.val("");
+                        uploadbtn.text("Прикрепить");
+                        progress.find('.bar').css("width", 0);
+                    });
+                    $(zefs).on(zefs.handlers.on_wikifileloadprocess, function(e, p) {
+                        progress.find('.bar').css("width", (p.loaded / p.total * 100) + "%");
+                    });
+                    $(zefs).on(zefs.handlers.on_wikifileloaderror, function(e, error) {
+                        progress.hide(); uploadform.show();
+                        progress.find('.bar').css("width", 0);
+                        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                            title: "Ошибка загрузки файла",
+                            text: "Во время загрузки файла произошла ошибка: " + error.message
+                        });
+                    });
                 }
                 wikiarticle.append(wikititle, wikitext, wikiinfo);
                 content.append(wikiarticle);
@@ -243,6 +278,18 @@
             });
             if (formstitle.next().length == 0) formstitle.remove();
         }
+    });
+
+    api.wiki.savefile.onSuccess(function() {
+        $(zefs).trigger(zefs.handlers.on_wikifileloadfinish);
+    });
+
+    api.wiki.savefile.onError(function(e, error) {
+        $(zefs).trigger(zefs.handlers.on_wikifileloaderror, JSON.parse(error.responseText));
+    });
+
+    api.wiki.savefile.onProgress(function(e, result) {
+        $(zefs).trigger(zefs.handlers.on_wikifileloadprocess, result);
     });
 
     $.extend(zefs.myform, {
