@@ -125,15 +125,19 @@ li a {
     position: relative;
 }
 
+.widget:hover>.wikirowhelp {
+    display: block;
+}
+
 .widget>.wikirowhelp {
     position: absolute;
+    display: none;
     right: -3px;
     bottom: -3px;
     cursor: pointer;
     width: 10px;
     height: 10px;
     margin-left: 3px;
-    display: block;
     background: url("../images/question-small-white.png") no-repeat center;
     z-index: 3;
 }
