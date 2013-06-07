@@ -35,7 +35,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 				if (e.Name == "ver") continue;
 				if (e.Name == "owner") continue;
 				if (e.Name == "editor") continue;
-				if(e.Name=="title")continue;
+				if(e.Name=="title")continue; 
 				result.Propeties[e.Name] = e.Value.AsString;
 			}
 			return result;
@@ -58,7 +58,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 				Title = info.Metadata["title"].AsString,
 				Owner = info.Metadata["owner"].AsString,
 				Editor = info.Metadata["editor"].AsString,
-				LastWriteTime = info.UploadDate
+				LastWriteTime = info.Metadata["lastwrite"].ToLocalTime()
 			};
 			return result;
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
@@ -80,6 +81,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 				s.Write(binary.Data,0,binary.Data.Length);
 				s.Flush();
 			}
+			
 		}
 
 		private MongoGridFSStream CreateStream(WikiBinary binary) {
@@ -88,6 +90,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 			}
 			var info = Connector.GridFs.FindOne(binary.Code);
 			info.Metadata["editor"] = Application.Principal.CurrentUser.Identity.Name;
+			info.Metadata["lastwrite"] = DateTime.Now;
 			Connector.GridFs.SetMetadata(info,info.Metadata);
 			return info.OpenWrite();
 
@@ -99,6 +102,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 			md["title"] = binary.Title;
 			md["editor"] = Application.Principal.CurrentUser.Identity.Name;
 			md["owner"] = Application.Principal.CurrentUser.Identity.Name;
+			md["lastwrite"] = DateTime.Now;
 			return Connector.GridFs.Create(
 				binary.Code,
 				new MongoGridFSCreateOptions
@@ -121,6 +125,10 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 			SetupConnection();
 			if (!Connector.GridFs.ExistsById(code)) return null;
 			var info = Connector.GridFs.FindOne(code);
+			if (!info.Metadata.Contains("lastwrite")) {
+				info.Metadata["lastwrite"] = info.UploadDate;
+				Connector.GridFs.SetMetadata(info,info.Metadata);
+			}
 			byte[] data = null;
 			if (withData) {
 				data = new byte[info.Length];
@@ -162,7 +170,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 			SetupConnection();
 			var queryJson = "{$or : [{_id : {$regex : '(?ix)_REGEX_'}},{'metadata.title':{$regex:'(?ix)_REGEX_'}},{'metadata.owner':{$regex:'(?ix)_REGEX_'}},{contentType:{$regex:'(?ix)_REGEX_'}}]}".Replace("_REGEX_", search);
 			var queryDoc = new QueryDocument(BsonDocument.Parse(queryJson));
-			foreach (var doc in Connector.GridFs.Find(queryDoc).SetFields("_id", "metadata.title", "metadata.owner", "length", "contentType", "uploadDate", "chunkSize"))
+			foreach (var doc in Connector.GridFs.Find(queryDoc).SetFields("_id", "metadata.title", "metadata.owner", "length", "contentType","metadata.lastwrite", "uploadDate", "chunkSize"))
 			{
 				var file = new WikiBinary()
 				{
@@ -172,8 +180,44 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 					Size = doc.Length,
 					MimeType = doc.ContentType
 				};
+				if (doc.Metadata.Contains("lastwrite")) {
+					file.LastWriteTime = doc.Metadata["lastwrite"].ToLocalTime();
+				}
 				yield return file;
 			}
+		}
+
+		/// <summary>
+		/// Возвращает версию файла
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns></returns>
+		public DateTime GetBinaryVersion(string code) {
+			SetupConnection();
+			var existed =
+				Connector.GridFs.Files.Find(new QueryDocument(BsonDocument.Parse("{_id:'" + code + "'}")))
+				         .SetFields("metadata.lastwrite").FirstOrDefault();
+			if (null == existed) {
+				return DateTime.MinValue;
+			}
+			return existed["metadata"]["lastwrite"].ToLocalTime();
+		}
+
+		/// <summary>
+		/// Возвращает версию страницы
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns></returns>
+		public DateTime GetPageVersion(string code) {
+			SetupConnection();
+			var existed =
+				Connector.Collection.Find(new QueryDocument(BsonDocument.Parse("{_id:'" + code + "'}")))
+						 .SetFields("ver").FirstOrDefault();
+			if (null == existed)
+			{
+				return DateTime.MinValue;
+			}
+			return existed["ver"].ToLocalTime();
 		}
 	}
 }

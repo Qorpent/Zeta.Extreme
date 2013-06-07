@@ -10,5 +10,8 @@
 		<Config Include="..\deployconfig\work.db-connection"/>
 		<Config Include="..\deployconfig\devel.rolemap.bxl"/>
 		<Config Include="..\deployconfig\temporalrolefix.rolemap.bxl"/>
+		<Script	Include="..\qorpent.sys\commons\qorpent.wiki.js"/>
+		<Image Include="..\Ugmk.Assoi\*.png"/>
+		<Style Include="..\qorpent.sys\commons\qorpent.wiki.css"/>
 	</ItemGroup>
 </Project>
