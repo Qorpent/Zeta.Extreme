@@ -78,7 +78,10 @@ root.handlers = $.extend(root.handlers, {
                 $.proxy(function(i, e) {
                     if ((root.user != null && root.user.getLogonName() != "" ) || !e.options.authonly) {
                         if (e.options.adminonly && root.user != null) {
-                            if (!root.user.getIsAdmin()) return;
+                            if (e.name == "zefsdebug") {
+                                if (!root.user.getRealIsAdmin()) return;
+                            }
+                            else if (!root.user.getIsAdmin()) return;
                         }
                         if (!this.widgets[i].installed) {
                             this.layout.add(e);
