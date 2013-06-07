@@ -299,7 +299,7 @@ li.current>a:hover {
     position: fixed;
     top: 41px;
     right: 20px;
-    z-index: 1000;
+    z-index: 103;
 }
 
 .zefsalerter .alert {

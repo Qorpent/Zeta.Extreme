@@ -5,7 +5,7 @@
     position: fixed;
     bottom: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 100;
 }
 
 .zefslogo>.logo-main {
@@ -15,7 +15,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 100;
     cursor: pointer;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .zefsformsave {
-    z-index: 1001;
+    z-index: 101;
     position: relative;
 }
 

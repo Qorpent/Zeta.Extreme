@@ -22,7 +22,7 @@ a.btn {
 #consoleHeader {
     height: 37px;
     position: fixed;
-    z-index: 999;
+    z-index: 106; /*Должна быть больше, чем у модальных окон*/
     width: 100%;
     top: 0;
 }
@@ -30,7 +30,7 @@ a.btn {
 #consoleTools {
     position: fixed;
     top: 37px;
-    z-index: 994;
+    z-index: 3;
     background-color: #F0F0F0;
     width: 100%;
     height: 23px;
@@ -41,7 +41,7 @@ a.btn {
     position: fixed;
     top: 60px;
     height: 40px;
-    z-index: 996;
+    z-index: 5;
     background-color: white;
     width: 100%;
     padding: 0 20px;
@@ -134,8 +134,6 @@ li a {
     height: 10px;
     margin-left: 3px;
     display: block;
-    background-image: url("../images/question-small-white.png");
-    background-repeat: no-repeat;
-    background-position: center;
+    background: url("../images/question-small-white.png") no-repeat center;
     z-index: 3;
 }
