@@ -77,7 +77,7 @@
         }).append("Лента сообщений текущей формы"),
         $('<div class="userchat chat-list-body"/>')
     );
-    var showarchive = $('<i class="icon pull-right" data-original-title="Показать/скрыть проченные"/>');
+    var showarchive = $('<i class="icon pull-right" data-original-title="Показать/скрыть прочтенные"/>');
     if ($.isEmptyObject(root.chatoptionsstorage.Get())) {
         zeta.chatoptionsstorage.AddOrUpdate({showarchived: false});
         showarchive.addClass("icon-eye-open");

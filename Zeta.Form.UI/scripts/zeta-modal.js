@@ -84,6 +84,7 @@
             modal.css("z-index", 10001);
         });
         $(modal).draggable({ handle: ".modal-header", containment: "window"});
+        modal.trigger('click');
     };
     $(window.zeta).on(window.zeta.handlers.on_modal, function(e,params) {
         $(document).trigger('click.dropdown.data-api');
