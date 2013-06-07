@@ -137,4 +137,5 @@ li a {
     background-image: url("../images/question-small-white.png");
     background-repeat: no-repeat;
     background-position: center;
+    z-index: 3;
 }
