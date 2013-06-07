@@ -79,12 +79,12 @@
             $(this).remove();
             backdrop.remove()
         });
-        modal.click(function() {
+        $(modal).draggable({ handle: ".modal-header", containment: "window"});
+        modal.mousedown(function() {
             $('.modal').css("z-index", 100);
             modal.css("z-index", 101);
         });
-        $(modal).draggable({ handle: ".modal-header", containment: "window"});
-        modal.trigger('click');
+        modal.trigger('mousedown');
     };
     $(window.zeta).on(window.zeta.handlers.on_modal, function(e,params) {
         $(document).trigger('click.dropdown.data-api');

@@ -71,6 +71,7 @@
         refresh.hide();
         progress.show();
     });
+    addhelp.click(function() { zefs.api.wiki.getsync.execute({code: "/form/chat/channels"}) });
     chatlist.append(
         $('<div class="userchat chat-list-header"/>').click(function() {
             $(chatlist.find('.userchat.chat-list-header')).toggleClass("collapsed");

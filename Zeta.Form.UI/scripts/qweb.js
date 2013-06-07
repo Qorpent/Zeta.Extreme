@@ -1,5 +1,6 @@
 (function(){
     var root = window.qweb = window.qweb || {};
+    var cache = root.cache= root.cache || {};
     var siteroot = document.location.pathname.match(/([\\w\\d_\-]+)?/)[0];
 
     var Log = function() {
@@ -167,12 +168,18 @@
                 datatype : this.datatype,
                 url : this.getUrl(this.datatype)
             });
+            var method = "GET";
+            if(params && JSON.stringify(params).length>200){
+                method = "POST";
+            }
             var ajaxinfo = {
                 url: myoptions.url,
-                type : !params ? "GET" : "POST",
+                type : method,
                 dataType: myoptions.datatype,
                 data : params || {},
-                crossDomain: true
+                crossDomain: true,
+                ifModified: method=="GET"
+//                cache: true
             };
             ajaxinfo.async = this.async;
             if (this.async) {
@@ -187,22 +194,30 @@
                         }
                         return x;
                     },
-                    cache: false,
+                    cache: true,
                     contentType: false,
                     processData: false
                 });
             }
             $.ajax(ajaxinfo)
-                .success(function(r){
-                    myoptions.onsuccess(r,params);
-                })
-                .error(function(r) {
-                    self.triggerOnError(r)
-                })
                 .complete(function(r) {
-                    self.triggerOnComplete(r)
-                });
+                    if (304 == r.status) {
+                        myoptions.onsuccess(JSON.parse(sessionStorage.getItem(ajaxinfo.url+"?"+JSON.stringify(ajaxinfo.data))),params);
+                    }
+                    else if( 200 == r.status) {
 
+                        if (!r.responseText.match(/^\s*<!DOCTYPE/)) {
+                            if(ajaxinfo.type=="GET" && r.getResponseHeader("Last-Modified"))   {
+                                sessionStorage.setItem(ajaxinfo.url+"?"+JSON.stringify(ajaxinfo.data), r.responseText);
+                            }
+                            myoptions.onsuccess(JSON.parse(r.responseText),params);
+                        }
+                    }
+                    else {
+                        self.triggerOnError(r);
+                    }
+                    self.triggerOnComplete(r);
+                });
         }
     });
 
