@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Wrappers;
 using Qorpent.Applications;
 using Qorpent.Wiki;
@@ -39,6 +40,32 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 			}
 			return result;
 		}
+
+		/// <summary>
+		/// Конвертирует описатель MongoFile в WikiBinary
+		/// </summary>
+		/// <param name="info"></param>
+		/// <param name="data"></param>
+		/// <returns></returns>
+		public  WikiBinary ConvertToWikiBinary(MongoGridFSFileInfo info, byte[] data)
+		{
+			var result = new WikiBinary
+			{
+				Code = info.Id.AsString,
+				Data = data,
+				MimeType = info.ContentType,
+				Size = info.Length,
+				Title = info.Metadata["title"].AsString,
+				Owner = info.Metadata["owner"].AsString,
+				Editor = info.Metadata["editor"].AsString,
+				LastWriteTime = info.UploadDate
+			};
+			return result;
+		}
+
+
+
+
 		/// <summary>
 		/// Формирует запрос по кодам
 		/// </summary>

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
@@ -78,6 +75,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		/// Сохраняет в Wiki файл с указанным кодом
 		/// </summary>
 		public void SaveBinary(WikiBinary binary) {
+			SetupConnection();
 			using (var s = CreateStream(binary)) {
 				s.Write(binary.Data,0,binary.Data.Length);
 				s.Flush();
@@ -86,26 +84,31 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 
 		private MongoGridFSStream CreateStream(WikiBinary binary) {
 			if (!Connector.GridFs.ExistsById(binary.Code)) {
-				var md = new BsonDocument();
-				md["title"] = binary.Title;
-				md["editor"] = Application.Principal.CurrentUser.Identity.Name;
-				md["owner"] = Application.Principal.CurrentUser.Identity.Name;
-				return Connector.GridFs.Create(
-					binary.Code,
-					new MongoGridFSCreateOptions
-						{
-							Id = binary.Code,
-							Metadata = md,
-							UploadDate = DateTime.Now,
-							ContentType = binary.MimeType,
-						}
-					);
+				return ConvertToMongoGridInfo(binary);
 			}
 			var info = Connector.GridFs.FindOne(binary.Code);
 			info.Metadata["editor"] = Application.Principal.CurrentUser.Identity.Name;
 			Connector.GridFs.SetMetadata(info,info.Metadata);
 			return info.OpenWrite();
 
+		}
+
+		private MongoGridFSStream ConvertToMongoGridInfo(WikiBinary binary)
+		{
+			var md = new BsonDocument();
+			md["title"] = binary.Title;
+			md["editor"] = Application.Principal.CurrentUser.Identity.Name;
+			md["owner"] = Application.Principal.CurrentUser.Identity.Name;
+			return Connector.GridFs.Create(
+				binary.Code,
+				new MongoGridFSCreateOptions
+				{
+					Id = binary.Code,
+					Metadata = md,
+					UploadDate = DateTime.Now,
+					ContentType = binary.MimeType,
+				}
+				);
 		}
 
 		/// <summary>
@@ -115,6 +118,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		/// <param name="withData">Флаг, что требуется подгрузка бинарных данных</param>
 		/// <returns></returns>
 		public WikiBinary LoadBinary(string code, bool withData = true) {
+			SetupConnection();
 			if (!Connector.GridFs.ExistsById(code)) return null;
 			var info = Connector.GridFs.FindOne(code);
 			byte[] data = null;
@@ -124,16 +128,52 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 					s.Read(data, 0, (int)s.Length);
 				}
 			}
-			var result = new WikiBinary();
-			result.Code = code;
-			if (withData) result.Data = data;
-			result.MimeType = info.ContentType;
-			result.Size = info.Length;
-			result.Title = info.Metadata["title"].AsString;
-			result.Owner = info.Metadata["owner"].AsString;
-			result.Editor = info.Metadata["editor"].AsString;
-			result.LastWriteTime = info.UploadDate;
-			return result;
+			return Serializer.ConvertToWikiBinary(info, data);
+		}
+
+		
+
+		/// <summary>
+		/// Поиск страниц по маске 
+		/// </summary>
+		/// <param name="search"></param>
+		/// <returns></returns>
+		public IEnumerable<WikiPage> FindPages(string search) {
+			SetupConnection();
+			var queryJson = "{$or : [ {_id : {$regex : '(?ix)_REGEX_'}},{title:{$regex: '(?ix)_REGEX_'}},{owner:{$regex: '(?ix)_REGEX_'}},{editor:{$regex: '(?ix)_REGEX_'}}]},".Replace("_REGEX_", search);
+			var queryDoc = new QueryDocument(BsonDocument.Parse(queryJson));
+			foreach (var doc in Connector.Collection.Find(queryDoc).SetFields("_id","title","ver","editor","owner")) {
+				var page = new WikiPage
+					{
+						Code = doc["_id"].AsString,
+						Title = doc["title"].AsString,
+						LastWriteTime = doc["ver"].ToLocalTime()
+					};
+				yield return page;
+			}
+		}
+
+		/// <summary>
+		/// Поиск файлов по маске
+		/// </summary>
+		/// <param name="search"></param>
+		/// <returns></returns>
+		public IEnumerable<WikiBinary> FindBinaries(string search) {
+			SetupConnection();
+			var queryJson = "{$or : [{_id : {$regex : '(?ix)_REGEX_'}},{'metadata.title':{$regex:'(?ix)_REGEX_'}},{'metadata.owner':{$regex:'(?ix)_REGEX_'}},{contentType:{$regex:'(?ix)_REGEX_'}}]}".Replace("_REGEX_", search);
+			var queryDoc = new QueryDocument(BsonDocument.Parse(queryJson));
+			foreach (var doc in Connector.GridFs.Find(queryDoc).SetFields("_id", "metadata.title", "metadata.owner", "length", "contentType", "uploadDate", "chunkSize"))
+			{
+				var file = new WikiBinary()
+				{
+					Code = doc.Id.AsString,
+					Title = doc.Metadata["title"].AsString,
+					LastWriteTime = doc.UploadDate,
+					Size = doc.Length,
+					MimeType = doc.ContentType
+				};
+				yield return file;
+			}
 		}
 	}
 }
