@@ -19,19 +19,16 @@
         .click(function() { Debug("zefs/debuginfo.json.qweb?session=" + sid, "Отладочные данные") })
         .html('<i class="icon-warning-sign"></i> Отладочная информация');
     var lock = $('<a id="currentlockInfo"/>')
-        .click(function() { Debug("zefs/currentlockstate.json.qweb?session=" + sid, "Статус блокировки") })
+        .click(function() { Debug("zefs/getlockstate.json.qweb?session=" + sid, "Статус блокировки") })
         .html('<i class="icon-lock"></i> Текущий статус');
     var serverstatus = $('<a id="serverInfo"/>')
         .click(function() { Debug(spec.server.state) })
         .html('<i class="icon-tasks"></i> Статус сервера');
-    var canlock = $('<a id="canlockInfo"/>')
-        .click(function() { Debug("zefs/canlockstate.json.qweb?session=" + sid, "Возможность блокировки") })
-        .html('<i class="icon-lock"></i> Возможность блокровки');
     var b = $('<button class="btn btn-small dropdown-toggle" data-original-title="Отладка"/>')
         .html('<i class="icon-eye-close"></i><span class="caret"></span>');
     var list = $('<ul class="dropdown-menu"/>').append(
         $('<li/>').append(setup),$('<li/>').append(formuladebuger),$('<li class="divider"/>'),
-        $('<li/>').append(lock),$('<li/>').append(canlock),$('<li/>').append(session),$('<li/>').append(debuginfo),$('<li class="divider"/>'),
+        $('<li/>').append(lock),$('<li/>').append(session),$('<li/>').append(debuginfo),$('<li class="divider"/>'),
         $('<li/>').append(serverstatus)
     );
     var addwikibtn = $('<button class="btn btn-small"/>').html('<i class="icon icon-arrow-right"></i>');
