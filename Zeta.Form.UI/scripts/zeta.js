@@ -47,9 +47,11 @@ root.handlers = $.extend(root.handlers, {
             add : function(w) {
                 $(w.body).addClass(w.name);
                 if (w.float != "none") $(w.body).addClass("pull-" + w.float);
-                if (!!zeta.widgethelp[w.name]) {
-                    $(w.body).addClass("widget");
-                    $(w.body).append($('<span class="wikirowhelp"/>').click(function(e) { e.stopPropagation(); zefs.api.wiki.getsync.execute({code: zeta.widgethelp[w.name]}); }));
+                if (!!zeta.widgethelp) {
+                    if (!!zeta.widgethelp[w.name]) {
+                        $(w.body).addClass("widget");
+                        $(w.body).append($('<span class="wikirowhelp"/>').click(function(e) { e.stopPropagation(); zefs.api.wiki.getsync.execute({code: zeta.widgethelp[w.name]}); }));
+                    }
                 }
                 if (w.pos == this.position.layoutHeader) $('#consoleHeader > .navbar > .navbar-inner').append(w.body);
                 if (w.pos == this.position.layoutBodyMain) $('#consoleBody').append(w.body);
@@ -76,7 +78,10 @@ root.handlers = $.extend(root.handlers, {
                 $.proxy(function(i, e) {
                     if ((root.user != null && root.user.getLogonName() != "" ) || !e.options.authonly) {
                         if (e.options.adminonly && root.user != null) {
-                            if (!root.user.getIsAdmin()) return;
+                            if (e.name == "zefsdebug") {
+                                if (!root.user.getRealIsAdmin()) return;
+                            }
+                            else if (!root.user.getIsAdmin()) return;
                         }
                         if (!this.widgets[i].installed) {
                             this.layout.add(e);

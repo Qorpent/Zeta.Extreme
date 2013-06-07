@@ -235,7 +235,7 @@
         if (!zeta.user.getIsDocWriter() && !zeta.user.getIsAdmin()) {
             $('.wikirowhelp.notexist').remove();
         }
-        $('.wikirowhelp').show();
+        $('.name>.wikirowhelp').show();
     });
 
     api.metadata.getformuladependency.onSuccess(function(e, result) {

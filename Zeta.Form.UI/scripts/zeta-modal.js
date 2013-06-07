@@ -27,14 +27,14 @@
         }, p.customButton);
         var backdrop = $('<div/>').css({
             position: "fixed",
-            "z-index" : 10000,
+            "z-index" : 100,
             backgroundColor : "white",
             opacity : 0.7,
             width: "100%",
             height: "100%",
             top: 0
         });
-        var modal = $('<div class="modal" role="dialog" />').css({"z-index": 10000, marginLeft: (p.width || 560)/-2, "top" : 50});
+        var modal = $('<div class="modal" role="dialog" />').css({"z-index": 100, marginLeft: (p.width || 560)/-2, "top" : 50});
         if (p.name != "") {
             modal.attr("id", p.id);
         }
@@ -79,11 +79,12 @@
             $(this).remove();
             backdrop.remove()
         });
-        modal.click(function() {
-            $('.modal').css("z-index", 10000);
-            modal.css("z-index", 10001);
-        });
         $(modal).draggable({ handle: ".modal-header", containment: "window"});
+        modal.mousedown(function() {
+            $('.modal').css("z-index", 100);
+            modal.css("z-index", 101);
+        });
+        modal.trigger('mousedown');
     };
     $(window.zeta).on(window.zeta.handlers.on_modal, function(e,params) {
         $(document).trigger('click.dropdown.data-api');
