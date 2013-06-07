@@ -94,6 +94,10 @@ $.extend(api,(function(){
                     return obj;
                 }
             })
+        },
+
+        wiki : {
+            getsync : new Command({ domain: "wiki", name: "get", async: false })
         }
     }
 })());

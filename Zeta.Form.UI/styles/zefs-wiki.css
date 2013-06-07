@@ -1,5 +1,6 @@
 .wikiarticle {
     position: relative;
+    padding-top: 30px;
 }
 
 .wikicontrols {
@@ -11,6 +12,13 @@
 
 .wikicontrols button {
     margin-left: 4px;
+}
+
+.wikicontrols .progress {
+    display: inline-block;
+    width: 100px;
+    margin: 0;
+    vertical-align: middle;
 }
 
 .wikiedit {

@@ -16,7 +16,8 @@
     docprint.click(function() {
         $('#zefsFormDoc').printelement();
     });
-    var t = $('<span class="label-tree"/>');
+    var t = $('<span class="label-tree" data-original-title="Справка по форме"/>');
+    t.tooltip({placement: 'bottom'});
     content.append(formdetails, formdependence, formdocumentation);
 
     var GetFormType = function(type) {
