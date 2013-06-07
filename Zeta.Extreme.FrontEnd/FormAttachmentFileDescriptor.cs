@@ -108,6 +108,11 @@ namespace Zeta.Extreme.FrontEnd {
 		}
 
 		/// <summary>
+		/// Прямое указание данных
+		/// </summary>
+		public byte[] Data { get; set; }
+
+		/// <summary>
 		/// 	Возвращает поток данных файла
 		/// </summary>
 		/// <returns> </returns>
