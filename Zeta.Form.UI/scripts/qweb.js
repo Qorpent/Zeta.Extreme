@@ -169,7 +169,7 @@
                 url : this.getUrl(this.datatype)
             });
             var method = "GET";
-            if(params && JSON.stringify(params).length>200){
+            if((params && JSON.stringify(params).length>200) || this.useProgress ){
                 method = "POST";
             }
             var ajaxinfo = {
