@@ -1,3 +1,4 @@
+var cloudHandled;
 (function(cloudMap) {    
     var global = window.loadBalancer = window.psychosis = this;
 	
@@ -72,6 +73,22 @@
 					);
 				})(cloudStats, srv);
 			}
+		}
+	},
+	
+	this.ping = {
+		app : function(target, callback) {
+			global.poll.app(
+				target,
+				
+				function(json) {
+					callback(true);
+				},
+				
+				function() {
+					callback(false);
+				}
+			);
 		}
 	},
 	
@@ -158,6 +175,8 @@
 					delete dirty.sources[r.key][b.key];
 				}
 			}
+			
+			cloudHandled = dirty;
 			
 			return list;
 		};
