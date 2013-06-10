@@ -1,4 +1,4 @@
-(function() {    
+(function(cloudMap) {    
     var global = window.loadBalancer = window.psychosis = this;
 	
 	this.poll = {
@@ -7,7 +7,7 @@
 				{
 					'url' : target.protocol + '://' + target.host + '/' + target.app + '/zefs/' + 'nodeload.json.qweb',
 					'dataType' : 'json',
-					'timeout' : 200,
+					'timeout' : 1200,
 					'xhrFields': {
 						'withCredentials' : true
 					},
@@ -75,62 +75,110 @@
 		}
 	},
 	
-	this.sort = {
-		getMostFreeApp : function(stat) {
-			var appLeaders = new Object();
-			var appLeader = {
-				'host' : undefined,
-				'app' : undefined,
-				'av' : 0
-			};
+	this.handle = function(query, callback) {
+		var that = this;
+	
+		this.select = function(query, source) {
+			this.makeSources = function(targets, sources) {
+				var r = new Object();
 		
-			$.each(
-				stat,
-				function(host, obj) {
-					appLeaders[host] = {
-						'av' : 0,
-						'app' : undefined
-					};
-				
+				if(targets === undefined) {
+					r = sources;
+				} else {
 					$.each(
-						obj,
-						function(app, av) {
-							if(appLeaders[host].av < av) {
-								appLeaders[host].av = av;
-								appLeaders[host].app = app;
+						targets,
+						function(server, apps) {
+							r[server] = new Object();
+							
+							if(apps.length == 0) {
+								r[server] = sources[server];
+							} else {
+								for(i = 0; i < apps.length; i++) {
+									r[server][apps[i]] = sources[server][apps[i]];
+								}
 							}
 						}
 					);
 				}
-			);
-			
+				
+				return r;
+			};
+		
+			var list = new Array();
+			var dirty = {
+				servers : new Object(),
+				leaders : new Object(),
+				sources : this.makeSources(query.servers, source),
+				count : {
+					servers : 0,
+					apps : new Object()
+				},
+				lista : list
+			};
+
 			$.each(
-				appLeaders,
-				function(host, obj) {
-					if(appLeader.av < obj.av) {
-						appLeader.av = obj.av;
-						appLeader.host = host;
-						appLeader.app = obj.app;
+				dirty.sources,
+				function(server, apps) {
+					dirty.servers[server] = new Object();
+					dirty.leaders[server] = 0;
+					
+					dirty.count.servers++;
+					dirty.count.apps[server] = Object.keys(apps).length;
+		
+					for(a = 0; a < Object.keys(apps).length; a++) {				
+						dirty.leaders[server] += dirty.sources[server][Object.keys(apps)[a]];
 					}
+					
+					// relative availability
+					dirty.leaders[server] = dirty.leaders[server] / Object.keys(apps).length;
 				}
 			);
 			
-			return appLeader;
-		}
-	},
-	
-    this.getMostFreeServer = function(callback) {	
-		global.poll.cloud(
-			serversMap,
-			function(cs) {
-				var i = global.sort.getMostFreeApp(cs);
+
+			// build the list of most available servers(!), not apps.
+			// we will use the relative availability
+			for(l = 0; (l < Object.keys(dirty.leaders).length) && (l < query.count.servers); l++) {
+				var r = window.math.objects.sort.max(dirty.leaders);
 				
-				if(i.av == 0) {
-					global.getMostFreeServer(callback);
-				} else {
-					callback(i);
+				// add the server to the top-list
+				list.push(
+					{
+						server : r.key,
+						availability : r.val,
+						apps : new Array()
+					}
+				);
+				
+				delete dirty.leaders[r.key];
+
+				for(a = 0; (a < dirty.count.apps[r.key]) && (a < query.count.apps); a++) {
+					var b = window.math.objects.sort.max(dirty.sources[r.key]);
+					
+					list[l].apps.push(b.key);
+					delete dirty.sources[r.key][b.key];
 				}
 			}
+			
+			return list;
+		};
+	
+		global.poll.cloud(
+			cloudMap,
+			function(cloudStat) {
+				var list = that.select(
+					{
+						servers : query.servers,
+						count : {
+							servers : query.count.servers,
+							apps : query.count.apps
+						}
+					},
+					
+					cloudStat
+				);
+				
+				callback(list);
+			}
 		);
-    };
-})();
+	};
+})(serversMap);
