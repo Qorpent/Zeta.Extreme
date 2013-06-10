@@ -74,19 +74,27 @@ var cloudHandled;
 	},
 	
 	this.watchdog = {
+		free : true,
 		cloudMap : new Object(),
 		
 		pulse : function() {
+			global.watchdog.free = false;
 			global.poll.cloud(
 				cloudMap,
 				function(cloudStat) {
+					global.watchdog.free = true;
 					global.watchdog.cloudMap = cloudMap;
+					global.watchdog.migrate();
 				}
 			);
 		},
 		
 		migrate : function() {
-
+			var groups = Object.keys(global.groups.db);
+			
+			for(i = 0; i < groups.length; i++) {
+				global.groups.refreshHandler(groups[i]);
+			}
 		}
 	},
 	

@@ -1,5 +1,6 @@
 (function(){
     var root = window.qweb = window.qweb || {};
+    var cache = root.cache= root.cache || {};
 
     var Log = function() {
         this.init();
@@ -43,6 +44,7 @@
         if (typeof(options)=="string"){
             options = {name:options};
         }
+        if (!!options.async) options.async = true;
         $.extend(this,options);
         if(!this.url){
             var domain = this.domain || "_sys";
@@ -68,6 +70,7 @@
 
     $.extend(root.Command.prototype, {
         datatype : "json",
+        group : "",
         getParameters : function() { return {} },
         getPrimaryServer : function() {
             return "";
@@ -75,7 +78,8 @@
         getSecondaryServer : function() {
             return "";
         },
-        getUrl:function(datatype) {
+        getUrl:function(datatype, group) {
+			
             datatype = datatype || this.datatype;
             return siteroot + this.url.replace('{DATATYPE}',datatype);
         },
@@ -163,18 +167,25 @@
             var myoptions = options || {};
             $.extend(myoptions, {
                 datatype : this.datatype,
-                url : this.getUrl(this.datatype)
+                url : this.getUrl(this.datatype, this.group)
             });
+            var method = "GET";
+            if((params && JSON.stringify(params).length>200) || this.useProgress ){
+                method = "POST";
+            }
             var ajaxinfo = {
                 url: myoptions.url,
-                type : !params ? "GET" : "POST",
+                type : method,
                 dataType: myoptions.datatype,
                 data : params || {},
-				xhrFields: {
-					withCredentials: true
-				},
-				crossDomain: true
+                crossDomain: true,
+                ifModified: method=="GET"
+//                cache: true
             };
+            ajaxinfo.async = this.async;
+            //if (this.async) {
+                ajaxinfo.xhrFields = { withCredentials: true };
+            //}
             if(this.useProgress){
                 $.extend(ajaxinfo,{
                     xhr: function() {
@@ -184,22 +195,30 @@
                         }
                         return x;
                     },
-                    cache: false,
+                    cache: true,
                     contentType: false,
                     processData: false
                 });
             }
             $.ajax(ajaxinfo)
-                .success(function(r){
-                    myoptions.onsuccess(r,params);
-                })
-                .error(function(r) {
-                    self.triggerOnError(r)
-                })
                 .complete(function(r) {
-                    self.triggerOnComplete(r)
-                });
+                    if (304 == r.status) {
+                        myoptions.onsuccess(JSON.parse(sessionStorage.getItem(ajaxinfo.url+"?"+JSON.stringify(ajaxinfo.data))),params);
+                    }
+                    else if( 200 == r.status) {
 
+                        if (!r.responseText.match(/^\s*<!DOCTYPE/)) {
+                            if(ajaxinfo.type=="GET" && r.getResponseHeader("Last-Modified"))   {
+                                sessionStorage.setItem(ajaxinfo.url+"?"+JSON.stringify(ajaxinfo.data), r.responseText);
+                            }
+                            myoptions.onsuccess(JSON.parse(r.responseText),params);
+                        }
+                    }
+                    else {
+                        self.triggerOnError(r);
+                    }
+                    self.triggerOnComplete(r);
+                });
         }
     });
 
