@@ -2,6 +2,94 @@ var cloudHandled;
 (function(cloudMap) {    
     var global = window.loadBalancer = window.psychosis = this;
 	
+	this.groups = {
+		db : new Object(),
+	
+		migrateGroup : function(group, newHandler) {
+			if(!global.groups.getNoMigrationProperty(group)) {
+				global.groups.setHandler(group, newHandler);
+			}
+		},
+		
+		registerGroup : function(group, noMigration) {
+			global.groups.db[group] = {
+				noMigration : noMigration
+			};
+		},
+		
+		setGroupHandler : function(group, handler) {
+			if(global.groups.checkGroupExists(group)) {
+				global.groups.db[group].handler = handler;
+			}
+		},
+		
+		initGroup : function(group, noMigration, handler) {
+			global.groups.registerGroup(group, noMigration);
+			global.groups.setHandler(group, handler);
+		},
+		
+		getNoMigrationProperty : function(group) {
+			if(global.groups.checkGroupExists(group)) {
+				return global.groups.db[group].noMigration;
+			} else {
+				return undefined;
+			}
+		},
+		
+		checkGroupExists : function(group) {
+			if(global.groups.db[group]) {
+				return true;
+			} else {
+				return false;
+			}
+		},
+		
+		getCurrentGroupHandler : function(group) {
+			if(global.groups.checkGroupExists(group)) {
+				return global.groups.db[group].handler;
+			} else {
+				return undefined;
+			}
+		},
+		
+		refreshHandler : function(group) {
+			if(global.groups.getCurrentGroupHandler(group) === undefined) {
+				global.pool.getHandler(
+					function(handler) {
+						global.groups.migrateGroup(group, handler);
+					}
+				);
+			} else {
+				if(global.groups.getNoMigrationProperty(group)) {
+					return global.groups.getCurrentGroupHandler(group);
+				} else {
+					global.pool.getHandler(
+						function(handler) {
+							global.groups.migrateGroup(group, handler);
+						}
+					);
+				}
+			}
+		}
+	},
+	
+	this.watchdog = {
+		cloudMap : new Object(),
+		
+		pulse : function() {
+			global.poll.cloud(
+				cloudMap,
+				function(cloudStat) {
+					global.watchdog.cloudMap = cloudMap;
+				}
+			);
+		},
+		
+		migrate : function() {
+
+		}
+	},
+	
 	this.poll = {
 		app : function(target, done, error) {
 			$.ajax(
@@ -92,10 +180,8 @@ var cloudHandled;
 		}
 	},
 	
-	this.handle = function(query, callback) {
-		var that = this;
-	
-		this.select = function(query, source) {
+	this.pool = {
+		select : function(query, source) {
 			this.makeSources = function(targets, sources) {
 				var r = new Object();
 		
@@ -179,12 +265,35 @@ var cloudHandled;
 			cloudHandled = dirty;
 			
 			return list;
-		};
+		},
+		
+		getHandler : function(callback) {
+			global.handle(
+				{
+					count : {
+						servers : 1,
+						apps : 1
+					}
+				},
+				
+				function(list) {
+					callback(
+						{
+							protocol : 'https',
+							host : list[0].server,
+							app : list[0].apps[0]
+						}
+					);
+				}
+			);
+		}
+	},
 	
+	this.handle = function(query, callback) {
 		global.poll.cloud(
 			cloudMap,
 			function(cloudStat) {
-				var list = that.select(
+				var list = global.pool.select(
 					{
 						servers : query.servers,
 						count : {
@@ -200,4 +309,6 @@ var cloudHandled;
 			}
 		);
 	};
+	
+	setInterval(global.watchdog.pulse, 20000);
 })(serversMap);
