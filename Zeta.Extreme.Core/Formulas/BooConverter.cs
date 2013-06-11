@@ -55,6 +55,7 @@ namespace Zeta.Extreme {
 						.Replace(".altdiv(\"", ".altobjfilter(\"div_")
 						.Replace(".altdiv()",".altobjfilter(\"div_CURRENT\")")
 						.Replace(".torootobj()", ".toobj(-1)")
+						.Replace(".toparentobj()", ".toobj(-2)")
 					;
 
 				return result;

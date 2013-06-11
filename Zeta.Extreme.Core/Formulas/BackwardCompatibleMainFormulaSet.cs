@@ -85,6 +85,18 @@ namespace Zeta.Extreme {
 		public decimal choose(params QueryDelta[] deltas) {
 			return deltas.Select(d => _host.Eval(d)).FirstOrDefault(qr => 0 != qr);
 		}
+		/// <summary>
+		/// Choose на основе значений
+		/// </summary>
+		/// <param name="variants"></param>
+		/// <returns></returns>
+		public decimal choose(params decimal[] variants)
+		{
+			if (_host.IsInPlaybackMode) {
+				return 1;
+			}
+			return variants.FirstOrDefault(_=>_!=0);
+		}
 
 		
 

@@ -123,7 +123,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			if (_objByCode.ContainsKey(code)) {
 				return _objByCode[code];
 			}
-			var native = new NativeZetaReader().ReadObjects("Code = '" + code.Replace("'","''")+"'").FirstOrDefault();
+			var native = new NativeZetaReader().ReadObjectsWithTypes("o.Code = '" + code.Replace("'","''")+"'").FirstOrDefault();
 			if (null != native) {
 				RegisterObject(native);
 				return native;
@@ -153,7 +153,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			if (_objById.ContainsKey(id)) {
 				return _objById[id];
 			}
-			var native = new NativeZetaReader().ReadObjects("Id = " + id).FirstOrDefault();
+			var native = new NativeZetaReader().ReadObjectsWithTypes("o.Id = " + id).FirstOrDefault();
 			if (null != native) {
 				RegisterObject(native);
 				return native;
