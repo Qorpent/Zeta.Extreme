@@ -71,6 +71,7 @@
 
     $.extend(root.Command.prototype, {
         datatype : "json",
+        group : "",
         getParameters : function() { return {} },
         getPrimaryServer : function() {
             return "";
@@ -78,7 +79,7 @@
         getSecondaryServer : function() {
             return "";
         },
-        getUrl:function(datatype) {
+        getUrl:function(datatype, group) {
             datatype = datatype || this.datatype;
             return siteroot + this.url.replace('{DATATYPE}',datatype);
         },
@@ -166,7 +167,7 @@
             var myoptions = options || {};
             $.extend(myoptions, {
                 datatype : this.datatype,
-                url : this.getUrl(this.datatype)
+                url : this.getUrl(this.datatype, this.group)
             });
             var method = "GET";
             if((params && JSON.stringify(params).length>200) || this.useProgress ){
