@@ -56,23 +56,53 @@ namespace Zeta.Extreme {
 
 		private void MoveConsobj(IQuery query) {
 			if (UseConsolidateObject) {
+
 				var nzr = new NativeZetaReader();
 				var filter = string.IsNullOrWhiteSpace(ConsolidateObjectFilter)
 					             ? ""
 					             : ("/" + ConsolidateObjectFilter.Replace(",", "/") + "/");
-				int[] ids = null;
-				if (string.IsNullOrWhiteSpace(filter)) {
-					ids = nzr.ReadObjects("Path like '%/" + query.Obj.Id + "/%'").Select(_ => _.Id).ToArray();
+				var formula = "";
+				if (filter.StartsWith("/_")) {
+					formula = ConsolidateUpFromTerminalObj(query, filter.Substring(2,filter.Length-3), nzr);
 				}
 				else {
-					ids =
-						nzr.ReadObjectsWithTypes(
-							string.Format("Path like '%/{0}/%' and ('{1}' like '%/'+t.Code+'/%' or '{1}' like '%/'+c.Code+'/%')",
-							              query.Obj.Code, filter)).Select(_ => _.Id).ToArray();
+
+					formula = ConsolidateDownRootObj(query, filter, nzr);
 				}
-				var formula = string.Join(",", ids);
-				query.Obj = new ObjHandler {Native = new Obj {IsFormula = true, Formula = formula}};
+				query.Obj = new ObjHandler { Native = new Obj { IsFormula = true, Formula = formula } };
 			}
+		}
+
+		private string ConsolidateUpFromTerminalObj(IQuery query,string filter, NativeZetaReader nzr) {
+			var root = filter.Split('.')[0] == "_ROOT";
+			var type = filter.Split('.')[1] == "TYPE";
+			var current = query.Obj.Native as IZetaMainObject;
+			if (null == current) return "-1";
+			var obj = current;
+			while (null!=obj.ParentId) {
+				obj = MetaCache.Default.Get<IZetaMainObject>( obj.ParentId);
+				if (!root) break;
+			}
+#pragma warning disable 612,618
+			var newfilter = "/"+( type ? current.ObjType.Code : current.ObjType.Class.Code )+"/";
+#pragma warning restore 612,618
+			query.Obj = new ObjHandler{Native =  obj};
+			return ConsolidateDownRootObj(query, newfilter, nzr);
+
+		}
+
+		private static string ConsolidateDownRootObj(IQuery query, string filter, NativeZetaReader nzr) {
+			int[] ids = null;
+			if (string.IsNullOrWhiteSpace(filter)) {
+				ids = nzr.ReadObjectsWithTypes("o.Path like '%/" + query.Obj.Id + "/%'").Select(_ => _.Id).ToArray();
+			}
+			else {
+				ids =
+					nzr.ReadObjectsWithTypes(
+						string.Format("Path like '%/{0}/%' and ('{1}' like '%/'+t.Code+'/%' or '{1}' like '%/'+c.Code+'/%')",
+						              query.Obj.Id, filter)).Select(_ => _.Id).ToArray();
+			}
+			return string.Join(",", ids);
 		}
 
 		private void MoveContragent(IQuery result) {
@@ -309,8 +339,14 @@ namespace Zeta.Extreme {
 			}
 			
 		}
-
-	
+		/// <summary>
+		/// Режим смены объекта до корневого
+		/// </summary>
+		public const int TO_ROOT_OBJ_MODE = -1;
+		/// <summary>
+		/// Режим смены объекта до родительского
+		/// </summary>
+		public const int TO_PARENT_OBJ_MODE = -2;
 
 		private void MoveObj(IQuery result) {
 			if (HasObjDelta(result)) {
@@ -320,7 +356,7 @@ namespace Zeta.Extreme {
 					}
 				}
 				else if (0 != ObjId) {
-					if (ObjId == -1 ) {
+					if (ObjId == TO_ROOT_OBJ_MODE ||ObjId== TO_PARENT_OBJ_MODE) {
 						var mc = MetaCache.Default;
 						if (null != result.Session) {
 							mc = result.Session.GetMetaCache();
@@ -329,6 +365,7 @@ namespace Zeta.Extreme {
 							var current = (Obj)result.Obj.Native;
 							while (current.ParentId.HasValue) {
 								current = mc.Get<Obj>(current.ParentId.Value);
+								if (ObjId == TO_PARENT_OBJ_MODE) break;
 							}
 							if (current.Id != result.Obj.Id) {
 								result.Obj = new ObjHandler {Native = current};
@@ -337,7 +374,9 @@ namespace Zeta.Extreme {
 						else {
 							throw new Exception("cannot apply root object to null");
 						}
-					}else if (ObjId != result.Obj.Id) {
+					}
+					
+					else if (ObjId != result.Obj.Id) {
 						result.Obj = new ObjHandler { Id =ObjId};
 					}
 				}

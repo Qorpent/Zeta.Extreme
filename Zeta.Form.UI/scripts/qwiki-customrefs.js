@@ -8,7 +8,11 @@
         else if(addr.match(/^img:/)){
             var imgcode = addr.match(/^img:([\s\S]+)$/)[1];
             var imgaddr = "./wiki/getfile.filedesc.qweb?code="+imgcode;
-            return "<img src='"+imgaddr+"' title='"+name+"' "+tail+" />";
+			if(tail.match(/pict/)){
+            return "<div  class='wiki-img'><div class='wiki-img-title'>"+name+"</div><img src='"+imgaddr+"' title='"+name+"' "+tail+" /></div>";
+			}else{
+				return "<img src='"+imgaddr+"' title='"+name+"' "+tail+" />";
+			}
         }
         //reference to wiki-filedesc
         else if (addr.match(/^file:/)){
