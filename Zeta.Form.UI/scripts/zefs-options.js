@@ -131,6 +131,7 @@ $.extend(api,(function(){
                             else if (f == "#,0.0") decimalLength = 1;
                             else if (f == "#,0.00") decimalLength = 2;
                             else if (f == "#,0.000") decimalLength = 3;
+                            else if (f == "#,0.0000") decimalLength = 4;
                             // gs - group seporator
                             // ds - decimal seporator
                             // dl - decimal length
