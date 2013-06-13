@@ -318,5 +318,5 @@ var cloudHandled;
 		);
 	};
 	
-	setInterval(global.watchdog.pulse, 20000);
+	//setInterval(global.watchdog.pulse, 20000);
 })(serversMap);

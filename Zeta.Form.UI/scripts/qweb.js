@@ -44,7 +44,7 @@
         if (typeof(options)=="string"){
             options = {name:options};
         }
-        if (!!options.async) options.async = true;
+		if(options.async===undefined)options.async = true;
         $.extend(this,options);
         if(!this.url){
             var domain = this.domain || "_sys";
@@ -183,9 +183,10 @@
 //                cache: true
             };
             ajaxinfo.async = this.async;
-            //if (this.async) {
-                ajaxinfo.xhrFields = { withCredentials: true };
-            //}
+           if (this.async) {
+                
+				ajaxinfo.xhrFields = { withCredentials: true };
+            }
             if(this.useProgress){
                 $.extend(ajaxinfo,{
                     xhr: function() {
