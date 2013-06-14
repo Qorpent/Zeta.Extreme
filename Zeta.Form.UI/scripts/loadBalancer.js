@@ -3,7 +3,8 @@
 	
 	this.groups = {
 		db : new Object(),
-	
+		totalMigrations : 0,
+		
 		migrateGroup : function(group, newHandler) {
 			if(global.groups.getHotMigrationProperty(group)) {
 				global.groups.setHandler(group, newHandler);
@@ -12,7 +13,8 @@
 		
 		registerGroup : function(group, hotMigration) {
 			global.groups.db[group] = {
-				hotMigration : hotMigration
+				hotMigration : hotMigration,
+				migrationsCount : 0
 			};
 		},
 		
@@ -74,6 +76,20 @@
 			} else {
 				return false;
 			}
+		},
+		
+		getGroupmigrationsCount : function(group) {
+			if(global.groups.checkGroupExists(group)) {
+				return global.groups.db[group].migrationsCount;
+			} else {
+				return -1;
+			}
+		},
+		
+		increaseMigrations : function(group) {
+			if(global.groups.checkGroupExists(group)) {
+				return global.groups.db[group].migrationsCount++;
+			}
 		}
 	},
 	
@@ -95,10 +111,21 @@
 		
 		migrate : function() {
 			var groups = Object.keys(global.groups.db);
+			global.groups.totalMigrations++;
 			
-			for(i = 0; i < groups.length; i++) {
-				global.groups.refreshHandler(groups[i]);
+			for(i = 0; (i < groups.length) && (i < config.watchdog.migrateGroupsPerStep); i++) {
+				var groupMigrations = global.groups.getGroupmigrationsCount(groups[i]);
+				
+				if((groupMigrations != -1) && (groupMigrations < global.groups.totalMigrations)) {
+					global.groups.refreshHandler(groups[i]);
+				} else {
+					global.groups.increaseMigrations(groups[i]);
+				}
 			}
+		},
+		
+		bootstrap : function() {
+			setInterval(global.watchdog.pulse, config.watchdog.pulseTime);
 		}
 	},
 	
@@ -330,7 +357,7 @@
 			);
 		}
 		
-		setInterval(global.watchdog.pulse, config.watchdog.pulseTime);
+		setTimeout(global.watchdog.bootstrap, config.watchdog.pulseTime);
 	};
 	
 	this.bootstrap(config);
@@ -356,7 +383,8 @@
 		},
 		
 		watchdog : {
-			pulseTime : 120000
+			pulseTime : 120000,
+			migrateGroupsPerStep : 5
 		},
 		
 		polling : {
