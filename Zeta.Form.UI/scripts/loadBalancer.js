@@ -1,5 +1,5 @@
 var cloudHandled;
-(function(cloudMap, bootstrapConfig) {    
+(function(config) {    
     var global = window.loadBalancer = window.psychosis = this;
 	
 	this.groups = {
@@ -22,9 +22,13 @@ var cloudHandled;
 			global.groups.setHandler(group, handler);
 		},
 		
-		createGroup : function(group, hotMigration) {
-			global.groups.registerGroup(group, hotMigration);
-			global.groups.refreshHandler(group);
+		createGroup : function(group, config) {			
+			if(config.handler) {
+				global.groups.initGroup(group, config.hotMigration, config.handler);
+			} else {
+				global.groups.registerGroup(group, config.hotMigration);
+				global.groups.refreshHandler(group);
+			}
 		},
 		
 		setHandler : function(group, handler) {
@@ -81,7 +85,7 @@ var cloudHandled;
 		pulse : function() {
 			global.watchdog.free = false;
 			global.poll.cloud(
-				cloudMap,
+				config.cloud.map,
 				function(cloudStat) {
 					global.watchdog.free = true;
 					global.watchdog.cloudMap = cloudMap;
@@ -103,13 +107,13 @@ var cloudHandled;
 		app : function(target, done, error) {
 			$.ajax(
 				{
-					'url' : target.protocol + '://' + target.host + '/' + target.app + '/zefs/' + 'nodeload.json.qweb',
-					'dataType' : 'json',
-					'timeout' : 1200,
-					'xhrFields': {
-						'withCredentials' : true
+					url : target.protocol + '://' + target.host + '/' + target.app + '/zefs/' + config.polling.nodeloadAction,
+					dataType : 'json',
+					timeout : config.polling.timeout,
+					xhrFields: {
+						withCredentials : true
 					},
-                    'crossDomain' : true
+                    crossDomain : true
 				}
 			).done(done).error(error);
 		},
@@ -300,7 +304,7 @@ var cloudHandled;
 	
 	this.handle = function(query, callback) {
 		global.poll.cloud(
-			cloudMap,
+			config.cloud.map,
 			function(cloudStat) {
 				var list = global.pool.select(
 					{
@@ -324,17 +328,16 @@ var cloudHandled;
 			$.each(
 				config.groups,
 				function(groupName, config) {
-					global.groups.createGroup(groupName, config.hotMigration);
+					global.groups.createGroup(groupName, config);
 				}
 			);
 		}
+		
+		setInterval(global.watchdog.pulse, config.watchdog.pulseTime);
 	};
 	
-	this.bootstrap(bootstrapConfig);
-	
-	setInterval(global.watchdog.pulse, 120000);
+	this.bootstrap(config);
 })(
-	serversMap,
 	{
 		groups : {
 			master : {
@@ -343,7 +346,29 @@ var cloudHandled;
 			
 			margarita : {
 				hotMigration : false
+			},
+			
+			voland : {
+				hotMigration : false,
+				handler : {
+					protocol : 'https',
+					host : 'admin-assoi.ugmk.com',
+					app : 'zefs27'
+				}
 			}
+		},
+		
+		watchdog : {
+			pulseTime : 120000
+		},
+		
+		polling : {
+			timeout : 1200,
+			nodeloadAction : 'nodeload.json.qweb'
+		},
+		
+		cloud : {
+			map : serversMap
 		}
 	}
 );
