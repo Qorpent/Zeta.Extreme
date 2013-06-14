@@ -3,9 +3,11 @@
  */
 !function($) {
     var root = window.zeta = window.zeta || {};
-    var information = new root.Widget("information", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 0 });
+    var information = new root.Widget("information", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 0, ready : function() {
+        m.append(qwiki.getMENU('/form/helpmenu'));
+    } });
     var b = $('<button class="btn btn-small dropdown-toggle" data-original-title="Помощь"/>').html('<i class="icon-question-sign"></i><span class="caret"></span>');
-    var m = $('<div class="btn-group pull-left"/>').append(b, qwiki.getMENU('/form/helpmenu'));
+    var m = $('<div class="btn-group pull-left"/>').append(b);
     m.css("margin-left", 3);
     b.tooltip({placement: 'bottom'});
     b.dropdownHover({delay: 100});

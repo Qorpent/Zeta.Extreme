@@ -5,7 +5,7 @@
     var root = window.zeta = window.zeta || {};
     var zefsformsave = new root.Widget("zefsformsave", root.console.layout.position.layoutHeader, "left", { authonly: true, priority: 100 });
     var b = $('<button class="btn btn-small" title="Сохранить форму Ctrl+S" disabled/>').html('<i class="icon-ok"/>');
-    var superb = $('<button class="btn btn-small" title="Принудительное прокачака данных Ctrl+Shift+S" disabled/>').html('<i class="icon-ok"/>');
+    var superb = $('<button class="btn btn-small" title="Принудительная прокачка данных Ctrl+Shift+S" disabled/>').html('<i class="icon-ok"/>');
     var preloader = $('<div/>').css("padding", "1px 7px").append($('<img src="images/300.gif"/>')).hide();
     var backdrop = $('<div class="zefsbackdrop"/>');
     b.click(function(e) {

@@ -2,6 +2,10 @@
     margin-right: 2px;
 }
 
+.divider + .divider {
+    display: none;
+}
+
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;

@@ -15,6 +15,9 @@
         renderMENU : function(items) {
             var result = $('<ul class="dropdown-menu"/>');
             $.each(items, function(i, item) {
+                if (item.raw.search("admin") != -1 && !zeta.user.getIsAdmin()) {
+                    return;
+                }
                 var li = $('<li/>');
                 if (item.raw == "----") {
                     li.addClass("divider");

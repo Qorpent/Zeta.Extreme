@@ -1,4 +1,3 @@
-var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 var root = window.zeta = window.zeta || {};
 root.handlers = $.extend(root.handlers, {
     // Zeta handlers:

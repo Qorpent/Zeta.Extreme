@@ -1,5 +1,4 @@
 (function(){
-var siteroot = document.location.pathname.match("^/([\\w\\d_\-]+)?/")[0];
 window.zefs.handlers = $.extend(window.zefs.handlers, {
     // Zefs handlers:
     on_zefsready : "zefsready", on_zefsstarting : "zefsstarting", on_zefsfailed : "zefsfailed",
