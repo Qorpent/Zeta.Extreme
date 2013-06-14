@@ -5,6 +5,7 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="shortcut icon" href="favicon.png" type="image/png">
     <script type="text/javascript">
+        var siteroot = document.location.pathname.match(/([\\w\\d_\-]+)?/)[0];
         if (location.href.search(/\/(corp\-assoi|assoi|admin\-assoi)\./) != -1 && location.href.search('redirected') == -1 && location.pathname.search("zefst") == -1) {
             var oldurl = location.href;
             var newurl = location.href.replace(/zefs[1|2|3|4]?/, ["zefs", "zefs1", "zefs2", "zefs3", "zefs4"][Math.floor(Math.random()*5)]);

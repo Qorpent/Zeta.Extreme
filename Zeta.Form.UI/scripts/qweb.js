@@ -1,7 +1,6 @@
 (function(){
     var root = window.qweb = window.qweb || {};
     var cache = root.cache= root.cache || {};
-    var siteroot = document.location.pathname.match(/([\\w\\d_\-]+)?/)[0];
 
     var Log = function() {
         this.init();
