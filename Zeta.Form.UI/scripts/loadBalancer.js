@@ -1,4 +1,3 @@
-var cloudHandled;
 (function(config) {    
     var global = window.loadBalancer = window.psychosis = this;
 	
@@ -107,7 +106,7 @@ var cloudHandled;
 		app : function(target, done, error) {
 			$.ajax(
 				{
-					url : target.protocol + '://' + target.host + '/' + target.app + '/zefs/' + config.polling.nodeloadAction,
+					url : target.protocol + '://' + target.host + '/' + target.app + '/' + config.polling.controller + '/' + config.polling.action,
 					dataType : 'json',
 					timeout : config.polling.timeout,
 					xhrFields: {
@@ -275,8 +274,6 @@ var cloudHandled;
 				}
 			}
 			
-			cloudHandled = dirty;
-			
 			return list;
 		},
 		
@@ -364,7 +361,8 @@ var cloudHandled;
 		
 		polling : {
 			timeout : 1200,
-			nodeloadAction : 'nodeload.json.qweb'
+			controller : 'zefs',
+			action : 'nodeload.json.qweb'
 		},
 		
 		cloud : {
