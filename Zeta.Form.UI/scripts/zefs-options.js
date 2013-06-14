@@ -114,7 +114,7 @@ $.extend(api,(function(){
                             if (prevrow.level< o.level) {
                                 prevrow.haschilds = true;
                             }
-                            if (!!o.comment) {
+                            if (!!o.comment || !!o.isformula) {
                                 o.hasHelp = true;
                             }
                             result.rows.push(o);
@@ -128,6 +128,10 @@ $.extend(api,(function(){
                             else if (f == "#.##" || f == "#,#.##") decimalLength = 2;
                             else if (f == "#.###" || f == "#,#.###") decimalLength = 3;
                             else if (f == "#.####" || f == "#,#.####") decimalLength = 4;
+                            else if (f == "#,0.0") decimalLength = 1;
+                            else if (f == "#,0.00") decimalLength = 2;
+                            else if (f == "#,0.000") decimalLength = 3;
+                            else if (f == "#,0.0000") decimalLength = 4;
                             // gs - group seporator
                             // ds - decimal seporator
                             // dl - decimal length
@@ -374,10 +378,28 @@ $.extend(api,(function(){
                     return obj;
                 }
             }),
+            // то же самое что get, только
+            getsync : $.extend(new Command({ domain: "wiki", name: "get", async: false }), {
+                wrap : function(obj) {
+                    if ($.isEmptyObject(obj)) return obj;
+                    $.each(obj, function(i, o) {
+                        o.Code = o.Code || "";
+                        o.Date = eval(o.LastWriteTime? o.LastWriteTime.substring(2):"");
+                        o.Existed = o.Existed || false;
+                        o.Propeties = o.Propeties || {};
+                        o.Text = o.Text || "";
+                        o.Title = o.Title || "";
+                        o.Editor = o.Editor || "";
+                    });
+                    return obj;
+                }
+            }),
+            getmenu : $.extend(new Command({ domain: "wiki", name: "get", async: false }), {}),
             // Сохраняет или добавляет параметры
             save : new Command({ domain: "wiki", name: "save" }),
             // Проверяет наличие статьи с кодом [code]
-            exists : new Command({ domain: "wiki", name: "exists" })
+            exists : new Command({ domain: "wiki", name: "exists" }),
+            savefile : new Command({ domain: "wiki", name: "savefile", useProgress:true })
         },
 
         metadata : {
@@ -451,6 +473,9 @@ $.extend(api,(function(){
             }),
             archivenews : $.extend(new Command({domain: "message", name: "getnews"}), {
                 url : location.protocol + "//" + location.host + api.siterootold() + "message/archive.rails"
+            }),
+            getformuladependency : $.extend(new Command({domain: "zeta", name: "getrowformuladependency"}), {
+
             })
         },
 

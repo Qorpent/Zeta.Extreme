@@ -9,6 +9,9 @@
 	<ItemGroup>	
 		<Config Include="..\deployconfig\work.db-connection"/>
 		<Config Include="..\deployconfig\devel.rolemap.bxl"/>
+		<Script	Include="..\qorpent.sys\commons\qorpent.wiki.js"/>
+		<Image Include="..\Ugmk.Assoi\*.png"/>
+		<Style Include="..\qorpent.sys\commons\qorpent.wiki.css"/>
 		<Config Include="..\deployconfig\temporalrolefix.rolemap.bxl"/>
 	    <Config Include="..\Zeta.Extreme\mongodbattachmentsource.ioc-manifest.bxl"/>
 	</ItemGroup>
