@@ -32,6 +32,8 @@
     <Compile Include="Actions\Info\GetCellHistory.cs" />
     <Compile Include="Actions\Info\GetEvalStack.cs" />
     <Compile Include="Actions\Info\GetResponsibleUsersAction.cs" />
+    <Compile Include="Actions\Info\GetRowExtremeStatusSqlAction.cs" />
+    <Compile Include="Actions\States\GetCurratorLockStateAction.cs" />
     <Compile Include="Actions\States\GetLockStateAction.cs" />
     <Compile Include="Actions\SessionProcessing\DataLoadedAction.cs" />
     <Compile Include="Actions\Attachments\DeleteFileAction.cs" />
@@ -98,6 +100,10 @@
     <ProjectReference Include="..\..\qorpent.sys\Qorpent.Mvc\Qorpent.Mvc.csproj">
       <Project>{96885c8f-ad20-41b4-86ee-bc9b3d47d9f9}</Project>
       <Name>Qorpent.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.Core\Zeta.Extreme.Core.csproj">
+      <Project>{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}</Project>
+      <Name>Zeta.Extreme.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.MongoDB.Integration\Zeta.Extreme.MongoDB.Integration.csproj">
       <Project>{459E4387-484E-42DE-8795-A142E83CFCBB}</Project>

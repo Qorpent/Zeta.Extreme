@@ -42,8 +42,12 @@ namespace Zeta.Extreme {
 using System;
 using Zeta.Extreme;
 namespace Zeta.Extreme.DyncamicFormulas {
-	[Formula(""_KEY_"",""_VERSION_"")]
+	
+	[Formula(""_KEY_"",""_VERSION_"",@""_SRC_"",
+	@""_EXPD_""
+	)]
 	public class Formula__CLASS_ : _BASE_ {
+		 _DELTAS_ 
 		protected override object EvaluateExpression(){
 			return  (
 				_EXP_
@@ -134,20 +138,47 @@ namespace Zeta.Extreme.DyncamicFormulas {
 
 		private  IEnumerable<string> GetCodeFiles(IEnumerable<FormulaRequest> formulaRequests) {
 			foreach (var fr in formulaRequests) {
-				var classname = Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "");
+				var classname = fr.Key.Replace(":", ",").Replace(".", "__").Replace(",","__");
+				if (!(fr.Key.StartsWith("row:")||(fr.Key.StartsWith("col:")))) {
+					classname = Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "");
+				}
 				var basetype = typeof (BackwardCompatibleFormulaBase).FullName;
 				if (null != fr.AssertedBaseType) {
 					basetype = fr.AssertedBaseType.FullName;
 				}
 				var key = fr.Key.Replace("\\", "\\\\").Replace("\"", "\\\"");
 				var expression = fr.PreprocessedFormula;
+
+				IList<string> deltalist = new List<string>();
+				expression = Regex.Replace(expression, @"Eval\(( new QueryDelta[\s\S]+?)\)", m =>
+					{
+
+						var delta = m.Groups[1].Value;
+						if (delta.Contains("gets(") || delta.Contains("getn(")) {
+							return m.Value;
+						}
+						if (!deltalist.Contains(delta)) {
+							deltalist.Add(delta);
+						}
+						var idx = deltalist.IndexOf(delta);
+						return "Eval(Delta_"+idx+")";
+					});
+
+				string deltas = "";
+				for (var i = 0; i < deltalist.Count; i++) {
+					deltas += "public static QueryDelta Delta_" + i + " = " + deltalist[i] + ";\r\n";
+				}
+	
 				yield return
 					MainTemplate
 						.Replace("_KEY_", key)
 						.Replace("_CLASS_", classname)
 						.Replace("_BASE_", basetype)
 						.Replace("_EXP_", expression)
-						.Replace("_VERSION_", fr.Version);
+						.Replace("_EXPD_", expression.Replace("\"","\"\""))
+						.Replace("_VERSION_", fr.Version)
+						.Replace("_SRC_",fr.Formula.Replace("\"","\"\""))
+						.Replace("_DELTAS_",deltas);
 			}
 		}
 	}
