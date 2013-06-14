@@ -1,5 +1,5 @@
 var cloudHandled;
-(function(cloudMap) {    
+(function(cloudMap, bootstrapConfig) {    
     var global = window.loadBalancer = window.psychosis = this;
 	
 	this.groups = {
@@ -17,7 +17,7 @@ var cloudHandled;
 			};
 		},
 		
-		setGroupHandler : function(group, handler) {
+		setHandler : function(group, handler) {
 			if(global.groups.checkGroupExists(group)) {
 				global.groups.db[group].handler = handler;
 			}
@@ -46,30 +46,35 @@ var cloudHandled;
 		
 		getCurrentGroupHandler : function(group) {
 			if(global.groups.checkGroupExists(group)) {
-				return global.groups.db[group].handler;
+				if(!global.groups.db[group].handler) {
+					return undefined;
+				} else {
+					return global.groups.db[group].handler;
+				}
 			} else {
 				return undefined;
 			}
 		},
 		
-		refreshHandler : function(group) {
-			if(global.groups.getCurrentGroupHandler(group) === undefined) {
-				global.pool.getHandler(
-					function(handler) {
+		refreshHandler : function(group) {	
+			global.pool.getHandler(
+				function(handler) {
+					if(global.groups.getCurrentGroupHandler(group) === undefined) {
+						global.groups.setHandler(group, handler);
+					} else {
 						global.groups.migrateGroup(group, handler);
 					}
-				);
-			} else {
-				if(global.groups.getNoMigrationProperty(group)) {
-					return global.groups.getCurrentGroupHandler(group);
-				} else {
-					global.pool.getHandler(
-						function(handler) {
-							global.groups.migrateGroup(group, handler);
-						}
-					);
 				}
-			}
+			);
+		},
+		
+		getHandler : function(group) {
+			return getCurrentGroupHandler(group);
+		},
+		
+		createGroup : function(group, noMigration) {
+			global.groups.registerGroup(group, noMigration);
+			global.groups.refreshHandler(group);
 		}
 	},
 	
@@ -316,7 +321,33 @@ var cloudHandled;
 				callback(list);
 			}
 		);
+	},
+	
+	this.bootstrap = function(config) {
+		if(config.groups) {
+			$.each(
+				config.groups,
+				function(groupName, config) {
+					global.groups.createGroup(groupName, config.noMigration);
+				}
+			);
+		}
 	};
 	
+	this.bootstrap(bootstrapConfig);
+	
 	//setInterval(global.watchdog.pulse, 20000);
-})(serversMap);
+})(
+	serversMap,
+	{
+		groups : {
+			master : {
+				noMigration : true
+			},
+			
+			margarita : {
+				noMigration : false
+			}
+		}
+	}
+);
