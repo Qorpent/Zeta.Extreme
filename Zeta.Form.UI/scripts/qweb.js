@@ -1,6 +1,7 @@
 (function(){
     var root = window.qweb = window.qweb || {};
     var cache = root.cache= root.cache || {};
+    var siteroot = document.location.pathname.match(/([\\w\\d_\-]+)?/)[0];
 
     var Log = function() {
         this.init();
@@ -44,7 +45,7 @@
         if (typeof(options)=="string"){
             options = {name:options};
         }
-		if(options.async===undefined)options.async = true;
+        if (!!options.async) options.async = true;
         $.extend(this,options);
         if(!this.url){
             var domain = this.domain || "_sys";
@@ -79,7 +80,6 @@
             return "";
         },
         getUrl:function(datatype, group) {
-			
             datatype = datatype || this.datatype;
             return siteroot + this.url.replace('{DATATYPE}',datatype);
         },
@@ -183,9 +183,8 @@
 //                cache: true
             };
             ajaxinfo.async = this.async;
-           if (this.async) {
-                
-				ajaxinfo.xhrFields = { withCredentials: true };
+            if (this.async) {
+                ajaxinfo.xhrFields = { withCredentials: true };
             }
             if(this.useProgress){
                 $.extend(ajaxinfo,{
