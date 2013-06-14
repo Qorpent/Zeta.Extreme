@@ -64,13 +64,13 @@
     <link rel="stylesheet" type="text/css" href="styles/jsformatter.css">
 	
 	<script>
-		/*if(isStatic() == true) {
+	if(isStatic() == true) {
 			$.extend(
 				window.qweb.Command.prototype,
 				{
 					getUrl:function(datatype, group) {
 						datatype = datatype || this.datatype;
-						var handler = window.psychosis.groups.getHandler(group);
+						var handler = window.psychosis.groups.getCurrentGroupHandler(group);
 						var newSiteroot = siteroot;
 						
 						if(handler !== undefined) {
@@ -81,7 +81,7 @@
 					}
 				}
 			);
-		}*/
+		}
 	</script>
 </head>
 <body>

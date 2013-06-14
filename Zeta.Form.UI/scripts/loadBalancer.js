@@ -6,41 +6,30 @@ var cloudHandled;
 		db : new Object(),
 	
 		migrateGroup : function(group, newHandler) {
-			if(!global.groups.getNoMigrationProperty(group)) {
+			if(global.groups.getHotMigrationProperty(group)) {
 				global.groups.setHandler(group, newHandler);
 			}
 		},
 		
-		registerGroup : function(group, noMigration) {
+		registerGroup : function(group, hotMigration) {
 			global.groups.db[group] = {
-				noMigration : noMigration
+				hotMigration : hotMigration
 			};
+		},
+		
+		initGroup : function(group, hotMigration, handler) {
+			global.groups.registerGroup(group, hotMigration);
+			global.groups.setHandler(group, handler);
+		},
+		
+		createGroup : function(group, hotMigration) {
+			global.groups.registerGroup(group, hotMigration);
+			global.groups.refreshHandler(group);
 		},
 		
 		setHandler : function(group, handler) {
 			if(global.groups.checkGroupExists(group)) {
 				global.groups.db[group].handler = handler;
-			}
-		},
-		
-		initGroup : function(group, noMigration, handler) {
-			global.groups.registerGroup(group, noMigration);
-			global.groups.setHandler(group, handler);
-		},
-		
-		getNoMigrationProperty : function(group) {
-			if(global.groups.checkGroupExists(group)) {
-				return global.groups.db[group].noMigration;
-			} else {
-				return undefined;
-			}
-		},
-		
-		checkGroupExists : function(group) {
-			if(global.groups.db[group]) {
-				return true;
-			} else {
-				return false;
 			}
 		},
 		
@@ -68,13 +57,20 @@ var cloudHandled;
 			);
 		},
 		
-		getHandler : function(group) {
-			return getCurrentGroupHandler(group);
+		getHotMigrationProperty : function(group) {
+			if(global.groups.checkGroupExists(group)) {
+				return global.groups.db[group].hotMigration;
+			} else {
+				return undefined;
+			}
 		},
 		
-		createGroup : function(group, noMigration) {
-			global.groups.registerGroup(group, noMigration);
-			global.groups.refreshHandler(group);
+		checkGroupExists : function(group) {
+			if(global.groups.db[group]) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	},
 	
@@ -328,7 +324,7 @@ var cloudHandled;
 			$.each(
 				config.groups,
 				function(groupName, config) {
-					global.groups.createGroup(groupName, config.noMigration);
+					global.groups.createGroup(groupName, config.hotMigration);
 				}
 			);
 		}
@@ -336,17 +332,17 @@ var cloudHandled;
 	
 	this.bootstrap(bootstrapConfig);
 	
-	//setInterval(global.watchdog.pulse, 20000);
+	setInterval(global.watchdog.pulse, 120000);
 })(
 	serversMap,
 	{
 		groups : {
 			master : {
-				noMigration : true
+				hotMigration : true
 			},
 			
 			margarita : {
-				noMigration : false
+				hotMigration : false
 			}
 		}
 	}
