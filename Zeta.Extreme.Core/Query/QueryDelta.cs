@@ -22,10 +22,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model;
-using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
+using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -48,14 +48,76 @@ namespace Zeta.Extreme {
 			MoveObj(result);
 			MoveTime(result);
 			MoveContragent(result);
+			MoveAccounts(result);
+			MoveConsobj(result);
 			result.InvalidateCacheKey();
 			return result;
+		}
+
+		private void MoveConsobj(IQuery query) {
+			if (UseConsolidateObject) {
+
+				var nzr = new NativeZetaReader();
+				var filter = string.IsNullOrWhiteSpace(ConsolidateObjectFilter)
+					             ? ""
+					             : ("/" + ConsolidateObjectFilter.Replace(",", "/") + "/");
+				var formula = "";
+				if (filter.StartsWith("/_")) {
+					formula = ConsolidateUpFromTerminalObj(query, filter.Substring(2,filter.Length-3), nzr);
+				}
+				else {
+
+					formula = ConsolidateDownRootObj(query, filter, nzr);
+				}
+				query.Obj = new ObjHandler { Native = new Obj { IsFormula = true, Formula = formula } };
+			}
+		}
+
+		private string ConsolidateUpFromTerminalObj(IQuery query,string filter, NativeZetaReader nzr) {
+			var root = filter.Split('.')[0] == "_ROOT";
+			var type = filter.Split('.')[1] == "TYPE";
+			var current = query.Obj.Native as IZetaMainObject;
+			if (null == current) return "-1";
+			var obj = current;
+			while (null!=obj.ParentId) {
+				obj = MetaCache.Default.Get<IZetaMainObject>( obj.ParentId);
+				if (!root) break;
+			}
+#pragma warning disable 612,618
+			var newfilter = "/"+( type ? current.ObjType.Code : current.ObjType.Class.Code )+"/";
+#pragma warning restore 612,618
+			query.Obj = new ObjHandler{Native =  obj};
+			return ConsolidateDownRootObj(query, newfilter, nzr);
+
+		}
+
+		private static string ConsolidateDownRootObj(IQuery query, string filter, NativeZetaReader nzr) {
+			int[] ids = null;
+			if (string.IsNullOrWhiteSpace(filter)) {
+				ids = nzr.ReadObjectsWithTypes("o.Path like '%/" + query.Obj.Id + "/%'").Select(_ => _.Id).ToArray();
+			}
+			else {
+				ids =
+					nzr.ReadObjectsWithTypes(
+						string.Format("Path like '%/{0}/%' and ('{1}' like '%/'+t.Code+'/%' or '{1}' like '%/'+c.Code+'/%')",
+						              query.Obj.Id, filter)).Select(_ => _.Id).ToArray();
+			}
+			return string.Join(",", ids);
 		}
 
 		private void MoveContragent(IQuery result) {
 			if (!string.IsNullOrWhiteSpace(Contragents)) {
 				result.Reference = result.Reference.Copy();
 				result.Reference.Contragents = Contragents;
+			}
+		}
+
+		private void MoveAccounts(IQuery result)
+		{
+			if (!string.IsNullOrWhiteSpace(Types))
+			{
+				result.Reference = result.Reference.Copy();
+				result.Reference.Types = Types;
 			}
 		}
 
@@ -71,6 +133,9 @@ namespace Zeta.Extreme {
 			var c = match.Groups["c"].Value;
 			var o = match.Groups["o"].Value.ToInt();
 			var y = match.Groups["y"].Value.ToInt();
+			var t = match.Groups["t"].Value;
+			var co = !string.IsNullOrWhiteSpace(match.Groups["co"].Value);
+			var cov = match.Groups["cov"].Value;
 			var aof = match.Groups["aof"].Value.ToStr(); //ZC-248 AltObjFilter
 			var ys = match.Groups["ys"].Value != "-";
 			if (!ys) {
@@ -115,8 +180,26 @@ namespace Zeta.Extreme {
 			if (!string.IsNullOrWhiteSpace(aof)) {
 				delta.Contragents = aof;
 			}
+
+			if (!string.IsNullOrWhiteSpace(t)) {
+				delta.Types = t;
+			}
+
+			if (co) {
+				delta.UseConsolidateObject = true;
+				delta.ConsolidateObjectFilter = cov;
+			}
 			return delta;
 		}
+		/// <summary>
+		/// Фильтр типов для консолидации объекта
+		/// </summary>
+		public string ConsolidateObjectFilter { get; set; }
+
+		/// <summary>
+		/// Признак использования консолидации
+		/// </summary>
+		public bool UseConsolidateObject { get; set; }
 
 		/// <summary>
 		/// Фильтр по контрагенту
@@ -167,6 +250,18 @@ namespace Zeta.Extreme {
 			}
 			if (!string.IsNullOrWhiteSpace(Contragents)) {
 				s.Append("Contragents = \"" + Contragents + "\", ");
+			}
+			if (!string.IsNullOrWhiteSpace(Types))
+			{
+				s.Append("Types = \"" + Types + "\", ");
+			}
+			if (UseConsolidateObject)
+			{
+				s.Append("UseConsolidateObject = true, ");
+			}
+			if (!string.IsNullOrWhiteSpace(ConsolidateObjectFilter))
+			{
+				s.Append("ConsolidateObjectFilter = \"" + ConsolidateObjectFilter + "\", ");
 			}
 			s.Append("}");
 			if (!string.IsNullOrWhiteSpace(infunctionName)) {
@@ -244,8 +339,14 @@ namespace Zeta.Extreme {
 			}
 			
 		}
-
-	
+		/// <summary>
+		/// Режим смены объекта до корневого
+		/// </summary>
+		public const int TO_ROOT_OBJ_MODE = -1;
+		/// <summary>
+		/// Режим смены объекта до родительского
+		/// </summary>
+		public const int TO_PARENT_OBJ_MODE = -2;
 
 		private void MoveObj(IQuery result) {
 			if (HasObjDelta(result)) {
@@ -255,7 +356,7 @@ namespace Zeta.Extreme {
 					}
 				}
 				else if (0 != ObjId) {
-					if (ObjId == -1 ) {
+					if (ObjId == TO_ROOT_OBJ_MODE ||ObjId== TO_PARENT_OBJ_MODE) {
 						var mc = MetaCache.Default;
 						if (null != result.Session) {
 							mc = result.Session.GetMetaCache();
@@ -264,6 +365,7 @@ namespace Zeta.Extreme {
 							var current = (Obj)result.Obj.Native;
 							while (current.ParentId.HasValue) {
 								current = mc.Get<Obj>(current.ParentId.Value);
+								if (ObjId == TO_PARENT_OBJ_MODE) break;
 							}
 							if (current.Id != result.Obj.Id) {
 								result.Obj = new ObjHandler {Native = current};
@@ -272,7 +374,9 @@ namespace Zeta.Extreme {
 						else {
 							throw new Exception("cannot apply root object to null");
 						}
-					}else if (ObjId != result.Obj.Id) {
+					}
+					
+					else if (ObjId != result.Obj.Id) {
 						result.Obj = new ObjHandler { Id =ObjId};
 					}
 				}
@@ -324,6 +428,13 @@ namespace Zeta.Extreme {
 			if (0 != Year && Year != target.Time.Year) {
 				return false;
 			}
+
+			if (!string.IsNullOrWhiteSpace(Types) && target.Reference.Types != Types) {
+				return false;
+			}
+			if (UseConsolidateObject) {
+				return false;
+			}
 			return true;
 		}
 
@@ -371,5 +482,10 @@ namespace Zeta.Extreme {
 		/// 	Прямое или дельтированое указание года
 		/// </summary>
 		public int Year;
+
+		/// <summary>
+		///  Поддержка счетов
+		/// </summary>
+		public string Types;
 	}
 }
