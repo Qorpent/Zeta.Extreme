@@ -94,17 +94,20 @@
 	},
 	
 	this.watchdog = {
-		free : true,
-		cloudMap : new Object(),
+		cloudStat : new Object(),
 		
-		pulse : function() {
+		heartbeat : function(callback) {
 			global.poll.cloud(
 				config.cloud.map,
 				function(cloudStat) {
-					global.watchdog.cloudMap = cloudMap;
-					global.watchdog.migrate();
+					global.watchdog.cloudStat = cloudStat;
+					callback();
 				}
 			);
+		},
+		
+		pulse : function() {
+			global.watchdog.heartbeat(global.watchdog.migrate);
 		},
 		
 		migrate : function() {
@@ -120,10 +123,6 @@
 					global.groups.increaseMigrations(groups[i]);
 				}
 			}
-		},
-		
-		bootstrap : function() {
-			setInterval(global.watchdog.pulse, config.watchdog.pulseTime);
 		}
 	},
 	
@@ -303,7 +302,7 @@
 		},
 		
 		getHandler : function(callback) {
-			global.handle(
+			var list = global.pool.select(
 				{
 					count : {
 						servers : 1,
@@ -311,14 +310,14 @@
 					}
 				},
 				
-				function(list) {
-					callback(
-						{
-							protocol : 'https',
-							host : list[0].server,
-							app : list[0].apps[0]
-						}
-					);
+				global.watchdog.cloudStat
+			);
+			
+			callback(
+				{
+					protocol : 'https',
+					host : list[0].server,
+					app : list[0].apps[0]
 				}
 			);
 		}
@@ -346,16 +345,20 @@
 	},
 	
 	this.bootstrap = function(config) {
-		if(config.groups) {
-			$.each(
-				config.groups,
-				function(groupName, config) {
-					global.groups.createGroup(groupName, config);
+		global.watchdog.heartbeat(
+			function() {
+				if(config.groups) {
+					$.each(
+						config.groups,
+						function(groupName, config) {
+							global.groups.createGroup(groupName, config);
+						}
+					);
 				}
-			);
-		}
-		
-		setTimeout(global.watchdog.bootstrap, config.watchdog.pulseTime);
+			
+				setTimeout(global.watchdog.pulse, config.watchdog.pulseTime);
+			}
+		);
 	};
 	
 	this.bootstrap(config);
