@@ -44,7 +44,7 @@
         if (typeof(options)=="string"){
             options = {name:options};
         }
-        	if(options.async===undefined)options.async = true;
+        if(options.async===undefined)options.async = true;
         $.extend(this,options);
         if(!this.url){
             var domain = this.domain || "_sys";
