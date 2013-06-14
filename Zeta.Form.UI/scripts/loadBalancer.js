@@ -98,11 +98,9 @@
 		cloudMap : new Object(),
 		
 		pulse : function() {
-			global.watchdog.free = false;
 			global.poll.cloud(
 				config.cloud.map,
 				function(cloudStat) {
-					global.watchdog.free = true;
 					global.watchdog.cloudMap = cloudMap;
 					global.watchdog.migrate();
 				}
