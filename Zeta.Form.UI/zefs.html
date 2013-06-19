@@ -15,22 +15,10 @@
 	
 	<script type="text/javascript">
 		if(window.useStatic == true) {			
-			window.psychosis.handle(
-				{
-				/*	servers : {
-						'admin-assoi.ugmk.com' : ['zefs2', 'zefs3'],
-						'assoi.ugmk.com' : ['zefs2', 'zefs3'],
-						'corp-assoi.ugmk.com' : ['zefs2', 'zefs3']
-					},*/
-					
-					count : {
-						servers : 1,
-						apps : 1
-					}
-				},
-				
-				function(list) {
-					siteroot = 'https://' + list[0].server + '/' + list[0].apps[0] + '/';
+			window.psychosis.groups.handle(
+				'margarita',
+				function(handler) {
+					siteroot = handler.protocol + '://' + handler.host + '/' + handler.app + '/';
 					
 					$(window).load(
 						function() {

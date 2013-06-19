@@ -1,8 +1,13 @@
 (function(config) {    
     var global = window.loadBalancer = window.psychosis = this;
 	
+	this.sysState = {
+		bootstrapDone : false
+	},
+	
 	this.groups = {
 		db : new Object(),
+		flow : new Array(),
 		totalMigrations : 0,
 		
 		migrateGroup : function(group, newHandler) {
@@ -89,6 +94,75 @@
 		increaseMigrations : function(group) {
 			if(global.groups.checkGroupExists(group)) {
 				return global.groups.db[group].migrationsCount++;
+			}
+		},
+		
+		migrationControl : {
+		
+		},
+
+		flowControl : {
+			push : function(group, callback) {
+				if(!global.groups.flow[group]) {
+					global.groups.flow[group] = new Array();
+				}
+					
+				global.groups.flow[group].push(callback);
+			},
+			
+			shift : function(group) {
+				if(!global.groups.flow[group]) {
+					return undefined;
+				}
+				
+				var callback = global.groups.flow[group].shift();
+				
+				if(global.groups.flow[group].length) {
+					delete global.groups.flow[group];
+				}
+				
+				return callback;
+			},		
+		
+			handleGroup : function(group) {
+				if(!global.groups.flow[group]) return;
+			
+				var groupHandler = global.groups.getCurrentGroupHandler(group);
+			
+				for(i = 0; i < global.groups.flow[group].length; i++) {
+					global.groups.flow[group][i](groupHandler);
+					delete global.groups.flow[group][i];
+				}
+				
+				delete global.groups.flow[group];
+			},
+			
+			removeGroup : function(group) {
+				delete global.groups.flow[group];
+			},
+			
+			checkGroupExists : function(group) {
+				if(global.groups.flow[group]) {
+					return true;
+				} else {
+					return false;
+				}
+			},
+			
+			handle : function() {
+				var groups = Object.keys(global.groups.flow);
+				
+				for(i = 0; i < groups.length; i++) {
+					global.groups.flowControl.handleGroup(groups[i]);
+				}
+			}
+		},
+		
+		handle : function(group, callback) {
+			global.groups.flowControl.push(group, callback);
+		
+			if(global.sysState.bootstrapDone) {
+				global.groups.flowControl.handleGroup(group);
 			}
 		}
 	},
@@ -200,22 +274,6 @@
 		}
 	},
 	
-	this.ping = {
-		app : function(target, callback) {
-			global.poll.app(
-				target,
-				
-				function(json) {
-					callback(true);
-				},
-				
-				function() {
-					callback(false);
-				}
-			);
-		}
-	},
-	
 	this.pool = {
 		select : function(query, source) {
 			this.makeSources = function(targets, sources) {
@@ -323,27 +381,6 @@
 		}
 	},
 	
-	this.handle = function(query, callback) {
-		global.poll.cloud(
-			config.cloud.map,
-			function(cloudStat) {
-				var list = global.pool.select(
-					{
-						servers : query.servers,
-						count : {
-							servers : query.count.servers,
-							apps : query.count.apps
-						}
-					},
-					
-					cloudStat
-				);
-				
-				callback(list);
-			}
-		);
-	},
-	
 	this.bootstrap = function(config) {
 		global.watchdog.heartbeat(
 			function() {
@@ -356,6 +393,9 @@
 					);
 				}
 			
+				global.sysState.bootstrapDone = true;
+				global.groups.flowControl.handle();
+				
 				setTimeout(global.watchdog.pulse, config.watchdog.pulseTime);
 			}
 		);
