@@ -17,6 +17,7 @@
 // PROJECT ORIGIN: Zeta.Extreme.FrontEnd/UserInfoHelper.cs
 #endregion
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model;
@@ -51,16 +52,18 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public SimpleUserInfo GetUserInfoByName(string name) {
+        public IList<SimpleUserInfo> GetUsersInfoByName(string name) {
             if (name.Contains("'")) {
                 throw new Exception("sql injection with usrinfo " + name);
             }
+            
+            var users = new NativeZetaReader().ReadUsers("Name like '%" + name + "%'");
+            var result = new List<SimpleUserInfo>();
 
-            var usr = new NativeZetaReader().ReadUsers("Name like '%" + name + "%'").FirstOrDefault();
-            if (null == usr) {
-                return new SimpleUserInfo {Name = name };
+            foreach (var usr in users) {
+                result.Add(GetUserInfo(usr));
             }
-            var result = GetUserInfo(usr);
+
             return result;
         }
 

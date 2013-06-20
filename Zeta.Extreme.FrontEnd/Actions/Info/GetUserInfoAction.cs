@@ -36,7 +36,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
             if (login != null) {
                 return new UserInfoHelper().GetUserInfo(login);
             } else {
-                return new UserInfoHelper().GetUserInfoByName(name);
+                return new UserInfoHelper().GetUsersInfoByName(name);
             }
 		}
 
