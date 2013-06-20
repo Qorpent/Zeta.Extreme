@@ -32,12 +32,22 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		/// <returns> </returns>
 		protected override object MainProcess() {
 			MyFormServer.MetaCacheLoad.Wait();
-			return new UserInfoHelper().GetUserInfo(login);
+
+            if (login != null) {
+                return new UserInfoHelper().GetUserInfo(login);
+            } else {
+                return new UserInfoHelper().GetUserInfoByName(name);
+            }
 		}
 
 		/// <summary>
 		/// 	Логин, по которому запрашиваются данные пользователя
 		/// </summary>
-		[Bind(Required = true, ValidatePattern = @"^([\w\d_\.]+\\)?[\w\d_\.]+$")] protected string login;
+		[Bind(ValidatePattern = @"^([\w\d_\.]+\\)?[\w\d_\.]+$")] protected string login;
+
+        /// <summary>
+        /// имя
+        /// </summary>
+        [Bind]protected string name;
 	}
 }

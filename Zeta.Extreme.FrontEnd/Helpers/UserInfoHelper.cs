@@ -46,6 +46,24 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 			return result;
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public SimpleUserInfo GetUserInfoByName(string name) {
+            if (name.Contains("'")) {
+                throw new Exception("sql injection with usrinfo " + name);
+            }
+
+            var usr = new NativeZetaReader().ReadUsers("Name like '%" + name + "%'").FirstOrDefault();
+            if (null == usr) {
+                return new SimpleUserInfo {Name = name };
+            }
+            var result = GetUserInfo(usr);
+            return result;
+        }
+
 		/// <summary>
 		/// Конвертирует существующий логин в запись
 		/// </summary>
