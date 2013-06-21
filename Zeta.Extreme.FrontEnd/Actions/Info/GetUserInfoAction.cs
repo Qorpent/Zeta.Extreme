@@ -16,6 +16,8 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.FrontEnd/GetUserInfoAction.cs
 #endregion
+
+using System.Collections.Generic;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 using Zeta.Extreme.FrontEnd.Helpers;
@@ -26,6 +28,12 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 	/// </summary>
 	[Action("zeta.getuserinfo")]
 	public class GetUserInfoAction : FormServerActionBase {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Bind]
+        protected bool WithRoles;
+
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
@@ -34,9 +42,17 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			MyFormServer.MetaCacheLoad.Wait();
 
             if (login != null) {
-                return new UserInfoHelper().GetUserInfo(login);
+                if(WithRoles) {
+                    return new UserInfoHelper().GetUserInfoWithRoles(login);
+                } else {
+                    return new UserInfoHelper().GetUserInfo(login); 
+                }
             } else {
-                return new UserInfoHelper().GetUsersInfoByName(name);
+                if(WithRoles) {
+                    return new UserInfoHelper().GetUsersInfoByNameWithRoles(name);
+                } else {
+                    return new UserInfoHelper().GetUsersInfoByName(name); 
+                }
             }
 		}
 

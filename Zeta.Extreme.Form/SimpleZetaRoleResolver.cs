@@ -26,7 +26,8 @@ namespace Zeta.Extreme.Form {
 	/// <summary>
 	/// 	Простое расширение, запрашивающее роли посредством хранимой процедуры
 	/// </summary>
-	public class SimpleZetaRoleResolver : ServiceBase, IRoleResolverExtension {
+	public class SimpleZetaRoleResolver : ServiceBase, IRoleResolverExtension
+	{
 		/// <summary>
 		/// 	An index of object
 		/// </summary>
@@ -66,6 +67,26 @@ namespace Zeta.Extreme.Form {
 				}
 			}
 		}
+
+        /// <summary>
+        /// Возвращает массив ролей пользователя
+        /// </summary>
+        /// <param name="login">логин пользователя</param>
+        /// <returns></returns>
+        public string[] GetUserRoles(string login) {
+            using (var c = Application.DatabaseConnections.GetConnection("Default")) {
+                c.Open();
+                var cmd = c.CreateCommand();
+                cmd.CommandText = string.Format("select rolename from zeta.usrrolemap where login = '{0}'", login);
+                var result = new List<string>();
+                using (var r = cmd.ExecuteReader()) {
+                    while (r.Read()) {
+                        result.Add(r.GetString(0));
+                    }
+                }
+                return result.ToArray();
+            }
+        }
 
 		/// <summary>
 		/// 	Возвращает признак обслуживания учетных записей суперпользователя

@@ -29,22 +29,26 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 	/// 	¬спомогательный класс дл€ доступа к данным пользовател€
 	/// </summary>
 	public class UserInfoHelper {
-		/// <summary>
-		/// 	¬озвращает упрощенную запись о пользователе
-		/// </summary>
-		/// <param name="login"> </param>
-		/// <returns> </returns>
-		/// <exception cref="Exception"></exception>
-		public SimpleUserInfo GetUserInfo(string login) {
+        /// <summary>
+        ///     ¬озвращает упрощенную запись о пользователе
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="withRoles"></param>
+        /// <returns></returns>
+		public SimpleUserInfo GetUserInfo(string login, bool withRoles = false) {
 			if (login.Contains(" ") || login.Contains("'")) {
 				throw new Exception("sql injection with usrinfo " + login);
 			}
+
 			var usr = new NativeZetaReader().ReadUsers("Login = '" + login + "'").FirstOrDefault();
 			if (null == usr) {
-				return new SimpleUserInfo {Login = login, Name = "NOT REGISTERED IN DB"};
+                return new SimpleUserInfo {
+                    Login = login,
+                    Name = "NOT REGISTERED IN DB"
+                };
 			}
-			var result = GetUserInfo(usr);
-			return result;
+
+            return GetUserInfo(usr, withRoles);
 		}
 
         /// <summary>
@@ -63,7 +67,27 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
             foreach (var usr in users) {
                 result.Add(GetUserInfo(usr));
             }
+            
+            return result;
+        }
 
+                /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public IList<SimpleUserInfo> GetUsersInfoByNameWithRoles(string name) {
+            if (name.Contains("'")) {
+                throw new Exception("sql injection with usrinfo " + name);
+            }
+            
+            var users = new NativeZetaReader().ReadUsers("Name like '%" + name + "%'");
+            var result = new List<SimpleUserInfo>();
+
+            foreach (var usr in users) {
+                result.Add(GetUserInfoWithRoles(usr));
+            }
+            
             return result;
         }
 
@@ -105,5 +129,51 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 			}
 			return result;
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="fullData"></param>
+        /// <returns></returns>
+        public SimpleUserInfoWithRoles GetUserInfoWithRoles(string login, bool fullData = false) {
+            if (login.Contains(" ") || login.Contains("'")) {
+                throw new Exception("sql injection with usrinfo " + login);
+            }
+
+            var usr = new NativeZetaReader().ReadUsers("Login = '" + login + "'").FirstOrDefault();
+            if (null == usr) {
+                return new SimpleUserInfoWithRoles {
+                    Login = login,
+                    Name = "NOT REGISTERED IN DB"
+                };
+            }
+
+            return GetUserInfoWithRoles(usr, fullData);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="usr"></param>
+        /// <param name="fullData"></param>
+        /// <returns></returns>
+        public SimpleUserInfoWithRoles GetUserInfoWithRoles(IZetaUser usr, bool fullData = false) {
+            var userInfo = GetUserInfo(usr, true);
+            return new SimpleUserInfoWithRoles {
+                Login = userInfo.Login,
+                Name = userInfo.Name,
+                Dolzh = userInfo.Dolzh,
+                Email = userInfo.Email,
+                ObjId = userInfo.ObjId,
+                ObjName = userInfo.ObjName,
+                IsObjAdmin = userInfo.IsObjAdmin,
+                Active = userInfo.Active,
+                Slots = (fullData) ? userInfo.Slots : null,
+                ObjRoles = (fullData) ? userInfo.ObjRoles : null,
+                SysRoles = (fullData) ? userInfo.SysRoles : null,
+                Roles = string.Join(",", userInfo.SysRoles)
+            };
+        }
 	}
 }
