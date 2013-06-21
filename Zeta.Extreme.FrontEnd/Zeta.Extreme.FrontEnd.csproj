@@ -58,6 +58,7 @@
     <Compile Include="Actions\Abstracts\SessionStartBase.cs" />
     <Compile Include="Actions\ZefsServer\GetClusterNodeLoad.cs" />
     <Compile Include="Actions\ZefsServer\RegisterClientStatAction.cs" />
+    <Compile Include="Actions\ZefsServer\SaveClientStatAction.cs" />
     <Compile Include="DataStructures\AccessibleObjects.cs" />
     <Compile Include="DataStructures\DivisionRecord.cs" />
     <Compile Include="DataStructures\ObjectRecord.cs" />

@@ -7,11 +7,13 @@ using Zeta.Extreme.BizProcess.Forms
 using Zeta.Extreme.MongoDB.Integration 
 using Zeta.Extreme.MongoDB.Integration.MongoDbLogs
 using Zeta.Extreme.MongoDB.Integration.WikiStorage
+using Zeta.Extreme.MongoDB.Integration.FrontEndStat
 
 define MONGO_CONNECTION : "mongodb://ugmk-as2:28017,ugmk-econ:28017,ugmk-as5:28017/?connect=replicaset"
 define MONGO_FORMDATA_DB : formdata
 define MONGO_LOGS_DB : logs
 define MONGO_WIKI_DB : wiki
+defien MONGO_STAT_DB : stat
 
 
 transient "attachment.source"  MongoDbAttachmentSource : IAttachmentStorage
@@ -38,3 +40,8 @@ transient "wiki.mongo.persister"  MongoWikiPersister : IWikiPersister
 	ConnectionString = @MONGO_CONNECTION
 	DatabaseName = @MONGO_WIKI_DB
 	CollectionName = "main"
+
+transient "frontendstat.mongodb"  FrontEndStatStorage : IFrontEndStatStorage
+	ConnectionString = @MONGO_CONNECTION
+	DatabaseName = "stat"
+	CollectionName = "FrontEnd"

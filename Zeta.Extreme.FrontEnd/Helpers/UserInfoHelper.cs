@@ -162,6 +162,7 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
             var userInfo = GetUserInfo(usr, true);
             return new SimpleUserInfoWithRoles {
                 Login = userInfo.Login,
+                Contact = userInfo.Contact,
                 Name = userInfo.Name,
                 Dolzh = userInfo.Dolzh,
                 Email = userInfo.Email,

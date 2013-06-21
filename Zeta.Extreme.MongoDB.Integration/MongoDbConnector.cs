@@ -24,7 +24,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
     /// <summary>
     ///     MongoDB connector
     /// </summary>
-    public class MongoDbConnector {
+    public class MongoDbConnector : IMongoDbConnector {
         private MongoClient _client;
         private MongoServer _server;
         private MongoDatabase _database;

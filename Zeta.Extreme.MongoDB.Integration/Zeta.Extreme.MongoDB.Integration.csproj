@@ -13,6 +13,9 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrontEndStat\FrontEndStatStorage.cs" />
+    <Compile Include="FrontEndStat\IFrontEndStatStorage.cs" />
+    <Compile Include="IMongoDbConnector.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSource.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceSerializer.cs" />
     <Compile Include="MongoDbConnector.cs" />
