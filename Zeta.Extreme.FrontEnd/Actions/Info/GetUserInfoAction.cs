@@ -17,6 +17,7 @@
 // PROJECT ORIGIN: Zeta.Extreme.FrontEnd/GetUserInfoAction.cs
 #endregion
 
+using System;
 using System.Collections.Generic;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
@@ -41,20 +42,41 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		protected override object MainProcess() {
 			MyFormServer.MetaCacheLoad.Wait();
 
-            if (login != null) {
-                if(WithRoles) {
-                    return new UserInfoHelper().GetUserInfoWithRoles(login);
-                } else {
-                    return new UserInfoHelper().GetUserInfo(login); 
-                }
+            if (Application.Roles.IsInRole(Context.LogonUser, "ADMIN")) {
+                return GetUser(login, name, WithRoles);
             } else {
-                if(WithRoles) {
-                    return new UserInfoHelper().GetUsersInfoByNameWithRoles(name);
+                return GetUser(login, name, false); // just give a damn
+            }
+
+		}
+
+        private object GetUser(string userLogin, string userName, bool withRoles) {
+            if (userLogin != null) {
+                return GetUserByLogin(userLogin, withRoles);
+            } else {
+                if (userName != null) {
+                    return GetUsersByName(userName, withRoles);
                 } else {
-                    return new UserInfoHelper().GetUsersInfoByName(name); 
+                    throw new Exception("You should set one of two parameters!");
                 }
             }
-		}
+        }
+
+        private object GetUserByLogin(string userLogin, bool withRoles) {
+            if(withRoles) {
+                return new UserInfoHelper().GetUserInfoWithRoles(userLogin);
+            } else {
+                return new UserInfoHelper().GetUserInfo(userLogin); 
+            }
+        }
+
+        private object GetUsersByName(string userName, bool withRoles) {
+            if (withRoles) {
+                return new UserInfoHelper().GetUsersInfoByNameWithRoles(userName);
+            } else {
+                return new UserInfoHelper().GetUsersInfoByName(userName);
+            }
+        }
 
 		/// <summary>
 		/// 	Логин, по которому запрашиваются данные пользователя
