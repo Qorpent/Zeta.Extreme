@@ -91,7 +91,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 			result["ver"] = DateTime.Now;
 			result["owner"] = Application.Current.Principal.CurrentUser.Identity.Name;
 			result["editor"] = Application.Current.Principal.CurrentUser.Identity.Name;
-			result["title"] = page.Title;
+			result["title"] = page.Title ?? "";
 			foreach (var propety in page.Propeties) {
 				result[propety.Key] = propety.Value ?? "";
 			}
