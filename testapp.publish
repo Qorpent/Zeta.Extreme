@@ -1,6 +1,6 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
-		<AppDir>c:\s133\base\test\zefst</AppDir>
+		<AppDir>c:\mnt\s133\base\test\zefst</AppDir>
 		<Configuration>Debug</Configuration>
 		<QISD>False</QISD>
 		<IsWeb>True</IsWeb>

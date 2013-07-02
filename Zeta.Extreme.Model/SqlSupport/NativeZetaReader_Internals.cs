@@ -269,9 +269,9 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				{
 					Id = r.GetInt32(0),
 					Version = r.GetDateTime(1),
-					Comment = r.GetString(2),
-					State = r.GetString(3),
-					User = r.GetString(4),
+					Comment = r.IsDBNull(2)? "" : r.GetString(2),
+					State = r.IsDBNull(3)?"0ISOPEN" : r.GetString(3),
+					User = r.IsDBNull(4)?"unk": r.GetString(4),
 				};
 			if (!r.IsDBNull(5)) {
 				x.FormId = r.GetInt32(5);
