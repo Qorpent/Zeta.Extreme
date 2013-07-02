@@ -102,21 +102,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\qorpent.sys\Qorpent.IoC\Qorpent.IoC.csproj">
-      <Project>{62F22FFA-A1CF-4A74-838C-9AB33A9442EA}</Project>
-      <Name>Qorpent.IoC</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Mvc\Qorpent.Mvc.csproj">
-      <Project>{96885c8f-ad20-41b4-86ee-bc9b3d47d9f9}</Project>
-      <Name>Qorpent.Mvc</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.Core\Zeta.Extreme.Core.csproj">
       <Project>{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}</Project>
       <Name>Zeta.Extreme.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Zeta.Extreme.MongoDB.Integration\Zeta.Extreme.MongoDB.Integration.csproj">
-      <Project>{459E4387-484E-42DE-8795-A142E83CFCBB}</Project>
-      <Name>Zeta.Extreme.MongoDB.Integration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />

@@ -22,8 +22,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.ZefsServer {
 		/// <returns> </returns>
 		protected override object MainProcess() {
 			if (null != ClientStatisticsRegistry) {
-				var req = ((MvcContext) Context).NativeAspContext.Request;
-				ClientStatisticsRegistry.RegisterClientStatistics(Data,req.UserHostAddress+" ("+req.UserHostName+")",req.UserAgent) ;
+				ClientStatisticsRegistry.RegisterClientStatistics(Data,Context.UserHostAddress+" ("+Context.UserHostName+")",Context.UserAgent) ;
 			}
 			return true;
 		}

@@ -1,6 +1,5 @@
 ﻿using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
-using Zeta.Extreme.MongoDB.Integration.FrontEndStat;
 
 namespace Zeta.Extreme.FrontEnd.Actions.ZefsServer {
 
@@ -10,10 +9,13 @@ namespace Zeta.Extreme.FrontEnd.Actions.ZefsServer {
         protected string Stat;
 
         protected override object MainProcess() {
-            var s = Container.Get<IFrontEndStatStorage>("frontendstat.mongodb") ?? new FrontEndStatStorage();
-            s.Write(Stat);
-
-            return true;
+            var s = Container.Get<IClientStatStorage>();
+            if (null != s)
+            {
+                s.Write(Stat);
+                return true;
+            }
+            return false;
         }
     }
 }

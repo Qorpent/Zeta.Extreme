@@ -1,11 +1,12 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using Qorpent.Mvc;
 
 namespace Zeta.Extreme.MongoDB.Integration.FrontEndStat {
     /// <summary>
     ///     A class for writing user's statistics form frontend to MongoDB
     /// </summary>
-    public class FrontEndStatStorage : MongoDbConnector, IFrontEndStatStorage {
+    public class FrontEndStatStorage : MongoDbConnector, IClientStatStorage {
         /// <summary>
         ///     Write statistics to MongoDB as a JSON string
         /// </summary>
