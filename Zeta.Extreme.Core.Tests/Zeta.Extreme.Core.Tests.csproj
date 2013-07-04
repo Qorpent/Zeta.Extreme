@@ -18,6 +18,7 @@
     <Compile Include="DatabaseIgnorancePureZeta\CanCalculateWithTargetedObjects.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\NoCalcSumSupport.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\SumObjSupport.cs" />
+    <Compile Include="DatabaseIgnorancePureZeta\SumPeriodFormulaSupport.cs" />
     <Compile Include="FeatureAndBugFix\Af575ContoSupport.cs" />
     <Compile Include="FeatureAndBugFix\Af577ConsobjSupport.cs" />
     <Compile Include="FeatureAndBugFix\CanCalculateDetails.cs" />

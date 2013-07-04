@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Zeta.Extreme.Model;
 
 namespace Zeta.Extreme.Core.Tests.DatabaseIgnorancePureZeta {
-	/// <summary>
+    /// <summary>
 	/// </summary>
 	[TestFixture]
 	public class SumObjSupport : PureZetaTestFixtureBase
