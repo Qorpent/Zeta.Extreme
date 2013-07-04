@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
+using Qorpent.Serialization;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.Themas;
 using Zeta.Extreme.FrontEnd.Helpers;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.FrontEnd.Actions.Info {
 	/// <summary>
@@ -22,6 +25,31 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		/// Код строки
 		/// </summary>
 		[Bind]public string Code { get; set; }
+        /// <summary>
+        /// Идентификатор объекта
+        /// </summary>
+        [Bind(Name = "obj")] public int ObjId { get; set; }
+        /// <summary>
+        /// Описание колсета для дополнитеьных данных
+        /// </summary>
+        [Bind(Name = "colset")]
+        public string ColsetDesc { get; set; }
+
+        /// <summary>
+        /// Признак требования на дозагрузку данных в описание зависимостей
+        /// </summary>
+        public bool NeedData { get { return 0 != ObjId && !string.IsNullOrWhiteSpace(ColsetDesc); } }
+
+        /// <summary>
+        /// Колсет на отрисовку дополнительных данных
+        /// </summary>
+        public ColumnDesc[] Colset { get; set; }
+
+        /// <summary>
+        /// Целевой объект
+        /// </summary>
+        public IZetaMainObject MyObject { get; set; }
+
 
 		/// <summary>
 		/// 	First phase of execution - override if need special input parameter's processing
@@ -35,9 +63,25 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 				BuildRowThemaMap();
 			}
 			row = MetaCache.Default.Get<IZetaRow>(Code);
+            if (NeedData) {
+                MyObject = MetaCache.Default.Get<IZetaMainObject>(ObjId);
+                var coldescs = ColsetDesc.Split(';');
+                IList<ColumnDesc> cols = new List<ColumnDesc>();
+                foreach (var coldesc in coldescs) {
+                    var parsedcol = coldesc.Split(',');
+                    var col = new ColumnDesc(parsedcol[0], parsedcol[1].ToInt(), parsedcol[2].ToInt());
+                    cols.Add(col);
+                }
+                Colset = cols.ToArray();
+                this.DataSession = new Session().AsSerial();
+            }
 		}
+        /// <summary>
+        /// Сессия для расчета дополнительных данных
+        /// </summary>
+	    protected ISerialSession DataSession { get; set; }
 
-		private void BuildRowThemaMap() {
+	    private void BuildRowThemaMap() {
 			var allthemas = ((ExtremeFormProvider) MyFormServer.FormProvider).Factory.GetAll().ToArray();
 			foreach (var t in allthemas) {
 				if(t.GetParameter("thematype","")!="in")continue;
@@ -115,7 +159,18 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		}
 
 		private object[] GetDepList(IList<string> codes,string type) {
-			return codes.Select(_ => MetaCache.Default.Get<IZetaRow>(_)).Select(_ => ConvertToDependency(_, type)).ToArray();
+			var result = codes.Select(_ => MetaCache.Default.Get<IZetaRow>(_)).Select(_ => ConvertToDependency(_, type)).ToArray();
+		    if (NeedData) {
+		        foreach (var d in result) {
+		            var vals = new List<decimal>();
+		            foreach (var c in Colset) {
+		                var q = new Query(d.code, c.Code, ObjId, c.Year, c.Period);
+		                vals.Add(DataSession.Eval(q).NumericResult);
+		            }
+		            d.values = vals.ToArray();
+		        }
+		    }
+		    return result;
 		}
 
 		private object ExRefDependency(IZetaRow r, bool child, string[] myForm, object[] forms, string type, IEnumerable<object> depinfo) {
@@ -176,6 +231,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			var myForm = GetFormName(r);
 			var forms = getForms(myForm);
 			var depinfo = GetDepList(codes,"formula");
+
 			foreach (var form in forms)
 			{
 				if (!refforms.Contains(form))
@@ -190,7 +246,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			return ExRefDependency(r, child, myForm, forms, "formula", depinfo);
 		}
 
-		private object ConvertToDependency(IZetaRow r,string type) {
+		private DependencyDesc ConvertToDependency(IZetaRow r,string type) {
 			var myForm = GetFormName(r);
 			var forms = getForms(myForm);
 			foreach (var form in forms)
@@ -200,15 +256,15 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 					refforms.Add(form);
 				}
 			}
-			return new
+			return new DependencyDesc
 				{
 					code = r.Code,
 					name = r.Name,
 					outercode = r.OuterCode,
 					formcode = myForm[0],
 					form = myForm[1],
-					forms,
-					type,
+					forms = forms,
+					type = type,
 					dependency = GetRowDependencies(r,true)
 				};
 			
@@ -221,4 +277,18 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			return GetFormName(row.Parent);
 		}
 	}
+    [Serialize]
+    internal class DependencyDesc {
+        public string code;
+        public string name;
+        public string outercode;
+        public string formcode;
+        public string form;
+        public object[] forms;
+        public string type;
+        public object dependency;
+        public decimal[] values;
+    }
+
+    
 }
