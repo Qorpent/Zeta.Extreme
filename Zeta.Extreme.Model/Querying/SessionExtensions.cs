@@ -89,21 +89,26 @@ namespace Zeta.Extreme.Model.Querying {
 		/// <returns></returns>
 		public static string ResolveRealCode(this ISession session, IQuery query, string pseudocode) {
 			var rowhandler = query.Row;
-			var code = ResolveRealCode(session, rowhandler, pseudocode);
+		    var code = "";
+            if (query.Obj.Native is IZetaMainObject)
+            {
+                var obj = query.Obj.ObjRef;
+                if (null == obj.ObjType && 0 != obj.ObjTypeId)
+                {
+                    obj = new NativeZetaReader().ReadObjectsWithTypes("o.Id = " + obj.Id).First();
+                }
+                code = obj.ResolveTag(pseudocode);
+                if (!string.IsNullOrWhiteSpace(code))
+                {
+                    return code;
+                }
+            }
+			code = ResolveRealCode(session, rowhandler, pseudocode);
 			if (!string.IsNullOrWhiteSpace(code)) {
 				return code;
 			}
 
-			if (query.Obj.Native is IZetaMainObject) {
-				var obj = query.Obj.ObjRef;
-				if (null == obj.ObjType && 0!=obj.ObjTypeId) {
-					obj = new NativeZetaReader().ReadObjectsWithTypes("o.Id = " + obj.Id).First();
-				}
-				code = obj.ResolveTag(pseudocode);
-				if (!string.IsNullOrWhiteSpace(code)) {
-					return code;
-				}
-			}
+			
 
 			return null;
 		}

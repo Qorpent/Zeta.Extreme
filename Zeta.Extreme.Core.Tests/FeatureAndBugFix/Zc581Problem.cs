@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 
 namespace Zeta.Extreme.Core.Tests {
-	/// <summary>
+    /// <summary>
 	/// Не работает формула со сменой строки по настройкам в объекте
 	/// </summary>
 	[TestFixture]
