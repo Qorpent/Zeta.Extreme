@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
@@ -43,13 +44,14 @@ namespace Zeta.Extreme.Core.Tests {
 		{
 			var q = session.Register(new Query
 				{
-					Row = { Code = "f1102319" },
+                    Row = { Code = "f1102318" },
 					Col = { Code = "PLAN" },
 					Time = { Year = 2013, Period = 251 },
 					Obj = { Id = 449 },
 				});
 			session.WaitPreparation();
 			var result = _serial.Eval(q);
+            if(null!=result.Error)Console.WriteLine(result.Error);
 			Assert.True(result.IsComplete);
 			Assert.Null(result.Error);
 
