@@ -17,11 +17,7 @@
 // PROJECT ORIGIN: Zeta.Extreme.Core/ObjHandler.cs
 #endregion
 using System;
-using System.Linq;
-using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
@@ -38,6 +34,17 @@ namespace Zeta.Extreme {
 
 
 		}
+
+
+	    /// <summary>
+	    /// 	Проверяет первичность элемента запроса
+	    /// </summary>
+	    /// <returns> </returns>
+	    public override bool IsPrimary() {
+            //ZC-614 агрегированный объект требуется рассматривать как первичный
+            if (LockFormula) return true;
+            return base.IsPrimary();
+        }
 
 		/// <summary>
 		/// 	Тип зоны
@@ -93,9 +100,15 @@ namespace Zeta.Extreme {
 				return null;
 			}
 		}
-		
 
-		/// <summary>
+	    /// <summary>
+	    /// В соответствии с ZC614 формулы должны персистентно отключаться при AGGREGATEOBJ на колонках
+	    /// в том числе и для дочерних запросов
+	    /// </summary>
+	    public bool LockFormula { get; set; }
+
+
+	    /// <summary>
 		/// 	Простая копия зоны
 		/// </summary>
 		/// <returns> </returns>
@@ -175,6 +188,10 @@ namespace Zeta.Extreme {
 			if (IsFormula) {
 				prefix += "f:" + Formula;
 			}
+            //ZC-614 lock formula must be in query cache
+            if (LockFormula) {
+                prefix += "/lock/";
+            }
 			return prefix + base.EvalCacheKey();
 		}
 

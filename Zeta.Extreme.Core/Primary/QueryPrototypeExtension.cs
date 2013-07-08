@@ -61,6 +61,11 @@ namespace Zeta.Extreme.Primary
 					result.AggregatePeriod = true;
 				}
 			}
+            //ZC-614 - суммовые объекты по формуле с признаком Lock
+            if (query.Obj.LockFormula && query.Obj.IsFormula) {
+                result.UseSum = true;
+                result.UseLockedObject = true;
+            }
 		}
 
 		private static bool IsAggregate(IQuery query) {

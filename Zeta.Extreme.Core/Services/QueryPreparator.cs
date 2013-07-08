@@ -75,7 +75,8 @@ namespace Zeta.Extreme {
 		}
 
 		private IZetaQueryDimension GetMostPriorityNoPrimarySource(IQuery query) {
-			if (query.Obj.IsFormula || (query.Obj.IsForObj && _sumh.IsSum(query.Obj))) {
+            //ZC-614 - при включенной LockFormula объекты всегда игнорируются от обработки формулы
+			if ((!query.Obj.LockFormula) && (query.Obj.IsFormula || (query.Obj.IsForObj && _sumh.IsSum(query.Obj)))) {
 				return (query.Obj.ObjRef) ?? (IZetaQueryDimension) query.Obj;
 			}
 			if ((query.Row.IsFormula || _sumh.IsSum(query.Row.Native)) && !query.Row.IsPrimary()) {

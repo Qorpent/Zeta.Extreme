@@ -25,6 +25,7 @@ using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
+using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme {
 	/// <summary>
@@ -84,16 +85,17 @@ namespace Zeta.Extreme {
 					return true;
 				}
 			}
-			var obj = item as IZetaMainObject;
-			if (null != obj) {
-				if (obj.IsFormula && (string.IsNullOrWhiteSpace(obj.FormulaType) || obj.FormulaType == "sum") &&
-				    !string.IsNullOrWhiteSpace(obj.Formula)) {
-					return true;
-				}
-			}
-			if (item.IsFormula && item.FormulaType == "boo" && IsSumableFormula(item.Formula)) {
+		    if (item is IObjHandler && ((IObjHandler)item).IsForObj ) {
+		            if (item.IsFormula && (string.IsNullOrWhiteSpace(item.FormulaType) || item.FormulaType == "sum") &&
+		                !string.IsNullOrWhiteSpace(item.Formula)) {
+		                return true;
+		            }
+		     }
+		    if (item.IsFormula && item.FormulaType == "boo" && IsSumableFormula(item.Formula)) {
 				return true;
 			}
+
+            
 
 			return false;
 		}
@@ -143,12 +145,13 @@ namespace Zeta.Extreme {
 			if (!IsSum(item)) {
 				yield break;
 			}
-			if (item is IZetaMainObject) {
+			if (item is IZetaMainObject || item is IObjHandler) {
 				var ids = item.Formula.SmartSplit().Select(_ => _.ToInt()).ToArray();
 				foreach (var id in ids) {
 					yield return new QueryDelta {ObjId = id};
 				}
 			}
+            
 			else if (item is IZetaRow) {
 				var row = item as IZetaRow;
 				if (row.IsMarkSeted("0SA")) {

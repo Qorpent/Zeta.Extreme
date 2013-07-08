@@ -57,5 +57,9 @@ namespace Zeta.Extreme.Primary {
 		/// “ипы контрагентов
 		/// </summary>
 		public string Types;
+        /// <summary>
+        /// ƒл€ выполнени€ ZC-614 требуетс€ наличие нативного объекта по возможности дл€ вы€влени€ поздних залоченных формул
+        /// </summary>
+	    public IZetaObject native;
 	}
 }
