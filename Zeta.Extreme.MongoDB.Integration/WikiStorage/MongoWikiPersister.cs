@@ -11,8 +11,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 	/// <summary>
 	/// Реализация персистера Wiki на Mongo
 	/// </summary>
-	public class MongoWikiPersister : MongoBasedServiceBase,IWikiPersister
-	{
+	public class MongoWikiPersister : MongoBasedServiceBase, IWikiPersister {
 		/// <summary>
 		/// Создание персистера
 		/// </summary>
@@ -29,10 +28,9 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		/// </summary>
 		/// <param name="codes"></param>
 		/// <returns></returns>
-		public IEnumerable<WikiPage> Get(params string[] codes) {
-			SetupConnection();			
+		public IEnumerable<WikiPage> Get(params string[] codes) {		
 			var qdoc = Serializer.GetQueryFromCodes(codes);
-			foreach (var doc in Connector.Collection.Find(qdoc)) {
+			foreach (var doc in Collection.Find(qdoc)) {
 				yield return Serializer.ToPage(doc);
 			}
 		}
@@ -44,9 +42,8 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		/// <param name="codes"></param>
 		/// <returns></returns>
 		public IEnumerable<WikiPage> Exists(params string[] codes) {
-			SetupConnection();
 			var qdoc = Serializer.GetQueryFromCodes(codes);
-			foreach (var doc in Connector.Collection.Find(qdoc).SetFields("_id")) {
+			foreach (var doc in Collection.Find(qdoc).SetFields("_id")) {
 				yield return new WikiPage {Code = doc["_id"].AsString};
 			}
 		}
@@ -56,18 +53,17 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		/// </summary>
 		/// <param name="pages"></param>
 		public void Save(params WikiPage[] pages) {
-			SetupConnection();
 			foreach (var page in pages) {
 				
 				var existsQuery = Serializer.GetQueryFromCodes(new[] {page.Code});
-				var exists = Connector.Collection.Find(existsQuery).Count() != 0;
+				var exists = Collection.Find(existsQuery).Count() != 0;
 				if (exists) {
 					var update = Serializer.UpdateFromPage(page);
-					Connector.Collection.Update(existsQuery, update);
+					Collection.Update(existsQuery, update);
 				}
 				else {
 					var doc = Serializer.NewFormPage(page);
-					Connector.Collection.Insert(doc);
+					Collection.Insert(doc);
 				}
 			}
 		}
@@ -76,7 +72,6 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		/// Сохраняет в Wiki файл с указанным кодом
 		/// </summary>
 		public void SaveBinary(WikiBinary binary) {
-			SetupConnection();
 			using (var s = CreateStream(binary)) {
 				s.Write(binary.Data,0,binary.Data.Length);
 				s.Flush();
@@ -85,13 +80,13 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		}
 
 		private MongoGridFSStream CreateStream(WikiBinary binary) {
-			if (!Connector.GridFs.ExistsById(binary.Code)) {
+			if (!GridFs.ExistsById(binary.Code)) {
 				return ConvertToMongoGridInfo(binary);
 			}
-			var info = Connector.GridFs.FindOne(binary.Code);
+			var info = GridFs.FindOne(binary.Code);
 			info.Metadata["editor"] = Application.Principal.CurrentUser.Identity.Name;
 			info.Metadata["lastwrite"] = DateTime.Now;
-			Connector.GridFs.SetMetadata(info,info.Metadata);
+			GridFs.SetMetadata(info,info.Metadata);
 			return info.OpenWrite();
 
 		}
@@ -103,7 +98,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 			md["editor"] = Application.Principal.CurrentUser.Identity.Name;
 			md["owner"] = Application.Principal.CurrentUser.Identity.Name;
 			md["lastwrite"] = DateTime.Now;
-			return Connector.GridFs.Create(
+			return GridFs.Create(
 				binary.Code,
 				new MongoGridFSCreateOptions
 				{
@@ -122,12 +117,12 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		/// <param name="withData">Флаг, что требуется подгрузка бинарных данных</param>
 		/// <returns></returns>
 		public WikiBinary LoadBinary(string code, bool withData = true) {
-			SetupConnection();
-			if (!Connector.GridFs.ExistsById(code)) return null;
-			var info = Connector.GridFs.FindOne(code);
+
+			if (!GridFs.ExistsById(code)) return null;
+			var info = GridFs.FindOne(code);
 			if (!info.Metadata.Contains("lastwrite")) {
 				info.Metadata["lastwrite"] = info.UploadDate;
-				Connector.GridFs.SetMetadata(info,info.Metadata);
+				GridFs.SetMetadata(info,info.Metadata);
 			}
 			byte[] data = null;
 			if (withData) {
@@ -147,10 +142,9 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		/// <param name="search"></param>
 		/// <returns></returns>
 		public IEnumerable<WikiPage> FindPages(string search) {
-			SetupConnection();
 			var queryJson = "{$or : [ {_id : {$regex : '(?ix)_REGEX_'}},{title:{$regex: '(?ix)_REGEX_'}},{owner:{$regex: '(?ix)_REGEX_'}},{editor:{$regex: '(?ix)_REGEX_'}}]},".Replace("_REGEX_", search);
 			var queryDoc = new QueryDocument(BsonDocument.Parse(queryJson));
-			foreach (var doc in Connector.Collection.Find(queryDoc).SetFields("_id","title","ver","editor","owner")) {
+			foreach (var doc in Collection.Find(queryDoc).SetFields("_id","title","ver","editor","owner")) {
 				var page = new WikiPage
 					{
 						Code = doc["_id"].AsString,
@@ -167,10 +161,9 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		/// <param name="search"></param>
 		/// <returns></returns>
 		public IEnumerable<WikiBinary> FindBinaries(string search) {
-			SetupConnection();
 			var queryJson = "{$or : [{_id : {$regex : '(?ix)_REGEX_'}},{'metadata.title':{$regex:'(?ix)_REGEX_'}},{'metadata.owner':{$regex:'(?ix)_REGEX_'}},{contentType:{$regex:'(?ix)_REGEX_'}}]}".Replace("_REGEX_", search);
 			var queryDoc = new QueryDocument(BsonDocument.Parse(queryJson));
-			foreach (var doc in Connector.GridFs.Find(queryDoc).SetFields("_id", "metadata.title", "metadata.owner", "length", "contentType","metadata.lastwrite", "uploadDate", "chunkSize"))
+			foreach (var doc in GridFs.Find(queryDoc).SetFields("_id", "metadata.title", "metadata.owner", "length", "contentType","metadata.lastwrite", "uploadDate", "chunkSize"))
 			{
 				var file = new WikiBinary()
 				{
@@ -193,9 +186,8 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		/// <param name="code"></param>
 		/// <returns></returns>
 		public DateTime GetBinaryVersion(string code) {
-			SetupConnection();
 			var existed =
-				Connector.GridFs.Files.Find(new QueryDocument(BsonDocument.Parse("{_id:'" + code + "'}")))
+				GridFs.Files.Find(new QueryDocument(BsonDocument.Parse("{_id:'" + code + "'}")))
 				         .SetFields("metadata.lastwrite").FirstOrDefault();
 			if (null == existed) {
 				return DateTime.MinValue;
@@ -209,9 +201,9 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		/// <param name="code"></param>
 		/// <returns></returns>
 		public DateTime GetPageVersion(string code) {
-			SetupConnection();
+			
 			var existed =
-				Connector.Collection.Find(new QueryDocument(BsonDocument.Parse("{_id:'" + code + "'}")))
+				Collection.Find(new QueryDocument(BsonDocument.Parse("{_id:'" + code + "'}")))
 						 .SetFields("ver").FirstOrDefault();
 			if (null == existed)
 			{
@@ -219,5 +211,64 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 			}
 			return existed["ver"].ToLocalTime();
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="comment"></param>
+        /// <returns></returns>
+        public WikiVersionCreateResult CreateVersion(string code, string comment) {
+            
+        }
+
+        /// <summary>
+        ///     Get a wiki page by version identifier
+        /// </summary>
+        /// <param name="code">page code</param>
+        /// <param name="version">page version</param>
+        /// <returns></returns>
+        private WikiPage GetWikiPageByVersion(string code, DateTime version) {
+            var rawDocument = Collection.Find(
+                new QueryDocument (
+                    BsonDocument.Parse("{'code' : '" + code + "', 'version' : '" + version + "'}")
+                )
+            );
+
+            return Serializer.ToPage(rawDocument.First());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        private WikiPage DuplicateWikiPage(string code, DateTime version) {
+            var currentPage = GetWikiPageByVersion(code, version);
+            currentPage.Version = DateTime.Now;
+            Save(currentPage);
+
+            return currentPage;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        private WikiPage GetLatestVersion(string code) {
+            var rawWikiPage = Collection.Find(
+                new QueryDocument(
+                    BsonDocument.Parse("{'code' : '" + code + "', 'version' : {$exists : true}}")    
+                )   
+            ).SetSortOrder(
+                new SortByDocument(
+                    BsonDocument.Parse("{version : -1}")    
+                )
+            ).SetLimit(1).ToBsonDocument();
+
+            return Serializer.ToPage(rawWikiPage);
+        }
 	}
 }
