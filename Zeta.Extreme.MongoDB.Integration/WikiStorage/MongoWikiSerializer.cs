@@ -27,6 +27,8 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 					Owner = doc["owner"].AsString,
 					Editor = doc["editor"].AsString,
 					Title = doc["title"].AsString,
+                    Published = doc["published"].ToUniversalTime(),
+                    Version = doc["version"].AsString,
 					Existed = true,
 				};
 			foreach (var e in doc) {
@@ -35,7 +37,9 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 				if (e.Name == "ver") continue;
 				if (e.Name == "owner") continue;
 				if (e.Name == "editor") continue;
-				if(e.Name=="title")continue; 
+				if(e.Name=="title")continue;
+			    if (e.Name == "published") continue;
+                if (e.Name == "version") continue;
 				result.Propeties[e.Name] = e.Value.AsString;
 			}
 			return result;
@@ -67,15 +71,18 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 
 
 		/// <summary>
-		/// Формирует запрос по кодам
+		/// Формирует запрос по кодам и версиям
 		/// </summary>
 		/// <param name="codes"></param>
+        /// <param name="versions"></param>
 		/// <returns></returns>
-		public  IMongoQuery GetQueryFromCodes(string[] codes)
+		public  IMongoQuery GetQueryFromCodes(string[] codes, string[] versions)
 		{
 			var query = new BsonDocument();
 			var idcond = query["_id"] = new BsonDocument();
+		    var versionCond = query["version"] = new BsonDocument();
 			idcond["$in"] = new BsonArray(codes);
+            versionCond["$in"] = new BsonArray(versions);
 			var qdoc = new QueryDocument(query);
 			return qdoc;
 		}
@@ -92,6 +99,8 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 			result["owner"] = Application.Current.Principal.CurrentUser.Identity.Name;
 			result["editor"] = Application.Current.Principal.CurrentUser.Identity.Name;
 			result["title"] = page.Title ?? "";
+		    result["version"] = page.Version ?? Guid.NewGuid().ToString();
+		    result["published"] = DateTime.Now;
 			foreach (var propety in page.Propeties) {
 				result[propety.Key] = propety.Value ?? "";
 			}

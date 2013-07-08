@@ -1,33 +1,42 @@
-﻿namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
+﻿using System;
+
+namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
     /// <summary>
-    /// 
+    ///     Класс, описывающий результат операции создания версии страницы Wiki
     /// </summary>
     public class WikiVersionCreateResult {
         /// <summary>
-        /// 
+        ///     Успешность операции?
         /// </summary>
         public bool IsSuccess { get; private set; }
 
         /// <summary>
-        /// 
+        ///     Версия?
         /// </summary>
-        public string VersionCode { get; private set; }
+        public string Version { get; private set; }
+
+        /// <summary>
+        ///     Дата публикации
+        /// </summary>
+        public DateTime Published { get; private set; }
+
+        /// <summary>
+        ///     Комментарий к версии
+        /// </summary>
+        public string Comment { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string ResultComment { get; private set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="isSuccess">It was a succesful create operation?</param>
-        /// <param name="versionCode">Version code</param>
-        /// <param name="resultComment">Comment for create operation</param>
-        public WikiVersionCreateResult(bool isSuccess, string versionCode, string resultComment) {
+        /// <param name="isSuccess"></param>
+        /// <param name="version"></param>
+        /// <param name="published"></param>
+        /// <param name="comment"></param>
+        public WikiVersionCreateResult(bool isSuccess, string version, DateTime published, string comment) {
             IsSuccess = isSuccess;
-            VersionCode = versionCode;
-            ResultComment = resultComment;
+            Version = version;
+            Published = published;
+            Comment = comment;
         }
     }
 }

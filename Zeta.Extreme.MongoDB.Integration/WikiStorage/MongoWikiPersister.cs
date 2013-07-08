@@ -6,47 +6,85 @@ using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 using Qorpent.Wiki;
 
-namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
-{
+namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 	/// <summary>
-	/// Реализация персистера Wiki на Mongo
+	///     Реализация персистера Wiki на Mongo
 	/// </summary>
 	public class MongoWikiPersister : MongoBasedServiceBase, IWikiPersister {
-		/// <summary>
-		/// Создание персистера
-		/// </summary>
-		public MongoWikiPersister() {
-			this.Serializer = new MongoWikiSerializer();
-		}
-		/// <summary>
-		/// Компонент сериализации WikiPage - BSON
-		/// </summary>
-		protected MongoWikiSerializer Serializer { get; set; }
+        /// <summary>
+        ///     Компонент сериализации WikiPage - BSON
+        /// </summary>
+        protected MongoWikiSerializer Serializer { get; set; }
 
 		/// <summary>
+		///     Создание персистера
+		/// </summary>
+		public MongoWikiPersister() {
+			Serializer = new MongoWikiSerializer();
+		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codes"></param>
+        /// <returns></returns>
+	    public IEnumerable<WikiPage> Get(params string[] codes) {
+	        throw new NotImplementedException();
+	    }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codes"></param>
+        /// <returns></returns>
+	    public IEnumerable<WikiPage> Exists(params string[] codes) {
+	        throw new NotImplementedException();
+	    }
+
+	    /// <summary>
 		/// Возвращает полностью загруженные страницы Wiki
 		/// </summary>
-		/// <param name="codes"></param>
+        /// <param name="codeVersion"></param>
 		/// <returns></returns>
-		public IEnumerable<WikiPage> Get(params string[] codes) {		
-			var qdoc = Serializer.GetQueryFromCodes(codes);
-			foreach (var doc in Collection.Find(qdoc)) {
+		public IEnumerable<WikiPage> Get(IEnumerable<KeyValuePair<string, string>> codeVersion) {
+		    var clause = PrepareCodeVersionFindClause(codeVersion);
+            var found = Collection.Find(clause);
+
+            foreach (var doc in found) {
 				yield return Serializer.ToPage(doc);
 			}
 		}
 
-		
-		/// <summary>
-		/// Возвращает страницы, только с загруженным признаком хранения в БД
-		/// </summary>
-		/// <param name="codes"></param>
-		/// <returns></returns>
-		public IEnumerable<WikiPage> Exists(params string[] codes) {
-			var qdoc = Serializer.GetQueryFromCodes(codes);
-			foreach (var doc in Collection.Find(qdoc).SetFields("_id")) {
+        /// <summary>
+        ///     Возвращает страницы, только с загруженным признаком хранения в БД
+        /// </summary>
+        /// <param name="codeVersion"></param>
+        /// <returns></returns>
+        public IEnumerable<WikiPage> Exists(IEnumerable<KeyValuePair<string, string>> codeVersion) {
+            var clause = PrepareCodeVersionFindClause(codeVersion);
+            foreach (var doc in Collection.Find(clause).SetFields("_id")) {
 				yield return new WikiPage {Code = doc["_id"].AsString};
 			}
 		}
+
+        private IMongoQuery PrepareCodeVersionFindClause(IEnumerable<KeyValuePair<string, string>> codeVersion) {
+            var rawQueryCodes = "";
+            var rawQueryVersions = "";
+
+            foreach (var keyValuePair in codeVersion) {
+                rawQueryCodes += "'" + keyValuePair.Key + "', ";
+                rawQueryVersions += "'" + keyValuePair.Value + "', ";
+            }
+
+            rawQueryCodes = "[" + rawQueryCodes.Substring(0, rawQueryCodes.Length - 2) + "]";
+            rawQueryVersions = "[" + rawQueryVersions.Substring(0, rawQueryVersions.Length - 2) + "]";
+
+            var rawQuery = "{code : {$in : " + rawQueryCodes + "}, version : {$in : " + rawQueryVersions + "}}";
+
+            return new QueryDocument(
+                BsonDocument.Parse(rawQuery)
+            );
+        }
 
 		/// <summary>
 		/// Метод сохранения изменений в страницу
@@ -55,11 +93,11 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 		public void Save(params WikiPage[] pages) {
 			foreach (var page in pages) {
 				
-				var existsQuery = Serializer.GetQueryFromCodes(new[] {page.Code});
+				var existsQuery = Serializer.GetQueryFromCodes(new[] {page.Code}, new[] {page.Version});
 				var exists = Collection.Find(existsQuery).Count() != 0;
 				if (exists) {
 					var update = Serializer.UpdateFromPage(page);
-					Collection.Update(existsQuery, update);
+					Collection.Update(existsQuery, update, UpdateFlags.Upsert);
 				}
 				else {
 					var doc = Serializer.NewFormPage(page);
@@ -205,8 +243,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
 			var existed =
 				Collection.Find(new QueryDocument(BsonDocument.Parse("{_id:'" + code + "'}")))
 						 .SetFields("ver").FirstOrDefault();
-			if (null == existed)
-			{
+			if (null == existed) {
 				return DateTime.MinValue;
 			}
 			return existed["ver"].ToLocalTime();
@@ -219,7 +256,29 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
         /// <param name="comment"></param>
         /// <returns></returns>
         public WikiVersionCreateResult CreateVersion(string code, string comment) {
-            
+            var lastVersion = GetLatestVersion(code);
+
+            if (lastVersion == null) {
+                return new WikiVersionCreateResult(false, null, DateTime.MinValue, "There is no page to clone");
+            }
+
+            var cloned = CloneWikiPage(code, lastVersion.Version);
+
+            if (cloned != null) {
+                Collection.Update(
+                    new QueryDocument(
+                        BsonDocument.Parse("{version : '" + cloned.Version + "'}")
+                    ),
+                    new UpdateDocument(
+                        BsonDocument.Parse("{$set : {comment : '" + comment + "'}}")    
+                    ),
+                    UpdateFlags.Upsert
+                );
+
+                return new WikiVersionCreateResult(true, cloned.Version, cloned.Published, "The page was cloned successful");
+            }
+
+            return new WikiVersionCreateResult(false, null, DateTime.MinValue, "Can not clone the page");
         }
 
         /// <summary>
@@ -228,14 +287,18 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
         /// <param name="code">page code</param>
         /// <param name="version">page version</param>
         /// <returns></returns>
-        private WikiPage GetWikiPageByVersion(string code, DateTime version) {
+        private WikiPage GetWikiPageByVersion(string code, string version) {
             var rawDocument = Collection.Find(
                 new QueryDocument (
-                    BsonDocument.Parse("{'code' : '" + code + "', 'version' : '" + version + "'}")
+                    BsonDocument.Parse("{'_id' : '" + code + "', 'version' : '" + version + "'}")
                 )
             );
 
-            return Serializer.ToPage(rawDocument.First());
+            if (rawDocument == null) {
+                return null;
+            }
+
+            return Serializer.ToPage(rawDocument.FirstOrDefault());
         }
 
         /// <summary>
@@ -244,9 +307,12 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
         /// <param name="code"></param>
         /// <param name="version"></param>
         /// <returns></returns>
-        private WikiPage DuplicateWikiPage(string code, DateTime version) {
+        private WikiPage CloneWikiPage(string code, string version) {
             var currentPage = GetWikiPageByVersion(code, version);
-            currentPage.Version = DateTime.Now;
+            
+            currentPage.Version = Guid.NewGuid().ToString();
+            currentPage.Published = DateTime.Now;
+
             Save(currentPage);
 
             return currentPage;
@@ -260,15 +326,21 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage
         private WikiPage GetLatestVersion(string code) {
             var rawWikiPage = Collection.Find(
                 new QueryDocument(
-                    BsonDocument.Parse("{'code' : '" + code + "', 'version' : {$exists : true}}")    
-                )   
+                    BsonDocument.Parse("{_id : '" + code + "', published : {$exists : true}}")
+                )
             ).SetSortOrder(
                 new SortByDocument(
-                    BsonDocument.Parse("{version : -1}")    
+                    BsonDocument.Parse("{published : -1}")
                 )
-            ).SetLimit(1).ToBsonDocument();
+            ).SetLimit(1);
 
-            return Serializer.ToPage(rawWikiPage);
+            if (rawWikiPage == null) {
+                return null;
+            }
+
+            return Serializer.ToPage(
+                rawWikiPage.FirstOrDefault().ToBsonDocument()
+            );
         }
 	}
 }

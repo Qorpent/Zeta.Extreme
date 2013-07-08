@@ -28,6 +28,7 @@
     <Compile Include="MongoDbLogs\MongoDbLogsSerializer.cs" />
     <Compile Include="WikiStorage\MongoWikiPersister.cs" />
     <Compile Include="WikiStorage\MongoWikiSerializer.cs" />
+    <Compile Include="WikiStorage\WikiVersionCreateResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MongoDB.Bson, Version=0.0.0.0, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">

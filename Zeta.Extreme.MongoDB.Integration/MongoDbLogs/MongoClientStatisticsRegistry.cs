@@ -57,8 +57,7 @@ namespace Zeta.Extreme.MongoDB.Integration.MongoDbLogs
 			doc.Remove("head");
 			doc["body"] = body.Value;
 			try {
-				SetupConnection();
-				Connector.Collection.Save(doc);
+				Collection.Save(doc);
 			}
 			catch {
 				// it's not main ativity of programm, can be skipped

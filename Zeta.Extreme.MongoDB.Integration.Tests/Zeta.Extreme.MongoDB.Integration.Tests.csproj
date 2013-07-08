@@ -62,6 +62,7 @@
     <Compile Include="MongoDbLogs\MongoDbLogsTestsBase.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsP1358.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsP1362FindPattern.cs" />
+    <Compile Include="Wiki\WikiTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\mongo-csharp-driver\MongoDB.Bson\MongoDB.Bson.csproj">
