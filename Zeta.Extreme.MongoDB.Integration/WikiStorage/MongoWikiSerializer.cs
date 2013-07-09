@@ -21,9 +21,8 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		public WikiPage ToPage(BsonDocument doc) {
 			var result = new WikiPage
 				{
-					Code = doc["_id"].AsString,
+					Code = doc["code"].AsString,
 					Text = doc["text"].AsString,
-					LastWriteTime = doc["ver"].ToLocalTime(),
 					Owner = doc["owner"].AsString,
 					Editor = doc["editor"].AsString,
 					Title = doc["title"].AsString,
@@ -32,9 +31,9 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 					Existed = true,
 				};
 			foreach (var e in doc) {
-				if (e.Name == "_id") continue;
+			    if (e.Name == "_id") continue;
+				if (e.Name == "code") continue;
 				if (e.Name == "text") continue;
-				if (e.Name == "ver") continue;
 				if (e.Name == "owner") continue;
 				if (e.Name == "editor") continue;
 				if(e.Name=="title")continue;
@@ -79,7 +78,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		public  IMongoQuery GetQueryFromCodes(string[] codes, string[] versions)
 		{
 			var query = new BsonDocument();
-			var idcond = query["_id"] = new BsonDocument();
+			var idcond = query["code"] = new BsonDocument();
 		    var versionCond = query["version"] = new BsonDocument();
 			idcond["$in"] = new BsonArray(codes);
             versionCond["$in"] = new BsonArray(versions);
@@ -93,9 +92,8 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		/// <returns></returns>
 		public object NewFormPage(WikiPage page) {
 			var result = new BsonDocument();
-			result["_id"] = page.Code;
+			result["code"] = page.Code;
 			result["text"] = page.Text;
-			result["ver"] = DateTime.Now;
 			result["owner"] = Application.Current.Principal.CurrentUser.Identity.Name;
 			result["editor"] = Application.Current.Principal.CurrentUser.Identity.Name;
 			result["title"] = page.Title ?? "";
@@ -121,7 +119,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 			{
 				updateBuilder.Set("title", page.Title);
 			}
-			updateBuilder.Set("ver", DateTime.Now);
+
 			updateBuilder.Set("editor", Application.Current.Principal.CurrentUser.Identity.Name);
 			foreach (var propety in page.Propeties)
 			{

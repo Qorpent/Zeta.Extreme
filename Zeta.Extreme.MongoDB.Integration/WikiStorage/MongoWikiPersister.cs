@@ -62,8 +62,8 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         /// <returns></returns>
         public IEnumerable<WikiPage> Exists(IEnumerable<KeyValuePair<string, string>> codeVersion) {
             var clause = PrepareCodeVersionFindClause(codeVersion);
-            foreach (var doc in Collection.Find(clause).SetFields("_id")) {
-				yield return new WikiPage {Code = doc["_id"].AsString};
+            foreach (var doc in Collection.Find(clause).SetFields("code")) {
+				yield return new WikiPage {Code = doc["code"].AsString};
 			}
 		}
 
@@ -180,12 +180,12 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		/// <param name="search"></param>
 		/// <returns></returns>
 		public IEnumerable<WikiPage> FindPages(string search) {
-			var queryJson = "{$or : [ {_id : {$regex : '(?ix)_REGEX_'}},{title:{$regex: '(?ix)_REGEX_'}},{owner:{$regex: '(?ix)_REGEX_'}},{editor:{$regex: '(?ix)_REGEX_'}}]},".Replace("_REGEX_", search);
+			var queryJson = "{$or : [ {code : {$regex : '(?ix)_REGEX_'}},{title:{$regex: '(?ix)_REGEX_'}},{owner:{$regex: '(?ix)_REGEX_'}},{editor:{$regex: '(?ix)_REGEX_'}}]},".Replace("_REGEX_", search);
 			var queryDoc = new QueryDocument(BsonDocument.Parse(queryJson));
-			foreach (var doc in Collection.Find(queryDoc).SetFields("_id","title","ver","editor","owner")) {
+            foreach (var doc in Collection.Find(queryDoc).SetFields("code", "title", "ver", "editor", "owner")) {
 				var page = new WikiPage
 					{
-						Code = doc["_id"].AsString,
+                        Code = doc["code"].AsString,
 						Title = doc["title"].AsString,
 						LastWriteTime = doc["ver"].ToLocalTime()
 					};
@@ -199,9 +199,9 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		/// <param name="search"></param>
 		/// <returns></returns>
 		public IEnumerable<WikiBinary> FindBinaries(string search) {
-			var queryJson = "{$or : [{_id : {$regex : '(?ix)_REGEX_'}},{'metadata.title':{$regex:'(?ix)_REGEX_'}},{'metadata.owner':{$regex:'(?ix)_REGEX_'}},{contentType:{$regex:'(?ix)_REGEX_'}}]}".Replace("_REGEX_", search);
+            var queryJson = "{$or : [{code : {$regex : '(?ix)_REGEX_'}},{'metadata.title':{$regex:'(?ix)_REGEX_'}},{'metadata.owner':{$regex:'(?ix)_REGEX_'}},{contentType:{$regex:'(?ix)_REGEX_'}}]}".Replace("_REGEX_", search);
 			var queryDoc = new QueryDocument(BsonDocument.Parse(queryJson));
-			foreach (var doc in GridFs.Find(queryDoc).SetFields("_id", "metadata.title", "metadata.owner", "length", "contentType","metadata.lastwrite", "uploadDate", "chunkSize"))
+            foreach (var doc in GridFs.Find(queryDoc).SetFields("code", "metadata.title", "metadata.owner", "length", "contentType", "metadata.lastwrite", "uploadDate", "chunkSize"))
 			{
 				var file = new WikiBinary()
 				{
@@ -225,7 +225,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		/// <returns></returns>
 		public DateTime GetBinaryVersion(string code) {
 			var existed =
-				GridFs.Files.Find(new QueryDocument(BsonDocument.Parse("{_id:'" + code + "'}")))
+                GridFs.Files.Find(new QueryDocument(BsonDocument.Parse("{code:'" + code + "'}")))
 				         .SetFields("metadata.lastwrite").FirstOrDefault();
 			if (null == existed) {
 				return DateTime.MinValue;
@@ -241,7 +241,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		public DateTime GetPageVersion(string code) {
 			
 			var existed =
-				Collection.Find(new QueryDocument(BsonDocument.Parse("{_id:'" + code + "'}")))
+                Collection.Find(new QueryDocument(BsonDocument.Parse("{code:'" + code + "'}")))
 						 .SetFields("ver").FirstOrDefault();
 			if (null == existed) {
 				return DateTime.MinValue;
@@ -250,10 +250,10 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		}
 
         /// <summary>
-        /// 
+        ///     Создание версии страницы (копии последней с комментарием)
         /// </summary>
-        /// <param name="code"></param>
-        /// <param name="comment"></param>
+        /// <param name="code">Код страницы</param>
+        /// <param name="comment">Комментарий</param>
         /// <returns></returns>
         public WikiVersionCreateResult CreateVersion(string code, string comment) {
             var lastVersion = GetLatestVersion(code);
@@ -282,15 +282,15 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         }
 
         /// <summary>
-        ///     Get a wiki page by version identifier
+        ///     Получить страницу Wiki определённой версии по коду страницы
         /// </summary>
-        /// <param name="code">page code</param>
-        /// <param name="version">page version</param>
+        /// <param name="code">Код страницы</param>
+        /// <param name="version">Код версии страницы</param>
         /// <returns></returns>
         private WikiPage GetWikiPageByVersion(string code, string version) {
             var rawDocument = Collection.Find(
                 new QueryDocument (
-                    BsonDocument.Parse("{'_id' : '" + code + "', 'version' : '" + version + "'}")
+                    BsonDocument.Parse("{'code' : '" + code + "', 'version' : '" + version + "'}")
                 )
             );
 
@@ -298,11 +298,13 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                 return null;
             }
 
-            return Serializer.ToPage(rawDocument.FirstOrDefault());
+            return Serializer.ToPage(
+                rawDocument.FirstOrDefault()
+            );
         }
 
         /// <summary>
-        /// 
+        ///     Метод клонирования страницы Wiki
         /// </summary>
         /// <param name="code"></param>
         /// <param name="version"></param>
@@ -319,14 +321,14 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         }
 
         /// <summary>
-        /// 
+        ///     Метод лля получения наиболее поздней версии страницы Wiki
         /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
+        /// <param name="code">Код страницы</param>
+        /// <returns>Страница Wiki</returns>
         private WikiPage GetLatestVersion(string code) {
             var rawWikiPage = Collection.Find(
                 new QueryDocument(
-                    BsonDocument.Parse("{_id : '" + code + "', published : {$exists : true}}")
+                    BsonDocument.Parse("{code : '" + code + "', published : {$exists : true}}")
                 )
             ).SetSortOrder(
                 new SortByDocument(
