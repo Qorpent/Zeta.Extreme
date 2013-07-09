@@ -36,6 +36,68 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Wiki {
         }
 
         [Test]
+        public void CanGetPagesUsingOldMethod() {
+            var wp = new MongoWikiPersister {
+                CollectionName = "Wiki",
+                DatabaseName = "Zefs",
+            };
+
+            wp.Collection.RemoveAll();
+
+            wp.Save(
+                new WikiPage {
+                    Code = "Test",
+                    Editor = "remalloc",
+                    Existed = true,
+                    LastWriteTime = DateTime.Now,
+                    Owner = "remalloc",
+                    Text = "sdffsdff",
+                    Title = "fggfgdfg"
+                }
+            );
+
+            wp.Save(
+                new WikiPage {
+                    Code = "Test2",
+                    Editor = "remalloc",
+                    Existed = true,
+                    LastWriteTime = DateTime.Now,
+                    Owner = "remalloc",
+                    Text = "asdadad",
+                    Title = "sdsadd"
+                }
+            );
+
+            var got = wp.Get(new[] {"Test", "Test2"});
+            Assert.AreEqual(2, got.Count());
+        }
+
+        [Test]
+        public void CanGetPage() {
+            var wp = new MongoWikiPersister {
+                CollectionName = "Wiki",
+                DatabaseName = "Zefs",
+            };
+
+            wp.Collection.RemoveAll();
+
+            wp.Save(
+                new WikiPage {
+                    Code = "Test",
+                    Editor = "remalloc",
+                    Existed = true,
+                    LastWriteTime = DateTime.Now,
+                    Owner = "remalloc",
+                    Text = "Not crap",
+                    Title = "Test page"
+                }
+            );
+
+            var e = wp.Get("Test", null);
+            Assert.AreEqual(e.Text, "Not crap");
+        }
+
+        [Test]
         public void CanRestorePage() {
             var wp = new MongoWikiPersister {
                 CollectionName = "Wiki",

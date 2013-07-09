@@ -29,7 +29,13 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         /// <param name="codes"></param>
         /// <returns></returns>
 	    public IEnumerable<WikiPage> Get(params string[] codes) {
-	        throw new NotImplementedException();
+            foreach (var code in codes) {
+                var latest = GetLatestVersion(code);
+                
+                if (latest != null) {
+                    yield return latest;
+                }
+            }
 	    }
 
         /// <summary>
@@ -38,55 +44,44 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         /// <param name="codes"></param>
         /// <returns></returns>
 	    public IEnumerable<WikiPage> Exists(params string[] codes) {
-	        throw new NotImplementedException();
+            foreach (var code in codes) {
+                var latest = GetLatestVersion(code);
+
+                if (latest != null) {
+                    yield return new WikiPage {Code = latest.Code};
+                }
+            }
 	    }
 
 	    /// <summary>
-		/// Возвращает полностью загруженные страницы Wiki
-		/// </summary>
-        /// <param name="codeVersion"></param>
-		/// <returns></returns>
-		public IEnumerable<WikiPage> Get(IEnumerable<KeyValuePair<string, string>> codeVersion) {
-		    var clause = PrepareCodeVersionFindClause(codeVersion);
-            var found = Collection.Find(clause);
-
-            foreach (var doc in found) {
-				yield return Serializer.ToPage(doc);
-			}
-		}
-
-        /// <summary>
-        ///     Возвращает страницы, только с загруженным признаком хранения в БД
+        ///     Возвращает страницу Wiki. Если версия не указана — последнюю актуальную
         /// </summary>
-        /// <param name="codeVersion"></param>
+        /// <param name="code"></param>
+        /// <param name="version"></param>
         /// <returns></returns>
-        public IEnumerable<WikiPage> Exists(IEnumerable<KeyValuePair<string, string>> codeVersion) {
-            var clause = PrepareCodeVersionFindClause(codeVersion);
-            foreach (var doc in Collection.Find(clause).SetFields("code")) {
-				yield return new WikiPage {Code = doc["code"].AsString};
-			}
-		}
+        public WikiPage Get(string code, string version = null) {
+            var clause = "{code : '" + code + "'";
 
-        private IMongoQuery PrepareCodeVersionFindClause(IEnumerable<KeyValuePair<string, string>> codeVersion) {
-            var rawQueryCodes = "";
-            var rawQueryVersions = "";
-
-            foreach (var keyValuePair in codeVersion) {
-                rawQueryCodes += "'" + keyValuePair.Key + "', ";
-                rawQueryVersions += "'" + keyValuePair.Value + "', ";
+            if (!string.IsNullOrEmpty(version)) {
+                clause += ", version : '" + version + "'";
             }
 
-            rawQueryCodes = "[" + rawQueryCodes.Substring(0, rawQueryCodes.Length - 2) + "]";
-            rawQueryVersions = "[" + rawQueryVersions.Substring(0, rawQueryVersions.Length - 2) + "]";
+            clause += "}";
 
-            var rawQuery = "{code : {$in : " + rawQueryCodes + "}, version : {$in : " + rawQueryVersions + "}}";
+            var found = Collection.Find(
+                new QueryDocument(
+                    BsonDocument.Parse(clause)
+                )    
+            ).FirstOrDefault();
 
-            return new QueryDocument(
-                BsonDocument.Parse(rawQuery)
-            );
+            if (found != null) {
+                return Serializer.ToPage(found);
+            }
+
+            return null;
         }
 
-		/// <summary>
+	    /// <summary>
 		/// Метод сохранения изменений в страницу
 		/// </summary>
 		/// <param name="pages"></param>
@@ -236,23 +231,22 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 			return existed["metadata"]["lastwrite"].ToLocalTime();
 		}
 
-		/// <summary>
-		/// Возвращает версию страницы
-		/// </summary>
-		/// <param name="code"></param>
-		/// <returns></returns>
-		public DateTime GetPageVersion(string code) {
-			
-			var existed =
-                Collection.Find(new QueryDocument(BsonDocument.Parse("{code:'" + code + "'}")))
-						 .SetFields("ver").FirstOrDefault();
-			if (null == existed) {
-				return DateTime.MinValue;
-			}
-			return existed["ver"].ToLocalTime();
-		}
-
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+	    public DateTime GetPageVersion(string code) {
+            var latest = GetLatestVersion(code);
+            
+            if (latest == null) {
+                return DateTime.MinValue;
+            }
+
+            return latest.Published;
+        }
+
+	    /// <summary>
         ///     Создание версии страницы (копии последней с комментарием)
         /// </summary>
         /// <param name="code">Код страницы</param>
