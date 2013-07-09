@@ -345,14 +345,7 @@ namespace Zeta.Extreme {
 			Task objt=null; //объекты зачастую из БД догружаются
 
 
-            //ZC-614 выставление признака блокировки формулы объекта
-            if (Obj.Type == ZoneType.Obj)
-            {
-                if (Obj.IsFormula && (Obj.FormulaType() != "boo") && Col.Native != null && Col.Native.IsMarkSeted("AGGREGATEOBJ"))
-                {
-                    Obj.LockFormula = true;
-                }
-            }
+            
 
 			if (null == Row.TargetObject) {
 				

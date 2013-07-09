@@ -85,12 +85,13 @@ namespace Zeta.Extreme {
 					return true;
 				}
 			}
-		    if (item is IObjHandler && ((IObjHandler)item).IsForObj ) {
+		    if ((item is IObjHandler && ((IObjHandler)item).IsForObj)||(item is IZetaMainObject) ) {
 		            if (item.IsFormula && (string.IsNullOrWhiteSpace(item.FormulaType) || item.FormulaType == "sum") &&
 		                !string.IsNullOrWhiteSpace(item.Formula)) {
 		                return true;
 		            }
 		     }
+           
 		    if (item.IsFormula && item.FormulaType == "boo" && IsSumableFormula(item.Formula)) {
 				return true;
 			}

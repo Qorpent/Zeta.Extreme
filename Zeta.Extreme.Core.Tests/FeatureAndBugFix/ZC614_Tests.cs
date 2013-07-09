@@ -23,9 +23,9 @@ namespace Zeta.Extreme.Core.Tests {
         [Test]
         public void Can_Determaine_That_Is_LockFormula()
         {
-            var q1 = new Query { Obj = { Id=1,IsFormula = true,Formula = "1,2,3"},Col = {Native = new Column{MarkCache = "/AGGREGATEOBJ/"}}};
-            var q2 = new Query { Obj = { Id = 1, IsFormula = true, Formula = "1,2,3" }, Col = { Native = new Column { MarkCache = "/NO_AGGREGATEOBJ/" } } };
-            var q3 = new Query { Obj = { Id = 1 }, Col = { Native = new Column { MarkCache = "/AGGREGATEOBJ/" } } };
+            var q1 = new Query { Obj = { Id = 777777, IsFormula = true, Formula = "888888,1888888,2888888" }, Col = { Native = new Column { MarkCache = "/AGGREGATEOBJ/" } } };
+            var q2 = new Query { Obj = { Id = 777777, IsFormula = true, Formula = "888888,1888888,2888888" }, Col = { Native = new Column { MarkCache = "/NO_AGGREGATEOBJ/" } } };
+            var q3 = new Query { Obj = { Id = 777777 }, Col = { Native = new Column { MarkCache = "/AGGREGATEOBJ/" } } };
             q1.Normalize();
             q2.Normalize();
             Assert.True(q1.Obj.LockFormula);
@@ -42,13 +42,13 @@ namespace Zeta.Extreme.Core.Tests {
         {
             var _sumh = new StrongSumProvider();
             Assert.AreEqual(3,
-                _sumh.GetSumDelta(new ObjHandler { Id = 1, IsFormula = true, Formula = "1,2,3" }).Length);
+                _sumh.GetSumDelta(new ObjHandler { Id = 777777, IsFormula = true, Formula = "888888,1888888,2888888" }).Length);
         }
 
         [Test]
         public void Bug_Cannot_Determine_Sum_Object() {
             var _sumh = new StrongSumProvider();
-            Assert.True(_sumh.IsSum(new ObjHandler { Id = 1, IsFormula = true, Formula = "1,2,3" }));
+            Assert.True(_sumh.IsSum(new ObjHandler { Id = 777777, IsFormula = true, Formula = "888888,1888888,2888888" }));
         }
 
         [Test]
@@ -57,9 +57,9 @@ namespace Zeta.Extreme.Core.Tests {
            
             var q2 = new Query
             {
-                Obj = { Id = 1, IsFormula = true, Formula = "1,2,3" }
+                Obj = { Id = 777777, IsFormula = true, Formula = "888888,1888888,2888888" }
                 ,
-                Col = { Native = new Column { Code = "y", MarkCache = "/NO_AGGREGATEOBJ/" } }
+                Col = { Native = new Column { Code = "Bug_Cannot_Reproduce_Formula", MarkCache = "/NO_AGGREGATEOBJ/" } }
             };
       
             var realq2 = _session.Register(q2);
@@ -70,14 +70,14 @@ namespace Zeta.Extreme.Core.Tests {
         [Test]
         public void Lock_Formula_Prevent_ObjFormula() {
             var q1 = new Query {
-                Obj = {Id = 1, IsFormula = true, Formula = "1,2,3"}
+                Obj = { Id = 777777, IsFormula = true, Formula = "888888,1888888,2888888" }
                 ,
-                Col = {Native = new Column {Code="x",MarkCache = "/AGGREGATEOBJ/"}}
+                Col = { Native = new Column { Code = "Lock_Formula_Prevent_ObjFormula_X", MarkCache = "/AGGREGATEOBJ/" } }
             };
             var q2 = new Query {
-                Obj = {Id = 1, IsFormula = true, Formula = "1,2,3"}
+                Obj = { Id = 777777, IsFormula = true, Formula = "888888,1888888,2888888" }
                 ,
-                Col = {Native = new Column {Code="y",MarkCache = "/NO_AGGREGATEOBJ/"}}
+                Col = { Native = new Column { Code = "Lock_Formula_Prevent_ObjFormula_Y", MarkCache = "/NO_AGGREGATEOBJ/" } }
             };
             var realq1 = _session.Register(q1);
             var realq2 = _session.Register(q2);
@@ -92,9 +92,9 @@ namespace Zeta.Extreme.Core.Tests {
             _session.MetaCache.Set(new Column {Code = "SUMMA"});
             var q1 = new Query
             {
-                Obj = { Id = 1, IsFormula = true, Formula = "1,2,3" }
+                Obj = { Id = 777777, IsFormula = true, Formula = "888888,1888888,2888888" }
                 ,
-                Col = { Native = new Column { Code = "x", IsFormula = true, Formula = "@SUMMA?", FormulaType = "boo", MarkCache = "/AGGREGATEOBJ/" } }
+                Col = { Native = new Column { Code = "Lock_Formula_Keep_Lock_Formula_On_Direct_Changes_X", IsFormula = true, Formula = "@SUMMA?", FormulaType = "boo", MarkCache = "/AGGREGATEOBJ/" } }
             };
            
             var realq1 = _session.Register(q1);
@@ -106,9 +106,9 @@ namespace Zeta.Extreme.Core.Tests {
         public void Prototype_Query_Test() {
             var q1 = new Query
             {
-                Obj = { Id = 333, IsFormula = true, Formula = "1,2,3" }
+                Obj = { Id = 777777, IsFormula = true, Formula = "888888,1888888,2888888" }
                 ,
-                Col = { Native = new Column {Id=2, Code = "x", MarkCache = "/AGGREGATEOBJ/" } }
+                Col = { Native = new Column { Id = 777777, Code = "Prototype_Query_Test_X", MarkCache = "/AGGREGATEOBJ/" } }
             };
             q1.Normalize();
             var p = q1.GetPrototype();
@@ -121,14 +121,14 @@ namespace Zeta.Extreme.Core.Tests {
             var sqlg = new Zeta2SqlScriptGenerator();
             var q1 = new Query
             {
-                Obj = { Id = 333, IsFormula = true, Formula = "1,2,3" }
+                Obj = { Native = new Obj{ Id = 777777, IsFormula = true, Formula = "888888,1888888,2888888" } }
                 ,
-                Col = { Native = new Column { Id = 2, Code = "x", MarkCache = "/AGGREGATEOBJ/" } }
+                Col = { Native = new Column { Id = 777777, Code = "Valid_Sql_Generation_X", MarkCache = "/AGGREGATEOBJ/" } }
             };
             q1.Normalize();
             var result = sqlg.Generate(new IQuery[] {q1}, q1.GetPrototype());
             Console.WriteLine(result);
-            Assert.AreEqual("SELECT 0,col,row,333,year,0, SUM(decimalvalue) , 1 ,':'   FROM cell  WHERE period=0 and year=0 and  col in ( 2) and obj=333 and row in (0) and detail is null  GROUP BY col,row,obj,year,period", result.Trim());
+            Assert.AreEqual("SELECT 0,col,row,777777,year,0, SUM(decimalvalue) , 1 ,':'   FROM cell  WHERE period=0 and year=0 and  col in ( 777777) and obj in ( 888888,1888888,2888888 ) and row in (0) and detail is null  GROUP BY col,row,obj,year,period", result.Trim());
         }
 
         [Test]
@@ -155,21 +155,21 @@ namespace Zeta.Extreme.Core.Tests {
             {
                 Obj = { Id = 333, IsFormula = true, Formula = "1,2,3",LockFormula = true}
                 ,
-                Col = { Native = new Column { Code = "SUMMA"  } }
+                Col = { Native = new Column { Code = "ZC614_Tests_S" } }
                 ,
-                Row= {Code="a"}
+                Row = { Code = "ZC614_Tests_A" }
             },10);
             yield return new Query {
                 Obj = {Id = 333, IsFormula = true, Formula = "1,2,3"}
                 ,
-                
-                Row= {Code="a"},
+
+                Row = { Code = "ZC614_Tests_A" },
                 Col = {
                     Native =
                         new Column {
-                            Code = "x",
+                            Code = "ZC614_Tests_X",
                             IsFormula = true,
-                            Formula = "@SUMMA? * @SUMMA?",
+                            Formula = "@ZC614_Tests_S? * @ZC614_Tests_S?",
                             FormulaType = "boo",
                             MarkCache = "/AGGREGATEOBJ/"
                         }

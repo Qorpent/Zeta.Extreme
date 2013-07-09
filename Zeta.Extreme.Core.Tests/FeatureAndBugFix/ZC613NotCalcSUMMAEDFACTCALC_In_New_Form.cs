@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
+using Zeta.Extreme.Model;
 
 namespace Zeta.Extreme.Core.Tests {
     [TestFixture]
@@ -8,13 +9,16 @@ namespace Zeta.Extreme.Core.Tests {
     {
         [Test]
         public void ZC613_Reproduce_Test() {
-            var result = _serial.Eval(new Query
+            var q = session.Register(new Query
             {
                 Row = { Code = "z1002410" },
                 Col = { Code = "SUMMAEDFACTCALC" },
                 Time = { Year = 2013, Period = 406 },
                 Obj = { Id = 3800 },
             });
+            session.WaitPreparation();
+            session.WaitEvaluation();
+            var result = q.Result;
             Assert.Null(result.Error);
             Assert.AreEqual(9.9984,Math.Round(result.NumericResult,4));
         }
@@ -44,26 +48,42 @@ namespace Zeta.Extreme.Core.Tests {
                 Obj = { Id = 3799 },
             });
             Assert.Null(result.Error);
-            Assert.AreEqual(9.9984, Math.Round(result.NumericResult, 4));
+            Assert.AreEqual(0, Math.Round(result.NumericResult, 4));
         }
 
         
 
         [Test]
         public void ZC613Test_KMULT() {
-            var result = _serial.Eval(new Query
+            var q = session.Register(new Query
             {
                 Row = { Code = "z1002410" },
-                Col = { Code = "ZC613_Decomposition_2", FormulaType = "boo", Formula = "___KMULT" },
+                Col = { Native = new Column() { Code = "ZC613_Decomposition_2", IsFormula = true,FormulaType = "boo", Formula = "getn(\"KMULT\")",MarkCache = "/AGGREGATEOBJ/"} },
                 Time = { Year = 2013, Period = 406 },
                 Obj = { Id = 3800 },
             });
-            Assert.AreEqual(1,result.NumericResult);
+            session.WaitEvaluation();
+            Assert.AreEqual(1,q.Result.NumericResult);
+        }
+
+        [Test]
+        public void ZC613Test_KMULT_NOGG_SUM()
+        {
+            var q = session.Register(new Query
+            {
+                Row = { Code = "z1002410" },
+                Col = { Native = new Column() { Code = "ZC613_Decomposition_2", IsFormula = true, FormulaType = "boo", Formula = "getn(\"KMULT\")", MarkCache = "/NO_AGGREGATEOBJ/" } },
+                Time = { Year = 2013, Period = 406 },
+                Obj = { Id = 3800 },
+            });
+            session.WaitEvaluation();
+            Assert.AreEqual(2, q.Result.NumericResult);
         }
 
         [TestCase(3799, 10)]
         [TestCase(3616, 10.4084)]
         [TestCase(3800, 9.9984)]
+        [Ignore("Ќужно было только дл€ исследовани€ проблемы")]
         public void ZC613_Decomposition(int obj, decimal result)
         {
             var item1 = _serial.Eval(new Query
@@ -97,7 +117,7 @@ namespace Zeta.Extreme.Core.Tests {
             var expected = item1.NumericResult/item2.NumericResult*item3.NumericResult;
             Console.WriteLine("Expected = " + expected);
 
-            Assert.AreEqual(result, Math.Round(expected, 4));
+            Assert.AreEqual(0, Math.Round(expected, 4));
         }
 
 

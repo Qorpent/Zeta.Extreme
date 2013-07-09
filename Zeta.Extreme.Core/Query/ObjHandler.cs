@@ -17,6 +17,7 @@
 // PROJECT ORIGIN: Zeta.Extreme.Core/ObjHandler.cs
 #endregion
 using System;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
 
@@ -130,6 +131,14 @@ namespace Zeta.Extreme {
 				Type = ZoneType.Obj;
 			}
 			NormalizeNative(query.Session);
+            //ZC-614 выставление признака блокировки формулы объекта
+            if (Type == ZoneType.Obj)
+            {
+                if (IsFormula && (FormulaType != "boo") && query.Col.Native != null && query.Col.Native.IsMarkSeted("AGGREGATEOBJ"))
+                {
+                    LockFormula = true;
+                }
+            }
 		}
 	
 

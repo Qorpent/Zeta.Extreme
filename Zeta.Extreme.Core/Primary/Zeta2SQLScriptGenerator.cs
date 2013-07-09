@@ -143,6 +143,10 @@ namespace Zeta.Extreme.Primary {
 				colcondition = " col in ( " + colids + ")";
 			}
             var objcondition = objfld + "=" + cobj.o;
+            if (0 == cobj.o)
+            {
+                objcondition = objfld + " in ( " + cobj.ids + " )";
+            }
             // ZC-614 формулы могут пройти до первичных значений и только тут уже заменяться конечными ID
             if (objfld == "obj" && cobj.native is IZetaMainObject) {
                 var obj = cobj.native as IZetaMainObject;
@@ -151,9 +155,7 @@ namespace Zeta.Extreme.Primary {
                 }
             }
 			
-			if (0==cobj.o) {
-				objcondition = objfld + " in ( " + cobj.ids + " )";
-			}
+			
 
 			if (string.IsNullOrWhiteSpace(time.ps)) {
 				return string.Format(
@@ -202,7 +204,12 @@ namespace Zeta.Extreme.Primary {
 			var idfld = prototype.UseSum ? "0" : "id";
             //ZC-614 проброс сводного объекта
             if (prototype.UseLockedObject) {
-                objfld = cobj.o.ToString(CultureInfo.InvariantCulture);
+                if (0 == cobj.o && null!=cobj.native) {
+                    objfld = cobj.native.Id.ToString(CultureInfo.InvariantCulture);
+                }
+                else {
+                    objfld = cobj.o.ToString(CultureInfo.InvariantCulture);
+                }
             }
 			return string.Format("\r\nSELECT {0},col,row,{1},year,{2}, {3} , {4} ,'{5}:{6}'  ", idfld, objfld, time.p, valuereference,
 			                     (int) cobj.t, cobj.af,cobj.Types);
