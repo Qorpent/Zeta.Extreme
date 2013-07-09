@@ -272,7 +272,8 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 
 		private const string formroot = "/0INPUTROOT/";
 		private string[] GetFormName(IZetaRow row) {
-			if (row.MarkCache.Contains(formroot)) return new[]{row.Code, row.Name};
+            if(null==row)return new[] {"UNKNOWN", "UNKNOWN"};
+			if (null!=row.MarkCache && row.MarkCache.Contains(formroot)) return new[]{row.Code, row.Name};
 			if (null == row.Parent) return new[] {"UNKNOWN", "UNKNOWN"};
 			return GetFormName(row.Parent);
 		}

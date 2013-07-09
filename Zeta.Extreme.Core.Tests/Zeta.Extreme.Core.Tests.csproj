@@ -48,6 +48,7 @@
     <Compile Include="FeatureAndBugFix\ZC612KmultNotResolved.cs" />
     <Compile Include="FeatureAndBugFix\ZC613NotCalcSUMMAEDFACTCALC_In_New_Form.cs" />
     <Compile Include="FeatureAndBugFix\ZC614_Tests.cs" />
+    <Compile Include="FeatureAndBugFix\ZC615NotCalcSUMMAEDFACTCALC_In_z1002820.cs" />
     <Compile Include="FormulaStorageTests\CanParseFormulaWithAltObjFilter.cs" />
     <Compile Include="FormulaStorageTests\DllCacheTests.cs" />
     <Compile Include="MockFormulaTest.cs" />
