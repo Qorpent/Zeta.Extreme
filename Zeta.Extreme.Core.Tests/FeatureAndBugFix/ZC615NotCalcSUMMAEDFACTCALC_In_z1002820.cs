@@ -18,6 +18,7 @@ namespace Zeta.Extreme.Core.Tests {
             session.WaitEvaluation();
             var result = q.Result;
             Assert.Null(result.Error);
+            Console.WriteLine(result.NumericResult);
             Assert.AreNotEqual(0, Math.Round(result.NumericResult, 4));
         }
 

@@ -16,6 +16,8 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Form/StateRule.cs
 #endregion
+
+using System;
 using System.Reflection;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -64,7 +66,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
 						DatabaseSettings = new MongoDatabaseSettings(),
 						CollectionName = CollectionName
 					};
-				__connecitonInitialized = true;
+			    
+			        Connector.Server.Connect(TimeSpan.FromSeconds(2));   
+			        Connector.Server.Disconnect();
+			    
+			    __connecitonInitialized = true;
 			}
 			if (!__moduleInitialized) {
 				var moduleJavaScript = Assembly.GetExecutingAssembly().ReadManifestResource("chat.js");

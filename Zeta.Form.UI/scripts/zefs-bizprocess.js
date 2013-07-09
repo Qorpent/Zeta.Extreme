@@ -38,6 +38,7 @@
             case "trud_grp"  : return "Персонал";
             case "sys"       : return "Системные";
             case "f7"        : return "Системные";
+			case "dosie_grp" : return "Досье"
             default          : return "";
         }
     };
