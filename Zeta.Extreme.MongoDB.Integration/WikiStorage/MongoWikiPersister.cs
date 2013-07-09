@@ -129,23 +129,26 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 
 		}
 
-		private MongoGridFSStream ConvertToMongoGridInfo(WikiBinary binary)
-		{
-			var md = new BsonDocument();
-			md["title"] = binary.Title;
-			md["editor"] = Application.Principal.CurrentUser.Identity.Name;
-			md["owner"] = Application.Principal.CurrentUser.Identity.Name;
-			md["lastwrite"] = DateTime.Now;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="binary"></param>
+        /// <returns></returns>
+		private MongoGridFSStream ConvertToMongoGridInfo(WikiBinary binary) {
 			return GridFs.Create(
 				binary.Code,
-				new MongoGridFSCreateOptions
-				{
+				new MongoGridFSCreateOptions {
 					Id = binary.Code,
-					Metadata = md,
+                    Metadata = new BsonDocument {
+                        {"title", binary.Title},
+                        {"editor", Application.Principal.CurrentUser.Identity.Name},
+                        {"owner", Application.Principal.CurrentUser.Identity.Name},
+                        {"lastwrite", DateTime.Now},
+		            },
 					UploadDate = DateTime.Now,
 					ContentType = binary.MimeType,
 				}
-				);
+            );
 		}
 
 		/// <summary>
@@ -282,6 +285,25 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         }
 
         /// <summary>
+        ///     Восстановление состояние страницы на момент определённой версии
+        /// </summary>
+        /// <param name="code">Код страницы</param>
+        /// <param name="version">Идентификатор версии</param>
+        /// <returns></returns>
+        public WikiVersionCreateResult RestoreVersion(string code, string version) {
+            var restored = GetWikiPageByVersion(code, version);
+            Serializer.UpdateWikiPageVersion(restored);
+
+            if (restored == null) {
+                return new WikiVersionCreateResult(false, null, DateTime.MinValue, "There is no page to restore");
+            }
+
+            Save(restored);
+
+            return new WikiVersionCreateResult(true, restored.Version, restored.Published, "The page was restored successful");
+        }
+
+        /// <summary>
         ///     Получить страницу Wiki определённой версии по коду страницы
         /// </summary>
         /// <param name="code">Код страницы</param>
@@ -325,7 +347,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         /// </summary>
         /// <param name="code">Код страницы</param>
         /// <returns>Страница Wiki</returns>
-        private WikiPage GetLatestVersion(string code) {
+        public WikiPage GetLatestVersion(string code) {
             var rawWikiPage = Collection.Find(
                 new QueryDocument(
                     BsonDocument.Parse("{code : '" + code + "', published : {$exists : true}}")
