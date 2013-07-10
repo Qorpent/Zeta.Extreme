@@ -6,6 +6,7 @@
 		<IsWeb>True</IsWeb>
 	</PropertyGroup>
 	<Import Project="..\Zeta.Extreme\testapp.base" />
+	<Import Project="..\qorpent.ui\fullinstall" />
 	<ItemGroup>	
 		<Script Include="..\Zeta.Extreme\Zeta.Form.UI\scripts\*.js"/>
 		<Script Include="..\qorpent.sys\commons\qorpent.wiki.js"/>
@@ -21,12 +22,5 @@
 		<Config Include="..\deployconfig\devel.db-connection"/>
 		
 		
-		<RootFile Include="..\qorpent.ui\*.html"/>		
-		<Config Include="..\qorpent.ui\qorpent.lib.ui-load.bxl" />
-		<Config Include="..\qorpent.ui\qorpent.core.ui-load.bxl" />
-		<!-- 
-		<Config Include="..\qorpent.ui\qorpent.main.ui-load.bxl" />
-		<Config Include="..\qorpent.ui\qorpent.admin.ui-load.bxl" />
-		-->
 	</ItemGroup>
 </Project>
