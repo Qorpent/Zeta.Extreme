@@ -11,31 +11,118 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 	///     Класс сериализации Wiki страниц в MongoDB
 	/// </summary>
 	public class MongoWikiSerializer {
-		/// <summary>
-		///     Конвертирует BSON в страницу
-		/// </summary>
-		/// <param name="doc">Документ</param>
-		/// <returns>Страница wiki</returns>
-		public WikiPage ToPage(BsonDocument doc) {
-			var result = new WikiPage {
-                Code = doc["code"].AsString,
-                Text = doc["text"].AsString,
-                Owner = doc["owner"].AsString,
-                Editor = doc["editor"].AsString,
-                Title = doc["title"].AsString,
-                Published = doc["published"].ToUniversalTime(),
-                Version = doc["version"].AsString,
-                Existed = true
-            };
+	    private ToWikiPageSerializer _toWikiPageSerializer;
 
-			foreach (var e in doc) {
-			    if (IsProperty(e.Name)) {
-			        result.Propeties[e.Name] = e.Value.AsString;
-			    }
-			}
+        /// <summary>
+        /// 
+        /// </summary>
+	    public ToWikiPageSerializer ToWikiPage {
+	        get { return _toWikiPageSerializer ?? (_toWikiPageSerializer = new ToWikiPageSerializer()); }
+            set { _toWikiPageSerializer = value; }
+	    } 
 
-			return result;
-		}
+        /// <summary>
+        /// 
+        /// </summary>
+        public class ToWikiPageSerializer {
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="document"></param>
+            /// <returns></returns>
+            public WikiPage FromMain(BsonDocument document) {
+                var result = new WikiPage {
+                    Code = document["_id"].AsString,
+                    Text = document["text"].AsString,
+                    Owner = document["owner"].AsString,
+                    Editor = document["editor"].AsString,
+                    Title = document["title"].AsString,
+                    Published = document["ver"].ToUniversalTime(),
+                    Version = "Current",
+                    Existed = true
+                };
+
+                foreach (var e in document) {
+                    if (IsProperty(e.Name)) {
+                        result.Propeties[e.Name] = e.Value.AsString;
+                    }
+                }
+
+                return result;
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="document"></param>
+            /// <returns></returns>
+            public WikiPage FromHistory(BsonDocument document) {
+                var result = new WikiPage {
+                    Code = document["code"].AsString,
+                    Text = document["text"].AsString,
+                    Owner = document["owner"].AsString,
+                    Editor = document["editor"].AsString,
+                    Title = document["title"].AsString,
+                    Published = document["published"].ToUniversalTime(),
+                    Version = document["version"].AsString,
+                    Existed = true
+                };
+
+                foreach (var e in document) {
+                    if (IsProperty(e.Name)) {
+                        result.Propeties[e.Name] = e.Value.AsString;
+                    }
+                }
+                
+                return result;
+            }
+
+            /// <summary>
+            ///     Проверяет, не является ли поле в документе мета-свойством
+            /// </summary>
+            /// <param name="fieldName">Имя поля</param>
+            /// <returns>True — является, false — не явялется</returns>
+            private static bool IsProperty(string fieldName) {
+                if (fieldName == "_id") {
+                    return false;
+                }
+
+                if (fieldName == "code") {
+                    return false;
+                }
+
+                if (fieldName == "text") {
+                    return false;
+                }
+
+                if (fieldName == "owner") {
+                    return false;
+                }
+
+                if (fieldName == "editor") {
+                    return false;
+                }
+
+                if (fieldName == "title") {
+                    return false;
+                }
+
+                if (fieldName == "published") {
+                    return false;
+                }
+
+                if (fieldName == "version") {
+                    return false;
+                }
+
+                if (fieldName == "ver") {
+                    return false;
+                }
+
+                return true;
+            }
+        }
 
 		/// <summary>
 		///     Конвертирует описатель MongoFile в WikiBinary
@@ -77,7 +164,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		/// </summary>
 		/// <param name="page">Страница Wiki</param>
 		/// <returns>Конвертированный BSON документ</returns>
-		public object NewFormPage(WikiPage page) {
+		public BsonDocument NewFormPage(WikiPage page) {
 		    var document = new BsonDocument {
                 {"code", page.Code},
                 {"text", page.Text},
@@ -85,9 +172,6 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                 {"editor", Application.Current.Principal.CurrentUser.Identity.Name},
                 {"title", page.Title ?? ""}
 		    };
-
-            UpdateWikiPageVersion(page);
-            CopyWikiPageVersionToBson(page, document);
 
 			foreach (var propety in page.Propeties) {
                 document[propety.Key] = propety.Value ?? "";
@@ -112,8 +196,6 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 				updateBuilder.Set("title", page.Title);
 			}
 
-		    updateBuilder.Set("version", page.Version);
-		    updateBuilder.Set("published", page.Published);
 			updateBuilder.Set("editor", Application.Current.Principal.CurrentUser.Identity.Name);
 
 			foreach (var propety in page.Propeties) {
@@ -140,47 +222,6 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         public void CopyWikiPageVersionToBson(WikiPage page, BsonDocument document) {
             document["version"] = page.Version;
             document["published"] = page.Published;
-        }
-
-        /// <summary>
-        ///     Проверяет, не является ли поле в документе мета-свойством
-        /// </summary>
-        /// <param name="fieldName">Имя поля</param>
-        /// <returns>True — является, false — не явялется</returns>
-        private bool IsProperty(string fieldName) {
-            if (fieldName == "_id") {
-                return false;
-            }
-
-            if (fieldName == "code") {
-                return false;
-            }
-
-            if (fieldName == "text") {
-                return false;
-            }
-
-            if (fieldName == "owner") {
-                return false;
-            }
-
-            if (fieldName == "editor") {
-                return false;
-            }
-
-            if (fieldName == "title") {
-                return false;
-            }
-
-            if (fieldName == "published") {
-                return false;
-            }
-
-            if (fieldName == "version") {
-                return false;
-            }
-
-            return true;
         }
 	}
 }

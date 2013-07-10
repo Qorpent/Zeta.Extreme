@@ -11,6 +11,22 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 	///     Реализация персистера Wiki на Mongo
 	/// </summary>
 	public class MongoWikiPersister : MongoBasedServiceBase, IWikiPersister {
+	    private MongoDbConnector _versionsStorage;
+
+	    private  MongoDbConnector VersionsStorage {
+	        get {
+	            if (_versionsStorage == null) {
+	                _versionsStorage = new MongoDbConnector {
+	                    CollectionName = CollectionName + "Versions",
+	                    DatabaseName = DatabaseName,
+	                    ConnectionString = ConnectionString
+	                };
+	            }
+
+                return _versionsStorage;
+	        }
+	    }
+
         /// <summary>
         ///     Компонент сериализации WikiPage - BSON
         /// </summary>
@@ -52,34 +68,6 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                 }
             }
 	    }
-
-	    /// <summary>
-        ///     Возвращает страницу Wiki. Если версия не указана — последнюю актуальную
-        /// </summary>
-        /// <param name="code"></param>
-        /// <param name="version"></param>
-        /// <returns></returns>
-        public WikiPage Get(string code, string version = null) {
-            var clause = "{code : '" + code + "'";
-
-            if (!string.IsNullOrEmpty(version)) {
-                clause += ", version : '" + version + "'";
-            }
-
-            clause += "}";
-
-            var found = Collection.Find(
-                new QueryDocument(
-                    BsonDocument.Parse(clause)
-                )    
-            ).FirstOrDefault();
-
-            if (found != null) {
-                return Serializer.ToPage(found);
-            }
-
-            return null;
-        }
 
 	    /// <summary>
 		/// Метод сохранения изменений в страницу
@@ -246,36 +234,60 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
             return latest.Published;
         }
 
+        /// <summary>
+        ///     Push a Wiki page to the history
+        /// </summary>
+        /// <param name="wikiPage"></param>
+        /// <param name="comment"></param>
+        private WikiVersionCreateResult PushHistory(WikiPage wikiPage, string comment) {
+            var version = Guid.NewGuid().ToString();
+            var published = DateTime.Now;
+
+            var writeResult = VersionsStorage.Collection.Insert(
+                Serializer.NewFormPage(wikiPage).Merge(
+                    new BsonDocument {
+                        {"published", published},
+                        {"version", version},
+                        {"creator", Application.Principal.CurrentUser.Identity.Name},
+                        {"comment", comment ?? "Uncommented version"},
+                        {"_id", ObjectId.GenerateNewId()},
+                        {"owner", wikiPage.Owner},
+                        {"editor", wikiPage.Editor}
+                    },
+
+                    true
+                )
+            );
+
+            if (!writeResult.Ok) {
+                return new WikiVersionCreateResult(false, version, published, writeResult.ErrorMessage);
+            }
+
+            return new WikiVersionCreateResult(true, version, published, "Version created to with comment: '" + comment + "'");
+        }
+
 	    /// <summary>
         ///     Создание версии страницы (копии последней с комментарием)
         /// </summary>
         /// <param name="code">Код страницы</param>
         /// <param name="comment">Комментарий</param>
         /// <returns></returns>
-        public WikiVersionCreateResult CreateVersion(string code, string comment) {
-            var lastVersion = GetLatestVersion(code);
+        public object CreateVersion(string code, string comment) {
+            var current = Collection.Find(
+                new QueryDocument(
+                    BsonDocument.Parse("{_id : '" + code + "'}")
+                )
+            ).SetLimit(1).FirstOrDefault();
 
-            if (lastVersion == null) {
+            if (current == null) {
                 return new WikiVersionCreateResult(false, null, DateTime.MinValue, "There is no page to clone");
             }
 
-            var cloned = CloneWikiPage(code, lastVersion.Version);
+	        var wikiPage = Serializer.ToWikiPage.FromMain(current);
 
-            if (cloned != null) {
-                Collection.Update(
-                    new QueryDocument(
-                        BsonDocument.Parse("{version : '" + cloned.Version + "'}")
-                    ),
-                    new UpdateDocument(
-                        BsonDocument.Parse("{$set : {comment : '" + comment + "'}}")    
-                    ),
-                    UpdateFlags.Upsert
-                );
+            Save(wikiPage);
 
-                return new WikiVersionCreateResult(true, cloned.Version, cloned.Published, "The page was cloned successful");
-            }
-
-            return new WikiVersionCreateResult(false, null, DateTime.MinValue, "Can not clone the page");
+            return PushHistory(wikiPage, comment);
         }
 
         /// <summary>
@@ -284,7 +296,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         /// <param name="code">Код страницы</param>
         /// <param name="version">Идентификатор версии</param>
         /// <returns></returns>
-        public WikiVersionCreateResult RestoreVersion(string code, string version) {
+        public object RestoreVersion(string code, string version) {
             var restored = GetWikiPageByVersion(code, version);
             Serializer.UpdateWikiPageVersion(restored);
 
@@ -303,38 +315,20 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         /// <param name="code">Код страницы</param>
         /// <param name="version">Код версии страницы</param>
         /// <returns></returns>
-        private WikiPage GetWikiPageByVersion(string code, string version) {
-            var rawDocument = Collection.Find(
-                new QueryDocument (
+        public WikiPage GetWikiPageByVersion(string code, string version) {
+            var rawDocument = VersionsStorage.Collection.Find(
+                new QueryDocument(
                     BsonDocument.Parse("{'code' : '" + code + "', 'version' : '" + version + "'}")
                 )
-            );
+            ).SetLimit(1).FirstOrDefault();
 
             if (rawDocument == null) {
                 return null;
             }
 
-            return Serializer.ToPage(
-                rawDocument.FirstOrDefault()
-            );
+            return Serializer.ToWikiPage.FromHistory(rawDocument);
         }
 
-        /// <summary>
-        ///     Метод клонирования страницы Wiki
-        /// </summary>
-        /// <param name="code"></param>
-        /// <param name="version"></param>
-        /// <returns></returns>
-        private WikiPage CloneWikiPage(string code, string version) {
-            var currentPage = GetWikiPageByVersion(code, version);
-            
-            currentPage.Version = Guid.NewGuid().ToString();
-            currentPage.Published = DateTime.Now;
-
-            Save(currentPage);
-
-            return currentPage;
-        }
 
         /// <summary>
         ///     Метод лля получения наиболее поздней версии страницы Wiki
@@ -342,7 +336,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         /// <param name="code">Код страницы</param>
         /// <returns>Страница Wiki</returns>
         public WikiPage GetLatestVersion(string code) {
-            var rawWikiPage = Collection.Find(
+            var rawWikiPage = VersionsStorage.Collection.Find(
                 new QueryDocument(
                     BsonDocument.Parse("{code : '" + code + "', published : {$exists : true}}")
                 )
@@ -350,15 +344,23 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                 new SortByDocument(
                     BsonDocument.Parse("{published : -1}")
                 )
-            ).SetLimit(1);
+            ).SetLimit(1).FirstOrDefault();
 
             if (rawWikiPage == null) {
-                return null;
+                rawWikiPage = Collection.Find(
+                    new QueryDocument(
+                        BsonDocument.Parse("{_id : '" + code + "'}")
+                    )
+                ).SetLimit(1).FirstOrDefault();
+
+                if (rawWikiPage != null) {
+                    return Serializer.ToWikiPage.FromMain(rawWikiPage);
+                }
+                
+                return new WikiPage();
             }
 
-            return Serializer.ToPage(
-                rawWikiPage.FirstOrDefault().ToBsonDocument()
-            );
+            return Serializer.ToWikiPage.FromHistory(rawWikiPage);
         }
 	}
 }
