@@ -1,6 +1,6 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
-		<AppDir>c:\tmp\zext</AppDir>
+		<AppDir>../.app/zefst</AppDir>
 		<Configuration>Debug</Configuration>
 		<QISD>False</QISD>
 		<IsWeb>True</IsWeb>
@@ -13,9 +13,20 @@
 		<Style Include="..\Zeta.Extreme\Zeta.Form.UI\styles\*.css"/>
 		<Image Include="..\Zeta.Extreme\Zeta.Form.UI\images\*.*"/>
 		<RootFile Include="..\Zeta.Extreme\Zeta.Form.UI\*.html"/>		
+		
+		
+		
 		<Config Include="..\deployconfig\devel.rolemap.bxl"/>
 		<Config Include="..\deployconfig\temporalrolefix.rolemap.bxl"/>
 		<Config Include="..\deployconfig\devel.db-connection"/>
 		
+		
+		<RootFile Include="..\qorpent.ui\*.html"/>		
+		<Config Include="..\qorpent.ui\qorpent.lib.ui-load.bxl" />
+		<Config Include="..\qorpent.ui\qorpent.core.ui-load.bxl" />
+		<!-- 
+		<Config Include="..\qorpent.ui\qorpent.main.ui-load.bxl" />
+		<Config Include="..\qorpent.ui\qorpent.admin.ui-load.bxl" />
+		-->
 	</ItemGroup>
 </Project>
