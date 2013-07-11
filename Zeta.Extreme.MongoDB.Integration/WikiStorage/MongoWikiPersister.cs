@@ -304,9 +304,10 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                 return new WikiVersionCreateResult(false, null, DateTime.MinValue, "There is no page to restore");
             }
 
+            var created = PushHistory(restored, "Restore version: " + version);
             Save(restored);
-
-            return new WikiVersionCreateResult(true, restored.Version, restored.Published, "The page was restored successful");
+            
+            return new WikiVersionCreateResult(true, created.Version, created.Published, "The page was restored successful");
         }
 
         /// <summary>
@@ -361,6 +362,39 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
             }
 
             return Serializer.ToWikiPage.FromHistory(rawWikiPage);
+        }
+        
+        /// <summary>
+        ///     Возвращает список версий и первичную информацию о документе по коду
+        /// </summary>
+        /// <param name="code">Wiki page code</param>
+        /// <returns></returns>
+        public IEnumerable<object> GetVersionsList(string code) {
+            var list = new List<object>();
+
+            var versions = VersionsStorage.Collection.Find(
+                new QueryDocument(
+                    BsonDocument.Parse("{code : '" + code + "'}")
+                )
+            ).SetFields(
+                new FieldsDocument(
+                    BsonDocument.Parse("{text : 0}")
+                )
+            );
+
+            foreach (var version in versions) {
+                list.Add(
+                    new {
+                        Version = version["version"].AsString,
+                        Published = version["published"].ToUniversalTime(),
+                        Editor = version["editor"].AsString,
+                        Owner = version["owner"].AsString,
+                        Creator = version["creator"].AsString
+                    }
+                );
+            }
+
+            return list;
         }
 	}
 }
