@@ -120,6 +120,10 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                     return false;
                 }
 
+                if (fieldName == "locker") {
+                    return false;
+                }
+
                 return true;
             }
         }

@@ -75,7 +75,10 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		/// <param name="pages"></param>
 		public void Save(params WikiPage[] pages) {
 			foreach (var page in pages) {
-				
+                if (!SaveAllowed(page.Code)) {
+                    throw new Exception("Вы не имеет прав на редактирование страницы. Страница заблокирована.");
+                }
+
 				var existsQuery = Serializer.GetQueryFromCodes(new[] {page.Code}, new[] {page.Version});
 				var exists = Collection.Find(existsQuery).Count() != 0;
 				if (exists) {
@@ -297,6 +300,10 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         /// <param name="version">Идентификатор версии</param>
         /// <returns></returns>
         public object RestoreVersion(string code, string version) {
+            if (!SaveAllowed(code)) {
+                throw new Exception("Вы не имеет прав на редактирование страницы. Страница заблокирована.");
+            }
+
             var restored = GetWikiPageByVersion(code, version);
             Serializer.UpdateWikiPageVersion(restored);
 
@@ -395,6 +402,118 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
             }
 
             return list;
+        }
+
+        /// <summary>
+        ///     Возвращает пользователя, заблокировавшего документ
+        /// </summary>
+        /// <param name="code">Код страницы Wiki</param>
+        /// <returns>Имя пользователя, заблокировавшего страницу</returns>
+        private string GetLocker(string code) {
+            var locker = Collection.Find(
+                new QueryDocument(
+                    BsonDocument.Parse("{_id : '" + code + "'}")
+                )
+            ).SetLimit(1).SetFields(
+                new FieldsDocument(
+                    BsonDocument.Parse("{locker : 1}")
+                )
+            ).FirstOrDefault();
+
+            if (locker == null) {
+                return null;
+            }
+
+            BsonValue user;
+            locker.TryGetValue("locker", out user);
+
+            if (user == null) {
+                return null;
+            }
+
+            return user.AsString;
+        }
+
+        /// <summary>
+        ///     Проверить, что страница заблокирована
+        /// </summary>
+        /// <param name="code">Код страницы Wiki</param>
+        /// <returns>Состояние блокировки</returns>
+        private bool IsLocked(string code) {
+            var locker = GetLocker(code);
+
+            if (locker == null) {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        ///     Установить блокировку страницы на текущего пользователя
+        /// </summary>
+        /// <param name="code">Код страницы Wiki</param>
+        /// <returns>Результат операции</returns>
+        private bool SetLock(string code) {
+            Collection.Update(
+                new QueryDocument(
+                    BsonDocument.Parse("{_id : '" + code + "'}")
+                ),
+
+                new UpdateDocument(
+                    new BsonDocument("locker", Application.Principal.CurrentUser.Identity.Name)
+                )
+            );
+
+            return true;
+        }
+
+        /// <summary>
+        ///     Проверить, что пользователю разрешено сохранять страницу
+        /// </summary>
+        /// <param name="code">Код страницы</param>
+        /// <returns></returns>
+        private bool SaveAllowed(string code) {
+            if (IsLocked(code)) {
+                if (GetLocker(code) != Application.Principal.CurrentUser.Identity.Name) {
+                    if (!Application.Principal.CurrentUser.IsInRole("ADMIN")) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        ///     Установить блокировку
+        /// </summary>
+        /// <param name="code">Код страницы</param>
+        /// <returns>Результат операции</returns>
+        public bool GetLock(string code) {
+            if (IsLocked(code)) {
+                return false;
+            }
+
+            return SetLock(code);
+        }
+
+        /// <summary>
+        ///     Снять блокировку
+        /// </summary>
+        /// <param name="code">код страницы</param>
+        public bool Releaselock(string code) {
+            Collection.Update(
+                new QueryDocument(
+                    BsonDocument.Parse("{_id : '" + code + "'}")
+                ),
+
+                new UpdateDocument(
+                    BsonDocument.Parse("{$unset : {locker : 1}}")
+                )
+            );
+
+            return true;
         }
 	}
 }
