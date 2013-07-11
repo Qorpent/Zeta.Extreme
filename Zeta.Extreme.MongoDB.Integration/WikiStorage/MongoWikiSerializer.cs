@@ -178,7 +178,8 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                 {"text", page.Text},
                 {"owner", Application.Current.Principal.CurrentUser.Identity.Name},
                 {"editor", Application.Current.Principal.CurrentUser.Identity.Name},
-                {"title", page.Title ?? ""}
+                {"title", page.Title ?? ""},
+                {"ver", DateTime.Now}
 		    };
 
 			foreach (var propety in page.Propeties) {

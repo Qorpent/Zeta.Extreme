@@ -459,17 +459,17 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         /// <param name="code">Код страницы Wiki</param>
         /// <returns>Результат операции</returns>
         private bool SetLock(string code) {
-            Collection.Update(
+            var affected = Collection.Update(
                 new QueryDocument(
-                    BsonDocument.Parse("{_id : '" + code + "'}")
+                    BsonDocument.Parse("{_id : '" + code + "', locker : {$exists : false}}")
                 ),
 
                 new UpdateDocument(
                     new BsonDocument("$set", new BsonDocument("locker", Application.Principal.CurrentUser.Identity.Name))
                 )
-            );
+            ).DocumentsAffected;
 
-            return true;
+            return (affected > 0);
         }
 
         /// <summary>
