@@ -79,15 +79,16 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                     throw new Exception("Вы не имеет прав на редактирование страницы. Страница заблокирована.");
                 }
 
-				var existsQuery = Serializer.GetQueryFromCodes(new[] {page.Code}, new[] {page.Version});
-				var exists = Collection.Find(existsQuery).Count() != 0;
+				var clause = new QueryDocument(
+                    BsonDocument.Parse("{_id : '" + page.Code + "'}")    
+                );
+
+                var exists = Collection.Find(clause).Count() != 0;
+
 				if (exists) {
-					var update = Serializer.UpdateFromPage(page);
-					Collection.Update(existsQuery, update, UpdateFlags.Upsert);
-				}
-				else {
-					var doc = Serializer.NewFormPage(page);
-					Collection.Insert(doc);
+                    Collection.Update(clause, Serializer.UpdateFromPage(page), UpdateFlags.Upsert);
+				} else {
+                    Collection.Insert(Serializer.NewFormPage(page));
 				}
 			}
 		}
@@ -344,7 +345,18 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         /// <param name="code">Код страницы</param>
         /// <returns>Страница Wiki</returns>
         public WikiPage GetLatestVersion(string code) {
-            var rawWikiPage = VersionsStorage.Collection.Find(
+            var rawWikiPage = Collection.Find(
+                new QueryDocument(
+                    BsonDocument.Parse("{_id : '" + code + "'}")
+                )
+            ).SetLimit(1).FirstOrDefault();
+
+            if (rawWikiPage != null) {
+                return Serializer.ToWikiPage.FromMain(rawWikiPage);
+            }
+                
+
+            rawWikiPage = VersionsStorage.Collection.Find(
                 new QueryDocument(
                     BsonDocument.Parse("{code : '" + code + "', published : {$exists : true}}")
                 )
@@ -354,21 +366,11 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                 )
             ).SetLimit(1).FirstOrDefault();
 
-            if (rawWikiPage == null) {
-                rawWikiPage = Collection.Find(
-                    new QueryDocument(
-                        BsonDocument.Parse("{_id : '" + code + "'}")
-                    )
-                ).SetLimit(1).FirstOrDefault();
-
-                if (rawWikiPage != null) {
-                    return Serializer.ToWikiPage.FromMain(rawWikiPage);
-                }
-                
-                return new WikiPage();
+            if (rawWikiPage != null) {
+                return Serializer.ToWikiPage.FromHistory(rawWikiPage);
             }
-
-            return Serializer.ToWikiPage.FromHistory(rawWikiPage);
+                
+            return new WikiPage();
         }
         
         /// <summary>
@@ -461,7 +463,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                 ),
 
                 new UpdateDocument(
-                    new BsonDocument("locker", Application.Principal.CurrentUser.Identity.Name)
+                    new BsonDocument("$set", new BsonDocument("locker", Application.Principal.CurrentUser.Identity.Name))
                 )
             );
 

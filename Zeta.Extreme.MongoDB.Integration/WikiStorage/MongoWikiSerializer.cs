@@ -32,6 +32,9 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
             /// <param name="document"></param>
             /// <returns></returns>
             public WikiPage FromMain(BsonDocument document) {
+                BsonValue locker;
+                document.TryGetValue("locker", out locker);
+
                 var result = new WikiPage {
                     Code = document["_id"].AsString,
                     Text = document["text"].AsString,
@@ -39,6 +42,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                     Editor = document["editor"].AsString,
                     Title = document["title"].AsString,
                     Published = document["ver"].ToUniversalTime(),
+                    Locker = locker.AsString,
                     Version = "Current",
                     Existed = true
                 };
@@ -170,7 +174,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		/// <returns>Конвертированный BSON документ</returns>
 		public BsonDocument NewFormPage(WikiPage page) {
 		    var document = new BsonDocument {
-                {"code", page.Code},
+                {"_id", page.Code},
                 {"text", page.Text},
                 {"owner", Application.Current.Principal.CurrentUser.Identity.Name},
                 {"editor", Application.Current.Principal.CurrentUser.Identity.Name},
