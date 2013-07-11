@@ -191,16 +191,16 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		public IEnumerable<WikiBinary> FindBinaries(string search) {
             var queryJson = "{$or : [{code : {$regex : '(?ix)_REGEX_'}},{'metadata.title':{$regex:'(?ix)_REGEX_'}},{'metadata.owner':{$regex:'(?ix)_REGEX_'}},{contentType:{$regex:'(?ix)_REGEX_'}}]}".Replace("_REGEX_", search);
 			var queryDoc = new QueryDocument(BsonDocument.Parse(queryJson));
-            foreach (var doc in GridFs.Find(queryDoc).SetFields("code", "metadata.title", "metadata.owner", "length", "contentType", "metadata.lastwrite", "uploadDate", "chunkSize"))
-			{
-				var file = new WikiBinary()
-				{
+
+            foreach (var doc in GridFs.Find(queryDoc).SetFields("code", "metadata.title", "metadata.owner", "length", "contentType", "metadata.lastwrite", "uploadDate", "chunkSize")) {
+				var file = new WikiBinary {
 					Code = doc.Id.AsString,
 					Title = doc.Metadata["title"].AsString,
 					LastWriteTime = doc.UploadDate,
 					Size = doc.Length,
 					MimeType = doc.ContentType
 				};
+
 				if (doc.Metadata.Contains("lastwrite")) {
 					file.LastWriteTime = doc.Metadata["lastwrite"].ToLocalTime();
 				}
@@ -256,7 +256,8 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                         {"comment", comment ?? "Uncommented version"},
                         {"_id", ObjectId.GenerateNewId()},
                         {"owner", wikiPage.Owner},
-                        {"editor", wikiPage.Editor}
+                        {"editor", wikiPage.Editor},
+                        {"code", wikiPage.Code}
                     },
 
                     true
@@ -387,7 +388,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                 )
             ).SetFields(
                 new FieldsDocument(
-                    BsonDocument.Parse("{text : 0}")
+                    BsonDocument.Parse("{version : 1, published : 1, editor : 1, owner : 1, creator : 1, comment : 1}")
                 )
             );
 
@@ -398,7 +399,8 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                         Published = version["published"].ToUniversalTime(),
                         Editor = version["editor"].AsString,
                         Owner = version["owner"].AsString,
-                        Creator = version["creator"].AsString
+                        Creator = version["creator"].AsString,
+                        Comment = version["comment"].AsString
                     }
                 );
             }
@@ -504,7 +506,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         ///     Снять блокировку
         /// </summary>
         /// <param name="code">код страницы</param>
-        public bool Releaselock(string code) {
+        public bool ReleaseLock(string code) {
             Collection.Update(
                 new QueryDocument(
                     BsonDocument.Parse("{_id : '" + code + "'}")
