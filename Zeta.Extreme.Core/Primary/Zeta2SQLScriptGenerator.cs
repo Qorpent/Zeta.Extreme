@@ -20,9 +20,11 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Primary {
@@ -78,6 +80,7 @@ namespace Zeta.Extreme.Primary {
 					{
 						t = _.First().Obj.Type,
 						m = _.First().Obj.DetailMode,
+                        native = _.First().Obj.Native,
 						ids = string.Join(",",_.Select(__=>__.Obj.Id).Distinct().OrderBy(___=>___)),
 						af = _.First().Reference.Contragents,
 						Types = _.First().Reference.Types
@@ -95,6 +98,7 @@ namespace Zeta.Extreme.Primary {
 							o = _.First().Obj.Id,
 							c = _.First().Col.Id,
 							t = _.First().Obj.Type,
+                            native = _.First().Obj.Native,
 							m = _.First().Obj.DetailMode,
 							af = _.First().Reference.Contragents,
 							Types = _.First().Reference.Types,
@@ -138,10 +142,20 @@ namespace Zeta.Extreme.Primary {
 			if (!string.IsNullOrWhiteSpace(colids)) {
 				colcondition = " col in ( " + colids + ")";
 			}
-			var objcondition = objfld + "=" + cobj.o;
-			if (0==cobj.o) {
-				objcondition = objfld + " in ( " + cobj.ids + " )";
-			}
+            var objcondition = objfld + "=" + cobj.o;
+            if (0 == cobj.o)
+            {
+                objcondition = objfld + " in ( " + cobj.ids + " )";
+            }
+            // ZC-614 формулы могут пройти до первичных значений и только тут уже заменяться конечными ID
+            if (objfld == "obj" && cobj.native is IZetaMainObject) {
+                var obj = cobj.native as IZetaMainObject;
+                if (obj.IsFormula) {
+                    objcondition = objfld + " in ( " + obj.Formula.Replace(";",",") + " )";
+                }
+            }
+			
+			
 
 			if (string.IsNullOrWhiteSpace(time.ps)) {
 				return string.Format(
@@ -188,6 +202,15 @@ namespace Zeta.Extreme.Primary {
 			var objfld = GetObjectField(cobj);
 			var valuereference = GetValueReference(prototype);
 			var idfld = prototype.UseSum ? "0" : "id";
+            //ZC-614 проброс сводного объекта
+            if (prototype.UseLockedObject) {
+                if (0 == cobj.o && null!=cobj.native) {
+                    objfld = cobj.native.Id.ToString(CultureInfo.InvariantCulture);
+                }
+                else {
+                    objfld = cobj.o.ToString(CultureInfo.InvariantCulture);
+                }
+            }
 			return string.Format("\r\nSELECT {0},col,row,{1},year,{2}, {3} , {4} ,'{5}:{6}'  ", idfld, objfld, time.p, valuereference,
 			                     (int) cobj.t, cobj.af,cobj.Types);
 		}

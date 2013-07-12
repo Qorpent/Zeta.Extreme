@@ -137,7 +137,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <returns></returns>
         private MongoClient ClientSetup() {
-            return new MongoClient(ConnectionString);
+            
+           var result = new MongoClient(ConnectionString);
+            return result;
         }
 
         /// <summary>

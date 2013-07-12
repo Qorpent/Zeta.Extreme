@@ -42,7 +42,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		protected override object MainProcess() {
 			MyFormServer.MetaCacheLoad.Wait();
 
-            if (Application.Roles.IsInRole(Context.LogonUser, "ADMIN")) {
+            if (Application.Roles.IsInRole(Context.User, "ADMIN")) {
                 return GetUser(login, name, WithRoles);
             } else {
                 return GetUser(login, name, false); // just give a damn

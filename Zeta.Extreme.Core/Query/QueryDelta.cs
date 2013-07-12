@@ -143,6 +143,12 @@ namespace Zeta.Extreme {
 			}
 			var p = match.Groups["p"].Value.ToInt();
 			var ps = match.Groups["ps"].Value != "-";
+		    var pds = match.Groups["pds"].Value;
+		    int[] periods = null;
+            if (!string.IsNullOrWhiteSpace(pds))
+            {
+                periods = pds.Split(',').Select(_ => _.ToInt()).ToArray();
+            }
 			if (!ps) {
 				p = -p;
 			}
@@ -176,6 +182,11 @@ namespace Zeta.Extreme {
 				delta.Period = p;
 			}
 
+            if (null != periods)
+            {
+                delta.Periods = periods;
+            }
+
 			//ZC-248
 			if (!string.IsNullOrWhiteSpace(aof)) {
 				delta.Contragents = aof;
@@ -191,7 +202,12 @@ namespace Zeta.Extreme {
 			}
 			return delta;
 		}
-		/// <summary>
+        /// <summary>
+        /// Множественный перевод
+        /// </summary>
+	    public int[] Periods { get; set; }
+
+	    /// <summary>
 		/// Фильтр типов для консолидации объекта
 		/// </summary>
 		public string ConsolidateObjectFilter { get; set; }
@@ -271,7 +287,14 @@ namespace Zeta.Extreme {
 		}
 
 		private void MoveTime(IQuery result) {
-			if ((Year != 0 && Year != result.Time.Year) || (Period != 0 && Period != result.Time.Period)) {
+			if (
+                    (Year != 0 && Year != result.Time.Year) 
+                || 
+                    (Period != 0 && Period != result.Time.Period)
+                ||
+                    (Periods!=null)
+                
+                ) {
 				result.Time = result.Time.Copy();
 				if (0 != Year && Year < 1900) {
 					result.Time.Year += Year;
@@ -284,7 +307,7 @@ namespace Zeta.Extreme {
 						result.Time.Period = Period;
 					}
 					else {
-						var eval = Periods.Eval(result.Time.Year, result.Time.Period, Period);
+						var eval = Model.MetaCaches.Periods.Eval(result.Time.Year, result.Time.Period, Period);
 
 						result.Time.Year = eval.Year;
 						if (eval.Periods.Length == 1) {
@@ -296,6 +319,10 @@ namespace Zeta.Extreme {
 						}
 					}
 				}
+                if (null != Periods) {
+                    result.Time.Period = 0;
+                    result.Time.Periods = Periods;
+                }
 				result.Time.Normalize(result);
 			}
 		}
@@ -401,6 +428,10 @@ namespace Zeta.Extreme {
 			if (0 > Period) {
 				return false; //формульный период
 			}
+            if (null != Periods)
+            {
+                return false;
+            }
 			if (0 != Year && Math.Abs(Year) < 1900) {
 				return false; //смещение года
 			}

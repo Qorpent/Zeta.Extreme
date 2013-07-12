@@ -48,8 +48,14 @@ namespace Zeta.Extreme.Model.Querying {
 		/// </summary>
 		IZetaMainObject ObjRef { get; }
 
+        /// <summary>
+        /// ¬ соответствии с ZC614 формулы должны персистентно отключатьс€ при AGGREGATEOBJ на колонках
+        /// в том числе и дл€ дочерних запросов
+        /// </summary>
+	    bool LockFormula { get; set; }
 
-		/// <summary>
+
+	    /// <summary>
 		/// 	ѕроста€ копи€ зоны
 		/// </summary>
 		/// <returns> </returns>

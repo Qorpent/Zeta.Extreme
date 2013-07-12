@@ -26,7 +26,7 @@ namespace Zeta.Extreme.FrontEnd.Helpers
 			}
 			var roles = Application.Current.Roles;
 			var factory = ((ExtremeFormProvider) FormServer.Default.FormProvider).Factory;
-			var allthemas = factory.GetAll().Where(_ => !_.Code.EndsWith("lib") && roles.IsInRole(user, _.Role) && _.GetAllForms().Any(f=>roles.IsInRole(user,f.Role)));
+			var allthemas = factory.GetAll().Where(_ => !_.Code.EndsWith("lib") && roles.IsInRole(user, _.Role) && _.GetAllForms().Any(f=>roles.IsInRole(user,f.Role))).ToArray();
 			var themarecords =
 				allthemas.Select(
 					_ => new BizProcessRecord
@@ -68,13 +68,13 @@ namespace Zeta.Extreme.FrontEnd.Helpers
 				}
 
 			}
-			foreach (var p in groupbygrop)
+			/*foreach (var p in groupbygrop)
 			{
 				if (1 == p.Count())
 				{
 					p.First().Group = "";
 				}
-			}
+			}*/
 
 			return
 				themarecords.OrderByDescending(_ =>string.IsNullOrWhiteSpace(_.Group)?"ZZZZZZZ": _.Group)

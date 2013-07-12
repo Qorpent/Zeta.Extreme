@@ -28,7 +28,6 @@ using Qorpent;
 using Qorpent.Applications;
 using Qorpent.Events;
 using Qorpent.IoC;
-using Qorpent.Log;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.BizProcess.Themas;
@@ -38,7 +37,6 @@ using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 using Zeta.Extreme.Model.SqlSupport;
-using Zeta.Extreme.MongoDB.Integration;
 
 namespace Zeta.Extreme.FrontEnd {
 	/// <summary>

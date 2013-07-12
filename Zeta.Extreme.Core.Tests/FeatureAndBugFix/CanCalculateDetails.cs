@@ -36,7 +36,7 @@ namespace Zeta.Extreme.Core.Tests {
 				}
 				;
 			var result = _serial.Eval(query);
-			Assert.AreEqual(93.89m, result.NumericResult);
+            Assert.AreEqual(281.65m, result.NumericResult);
 		}
 	}
 

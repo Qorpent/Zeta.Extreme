@@ -343,6 +343,10 @@ namespace Zeta.Extreme {
 		public void Normalize(ISession session = null) {
 			Session = session;
 			Task objt=null; //объекты зачастую из БД догружаются
+
+
+            
+
 			if (null == Row.TargetObject) {
 				
 				objt = Task.Run(() => Obj.Normalize(this));
@@ -351,18 +355,23 @@ namespace Zeta.Extreme {
 				Obj.Native = Row.TargetObject;
 			}
 			Time.Normalize(this);
+
+           
+
 			Col.Normalize(this);
 			ResolveTemporalCustomCodeBasedColumns(session);
 			Row.Normalize(this); //тут формулы парсим простые как рефы		
 			if (null == Row.TargetObject && null!=objt) {
 				objt.Wait();
 			}
+            
 			AdaptDetailModeForDetailBasedSubtrees();
 			AdaptExRefLinkSourceForColumns(session);
 			Reference.Normalize(this);
 			if (string.IsNullOrWhiteSpace(Currency)) {
 				Currency = PrimaryConstants.VALUTA_NONE;
 			}
+            
 			//жесткая защита от референции на несуществующие строки
 			if (!IgnoreCheckPrimaryExistence && Row.IsPrimary() && Row.Native == null) {
 				Result = new QueryResult{IsComplete = false,Error = new Exception("В качестве первичной строки указан несуществующий код"+Row.Code)};

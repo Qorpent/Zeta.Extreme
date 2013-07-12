@@ -56,5 +56,9 @@ namespace Zeta.Extreme.Primary {
 		/// Marks that period is aggregated period
 		/// </summary>
 		public bool AggregatePeriod { get; set; }
+        /// <summary>
+        /// Признак использования блокированного объекта
+        /// </summary>
+	    public bool UseLockedObject { get; set; }
 	}
 }

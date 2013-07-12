@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Zeta.Extreme.Core.Tests.CoreTests;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Querying;
@@ -12,16 +13,17 @@ namespace Zeta.Extreme.Core.Tests {
 		{
 			var query = new Query
 				{
-					Row = { Code = "z111513" },
+					Row = { Code = "z111511" },
 					Col = { Code = "SUMMA" },
 					Obj = { Id = 467 },
 					Time = { Year = 2013, Period = 13 }
 				};
 			var realquery = session.Register(query);
 			var result = _serial.Eval(realquery);
-
+            if (null != result.Error) Console.WriteLine(result.Error);
 			Assert.True(result.IsComplete);
 		}
+
 
 
 		[Test]
