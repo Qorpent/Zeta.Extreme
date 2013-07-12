@@ -47,9 +47,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <returns>
 		/// </returns>
 		public IEnumerable<FormChatItem> GetSessionItems(IFormSession session) {
-			SetupConnection();
 			
-            return Connector.Collection.Find(
+            return Collection.Find(
                 new QueryDocument(
                     MongoDbFormChatSerializer.SessionToSearchDocument(session)    
                 )
@@ -67,14 +66,13 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <returns>
 		/// </returns>
 		public FormChatItem AddMessage(IFormSession session, string message, string type="default") {
-            SetupConnection();
 			type = type ?? "default";
 			var item = new FormChatItem {
 			    Text = message,
 				Type = type
 			};
             
-			Connector.Collection.Save(
+			Collection.Save(
                 MongoDbFormChatSerializer.ChatItemToBson(
                     session,
                     item
@@ -91,7 +89,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <param name="uid"></param>
 		/// <param name="user"></param>
 		public void Archive(string uid, string user) {
-			SetupConnection();
 
             var collection = SelectUsrCollection();
             var query = MakeSearchQueryForUsrCollection(uid, user);
@@ -109,7 +106,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <returns></returns>
         private MongoCollection<BsonDocument> SelectUsrCollection() {
-            return Connector.Database.GetCollection<BsonDocument>(
+            return Database.GetCollection<BsonDocument>(
                 CollectionName + "_usr"
             );
         }
@@ -135,8 +132,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// </summary>
 		/// <param name="user"></param>
 		public void SetHaveRead(string user) {
-			SetupConnection();
-            
+           
             var collection = SelectUsrCollection();
             var query = MakeSearchQueryForUsrCollection("ALL", user);
 
@@ -157,8 +153,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <returns>
 		/// </returns>
 		public DateTime GetLastRead(string user) {
-			SetupConnection();
-
             var item = SelectUsrCollection().FindOne(
                 Query.And(
                     Query.EQ("message_id", "ALL"),
@@ -183,7 +177,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <returns>
 		/// </returns>
 		public long GetUpdatesCount(string user,int[] objids = null, string[] types=null, string[] forms = null) {
-			SetupConnection();
+
 			var lastread = GetLastRead(user);
 			var query = GenerateFindAllMessagesQuery(
                 user,
@@ -194,7 +188,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 false
             );
 			query["user"] = new BsonDocument("$ne",user);
-			return Connector.Collection.Count(new QueryDocument(query));
+			return Collection.Count(new QueryDocument(query));
 		}
 
 		/// <summary>
@@ -208,7 +202,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <returns>
 		/// </returns>
 		public IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids = null, string[] types=null, string[] forms=null,bool includeArchived=false) {
-			SetupConnection();
+
 			var query = GenerateFindAllMessagesQuery(
                 user,
                 startdate,
@@ -218,7 +212,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 includeArchived
             );
 
-			var result = Connector.Collection.Find(
+			var result = Collection.Find(
                 new QueryDocument(query)
             ).SetSortOrder(
                 SortBy.Ascending("time")
