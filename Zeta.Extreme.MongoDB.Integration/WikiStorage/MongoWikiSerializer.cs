@@ -42,7 +42,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                     Editor = document["editor"].AsString,
                     Title = document["title"].AsString,
                     Published = document["ver"].ToUniversalTime(),
-                    Locker = locker.AsString,
+                    Locker = (locker != null) ? (locker.AsString) : (""),
                     Version = "Current",
                     Existed = true
                 };

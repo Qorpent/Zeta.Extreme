@@ -22,7 +22,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Wiki {
 
     public class StubClaimsPrincipal : IPrincipal {
         public bool IsInRole(string role) {
-            throw new NotImplementedException();
+            return false;
+            //if (role == "ADMIN") return false;
         }
 
         public IIdentity Identity { get; set; }
@@ -37,45 +38,85 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Wiki {
     }
 
     class WikiTests : ServiceBase {
-        private IApplication app;
+        private IApplication _app;
+        private MongoWikiPersister _storage;
 
         [SetUp]
         public void SetUp() {
-            var storage = new MongoWikiPersister {
-               DatabaseName = "Zefs"
+            _storage = new MongoWikiPersister {
+               DatabaseName = "Zefs",
+               CollectionName = "main"
             };
+            _app = new Application();
+            _app.Container.Register(new ComponentDefinition<IPrincipalSource, StubPrincipalSource>());
+            _app.Principal.SetCurrentUser(new StubClaimsPrincipal { Identity = new StubIdentity { Name = Guid.NewGuid().ToString() } });
 
-            storage.Database.Drop();
+            _storage.SetApplication(_app);
         }
 
         [Test]
-        public void CanSaveWikiPage() {
-           var wikiPage = new WikiPage {
-               Code = "test",
-               Editor = "remalloc",
-               Existed = true,
-               LastWriteTime = DateTime.Now,
-               Owner = "remalloc",
-               Text = "some text",
-               Title = "fgfgdfgd"
-           };
+        public void CanSaveWikiPageWithCreateVersion() {
+            _storage.Database.Drop();
+            var wikiPage = new WikiPage {
+                Code = "test",
+                Editor = "remalloc",
+                Existed = true,
+                LastWriteTime = DateTime.Now,
+                Owner = "remalloc",
+                Text = "some text",
+                Title = "fgfgdfgd"
+            };
 
-           var storage = new MongoWikiPersister {
-               DatabaseName = "Zefs",
-               CollectionName = "main"
-           };
+            _storage.SetApplication(_app);
+            _storage.Save(wikiPage);                                    // сохраним тестовую страницу
 
-           storage.Save(wikiPage);
-           storage.Get("test");
+            var t = _storage.Get("test").FirstOrDefault();              // получим её
+            Assert.NotNull(t);
+            Assert.AreEqual("some text", t.Text);                       // и проверим, что текст нормальный
+
+            t.Text = "Test2";                                           // слегка изменим текст
+            _storage.Save(t);                                           // и сохраним
+
+            var r = _storage.Get("test").FirstOrDefault();              // снова получим эту страницу из базы
+            Assert.NotNull(r);
+            Assert.AreEqual("Test2", r.Text);                           // и убедимся, что всё сохранятеся нормально и идентификатор не перебивается
+
+            /* на этом этапе мы убедились, что весь базовый старый функционал работает нормально, ничего не сломалось */
+
+            /* а теперь убедимся, что работает версионность */
+
+            var e = (WikiVersionCreateResult)_storage.CreateVersion("test", "test commit");      // теперь создадим тестовую версию
+            Assert.NotNull(e);
+
+            var h = _storage.Get("test").FirstOrDefault();              // теперь получим страницу из базы 
+            Assert.NotNull(h);
+            Assert.AreEqual("Test2", h.Text);                           // и проверим, что текст не изменился
+
+            var f = _storage.GetWikiPageByVersion("test", e.Version);   // и в нашей версии-бэкапе всё точно так же как и в текущей копии
+            Assert.NotNull(f);
+            Assert.AreEqual(h.Text, f.Text);
+
+
+            h.Text = "Some new text";                                   // измением слегка текст
+            _storage.Save(h);                                           // и сохраним
+            var y =_storage.Get(h.Code).FirstOrDefault();               // вытащим из базы
+            Assert.NotNull(y);  
+            Assert.AreEqual("Some new text", y.Text);                   // и проверим, что всё хорошо.\
+
+            /* теперь проверим, что последнее изменение не слилось в бэкапы */
+            var c = _storage.GetWikiPageByVersion("test", e.Version);
+            var u = _storage.Get("code").FirstOrDefault();
+
+            Assert.AreNotEqual(c.Text, u.Text);
+
         }
 
         public void GetLockTask(bool isFirst) {
-            app.Principal.SetCurrentUser(new StubClaimsPrincipal { Identity = new StubIdentity { Name = Guid.NewGuid().ToString() } });
             var storage = new MongoWikiPersister {
                 DatabaseName = "Zefs",
                 CollectionName = "main"
             };
-            storage.SetApplication(app);
+            storage.SetApplication(_app);
             var locked = storage.GetLock("test");
 
             if (isFirst) {
@@ -87,10 +128,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Wiki {
 
         [Test]
         public void CanLockWikiPage() {
-            app = new Application();
-            app.Container.Register(new ComponentDefinition<IPrincipalSource, StubPrincipalSource>());
-            
-
+            _storage.Database.Drop();
             var wikiPage = new WikiPage {
                 Code = "test",
                 Editor = "remalloc",
@@ -101,12 +139,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Wiki {
                 Title = "fgfgdfgd"
             };
 
-            var storage = new MongoWikiPersister {
-                DatabaseName = "Zefs",
-                CollectionName = "main"
-            };
-            storage.Save(wikiPage);
-            var r= storage.Get("test");
+            _storage.Save(wikiPage);
+            var r = _storage.Get("test");
             Assert.NotNull(r);
 
             var t01 = new Task(() => GetLockTask(true));
