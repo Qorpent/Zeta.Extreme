@@ -21,9 +21,14 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Wiki {
     }
 
     public class StubClaimsPrincipal : IPrincipal {
+        public bool WithAdmin { get; set; }
+
         public bool IsInRole(string role) {
+            if (WithAdmin) {
+                if (role == "ADMIN") return true;
+            }
+
             return false;
-            //if (role == "ADMIN") return false;
         }
 
         public IIdentity Identity { get; set; }
@@ -218,6 +223,36 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Wiki {
             t03.Start();
             t04.Start();
             t05.Start();
+        }
+
+        [Test]
+        public void CheckLocking() {
+            _storage.Database.Drop();
+            var wikiPage = new WikiPage {
+                Code = "test",
+                Editor = "remalloc",
+                Existed = true,
+                LastWriteTime = DateTime.Now,
+                Owner = "remalloc",
+                Text = "some text",
+                Title = "fgfgdfgd"
+            };
+
+            ((StubClaimsPrincipal)_app.Principal.CurrentUser).WithAdmin = false;
+            Assert.IsTrue(_storage.Save(wikiPage));
+            Assert.IsTrue(_storage.GetLock(wikiPage.Code));
+            _app.Principal.SetCurrentUser(new StubClaimsPrincipal { Identity = new StubIdentity { Name = Guid.NewGuid().ToString() } });
+            Assert.IsFalse(_storage.Save(wikiPage));
+            Assert.IsFalse(_storage.GetLock(wikiPage.Code));
+            Assert.IsFalse(_storage.ReleaseLock(wikiPage.Code));
+            ((StubClaimsPrincipal) _app.Principal.CurrentUser).WithAdmin = true;
+            Assert.IsFalse(_storage.Save(wikiPage));
+            Assert.IsFalse(_storage.GetLock(wikiPage.Code));
+            Assert.IsTrue(_storage.ReleaseLock(wikiPage.Code));
+            Assert.IsTrue(_storage.Save(wikiPage));
+
+
+
         }
     }
 }

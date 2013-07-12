@@ -73,10 +73,10 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		/// Метод сохранения изменений в страницу
 		/// </summary>
 		/// <param name="pages"></param>
-		public void Save(params WikiPage[] pages) {
+		public bool Save(params WikiPage[] pages) {
 			foreach (var page in pages) {
                 if (!SaveAllowed(page.Code)) {
-                    throw new Exception("Вы не имеет прав на редактирование страницы. Страница заблокирована.");
+                    return false;
                 }
 
 				var clause = new QueryDocument(
@@ -91,7 +91,9 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                     Collection.Insert(Serializer.NewFormPage(page));
 				}
 			}
-		}
+
+	        return true;
+	    }
 
 		/// <summary>
 		/// Сохраняет в Wiki файл с указанным кодом
