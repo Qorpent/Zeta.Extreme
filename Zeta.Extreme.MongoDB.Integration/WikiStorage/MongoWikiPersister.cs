@@ -480,9 +480,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         private bool SaveAllowed(string code) {
             if (IsLocked(code)) {
                 if (GetLocker(code) != Application.Principal.CurrentUser.Identity.Name) {
-                    if (!Application.Principal.CurrentUser.IsInRole("ADMIN")) {
-                        return false;
-                    }
+                    return false;
                 }
             }
 
@@ -507,6 +505,14 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         /// </summary>
         /// <param name="code">код страницы</param>
         public bool ReleaseLock(string code) {
+            var locker = GetLocker(code);
+
+            if (locker != Application.Principal.CurrentUser.Identity.Name) {
+                if (!Application.Principal.CurrentUser.IsInRole("ADMIN")) {
+                    return false;
+                }
+            }
+
             Collection.Update(
                 new QueryDocument(
                     BsonDocument.Parse("{_id : '" + code + "'}")
