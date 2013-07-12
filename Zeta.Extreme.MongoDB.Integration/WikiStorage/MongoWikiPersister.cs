@@ -73,10 +73,10 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 		/// Метод сохранения изменений в страницу
 		/// </summary>
 		/// <param name="pages"></param>
-		public void Save(params WikiPage[] pages) {
+		public bool Save(params WikiPage[] pages) {
 			foreach (var page in pages) {
                 if (!SaveAllowed(page.Code)) {
-                    throw new Exception("Вы не имеет прав на редактирование страницы. Страница заблокирована.");
+                    return false;
                 }
 
 				var clause = new QueryDocument(
@@ -91,7 +91,9 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                     Collection.Insert(Serializer.NewFormPage(page));
 				}
 			}
-		}
+
+	        return true;
+	    }
 
 		/// <summary>
 		/// Сохраняет в Wiki файл с указанным кодом
@@ -480,9 +482,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         private bool SaveAllowed(string code) {
             if (IsLocked(code)) {
                 if (GetLocker(code) != Application.Principal.CurrentUser.Identity.Name) {
-                    if (!Application.Principal.CurrentUser.IsInRole("ADMIN")) {
-                        return false;
-                    }
+                    return false;
                 }
             }
 
@@ -507,6 +507,14 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
         /// </summary>
         /// <param name="code">код страницы</param>
         public bool ReleaseLock(string code) {
+            var locker = GetLocker(code);
+
+            if (locker != Application.Principal.CurrentUser.Identity.Name) {
+                if (!Application.Principal.CurrentUser.IsInRole("ADMIN")) {
+                    return false;
+                }
+            }
+
             Collection.Update(
                 new QueryDocument(
                     BsonDocument.Parse("{_id : '" + code + "'}")
