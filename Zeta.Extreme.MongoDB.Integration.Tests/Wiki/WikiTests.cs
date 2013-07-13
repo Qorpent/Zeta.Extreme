@@ -110,7 +110,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Wiki {
 
             /* теперь проверим, что последнее изменение не слилось в бэкапы */
             var c = _storage.GetWikiPageByVersion("test", e.Version);
-            var u = _storage.Get("code").FirstOrDefault();
+            var u = _storage.Get("test").FirstOrDefault();
 
             Assert.AreNotEqual(c.Text, u.Text);
 
@@ -253,6 +253,25 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Wiki {
 
 
 
+        }
+
+        [Test]
+        public void CorrectReturnForNonExistsPage() {
+            _storage.Database.Drop();
+            var wikiPage = new WikiPage {
+                Code = "test",
+                Editor = "remalloc",
+                Existed = true,
+                LastWriteTime = DateTime.Now,
+                Owner = "remalloc",
+                Text = "some text",
+                Title = "fgfgdfgd"
+            };
+
+            Assert.IsTrue(_storage.Save(wikiPage));
+
+            var t = _storage.Exists("test", "notExists");
+            Assert.AreEqual(1, t.Count());
         }
     }
 }

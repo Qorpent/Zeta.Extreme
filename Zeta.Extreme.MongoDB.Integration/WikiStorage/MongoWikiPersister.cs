@@ -373,7 +373,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                 return Serializer.ToWikiPage.FromHistory(rawWikiPage);
             }
                 
-            return new WikiPage();
+            return null;
         }
         
         /// <summary>
