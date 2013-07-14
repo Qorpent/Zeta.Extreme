@@ -108,6 +108,14 @@ namespace Zeta.Extreme.FrontEnd {
 			{
 				PrepareSubObjects();
 			}
+
+            if (Application.Roles.IsInRole(Usr, "BUDGET"))
+            {
+                if (null != form.Thema && !string.IsNullOrWhiteSpace(form.Thema.GetParameter("forgroup", "")) && form.Thema.GetParameter("showprdgroup", "").ToBool())
+                {
+                    OverrideObjects = PrepareOverrideObjects();
+                }
+            }
 			ObjInfo = new
 				{
 					Object.Id, 
@@ -152,8 +160,19 @@ namespace Zeta.Extreme.FrontEnd {
 			
 
 		}
+        /// <summary>
+        /// Перекрывает "свои предприятия"
+        /// </summary>
+        [SerializeNotNullOnly]
+	    public object OverrideObjects { get; set; }
 
-		private void PrepareSubObjects() {
+	    private object PrepareOverrideObjects() {
+	        var group = Template.Thema.GetParameter("forgroup");
+	        var objects = new NativeZetaReader().ReadObjects(" groupcache like '%/" + group + "/%'");
+            return objects.Select(_=>new{_.Id,Name=string.IsNullOrWhiteSpace(_.ShortName)?_.Name:_.ShortName}).ToArray();
+	    }
+
+	    private void PrepareSubObjects() {
 			var zr = new NativeZetaReader();
 			this.RequireSubObjects = true;
 			var splittoobj = Template.Thema.GetParameter("splittoobj", "");
