@@ -358,21 +358,6 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                 return Serializer.ToWikiPage.FromMain(rawWikiPage);
             }
                 
-
-            rawWikiPage = VersionsStorage.Collection.Find(
-                new QueryDocument(
-                    BsonDocument.Parse("{code : '" + code + "', published : {$exists : true}}")
-                )
-            ).SetSortOrder(
-                new SortByDocument(
-                    BsonDocument.Parse("{published : -1}")
-                )
-            ).SetLimit(1).FirstOrDefault();
-
-            if (rawWikiPage != null) {
-                return Serializer.ToWikiPage.FromHistory(rawWikiPage);
-            }
-                
             return null;
         }
         

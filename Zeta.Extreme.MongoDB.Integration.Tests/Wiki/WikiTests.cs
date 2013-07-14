@@ -273,5 +273,24 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Wiki {
             var t = _storage.Exists("test", "notExists");
             Assert.AreEqual(1, t.Count());
         }
+
+        [Test]
+        public void CorrectReturnForNonExistsPageFromGet() {
+            _storage.Database.Drop();
+            var wikiPage = new WikiPage {
+                Code = "test",
+                Editor = "remalloc",
+                Existed = true,
+                LastWriteTime = DateTime.Now,
+                Owner = "remalloc",
+                Text = "some text",
+                Title = "fgfgdfgd"
+            };
+
+            Assert.IsTrue(_storage.Save(wikiPage));
+
+            var t = _storage.Get("test", "notExists");
+            Assert.AreEqual(1, t.Count());
+        }
     }
 }
