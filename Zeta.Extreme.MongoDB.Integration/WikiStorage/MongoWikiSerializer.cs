@@ -208,6 +208,8 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
 
 			updateBuilder.Set("editor", Application.Current.Principal.CurrentUser.Identity.Name);
 
+		    updateBuilder.Set("ver", DateTime.Now);
+
 			foreach (var propety in page.Propeties) {
 				updateBuilder.Set(propety.Key, propety.Value ?? "");
 			}
