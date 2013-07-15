@@ -311,5 +311,29 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Wiki {
             var t = _storage.Get("test").FirstOrDefault();
             Assert.AreEqual(t.LastWriteTime.ToShortTimeString(), wikiPage.LastWriteTime.ToShortTimeString());
         }
+
+        [Test]
+        public void CorrectSetLastWriteTimeWhenUpdate() {
+            _storage.Database.Drop();
+            var wikiPage = new WikiPage {
+                Code = "test",
+                Editor = "remalloc",
+                Existed = true,
+                LastWriteTime = DateTime.Now,
+                Owner = "remalloc",
+                Text = "some text",
+                Title = "fgfgdfgd"
+            };
+
+            Assert.IsTrue(_storage.Save(wikiPage));
+            var t = _storage.Get("test").FirstOrDefault();
+            Assert.AreEqual(t.LastWriteTime.ToShortTimeString(), wikiPage.LastWriteTime.ToShortTimeString());
+
+            System.Threading.Thread.Sleep(1500);
+
+            Assert.IsTrue(_storage.Save(wikiPage));
+            var z = _storage.Get("test").FirstOrDefault();
+            Assert.AreEqual(t.LastWriteTime.ToShortTimeString(), z.LastWriteTime.ToShortTimeString());
+        }
     }
 }
