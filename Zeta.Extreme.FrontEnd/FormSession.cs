@@ -109,7 +109,7 @@ namespace Zeta.Extreme.FrontEnd {
 				PrepareSubObjects();
 			}
 
-            if (Application.Roles.IsInRole(Usr, "BUDGET"))
+            if (Qorpent.Applications.Application.Current.Roles.IsInRole(Usr, "BUDGET"))
             {
                 if (null != form.Thema && !string.IsNullOrWhiteSpace(form.Thema.GetParameter("forgroup", "")) && form.Thema.GetParameter("showprdgroup", "").ToBool())
                 {
