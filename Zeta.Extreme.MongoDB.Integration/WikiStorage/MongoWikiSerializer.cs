@@ -41,7 +41,8 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                     Owner = document["owner"].AsString,
                     Editor = document["editor"].AsString,
                     Title = document["title"].AsString,
-                    Published = document["ver"].ToUniversalTime(),
+                    Published = document["ver"].ToLocalTime(),
+                    LastWriteTime = document["ver"].ToLocalTime(),
                     Locker = (locker != null) ? (locker.AsString) : (""),
                     Version = "Current",
                     Existed = true
@@ -68,7 +69,7 @@ namespace Zeta.Extreme.MongoDB.Integration.WikiStorage {
                     Owner = document["owner"].AsString,
                     Editor = document["editor"].AsString,
                     Title = document["title"].AsString,
-                    Published = document["published"].ToUniversalTime(),
+                    Published = document["published"].ToLocalTime(),
                     Version = document["version"].AsString,
                     Existed = true
                 };
