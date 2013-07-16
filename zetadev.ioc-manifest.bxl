@@ -1,0 +1,7 @@
+ref Zeta.Extreme.Developer
+using Zeta.Extreme.Developer.Analyzers
+
+singleton CodeIndex : ICodeIndex
+transient Analyzer : IAnalyzer
+mvc Zeta.Extreme.Developer
+	

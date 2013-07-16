@@ -1,0 +1,27 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<AppDir>../.app/zefst</AppDir>
+		<Configuration>Debug</Configuration>
+		<QISD>False</QISD>
+		<IsWeb>True</IsWeb>
+	</PropertyGroup>
+	<Import Project="..\Zeta.Extreme\testapp.base" />
+	<Import Project="..\qorpent.ui\fullinstall" />
+	<ItemGroup>	
+		
+		<Script Include="..\Zeta.Extreme\Zeta.Form.UI\scripts\*.js"/>
+		<Script Include="..\qorpent.sys\commons\qorpent.wiki.js"/>
+		<Style Include="..\qorpent.sys\commons\qorpent.wiki.css"/>
+		<Style Include="..\Zeta.Extreme\Zeta.Form.UI\styles\*.css"/>
+		<Image Include="..\Zeta.Extreme\Zeta.Form.UI\images\*.*"/>
+		<RootFile Include="..\Zeta.Extreme\Zeta.Form.UI\*.html"/>		
+		
+		
+		
+		<Config Include="..\deployconfig\devel.rolemap.bxl"/>
+		<Config Include="..\deployconfig\temporalrolefix.rolemap.bxl"/>
+		<Config Include="..\deployconfig\devel.db-connection"/>
+		
+		
+	</ItemGroup>
+</Project>

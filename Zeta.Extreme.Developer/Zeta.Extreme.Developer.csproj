@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration>Debug</Configuration>
+    <ProjectGuid>{A6ADC6DF-7306-42D5-A674-3D847390CA29}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Zeta.Extreme.Developer</RootNamespace>
+    <AssemblyName>Zeta.Extreme.Developer</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="*.import" />
+    <None Include="*.export" />
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions\AnalyzerActionBase.cs" />
+    <Compile Include="Actions\GetColAttributesAction.cs" />
+    <Compile Include="Actions\GetParameterAttributesAction.cs" />
+    <Compile Include="Analyzers\Analyzer.cs" />
+    <Compile Include="Analyzers\DeveloperConstants.cs" />
+    <Compile Include="Analyzers\IAnalyzer.cs" />
+    <Compile Include="Analyzers\ICodeIndex.cs" />
+    <Compile Include="Analyzers\CodeIndex.cs" />
+    <Compile Include="Model\Source.cs" />
+    <Compile Include="Model\SimpleAttributeDescriptor.cs" />
+    <Compile Include="Model\AttributeDescriptor.cs" />
+    <Compile Include="Model\AttributeValueVariant.cs" />
+    <Compile Include="Analyzers\SearchFilter.cs" />
+    <Compile Include="Config\DeveloperConfig.cs" />
+    <Compile Include="Config\IDeveloperConfig.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <Import Project="..\..\qorpent.kernel\build.targets" />
+</Project>
