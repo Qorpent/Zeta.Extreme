@@ -1,0 +1,1941 @@
+<result>
+  <item Name="customview" VariantCount="7" ReferenceCount="33" __idx="0">
+    <ValueVariants>
+      <item ReferenceCount="11" Value="/report/partselector_param" __idx="0">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\demo.chart.bxl" Line="9" MainContext="assoireport[demochart(Пример отчета с графиками)]" SubContext="out[Aa(Паспорт темы)]/var[partselector]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\ditrectorat.bxl" __idx="1">
+            <item Line="7" MainContext="assoireport[directorat(Презентация для директората)]" SubContext="out[Aa(Презентация для директората)]/var[partselector]" __idx="0" />
+            <item Line="26" MainContext="assoireport[directorat_ocm(Презентация для ОЦМ)]" SubContext="out[Aa(Презентация для ОЦМ)]/var[partselector]" __idx="1" />
+            <item MainContext="assoireport[protocol(Протокол предприятия)]" __idx="2">
+              <item Line="56" SubContext="out[Ab(Протокол предприятия)]/var[partselector]" __idx="0" />
+              <item Line="86" SubContext="out[Aa(Протокол предприятия)]/var[partselector]" __idx="1" />
+            </item>
+          </item>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" __idx="2">
+            <item Line="9" MainContext="assoireport[themadoc(Документация темы)]" SubContext="out[Aa(Паспорт темы)]/var[partselector]" __idx="0" />
+            <item MainContext="thema[blockreport(Базис блочного отчета)]" __idx="1">
+              <item Line="60" SubContext="out[Aa(${name})]/var[partselector]" __idx="0" />
+              <item Line="88" SubContext="out[Ba(Протокол (настраиваемый))]/var[partselector]" __idx="1" />
+              <item Line="118" SubContext="out[Bb(Протокол)]/var[partselector]" __idx="2" />
+            </item>
+          </item>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" __idx="3">
+            <item Line="427" MainContext="assoireport[objectpassport(Паспорт предприятия)]" SubContext="out[Aa(Паспорт предприятия)]/var[partselector]" __idx="0" />
+            <item Line="468" MainContext="assoireport[kreditpassport(Паспорт кредитного договора)]" SubContext="out[Aa(Реестр кредитных договоров)]/var[partselector]" __idx="1" />
+          </item>
+        </References>
+      </item>
+      <item ReferenceCount="11" Value="/report/overlayselector_param" __idx="1">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\demo.chart.bxl" Line="10" MainContext="assoireport[demochart(Пример отчета с графиками)]" SubContext="out[Aa(Паспорт темы)]/var[overlayselector]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\ditrectorat.bxl" __idx="1">
+            <item Line="8" MainContext="assoireport[directorat(Презентация для директората)]" SubContext="out[Aa(Презентация для директората)]/var[overlayselector]" __idx="0" />
+            <item Line="27" MainContext="assoireport[directorat_ocm(Презентация для ОЦМ)]" SubContext="out[Aa(Презентация для ОЦМ)]/var[overlayselector]" __idx="1" />
+            <item MainContext="assoireport[protocol(Протокол предприятия)]" __idx="2">
+              <item Line="57" SubContext="out[Ab(Протокол предприятия)]/var[overlayselector]" __idx="0" />
+              <item Line="87" SubContext="out[Aa(Протокол предприятия)]/var[overlayselector]" __idx="1" />
+            </item>
+          </item>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" __idx="2">
+            <item Line="10" MainContext="assoireport[themadoc(Документация темы)]" SubContext="out[Aa(Паспорт темы)]/var[overlayselector]" __idx="0" />
+            <item MainContext="thema[blockreport(Базис блочного отчета)]" __idx="1">
+              <item Line="61" SubContext="out[Aa(${name})]/var[overlayselector]" __idx="0" />
+              <item Line="89" SubContext="out[Ba(Протокол (настраиваемый))]/var[overlayselector]" __idx="1" />
+              <item Line="119" SubContext="out[Bb(Протокол)]/var[overlayselector]" __idx="2" />
+            </item>
+          </item>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" __idx="3">
+            <item Line="428" MainContext="assoireport[objectpassport(Паспорт предприятия)]" SubContext="out[Aa(Паспорт предприятия)]/var[overlayselector]" __idx="0" />
+            <item Line="469" MainContext="assoireport[kreditpassport(Паспорт кредитного договора)]" SubContext="out[Aa(Реестр кредитных договоров)]/var[overlayselector]" __idx="1" />
+          </item>
+        </References>
+      </item>
+      <item ReferenceCount="4" Value="/report/protocol/holdingunderwriters_parameter" __idx="2">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\ditrectorat.bxl" MainContext="assoireport[protocol(Протокол предприятия)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" MainContext="thema[blockreport(Базис блочного отчета)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="4" Value="/report/protocol/objunderwriters_parameter" __idx="3">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\ditrectorat.bxl" MainContext="assoireport[protocol(Протокол предприятия)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" MainContext="thema[blockreport(Базис блочного отчета)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="/report/blockslideselector" __idx="4">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" Line="55" MainContext="thema[blockreport(Базис блочного отчета)]" SubContext="out[Aa(${name})]/var[blockslideselector]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="/report/targetgroupselector" __idx="5">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" Line="58" MainContext="thema[blockreport(Базис блочного отчета)]" SubContext="out[Aa(${name})]/var[targetgroupselector]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="/report/targetprocessselector" __idx="6">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" Line="59" MainContext="thema[blockreport(Базис блочного отчета)]" SubContext="out[Aa(${name})]/var[targetprocessselector]" __idx="0" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+  <item Name="group" VariantCount="19" ReferenceCount="369" __idx="1">
+    <ValueVariants>
+      <item ReferenceCount="13" Value="_ГП_ЧАСТИ" __idx="0">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\demo.chart.bxl" Line="9" MainContext="assoireport[demochart(Пример отчета с графиками)]" SubContext="out[Aa(Паспорт темы)]/var[partselector]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\ditrectorat.bxl" __idx="1">
+            <item Line="7" MainContext="assoireport[directorat(Презентация для директората)]" SubContext="out[Aa(Презентация для директората)]/var[partselector]" __idx="0" />
+            <item Line="26" MainContext="assoireport[directorat_ocm(Презентация для ОЦМ)]" SubContext="out[Aa(Презентация для ОЦМ)]/var[partselector]" __idx="1" />
+            <item MainContext="assoireport[protocol(Протокол предприятия)]" __idx="2">
+              <item Line="56" SubContext="out[Ab(Протокол предприятия)]/var[partselector]" __idx="0" />
+              <item Line="86" SubContext="out[Aa(Протокол предприятия)]/var[partselector]" __idx="1" />
+            </item>
+          </item>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" __idx="2">
+            <item Line="9" MainContext="assoireport[themadoc(Документация темы)]" SubContext="out[Aa(Паспорт темы)]/var[partselector]" __idx="0" />
+            <item MainContext="thema[blockreport(Базис блочного отчета)]" __idx="1">
+              <item Line="55" SubContext="out[Aa(${name})]/var[blockslideselector]" __idx="0" />
+              <item Line="60" SubContext="out[Aa(${name})]/var[partselector]" __idx="1" />
+              <item Line="88" SubContext="out[Ba(Протокол (настраиваемый))]/var[partselector]" __idx="2" />
+              <item Line="118" SubContext="out[Bb(Протокол)]/var[partselector]" __idx="3" />
+            </item>
+          </item>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" __idx="3">
+            <item Line="436" MainContext="paramlib[kredits]" SubContext="param[dogovorid(ИД договора)]" __idx="0" />
+            <item Line="427" MainContext="assoireport[objectpassport(Паспорт предприятия)]" SubContext="out[Aa(Паспорт предприятия)]/var[partselector]" __idx="1" />
+            <item Line="468" MainContext="assoireport[kreditpassport(Паспорт кредитного договора)]" SubContext="out[Aa(Реестр кредитных договоров)]/var[partselector]" __idx="2" />
+          </item>
+        </References>
+      </item>
+      <item ReferenceCount="11" Value="_ГП_СЛОИ" __idx="1">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\demo.chart.bxl" Line="10" MainContext="assoireport[demochart(Пример отчета с графиками)]" SubContext="out[Aa(Паспорт темы)]/var[overlayselector]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\ditrectorat.bxl" __idx="1">
+            <item Line="8" MainContext="assoireport[directorat(Презентация для директората)]" SubContext="out[Aa(Презентация для директората)]/var[overlayselector]" __idx="0" />
+            <item Line="27" MainContext="assoireport[directorat_ocm(Презентация для ОЦМ)]" SubContext="out[Aa(Презентация для ОЦМ)]/var[overlayselector]" __idx="1" />
+            <item MainContext="assoireport[protocol(Протокол предприятия)]" __idx="2">
+              <item Line="57" SubContext="out[Ab(Протокол предприятия)]/var[overlayselector]" __idx="0" />
+              <item Line="87" SubContext="out[Aa(Протокол предприятия)]/var[overlayselector]" __idx="1" />
+            </item>
+          </item>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" __idx="2">
+            <item Line="10" MainContext="assoireport[themadoc(Документация темы)]" SubContext="out[Aa(Паспорт темы)]/var[overlayselector]" __idx="0" />
+            <item MainContext="thema[blockreport(Базис блочного отчета)]" __idx="1">
+              <item Line="61" SubContext="out[Aa(${name})]/var[overlayselector]" __idx="0" />
+              <item Line="89" SubContext="out[Ba(Протокол (настраиваемый))]/var[overlayselector]" __idx="1" />
+              <item Line="119" SubContext="out[Bb(Протокол)]/var[overlayselector]" __idx="2" />
+            </item>
+          </item>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" __idx="3">
+            <item Line="428" MainContext="assoireport[objectpassport(Паспорт предприятия)]" SubContext="out[Aa(Паспорт предприятия)]/var[overlayselector]" __idx="0" />
+            <item Line="469" MainContext="assoireport[kreditpassport(Паспорт кредитного договора)]" SubContext="out[Aa(Реестр кредитных договоров)]/var[overlayselector]" __idx="1" />
+          </item>
+        </References>
+      </item>
+      <item ReferenceCount="5" Value="_ГП_ОЛАП" __idx="2">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.lib.bxl" Line="116" MainContext="thema[ecolib(Основная библиотека)]" SubContext="out[CROSS]/var[olapsubrow(Показывать строку с периодами)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="1" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="319" MainContext="assoireport[olap(Стандартный OLAP-отчет)]" SubContext="out[Aa(OLAP-отчет)]/var[olapsubrow(Показывать строку с периодами)]" __idx="2" />
+        </References>
+      </item>
+      <item ReferenceCount="6" Value="_ГП_КОЛС" __idx="3">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.presentation.bxl" MainContext="thema[prd_lib(Библиотека презентации)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="145" Value="_ГП_ДЕРЕВО" __idx="4">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.bank.bxl" __idx="0">
+            <item MainContext="thema[banklitelib(Библиотека для заемных средств)]" __idx="0">
+              <item Line="202" SubContext="out[FACTSVOD]/var[removeinner(Без внутренних оборотов)]" __idx="0" />
+              <item Line="246" SubContext="out[PLANSVOD]/var[removeinner(Без внутренних оборотов)]" __idx="1" />
+            </item>
+            <item Line="295" MainContext="thema[graphlib(Библиотека для графика погашения кредита)]" SubContext="out[PLANSVOD]/var[removeinner(Без внутренних оборотов)]" __idx="1" />
+          </item>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.calc.bxl" MainContext="paramlib" __idx="1" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.prd.bxl" MainContext="thema[prdlib(Библиотека для объемов производства)]" __idx="2" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.prd.old.bxl" MainContext="thema[prdlibold(Библиотека для объемов производства)]" __idx="3" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" MainContext="paramlib" __idx="4" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" MainContext="paramlib" __idx="5" />
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="6" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="7" />
+        </References>
+      </item>
+      <item ReferenceCount="52" Value="_ГП_ВРЕМЯ" __idx="5">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.en.bxl" MainContext="thema[enlib(Основная библиотека)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="1" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="2" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" __idx="3">
+            <item MainContext="assoireport[valutaset(Курсы валют)]" __idx="0">
+              <item Line="210" SubContext="out(Курсы валют)/var[periods(Периоды)]" __idx="0" />
+              <item Line="221" SubContext="out(Курсы валют)/var[periods2(Периоды (строкой))]" __idx="1" />
+            </item>
+            <item MainContext="assoireport[states(Отчет о статусах по закрытию форм)]" __idx="1">
+              <item Line="384" SubContext="out[Aa(Отчет о статусах форм)]/var[statetime(Тип развертки)]" __idx="0" />
+              <item Line="395" SubContext="out[Aa(Отчет о статусах форм)]/var[usetpfp(Показывать ТПФП?)]" __idx="1" />
+            </item>
+          </item>
+        </References>
+      </item>
+      <item ReferenceCount="6" Value="95. Статусы тем" __idx="6">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" MainContext="assoireport[themadoc(Документация темы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="96. Тип тем" __idx="7">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" MainContext="assoireport[themadoc(Документация темы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="95. Каталог тем" __idx="8">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" MainContext="assoireport[themadoc(Документация темы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="4" Value="05. Выборка слайдов" __idx="9">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" MainContext="thema[blockreport(Базис блочного отчета)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="14" Value="_ГП_СИСТЕМА" __idx="10">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="15" Value="_ГП_ПЕЧАТЬ" __idx="11">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="8" Value="_ГП_ВАЛЮТА" __idx="12">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="16" Value="_ГП_ПОДПИСИ" __idx="13">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="27" Value="_ГП_ОБЪЕКТЫ" __idx="14">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="375" MainContext="assoireport[states(Отчет о статусах по закрытию форм)]" SubContext="out[Aa(Отчет о статусах форм)]/var[blockfilter(Фильтр по блокировкам)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="16" Value="_ГП_ГРАФ" __idx="15">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="14" Value="_ГП_ФОРМАТ" __idx="16">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="7" Value="20. Входные валюты" __idx="17">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" MainContext="assoireport[valutaset(Курсы валют)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="5" Value="20. Выходные валюты" __idx="18">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" MainContext="assoireport[valutaset(Курсы валют)]" __idx="0" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+  <item Name="type" VariantCount="5" ReferenceCount="291" __idx="2">
+    <ValueVariants>
+      <item ReferenceCount="253" Value="bool" __idx="0">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\demo.chart.bxl" MainContext="assoireport[demochart(Пример отчета с графиками)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\ditrectorat.bxl" __idx="1">
+            <item MainContext="assoireport[directorat(Презентация для директората)]" __idx="0">
+              <item Line="9" SubContext="out[Aa(Презентация для директората)]/var[allstuff(Все включено)]" __idx="0" />
+              <item Line="10" SubContext="out[Aa(Презентация для директората)]/var[allparts(Все части)]" __idx="1" />
+              <item Line="11" SubContext="out[Aa(Презентация для директората)]/var[alloverlays(Все слои)]" __idx="2" />
+            </item>
+            <item MainContext="assoireport[directorat_ocm(Презентация для ОЦМ)]" __idx="1">
+              <item Line="28" SubContext="out[Aa(Презентация для ОЦМ)]/var[allstuff(Все включено)]" __idx="0" />
+              <item Line="29" SubContext="out[Aa(Презентация для ОЦМ)]/var[allparts(Все части)]" __idx="1" />
+              <item Line="30" SubContext="out[Aa(Презентация для ОЦМ)]/var[alloverlays(Все слои)]" __idx="2" />
+            </item>
+            <item MainContext="assoireport[protocol(Протокол предприятия)]" __idx="2">
+              <item Line="58" SubContext="out[Ab(Протокол предприятия)]/var[allstuff(Все включено)]" __idx="0" />
+              <item Line="59" SubContext="out[Ab(Протокол предприятия)]/var[allparts(Все части)]" __idx="1" />
+              <item Line="60" SubContext="out[Ab(Протокол предприятия)]/var[alloverlays(Все слои)]" __idx="2" />
+              <item Line="72" SubContext="out[Ab(Протокол предприятия)]/var[allholdunderwriters(Все от холдинга)]" __idx="3" />
+              <item Line="88" SubContext="out[Aa(Протокол предприятия)]/var[allstuff(Все включено)]" __idx="4" />
+              <item Line="89" SubContext="out[Aa(Протокол предприятия)]/var[allparts(Все части)]" __idx="5" />
+              <item Line="90" SubContext="out[Aa(Протокол предприятия)]/var[alloverlays(Все слои)]" __idx="6" />
+              <item Line="102" SubContext="out[Aa(Протокол предприятия)]/var[allholdunderwriters(Все от холдинга)]" __idx="7" />
+            </item>
+          </item>
+          <item File="C:\code\usr\ugmk\eco\data\eco.lib.bxl" Line="116" MainContext="thema[ecolib(Основная библиотека)]" SubContext="out[CROSS]/var[olapsubrow(Показывать строку с периодами)]" __idx="2" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.presentation.bxl" MainContext="thema[prd_lib(Библиотека презентации)]" __idx="3" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.bank.bxl" __idx="4">
+            <item MainContext="thema[kzreestr_base(Реестр договоров кредита и займа)]" __idx="0">
+              <item Line="535" SubContext="out[Aa(Реестр договоров кредита и займа)]/param[allstuff(Все включено)]" __idx="0" />
+              <item Line="560" SubContext="out[Ab(Реестр договоров кредита и займа)]/param[allstuff(Все включено)]" __idx="1" />
+            </item>
+            <item MainContext="thema[banklitelib(Библиотека для заемных средств)]" __idx="1">
+              <item Line="202" SubContext="out[FACTSVOD]/var[removeinner(Без внутренних оборотов)]" __idx="0" />
+              <item Line="246" SubContext="out[PLANSVOD]/var[removeinner(Без внутренних оборотов)]" __idx="1" />
+            </item>
+            <item Line="295" MainContext="thema[graphlib(Библиотека для графика погашения кредита)]" SubContext="out[PLANSVOD]/var[removeinner(Без внутренних оборотов)]" __idx="2" />
+          </item>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.bxl" MainContext="assoireport[contacts(Справочник пользователей)]" __idx="5" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.calc.bxl" MainContext="paramlib" __idx="6" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.en.bxl" MainContext="thema[enlib(Основная библиотека)]" __idx="7" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" MainContext="paramlib" __idx="8" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" MainContext="paramlib" __idx="9" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.resposibility.report.bxl" Line="26" MainContext="assoireport[responsibility(Ответственные по предприятию по группам)]" SubContext="out[Aa(Отчет об ответственных по предприятию по группам)]/param[showhashheader]" __idx="10" />
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" __idx="11">
+            <item MainContext="assoireport[themadoc(Документация темы)]" __idx="0">
+              <item Line="11" SubContext="out[Aa(Паспорт темы)]/var[allparts(Все части)]" __idx="0" />
+              <item Line="12" SubContext="out[Aa(Паспорт темы)]/var[alloverlays(Все слои)]" __idx="1" />
+              <item Line="14" SubContext="out[Aa(Паспорт темы)]/var[usetest(Включать тестовые)]" __idx="2" />
+              <item Line="15" SubContext="out[Aa(Паспорт темы)]/var[usedisign(Включать дизайнерские)]" __idx="3" />
+              <item Line="16" SubContext="out[Aa(Паспорт темы)]/var[useexp(Включать эксплуатируемые)]" __idx="4" />
+              <item Line="17" SubContext="out[Aa(Паспорт темы)]/var[usehist(Включать исторические)]" __idx="5" />
+              <item Line="18" SubContext="out[Aa(Паспорт темы)]/var[usesys(Включать системные)]" __idx="6" />
+              <item Line="19" SubContext="out[Aa(Паспорт темы)]/var[useold(Включать устаревшие)]" __idx="7" />
+              <item Line="22" SubContext="out[Aa(Паспорт темы)]/var[usein(Включать формы)]" __idx="8" />
+              <item Line="23" SubContext="out[Aa(Паспорт темы)]/var[useout(Включать отчеты)]" __idx="9" />
+              <item Line="24" SubContext="out[Aa(Паспорт темы)]/var[usegrp(Включать группы)]" __idx="10" />
+              <item Line="26" SubContext="out[Aa(Паспорт темы)]/var[tdt_useadmin(Административные темы)]" __idx="11" />
+              <item Line="27" SubContext="out[Aa(Паспорт темы)]/var[tdt_usedesign(Дизайнерские темы)]" __idx="12" />
+            </item>
+            <item MainContext="thema[blockreport(Базис блочного отчета)]" __idx="1">
+              <item Line="56" SubContext="out[Aa(${name})]/var[usetargetgroups(Использовать целевые группы)]" __idx="0" />
+              <item Line="57" SubContext="out[Aa(${name})]/var[usetargetprocesses(Использовать целевые процессы)]" __idx="1" />
+              <item Line="62" SubContext="out[Aa(${name})]/var[allparts(Все части)]" __idx="2" />
+              <item Line="63" SubContext="out[Aa(${name})]/var[alloverlays(Все слои)]" __idx="3" />
+              <item Line="64" SubContext="out[Aa(${name})]/var[allslides(Все слайды)]" __idx="4" />
+              <item Line="65" SubContext="out[Aa(${name})]/var[hideslots(Прятать пустые слайды и слоты)]" __idx="5" />
+              <item Line="90" SubContext="out[Ba(Протокол (настраиваемый))]/var[allstuff(Все включено)]" __idx="6" />
+              <item Line="91" SubContext="out[Ba(Протокол (настраиваемый))]/var[allparts(Все части)]" __idx="7" />
+              <item Line="92" SubContext="out[Ba(Протокол (настраиваемый))]/var[alloverlays(Все слои)]" __idx="8" />
+              <item Line="106" SubContext="out[Ba(Протокол (настраиваемый))]/var[allholdunderwriters(Все от холдинга)]" __idx="9" />
+              <item Line="120" SubContext="out[Bb(Протокол)]/var[allstuff(Все включено)]" __idx="10" />
+              <item Line="121" SubContext="out[Bb(Протокол)]/var[allparts(Все части)]" __idx="11" />
+              <item Line="122" SubContext="out[Bb(Протокол)]/var[alloverlays(Все слои)]" __idx="12" />
+              <item Line="136" SubContext="out[Bb(Протокол)]/var[allholdunderwriters(Все от холдинга)]" __idx="13" />
+            </item>
+          </item>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="12" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="13" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" __idx="14">
+            <item MainContext="paramlib[kredits]" __idx="0">
+              <item Line="439" SubContext="param[use_kredit(Кредиты)]" __idx="0" />
+              <item Line="440" SubContext="param[use_zaim(Займы)]" __idx="1" />
+              <item Line="441" SubContext="param[use_dolg(Долгосрочные)]" __idx="2" />
+              <item Line="442" SubContext="param[use_krat(Краткосрочные)]" __idx="3" />
+              <item Line="443" SubContext="param[use_val(В национальной валюте)]" __idx="4" />
+              <item Line="444" SubContext="param[use_ival(В иностранной валюте)]" __idx="5" />
+              <item Line="445" SubContext="param[use_active_only(Только активные (по году))]" __idx="6" />
+              <item Line="446" SubContext="param[use_reformation(Реформация сроков)]" __idx="7" />
+              <item Line="447" SubContext="param[use_comments(Выводить комментарий и доп. инф.)]" __idx="8" />
+            </item>
+            <item MainContext="assoireport[states(Отчет о статусах по закрытию форм)]" __idx="1">
+              <item Line="372" SubContext="out[Aa(Отчет о статусах форм)]/param[showhashheader]" __idx="0" />
+              <item Line="370" SubContext="out[Aa(Отчет о статусах форм)]/var[usefamilies(Показывать ФИО)]" __idx="1" />
+              <item Line="395" SubContext="out[Aa(Отчет о статусах форм)]/var[usetpfp(Показывать ТПФП?)]" __idx="2" />
+            </item>
+            <item MainContext="report[ncpforms(Формы, закрытые поверх контрольных точек)]" __idx="2">
+              <item Line="24" SubContext="out/var[onlyblocked(Только до сих пор блокированные)]" __idx="0" />
+              <item Line="25" SubContext="out/var[onlycp(Только до сих пор с к.т.)]" __idx="1" />
+              <item Line="27" SubContext="out/var[orderbyobj(Упорядочить по предприятиям)]" __idx="2" />
+            </item>
+            <item MainContext="assoireport[messageread(Отчет о результатах прочтения сообщений)]" __idx="3">
+              <item Line="68" SubContext="out[Aa]/var[direct(Прямой порядок)]" __idx="0" />
+              <item Line="69" SubContext="out[Aa]/var[formatsearch(Выделять поисковую строку)]" __idx="1" />
+              <item Line="70" SubContext="out[Aa]/var[filtersearch(Фильтровать по  поисковой строке)]" __idx="2" />
+            </item>
+            <item MainContext="report[thfileidx(Индекс файлов тем)]" __idx="4">
+              <item Line="87" SubContext="out[Aa]/var[thi_usethemas(Искать в темах)]" __idx="0" />
+              <item Line="88" SubContext="out[Aa]/var[thi_useparams(Искать в параметрах)]" __idx="1" />
+              <item Line="89" SubContext="out[Aa]/var[thi_usesubsets(Искать в субсетах)]" __idx="2" />
+              <item Line="90" SubContext="out[Aa]/var[thi_useglobals(Искать в глобалах)]" __idx="3" />
+              <item Line="91" SubContext="out[Aa]/var[thi_useothers(Искать в доп. элементах)]" __idx="4" />
+            </item>
+            <item MainContext="assoireport[valutaset(Курсы валют)]" __idx="5">
+              <item Line="189" SubContext="out(Курсы валют)/var[i_rsd(Сербский динар)]" __idx="0" />
+              <item Line="190" SubContext="out(Курсы валют)/var[i_czk(Чешская крона)]" __idx="1" />
+              <item Line="191" SubContext="out(Курсы валют)/var[i_kzt(Казахское тенге)]" __idx="2" />
+              <item Line="192" SubContext="out(Курсы валют)/var[i_usd(Доллары США)]" __idx="3" />
+              <item Line="193" SubContext="out(Курсы валют)/var[i_eur(Евро)]" __idx="4" />
+              <item Line="194" SubContext="out(Курсы валют)/var[i_rub(Рубль)]" __idx="5" />
+              <item Line="197" SubContext="out(Курсы валют)/var[o_rub(Рубль)]" __idx="6" />
+              <item Line="198" SubContext="out(Курсы валют)/var[o_usd(Доллары США)]" __idx="7" />
+              <item Line="199" SubContext="out(Курсы валют)/var[o_eur(Евро)]" __idx="8" />
+            </item>
+            <item Line="319" MainContext="assoireport[olap(Стандартный OLAP-отчет)]" SubContext="out[Aa(OLAP-отчет)]/var[olapsubrow(Показывать строку с периодами)]" __idx="6" />
+            <item Line="411" MainContext="assoireport[sqlxmlreport(Отчет SQL" SubContext="XML, предназначен для косвенного вызова)]/out[Aa(Отчет вызова SQL)]/var[applyxslt(Применять преобразование)]" __idx="7" />
+            <item Line="429" MainContext="assoireport[objectpassport(Паспорт предприятия)]" SubContext="out[Aa(Паспорт предприятия)]/var[allstuff(Все включено)]" __idx="8" />
+            <item MainContext="assoireport[kreditpassport(Паспорт кредитного договора)]" __idx="9">
+              <item Line="470" SubContext="out[Aa(Реестр кредитных договоров)]/var[allparts(Все части)]" __idx="0" />
+              <item Line="471" SubContext="out[Aa(Реестр кредитных договоров)]/var[alloverlays(Все слои)]" __idx="1" />
+            </item>
+          </item>
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="file" __idx="1">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.bm.bxl" Line="18" MainContext="thema[calced_matrix(Матрица расчета калькуляций)]" SubContext="out[Aa]/param" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" __idx="1">
+            <item Line="109" MainContext="report[orglist(Реестр предприятий)]" SubContext="out(Реестр предприятий)/param" __idx="0" />
+            <item Line="118" MainContext="report[newobjlist(Реестр старших объектов)]" SubContext="out(Реестр старших объектов)/param" __idx="1" />
+          </item>
+        </References>
+      </item>
+      <item ReferenceCount="31" Value="int" __idx="2">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.bxl" MainContext="assoireport[contacts(Справочник пользователей)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.prd.bxl" MainContext="thema[prdlib(Библиотека для объемов производства)]" __idx="1" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.prd.old.bxl" MainContext="thema[prdlibold(Библиотека для объемов производства)]" __idx="2" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="3" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" __idx="4">
+            <item Line="436" MainContext="paramlib[kredits]" SubContext="param[dogovorid(ИД договора)]" __idx="0" />
+            <item Line="60" MainContext="assoireport[messageread(Отчет о результатах прочтения сообщений)]" SubContext="out[Ab]/var[message(Сообщение)]" __idx="1" />
+          </item>
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="string" __idx="3">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="16" MainContext="paramlib" SubContext="param[main_metal(Основной метал)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="123" MainContext="paramlib" SubContext="param[nolibobjects(Список библиотек, из которых объекты НЕ импортируются)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="date" __idx="4">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" MainContext="assoireport[messageread(Отчет о результатах прочтения сообщений)]" __idx="0" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+  <item Name="defaultvalue" VariantCount="39" ReferenceCount="96" __idx="3">
+    <ValueVariants>
+      <item ReferenceCount="49" Value="true" __idx="0">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\demo.chart.bxl" MainContext="assoireport[demochart(Пример отчета с графиками)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\ditrectorat.bxl" __idx="1">
+            <item MainContext="assoireport[directorat(Презентация для директората)]" __idx="0">
+              <item Line="9" SubContext="out[Aa(Презентация для директората)]/var[allstuff(Все включено)]" __idx="0" />
+              <item Line="10" SubContext="out[Aa(Презентация для директората)]/var[allparts(Все части)]" __idx="1" />
+              <item Line="11" SubContext="out[Aa(Презентация для директората)]/var[alloverlays(Все слои)]" __idx="2" />
+            </item>
+            <item MainContext="assoireport[directorat_ocm(Презентация для ОЦМ)]" __idx="1">
+              <item Line="28" SubContext="out[Aa(Презентация для ОЦМ)]/var[allstuff(Все включено)]" __idx="0" />
+              <item Line="29" SubContext="out[Aa(Презентация для ОЦМ)]/var[allparts(Все части)]" __idx="1" />
+              <item Line="30" SubContext="out[Aa(Презентация для ОЦМ)]/var[alloverlays(Все слои)]" __idx="2" />
+            </item>
+            <item MainContext="assoireport[protocol(Протокол предприятия)]" __idx="2">
+              <item Line="58" SubContext="out[Ab(Протокол предприятия)]/var[allstuff(Все включено)]" __idx="0" />
+              <item Line="59" SubContext="out[Ab(Протокол предприятия)]/var[allparts(Все части)]" __idx="1" />
+              <item Line="60" SubContext="out[Ab(Протокол предприятия)]/var[alloverlays(Все слои)]" __idx="2" />
+              <item Line="72" SubContext="out[Ab(Протокол предприятия)]/var[allholdunderwriters(Все от холдинга)]" __idx="3" />
+              <item Line="88" SubContext="out[Aa(Протокол предприятия)]/var[allstuff(Все включено)]" __idx="4" />
+              <item Line="89" SubContext="out[Aa(Протокол предприятия)]/var[allparts(Все части)]" __idx="5" />
+              <item Line="90" SubContext="out[Aa(Протокол предприятия)]/var[alloverlays(Все слои)]" __idx="6" />
+              <item Line="102" SubContext="out[Aa(Протокол предприятия)]/var[allholdunderwriters(Все от холдинга)]" __idx="7" />
+            </item>
+          </item>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.bank.bxl" MainContext="thema[kzreestr_base(Реестр договоров кредита и займа)]" __idx="2" />
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" __idx="3">
+            <item MainContext="assoireport[themadoc(Документация темы)]" __idx="0">
+              <item Line="11" SubContext="out[Aa(Паспорт темы)]/var[allparts(Все части)]" __idx="0" />
+              <item Line="12" SubContext="out[Aa(Паспорт темы)]/var[alloverlays(Все слои)]" __idx="1" />
+              <item Line="14" SubContext="out[Aa(Паспорт темы)]/var[usetest(Включать тестовые)]" __idx="2" />
+              <item Line="15" SubContext="out[Aa(Паспорт темы)]/var[usedisign(Включать дизайнерские)]" __idx="3" />
+              <item Line="16" SubContext="out[Aa(Паспорт темы)]/var[useexp(Включать эксплуатируемые)]" __idx="4" />
+              <item Line="17" SubContext="out[Aa(Паспорт темы)]/var[usehist(Включать исторические)]" __idx="5" />
+              <item Line="18" SubContext="out[Aa(Паспорт темы)]/var[usesys(Включать системные)]" __idx="6" />
+              <item Line="19" SubContext="out[Aa(Паспорт темы)]/var[useold(Включать устаревшие)]" __idx="7" />
+              <item Line="22" SubContext="out[Aa(Паспорт темы)]/var[usein(Включать формы)]" __idx="8" />
+              <item Line="23" SubContext="out[Aa(Паспорт темы)]/var[useout(Включать отчеты)]" __idx="9" />
+              <item Line="24" SubContext="out[Aa(Паспорт темы)]/var[usegrp(Включать группы)]" __idx="10" />
+              <item Line="26" SubContext="out[Aa(Паспорт темы)]/var[tdt_useadmin(Административные темы)]" __idx="11" />
+              <item Line="27" SubContext="out[Aa(Паспорт темы)]/var[tdt_usedesign(Дизайнерские темы)]" __idx="12" />
+            </item>
+            <item MainContext="thema[blockreport(Базис блочного отчета)]" __idx="1">
+              <item Line="56" SubContext="out[Aa(${name})]/var[usetargetgroups(Использовать целевые группы)]" __idx="0" />
+              <item Line="57" SubContext="out[Aa(${name})]/var[usetargetprocesses(Использовать целевые процессы)]" __idx="1" />
+              <item Line="62" SubContext="out[Aa(${name})]/var[allparts(Все части)]" __idx="2" />
+              <item Line="63" SubContext="out[Aa(${name})]/var[alloverlays(Все слои)]" __idx="3" />
+              <item Line="64" SubContext="out[Aa(${name})]/var[allslides(Все слайды)]" __idx="4" />
+              <item Line="65" SubContext="out[Aa(${name})]/var[hideslots(Прятать пустые слайды и слоты)]" __idx="5" />
+              <item Line="90" SubContext="out[Ba(Протокол (настраиваемый))]/var[allstuff(Все включено)]" __idx="6" />
+              <item Line="91" SubContext="out[Ba(Протокол (настраиваемый))]/var[allparts(Все части)]" __idx="7" />
+              <item Line="92" SubContext="out[Ba(Протокол (настраиваемый))]/var[alloverlays(Все слои)]" __idx="8" />
+              <item Line="106" SubContext="out[Ba(Протокол (настраиваемый))]/var[allholdunderwriters(Все от холдинга)]" __idx="9" />
+              <item Line="120" SubContext="out[Bb(Протокол)]/var[allstuff(Все включено)]" __idx="10" />
+              <item Line="121" SubContext="out[Bb(Протокол)]/var[allparts(Все части)]" __idx="11" />
+              <item Line="122" SubContext="out[Bb(Протокол)]/var[alloverlays(Все слои)]" __idx="12" />
+              <item Line="136" SubContext="out[Bb(Протокол)]/var[allholdunderwriters(Все от холдинга)]" __idx="13" />
+            </item>
+          </item>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" __idx="4">
+            <item Line="429" MainContext="assoireport[objectpassport(Паспорт предприятия)]" SubContext="out[Aa(Паспорт предприятия)]/var[allstuff(Все включено)]" __idx="0" />
+            <item MainContext="assoireport[kreditpassport(Паспорт кредитного договора)]" __idx="1">
+              <item Line="470" SubContext="out[Aa(Реестр кредитных договоров)]/var[allparts(Все части)]" __idx="0" />
+              <item Line="471" SubContext="out[Aa(Реестр кредитных договоров)]/var[alloverlays(Все слои)]" __idx="1" />
+            </item>
+          </item>
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="6600FF,339933,009999,00FFFF,3333CC,CC3300,CCCC00,CC6600,006600,FFFF00,336600,FF3300,CCFF33,009933" __idx="1">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\ditrectorat.bxl" __idx="0">
+            <item Line="16" MainContext="assoireport[directorat(Презентация для директората)]" SubContext="out[Aa(Презентация для директората)]/var[paletteсolors(Палитра)]" __idx="0" />
+            <item Line="33" MainContext="assoireport[directorat_ocm(Презентация для ОЦМ)]" SubContext="out[Aa(Презентация для ОЦМ)]/var[paletteсolors(Палитра)]" __idx="1" />
+          </item>
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="false" __idx="2">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" MainContext="paramlib" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="11" MainContext="paramlib" SubContext="param[sql_use_metal_filter(Вид отчета)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="cu" __idx="3">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="16" MainContext="paramlib" SubContext="param[main_metal(Основной метал)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="views/report/doc/blockparts.bxl" __idx="4">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" Line="67" MainContext="thema[blockreport(Базис блочного отчета)]" SubContext="out[Aa(${name})]/param[parts(Файл партов)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="views/report/mm/protocol.bxl" __idx="5">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" MainContext="thema[blockreport(Базис блочного отчета)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="ПРИБ" __idx="6">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="102" MainContext="paramlib" SubContext="param[prib_or_ubyt(Прибыль или затраты)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="KOL;CENA;SUMMA" __idx="7">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="113" MainContext="paramlib" SubContext="param[cond_type_pokaz(Тип показателя)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="OSTN;PRIHOD;RASHOD;OSTK" __idx="8">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="121" MainContext="paramlib" SubContext="param[cond_group_pokaz(Группа показателей)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="KOL;CENA;SS;UR;KR;PROC;PRIB" __idx="9">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="128" MainContext="paramlib" SubContext="param[cond_sale_pokaz(Показатель продаж)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="ED;VSEGO" __idx="10">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="146" MainContext="paramlib" SubContext="param[cond_vid_pokaz(Вид показателя)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="DZ;KZ" __idx="11">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="153" MainContext="paramlib" SubContext="param[cond_dzk(Вид задолженности)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="363" MainContext="paramlib" SubContext="param[cond_dkz(Вид задолженности)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="M1" __idx="12">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="180" MainContext="paramlib" SubContext="param[kolmes(Число пред. месяцев (устар.))]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="PM1" __idx="13">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="202" MainContext="paramlib" SubContext="param[predkolmes(Число пред. месяцев)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="Y1" __idx="14">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="232" MainContext="paramlib" SubContext="param[kolgod(Число пред. лет)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="Y0" __idx="15">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="255" MainContext="paramlib" SubContext="param[kolgod6(Число пред. лет)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="P0" __idx="16">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="269" MainContext="paramlib" SubContext="param[kolplan(Число промежут. планов)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="K0" __idx="17">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="284" MainContext="paramlib" SubContext="param[kolkorr(Число коррективов)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="ФОТ" __idx="18">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="NOB;NDS;SNDS" __idx="19">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="341" MainContext="paramlib" SubContext="param[cond_finplan(Параметры финплана)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="${bindedformZZindexZZ}" __idx="20">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.eco.bxl" Line="166" MainContext="thema[ecosubset(Шаблонный поднабор из двух отчетов и формы)]" SubContext="out[ZZindexZZb(${rbnameZZindexZZ})]/param[bindedform(Связаная форма)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="${ra_numberZZindexZZ}" __idx="21">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.eco.bxl" Line="127" MainContext="thema[ecosubset(Шаблонный поднабор из двух отчетов и формы)]" SubContext="out[ZZindexZZa(${ranameZZindexZZ})]/var[number(Номер формы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="${biztranZZindexZZ}" __idx="22">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.eco.bxl" MainContext="thema[ecosubset(Шаблонный поднабор из двух отчетов и формы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="${rb_numberZZindexZZ}" __idx="23">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.eco.bxl" Line="167" MainContext="thema[ecosubset(Шаблонный поднабор из двух отчетов и формы)]" SubContext="out[ZZindexZZb(${rbnameZZindexZZ})]/var[number(Номер формы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="0" __idx="24">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="НЕ_ТЕКУЩЕЕПРЕДПРИЯТИЕ,НЕ_МОИПРЕДПРИЯТИЯ" __idx="25">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="89" MainContext="paramlib" SubContext="param[only_current_admin(Свод или текущее)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="ТЕКУЩЕЕПРЕДПРИЯТИЕ" __idx="26">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="98" MainContext="paramlib" SubContext="param[only_current_strict(Текущее или все свои предприятия (дивизионы))]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="Column3D" __idx="27">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="231" MainContext="paramlib" SubContext="param[graphtype(Тип графика)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="Arial" __idx="28">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="259" MainContext="paramlib" SubContext="param[main_font(Основной шрифт)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="kPortraitOrientation" __idx="29">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="273" MainContext="paramlib" SubContext="param[print_orientation(Ориентация)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="kv1,kv2,kv3,kv4" __idx="30">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="290" MainContext="paramlib" SubContext="param[formperiodset(Набор периодов)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="yc1" __idx="31">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="299" MainContext="paramlib" SubContext="param[formayearcount(Кол-во годов)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="По годам" __idx="32">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="318" MainContext="paramlib" SubContext="param[formaperiods(Тип периода)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="OTKLABS" __idx="33">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="348" MainContext="paramlib" SubContext="param[useotkltype(Тип отклонения)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="OST;NACH;OPL" __idx="34">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="BALST,OSTST,AMST" __idx="35">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="356" MainContext="paramlib" SubContext="param[cond_voa(Показатели по активам)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="PLAN,FACT" __idx="36">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="614" MainContext="paramlib" SubContext="param[planfact(План/факт)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="otr" __idx="37">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="102" MainContext="report[orglist(Реестр предприятий)]" SubContext="out(Реестр предприятий)/var[groupping(Группировка)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="ONLYONEPERIOD" __idx="38">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="384" MainContext="assoireport[states(Отчет о статусах по закрытию форм)]" SubContext="out[Aa(Отчет о статусах форм)]/var[statetime(Тип развертки)]" __idx="0" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+  <item Name="idx" VariantCount="65" ReferenceCount="169" __idx="4">
+    <ValueVariants>
+      <item ReferenceCount="11" Value="10" __idx="0">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\ditrectorat.bxl" MainContext="assoireport[protocol(Протокол предприятия)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" __idx="1">
+            <item Line="14" MainContext="assoireport[themadoc(Документация темы)]" SubContext="out[Aa(Паспорт темы)]/var[usetest(Включать тестовые)]" __idx="0" />
+            <item MainContext="thema[blockreport(Базис блочного отчета)]" __idx="1">
+              <item Line="56" SubContext="out[Aa(${name})]/var[usetargetgroups(Использовать целевые группы)]" __idx="0" />
+              <item Line="57" SubContext="out[Aa(${name})]/var[usetargetprocesses(Использовать целевые процессы)]" __idx="1" />
+              <item Line="105" SubContext="out[Ba(Протокол (настраиваемый))]/var[holdingunderwriters]" __idx="2" />
+              <item Line="135" SubContext="out[Bb(Протокол)]/var[holdingunderwriters]" __idx="3" />
+            </item>
+          </item>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="2" />
+        </References>
+      </item>
+      <item ReferenceCount="11" Value="20" __idx="1">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\ditrectorat.bxl" MainContext="assoireport[protocol(Протокол предприятия)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" __idx="1">
+            <item Line="15" MainContext="assoireport[themadoc(Документация темы)]" SubContext="out[Aa(Паспорт темы)]/var[usedisign(Включать дизайнерские)]" __idx="0" />
+            <item MainContext="thema[blockreport(Базис блочного отчета)]" __idx="1">
+              <item Line="58" SubContext="out[Aa(${name})]/var[targetgroupselector]" __idx="0" />
+              <item Line="59" SubContext="out[Aa(${name})]/var[targetprocessselector]" __idx="1" />
+              <item Line="106" SubContext="out[Ba(Протокол (настраиваемый))]/var[allholdunderwriters(Все от холдинга)]" __idx="2" />
+              <item Line="136" SubContext="out[Bb(Протокол)]/var[allholdunderwriters(Все от холдинга)]" __idx="3" />
+            </item>
+          </item>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="2" />
+        </References>
+      </item>
+      <item ReferenceCount="8" Value="30" __idx="2">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\ditrectorat.bxl" MainContext="assoireport[protocol(Протокол предприятия)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" __idx="1">
+            <item Line="16" MainContext="assoireport[themadoc(Документация темы)]" SubContext="out[Aa(Паспорт темы)]/var[useexp(Включать эксплуатируемые)]" __idx="0" />
+            <item MainContext="thema[blockreport(Базис блочного отчета)]" __idx="1">
+              <item Line="107" SubContext="out[Ba(Протокол (настраиваемый))]/var[objunderwriters]" __idx="0" />
+              <item Line="137" SubContext="out[Bb(Протокол)]/var[objunderwriters]" __idx="1" />
+            </item>
+          </item>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="2" />
+        </References>
+      </item>
+      <item ReferenceCount="4" Value="35" __idx="3">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.calc.bxl" Line="6" MainContext="paramlib" SubContext="param[usesummaedd(Затраты, $/тн)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.en.bxl" Line="37" MainContext="thema[enlib(Основная библиотека)]" SubContext="out[TEROLAP]/var[useudveszatr(Доля в затратах)]" __idx="1" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="2" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="36" __idx="4">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.calc.bxl" Line="7" MainContext="paramlib" SubContext="param[usesummaedr(Затраты, руб./тн)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.en.bxl" Line="38" MainContext="thema[enlib(Основная библиотека)]" SubContext="out[TEROLAP]/var[useudvespered(Доля в переделе)]" __idx="1" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="366" MainContext="paramlib" SubContext="param[viewval(Показать валюту)]" __idx="2" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="37" __idx="5">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.calc.bxl" Line="8" MainContext="paramlib" SubContext="param[usesummar(Затраты, тыс. руб.)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="110" __idx="6">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="32" MainContext="paramlib" SubContext="param[show_summs_only(Сокр. вид)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="65" MainContext="assoireport[messageread(Отчет о результатах прочтения сообщений)]" SubContext="out[Aa]/var[startdate(От)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="111" __idx="7">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="37" MainContext="paramlib" SubContext="param[use_metal_filter(Вид отчета)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" MainContext="paramlib" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="112" __idx="8">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="42" MainContext="paramlib" SubContext="param[metal_filter_au(Золото)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="22" MainContext="paramlib" SubContext="param[sql_metal_filter_au(Золото)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="113" __idx="9">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="43" MainContext="paramlib" SubContext="param[metal_filter_ag(Серебро)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="23" MainContext="paramlib" SubContext="param[sql_metal_filter_ag(Серебро)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="114" __idx="10">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="44" MainContext="paramlib" SubContext="param[metal_filter_cu(Медь)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="24" MainContext="paramlib" SubContext="param[sql_metal_filter_cu(Медь)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="115" __idx="11">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="45" MainContext="paramlib" SubContext="param[metal_filter_zn(Цинк)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="25" MainContext="paramlib" SubContext="param[sql_metal_filter_zn(Цинк)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="116" __idx="12">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="46" MainContext="paramlib" SubContext="param[metal_filter_pb(Свинец)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="26" MainContext="paramlib" SubContext="param[sql_metal_filter_pb(Свинец)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="117" __idx="13">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="48" MainContext="paramlib" SubContext="param[metal_filter_smt(СМТ)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="27" MainContext="paramlib" SubContext="param[sql_metal_filter_smt(СМТ)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="118" __idx="14">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="49" MainContext="paramlib" SubContext="param[metal_filter_sod(Сод.)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="28" MainContext="paramlib" SubContext="param[sql_metal_filter_sod(Сод.)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="11" __idx="15">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="51" MainContext="paramlib" SubContext="param[include_raw(Сырье)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="12" __idx="16">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="52" MainContext="paramlib" SubContext="param[include_raw_self(Собственное сырье)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="131" MainContext="paramlib" SubContext="param[filteringgroupcorr(Корректор фильт. группы)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="13" __idx="17">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="53" MainContext="paramlib" SubContext="param[include_raw_gift(Давальческое сырье)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="132" MainContext="paramlib" SubContext="param[detailtypefilter(Фильтр типов младших объектов)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="14" __idx="18">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="54" MainContext="paramlib" SubContext="param[include_raw_sum(Итоги по сырью)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="116" MainContext="paramlib" SubContext="param[cond_org_groups(Группировка предприятий)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="4" Value="21" __idx="19">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="56" MainContext="paramlib" SubContext="param[include_gp(Продукция)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="5" Value="22" __idx="20">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="57" MainContext="paramlib" SubContext="param[include_gp_self(Собственная продукция)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="23" __idx="21">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="58" MainContext="paramlib" SubContext="param[include_gp_gift(Давальческая продукция)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="24" __idx="22">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="59" MainContext="paramlib" SubContext="param[include_gp_sum(Итоги по продукции)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="31" __idx="23">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="61" MainContext="paramlib" SubContext="param[include_sale(Реализация)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="32" __idx="24">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="62" MainContext="paramlib" SubContext="param[include_sale_self(Собственная продукция)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="4" Value="33" __idx="25">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="63" MainContext="paramlib" SubContext="param[include_sale_gift(Услуги по переработке)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="4" Value="34" __idx="26">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="64" MainContext="paramlib" SubContext="param[include_sale_sum(Итоги по реализации)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="41" __idx="27">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="66" MainContext="paramlib" SubContext="param[include_nezav(НЗП)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="368" MainContext="paramlib" SubContext="param[usetpfp(Годовой ТПФП)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="42" __idx="28">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="67" MainContext="paramlib" SubContext="param[include_nezav_self(Собственное НЗП)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="369" MainContext="paramlib" SubContext="param[usekorrtpfp(ТПФП с уч. корр.)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="43" __idx="29">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="68" MainContext="paramlib" SubContext="param[include_nezav_gift(Давальческое НЗП)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="370" MainContext="paramlib" SubContext="param[showkorrtpfp(Показать корр. ТПФП)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="44" __idx="30">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="69" MainContext="paramlib" SubContext="param[include_nezav_sum(Итоги по НЗП)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="371" MainContext="paramlib" SubContext="param[usetekkorr(Корр. тек. ТПФП)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="119" __idx="31">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="120" __idx="32">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="30" MainContext="paramlib" SubContext="param[sql_reverse(Реверсия)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="66" MainContext="assoireport[messageread(Отчет о результатах прочтения сообщений)]" SubContext="out[Aa]/var[enddate(До)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="4" Value="130" __idx="33">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" MainContext="paramlib" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="67" MainContext="assoireport[messageread(Отчет о результатах прочтения сообщений)]" SubContext="out[Aa]/var[search(Искать в тексте)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="125" __idx="34">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="32" MainContext="paramlib" SubContext="param[biztran(Бизнес-процесс)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="140" __idx="35">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="39" MainContext="paramlib" SubContext="param[column_type(Тип колонки для вывода)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="68" MainContext="assoireport[messageread(Отчет о результатах прочтения сообщений)]" SubContext="out[Aa]/var[direct(Прямой порядок)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="40" __idx="36">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" Line="17" MainContext="assoireport[themadoc(Документация темы)]" SubContext="out[Aa(Паспорт темы)]/var[usehist(Включать исторические)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="50" __idx="37">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" Line="18" MainContext="assoireport[themadoc(Документация темы)]" SubContext="out[Aa(Паспорт темы)]/var[usesys(Включать системные)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="60" __idx="38">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" MainContext="assoireport[themadoc(Документация темы)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="136" MainContext="paramlib" SubContext="param[cond_sale_pokaz_prib(Прибыль от продаж)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="90" __idx="39">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" Line="22" MainContext="assoireport[themadoc(Документация темы)]" SubContext="out[Aa(Паспорт темы)]/var[usein(Включать формы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="100" __idx="40">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" Line="23" MainContext="assoireport[themadoc(Документация темы)]" SubContext="out[Aa(Паспорт темы)]/var[useout(Включать отчеты)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="5" Value="51" __idx="41">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="52" __idx="42">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="121" MainContext="paramlib" SubContext="param[cond_group_pokaz(Группа показателей)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="53" __idx="43">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="128" MainContext="paramlib" SubContext="param[cond_sale_pokaz(Показатель продаж)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="414" MainContext="paramlib" SubContext="param[obj_level4(Четвертый уровень развертки)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="54" __idx="44">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="421" MainContext="paramlib" SubContext="param[obj_level5(Пятый уровень развертки)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="55" __idx="45">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="56" __idx="46">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="57" __idx="47">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="58" __idx="48">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="134" MainContext="paramlib" SubContext="param[cond_sale_pokaz_kr(Ком. расходы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="59" __idx="49">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="135" MainContext="paramlib" SubContext="param[cond_sale_pokaz_pss(Полная с-сть)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="61" __idx="50">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="137" MainContext="paramlib" SubContext="param[cond_sale_pokaz_proc(Проценты)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="62" __idx="51">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="138" MainContext="paramlib" SubContext="param[cond_sale_pokaz_zatr(Полн. с-сть с уч. %%)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="63" __idx="52">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="139" MainContext="paramlib" SubContext="param[cond_sale_pokaz_pribproc(Прибыль с уч. %%)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="26" __idx="53">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="4" Value="27" __idx="54">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="314" MainContext="paramlib" SubContext="param[summayear(Сумма лет)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="28" __idx="55">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="43" MainContext="paramlib" SubContext="param[maxlevel(Уровень детализации)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="5" Value="25" __idx="56">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="45" __idx="57">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="372" MainContext="paramlib" SubContext="param[showallkorr(Показать все корр.)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="46" __idx="58">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="47" __idx="59">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="376" MainContext="paramlib" SubContext="param[usekorrnalog(Перерасчеты за пред. годы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="4486" __idx="60">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="377" MainContext="paramlib" SubContext="param[useplan(План текущего периода)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="49" __idx="61">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="378" MainContext="paramlib" SubContext="param[useplanpred(План предыдущего года)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="29" __idx="62">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="383" MainContext="paramlib" SubContext="param[usealias(Использовать превдонимы строк)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="150" __idx="63">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="69" MainContext="assoireport[messageread(Отчет о результатах прочтения сообщений)]" SubContext="out[Aa]/var[formatsearch(Выделять поисковую строку)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="160" __idx="64">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="70" MainContext="assoireport[messageread(Отчет о результатах прочтения сообщений)]" SubContext="out[Aa]/var[filtersearch(Фильтровать по  поисковой строке)]" __idx="0" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+  <item Name="tab" VariantCount="7" ReferenceCount="142" __idx="5">
+    <ValueVariants>
+      <item ReferenceCount="28" Value="_TAB_UND" __idx="0">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\ditrectorat.bxl" MainContext="assoireport[protocol(Протокол предприятия)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" MainContext="thema[blockreport(Базис блочного отчета)]" __idx="1" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="2" />
+        </References>
+      </item>
+      <item ReferenceCount="6" Value="_TAB_DEF" __idx="1">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.presentation.bxl" MainContext="thema[prd_lib(Библиотека презентации)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="64" Value="_TAB_FMT" __idx="2">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.prd.bxl" MainContext="thema[prdlib(Библиотека для объемов производства)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.prd.old.bxl" MainContext="thema[prdlibold(Библиотека для объемов производства)]" __idx="1" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="2" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_TAB_PRES" __idx="3">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\doc.reports.bxl" Line="55" MainContext="thema[blockreport(Базис блочного отчета)]" SubContext="out[Aa(${name})]/var[blockslideselector]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="16" Value="_TAB_SYS" __idx="4">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="14" Value="_TAB_TBL" __idx="5">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="13" Value="_TAB_PRN" __idx="6">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+  <item Name="target" VariantCount="5" ReferenceCount="99" __idx="6">
+    <ValueVariants>
+      <item ReferenceCount="94" Value="condition" __idx="0">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\dosie.start.bxl" MainContext="thema[dosie_check_osnpok(Проверка основных показателей)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.calc.bxl" MainContext="paramlib" __idx="1" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.en.bxl" MainContext="thema[enlib(Основная библиотека)]" __idx="2" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.resposibility.report.bxl" MainContext="assoireport[responsibility(Ответственные по предприятию по группам)]" __idx="3" />
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="4" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="5" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" MainContext="assoireport[states(Отчет о статусах по закрытию форм)]" __idx="6" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="countryfilter" __idx="1">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="120" MainContext="paramlib" SubContext="param[cofl_cnt(Фильтр по странам)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="objectfilter" __idx="2">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="customobjectfilters" __idx="3">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="147" MainContext="paramlib" SubContext="param[cof_cnt(Подключение фильтра по странам)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="logicalzero" __idx="4">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="375" MainContext="assoireport[states(Отчет о статусах по закрытию форм)]" SubContext="out[Aa(Отчет о статусах форм)]/var[blockfilter(Фильтр по блокировкам)]" __idx="0" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+  <item Name="listdefinition" VariantCount="75" ReferenceCount="79" __idx="7">
+    <ValueVariants>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;&#x9;OG:Группы|&#xA;&#x9;&#x9;&#x9;&#x9;OG_ORG:Предприятия (в разбике по группам)&#xA;&#x9;&#x9;&#x9;&#x9;OG,OG_ORG:Группы и предприятия&#xA;&#x9;&#x9;&#x9;" __idx="0">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\dosie.start.bxl" Line="75" MainContext="thema[dosie_check_osnpok(Проверка основных показателей)]" SubContext="out[Aa]/var[dosie_svod_rezvert(Вариант развертки)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;&#x9;ALL_OG:Все|&#xA;&#x9;&#x9;&#x9;&#x9;OGDS_DIV_METAL:Металлургия|&#xA;&#x9;&#x9;&#x9;&#x9;OGDS_DIV_MASHIN:Машиностроение&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;" __idx="1">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\dosie.start.bxl" Line="81" MainContext="thema[dosie_check_osnpok(Проверка основных показателей)]" SubContext="out[Aa]/var[dosie_division_selector(Список групп (дивизионов))]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;false:Полный отчет |&#xA;&#x9;&#x9;&#x9;true:Только Всего&#xA;&#x9;&#x9;" __idx="2">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="32" MainContext="paramlib" SubContext="param[show_summs_only(Сокр. вид)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="&#xA;&#x9;&#x9;&#x9;false:Полный отчет |&#xA;&#x9;&#x9;&#x9;true:По металлам&#xA;&#x9;&#x9;" __idx="3">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" Line="37" MainContext="paramlib" SubContext="param[use_metal_filter(Вид отчета)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="11" MainContext="paramlib" SubContext="param[sql_use_metal_filter(Вид отчета)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;cu:Медь|&#xA;&#x9;&#x9;&#x9;zn:Цинк|&#xA;&#x9;&#x9;&#x9;pb:Свинец&#xA;&#x9;&#x9;" __idx="4">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="16" MainContext="paramlib" SubContext="param[main_metal(Основной метал)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;0 : Предприятие и переделы|&#xA;&#x9;&#x9;1 : Только предприятие |&#xA;&#x9;&#x9;2 : Только переделы&#xA;&#x9;&#x9;" __idx="5">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="33" MainContext="paramlib" SubContext="param[biztran_subpart(Деталировка по переделам)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="PDKOL:Поступление|RDKOL:Загрузка" __idx="6">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="39" MainContext="paramlib" SubContext="param[column_type(Тип колонки для вывода)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;PLAN,FACT : Все |&#xA;&#x9;&#x9;&#x9;FACT : Факт |&#xA;&#x9;&#x9;&#x9;PLAN : План &#xA;&#x9;&#x9;" __idx="7">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.resposibility.report.bxl" Line="27" MainContext="assoireport[responsibility(Ответственные по предприятию по группам)]" SubContext="out[Aa(Отчет об ответственных по предприятию по группам)]/var[groupselectorplanfact(План/Факт)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;ALLGRP : Все |&#xA;&#x9;&#x9;&#x9;FINGRP : Финансы |&#xA;&#x9;&#x9;&#x9;ECOGRP : Экономика |&#xA;&#x9;&#x9;&#x9;TRUDGRP : Персонал |&#xA;&#x9;&#x9;&#x9;SOCGRP : Соц. сфера |&#xA;&#x9;&#x9;&#x9;PROIZGRP : Производство&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;" __idx="8">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.resposibility.report.bxl" Line="32" MainContext="assoireport[responsibility(Ответственные по предприятию по группам)]" SubContext="out[Aa(Отчет об ответственных по предприятию по группам)]/var[groupselector(Группа)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;ПРИБ : Прибыли |&#xA;&#x9;&#x9;&#x9;ЗАТР : Затраты&#xA;&#x9;&#x9;" __idx="9">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="102" MainContext="paramlib" SubContext="param[prib_or_ubyt(Прибыль или затраты)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_ТИППОКАЗАТЕЛЯ" __idx="10">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="113" MainContext="paramlib" SubContext="param[cond_type_pokaz(Тип показателя)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_ГРУППАПОКАЗАТЕЛЕЙ" __idx="11">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="121" MainContext="paramlib" SubContext="param[cond_group_pokaz(Группа показателей)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_ПОКАЗАТЕЛЬПРОДАЖ" __idx="12">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="128" MainContext="paramlib" SubContext="param[cond_sale_pokaz(Показатель продаж)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_ВИДПОКАЗАТЕЛЯ" __idx="13">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="146" MainContext="paramlib" SubContext="param[cond_vid_pokaz(Вид показателя)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="_ВИДЗАДОЛЖЕННОСТИ" __idx="14">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="153" MainContext="paramlib" SubContext="param[cond_dzk(Вид задолженности)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="363" MainContext="paramlib" SubContext="param[cond_dkz(Вид задолженности)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_КОЛМЕС" __idx="15">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="180" MainContext="paramlib" SubContext="param[kolmes(Число пред. месяцев (устар.))]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_ПРЕДКОЛМЕС" __idx="16">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="202" MainContext="paramlib" SubContext="param[predkolmes(Число пред. месяцев)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_КОЛГОД" __idx="17">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="232" MainContext="paramlib" SubContext="param[kolgod(Число пред. лет)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_КОЛГОД6" __idx="18">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="255" MainContext="paramlib" SubContext="param[kolgod6(Число пред. лет)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_КОЛПЛАН" __idx="19">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="269" MainContext="paramlib" SubContext="param[kolplan(Число промежут. планов)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_КОЛКОРР" __idx="20">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="284" MainContext="paramlib" SubContext="param[kolkorr(Число коррективов)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;ФОТ,ЗП,Ч,ЧК,ЧУ,СВ : Все показатели |&#xA;&#x9;&#x9;&#x9;ФОТ: ФОТ |&#xA;&#x9;&#x9;&#x9;ЗП: Зарплата |&#xA;&#x9;&#x9;&#x9;Ч: Численность |&#xA;&#x9;&#x9;&#x9;ЧК: Численность на кон. |&#xA;&#x9;&#x9;&#x9;ЧУ : Числ-ть упр. |&#xA;&#x9;&#x9;&#x9;СВ : Соцвыплаты&#xA;&#x9;&#x9;" __idx="21">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="304" MainContext="paramlib" SubContext="param[param_trud(Показатели по труду)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;ФОТ,ЗП,Ч,ЧК,СВ : Все показатели |&#xA;&#x9;&#x9;&#x9;ФОТ: ФОТ |&#xA;&#x9;&#x9;&#x9;ЗП: Зарплата |&#xA;&#x9;&#x9;&#x9;Ч: Численность |&#xA;&#x9;&#x9;&#x9;ЧК: Численность на кон. |&#xA;&#x9;&#x9;&#x9;СВ : Соцвыплаты&#xA;&#x9;&#x9;" __idx="22">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="320" MainContext="paramlib" SubContext="param[param_trud_plan(Показатели по труду (план))]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_ПОКФИНПЛАН" __idx="23">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="341" MainContext="paramlib" SubContext="param[cond_finplan(Параметры финплана)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;0 : Текущий |&#xA;&#x9;&#x9;&#x9;-1 : Предыдущий  |&#xA;&#x9;&#x9;&#x9;СПИСОКГОДОВ&#xA;&#x9;&#x9;" __idx="24">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="34" MainContext="paramlib" SubContext="param[year(Год)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_СПИСОК_ПЕРИОДОВ" __idx="25">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="41" MainContext="paramlib" SubContext="param[period(Период)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="0:Авто|500:Все на 1|1|2|3|4|5|6|7|8|9|10" __idx="26">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="42" MainContext="paramlib" SubContext="param[maxperpage(Кол-во объектов на листе)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="-1:Все|0|1|2|3" __idx="27">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="43" MainContext="paramlib" SubContext="param[maxlevel(Уровень детализации)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="1:1|1000|1000000" __idx="28">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="44" MainContext="paramlib" SubContext="param[numberscale(Разрядность)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="true:Скрывать|false:Показывать" __idx="29">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="true:Использовать|false:Не использовать" __idx="30">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="50" MainContext="paramlib" SubContext="param[useactualdate(Использовать актуальность предприятий)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_ТПСНГ" __idx="31">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="55" MainContext="paramlib" SubContext="param[cond_otch_periods(Отчетные периоды)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;0 : Текущее предприятие |&#xA;&#x9;&#x9;357 : УГМК-Холдинг |&#xA;&#x9;&#x9;1047 : УГМК-Сталь |&#xA;&#x9;&#x9;1046 : УГМК-ОЦМ |&#xA;&#x9;&#x9;1836 : Холдинг Кабельный альянс |&#xA;&#x9;&#x9;1092 : Управляющая портовая компания |&#xA;&#x9;&#x9;527: УГМК-Агро |&#xA;&#x9;&#x9;1054 : УГМК-Телеком&#xA;&#x9;&#x9;" __idx="32">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="73" MainContext="paramlib" SubContext="param[und_redirect(Перенеаправление подписи (ИД предприятия))]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;НЕ_ТЕКУЩЕЕПРЕДПРИЯТИЕ,НЕ_МОИПРЕДПРИЯТИЯ: Свод |&#xA;&#x9;&#x9;ТЕКУЩЕЕПРЕДПРИЯТИЕ : Текущее |&#xA;&#x9;&#x9;ВСЕМОИПРЕДПРИЯТИЯ: Все мои |&#xA;&#x9;&#x9;ТОЛЬКОВСЕГО : Только всего&#xA;&#x9;&#x9;" __idx="33">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="89" MainContext="paramlib" SubContext="param[only_current_admin(Свод или текущее)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;ТЕКУЩЕЕПРЕДПРИЯТИЕ:  Текущее |&#xA;&#x9;&#x9;ВСЕМОИПРЕДПРИЯТИЯ,ВСЕМОИПРЕДПРИЯТИЯРАЗБИВКА: Все мои |&#xA;&#x9;&#x9;ВСЕМОИПРЕДПРИЯТИЯ: Только всего &#xA;&#x9;&#x9;" __idx="34">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="98" MainContext="paramlib" SubContext="param[only_current_strict(Текущее или все свои предприятия (дивизионы))]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;:По умолчанию|&#xA;&#x9;&#x9;all:Все|&#xA;&#x9;&#x9;CHECKVALUTA:Проверка валют&#xA;&#x9;" __idx="35">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="109" MainContext="paramlib" SubContext="param[colgroup(Группа колонок)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_ГРУППИРОВКАПРЕДПРИЯТИЙ" __idx="36">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="116" MainContext="paramlib" SubContext="param[cond_org_groups(Группировка предприятий)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_СПИСОК_ОТРАСЛЕЙ" __idx="37">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="117" MainContext="paramlib" SubContext="param[cond_otrasl(Отрасли)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_СПИСОК_ДИВИЗИОНОВ" __idx="38">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="118" MainContext="paramlib" SubContext="param[cond_div(Дивизионы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_СПИСОК_РЕГИОНОВ" __idx="39">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="119" MainContext="paramlib" SubContext="param[cond_reg(Регионы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_СПИСОК_СТРАН" __idx="40">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="120" MainContext="paramlib" SubContext="param[cofl_cnt(Фильтр по странам)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_СПИСОК_ГРУПП" __idx="41">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="121" MainContext="paramlib" SubContext="param[cond_og(Группы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_СПИСОК_ФИЛЬТРАДАННЫХ" __idx="42">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="127" MainContext="paramlib" SubContext="param[zdf_data(Наличие данных)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_ЛД_СПИСОК_ГРУПП" __idx="43">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="130" MainContext="paramlib" SubContext="param[filteringgroup(Фильтрующая группа)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="Dot|Circo|Neato|Twopi|Fdp" __idx="44">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="150" MainContext="paramlib" SubContext="param[g_algorithm(Алгоритм)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;:Не указана|&#xA;&#x9;&#x9;&#x9;RUB:Рубль|&#xA;&#x9;&#x9;&#x9;USD:Доллары США|&#xA;&#x9;&#x9;&#x9;EUR:Евро|&#xA;&#x9;&#x9;&#x9;RSD:Сербский динар|&#xA;&#x9;&#x9;&#x9;CZK:Чешская крона|&#xA;&#x9;&#x9;&#x9;KZT:Казахский тенге|&#xA;&#x9;&#x9;&#x9;GBP:Фунт стерлингов|&#xA;&#x9;&#x9;" __idx="45">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="165" MainContext="paramlib" SubContext="param[invaluta(Входная валюта для шапки)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;RUB:Рубль|&#xA;&#x9;&#x9;&#x9;USD:Доллары США|&#xA;&#x9;&#x9;&#x9;EUR:Евро|&#xA;&#x9;&#x9;&#x9;RSD:Сербский динар|&#xA;&#x9;&#x9;&#x9;CZK:Чешская крона|&#xA;&#x9;&#x9;&#x9;KZT:Казахский тенге|&#xA;&#x9;&#x9;&#x9;GBP:Фунт стерлингов|&#xA;&#x9;&#x9;&#x9;NONE:Игнорировать преобразования&#xA;&#x9;&#x9;" __idx="46">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="177" MainContext="paramlib" SubContext="param[out_valuta(Расчет в валюте)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9; : Принятый в компании|&#xA;&#x9;&#x9;&#x9; e : Официальный на конец периода (ЦБР)|&#xA;&#x9;&#x9;&#x9; z : Средний курс за период (ЦБР)|&#xA;&#x9;&#x9;&#x9; d121 : Динамический 2012 (I кв) для банков&#xA;&#x9;&#x9;" __idx="47">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="188" MainContext="paramlib" SubContext="param[out_valuta_suffix(Тип курса)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9; 0 : -- |&#xA;&#x9;&#x9;&#x9; 2001 |&#xA;&#x9;&#x9;&#x9; 2002 |&#xA;&#x9;&#x9;&#x9; 2003 |&#xA;&#x9;&#x9;&#x9; 2004 |&#xA;&#x9;&#x9;&#x9; 2005 |&#xA;&#x9;&#x9;&#x9; 2006 |&#xA;&#x9;&#x9;&#x9; 2007 |&#xA;&#x9;&#x9;&#x9; 2008 |&#xA;&#x9;&#x9;&#x9; 2009 |&#xA;&#x9;&#x9;&#x9; 2010 |&#xA;&#x9;&#x9;&#x9; 2011 |&#xA;&#x9;&#x9;&#x9; 2012 |&#xA;&#x9;&#x9;&#x9; 2013 &#xA;&#x9;&#x9;" __idx="48">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="196" MainContext="paramlib" SubContext="param[out_valuta_year(Фиксированный год валюты)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9; 1 : 3 мес. |&#xA;&#x9;&#x9;&#x9; 2 : 6 мес. |&#xA;&#x9;&#x9;&#x9; 3 : 9 мес. |&#xA;&#x9;&#x9;&#x9; 4 : 12 мес.|&#xA;&#x9;&#x9;&#x9; 301 : План |&#xA;&#x9;&#x9;&#x9; 401 : Ожидаемое год&#xA;&#x9;&#x9;" __idx="49">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="214" MainContext="paramlib" SubContext="param[out_valuta_period(Фиксированный период курса)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_ТИПЫГРАФИКОВ" __idx="50">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="231" MainContext="paramlib" SubContext="param[graphtype(Тип графика)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;_ПАЛИТРАОСНОВНЫХЦВЕТОВ&#xA;&#x9;&#x9;" __idx="51">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="243" MainContext="paramlib" SubContext="param[graphbgcolor(Цвет фона)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="1|2|3|4|5" __idx="52">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="247" MainContext="paramlib" SubContext="param[graphpalette(Палитра)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;kPortraitOrientation:Книжная|&#xA;&#x9;&#x9;&#x9;kLandscapeOrientation:Альбомная&#xA;&#x9;&#x9;" __idx="53">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="273" MainContext="paramlib" SubContext="param[print_orientation(Ориентация)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;kv1,kv2,kv3,kv4 : Все |&#xA;&#x9;&#x9;&#x9;kv1 : I |&#xA;&#x9;&#x9;&#x9;kv1,kv2 : I,II |&#xA;&#x9;&#x9;&#x9;kv1,kv2,kv3 : I,II,III&#xA;&#x9;&#x9;" __idx="54">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="290" MainContext="paramlib" SubContext="param[formperiodset(Набор периодов)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;yc1 : 1 |&#xA;&#x9;&#x9;yc1,yc2 : 2 |&#xA;&#x9;&#x9;yc1,yc2,yc3 : 3 |&#xA;&#x9;&#x9;yc1,yc2,yc3,yc4 : 4 |&#xA;&#x9;&#x9;yc1,yc2,yc3,yc4,yc5 : 5 |&#xA;&#x9;&#x9;yc1,yc2,yc3,yc4,yc5,yc6 : 6 |&#xA;&#x9;&#x9;yc1,yc2,yc3,yc4,yc5,yc6,yc7 : 7 |&#xA;&#x9;&#x9;yc1,yc2,yc3,yc4,yc5,yc6,yc7,yc8 : 8 |&#xA;&#x9;&#x9;yc1,yc2,yc3,yc4,yc5,yc6,yc7,yc8,yc9 : 9 |&#xA;&#x9;&#x9;yc1,yc2,yc3,yc4,yc5,yc6,yc7,yc8,yc9,yc10 : 10&#xA;&#x9;&#x9;" __idx="55">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="299" MainContext="paramlib" SubContext="param[formayearcount(Кол-во годов)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;Погодам : Год |&#xA;&#x9;&#x9;Попериодам : Квартал (нак.) |&#xA;&#x9;&#x9;Покварталам : Квартал (форм.) |&#xA;&#x9;&#x9;ПокварталамнеФ: Квартал |&#xA;&#x9;&#x9;Помесяцам : Месяц |&#xA;        Помесяцам,Помесяцамвсего : Месяц Σ |&#xA;&#x9;&#x9;МПогодам : Год Σ&#xA;&#x9;&#x9;" __idx="56">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="318" MainContext="paramlib" SubContext="param[formaperiods(Тип периода)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="OTKLABS:Абсолютное|OTKLOTN:Относительное" __idx="57">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="348" MainContext="paramlib" SubContext="param[useotkltype(Тип отклонения)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_ОТЧЕТПОНАЛОГАМ" __idx="58">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="354" MainContext="paramlib" SubContext="param[cond_nalog(Показатели по налогам)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_ОТЧЕТ_ПО_ВНЕОБ_АКТИВАМ" __idx="59">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="356" MainContext="paramlib" SubContext="param[cond_voa(Показатели по активам)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="_ОТЧЕТПОСЧЕТУ" __idx="60">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="358" MainContext="paramlib" SubContext="param[cond_conto(Показатели отчета)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="0|1|2|3|4|5" __idx="61">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="365" MainContext="paramlib" SubContext="param[kr_yeardelta(Договора за пред. годы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;GROUPALL &#x9;: Всего по группе &#x9;&#x9;|&#xA;&#x9;&#x9;DIV &#x9;&#x9;: Дивизионы&#x9;&#x9;&#x9;&#x9;|&#xA;&#x9;&#x9;OBJ&#x9;&#x9;&#x9;: Предприятия &#x9;&#x9;&#x9;|&#xA;&#x9;&#x9;CALCTYPE&#x9;: Типы кальк. единиц&#x9;|&#xA;&#x9;&#x9;CURRENT&#x9;&#x9;: Текущее предприятие &#x9;|&#xA;&#x9;&#x9;CALC&#x9;&#x9;: Кальк. единицы &#x9;&#xA;&#x9;" __idx="62">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="386" MainContext="paramlib" SubContext="param[obj_level1(Первый уровень развертки)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;NONE&#x9;&#x9;: Нет&#x9;&#x9;&#x9;&#x9;&#x9;|&#xA;&#x9;&#x9;DIV &#x9;&#x9;: Дивизионы&#x9;&#x9;&#x9;&#x9;|&#xA;&#x9;&#x9;OBJ&#x9;&#x9;&#x9;: Предприятия &#x9;&#x9;&#x9;|&#xA;&#x9;&#x9;PEREDEL&#x9;&#x9;: Переделы &#x9;&#x9;&#x9;&#x9;|&#xA;&#x9;&#x9;CALCTYPE&#x9;: Типы кальк. единиц&#x9;|&#xA;&#x9;&#x9;CALC&#x9;&#x9;: Кальк. единицы&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;" __idx="63">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="395" MainContext="paramlib" SubContext="param[obj_level2(Второй уровень развертки)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value=" &#xA;&#x9;&#x9;NONE&#x9;&#x9;: Нет&#x9;&#x9;&#x9;&#x9;&#x9;|&#xA;&#x9;&#x9;OBJ&#x9;&#x9;&#x9;: Предприятия &#x9;&#x9;&#x9;|&#xA;&#x9;&#x9;PEREDEL&#x9;&#x9;: Переделы &#x9;&#x9;&#x9;&#x9;|&#xA;&#x9;&#x9;CALCTYPE&#x9;: Типы кальк. единиц&#x9;|&#xA;&#x9;&#x9;CALC&#x9;&#x9;: Кальк. единицы&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;" __idx="64">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="405" MainContext="paramlib" SubContext="param[obj_level3(Третий уровень развертки)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value=" &#xA;&#x9;&#x9;NONE&#x9;&#x9;: Нет&#x9;&#x9;&#x9;&#x9;&#x9;|&#xA;&#x9;&#x9;PEREDEL&#x9;&#x9;: Переделы &#x9;&#x9;&#x9;&#x9;|&#xA;&#x9;&#x9;CALC&#x9;&#x9;: Кальк. единицы&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;" __idx="65">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="414" MainContext="paramlib" SubContext="param[obj_level4(Четвертый уровень развертки)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value=" &#xA;&#x9;&#x9;NONE&#x9;&#x9;: Нет&#x9;&#x9;&#x9;&#x9;&#x9;|&#xA;&#x9;&#x9;CALC&#x9;&#x9;: Кальк. единицы&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;" __idx="66">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="421" MainContext="paramlib" SubContext="param[obj_level5(Пятый уровень развертки)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xA;&#x9;&#x9;&#x9;PLAN,FACT:План/Факт|&#xA;&#x9;&#x9;&#x9;FACT:Факт|&#xA;&#x9;&#x9;&#x9;PLAN:План |&#xA;&#x9;&#x9;&#x9;PLAN,OZHID:План/Ожид.|&#xA;&#x9;&#x9;&#x9;OZHID,FACT:Ожид./Факт&#xA;&#x9;&#x9;" __idx="67">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="614" MainContext="paramlib" SubContext="param[planfact(План/факт)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="0:Один договор|1:Одно предприятие|5:Все предприятия" __idx="68">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="437" MainContext="paramlib[kredits]" SubContext="param[settype(Набор объектов)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="0:Таблица|1:Текст" __idx="69">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="438" MainContext="paramlib[kredits]" SubContext="param[reporttype(Тип отчета)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;otr:Отрасли|&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;reg:Регионы|&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;div:Дивизионы&#xD;&#xA;&#x9;&#x9;&#x9;" __idx="70">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="102" MainContext="report[orglist(Реестр предприятий)]" SubContext="out(Реестр предприятий)/var[groupping(Группировка)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xD;&#xA;&#x9;&#x9;&#x9; : Принятый в компании|&#xD;&#xA;&#x9;&#x9;&#x9; e : Официальный на конец периода (ЦБР)|&#xD;&#xA;&#x9;&#x9;&#x9; z : Средний курс за период (ЦБР)&#xD;&#xA;&#x9;&#x9;" __idx="71">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="202" MainContext="assoireport[valutaset(Курсы валют)]" SubContext="out(Курсы валют)/var[out_valuta_suffix(Тип курса)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xD;&#xA;&#x9;&#x9;&#x9;&#x9; : Нет набора|&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;11,12,22,13,1,14,24,15,25,16,2,17,27,18,28,19,3,110,210,111,211,112,4 : Весь год, факт |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;11,12,13,14,15,16,17,18,19,110,111,112 : Месяцы |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;1,2,3,4 : Кварталы |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;11,12,22,13,1 : I кв |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;14,24,15,25,16,2 : II кв |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;17,27,18,28,19,3 : III кв |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;110,210,111,211,112,4 : IV кв |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;401,301,303,306,309 : Плановые&#xD;&#xA;&#x9;&#x9;&#x9;" __idx="72">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="210" MainContext="assoireport[valutaset(Курсы валют)]" SubContext="out(Курсы валют)/var[periods(Периоды)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;NONE : Все  |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;0ISOPEN : Только закрытые |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;0ISBLOCK,0ISCHECKED : Только открытые |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;0ISOPEN, 0ISCHECKED : Только непроверенные (из закрытых) |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;0ISOPEN, 0ISBLOCK : Только проверенные |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;- : Непустые&#xD;&#xA;&#x9;&#x9;&#x9;" __idx="73">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="375" MainContext="assoireport[states(Отчет о статусах по закрытию форм)]" SubContext="out[Aa(Отчет о статусах форм)]/var[blockfilter(Фильтр по блокировкам)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;ONLYONEPERIOD : Указанный период |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;kv1 : I кв|&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;kv1,kv2 : I - II кв |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;kv1,kv2,kv3 : I - III кв |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;kv1,kv2,kv3,kv4 : Год |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;kv1,kv2,kv3,kv4,tpfp : Все |&#xD;&#xA;&#x9;&#x9;&#x9;&#x9;tpfp : Только ТПФП&#xD;&#xA;&#x9;&#x9;&#x9;" __idx="74">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="384" MainContext="assoireport[states(Отчет о статусах по закрытию форм)]" SubContext="out[Aa(Отчет о статусах форм)]/var[statetime(Тип развертки)]" __idx="0" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+  <item Name="defaultValue" VariantCount="5" ReferenceCount="15" __idx="8">
+    <ValueVariants>
+      <item ReferenceCount="8" Value="true" __idx="0">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.bxl" MainContext="assoireport[contacts(Справочник пользователей)]" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="40" MainContext="paramlib" SubContext="param[include_1092(Включать отходы)]" __idx="1" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" MainContext="report[thfileidx(Индекс файлов тем)]" __idx="2" />
+        </References>
+      </item>
+      <item ReferenceCount="3" Value="false" __idx="1">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.bxl" MainContext="assoireport[contacts(Справочник пользователей)]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="91" MainContext="report[thfileidx(Индекс файлов тем)]" SubContext="out[Aa]/var[thi_useothers(Искать в доп. элементах)]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="1" __idx="2">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.resposibility.report.bxl" Line="49" MainContext="assoireport[responsibility(Ответственные по предприятию по группам)]" SubContext="out[Aa(Отчет об ответственных по предприятию по группам)]/param[groupbydivs]" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="403" MainContext="assoireport[states(Отчет о статусах по закрытию форм)]" SubContext="out[Aa(Отчет о статусах форм)]/param[groupbydivs]" __idx="1" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="PLAN,FACT" __idx="3">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.resposibility.report.bxl" Line="27" MainContext="assoireport[responsibility(Ответственные по предприятию по группам)]" SubContext="out[Aa(Отчет об ответственных по предприятию по группам)]/var[groupselectorplanfact(План/Факт)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="ALLGRP" __idx="4">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.resposibility.report.bxl" Line="32" MainContext="assoireport[responsibility(Ответственные по предприятию по группам)]" SubContext="out[Aa(Отчет об ответственных по предприятию по группам)]/var[groupselector(Группа)]" __idx="0" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+  <item Name="altvalue" VariantCount="57" ReferenceCount="58" __idx="9">
+    <ValueVariants>
+      <item ReferenceCount="1" Value="SUMMAEDD" __idx="0">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.calc.bxl" Line="6" MainContext="paramlib" SubContext="param[usesummaedd(Затраты, $/тн)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="SUMMAEDR" __idx="1">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.calc.bxl" Line="7" MainContext="paramlib" SubContext="param[usesummaedr(Затраты, руб./тн)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="SUMMAR" __idx="2">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.calc.bxl" Line="8" MainContext="paramlib" SubContext="param[usesummar(Затраты, тыс. руб.)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="UDVESZATR" __idx="3">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.en.bxl" Line="37" MainContext="thema[enlib(Основная библиотека)]" SubContext="out[TEROLAP]/var[useudveszatr(Доля в затратах)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="UDVESPERED" __idx="4">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.en.bxl" Line="38" MainContext="thema[enlib(Основная библиотека)]" SubContext="out[TEROLAP]/var[useudvespered(Доля в переделе)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="KOL" __idx="5">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="130" MainContext="paramlib" SubContext="param[cond_sale_pokaz_kol(Количество)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="CENA" __idx="6">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="131" MainContext="paramlib" SubContext="param[cond_sale_pokaz_cena(Цена (выручка))]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="SS" __idx="7">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="132" MainContext="paramlib" SubContext="param[cond_sale_pokaz_ss(Цех. с-сть)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="UR" __idx="8">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="133" MainContext="paramlib" SubContext="param[cond_sale_pokaz_ur(Упр. расходы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="KR" __idx="9">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="134" MainContext="paramlib" SubContext="param[cond_sale_pokaz_kr(Ком. расходы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="PSS" __idx="10">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="135" MainContext="paramlib" SubContext="param[cond_sale_pokaz_pss(Полная с-сть)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="PRIB" __idx="11">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="136" MainContext="paramlib" SubContext="param[cond_sale_pokaz_prib(Прибыль от продаж)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="PROC" __idx="12">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="137" MainContext="paramlib" SubContext="param[cond_sale_pokaz_proc(Проценты)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="ZATR" __idx="13">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="138" MainContext="paramlib" SubContext="param[cond_sale_pokaz_zatr(Полн. с-сть с уч. %%)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="PRIBPROC" __idx="14">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="139" MainContext="paramlib" SubContext="param[cond_sale_pokaz_pribproc(Прибыль с уч. %%)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="RESERV" __idx="15">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="155" MainContext="paramlib" SubContext="param[cond_dzk_reserv(в т.ч. резервы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="OSTN" __idx="16">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="157" MainContext="paramlib" SubContext="param[cond_ostn(Сальдо на начало)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="OSTK" __idx="17">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="158" MainContext="paramlib" SubContext="param[cond_ostk(Сальдо на конец)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="FULLREPORT" __idx="18">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="291" MainContext="paramlib" SubContext="param[usefullreport(Полный отчет)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="OZHIDCALC" __idx="19">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="298" MainContext="paramlib" SubContext="param[useozhidcalc(Ожидаемое (расчет))]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="NOB" __idx="20">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="344" MainContext="paramlib" SubContext="param[cond_finplan_nob(Н/о база)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="NDS" __idx="21">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="345" MainContext="paramlib" SubContext="param[cond_finplan_nds(НДС)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="SNDS" __idx="22">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" Line="346" MainContext="paramlib" SubContext="param[cond_finplan_snds(С НДС)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="SUMMAYEAR" __idx="23">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="314" MainContext="paramlib" SubContext="param[summayear(Сумма лет)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="ONLYONEPERIOD" __idx="24">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="316" MainContext="paramlib" SubContext="param[useoneperiod(По одному периоду)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="BYMONTH" __idx="25">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="330" MainContext="paramlib" SubContext="param[usemes(За месяц)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="СНГ" __idx="26">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="331" MainContext="paramlib" SubContext="param[usesng(С начала года)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="KVART" __idx="27">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="332" MainContext="paramlib" SubContext="param[usekvart(Поквартально)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="PRED" __idx="28">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="333" MainContext="paramlib" SubContext="param[usepredmes(Предыдущий месяц)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="PREDYEAR" __idx="29">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="334" MainContext="paramlib" SubContext="param[usepredsng(Пред. период с н.г.)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="OZHID" __idx="30">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="335" MainContext="paramlib" SubContext="param[useozhid(Ожидаемое)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="2" Value="OTKL" __idx="31">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="OTKLFA" __idx="32">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="337" MainContext="paramlib" SubContext="param[useotklfa(Факторный анализ)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="FAREV" __idx="33">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="339" MainContext="paramlib" SubContext="param[usefarev(Факт. анализ выручки)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="FAPRIB" __idx="34">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="340" MainContext="paramlib" SubContext="param[usefaprib(Факт. анализ прибыли)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="FAPSS" __idx="35">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="341" MainContext="paramlib" SubContext="param[usefapss(Факт. анализ себ-сти)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="PRIROST" __idx="36">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="343" MainContext="paramlib" SubContext="param[useprirost(Темп прироста)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="OZHIDTOFACT" __idx="37">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="344" MainContext="paramlib" SubContext="param[ozhidtofact(Ожид. -&gt; факт)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="KVARTRAS" __idx="38">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="351" MainContext="paramlib" SubContext="param[usekvartras(Расшифровка по кварталам)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="KVKURS" __idx="39">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="353" MainContext="paramlib" SubContext="param[usekvkurs(Квартальный плановый курс)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="VNOB" __idx="40">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="360" MainContext="paramlib" SubContext="param[cond_conto_vnob(в т.ч. вн. оборот)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="OSV" __idx="41">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="361" MainContext="paramlib" SubContext="param[cond_conto_osv(Обороты ОСВ)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="RAZVSALDO" __idx="42">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="362" MainContext="paramlib" SubContext="param[userazvsaldo(Развернутое сальдо)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="USETPFP" __idx="43">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="368" MainContext="paramlib" SubContext="param[usetpfp(Годовой ТПФП)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="USEKORRTPFP" __idx="44">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="369" MainContext="paramlib" SubContext="param[usekorrtpfp(ТПФП с уч. корр.)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="SHOWKORRTPFP" __idx="45">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="370" MainContext="paramlib" SubContext="param[showkorrtpfp(Показать корр. ТПФП)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="USETEKKORR" __idx="46">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="371" MainContext="paramlib" SubContext="param[usetekkorr(Корр. тек. ТПФП)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="SHOWALLKORR" __idx="47">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="372" MainContext="paramlib" SubContext="param[showallkorr(Показать все корр.)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="SHOWDRAFTPLAN" __idx="48">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="373" MainContext="paramlib" SubContext="param[showdraftplan(Показать черновик ТПФП)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="USEIZMTPFP" __idx="49">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="375" MainContext="paramlib" SubContext="param[useizmtpfp(Изменения ТПФП)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="USEKORR" __idx="50">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="376" MainContext="paramlib" SubContext="param[usekorrnalog(Перерасчеты за пред. годы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="PLAN" __idx="51">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="377" MainContext="paramlib" SubContext="param[useplan(План текущего периода)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="PLANPRED" __idx="52">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="378" MainContext="paramlib" SubContext="param[useplanpred(План предыдущего года)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="KVPLAN" __idx="53">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="379" MainContext="paramlib" SubContext="param[usekvplan(Квартальные планы)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="OPERPLAN" __idx="54">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="380" MainContext="paramlib" SubContext="param[useoperplan(Оперативный план)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="CALCOZHID" __idx="55">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="381" MainContext="paramlib" SubContext="param[usecalcozhid(Расчет ожид.)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="tpfp" __idx="56">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="395" MainContext="assoireport[states(Отчет о статусах по закрытию форм)]" SubContext="out[Aa(Отчет о статусах форм)]/var[usetpfp(Показывать ТПФП?)]" __idx="0" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+  <item Name="radio" VariantCount="2" ReferenceCount="23" __idx="10">
+    <ValueVariants>
+      <item ReferenceCount="11" Value="true" __idx="0">
+        <References>
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.raw.bxl" MainContext="paramlib" __idx="0" />
+          <item File="C:\code\usr\ugmk\eco\data\eco.real.res.bxl" Line="11" MainContext="paramlib" SubContext="param[sql_use_metal_filter(Вид отчета)]" __idx="1" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="2" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="384" MainContext="assoireport[states(Отчет о статусах по закрытию форм)]" SubContext="out[Aa(Отчет о статусах форм)]/var[statetime(Тип развертки)]" __idx="3" />
+        </References>
+      </item>
+      <item ReferenceCount="12" Value="1" __idx="1">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\eco.param.bxl" MainContext="paramlib" __idx="0" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="1" />
+          <item File="C:\code\zeta\zeta\sys\data\sys.reports.bxl" Line="102" MainContext="report[orglist(Реестр предприятий)]" SubContext="out(Реестр предприятий)/var[groupping(Группировка)]" __idx="2" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+  <item Name="role" VariantCount="4" ReferenceCount="10" __idx="11">
+    <ValueVariants>
+      <item ReferenceCount="1" Value="BUDGET" __idx="0">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="87" MainContext="paramlib" SubContext="param[useobjectalias(Использовать псевдонимы объектов)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="SYS_ALLOBJECTS,REMOVE" __idx="1">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="89" MainContext="paramlib" SubContext="param[only_current_admin(Свод или текущее)]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="1" Value="SYS_ALLOBJECTS,STRICT,REMOVE" __idx="2">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" Line="98" MainContext="paramlib" SubContext="param[only_current_strict(Текущее или все свои предприятия (дивизионы))]" __idx="0" />
+        </References>
+      </item>
+      <item ReferenceCount="7" Value="SYS_ALLOBJECTS" __idx="3">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+  <item Name="isarea" VariantCount="1" ReferenceCount="4" __idx="12">
+    <ValueVariants>
+      <item ReferenceCount="4" Value="true" __idx="0">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+  <item Name="iscss" VariantCount="1" ReferenceCount="5" __idx="13">
+    <ValueVariants>
+      <item ReferenceCount="5" Value="true" __idx="0">
+        <References>
+          <item File="C:\code\zeta\zeta\sys\data\sys.paramlib.bxl" MainContext="paramlib" __idx="0" />
+        </References>
+      </item>
+    </ValueVariants>
+    <References />
+  </item>
+</result>

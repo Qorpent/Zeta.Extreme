@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Qorpent.Serialization;
+using Zeta.Extreme.Developer.Model;
 
 namespace Zeta.Extreme.Developer.Tests
 {
@@ -27,6 +29,51 @@ namespace Zeta.Extreme.Developer.Tests
 			var result = index.FindAttributes(simplesource, new[]{"a/b","c/b"}).ToArray();
 			Assert.AreEqual(10, result.Length);
 			
+		}
+
+		[Test]
+		public void BugWithReferenceGroupping() {
+			var group =
+				index.GroupReferences(new[] {
+					new ItemReference {File = "A", MainContext = "A", SubContext = "B", Line = 1},
+					new ItemReference {File = "A", MainContext = "A", SubContext = "C", Line = 2}
+				}).ToArray();
+			Assert.AreEqual(1,group.Length);
+			Assert.AreEqual("A",group[0].File);
+			Assert.AreEqual("A", group[0].MainContext);
+			Assert.AreEqual(null, group[0].SubContext);
+			Assert.AreEqual(0, group[0].Line);
+
+			Assert.AreEqual(2,group[0].Children.Count());
+
+			Assert.AreEqual(null,group[0].Children.ElementAt(0).File);
+			Assert.AreEqual(null,group[0].Children.ElementAt(0).MainContext);
+			Assert.AreEqual("B", group[0].Children.ElementAt(0).SubContext);
+			Assert.AreEqual(1, group[0].Children.ElementAt(0).Line);
+
+			Assert.AreEqual(null, group[0].Children.ElementAt(1).File);
+			Assert.AreEqual(null, group[0].Children.ElementAt(1).MainContext);
+			Assert.AreEqual("C", group[0].Children.ElementAt(1).SubContext);
+			Assert.AreEqual(2, group[0].Children.ElementAt(1).Line);
+		}
+
+
+		[Test]
+		public void BugWithReferenceGrouppingInvalidXml()
+		{
+			var group =
+				index.GroupReferences(new[] {
+					new ItemReference {File = "A", MainContext = "A", SubContext = "B", Line = 1},
+					new ItemReference {File = "A", MainContext = "A", SubContext = "C", Line = 2}
+				}).ToArray();
+			var variant = new AttributeValueVariant {Value = "X"};
+			foreach (var g in group) {
+				variant.References.Add(g);
+			}
+			var attr = new AttributeDescriptor {Name = "x"};
+			attr.ValueVariants.Add(variant);
+			var result = new XmlSerializer().Serialize("test",attr);
+			Console.WriteLine(result);
 		}
 
 		[Test]

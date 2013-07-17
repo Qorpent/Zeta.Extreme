@@ -8,7 +8,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pkg", "Pkg", "{F755EF91-9827-4A03-8490-2E79BBC404E7}"
 	ProjectSection(SolutionItems) = preProject
 		local-sfo.zetadev.ioc-manifest.bxl = local-sfo.zetadev.ioc-manifest.bxl
+		zdev.ui\paramattributes.sample.xml = zdev.ui\paramattributes.sample.xml
 		testdeveloper.base = testdeveloper.base
+		zdev.ui\zdev-colattributes-report.css = zdev.ui\zdev-colattributes-report.css
+		zdev.ui\zdev-colattributes-report.xslt = zdev.ui\zdev-colattributes-report.xslt
+		zdev.ui\zdev-paramattributes-report.css = zdev.ui\zdev-paramattributes-report.css
+		zdev.ui\zdev-paramattributes-report.xslt = zdev.ui\zdev-paramattributes-report.xslt
+		zdev.ui\zdev-report-common.xslt = zdev.ui\zdev-report-common.xslt
+		zdev.ui\zdev.base.css = zdev.ui\zdev.base.css
+		zdev.ui\zdev.main.menu.js = zdev.ui\zdev.main.menu.js
+		zdev.ui\zdev.ui-load.bxl = zdev.ui\zdev.ui-load.bxl
 		zetadev.ioc-manifest.bxl = zetadev.ioc-manifest.bxl
 	EndProjectSection
 EndProject

@@ -175,7 +175,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 							var maincontext = ad.LexInfo.Context.SmartSplit(false,true,'/')[0];
 							var subcontext = string.Join("/", ad.LexInfo.Context.SmartSplit(false, true, '/').Skip(1));
 							rawrefs.Add(
-								new ItemReference{File=ad.LexInfo.File,Line = ad.LexInfo.Line,
+								new ItemReference{File=Path.GetFileName(ad.LexInfo.File),Line = ad.LexInfo.Line,
 									MainContext = maincontext,SubContext = subcontext
 								}
 								);
@@ -197,8 +197,12 @@ namespace Zeta.Extreme.Developer.Analyzers {
 			}
 
 		}
-
-		private IEnumerable<ItemReference> GroupReferences(ItemReference[] src) {
+		/// <summary>
+		/// Группировка ссылок
+		/// </summary>
+		/// <param name="src"></param>
+		/// <returns></returns>
+		public IEnumerable<ItemReference> GroupReferences(ItemReference[] src) {
 			var fstlevel = src.GroupBy(_ => _.File + ":" + _.MainContext + ":" + _.SubContext, _ => _)
 			                  .Select(_ => new ItemReference {
 				                  File = _.First().File,
@@ -223,7 +227,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 			{
 				s.Line = s.Children.First().Line;
 				s.SubContext = s.Children.First().SubContext;
-				s.Children = null;
+				s.Children = s.Children.First().Children;
 			}
 			var thdlevel = secondlevel.GroupBy(_ => _.File, _ => _)
 				.Select(_ => new ItemReference
@@ -236,7 +240,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 				s.Line = s.Children.First().Line;
 				s.SubContext = s.Children.First().SubContext;
 				s.MainContext = s.Children.First().MainContext;
-				s.Children = null;
+				s.Children = s.Children.First().Children;
 			}
 			return thdlevel;
 		}

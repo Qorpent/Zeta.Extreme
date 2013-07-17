@@ -1,0 +1,17 @@
+﻿body {
+    font-family:Consolas;
+    font-size:10pt;
+}
+
+table.data {
+     border-collapse:collapse;
+}
+
+table.data td , table.data th {
+     padding:2px;
+     border:solid 1px gray;
+}
+
+table.data th {
+     background-color : lightgray;
+}
