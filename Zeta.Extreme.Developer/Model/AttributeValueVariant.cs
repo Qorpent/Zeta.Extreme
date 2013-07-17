@@ -12,7 +12,7 @@ namespace Zeta.Extreme.Developer.Model {
 		/// Вариант значения по умолчнию
 		/// </summary>
 		public AttributeValueVariant() {
-			References = new List<LexInfo>();
+			References = new List<ItemReference>();
 		}
 
 		/// <summary>
@@ -28,6 +28,6 @@ namespace Zeta.Extreme.Developer.Model {
 		/// Позиции в исходных документах
 		/// </summary>
 		[Serialize]
-		public IList<LexInfo> References { get; private set; }
+		public IList<ItemReference> References { get; private set; }
 	}
 }

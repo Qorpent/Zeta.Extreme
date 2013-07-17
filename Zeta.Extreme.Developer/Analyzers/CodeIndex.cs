@@ -104,10 +104,35 @@ namespace Zeta.Extreme.Developer.Analyzers {
 						File = _.Parent.Attr("_file"),
 						Line = _.Parent.Attr("_line").ToInt()
 						,
-						Context = _.Parent.Parent.Name.LocalName + ":" + _.Parent.Parent.ChooseAttr("__code", "code") + "/" + _.Parent.Name.LocalName + ":" + _.Parent.ChooseAttr("__code", "code") + "(" + _.Parent.ChooseAttr("__name", "name") + ")"
+						Context = PrepareContext(_)
 					}
 				}).ToArray();
 			return result;
+		}
+
+		private string PrepareContext(XAttribute current) {
+			var c = current.Parent;
+			var result = "";
+			while (c.Parent != null) {	
+				var desc = c.Describe(explicitname:true);
+				var type = c.Name.LocalName;
+				var code = desc.Code;
+				var name = desc.Name;
+				var str = "/" + type;
+				if (!string.IsNullOrWhiteSpace(code)) {
+					str += "[" + code;
+				}
+				if (!string.IsNullOrWhiteSpace(name) && (name != code)) {
+					str += "(" + name + ")";
+				}
+				if (!string.IsNullOrWhiteSpace(code)) {
+					str += "]";
+				}
+				result = str + result;
+				c = c.Parent;
+			}
+			return result;
+
 		}
 
 		/// <summary>
@@ -145,9 +170,21 @@ namespace Zeta.Extreme.Developer.Analyzers {
 					item.ReferenceCount += valuegrp.Count();
 					variant.ReferenceCount = valuegrp.Count();
 					if (includereferences && includevariants) {
-						foreach (var attributeDescriptor in valuegrp) {
-							variant.References.Add(attributeDescriptor.LexInfo);
+						var rawrefs = new List<ItemReference>();
+						foreach (var ad in valuegrp) {
+							var maincontext = ad.LexInfo.Context.SmartSplit(false,true,'/')[0];
+							var subcontext = string.Join("/", ad.LexInfo.Context.SmartSplit(false, true, '/').Skip(1));
+							rawrefs.Add(
+								new ItemReference{File=ad.LexInfo.File,Line = ad.LexInfo.Line,
+									MainContext = maincontext,SubContext = subcontext
+								}
+								);
 						}
+						foreach (var ir in GroupReferences(rawrefs.ToArray()))
+						{
+							variant.References.Add(ir);
+						}
+						
 					}
 					if (includevariants)
 					{
@@ -161,6 +198,48 @@ namespace Zeta.Extreme.Developer.Analyzers {
 
 		}
 
+		private IEnumerable<ItemReference> GroupReferences(ItemReference[] src) {
+			var fstlevel = src.GroupBy(_ => _.File + ":" + _.MainContext + ":" + _.SubContext, _ => _)
+			                  .Select(_ => new ItemReference {
+				                  File = _.First().File,
+				                  MainContext = _.First().MainContext,
+				                  SubContext = _.First().SubContext,
+				                  Children =
+					                  _.Select(__ => new ItemReference {Line = __.Line})
+			                  }).ToArray();
+			foreach (var s in fstlevel.Where(_ => _.Children.Count() == 1))
+			{
+				s.Line = s.Children.First().Line;
+				s.Children = null;
+			}
+			var secondlevel = fstlevel.GroupBy(_ => _.File + ":" + _.MainContext, _ => _)
+				.Select(_ => new ItemReference
+				{
+					File = _.First().File,
+					MainContext = _.First().MainContext,
+					Children = _.Select(__ => new ItemReference { SubContext = __.SubContext, Line=__.Line, Children = __.Children })
+				}).ToArray();
+			foreach (var s in secondlevel.Where(_ => _.Children.Count() == 1))
+			{
+				s.Line = s.Children.First().Line;
+				s.SubContext = s.Children.First().SubContext;
+				s.Children = null;
+			}
+			var thdlevel = secondlevel.GroupBy(_ => _.File, _ => _)
+				.Select(_ => new ItemReference
+				{
+					File = _.First().File,
+					Children = _.Select(__ => new ItemReference { MainContext = __.MainContext, SubContext = __.SubContext, Line = __.Line, Children = __.Children })
+				}).ToArray();
+			foreach (var s in thdlevel.Where(_ => _.Children.Count() == 1))
+			{
+				s.Line = s.Children.First().Line;
+				s.SubContext = s.Children.First().SubContext;
+				s.MainContext = s.Children.First().MainContext;
+				s.Children = null;
+			}
+			return thdlevel;
+		}
 
 
 		/// <summary>

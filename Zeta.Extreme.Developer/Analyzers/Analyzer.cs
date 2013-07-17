@@ -33,7 +33,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <param name="filter"></param>
 		/// <returns></returns>
 		public IEnumerable<AttributeDescriptor> GetColsetAttribtes(SearchFilter filter = null) {
-			filter = filter ?? new SearchFilter {AttributeValueLimit = 20, AttributeValueReferenceLimit = 20};
+			filter = filter ?? new SearchFilter {AttributeValueLimit = 20, AttributeValueReferenceLimit = 50};
 			return CodeIndex.GetAttributes(new[] { "colset/col", "out/col", "form/col" }, filter);
 		}
 	}

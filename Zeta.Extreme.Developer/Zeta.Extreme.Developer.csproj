@@ -21,6 +21,7 @@
     <Compile Include="Analyzers\IAnalyzer.cs" />
     <Compile Include="Analyzers\ICodeIndex.cs" />
     <Compile Include="Analyzers\CodeIndex.cs" />
+    <Compile Include="Model\ItemReference.cs" />
     <Compile Include="Model\Source.cs" />
     <Compile Include="Model\SimpleAttributeDescriptor.cs" />
     <Compile Include="Model\AttributeDescriptor.cs" />

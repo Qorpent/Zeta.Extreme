@@ -13,6 +13,7 @@ namespace Zeta.Extreme.Developer.Model {
 		/// </summary>
 		public AttributeDescriptor() {
 			ValueVariants =  new List<AttributeValueVariant>();
+			References=new List<ItemReference>();
 		}
 		/// <summary>
 		/// Имя атрибута
@@ -32,6 +33,12 @@ namespace Zeta.Extreme.Developer.Model {
 		/// Варианты значений с точками применения
 		/// </summary>
 		[Serialize]
-		public IList<AttributeValueVariant> ValueVariants { get; private set; } 
+		public IList<AttributeValueVariant> ValueVariants { get; private set; }
+
+		/// <summary>
+		/// Варианты значений с точками применения
+		/// </summary>
+		[Serialize]
+		public IList<ItemReference> References { get; private set; } 
 	}
 }
