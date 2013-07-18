@@ -207,14 +207,26 @@
       <td class="refcount">
         <xsl:value-of select="@ReferenceCount"/>
       </td>
-      <td class="refs hidden" onclick="$(this).toggleClass('hidden')">
-		<div class="ref-div">
-			<xsl:apply-templates select="References" mode="ref-list"/>
-		</div>
-		<div class="ref-subst">
-			Щелкните для просмотра
-		</div>
-      </td>
+	  
+	  <xsl:choose>
+			<xsl:when test="count(References//item) &gt; 4">
+				 <td class="refs hidden" onclick="$(this).toggleClass('hidden')">
+					<div class="ref-div">
+						<xsl:apply-templates select="References" mode="ref-list"/>
+					</div>
+					<div class="ref-subst">
+						Щелкните для просмотра
+					</div>
+				  </td>
+			</xsl:when>
+			<xsl:otherwise>
+				<td class="refs">
+					<xsl:apply-templates select="References" mode="ref-list"/>
+				 </td>
+			</xsl:otherwise>
+	  </xsl:choose>
+	  
+    
     </tr>
   </xsl:template>
 

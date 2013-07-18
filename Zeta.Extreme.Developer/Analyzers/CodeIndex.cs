@@ -175,7 +175,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		public IEnumerable<SimpleAttributeDescriptor> FindAttributes(Source source, string root,SearchFilter filter = null) {
 			var result = (
 				             source.XmlContent.XPathEvaluate(
-					             "//" + root + "/@*[" + DeveloperConstants.XpathSysAttributesFilter + "]")
+					              root + "/@*[" + DeveloperConstants.XpathSysAttributesFilter + "]")
 				             as IEnumerable)
 				.Cast<XAttribute>()
 				.Select(_ => new SimpleAttributeDescriptor {

@@ -16,7 +16,10 @@
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\DropCacheAction.cs" />
     <Compile Include="Actions\GetColAttributesAction.cs" />
+    <Compile Include="Actions\GetFormAttributesAction.cs" />
     <Compile Include="Actions\GetParameterAttributesAction.cs" />
+    <Compile Include="Actions\GetReportAttributesAction.cs" />
+    <Compile Include="Actions\GetThemaAttributesAction.cs" />
     <Compile Include="Analyzers\Analyzer.cs" />
     <Compile Include="Analyzers\DeveloperConstants.cs" />
     <Compile Include="Analyzers\IAnalyzer.cs" />

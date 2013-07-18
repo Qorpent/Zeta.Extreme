@@ -25,5 +25,23 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// </summary>
 		[Inject]
 		ICodeIndex CodeIndex { get; set; }
+
+		/// <summary>
+		/// Корневые элементы для атрибутов
+		/// </summary>
+		/// <returns></returns>
+		IEnumerable<AttributeDescriptor> GetReportAttributes(SearchFilter filter = null);
+
+		/// <summary>
+		/// Корневые элементы для атрибутов
+		/// </summary>
+		/// <returns></returns>
+		IEnumerable<AttributeDescriptor> GetFormAttributes(SearchFilter filter = null);
+
+		/// <summary>
+		/// Корневые элементы для атрибутов
+		/// </summary>
+		/// <returns></returns>
+		IEnumerable<AttributeDescriptor> GetThemaAttributes(SearchFilter filter = null);
 	}
 }

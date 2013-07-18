@@ -10,7 +10,7 @@ _.widget.register({
 	menu : {
 		items : [
 			{
-				title:'Работа с параметрами',
+				title:'Параметры отчетов',
 				icon : 'icon-wrench',
 				items : [
 					{
@@ -24,7 +24,7 @@ _.widget.register({
 				]
 			},
 			{
-				title : 'Работа с колсетами',
+				title : 'Колсеты',
 				icon : 'icon-list-alt',
 				items : [
 					{
@@ -38,6 +38,51 @@ _.widget.register({
 					
 				]
 			},
+		    {
+		        title: 'Отчеты',
+		        icon: 'icon-list-alt',
+		        items: [
+					{
+					    title: 'Атрибуты отчетов (полный в XML)',
+					    href: './zdev/reportattributes.xml.qweb',
+					},
+					{
+					    title: 'Атрибуты отчетов (полный в HTML)',
+					    href: './zdev/reportattributes.html.qweb?__xslt=zdev-reportattributes-report',
+					}
+
+		        ]
+		    },
+		    {
+		        title: 'Формы',
+		        icon: 'icon-list-alt',
+		        items: [
+					{
+					    title: 'Атрибуты форм (полный в XML)',
+					    href: './zdev/formattributes.xml.qweb',
+					},
+					{
+					    title: 'Атрибуты форм (полный в HTML)',
+					    href: './zdev/formattributes.html.qweb?__xslt=zdev-formattributes-report',
+					}
+
+		        ]
+		    },
+		    {
+		        title: 'Темы',
+		        icon: 'icon-list-alt',
+		        items: [
+					{
+					    title: 'Атрибуты тем (полный в XML)',
+					    href: './zdev/themaattributes.xml.qweb',
+					},
+					{
+					    title: 'Атрибуты тема (полный в HTML)',
+					    href: './zdev/themaattributes.html.qweb?__xslt=zdev-themaattributes-report',
+					}
+
+		        ]
+		    },
 			"div",
 			{
 				title : "Очистить кэш",
