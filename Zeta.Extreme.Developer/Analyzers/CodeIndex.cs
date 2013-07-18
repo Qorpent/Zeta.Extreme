@@ -8,6 +8,7 @@ using System.Xml.XPath;
 using Qorpent;
 using Qorpent.Bxl;
 using Qorpent.Dsl;
+using Qorpent.Events;
 using Qorpent.IoC;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Developer.Config;
@@ -17,7 +18,18 @@ namespace Zeta.Extreme.Developer.Analyzers {
 	/// <summary>
 	/// Стандартный индекс исходного кода
 	/// </summary>
+	[RequireReset(All=true,Options=new[]{"zdev.cache"})]
 	public class CodeIndex :  ServiceBase, ICodeIndex {
+		/// <summary>
+		/// /
+		/// </summary>
+		public CodeIndex() {
+			LastResetTime = DateTime.Now;
+		}
+		/// <summary>
+		/// Время перезагрузки
+		/// </summary>
+		public DateTime LastResetTime { get; private set; }
 
 		private IDeveloperConfig _config;
 
@@ -54,6 +66,73 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		{
 			return _sourcecache ?? (_sourcecache = InternalReadXml().ToList());
 		}
+		/// <summary>
+		/// Сброс кэшей
+		/// </summary>
+		/// <param name="data"></param>
+		/// <returns></returns>
+		public override object Reset(ResetEventData data) {
+			_sourcecache = null;
+			_doc=null;
+			_attributeResolutionCache.Clear();
+			LastResetTime = DateTime.Now;
+			return true;
+		}
+
+		private IDictionary<string, Documentation> _doc;
+		/// <summary>
+		/// Вернуть полный список исходных XML
+		/// </summary>
+		/// <returns></returns>
+		public IDictionary<string, Documentation> GetDoc()
+		{
+			return _doc ?? (_doc = LoadDoc());
+		}
+
+		private IDictionary<string, Documentation> LoadDoc()
+		{
+			if (string.IsNullOrWhiteSpace(Config.DocFolder)) return new Dictionary<string, Documentation>();
+			//if (!Directory.Exists(Config.DocFolder)) return new Dictionary<string, Documentation>();
+			var files = Directory.GetFiles(Config.DocFolder, "*.doc.bxl");
+			var fullcontent = "";
+			foreach (var file in files) {
+				fullcontent += File.ReadAllText(file)+"\r\n";
+			}
+			var xml = Bxl.Parse( fullcontent,"doc");
+			return ConvertToDocumentDictionary(xml);
+		}
+
+		private IDictionary<string, Documentation> ConvertToDocumentDictionary(XElement xml) {
+			var result = new Dictionary<string, Documentation>();
+			foreach (var ctx in xml.Elements()) {
+				var key = ctx.Name.LocalName;
+				foreach (var item in ctx.Elements()) {
+					var itemdoc= ConvertToDocumentation(item, key);
+					result[itemdoc.Key] = itemdoc;
+					var itemkey = itemdoc.Key;
+					foreach (var val in item.Elements()) {
+						var valdoc = ConvertToDocumentation(val, itemkey);
+						result[valdoc.Key] = valdoc;
+					}
+				}
+			}
+			return result;
+		}
+
+		private static Documentation ConvertToDocumentation(XElement item, string key) {
+			var d = item.Describe(true);
+			key += ":" + item.Name.LocalName + "[" + item.Attr("code") + "]";
+			var itemdoc = new Documentation();
+			itemdoc.Key = key;
+			itemdoc.Name = d.Name;
+			var commentnode = item.Nodes().OfType<XText>().FirstOrDefault();
+			if (null != commentnode) {
+				itemdoc.Comment = commentnode.Value;
+			}
+			itemdoc.Obsolete = item.Attr("obsolete");
+			return itemdoc;
+		}
+
 		/// <summary>
 		/// Кэш источников в виде пополнянемого списка
 		/// </summary>
@@ -154,19 +233,34 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <param name="attributes"></param>
 		/// <returns></returns>
 		public IEnumerable<AttributeDescriptor> CollectAttributeIndex(SearchFilter filter, IEnumerable<SimpleAttributeDescriptor> attributes) {
-
+			var doc = GetDoc();
 			var basidx = attributes.GroupBy(_ => _.Name, _ => _);
 			foreach (var grp in basidx) {
 				var item = new AttributeDescriptor();
+				
 				var groupedvalues = grp.GroupBy(_ => _.Value);
 				item.Name = grp.Key;
+				if (filter.IncludeDoc) {
+					var key = filter.DocRoot + ":attr[" + grp.Key + "]";
+					if (doc.ContainsKey(key)) {
+						item.Doc = doc[key];
+					}
+				}
 				bool includevariants = 0 == filter.AttributeValueLimit || groupedvalues.Count() <= filter.AttributeValueLimit;
 				item.VariantCount = groupedvalues.Count();
 				foreach (var valuegrp in groupedvalues) {
 					
 					var variant = new AttributeValueVariant();
 					variant.Value = valuegrp.Key;
-					bool includereferences = 0 == filter.AttributeValueReferenceLimit ||valuegrp.Count() <= filter.AttributeValueReferenceLimit;
+					if (filter.IncludeDoc)
+					{
+						var key = filter.DocRoot + ":attr[" + grp.Key + "]" + ":value["+variant.Value+"]";
+						if (doc.ContainsKey(key))
+						{
+							variant.Doc = doc[key];
+						}
+					}
+					bool includereferences = filter.IncludeReferences && ( 0 == filter.AttributeValueReferenceLimit ||valuegrp.Count() <= filter.AttributeValueReferenceLimit);
 					item.ReferenceCount += valuegrp.Count();
 					variant.ReferenceCount = valuegrp.Count();
 					if (includereferences && includevariants) {

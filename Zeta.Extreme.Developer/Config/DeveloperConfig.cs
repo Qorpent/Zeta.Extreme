@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using Qorpent;
-using Qorpent.Bxl;
-using Qorpent.IoC;
-using Zeta.Extreme.Developer.Model;
+﻿using Qorpent;
 
 namespace Zeta.Extreme.Developer.Config
 {
@@ -24,6 +14,11 @@ namespace Zeta.Extreme.Developer.Config
 		/// Директория с компилированными темами
 		/// </summary>
 		public string ThemaComiledFolder { get; set; }
+
+		/// <summary>
+		/// Папка с документацией
+		/// </summary>
+		public string DocFolder { get; set; }
 
 		
 		

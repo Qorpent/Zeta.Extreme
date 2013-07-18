@@ -25,7 +25,7 @@ namespace Zeta.Extreme.Developer.Actions {
 		/// </summary>
 		/// <returns></returns>
 		protected override System.DateTime EvalLastModified() {
-			return Application.StartTime;
+			return Analyzer.CodeIndex.LastResetTime;
 		}
 	}
 }

@@ -4,7 +4,7 @@ namespace Zeta.Extreme.Developer.Actions {
 	/// <summary>
 	/// Возвращает атрибуты колонок
 	/// </summary>
-	[Action("zdev.colattributes", Role = "DEVELOPER")]
+	[Action("zdev.colattributes", Role = "DEVELOPER",Arm="dev")]
 	public class GetColAttributesAction : AnalyzerActionBase
 	{
 		/// <summary>

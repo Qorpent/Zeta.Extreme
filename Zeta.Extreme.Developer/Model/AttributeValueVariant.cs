@@ -14,7 +14,11 @@ namespace Zeta.Extreme.Developer.Model {
 		public AttributeValueVariant() {
 			References = new List<ItemReference>();
 		}
-
+		/// <summary>
+		/// Документация
+		/// </summary>
+		[SerializeNotNullOnly]
+		public Documentation Doc { get; set; }
 		/// <summary>
 		/// Явное указкние кол-ва референсов
 		/// </summary>

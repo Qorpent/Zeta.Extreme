@@ -16,5 +16,10 @@ namespace Zeta.Extreme.Developer.Config {
 		/// Директория с компилированными темами
 		/// </summary>
 		string ThemaComiledFolder { get; set; }
+
+		/// <summary>
+		/// Папка с документацией
+		/// </summary>
+		string DocFolder { get; set; }
 	}
 }

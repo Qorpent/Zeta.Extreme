@@ -26,6 +26,12 @@ namespace Zeta.Extreme.Developer.Model {
 		public int VariantCount { get; set; }
 
 		/// <summary>
+		/// Документация
+		/// </summary>
+		[SerializeNotNullOnly]
+		public Documentation Doc { get; set; }
+
+		/// <summary>
 		/// Явное указкние кол-ва референсов
 		/// </summary>
 		public int ReferenceCount { get; set; }

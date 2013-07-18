@@ -37,6 +37,14 @@ _.widget.register({
 					}
 					
 				]
+			},
+			"div",
+			{
+				title : "Очистить кэш",
+				onclick : { 
+					command : "zdev.dropcache" , 
+					onsuccess : { modal : { title : 'Внимание' , text : 'Кэш сброшен' ,fade: true, width: 200 } } 
+				}
 			}
 		]
 	}

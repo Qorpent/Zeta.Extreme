@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Zeta.Extreme.Developer.Model;
 
 namespace Zeta.Extreme.Developer.Analyzers {
@@ -19,5 +20,10 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// </summary>
 		/// <returns></returns>
 		IEnumerable<Source> GetAllSources();
+
+		/// <summary>
+		/// Время перезагрузки
+		/// </summary>
+		DateTime LastResetTime { get; }
 	}
 }

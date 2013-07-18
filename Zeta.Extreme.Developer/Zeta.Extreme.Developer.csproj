@@ -14,6 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\AnalyzerActionBase.cs" />
+    <Compile Include="Actions\DropCacheAction.cs" />
     <Compile Include="Actions\GetColAttributesAction.cs" />
     <Compile Include="Actions\GetParameterAttributesAction.cs" />
     <Compile Include="Analyzers\Analyzer.cs" />
@@ -21,6 +22,7 @@
     <Compile Include="Analyzers\IAnalyzer.cs" />
     <Compile Include="Analyzers\ICodeIndex.cs" />
     <Compile Include="Analyzers\CodeIndex.cs" />
+    <Compile Include="Model\Documentation.cs" />
     <Compile Include="Model\ItemReference.cs" />
     <Compile Include="Model\Source.cs" />
     <Compile Include="Model\SimpleAttributeDescriptor.cs" />

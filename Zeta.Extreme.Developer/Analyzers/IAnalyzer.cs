@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Qorpent.IoC;
 using Zeta.Extreme.Developer.Model;
 
 namespace Zeta.Extreme.Developer.Analyzers {
@@ -18,5 +19,11 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <param name="filter"></param>
 		/// <returns></returns>
 		IEnumerable<AttributeDescriptor> GetColsetAttribtes(SearchFilter filter = null);
+
+		/// <summary>
+		/// Доступ к конфигурации среды разработки
+		/// </summary>
+		[Inject]
+		ICodeIndex CodeIndex { get; set; }
 	}
 }
