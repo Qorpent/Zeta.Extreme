@@ -127,9 +127,11 @@ namespace Zeta.Extreme.Developer.Analyzers {
 			itemdoc.Name = d.Name;
 			var commentnode = item.Nodes().OfType<XText>().FirstOrDefault();
 			if (null != commentnode) {
-				itemdoc.Comment = commentnode.Value;
+				itemdoc.Comment = commentnode.Value.Trim().Replace("\r", "<BR/>").Replace("\t", "&#160;&#160;&#160;&#160;");
 			}
 			itemdoc.Obsolete = item.Attr("obsolete");
+			itemdoc.Error = item.Attr("error");
+			itemdoc.Question = item.Attr("question");
 			return itemdoc;
 		}
 

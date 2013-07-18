@@ -12,6 +12,37 @@ table.data td , table.data th {
      border:solid 1px gray;
 }
 
+table.data  td {
+    vertical-align: top;
+}
+
+
 table.data th {
      background-color : lightgray;
+}
+
+
+.obsolete-true {
+    background-color: pink;
+
+}
+.error-true {
+    background-color: red;
+
+}
+.question-true {
+    border: solid 2px blue;
+}
+
+.refs .ref-div {
+    display: block;
+}
+.refs .ref-subst {
+    display: none;
+}
+.refs.hidden .ref-div {
+    display: none;
+}
+.refs.hidden .ref-subst {
+    display: block;
 }

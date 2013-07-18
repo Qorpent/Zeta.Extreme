@@ -34,6 +34,37 @@ namespace Zeta.Extreme.Developer.Model {
 		/// <summary>
 		/// Информация об устаревании элемента синтаксиса
 		/// </summary>
+		[SerializeNotNullOnly]
 		public string Obsolete { get; set; }
+
+
+		/// <summary>
+		/// Признак устаревшего параметра
+		/// </summary>
+		[SerializeNotNullOnly]
+		public bool IsError
+		{
+			get { return !string.IsNullOrWhiteSpace(Error); }
+		}
+		/// <summary>
+		/// Информация об устаревании элемента синтаксиса
+		/// </summary>
+		[SerializeNotNullOnly]
+		public string Error { get; set; }
+
+
+		/// <summary>
+		/// Признак устаревшего параметра
+		/// </summary>
+		[SerializeNotNullOnly]
+		public bool IsQuestion
+		{
+			get { return !string.IsNullOrWhiteSpace(Question); }
+		}
+		/// <summary>
+		/// Информация об устаревании элемента синтаксиса
+		/// </summary>
+		[SerializeNotNullOnly]
+		public string Question { get; set; }
 	}
 }
