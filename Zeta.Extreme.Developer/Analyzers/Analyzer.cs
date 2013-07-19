@@ -47,7 +47,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		public IEnumerable<AttributeDescriptor> GetFormAttributes(SearchFilter filter = null)
 		{
 			filter = filter ?? new SearchFilter { DocRoot = "formattr" };
-			return CodeIndex.GetAttributes(new[] { "/*/in", "/*/form" }, filter);
+			return CodeIndex.GetAttributes(new[] { "/*/in", "/*[local-name()!='processes']/form" }, filter);
 		}
 
 
@@ -58,7 +58,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		public IEnumerable<AttributeDescriptor> GetThemaAttributes(SearchFilter filter = null)
 		{
 			filter = filter ?? new SearchFilter { DocRoot = "themaattr" };
-			return CodeIndex.GetAttributes(new[] { "/*[local-name()!='paramlib' and local-name()!='global' and local-name()!='colset' and local-name()!='objset'  and local-name()!='rowset'  and local-name()!='paramset']" }, filter);
+			return CodeIndex.GetAttributes(new[] { "/*[local-name()!='processes' and local-name()!='paramlib' and local-name()!='global' and local-name()!='colset' and local-name()!='objset'  and local-name()!='rowset'  and local-name()!='paramset']" }, filter);
 		}
 
 
@@ -68,7 +68,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <param name="filter"></param>
 		/// <returns></returns>
 		public IEnumerable<AttributeDescriptor> GetColsetAttribtes(SearchFilter filter = null) {
-			filter = filter ?? new SearchFilter {AttributeValueLimit = 20, AttributeValueReferenceLimit = 50, DocRoot="colattr"};
+			filter = filter ?? new SearchFilter {AttributeValueLimit = 40, AttributeValueReferenceLimit = 50, DocRoot="colattr"};
 			return CodeIndex.GetAttributes(new[] { "/colset/col", "/*/out/col", "/*/form/col" }, filter);
 		}
 	}

@@ -4,6 +4,8 @@
 >
   <xsl:import href="zdev-report-common.xslt"/>
   <xsl:output method="html" indent="yes"/>
+
+  <xsl:param name="docroot" >reportattr</xsl:param>
   <xsl:param name="selfname" >zdev-reportattributes-report</xsl:param>
   <xsl:param name="title">Отчет об использовании атрибутов отчетов</xsl:param>
   

@@ -13,6 +13,7 @@ using Qorpent.IoC;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Developer.Config;
 using Zeta.Extreme.Developer.Model;
+using Zeta.Extreme.Developer.Utils;
 
 namespace Zeta.Extreme.Developer.Analyzers {
 	/// <summary>
@@ -99,40 +100,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 				fullcontent += File.ReadAllText(file)+"\r\n";
 			}
 			var xml = Bxl.Parse( fullcontent,"doc");
-			return ConvertToDocumentDictionary(xml);
-		}
-
-		private IDictionary<string, Documentation> ConvertToDocumentDictionary(XElement xml) {
-			var result = new Dictionary<string, Documentation>();
-			foreach (var ctx in xml.Elements()) {
-				var key = ctx.Name.LocalName;
-				foreach (var item in ctx.Elements()) {
-					var itemdoc= ConvertToDocumentation(item, key);
-					result[itemdoc.Key] = itemdoc;
-					var itemkey = itemdoc.Key;
-					foreach (var val in item.Elements()) {
-						var valdoc = ConvertToDocumentation(val, itemkey);
-						result[valdoc.Key] = valdoc;
-					}
-				}
-			}
-			return result;
-		}
-
-		private static Documentation ConvertToDocumentation(XElement item, string key) {
-			var d = item.Describe(true);
-			key += ":" + item.Name.LocalName + "[" + item.Attr("code") + "]";
-			var itemdoc = new Documentation();
-			itemdoc.Key = key;
-			itemdoc.Name = d.Name;
-			var commentnode = item.Nodes().OfType<XText>().FirstOrDefault();
-			if (null != commentnode) {
-				itemdoc.Comment = commentnode.Value.Trim().Replace("\r", "<BR/>").Replace("\t", "&#160;&#160;&#160;&#160;");
-			}
-			itemdoc.Obsolete = item.Attr("obsolete");
-			itemdoc.Error = item.Attr("error");
-			itemdoc.Question = item.Attr("question");
-			return itemdoc;
+			return DocumentationHelper.LoadDocuments(xml);
 		}
 
 		/// <summary>
@@ -238,49 +206,19 @@ namespace Zeta.Extreme.Developer.Analyzers {
 			var doc = GetDoc();
 			var basidx = attributes.GroupBy(_ => _.Name, _ => _);
 			foreach (var grp in basidx) {
-				var item = new AttributeDescriptor();
-				
+				var item = new AttributeDescriptor {Name = grp.Key}.SetupDocument(filter,doc);
 				var groupedvalues = grp.GroupBy(_ => _.Value);
-				item.Name = grp.Key;
-				if (filter.IncludeDoc) {
-					var key = filter.DocRoot + ":attr[" + grp.Key + "]";
-					if (doc.ContainsKey(key)) {
-						item.Doc = doc[key];
-					}
-				}
+				
 				bool includevariants = 0 == filter.AttributeValueLimit || groupedvalues.Count() <= filter.AttributeValueLimit;
 				item.VariantCount = groupedvalues.Count();
 				foreach (var valuegrp in groupedvalues) {
 					
-					var variant = new AttributeValueVariant();
-					variant.Value = valuegrp.Key;
-					if (filter.IncludeDoc)
-					{
-						var key = filter.DocRoot + ":attr[" + grp.Key + "]" + ":value["+variant.Value+"]";
-						if (doc.ContainsKey(key))
-						{
-							variant.Doc = doc[key];
-						}
-					}
+					var variant = new AttributeValueVariant {Value = valuegrp.Key,Parent=item}.SetupDocument(filter, doc);
 					bool includereferences = filter.IncludeReferences && ( 0 == filter.AttributeValueReferenceLimit ||valuegrp.Count() <= filter.AttributeValueReferenceLimit);
 					item.ReferenceCount += valuegrp.Count();
 					variant.ReferenceCount = valuegrp.Count();
 					if (includereferences && includevariants) {
-						var rawrefs = new List<ItemReference>();
-						foreach (var ad in valuegrp) {
-							var maincontext = ad.LexInfo.Context.SmartSplit(false,true,'/')[0];
-							var subcontext = string.Join("/", ad.LexInfo.Context.SmartSplit(false, true, '/').Skip(1));
-							rawrefs.Add(
-								new ItemReference{File=Path.GetFileName(ad.LexInfo.File),Line = ad.LexInfo.Line,
-									MainContext = maincontext,SubContext = subcontext
-								}
-								);
-						}
-						foreach (var ir in GroupReferences(rawrefs.ToArray()))
-						{
-							variant.References.Add(ir);
-						}
-						
+						SetupReferencesForVariant(valuegrp, variant);
 					}
 					if (includevariants)
 					{
@@ -293,12 +231,80 @@ namespace Zeta.Extreme.Developer.Analyzers {
 			}
 
 		}
+
+		private void SetupReferencesForVariant(IGrouping<string, SimpleAttributeDescriptor> valuegrp, AttributeValueVariant variant) {
+			var rawrefs = new List<ItemReference>();
+			foreach (var ad in valuegrp) {
+				var maincontext = ad.LexInfo.Context.SmartSplit(false, true, '/')[0];
+				var subcontext = string.Join("/", ad.LexInfo.Context.SmartSplit(false, true, '/').Skip(1));
+				rawrefs.Add(
+					new ItemReference {
+						File = Path.GetFileName(ad.LexInfo.File),
+						Line = ad.LexInfo.Line,
+						MainContext = maincontext,
+						SubContext = subcontext
+					}
+					);
+			}
+			foreach (var ir in GroupReferences(rawrefs.ToArray())) {
+				variant.References.Add(ir);
+			}
+		}
+
 		/// <summary>
 		/// Группировка ссылок
 		/// </summary>
 		/// <param name="src"></param>
 		/// <returns></returns>
 		public IEnumerable<ItemReference> GroupReferences(ItemReference[] src) {
+			var fstlevel = GroupReferencesBySubContext(src);
+			var secondlevel = GroupReferencesByMainContext(fstlevel);
+			var thdlevel = GroupReferencesByFile(secondlevel);
+			return thdlevel;
+		}
+
+		private static ItemReference[] GroupReferencesByFile(ItemReference[] secondlevel) {
+			var thdlevel = secondlevel.GroupBy(_ => _.File, _ => _)
+			                          .Select(_ => new ItemReference {
+				                          File = _.First().File,
+				                          Children =
+					                          _.Select(
+						                          __ =>
+						                          new ItemReference {
+							                          MainContext = __.MainContext,
+							                          SubContext = __.SubContext,
+							                          Line = __.Line,
+							                          Children = __.Children
+						                          })
+			                          }).ToArray();
+			foreach (var s in thdlevel.Where(_ => _.Children.Count() == 1)) {
+				s.Line = s.Children.First().Line;
+				s.SubContext = s.Children.First().SubContext;
+				s.MainContext = s.Children.First().MainContext;
+				s.Children = s.Children.First().Children;
+			}
+			return thdlevel;
+		}
+
+		private static ItemReference[] GroupReferencesByMainContext(ItemReference[] fstlevel) {
+			var secondlevel = fstlevel.GroupBy(_ => _.File + ":" + _.MainContext, _ => _)
+			                          .Select(_ => new ItemReference {
+				                          File = _.First().File,
+				                          MainContext = _.First().MainContext,
+				                          Children =
+					                          _.Select(
+						                          __ =>
+						                          new ItemReference {SubContext = __.SubContext, Line = __.Line, Children = __.Children})
+			                          }).ToArray();
+			foreach (var s in secondlevel.Where(_ => _.Children.Count() == 1)) {
+				s.Line = s.Children.First().Line;
+				s.SubContext = s.Children.First().SubContext;
+				s.Children = s.Children.First().Children;
+			}
+			return secondlevel;
+		}
+
+		private static ItemReference[] GroupReferencesBySubContext(ItemReference[] src) {
 			var fstlevel = src.GroupBy(_ => _.File + ":" + _.MainContext + ":" + _.SubContext, _ => _)
 			                  .Select(_ => new ItemReference {
 				                  File = _.First().File,
@@ -307,38 +313,11 @@ namespace Zeta.Extreme.Developer.Analyzers {
 				                  Children =
 					                  _.Select(__ => new ItemReference {Line = __.Line})
 			                  }).ToArray();
-			foreach (var s in fstlevel.Where(_ => _.Children.Count() == 1))
-			{
+			foreach (var s in fstlevel.Where(_ => _.Children.Count() == 1)) {
 				s.Line = s.Children.First().Line;
 				s.Children = null;
 			}
-			var secondlevel = fstlevel.GroupBy(_ => _.File + ":" + _.MainContext, _ => _)
-				.Select(_ => new ItemReference
-				{
-					File = _.First().File,
-					MainContext = _.First().MainContext,
-					Children = _.Select(__ => new ItemReference { SubContext = __.SubContext, Line=__.Line, Children = __.Children })
-				}).ToArray();
-			foreach (var s in secondlevel.Where(_ => _.Children.Count() == 1))
-			{
-				s.Line = s.Children.First().Line;
-				s.SubContext = s.Children.First().SubContext;
-				s.Children = s.Children.First().Children;
-			}
-			var thdlevel = secondlevel.GroupBy(_ => _.File, _ => _)
-				.Select(_ => new ItemReference
-				{
-					File = _.First().File,
-					Children = _.Select(__ => new ItemReference { MainContext = __.MainContext, SubContext = __.SubContext, Line = __.Line, Children = __.Children })
-				}).ToArray();
-			foreach (var s in thdlevel.Where(_ => _.Children.Count() == 1))
-			{
-				s.Line = s.Children.First().Line;
-				s.SubContext = s.Children.First().SubContext;
-				s.MainContext = s.Children.First().MainContext;
-				s.Children = s.Children.First().Children;
-			}
-			return thdlevel;
+			return fstlevel;
 		}
 
 

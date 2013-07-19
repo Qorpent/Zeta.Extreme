@@ -21,6 +21,14 @@ table.data th {
      background-color : lightgray;
 }
 
+.mark {
+    padding: 2px;
+    border: solid 1px gray;
+}
+.mark.biztran {
+    background-color: #AAFFAA;
+}
+
 
 .obsolete-true {
     background-color: pink;

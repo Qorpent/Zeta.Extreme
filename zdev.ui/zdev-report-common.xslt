@@ -3,6 +3,7 @@
     xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl"
 >
   <xsl:param name="selfname" >default</xsl:param>
+  <xsl:param name="docroot" >attr</xsl:param>
   <xsl:param name="title">УКАЖИТЕ ИМЯ ОТЧЕТА</xsl:param>
 
 
@@ -39,6 +40,7 @@
       <thead>
         <tr>
           <th>№</th>
+          <th>Метки</th>
           <th>Код атрибута</th>
           <th>Информация</th>
           <th>Число значений</th>
@@ -57,6 +59,9 @@
     <tr class="obsolete-{Doc/@IsObsolete} error-{Doc/@IsError} question-{Doc/@IsQuestion}">
       <td class="number">
         <xsl:number value="position()" />
+      </td>
+      <td class="marks">
+        <xsl:apply-templates select="Doc" mode="marks"/>
       </td>
       <td class="code">
         <xsl:choose>
@@ -123,7 +128,11 @@
     </ul>
 
   </xsl:template>
-
+  <xsl:template match="Doc"  mode="marks">
+    <xsl:if test="@IsBiztran">
+      <span class="mark biztran">BIZTRAN</span>
+    </xsl:if>
+  </xsl:template>
   <xsl:template match="Doc"  mode="in-text-full">
     <table class="data doc">
       <tbody>
@@ -167,7 +176,12 @@
             </td>
           </tr>
         </xsl:if>
-
+        <tr class="marks">
+          <td>Метки</td>
+          <td>
+            <xsl:apply-templates select="." mode="marks"/>
+          </td>
+        </tr>
 
       </tbody>
 

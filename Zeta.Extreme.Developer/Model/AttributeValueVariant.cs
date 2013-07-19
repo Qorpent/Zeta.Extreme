@@ -15,6 +15,11 @@ namespace Zeta.Extreme.Developer.Model {
 			References = new List<ItemReference>();
 		}
 		/// <summary>
+		/// Родительский атрибут
+		/// </summary>
+		[IgnoreSerialize]
+		public AttributeDescriptor Parent { get; set; }
+		/// <summary>
 		/// Документация
 		/// </summary>
 		[SerializeNotNullOnly]

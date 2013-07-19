@@ -22,6 +22,7 @@
     <Compile Include="Actions\GetThemaAttributesAction.cs" />
     <Compile Include="Analyzers\Analyzer.cs" />
     <Compile Include="Analyzers\DeveloperConstants.cs" />
+    <Compile Include="Utils\DocumentationHelper.cs" />
     <Compile Include="Analyzers\IAnalyzer.cs" />
     <Compile Include="Analyzers\ICodeIndex.cs" />
     <Compile Include="Analyzers\CodeIndex.cs" />

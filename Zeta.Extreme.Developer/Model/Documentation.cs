@@ -66,5 +66,12 @@ namespace Zeta.Extreme.Developer.Model {
 		/// </summary>
 		[SerializeNotNullOnly]
 		public string Question { get; set; }
+
+
+		/// <summary>
+		/// Признак того, что единица кода относится к бизтрану
+		/// </summary>
+		[SerializeNotNullOnly]
+		public bool IsBiztran { get; set; }
 	}
 }
