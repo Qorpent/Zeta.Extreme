@@ -1,3 +1,4 @@
 pkg zeta.dev level=auth
+	uses qorpent.core
 	load zdev.main.menu.js
 	
