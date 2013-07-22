@@ -9,4 +9,4 @@ singleton DeveloperConfig : IDeveloperConfig
 	ThemaSourceFolders
 		add "C:\\rep\\themas\\sysdata"
 		add "C:\\rep\\themas\\usrdata"
-	DocFolder="C:\\rep\zdoc"
+	DocFolder="C:\\rep\\zdoc"
