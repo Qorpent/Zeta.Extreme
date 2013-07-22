@@ -14,6 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\AnalyzerActionBase.cs" />
+    <Compile Include="Actions\GetSubstAttributesAction.cs" />
     <Compile Include="Actions\DropCacheAction.cs" />
     <Compile Include="Actions\GetColAttributesAction.cs" />
     <Compile Include="Actions\GetFormAttributesAction.cs" />

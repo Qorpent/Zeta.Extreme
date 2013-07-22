@@ -63,6 +63,17 @@ namespace Zeta.Extreme.Developer.Analyzers {
 
 
 		/// <summary>
+		/// сабсты
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<AttributeDescriptor> GetSubstAttributes(SearchFilter filter = null)
+		{
+			filter = filter ?? new SearchFilter { DocRoot = "substattr" };
+			return CodeIndex.GetAttributes(new[] { "/subst" }, filter);
+		}
+
+
+		/// <summary>
 		/// Сбор атрибутов колсетов
 		/// </summary>
 		/// <param name="filter"></param>

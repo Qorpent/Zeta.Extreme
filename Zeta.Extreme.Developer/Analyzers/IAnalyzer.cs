@@ -39,6 +39,12 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		IEnumerable<AttributeDescriptor> GetFormAttributes(SearchFilter filter = null);
 
 		/// <summary>
+		/// сабсты
+		/// </summary>
+		/// <returns></returns>
+		IEnumerable<AttributeDescriptor> GetSubstAttributes(SearchFilter filter = null);
+
+		/// <summary>
 		/// Корневые элементы для атрибутов
 		/// </summary>
 		/// <returns></returns>
