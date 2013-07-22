@@ -67,11 +67,31 @@ namespace Zeta.Extreme.Developer.Model {
 		[SerializeNotNullOnly]
 		public string Question { get; set; }
 
+		/// <summary>
+		/// Признак устаревшего параметра
+		/// </summary>
+		[SerializeNotNullOnly]
+		public bool IsSubComment
+		{
+			get { return !string.IsNullOrWhiteSpace(SubComment); }
+		}
+		/// <summary>
+		/// Информация об устаревании элемента синтаксиса
+		/// </summary>
+		[SerializeNotNullOnly]
+		public string SubComment { get; set; }
+
 
 		/// <summary>
 		/// Признак того, что единица кода относится к бизтрану
 		/// </summary>
 		[SerializeNotNullOnly]
 		public bool IsBiztran { get; set; }
+
+		/// <summary>
+		/// Признак системного параметра
+		/// </summary>
+		[SerializeNotNullOnly]
+		public bool IsSystem { get; set; }
 	}
 }

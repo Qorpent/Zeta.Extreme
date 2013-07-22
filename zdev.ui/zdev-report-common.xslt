@@ -110,6 +110,11 @@
           <xsl:value-of select="@Comment" disable-output-escaping="yes"/>
         </li>
       </xsl:if>
+	   <xsl:if test="string(@SubComment)">
+        <li class="subcomment-{@IsSubComment}">
+          <xsl:value-of select="@SubComment"/>
+        </li>
+      </xsl:if>
 	   <xsl:if test="string(@Question)">
         <li class="question-{@IsQuestion}">
           <xsl:value-of select="@Question"/>
@@ -132,6 +137,9 @@
     <xsl:if test="@IsBiztran">
       <span class="mark biztran">BIZTRAN</span>
     </xsl:if>
+	<xsl:if test="@IsSystem">
+      <span class="mark system">SYSTEM</span>
+    </xsl:if>
   </xsl:template>
   <xsl:template match="Doc"  mode="in-text-full">
     <table class="data doc">
@@ -147,6 +155,14 @@
             <td>Разъяснение</td>
             <td>
               <xsl:value-of select="@Comment" disable-output-escaping="yes"/>
+            </td>
+          </tr>
+        </xsl:if>
+		<xsl:if test="string(@SubComment)">
+          <tr>
+            <td>Доп. комментарий</td>
+            <td>
+              <xsl:value-of select="@SubComment" disable-output-escaping="yes"/>
             </td>
           </tr>
         </xsl:if>

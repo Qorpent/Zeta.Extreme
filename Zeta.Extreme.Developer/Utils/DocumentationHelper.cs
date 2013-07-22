@@ -82,9 +82,11 @@ namespace Zeta.Extreme.Developer.Utils {
 				itemdoc.Comment = commentnode.Value.Trim().Replace("\r", "<BR/>").Replace("\t", "&#160;&#160;&#160;&#160;");
 			}
 			itemdoc.Obsolete = item.Attr("obsolete");
+			itemdoc.SubComment = item.Attr("comment");
 			itemdoc.Error = item.Attr("error");
 			itemdoc.Question = item.Attr("question");
 			itemdoc.IsBiztran = item.Attr("biztran").ToBool();
+			itemdoc.IsSystem = item.Attr("system").ToBool();
 			return itemdoc;
 		}
 	}

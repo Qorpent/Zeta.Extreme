@@ -58,7 +58,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		public IEnumerable<AttributeDescriptor> GetThemaAttributes(SearchFilter filter = null)
 		{
 			filter = filter ?? new SearchFilter { DocRoot = "themaattr" };
-			return CodeIndex.GetAttributes(new[] { "/*[local-name()!='processes' and local-name()!='paramlib' and local-name()!='global' and local-name()!='colset' and local-name()!='objset'  and local-name()!='rowset'  and local-name()!='paramset']" }, filter);
+			return CodeIndex.GetAttributes(new[] { "/*[local-name()!='processes' and local-name()!='subst'  and local-name()!='paramlib' and local-name()!='global' and local-name()!='colset' and local-name()!='objset'  and local-name()!='rowset'  and local-name()!='paramset']" }, filter);
 		}
 
 

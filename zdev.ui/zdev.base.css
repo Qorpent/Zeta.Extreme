@@ -29,6 +29,10 @@ table.data th {
     background-color: #AAFFAA;
 }
 
+.mark.system {
+    background-color: #AAAAFF;
+}
+
 
 .obsolete-true {
     background-color: pink;
