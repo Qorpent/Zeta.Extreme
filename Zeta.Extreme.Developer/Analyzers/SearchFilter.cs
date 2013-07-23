@@ -38,14 +38,14 @@
 		/// <summary>
 		/// При каком количестве референсов происходит возврат псевдо-референса "много"
 		/// </summary>
-		public int AttributeValueReferenceLimit { get; set; }
+		public int ReferenceLimit { get; set; }
 
 		/// <summary>
 		/// Приведение к строке для ключа
 		/// </summary>
 		/// <returns></returns>
 		public override string ToString() {
-			return "sf:" + CollectValues+":avl:"+AttributeValueLimit+":arl:"+AttributeValueReferenceLimit+
+			return "sf:" + CollectValues+":avl:"+AttributeValueLimit+":arl:"+ReferenceLimit+
 			":ir:"+IncludeReferences+":id:"+IncludeDoc+":dr:"+DocRoot;
 		}
 	}

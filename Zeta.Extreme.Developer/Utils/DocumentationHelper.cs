@@ -43,6 +43,36 @@ namespace Zeta.Extreme.Developer.Utils {
 			return variant;
 		}
 
+
+		/// <summary>
+		/// Подготовить документацию для варианта значения атрибута
+		/// </summary>
+		/// <param name="elementmap"></param>
+		/// <param name="filter"></param>
+		/// <param name="doc"></param>
+		public static ElementCodeTypeMap SetupDocument(this ElementCodeTypeMap elementmap, SearchFilter filter, IDictionary<string, Documentation> doc)
+		{
+			if (filter.IncludeDoc) {
+				var typekey = filter.DocRoot + ":codetype[" + elementmap.Type + "]";
+				var selfkey = filter.DocRoot + ":codemap[" + elementmap.Path + "]";
+				var resultdoc = new Documentation();
+
+				if (doc.ContainsKey(typekey)) {
+					var main = doc[typekey];
+					resultdoc.Merge(main);
+				}
+				if (doc.ContainsKey(selfkey))
+				{
+					var self = doc[selfkey];
+					resultdoc.Merge(self);
+				}
+				if (!string.IsNullOrWhiteSpace(resultdoc.Key)) {
+					elementmap.Doc = resultdoc;
+				}
+			}
+			return elementmap;
+		}
+
 		/// <summary>
 		/// Десериализует документацию из XML
 		/// </summary>
@@ -50,10 +80,10 @@ namespace Zeta.Extreme.Developer.Utils {
 		/// <returns></returns>
 		public static IDictionary<string, Documentation> LoadDocuments(XElement xml) {
 			var result = new Dictionary<string, Documentation>();
-			foreach (var ctx in xml.Elements()) {
-				var key = ctx.Name.LocalName;
-				foreach (var item in ctx.Elements()) {
-					var itemdoc= CreateDocument(item, key);
+			foreach (var root in xml.Elements()) {
+				var key = root.Name.LocalName;
+				foreach (var item in root.Elements()) {
+					var itemdoc = CreateDocument(item, key);
 					result[itemdoc.Key] = itemdoc;
 					var itemkey = itemdoc.Key;
 					foreach (var val in item.Elements()) {
@@ -64,6 +94,8 @@ namespace Zeta.Extreme.Developer.Utils {
 			}
 			return result;
 		}
+
+		
 
 		/// <summary>
 		/// Десериализует отдельный документа из XML

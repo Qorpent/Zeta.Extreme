@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Qorpent.Serialization;
+using Zeta.Extreme.Developer.Analyzers;
 using Zeta.Extreme.Developer.Model;
 
 namespace Zeta.Extreme.Developer.Tests
@@ -34,7 +35,7 @@ namespace Zeta.Extreme.Developer.Tests
 		[Test]
 		public void BugWithReferenceGroupping() {
 			var group =
-				index.GroupReferences(new[] {
+				CodeIndex.GroupReferences(new[] {
 					new ItemReference {File = "A", MainContext = "A", SubContext = "B", Line = 1},
 					new ItemReference {File = "A", MainContext = "A", SubContext = "C", Line = 2}
 				}).ToArray();
@@ -62,7 +63,7 @@ namespace Zeta.Extreme.Developer.Tests
 		public void BugWithReferenceGrouppingInvalidXml()
 		{
 			var group =
-				index.GroupReferences(new[] {
+				CodeIndex.GroupReferences(new[] {
 					new ItemReference {File = "A", MainContext = "A", SubContext = "B", Line = 1},
 					new ItemReference {File = "A", MainContext = "A", SubContext = "C", Line = 2}
 				}).ToArray();

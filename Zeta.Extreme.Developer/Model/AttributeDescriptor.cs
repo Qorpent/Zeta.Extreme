@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Qorpent.Serialization;
-using Zeta.Extreme.Developer.Analyzers;
 
 namespace Zeta.Extreme.Developer.Model {
 	/// <summary>

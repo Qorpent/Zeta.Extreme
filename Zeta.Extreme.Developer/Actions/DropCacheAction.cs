@@ -15,7 +15,7 @@ namespace Zeta.Extreme.Developer.Actions {
 		[Inject]
 		public ICodeIndex CodeIndex { get; set; }
 		/// <summary>
-		/// Сбрасывает Reset именно для CodeIndex
+		/// Сбрасывает Reset именно для Index
 		/// </summary>
 		/// <returns></returns>
 		protected override object MainProcess() {
