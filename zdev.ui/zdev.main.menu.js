@@ -83,6 +83,20 @@ _.widget.register({
 
 		        ]
 		    },
+			{
+		        title: 'Substitutions',
+		        icon: 'icon-list-alt',
+		        items: [
+					{
+					    title: 'Subst атрибутов (полный в XML)',
+					    href: './zdev/substattributes.xml.qweb?__xslt=zdev-substattributes-report',
+					},
+					{
+					    title: 'Subst атрибутов (полный в HTML)',
+					    href: './zdev/substattributes.html.qweb?__xslt=zdev-substattributes-report',
+					}
+				]
+		    },
 		    {
 		        title: 'Элементы кода',
 		        items: [
