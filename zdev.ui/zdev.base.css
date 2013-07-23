@@ -46,15 +46,15 @@ table.data th {
     border: solid 2px blue;
 }
 
-.refs .ref-div {
+.refs .ref-div, .tagnames.tagnames-div {
     display: block;
 }
-.refs .ref-subst {
+.refs .ref-subst,  .tagnames .tagnames-subst {
     display: none;
 }
-.refs.hidden .ref-div {
+.refs.hidden .ref-div , .tagnames.hidden .tagnames-div  {
     display: none;
 }
-.refs.hidden .ref-subst {
+.refs.hidden .ref-subst , .tagnames.hidden .tagnames-subst   {
     display: block;
 }

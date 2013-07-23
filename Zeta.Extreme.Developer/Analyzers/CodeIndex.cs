@@ -11,6 +11,7 @@ using Qorpent.Dsl;
 using Qorpent.Events;
 using Qorpent.IoC;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Developer.Analyzers.Visitors;
 using Zeta.Extreme.Developer.Config;
 using Zeta.Extreme.Developer.Model;
 using Zeta.Extreme.Developer.Utils;
@@ -21,11 +22,18 @@ namespace Zeta.Extreme.Developer.Analyzers {
 	/// </summary>
 	[RequireReset(All=true,Options=new[]{"zdev.cache"})]
 	public class CodeIndex :  ServiceBase, ICodeIndex {
+
+		/// <summary>
+		/// Посетитель для определения типа кода для элементов источника
+		/// </summary>
+		public ISourceVisitor ElementCodeTypeVisitor { get; set; }
+
 		/// <summary>
 		/// /
 		/// </summary>
 		public CodeIndex() {
 			LastResetTime = DateTime.Now;
+			ElementCodeTypeVisitor = new ElementCodeTypeResolverVisitor();
 		}
 		/// <summary>
 		/// Время перезагрузки
@@ -44,7 +52,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 			set { _config = value; }
 		}
 	
-		private IDictionary<string,AttributeDescriptor[]> _attributeResolutionCache = new Dictionary<string, AttributeDescriptor[]>();
+		private IDictionary<string, AttributeDescriptor[]> _attributeResolutionCache = new Dictionary<string, AttributeDescriptor[]>();
 
 		private IBxlParser _bxl;
 
@@ -65,8 +73,14 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <returns></returns>
 		public IEnumerable<Source> GetAllSources()
 		{
-			return _sourcecache ?? (_sourcecache = InternalReadXml().ToList());
+			return _sourcecache ?? (_sourcecache = InternalReadXml().Select(IndexizeCodeElements).ToList());
 		}
+
+		private Source IndexizeCodeElements(Source source) {
+			ElementCodeTypeVisitor.Visit(source);
+			return source;
+		}
+
 		/// <summary>
 		/// Сброс кэшей
 		/// </summary>
@@ -92,7 +106,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 
 		private IDictionary<string, Documentation> LoadDoc()
 		{
-			if (string.IsNullOrWhiteSpace(Config.DocFolder)) return new Dictionary<string, Documentation>();
+			if (String.IsNullOrWhiteSpace(Config.DocFolder)) return new Dictionary<string, Documentation>();
 			//if (!Directory.Exists(Config.DocFolder)) return new Dictionary<string, Documentation>();
 			var files = Directory.GetFiles(Config.DocFolder, "*.doc.bxl");
 			var fullcontent = "";
@@ -153,35 +167,46 @@ namespace Zeta.Extreme.Developer.Analyzers {
 						File = _.Parent.Attr("_file"),
 						Line = _.Parent.Attr("_line").ToInt()
 						,
-						Context = PrepareContext(_)
+						Context = GetContextString(_)
 					}
 				}).ToArray();
 			return result;
 		}
-
-		private string PrepareContext(XAttribute current) {
-			var c = current.Parent;
+		/// <summary>
+		/// Утилита подготовки контекста для атрибута
+		/// </summary>
+		/// <param name="current"></param>
+		/// <returns></returns>
+		public string GetContextString(XAttribute current) {
+			var e = current.Parent;
+			return GetContextString(e);
+		}
+		/// <summary>
+		/// Утилита подготовки контекста для элемента
+		/// </summary>
+		/// <param name="e"></param>
+		/// <returns></returns>
+		public static string GetContextString(XElement e) {
 			var result = "";
-			while (c.Parent != null) {	
-				var desc = c.Describe(explicitname:true);
-				var type = c.Name.LocalName;
+			while (e.Parent != null) {
+				var desc = e.Describe(explicitname: true);
+				var type = e.Name.LocalName;
 				var code = desc.Code;
 				var name = desc.Name;
 				var str = "/" + type;
-				if (!string.IsNullOrWhiteSpace(code)) {
+				if (!String.IsNullOrWhiteSpace(code)) {
 					str += "[" + code;
 				}
-				if (!string.IsNullOrWhiteSpace(name) && (name != code)) {
+				if (!String.IsNullOrWhiteSpace(name) && (name != code)) {
 					str += "(" + name + ")";
 				}
-				if (!string.IsNullOrWhiteSpace(code)) {
+				if (!String.IsNullOrWhiteSpace(code)) {
 					str += "]";
 				}
 				result = str + result;
-				c = c.Parent;
+				e = e.Parent;
 			}
 			return result;
-
 		}
 
 		/// <summary>
@@ -214,7 +239,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 				foreach (var valuegrp in groupedvalues) {
 					
 					var variant = new AttributeValueVariant {Value = valuegrp.Key,Parent=item}.SetupDocument(filter, doc);
-					bool includereferences = filter.IncludeReferences && ( 0 == filter.AttributeValueReferenceLimit ||valuegrp.Count() <= filter.AttributeValueReferenceLimit);
+					bool includereferences = filter.IncludeReferences && ( 0 == filter.ReferenceLimit ||valuegrp.Count() <= filter.ReferenceLimit);
 					item.ReferenceCount += valuegrp.Count();
 					variant.ReferenceCount = valuegrp.Count();
 					if (includereferences && includevariants) {
@@ -236,7 +261,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 			var rawrefs = new List<ItemReference>();
 			foreach (var ad in valuegrp) {
 				var maincontext = ad.LexInfo.Context.SmartSplit(false, true, '/')[0];
-				var subcontext = string.Join("/", ad.LexInfo.Context.SmartSplit(false, true, '/').Skip(1));
+				var subcontext = String.Join("/", ad.LexInfo.Context.SmartSplit(false, true, '/').Skip(1));
 				rawrefs.Add(
 					new ItemReference {
 						File = Path.GetFileName(ad.LexInfo.File),
@@ -256,11 +281,63 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// </summary>
 		/// <param name="src"></param>
 		/// <returns></returns>
-		public IEnumerable<ItemReference> GroupReferences(ItemReference[] src) {
+		public static IEnumerable<ItemReference> GroupReferences(ItemReference[] src) {
 			var fstlevel = GroupReferencesBySubContext(src);
 			var secondlevel = GroupReferencesByMainContext(fstlevel);
 			var thdlevel = GroupReferencesByFile(secondlevel);
 			return thdlevel;
+		}
+		/// <summary>
+		/// Выдает индекс элементов, сопоставленных их типу по коду
+		/// </summary>
+		/// <param name="filter"></param>
+		/// <returns></returns>
+		public IEnumerable<ElementCodeTypeMap> GetElementCodeMap(SearchFilter filter) {
+			var allelements = GetAllSources().Select(_ => _.XmlContent).SelectMany(_ => _.Descendants())
+								   .Select(
+									   _ =>
+									   new { e = _, key = GetPath(_), t = _.Attr("CodeType"), r = new ItemReference(_) }).ToArray();
+
+			var grouppedelements = allelements.GroupBy(_ => _.key);
+
+			return grouppedelements.Select(
+				_ =>
+				{
+					var result = new ElementCodeTypeMap
+					{
+						Path = _.Key,
+						Type = (CodeElementType)Enum.Parse(typeof(CodeElementType), _.First().t),
+
+					};
+
+					
+					if (result.Path == "/*") {
+						result.TagNames = string.Join(", ", _.Select(__ => __.e.Name.LocalName).Distinct());
+					}
+					result.SetupDocument(filter,GetDoc()); 
+					bool appendmany = false;
+
+					ItemReference[] refs = null;
+					result.RefCount = _.Count();
+					if (0 == filter.ReferenceLimit || result.RefCount <= filter.ReferenceLimit) {
+						refs = GroupReferences(_.Select(__ => __.r).ToArray()).ToArray();
+					}
+					else {
+						appendmany = true;
+						refs = GroupReferences(_.Select(__ => __.r).Take(filter.ReferenceLimit).ToArray()).ToArray();
+					}
+
+					foreach (var r in refs)
+					{
+						result.References.Add(r);
+					}
+					if(appendmany){
+						result.References.Add(new ItemReference { File = "Встречается еще во множестве мест" });
+					}
+
+					return result;
+				}
+				);
 		}
 
 		private static ItemReference[] GroupReferencesByFile(ItemReference[] secondlevel) {
@@ -329,7 +406,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <returns></returns>
 		public IEnumerable<AttributeDescriptor> GetAttributes(string[] roots, SearchFilter filter = null) {
 			filter = filter ?? new SearchFilter();
-			var key = filter + ",roots:" + string.Join(",", roots.Distinct().OrderBy(_ => _));
+			var key = filter + ",roots:" + String.Join(",", roots.Distinct().OrderBy(_ => _));
 			if (_attributeResolutionCache.ContainsKey(key)) {
 				return _attributeResolutionCache[key];
 			}
@@ -339,5 +416,52 @@ namespace Zeta.Extreme.Developer.Analyzers {
 			return result;
 		}
 
+		/// <summary>
+		/// Формирует ключ элемента для сопоставления индекса типов
+		/// </summary>
+		/// <param name="e"></param>
+		/// <param name="anyroot"></param>
+		/// <returns></returns>
+		public static string GetPath(XElement e, bool anyroot = false)
+		{
+			var result = "";
+			var current = e;
+			while (null != current.Parent)
+			{
+				if (anyroot && null == current.Parent.Parent) {
+					result = "/*" + result;
+				}
+				else {
+					result = "/" + current.Name.LocalName + result;
+				}
+				current = current.Parent;
+			}
+
+			if (!anyroot && (!KnownRoots.Any(_ => result.StartsWith(_))||(result.StartsWith("/thema")&&result!="/thema")))
+			{
+				result = GetPath(e, true);
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// Массив известных рутовых элементов
+		/// </summary>
+		public static readonly string[] KnownRoots = new[] {
+			"/global",
+			"/subst",
+			"/extension",
+			"/paramlib",
+			"/colset",
+			"/thema",
+			"/paramset",
+			"/objset",
+			"/processes",
+			"/optimization",
+			"/rowset",
+			"/param",
+			"/styleset",
+			"/namespace",
+		};
 	}
 }

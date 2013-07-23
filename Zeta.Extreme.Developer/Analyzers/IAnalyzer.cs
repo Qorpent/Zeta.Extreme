@@ -24,7 +24,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// Доступ к конфигурации среды разработки
 		/// </summary>
 		[Inject]
-		ICodeIndex CodeIndex { get; set; }
+		ICodeIndex Index { get; set; }
 
 		/// <summary>
 		/// Корневые элементы для атрибутов
@@ -43,5 +43,11 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// </summary>
 		/// <returns></returns>
 		IEnumerable<AttributeDescriptor> GetThemaAttributes(SearchFilter filter = null);
+
+		/// <summary>
+		/// Возвращает набор мапингов типа элементов кода
+		/// </summary>
+		/// <returns></returns>
+		IEnumerable<ElementCodeTypeMap> GetElementTypeMap(SearchFilter filter = null);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using Qorpent.Serialization;
+﻿using System;
+using Qorpent.Serialization;
 
 namespace Zeta.Extreme.Developer.Model {
 	/// <summary>
@@ -7,6 +8,55 @@ namespace Zeta.Extreme.Developer.Model {
 	[Serialize]
 	public class Documentation
 	{
+		/// <summary>
+		/// 
+		/// </summary>
+		public Documentation() {
+			Key = "";
+			Name = "";
+			Error = "";
+			Obsolete = "";
+			Comment = "";
+			SubComment = "";
+			Question = "";
+		}
+
+		/// <summary>
+		/// Присоединение дополнительного документа в режиме слияния
+		/// </summary>
+		/// <param name="otherdocument"></param>
+		/// <returns></returns>
+		public Documentation Merge(Documentation otherdocument) {
+			if (null == otherdocument) return this;
+			if (this == otherdocument) return this;
+
+			Func<string, string, string> setitem = (my, other) => {
+				var result = my;
+				if (!string.IsNullOrWhiteSpace(other)) {
+					if (!string.IsNullOrWhiteSpace(my)) {
+						result += "; ";
+					}
+					result += other;
+				}
+				return result;
+			};
+
+			Key = setitem(Key, otherdocument.Key);
+			Name = setitem(Name, otherdocument.Name);
+			Error = setitem(Error, otherdocument.Error);
+			Obsolete = setitem(Obsolete, otherdocument.Obsolete);
+			Question = setitem(Question, otherdocument.Question);
+			Comment = setitem(Comment, otherdocument.Comment);
+			SubComment = setitem(SubComment, otherdocument.SubComment);
+
+			IsBiztran = IsBiztran || otherdocument.IsBiztran;
+			IsSystem = IsSystem || otherdocument.IsSystem;
+			
+
+			return this;
+		}
+		
+
 		/// <summary>
 		/// Ключ документа
 		/// </summary>

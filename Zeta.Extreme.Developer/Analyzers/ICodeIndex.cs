@@ -25,5 +25,12 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// Время перезагрузки
 		/// </summary>
 		DateTime LastResetTime { get; }
+
+		/// <summary>
+		/// Выдает индекс элементов, сопоставленных их типу по коду
+		/// </summary>
+		/// <param name="filter"></param>
+		/// <returns></returns>
+		IEnumerable<ElementCodeTypeMap> GetElementCodeMap(SearchFilter filter);
 	}
 }

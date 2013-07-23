@@ -21,7 +21,13 @@
     <Compile Include="Actions\GetReportAttributesAction.cs" />
     <Compile Include="Actions\GetThemaAttributesAction.cs" />
     <Compile Include="Analyzers\Analyzer.cs" />
+    <Compile Include="Analyzers\ISourceVisitor.cs" />
+    <Compile Include="Model\ElementCodeTypeMap.cs" />
+    <Compile Include="Analyzers\Visitors\ElementCodeTypeResolverVisitor.cs" />
     <Compile Include="Analyzers\DeveloperConstants.cs" />
+    <Compile Include="Model\CodeElementType.cs" />
+    <Compile Include="Model\ElementDescriptor.cs" />
+    <Compile Include="Actions\GetElementsMapAction.cs" />
     <Compile Include="Utils\DocumentationHelper.cs" />
     <Compile Include="Analyzers\IAnalyzer.cs" />
     <Compile Include="Analyzers\ICodeIndex.cs" />

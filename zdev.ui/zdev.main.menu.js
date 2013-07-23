@@ -83,6 +83,21 @@ _.widget.register({
 
 		        ]
 		    },
+		    {
+		        title: 'Элементы кода',
+		        items: [
+					{
+					    title: 'Типы элементов (полный в XML)',
+					    href: './zdev/getelementsmap.xml.qweb',
+					},
+					{
+					    title: 'Типы элементов (полный в HTML)',
+					    href: './zdev/getelementsmap.html.qweb?__xslt=zdev-getelementsmap-report',
+					}
+
+		        ]
+		    },
+		    
 			"div",
 			{
 				title : "Очистить кэш",

@@ -44,7 +44,7 @@ thema mythema
 		public override void Setup()
 		{
 			base.Setup();
-			this.analyzer = new Analyzer {CodeIndex = index};
+			this.analyzer = new Analyzer {Index = index};
 		}
 
 		[Test]
@@ -64,7 +64,7 @@ thema mythema
 				ThemaSourceFolders = new[] {"C:\\code\\usr\\ugmk\\eco\\data", "C:\\code\\zeta\\zeta\\sys\\data"}
 			};
 			var codeindex = new CodeIndex {Config = config};
-			var analyzer = new Analyzer {CodeIndex = codeindex};
+			var analyzer = new Analyzer {Index = codeindex};
 			var result = new XmlSerializer().Serialize("test", analyzer.GetParameterAttributes());
 			Console.WriteLine(result);
 		}
@@ -77,7 +77,7 @@ thema mythema
 				ThemaSourceFolders = new[] { "C:\\code\\usr\\ugmk\\eco\\data", "C:\\code\\zeta\\zeta\\sys\\data" }
 			};
 			var codeindex = new CodeIndex { Config = config };
-			var analyzer = new Analyzer { CodeIndex = codeindex };
+			var analyzer = new Analyzer { Index = codeindex };
 			var result = new XmlSerializer().Serialize("test", analyzer.GetColsetAttribtes());
 			Console.WriteLine(result);
 		}
