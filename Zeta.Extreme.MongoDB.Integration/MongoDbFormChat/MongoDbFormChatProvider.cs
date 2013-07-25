@@ -32,10 +32,33 @@ namespace Zeta.Extreme.MongoDB.Integration {
 	/// </summary>
 	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IFormChatProvider))]
 	public class MongoDbFormChatProvider : MongoBasedServiceBase, IFormChatProvider {
+        /// <summary>
+        /// 
+        /// </summary>
+        private MongoDbConnector _mailCollection;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private MongoDbConnector MailCollection
+        {
+            get
+            {
+                return _mailCollection ?? (_mailCollection = new MongoDbConnector
+                {
+                    ConnectionString = ConnectionString,
+                    DatabaseName = DatabaseName,
+                    CollectionName = CollectionName + "Mail"
+                });
+
+            }
+        }
+
 		/// <summary>
 		/// </summary>
         public MongoDbFormChatProvider() {
-			ConnectionString = "mongodb://localhost:27017";
+            ConnectionString = "mongodb://10.2.246.15:27017";
+			//ConnectionString = "mongodb://localhost:27017";
 			DatabaseName = "MongoAttachedProviderBase";
 			CollectionName = GetType().Name;
 		}
@@ -65,24 +88,33 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <param name="type"></param>
 		/// <returns>
 		/// </returns>
-		public FormChatItem AddMessage(IFormSession session, string message, string type="default") {
-			type = type ?? "default";
-			var item = new FormChatItem {
-			    Text = message,
-				Type = type
-			};
-            
-			Collection.Save(
-                MongoDbFormChatSerializer.ChatItemToBson(
-                    session,
-                    item
-                )
-            );
+        public FormChatItem AddMessage(IFormSession session, string message, string type = "default")
+        {
+            type = type ?? "default";
+            var item = new FormChatItem
+            {
+                Text = message,
+                Type = type
+            };
 
-			return item;
-		}
+            var document = MongoDbFormChatSerializer.ChatItemToBson(session, item);
+            Collection.Save(document);
+            if (type == "admin" || type == "support")
+            {
+                AddToCollection(document);
+            }
 
-		/// <summary>
+
+            return item;
+        }
+
+        private void AddToCollection(BsonDocument document)
+        {
+            document.Remove("type");
+            MailCollection.Collection.Insert(document);
+        }
+
+	    /// <summary>
 		///     Помечает сообщение с указанным идентификатором как прочтенное
 		///     пользователем
 		/// </summary>

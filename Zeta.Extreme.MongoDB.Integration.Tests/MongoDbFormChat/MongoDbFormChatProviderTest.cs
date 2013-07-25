@@ -51,6 +51,25 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
         }
 
         [Test]
+        public void CanSaveMessagesToAdminAndSupport()
+        {
+            var session = new FormSession(new InputTemplate { Code = "x" }, 2012, 1, new Obj { Id = 2 }) { Usr = "y" };
+            _provider.AddMessage(session, "test1", "admin");
+            _provider.AddMessage(session, "test2", "support");
+            _provider.AddMessage(session, "test3", "");
+            var all = _connector.Collection.FindAll().ToArray();
+            Assert.AreEqual(3, all.Length);
+            Assert.True(all.All(_ => _["year"].AsInt32 == 2012));
+            Assert.True(all.All(_ => _["period"].AsInt32 == 1));
+            Assert.True(all.All(_ => _["obj"].AsInt32 == 2));
+            Assert.True(all.All(_ => _["form"].AsString == "x"));
+            Assert.True(all.All(_ => _["user"].AsString == "y"));
+            Assert.True(all.Any(_ => _["text"].AsString == "test1"));
+            Assert.True(all.Any(_ => _["text"].AsString == "test2"));
+            Assert.True(all.Any(_ => _["text"].AsString == "test3"));
+        }
+
+        [Test]
         public void CanSetHaveRead() {
             var session = GetFormSession();
             
