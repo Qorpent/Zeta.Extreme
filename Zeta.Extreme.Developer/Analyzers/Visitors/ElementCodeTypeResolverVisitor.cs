@@ -167,10 +167,15 @@ namespace Zeta.Extreme.Developer.Analyzers.Visitors
 				{"/*/report/var",CodeElementType.ReportParamDefLocalVar},
 				{"/*/reportset/var",CodeElementType.ReportParamDefLocalVar},
 				{"/*/reportsetex/var",CodeElementType.ReportParamDefLocalVar},
+				
+				{"/*/reportsetex/hide",CodeElementType.HideParamInReport},
+				{"/*/reportset/hide",CodeElementType.HideParamInReport},
+				
+				{"/rowset",CodeElementType.Rowset},
 			
-					
 				
 				
+				 
 				
 				
 				

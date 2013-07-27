@@ -1,8 +1,20 @@
 ﻿namespace Zeta.Extreme.Developer.Model
 {
 	/// <summary>
+	/// Класс для управления сведенными аналитическими единицами кода
+	/// </summary>
+	public static class AnalyticElementType
+	{
+		
+
+	}
+
+
+
+	/// <summary>
 	/// Тип элементов кода темы
 	/// </summary>
+	
 	public enum CodeElementType
 	{
 		/// <summary>
@@ -232,6 +244,10 @@
 		/// Расширение нутра отчета
 		/// </summary>
 		ReportSetEx,
+		/// <summary>
+		/// Спрятать параметры в отчете
+		/// </summary>
+		HideParamInReport,
 		//// <summary>
 		//// Определение отчета в целом
 		//// </summary>
@@ -327,5 +343,9 @@
 		/// Определение форм в расширении "процессы"
 		/// </summary>
 		ContentExtensionsForm,
+		/// <summary>
+		/// Набор строк
+		/// </summary>
+		Rowset,
 	}
 }
