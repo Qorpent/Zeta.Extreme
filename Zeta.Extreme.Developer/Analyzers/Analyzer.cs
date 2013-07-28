@@ -29,7 +29,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <returns></returns>
 		public IEnumerable<AttributeDescriptor> GetParameterAttributes(SearchFilter filter = null) {
 			filter = filter ?? new SearchFilter {  DocRoot = "paramattr" };
-			return Index.GetAttributes(new[] { "/paramlib/param", "/*/out/param", "/*/out/var" }, filter);
+			return Index.GetAttributes(new[] { "//*[@CodeCategory='Param']" }, filter);
 		}
 
 		/// <summary>
@@ -81,7 +81,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <returns></returns>
 		public IEnumerable<AttributeDescriptor> GetColsetAttribtes(SearchFilter filter = null) {
 			filter = filter ?? new SearchFilter {AttributeValueLimit = 40, ReferenceLimit = 50, DocRoot="colattr"};
-			return Index.GetAttributes(new[] { "/colset/col", "/*/out/col", "/*/form/col" }, filter);
+			return Index.GetAttributes(new[] { "//*[@CodeCategory='Column']" }, filter);
 		}
 	}
 

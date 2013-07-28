@@ -13,7 +13,7 @@ namespace Zeta.Extreme.Developer.Model {
 		/// <summary>
 		/// Определение парамтера в целом
 		/// </summary>
-		ParamDef = CodeElementType.ParamDefLib | 
+		Param = CodeElementType.ParamDefLib | 
 		           CodeElementType.ParamDefRoot |
 		           CodeElementType.ReportParamDefLocalVar|
 		           CodeElementType.ReportParamDefLocalParam|
@@ -23,7 +23,7 @@ namespace Zeta.Extreme.Developer.Model {
 		/// <summary>
 		/// Вариант использования параметра
 		/// </summary>
-		ParamUsage = CodeElementType.ParamAskInParamset|
+		ParamRef = CodeElementType.ParamAskInParamset|
 		             CodeElementType.ParamAskInReportDef|
 		             CodeElementType.ParamAskInReportSet|
 		             CodeElementType.ParamAskInReportSetEx|
@@ -33,5 +33,9 @@ namespace Zeta.Extreme.Developer.Model {
 		             CodeElementType.ParamUseInReportSetEx|
 		             CodeElementType.ParamUseReferenceInColset
 		,
+		/// <summary>
+		/// Агрегированный тип кода - определение колонки
+		/// </summary>
+		Column = CodeElementType.ColInColset|CodeElementType.ColInForm|CodeElementType.ColInReport,
 	}
 }

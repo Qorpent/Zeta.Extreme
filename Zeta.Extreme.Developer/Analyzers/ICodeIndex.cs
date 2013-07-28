@@ -14,6 +14,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <param name="filter"></param>
 		/// <returns></returns>
 		IEnumerable<AttributeDescriptor> GetAttributes(string[] roots, SearchFilter filter = null);
+		
 
 		/// <summary>
 		/// Вернуть полный список исходных XML
