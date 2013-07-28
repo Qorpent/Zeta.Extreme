@@ -1,4 +1,6 @@
-﻿namespace Zeta.Extreme.Developer.Model
+﻿using System;
+
+namespace Zeta.Extreme.Developer.Model
 {
 	/// <summary>
 	/// Класс для управления сведенными аналитическими единицами кода
@@ -9,343 +11,319 @@
 
 	}
 
+	/// <summary>
+	/// Укрупненная категория элемента кода
+	/// </summary>
+	[Flags]
+	public enum CodeElementCategory {
+		/// <summary>
+		/// Неопределенный	
+		/// </summary>
+		Undefined =0,
+		/// <summary>
+		/// Определение парамтера в целом
+		/// </summary>
+		ParamDef = CodeElementType.ParamDefLib | 
+				CodeElementType.ParamDefRoot |
+				CodeElementType.ReportParamDefLocalVar|
+				CodeElementType.ReportParamDefLocalParam
+				,
+		ParamUsage = 
+
+	}
 
 
 	/// <summary>
 	/// Тип элементов кода темы
 	/// </summary>
-	
+	[Flags]
 	public enum CodeElementType
 	{
 		/// <summary>
 		/// Неопределенный
 		/// </summary>
-		Undefined,
+		Undefined = 0,
 		/// <summary>
 		/// Библиотека параметров
 		/// </summary>
-		ParamLib,
+		ParamLib = 1,
 		/// <summary>
 		/// Параметр, определенные в библиотеке
 		/// </summary>
-		ParamDefLib,
+		ParamDefLib = 2^1,
 		/// <summary>
 		/// Указание параметра в корне (обычно в импортируемом файле)
 		/// </summary>
-		ParamDefRoot,
+		ParamDefRoot = 2^2,
 		/// <summary>
 		/// Статический параметр, определенный локально
 		/// </summary>
-		ReportParamDefLocalVar,
+		ReportParamDefLocalVar = 2^3,
 		/// <summary>
 		/// Динамический параметр, определенный локально
 		/// </summary>
-		ReportParamDefLocalParam,
+		ReportParamDefLocalParam = 2 ^ 4,
 		/// <summary>
 		/// Параметр, определенный локально в форме
 		/// </summary>
-		ParamInForm,
+		ParamInForm = 2 ^ 5,
 		/// <summary>
 		/// Параметр, показываемый локально в отчете
 		/// </summary>
-		ParamShowReport,
+		ParamShowReport = 2 ^ 6,
 		/// <summary>
 		///Параметр определяемый в наборе параметров (аналог колсета)
 		/// </summary>
-		ParamInParamset,
-		//// <summary>
-		//// Параметр, определенный локально
-		//// </summary>
-		//ReportParamDefLocal = ReportParamDefLocalVar | ReportParamDefLocalParam,
-		//// <summary>
-		//// Определение параметра
-		//// </summary>
-		//ParamDef = ReportParamDefLocal | ParamDefLib | ParamDefRoot,
+		ParamInParamset = 2 ^ 7,
 		/// <summary>
 		/// Набор параметров (аналог колсета)
 		/// </summary>
-		ParamSet,
+		ParamSet = 2 ^ 8,
 		/// <summary>
 		/// Ссылка ASK на параметр в paramset
 		/// </summary>
-		ParamAskInParamset,
+		ParamAskInParamset = 2 ^ 9,
 		/// <summary>
 		/// Запрос на парамтер в определении отчета
 		/// </summary>
-		ParamAskInReportDef,
+		ParamAskInReportDef = 2 ^ 10,
 		/// <summary>
 		/// Запрос параметра в репортсете
 		/// </summary>
-		ParamAskInReportSet,
+		ParamAskInReportSet = 2 ^ 11,
 		/// <summary>
 		/// Запрос параметра в расширении отчета
 		/// </summary>
-		ParamAskInReportSetEx,
-		//// <summary>
-		//// Определение парамтера на запрос в отчете
-		//// </summary>
-		//ParamAskInReport = ParamAskInReportDef | ParamAskInReportSet | ParamAskInReportSetEx,
+		ParamAskInReportSetEx = 2 ^ 12,
+		
 		/// <summary>
 		/// Определение запроса параметра в колсете
 		/// </summary>
-		ParamAskReferenceInColset,
-		//// <summary>
-		//// Запрос параметра в целом
-		//// </summary>
-		//ParamAsk = ParamAskInReport | ParamAskReferenceInColset,
+		ParamAskReferenceInColset = 2 ^ 13,
+	
 
 		/// <summary>
 		/// Утверждение на параметр в paramset
 		/// </summary>
-		ParamUseInParamset,
+		ParamUseInParamset = 2 ^ 14,
 		/// <summary>
 		/// Утверждение на парамтер в определении отчета
 		/// </summary>
-		ParamUseInReportDef,
+		ParamUseInReportDef = 2 ^ 15,
 		/// <summary>
 		/// Утверждение параметра в репортсете
 		/// </summary>
-		ParamUseInReportSet,
+		ParamUseInReportSet = 2 ^ 16,
 		/// <summary>
 		/// Утверждение параметра в расширении отчета
 		/// </summary>
-		ParamUseInReportSetEx,
-		//// <summary>
-		//// Утверждение параметера  в отчете
-		//// </summary>
-		//ParamUseInReport = ParamUseInReportDef | ParamUseInReportSet | ParamUseInReportSetEx,
+		ParamUseInReportSetEx = 2^ 17,
+	
 		/// <summary>
 		/// Утверждение  параметра в колсете
 		/// </summary>
-		ParamUseReferenceInColset,
-		//// <summary>
-		//// Утверждение параметра в целом
-		//// </summary>
-		//ParamUse = ParamUseInReport | ParamUseReferenceInColset,
+		ParamUseReferenceInColset = 2 ^ 18,
 
-		//// <summary>
-		//// Ссылка на параметр
-		//// </summary>
-		//ParamRef = ParamUse | ParamAsk,
 
 		/// <summary>
 		/// Определение колсета
 		/// </summary>
-		Colset,
+		Colset = 2 ^ 19,
 
 		/// <summary>
 		/// Импорт колсета в другой колсет
 		/// </summary>
-		ColsetImportIntoColset,
+		ColsetImportIntoColset = 2 ^ 20,
 		/// <summary>
 		/// Колонка, определенная в колсете
 		/// </summary>
-		ColInColset,
+		ColInColset = 2 ^ 21,
 		/// <summary>
 		/// Импорт, наследование тем
 		/// </summary>
-		Imports,
+		Imports = 2 ^ 22,
 		/// <summary>
 		/// Импорт парамсета
 		/// </summary>
-		ImportParamset,
+		ImportParamset = 2 ^ 23,
 
 		/// <summary>
 		/// Колонка, определенная в отчете
 		/// </summary>
-		ColInReport,
+		ColInReport = 2 ^ 24,
 		/// <summary>
 		/// Колонка, определенная в форме
 		/// </summary>
-		ColInForm,
+		ColInForm = 2 ^ 25,
 
-		//// <summary>
-		//// Определение колонки
-		//// </summary>
-		//Col = ColInReport | ColInColset | ColInForm,
-		/// <summary>
-		/// Правило для колонки
-		/// </summary>
-		ColCheckRule,
+		
 		/// <summary>
 		/// Подключение расширения
 		/// </summary>
-		Extension,
+		Extension = 2 ^ 26,
 		/// <summary>
 		/// Набор объектов
 		/// </summary>
-		Objset,
+		Objset = 2 ^ 27,
 
 		/// <summary>
 		/// Тема, объявленная как унаследованная
 		/// </summary>
-		ThemaInherited,
+		ThemaInherited = 2 ^ 28,
 		/// <summary>
 		/// Тема объявленная прямо тегом Thema
 		/// </summary>
-		ThemaRooted,
-		//// <summary>
-		//// Определение темы
-		//// </summary>
-		//Thema = ThemaInherited | ThemaRooted,
+		ThemaRooted = 2 ^ 29,
+		
 		/// <summary>
 		/// Определение автозамены языка
 		/// </summary>
-		SubstDefinition,
+		SubstDefinition = 2 ^ 30,
 		/// <summary>
 		/// Пользовательские расширения контента
 		/// </summary>
-		ContentExtensions,
+		ContentExtensions = 2 ^ 31,
 		/// <summary>
 		/// Генератор отчета
 		/// </summary>
-		ReportGeneration,
+		ReportGeneration = 2 ^ 32,
 		/// <summary>
 		/// Нутро генератора, генератор чего-либо в отчет
 		/// </summary>
-		GenerationEither,
+		GenerationEither = 2 ^ 33,
 
 		/// <summary>
 		/// Объект в группе объектов
 		/// </summary>		
-		ObjectInObjset,
+		ObjectInObjset = 2 ^ 34,
 
 		/// <summary>
 		/// Привязка объекта в отчет
 		/// </summary>			
-		ObjectInReport,
+		ObjectInReport = 2 ^ 35,
 
 		/// <summary>
 		/// Генератор объектов в отчет
 		/// </summary>
-		ObjsetGenerationIn,
+		ObjsetGenerationIn = 2 ^ 36,
 		/// <summary>
 		/// Генератор кондишинов
 		/// </summary>
-		ObjsetGenerationCond,
+		ObjsetGenerationCond = 2 ^ 37,
 		/// <summary>
 		/// Генератор фильтров
 		/// </summary>
-		ObjsetGenerationFilter,
+		ObjsetGenerationFilter = 2 ^ 38,
 		/// <summary>
 		/// Генератор объектов 
 		/// </summary>
-		ObjsetGeneration,
+		ObjsetGeneration = 2 ^ 39,
 
 		/// <summary>
 		/// Исходное определение отчета
 		/// </summary>
-		ReportDef,
+		ReportDef = 2 ^ 40,
 		/// <summary>
 		/// Определение нутра отчета
 		/// </summary>
-		ReportSet,
+		ReportSet = 2 ^ 41,
 		/// <summary>
 		/// Расширение нутра отчета
 		/// </summary>
-		ReportSetEx,
+		ReportSetEx = 2 ^ 42,
 		/// <summary>
 		/// Спрятать параметры в отчете
 		/// </summary>
-		HideParamInReport,
-		//// <summary>
-		//// Определение отчета в целом
-		//// </summary>
-		//Report = ReportDef | ReportSet | ReportSetEx,
+		HideParamInReport = 2 ^ 43,
+		
 
 		/// <summary>
 		/// Исходное определение формы
 		/// </summary>
-		FormDef,
+		FormDef = 2 ^ 44,
 		/// <summary>
 		/// Пользовательское расширение
 		/// </summary>
-		FormProcesses,
+		FormProcesses = 2 ^ 45,
 
 		/// <summary>
 		/// Определение нутра формы
 		/// </summary>
-		FormSet,
+		FormSet = 2 ^ 46,
 		/// <summary>
 		/// Расширение нутра формы
 		/// </summary>
-		FormSetEx,
-		//// <summary>
-		//// Определение формы в целом
-		//// </summary>
-		//Form = FormDef | FormSet | FormSetEx,
+		FormSetEx = 2 ^ 47,
+		/// <summary>
+		/// Определение формы в целом
+		/// </summary>
+		Form = FormDef | FormSet | FormSetEx,
 
 		/// <summary>
 		/// Импорт библиотеки в отчет
 		/// </summary>
-		UseLibReport,
+		UseLibReport = 2 ^ 48,
 
 
 		/// <summary>
 		/// Импорт библиотеки в форму
 		/// </summary>
-		UseLibForm,
-		//// <summary>
-		//// Импорт библиотеки в целом
-		//// </summary>
-		//UseLib = UseLibReport | UseLibForm,
+		UseLibForm = 2 ^49,
+		
 		/// <summary>
 		/// Импорт колсета в форму
 		/// </summary>
-		ColsetImportIntoForm,
+		ColsetImportIntoForm = 2 ^ 50,
 		/// <summary>
 		/// Импорт колсета в отчет
 		/// </summary>
-		ColsetImportIntoReport,
+		ColsetImportIntoReport = 2 ^ 51,
 
-		//// <summary>
-		//// Импорт колсета в тему
-		//// </summary>
-		//ColsetImportIntoThema = ColsetImportIntoForm | ColsetImportIntoReport,
-		//// <summary>
-		//// Импорт колсета в целом
-		//// </summary>
-		//ColsetImport = ColsetImportIntoColset | ColsetImportIntoForm | ColsetImportIntoReport,
-
+		
 		/// <summary>
 		/// Глобальное значение
 		/// </summary>
-		Global,
+		Global = 2 ^ 52,
 		/// <summary>
 		/// Генератор глобалов
 		/// </summary>
-		GlobalGeneration,
+		GlobalGeneration = 2 ^53,
 		/// <summary>
 		/// Строка среди строк
 		/// </summary>
-		RowInRows,
+		RowInRows = 2 ^ 54,
 		/// <summary>
 		/// Генератор строк
 		/// </summary>
-		RowsGeneration,
+		RowsGeneration = 2 ^55,
 		/// <summary>
 		/// Строки
 		/// </summary>
-		Rows,
+		Rows = 2 ^ 56,
 		/// <summary>
 		/// Строка в форме
 		/// </summary>
-		RowInForm,
+		RowInForm = 2 ^ 57,
 		/// <summary>
 		/// Строка в отчете
 		/// </summary>
-		RowInReport,
+		RowInReport = 2 ^ 58,
 		/// <summary>
 		/// Строка определяемая в наборе строк (аналог колсета, парамсета)
 		/// </summary>
-		RowInRowSet,
+		RowInRowSet = 2 ^ 59,
 		/// <summary>
 		/// Определение форм в расширении "процессы"
 		/// </summary>
-		ContentExtensionsForm,
+		ContentExtensionsForm = 2 ^ 60,
 		/// <summary>
 		/// Набор строк
 		/// </summary>
-		Rowset,
+		Rowset = 2 ^ 61,/// <summary>
+		/// Правило для колонки
+		/// </summary>
+		ColCheckRule = 2 ^ 62,
+		
+		
 	}
 }

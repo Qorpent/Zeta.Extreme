@@ -7,4 +7,4 @@ singleton DeveloperConfig : IDeveloperConfig
 	ThemaSourceFolders
 		add "C:\\code\\usr\\ugmk\\eco\\data"
 		add "C:\\code\\zeta\\zeta\\sys\\data"
-	DocFolder="\\\\192.168.26.133\\codebase\\base\\test\\zdev\\doc"
+	DocFolder="G:\\repos\\zdoc"
