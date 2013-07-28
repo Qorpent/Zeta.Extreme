@@ -22,6 +22,7 @@
     <Compile Include="Actions\GetThemaAttributesAction.cs" />
     <Compile Include="Analyzers\Analyzer.cs" />
     <Compile Include="Analyzers\ISourceVisitor.cs" />
+    <Compile Include="Model\CodeElementCategory.cs" />
     <Compile Include="Model\ElementCodeTypeMap.cs" />
     <Compile Include="Analyzers\Visitors\ElementCodeTypeResolverVisitor.cs" />
     <Compile Include="Analyzers\DeveloperConstants.cs" />

@@ -46,6 +46,10 @@
 	   <td class="type">
         
         <xsl:apply-templates select="@Type"/>
+      <xsl:if test="@Category != 'Undefined'">
+          (<xsl:value-of select="@Category"/>)
+      
+      </xsl:if>
       </td>
 	  
        

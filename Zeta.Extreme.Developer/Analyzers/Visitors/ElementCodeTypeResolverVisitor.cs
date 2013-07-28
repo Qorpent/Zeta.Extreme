@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Zeta.Extreme.Developer.Model;
@@ -109,7 +110,7 @@ namespace Zeta.Extreme.Developer.Analyzers.Visitors
 				
 				
 				{"/*/form",CodeElementType.FormDef},
-				{"/processes/form",CodeElementType.ContentExtensionsForm},
+				{"/processes/form",CodeElementType.ContentExtension},
 				
 			
 				
@@ -136,17 +137,17 @@ namespace Zeta.Extreme.Developer.Analyzers.Visitors
 				{"/*/report/ask",CodeElementType.ParamAskInReportDef},
 				
 				{"/global",CodeElementType.Global},
-				{"/global/generator",CodeElementType.GlobalGeneration},
-				{"/*/out/generator",CodeElementType.ReportGeneration},
+				{"/global/generator",CodeElementType.Generator},
+				{"/*/out/generator",CodeElementType.Generator},
 				
 				{"/*/formsetex",CodeElementType.FormSetEx},
 				
-				{"/*/out/generator/include",CodeElementType.GenerationEither},
-				{"/objset/generator/include",CodeElementType.ObjsetGenerationIn},
-				{"/objset/generator",CodeElementType.ObjsetGeneration},
-				{"/objset/generator/filter",CodeElementType.ObjsetGenerationFilter},
-				{"/objset/generator/condition",CodeElementType.ObjsetGenerationCond},
-				{"/*/rows/generator",CodeElementType.RowsGeneration},
+				{"/*/out/generator/include",CodeElementType.GeneratorInternal},
+				{"/objset/generator/include",CodeElementType.GeneratorInternal},
+				{"/objset/generator",CodeElementType.Generator},
+				{"/objset/generator/filter",CodeElementType.GeneratorInternal},
+				{"/objset/generator/condition",CodeElementType.GeneratorInternal},
+				{"/*/rows/generator",CodeElementType.Generator},
 				{"/objset",CodeElementType.Objset},
 				
 				
@@ -216,10 +217,13 @@ namespace Zeta.Extreme.Developer.Analyzers.Visitors
 		{
 			var key = CodeIndex.GetPath(e);
 
-			if (PathToTypeMap.ContainsKey(key))
-			{
-				e.SetAttributeValue("CodeType", PathToTypeMap[key]);
-
+			if (PathToTypeMap.ContainsKey(key)) {
+				var type = PathToTypeMap[key];
+				e.SetAttributeValue("CodeType", type);
+				var codecategory = DetermineCategory(type);
+				if (codecategory != CodeElementCategory.Undefined) {
+					e.SetAttributeValue("CodeCategory",codecategory);
+				}
 			}
 			else if (CodeIndex.KnownRoots.Contains(key))
 			{
@@ -237,6 +241,20 @@ namespace Zeta.Extreme.Developer.Analyzers.Visitors
 			{
 				VisitElement(e_);
 			}
+		}
+
+		private ulong[] cats =  Enum.GetValues(typeof (CodeElementCategory)).OfType<CodeElementCategory>().Select(_=>(ulong)_).ToArray();
+		private CodeElementCategory DetermineCategory(CodeElementType type) {
+			return (
+				       from v in cats
+				       where 0 != v
+				       where  MatchFlag(v, (ulong) type) 
+				       
+				select (CodeElementCategory) v).FirstOrDefault();
+		}
+
+		private bool MatchFlag(ulong l, ulong type) {
+			return 0 != (l & type);
 		}
 	}
 }

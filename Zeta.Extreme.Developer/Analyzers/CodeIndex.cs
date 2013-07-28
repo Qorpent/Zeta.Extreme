@@ -296,7 +296,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 			var allelements = GetAllSources().Select(_ => _.XmlContent).SelectMany(_ => _.Descendants())
 								   .Select(
 									   _ =>
-									   new { e = _, key = GetPath(_), t = _.Attr("CodeType"), r = new ItemReference(_) }).ToArray();
+									   new { e = _, key = GetPath(_), c=_.Attr("CodeCategory") , t = _.Attr("CodeType"), r = new ItemReference(_) }).ToArray();
 
 			var grouppedelements = allelements.GroupBy(_ => _.key);
 
@@ -307,9 +307,12 @@ namespace Zeta.Extreme.Developer.Analyzers {
 					{
 						Path = _.Key,
 						Type = (CodeElementType)Enum.Parse(typeof(CodeElementType), _.First().t),
-
+						
 					};
-
+					var c = _.First().c;
+					if (!string.IsNullOrWhiteSpace(c)) {
+						result.Category = (CodeElementCategory) Enum.Parse(typeof(CodeElementCategory), c);
+					}
 					
 					if (result.Path == "/*") {
 						result.TagNames = string.Join(", ", _.Select(__ => __.e.Name.LocalName).Distinct());
