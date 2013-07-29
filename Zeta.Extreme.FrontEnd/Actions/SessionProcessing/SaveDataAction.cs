@@ -35,7 +35,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.SessionProcessing {
 				_xmldata = new XElement("root");
 			}
 			else {
-				_xmldata = Application.Container.Get<ISpecialXmlParser>("json.xml.parser").Parse(_jsonSaveData);
+				_xmldata = Application.Container.Get<ISpecialXmlParser>("json.xml.parser").ParseXml(_jsonSaveData);
 			}
 		}
 

@@ -169,7 +169,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
         ///     GridFS connection setup
         /// </summary>
         public MongoGridFS GridFsSetup() {
+#pragma warning disable 612,618
             var gridFs = new MongoGridFS(
+#pragma warning restore 612,618
                 Database,
                 GridFsSettings
             );
@@ -189,7 +191,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         public void GridFsEnsureIndexesAreActual(MongoGridFS gridFs, IndexKeysDocument keys) {
             if (!gridFs.Chunks.IndexExists(keys)) {
-                gridFs.Chunks.ResetIndexCache();
+                gridFs.Chunks.ReIndex();
             }
         }
 	}
