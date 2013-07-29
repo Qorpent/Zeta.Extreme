@@ -190,9 +190,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
         ///     MongoDB.Driver «bonus» fixing
         /// </summary>
         public void GridFsEnsureIndexesAreActual(MongoGridFS gridFs, IndexKeysDocument keys) {
-            if (!gridFs.Chunks.IndexExists(keys)) {
+	        return;
+            /*if (!gridFs.Chunks.IndexExists(keys)) {
                 gridFs.Chunks.ReIndex();
-            }
+            }*/ //вроде больше не надо
         }
     }
 }

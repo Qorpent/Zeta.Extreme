@@ -46,7 +46,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.Wiki {
         private IApplication _app;
         private MongoWikiPersister _storage;
 
-        [SetUp]
+        [TestFixtureSetUp]
         public void SetUp() {
             _storage = new MongoWikiPersister {
                DatabaseName = "Zefs",
