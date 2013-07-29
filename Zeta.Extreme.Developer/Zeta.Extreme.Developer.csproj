@@ -18,6 +18,7 @@
     <Compile Include="Actions\GetColAttributesAction.cs" />
     <Compile Include="Actions\GetFormAttributesAction.cs" />
     <Compile Include="Actions\GetParameterAttributesAction.cs" />
+    <Compile Include="Actions\GetParamsAction.cs" />
     <Compile Include="Actions\GetReportAttributesAction.cs" />
     <Compile Include="Actions\GetThemaAttributesAction.cs" />
     <Compile Include="Analyzers\Analyzer.cs" />
@@ -29,6 +30,7 @@
     <Compile Include="Model\CodeElementType.cs" />
     <Compile Include="Model\ElementDescriptor.cs" />
     <Compile Include="Actions\GetElementsMapAction.cs" />
+    <Compile Include="Model\ParameterDescriptor.cs" />
     <Compile Include="Utils\DocumentationHelper.cs" />
     <Compile Include="Analyzers\IAnalyzer.cs" />
     <Compile Include="Analyzers\ICodeIndex.cs" />

@@ -1,0 +1,18 @@
+﻿@import url('zdev.base.css');
+.range-ParamDefLib {
+    background-color:green;
+    color:white;
+}
+
+.param-toc:nth-child(2n) td {
+    background-color:lightgray;
+}
+
+.has-lib-true .range-ReportParamDefLocalParam,
+.has-lib-true .range-ParamDefRoot,
+.has-lib-true .range-ReportParamDefLocalVar
+
+ {
+    background-color:red;
+    color:white;
+}

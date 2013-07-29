@@ -41,6 +41,12 @@
 		public int ReferenceLimit { get; set; }
 
 		/// <summary>
+		/// Указывается как селектор элементов для ряда команд
+		/// </summary>
+		public string BaseSelector { get; set; }
+
+
+		/// <summary>
 		/// Приведение к строке для ключа
 		/// </summary>
 		/// <returns></returns>

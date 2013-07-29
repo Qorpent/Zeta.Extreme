@@ -293,7 +293,8 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <param name="filter"></param>
 		/// <returns></returns>
 		public IEnumerable<ElementCodeTypeMap> GetElementCodeMap(SearchFilter filter) {
-			var allelements = GetAllSources().Select(_ => _.XmlContent).SelectMany(_ => _.Descendants())
+
+			var allelements = GetAllSources().Select(_ => _.XmlContent).SelectMany(_ => GetSubElements(_,filter))
 								   .Select(
 									   _ =>
 									   new { e = _, key = GetPath(_), c=_.Attr("CodeCategory") , t = _.Attr("CodeType"), r = new ItemReference(_) }).ToArray();
@@ -341,6 +342,20 @@ namespace Zeta.Extreme.Developer.Analyzers {
 					return result;
 				}
 				);
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="filter"></param>
+		/// <returns></returns>
+		public IEnumerable<XElement> SelectElements(SearchFilter filter) {
+			return GetAllSources().Select(_ => _.XmlContent).SelectMany(_ => GetSubElements(_, filter));
+		}
+
+		private static IEnumerable<XElement> GetSubElements(XElement _, SearchFilter filter) {
+			if(string.IsNullOrWhiteSpace(filter.BaseSelector)) return _.Descendants();
+			return _.XPathSelectElements(filter.BaseSelector);
+
 		}
 
 		private static ItemReference[] GroupReferencesByFile(ItemReference[] secondlevel) {

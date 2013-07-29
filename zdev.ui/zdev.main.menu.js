@@ -12,7 +12,15 @@ _.widget.register({
 			{
 				title:'Параметры отчетов',
 				icon : 'icon-wrench',
-				items : [
+				items: [
+				    {
+				        title: 'Список параметров (полный в XML)',
+				        href: './zdev/params.xml.qweb',
+				    },
+				    {
+				        title: 'Список параметров (полный в HTML)',
+				        href: './zdev/params.html.qweb?__xslt=zdev-parameters-report',
+				    },
 					{
 						title : 'Атрибуты параметров (полный в XML)',
 						href : './zdev/paramattributes.xml.qweb',

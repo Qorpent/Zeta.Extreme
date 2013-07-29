@@ -8,7 +8,7 @@ namespace Zeta.Extreme.Developer.Model
 	[Flags]
 	public enum CodeElementType : long
 	{
-		//FREE 32,33,38,39,53,55
+		//FREE 33,38,39,53,55
 
 		/// <summary>
 		/// Неопределенный
@@ -155,8 +155,10 @@ namespace Zeta.Extreme.Developer.Model
 		/// </summary>
 		ContentExtensions = 1L<< 31,
 		
-
-
+		/// <summary>
+		/// Явный параметр темы
+		/// </summary>
+		ThemaParameter = 1L << 32,
 
 
 		/// <summary>

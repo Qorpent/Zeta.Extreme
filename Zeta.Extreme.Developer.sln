@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pkg", "Pkg", "{F755EF91-982
 		zdev.ui\zdev-formattributes-report.xslt = zdev.ui\zdev-formattributes-report.xslt
 		zdev.ui\zdev-getelementsmap-report.css = zdev.ui\zdev-getelementsmap-report.css
 		zdev.ui\zdev-getelementsmap-report.xslt = zdev.ui\zdev-getelementsmap-report.xslt
+		zdev.ui\zdev-parameters-report.css = zdev.ui\zdev-parameters-report.css
+		zdev.ui\zdev-parameters-report.xslt = zdev.ui\zdev-parameters-report.xslt
 		zdev.ui\zdev-paramattributes-report.css = zdev.ui\zdev-paramattributes-report.css
 		zdev.ui\zdev-paramattributes-report.xslt = zdev.ui\zdev-paramattributes-report.xslt
 		zdev.ui\zdev-references.xslt = zdev.ui\zdev-references.xslt
@@ -43,8 +45,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.IoC", "..\qorpent.sys\Qorpent.IoC\Qorpent.IoC.csproj", "{62F22FFA-A1CF-4A74-838C-9AB33A9442EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.IoC.Tests", "..\qorpent.sys\Qorpent.IoC.Tests\Qorpent.IoC.Tests.csproj", "{0403B026-5047-41A4-98EE-62F2D92B812C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.Bxl", "..\qorpent.sys\Qorpent.Bxl\Qorpent.Bxl.csproj", "{381DEC86-5709-4A64-BD9F-462E792884CE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.IO", "..\qorpent.sys\Qorpent.IO\Qorpent.IO.csproj", "{426C92DF-3C40-426C-B0BE-40A1DF9044C2}"
 EndProject
@@ -95,12 +95,6 @@ Global
 		{0403B026-5047-41A4-98EE-62F2D92B812C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0403B026-5047-41A4-98EE-62F2D92B812C}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
 		{0403B026-5047-41A4-98EE-62F2D92B812C}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
-		{381DEC86-5709-4A64-BD9F-462E792884CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{381DEC86-5709-4A64-BD9F-462E792884CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{381DEC86-5709-4A64-BD9F-462E792884CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{381DEC86-5709-4A64-BD9F-462E792884CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{381DEC86-5709-4A64-BD9F-462E792884CE}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
-		{381DEC86-5709-4A64-BD9F-462E792884CE}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
 		{426C92DF-3C40-426C-B0BE-40A1DF9044C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{426C92DF-3C40-426C-B0BE-40A1DF9044C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{426C92DF-3C40-426C-B0BE-40A1DF9044C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -128,7 +122,6 @@ Global
 		{880F65EA-1A22-4672-A137-FFC912902112} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{62F22FFA-A1CF-4A74-838C-9AB33A9442EA} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{0403B026-5047-41A4-98EE-62F2D92B812C} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
-		{381DEC86-5709-4A64-BD9F-462E792884CE} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{426C92DF-3C40-426C-B0BE-40A1DF9044C2} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{21971F28-8ED8-4F50-B623-E9DB2658AF54} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{96885C8F-AD20-41B4-86EE-BC9B3D47D9F9} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}

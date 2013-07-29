@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
 using Qorpent.Serialization;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Developer.Model {
 	/// <summary>
@@ -14,6 +15,20 @@ namespace Zeta.Extreme.Developer.Model {
 		/// </summary>
 		public ElementDescriptor() {
 			Children = new List<ElementDescriptor>();
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public ElementDescriptor(XElement e)
+		{
+			Children = new List<ElementDescriptor>();
+			Source = e;
+			var desc = e.Describe(true);
+			this.Code = desc.Code;
+			this.Name = desc.Name;
+			this.TagName = e.Name.LocalName;
+			this.Reference = new ItemReference(e);
 		}
 
 		/// <summary>

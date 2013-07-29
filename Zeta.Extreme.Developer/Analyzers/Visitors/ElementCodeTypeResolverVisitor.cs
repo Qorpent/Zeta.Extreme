@@ -90,7 +90,7 @@ namespace Zeta.Extreme.Developer.Analyzers.Visitors
 				{"/*/formset/param", CodeElementType.ParamInForm},
 				{"/*/formsetex/param", CodeElementType.ParamInForm},
 				{"/*/out/show/param", CodeElementType.ParamShowReport},
-				{"/*/param", CodeElementType.ParamDefRoot},
+				{"/*/param", CodeElementType.ThemaParameter},
 				{"/*/reportset/param", CodeElementType.ReportParamDefLocalParam},
 				{"/*/reportsetex/param", CodeElementType.ReportParamDefLocalParam},
 				{"/paramset/param", CodeElementType.ParamInParamset},
