@@ -10,8 +10,7 @@ using Zeta.Extreme.Model;
 namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
 {
     [TestFixture]
-    public class MongoDbFormChatProviderTest
-    {
+    public class MongoDbFormChatProviderTest {
         private MongoDbFormChatProvider _provider;
         private MongoDbConnector _connector;
 
@@ -30,8 +29,9 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
 
             _connector.Collection.RemoveAll();
             _connector.Database.GetCollection(_provider.CollectionName + "_usr").RemoveAll();
-        }
 
+        }
+          
         [Test]
         public void CanSaveItem()
         {
@@ -63,8 +63,6 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
 
             Assert.AreEqual(0, _provider.GetUpdatesCount("SomeOtherUser"));
 
-            /*_provider.SetHaveRead(session.Usr);
-            Assert.AreEqual(0, _provider.GetUpdatesCount(session.Usr));*/
         }
 
         [Test]
