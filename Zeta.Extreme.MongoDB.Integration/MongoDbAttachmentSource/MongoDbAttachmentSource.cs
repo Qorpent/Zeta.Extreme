@@ -1,58 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using MongoDB.Driver.GridFS;
+using Qorpent.MongoDBIntegration;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration {
     /// <summary>
     ///     Альтернативный класс MongoDbAttachmentSource
     /// </summary>
-    public class MongoDbAttachmentSource : IAttachmentStorage {
-        // Internal variables to determine names of collection, db and connection string
-        private string _collectionName;
-
-        private string _connectionString;
-        private string _databaseName;
-
-        private MongoDbConnector _connector;
-
-        /// <summary>
-        ///     The database name you want to use to store attachements
-        /// </summary>
-        public string Database {
-            get { return _databaseName ?? (_databaseName = MongoDbLayoutSpecification.DEFAULT_ATTACHMENTS_DB); }
-            set { _databaseName = value; }
-        }
-
-        /// <summary>
-        ///     The name of collection which you wanna using
-        /// </summary>
-        public string Collection {
-            get { return _collectionName ?? (_collectionName = MongoDbLayoutSpecification.DEFAULT_ATTACHMENT_COLLECTION); }
-            set { _collectionName = value; }
-        }
-
-        /// <summary>
-        ///     connection string
-        /// </summary>
-        public string ConnectionString {
-            get { return _connectionString ?? (_connectionString = MongoDbLayoutSpecification.DEFAULT_CONNECTION_STRING); }
-            set { _connectionString = value; }
-        }
-
+    public class MongoDbAttachmentSource : MongoDbConnector, IAttachmentStorage {
         /// <summary>
         ///     Search mechanism to find an attachment(s)
         /// </summary>
         /// <param name="query">Запрос в виде частично или полностью заполенных полей класса Attachment</param>
         /// <returns>Перечисление полученных документов</returns>
         public IEnumerable<Attachment> Find(Attachment query) {
-            SetupConnection();
-
-            return _connector.GridFs.Files.FindAs<BsonDocument>(
+            return GridFs.Files.FindAs<BsonDocument>(
                 new QueryDocument(
                     MongoDbAttachmentSourceSerializer.AttachmentToBsonForFind(query)
                 )
@@ -66,14 +34,12 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="attachment">Описание аттача</param>
         public void Save(Attachment attachment) {
-            SetupConnection();
-
             SetIdToAttachmentIfNull(attachment);
             CreateFileIfNotExists(attachment);
 
-            var doc = _connector.GridFs.Files.FindOneById(attachment.Uid);
+            var doc = GridFs.Files.FindOneById(attachment.Uid);
             doc.Merge(MongoDbAttachmentSourceSerializer.AttachmentToBson(attachment), true);
-            _connector.GridFs.Files.Save(doc);
+            GridFs.Files.Save(doc);
         }
 
         /// <summary>
@@ -81,9 +47,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="attachment"></param>
         public void Delete(Attachment attachment) {
-            SetupConnection();
-
-            _connector.GridFs.Files.Update(
+            GridFs.Files.Update(
                 MongoDbAttachmentSourceSerializer.UpdateByUidClause(attachment), 
                 Update.Set("deleted", true),
                 UpdateFlags.None
@@ -97,28 +61,12 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="mode">Режим: чтение или запись</param>
         /// <returns>Дескриптов потока</returns>
         public Stream Open(Attachment attachment, FileAccess mode) {
-            SetupConnection();
-
-            return _connector.GridFs.FindOneById(
+            return GridFs.FindOneById(
                 attachment.Uid
             ).Open(
                 (mode == FileAccess.Write) ? (FileMode.Create) : (FileMode.OpenOrCreate),
                 mode
             );
-        }
-
-        /// <summary>
-        ///     Setup connection to the MongoDB using ConnectionString
-        /// </summary>
-        private void SetupConnection() {
-            _connector = new MongoDbConnector {
-                ConnectionString = ConnectionString,
-                DatabaseName = Database,
-                DatabaseSettings = new MongoDatabaseSettings(),
-                GridFsSettings = new MongoGridFSSettings {
-                    Root = Collection
-                }
-            };
         }
 
         /// <summary>
@@ -136,9 +84,9 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// </summary>
         /// <param name="attachment">an Attachment instance</param>
         private void CreateFileIfNotExists(Attachment attachment) {
-            if (_connector.GridFs.ExistsById(attachment.Uid) == false) {
-                _connector.GridFs.Create(
-                    attachment.Name,
+            if (GridFs.ExistsById(attachment.Uid) == false) {
+                GridFs.Create(
+                    attachment.Name ?? Guid.NewGuid().ToString(),
                     new MongoGridFSCreateOptions {
                         Id = attachment.Uid
                     }

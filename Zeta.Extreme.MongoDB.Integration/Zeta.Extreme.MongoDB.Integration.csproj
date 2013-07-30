@@ -14,20 +14,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FrontEndStat\FrontEndStatStorage.cs" />
-    <Compile Include="IMongoDbConnector.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSource.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceSerializer.cs" />
-    <Compile Include="MongoDbConnector.cs" />
-    <Compile Include="MongoBasedServiceBase.cs" />
     <Compile Include="MongoDbFormChat\MongoDbFormChatProvider.cs" />
     <Compile Include="MongoDbFormChat\MongoDbFormChatSerializer.cs" />
-    <Compile Include="MongoDbLayoutSpecification.cs" />
-    <Compile Include="MongoDbLogs\MongoClientStatisticsRegistry.cs" />
-    <Compile Include="MongoDbLogs\MongoDbLogs.cs" />
-    <Compile Include="MongoDbLogs\MongoDbLogsSerializer.cs" />
-    <Compile Include="WikiStorage\MongoWikiPersister.cs" />
-    <Compile Include="WikiStorage\MongoWikiSerializer.cs" />
-    <Compile Include="WikiStorage\WikiVersionCreateResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MongoDB.Bson, Version=0.0.0.0, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
@@ -54,6 +44,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\qorpent.integration\Qorpent.MongoDBIntegration\Qorpent.MongoDBIntegration.csproj">
+      <Project>{31ce132d-bfe7-443e-b68c-8c05f0751bc5}</Project>
+      <Name>Qorpent.MongoDBIntegration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
       <Project>{44653de7-dee5-4960-a906-e0d6b1f83fcc}</Project>
       <Name>Zeta.Extreme.BizProcess</Name>

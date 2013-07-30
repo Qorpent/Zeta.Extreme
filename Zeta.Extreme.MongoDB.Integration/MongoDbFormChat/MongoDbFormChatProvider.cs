@@ -24,6 +24,7 @@ using MongoDB.Bson;
 using MongoDB.Driver; 
 using MongoDB.Driver.Builders;
 using Qorpent.IoC;
+using Qorpent.MongoDBIntegration;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration {
@@ -31,7 +32,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 	///     Mongo - реализация чата формы
 	/// </summary>
 	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IFormChatProvider))]
-	public class MongoDbFormChatProvider : MongoBasedServiceBase, IFormChatProvider {
+	public class MongoDbFormChatProvider : MongoDbBasedServiceBase, IFormChatProvider {
 		/// <summary>
 		/// </summary>
         public MongoDbFormChatProvider() {

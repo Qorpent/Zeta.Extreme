@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using Qorpent.MongoDBIntegration;
 using Qorpent.Mvc;
 
 namespace Zeta.Extreme.MongoDB.Integration.FrontEndStat {

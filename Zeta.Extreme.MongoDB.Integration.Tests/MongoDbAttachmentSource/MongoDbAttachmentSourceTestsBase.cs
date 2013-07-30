@@ -39,7 +39,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
         public MongoDbAttachmentSourceTestsBase() {
             _mdb = new MongoDbAttachmentSource {
-                Database = "MongoDbAttachments"
+                DatabaseName = "MongoDbAttachments",
+                ConnectionString = "mongodb://127.0.0.1:27018"
             };
         }
 
@@ -61,7 +62,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
         [SetUp]
         public virtual void Setup() {
-            _db = new MongoClient().GetServer().GetDatabase(_mdb.Database);
+            _db = new MongoClient().GetServer().GetDatabase(_mdb.DatabaseName);
             // По идее MondoDbAS должна использовать имя коллекции как базис для GridFS
             _filecollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".files");
             _blobcollection = _db.GetCollection<BsonDocument>(_mdb.Collection + ".chunks");
