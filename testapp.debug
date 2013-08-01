@@ -6,7 +6,7 @@
 		<IsWeb>True</IsWeb>
 	</PropertyGroup>
 	<Import Project="..\Zeta.Extreme\testapp.base" />
-	<Import Project="..\qorpent.ui\fullinstall" />
+	<Import Project="..\qorpent.ui\install" />
 	<ItemGroup>	
 		
 		<Script Include="..\Zeta.Extreme\Zeta.Form.UI\scripts\*.js"/>
