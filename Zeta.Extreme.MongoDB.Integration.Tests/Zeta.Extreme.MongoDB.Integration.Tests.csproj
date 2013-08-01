@@ -68,9 +68,9 @@
       <Project>{ae5166cd-76b0-4911-bd80-ced9521f37a1}</Project>
       <Name>MongoDB.Driver</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\qorpent.integration\Qorpent.MongoDBIntegration\Qorpent.MongoDBIntegration.csproj">
-      <Project>{31CE132D-BFE7-443E-B68C-8C05F0751BC5}</Project>
-      <Name>Qorpent.MongoDBIntegration</Name>
+    <ProjectReference Include="..\..\qorpent.integration\Qorpent.Integration.MongoDB\Qorpent.Integration.MongoDB.csproj">
+      <Project>{31ce132d-bfe7-443e-b68c-8c05f0751bc5}</Project>
+      <Name>Qorpent.Integration.MongoDB</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
       <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>

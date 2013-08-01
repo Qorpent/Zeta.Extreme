@@ -44,9 +44,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\qorpent.integration\Qorpent.MongoDBIntegration\Qorpent.MongoDBIntegration.csproj">
+    <ProjectReference Include="..\..\qorpent.integration\Qorpent.Integration.MongoDB\Qorpent.Integration.MongoDB.csproj">
       <Project>{31ce132d-bfe7-443e-b68c-8c05f0751bc5}</Project>
-      <Name>Qorpent.MongoDBIntegration</Name>
+      <Name>Qorpent.Integration.MongoDB</Name>
     </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
       <Project>{44653de7-dee5-4960-a906-e0d6b1f83fcc}</Project>

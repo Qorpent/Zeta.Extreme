@@ -23,8 +23,8 @@ using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver; 
 using MongoDB.Driver.Builders;
+using Qorpent.Integration.MongoDB;
 using Qorpent.IoC;
-using Qorpent.MongoDBIntegration;
 using Zeta.Extreme.BizProcess.Forms;
 
 namespace Zeta.Extreme.MongoDB.Integration {
