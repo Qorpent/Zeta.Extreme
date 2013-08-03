@@ -1,18 +1,17 @@
 ﻿ref Qorpent.Core
 ref Zeta.Extreme.BizProcess
 ref Zeta.Extreme.MongoDB.Integration
+ref Qorpent.Integration.MongoDB
 
 using Qorpent.Wiki
+using Qorpent.Integration.MongoDB
+using Qorpent.Integration.MongoDB.Wiki
 using Zeta.Extreme.BizProcess.Forms
-using Zeta.Extreme.MongoDB.Integration 
-using Zeta.Extreme.MongoDB.Integration.MongoDbLogs
-using Zeta.Extreme.MongoDB.Integration.WikiStorage
-      
+using Zeta.Extreme.MongoDB.Integration     
 using Zeta.Extreme.MongoDB.Integration.FrontEndStat
 
 define MONGO_CONNECTION : "mongodb://ugmk-as2:28018,ugmk-econ:28018/?connect=replicaset;readpreference=primaryPreferred"
 define MONGO_FORMDATA_DB : formdata
-define MONGO_LOGS_DB : logs
 define MONGO_WIKI_DB : wiki
 defien MONGO_STAT_DB : stat
 
@@ -27,17 +26,12 @@ transient "form.chat.source"  MongoDbFormChatProvider : IFormChatProvider
 	DatabaseName = @MONGO_FORMDATA_DB
 	CollectionName = "chat"
 
-transient "server.form.logger"  MongoDbLogs : ILogWriter
-	ConnectionString = @MONGO_CONNECTION
-	DatabaseName = @MONGO_LOGS_DB
-	CollectionName = "serverform"
-
 transient "client.form.stats"  MongoClientStatisticsRegistry : IClientStatisticsRegistry
 	ConnectionString = @MONGO_CONNECTION
 	DatabaseName = @MONGO_LOGS_DB
 	CollectionName = "clientform"
 
-transient "wiki.mongo.persister"  MongoWikiPersister : IWikiPersister
+transient "wiki.mongo.persister"  MongoDbWikiPersister : IWikiPersister
 	ConnectionString = @MONGO_CONNECTION
 	DatabaseName = @MONGO_WIKI_DB
 	CollectionName = "main"
