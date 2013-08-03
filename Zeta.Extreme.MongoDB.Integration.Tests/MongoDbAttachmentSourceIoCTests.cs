@@ -16,9 +16,9 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             Assert.NotNull(result);
             Assert.IsInstanceOf<MongoDbAttachmentSource>(result);
             var myresult = (MongoDbAttachmentSource) result;
-            Assert.AreEqual("testconnection",myresult.ConnectionString);
-            Assert.AreEqual("testdatabase", myresult.Database);
-            Assert.AreEqual("testcollection", myresult.Collection);
+            Assert.AreEqual("mongodb://localhost", myresult.ConnectionString);
+            Assert.AreEqual("testdatabase", myresult.Database.Name);
+            Assert.AreEqual("testcollection", myresult.Collection.Name);
         }
         [SetUp]
         public void Setup() {
@@ -31,9 +31,9 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             component.ServiceType = typeof (IAttachmentStorage);
             component.ImplementationType = typeof (MongoDbAttachmentSource);
             component.Lifestyle = Lifestyle.Transient;
-            component.Parameters["ConnectionString"] = "testconnection";
-            component.Parameters["Database"] = "testdatabase";
-            component.Parameters["Collection"] = "testcollection";
+            component.Parameters["ConnectionString"] = "mongodb://localhost";
+            component.Parameters["DatabaseName"] = "testdatabase";
+            component.Parameters["CollectionName"] = "testcollection";
             container.Register(component);
         }
 
