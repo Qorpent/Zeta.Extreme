@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver; 
@@ -108,12 +109,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="user"></param>
         /// <returns></returns>
         private BsonDocument MakeSearchQueryForUsrCollection(string uid, string user) {
-            return new BsonDocument(
-                new Dictionary<string, object> {
-					{"message_id", uid},
-					{"user", user}
-			    }
-            );
+            return BsonDocument.Parse("{message_id : '" + uid + "', user : '" + user + "'}");
         }
 
 		/// <summary>
@@ -175,8 +171,18 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 forms,
                 false
             );
-			query["user"] = new BsonDocument("$ne",user);
-			return Collection.Count(new QueryDocument(query));
+
+            query["user"] = new BsonDocument("$ne", user);
+            var found = Database.Eval(
+                new BsonJavaScript("chatFindExcludeArchived('" + user + "', " + query.ToJson() + ")")
+            ).ToBsonDocument();
+
+            var array = new List<FormChatItem>();
+            foreach (var el in found.ToDictionary()) {
+                array.Add(MongoDbFormChatSerializer.BsonToChatItem(found[el.Key].AsBsonDocument));
+            }
+
+			return array.Count;
 		}
 
 		/// <summary>
@@ -200,13 +206,28 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 includeArchived
             );
 
-			var result = Collection.Find(
-                new QueryDocument(query)
-            ).SetSortOrder(
-                SortBy.Ascending("time")
-            ).Select(
-                MongoDbFormChatSerializer.BsonToChatItem
-            ).ToArray();
+		    IEnumerable<FormChatItem> result;
+
+            if (!includeArchived) {
+                var found = Database.Eval(
+                    new BsonJavaScript("chatFindExcludeArchived('" + user + "', " + query.ToJson() + ")")
+                ).ToBsonDocument();
+
+                var array = new List<FormChatItem>();
+                foreach (var el in found.ToDictionary()) {
+                    array.Add(MongoDbFormChatSerializer.BsonToChatItem(found[el.Key].AsBsonDocument));
+                }
+
+                result = array;
+            } else {
+              result = Collection.Find(
+                    new QueryDocument(query)
+                ).SetSortOrder(
+                    SortBy.Ascending("time")
+                ).Select(
+                    MongoDbFormChatSerializer.BsonToChatItem
+                ).ToArray();
+            }
 
 			foreach (var formChatItem in result) {
                 var usrdata = UsrCollection.FindOne(
@@ -264,17 +285,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
 				query["form"] = new BsonDocument(
                     "$in",
                     new BsonArray(forms)
-                );
-			}
-
-			if (!includeArchived) {
-				query["$where"] = string.Format(
-					"!db.{0}_usr.findOne({{message_id:this._id, user:'{1}', archive:true}})",
-					CollectionName,
-                    user.Replace(
-                        "\\",
-                        "\\\\"
-                    )
                 );
 			}
 

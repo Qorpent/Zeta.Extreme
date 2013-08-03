@@ -153,6 +153,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
             _provider.AddMessage(session, "test4");
             _provider.AddMessage(session, "test5");
 
+            System.Threading.Thread.Sleep(200);
+
             Assert.AreEqual(3, _provider.GetUpdatesCount("x"));
 
         }
