@@ -17,6 +17,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
         [SetUp]
         public void Setup() {
             _provider = new MongoDbFormChatProvider {
+                ConnectionString = "mongodb://localhost:27018",
                 DatabaseName = "test",
                 CollectionName = "test"
             };

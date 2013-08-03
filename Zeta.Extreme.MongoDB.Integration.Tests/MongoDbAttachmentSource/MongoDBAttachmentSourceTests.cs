@@ -17,6 +17,7 @@ using Zeta.Extreme.BizProcess.Forms;
 namespace Zeta.Extreme.MongoDB.Integration.Tests {
     [TestFixture]
     public class MongoDbAttachmentSourceTests : MongoDbAttachmentSourceTestsBase {
+
         [Test]
         public void CanAttachmentToBsonAndBack() {
             Attachment attachment = GetNewAttach();

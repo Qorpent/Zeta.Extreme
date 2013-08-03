@@ -15,6 +15,17 @@ namespace Zeta.Extreme.MongoDB.Integration {
     /// </summary>
     public class MongoDbAttachmentSource : MongoDbConnector, IAttachmentStorage {
         /// <summary>
+        /// 
+        /// </summary>
+        public override MongoGridFSSettings GridFsSettings {
+            get {
+                var ret = base.GridFsSettings;
+                ret.Root = CollectionName;
+                return ret;
+            }
+        }
+
+        /// <summary>
         ///     Search mechanism to find an attachment(s)
         /// </summary>
         /// <param name="query">Запрос в виде частично или полностью заполенных полей класса Attachment</param>
