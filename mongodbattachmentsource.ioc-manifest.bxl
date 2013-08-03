@@ -10,7 +10,7 @@ using Zeta.Extreme.MongoDB.Integration.WikiStorage
       
 using Zeta.Extreme.MongoDB.Integration.FrontEndStat
 
-define MONGO_CONNECTION : "mongodb://ugmk-as2:28017,ugmk-econ:28017/?connect=replicaset;readpreference=primaryPreferred"
+define MONGO_CONNECTION : "mongodb://ugmk-as2:28018,ugmk-econ:28018/?connect=replicaset;readpreference=primaryPreferred"
 define MONGO_FORMDATA_DB : formdata
 define MONGO_LOGS_DB : logs
 define MONGO_WIKI_DB : wiki
