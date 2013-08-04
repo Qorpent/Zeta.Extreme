@@ -109,7 +109,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="user"></param>
         /// <returns></returns>
         private BsonDocument MakeSearchQueryForUsrCollection(string uid, string user) {
-            return BsonDocument.Parse("{message_id : '" + uid + "', user : '" + user + "'}");
+            return BsonDocument.Parse("{message_id : '" + uid + "', user : '" + user.Replace("\\", "\\\\") + "'}");
         }
 
 		/// <summary>
