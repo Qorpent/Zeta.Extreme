@@ -245,9 +245,8 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="timeout"></param>
 		public void WaitPreparation(int timeout = -1) {
-			while (!_preEvalTaskAgenda.IsEmpty) {
-				SyncPreEval(timeout);
-				Thread.Sleep(20);
+			if (!_preEvalTaskAgenda.IsEmpty) {
+				Task.WaitAll(_preEvalTaskAgenda.Values.ToArray());
 			}
 		}
 
@@ -258,7 +257,9 @@ namespace Zeta.Extreme {
 		/// <param name="timeout"></param>
 		public void WaitEvaluation(int timeout = -1) {
 			PrimarySource.Wait();
-			ActiveSet.Values.Cast<IQueryWithProcessing>().AsParallel().Where(_ => null == _.Result).ForAll(_ => _.GetResult());
+			ActiveSet.Values.Cast<IQueryWithProcessing>().AsParallel().Where(_ => null == _.Result).ForAll(_ => {
+				if (null != _) _.GetResult();
+			});
 			ActiveSet.Clear();
 		}
 

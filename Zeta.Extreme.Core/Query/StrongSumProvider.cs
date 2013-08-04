@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent.Model;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 using Zeta.Extreme.Model.MetaCaches;
@@ -46,6 +47,7 @@ namespace Zeta.Extreme {
 			}
 			if (r is RowHandler) {
 				native = ((RowHandler) r).Native;
+				
 			}
 			if (r is ColumnHandler) {
 				native = ((ColumnHandler)r).Native;
@@ -53,6 +55,14 @@ namespace Zeta.Extreme {
 			r = native ?? r;
 			if (null == r) {
 				return false;
+			}
+
+			if ( native is Row)
+			{
+				if (((Row)native).ExtremeFormulaMode == 2)
+				{
+					return true;
+				}
 			}
 			lock (r.LocalProperties) {
 				if (r.LocalProperties.ContainsKey("_zvs_h_t")) {
@@ -92,7 +102,7 @@ namespace Zeta.Extreme {
 		            }
 		     }
            
-		    if (item.IsFormula && item.FormulaType == "boo" && IsSumableFormula(item.Formula)) {
+		    if (item.IsFormula && item.FormulaType == "boo"  && IsSumableFormula(item.Formula)) {
 				return true;
 			}
 
