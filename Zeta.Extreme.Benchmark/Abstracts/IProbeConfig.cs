@@ -1,4 +1,5 @@
 ﻿using Qorpent.Config;
+using Qorpent.Log;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Querying;
@@ -26,5 +27,25 @@ namespace Zeta.Extreme.Benchmark {
 		/// Запрос
 		/// </summary>
 		IQuery Query { get; set; }
+		/// <summary>
+		/// Журнал
+		/// </summary>
+		IUserLog Log { get; set; }
+		/// <summary>
+		/// Код формы
+		/// </summary>
+		string FormTemplate { get; set; }
+		/// <summary>
+		/// Ид объекта формы
+		/// </summary>
+		int FormObj { get; set; }
+		/// <summary>
+		/// Год формы
+		/// </summary>
+		int FormYear { get; set; }
+		/// <summary>
+		/// Период формы
+		/// </summary>
+		int FormPeriod { get; set; }
 	}
 }

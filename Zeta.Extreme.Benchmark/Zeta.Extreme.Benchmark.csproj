@@ -21,6 +21,7 @@
     <Compile Include="Abstracts\ProbeResult.cs" />
     <Compile Include="Abstracts\ProbeGroup.cs" />
     <Compile Include="Abstracts\ProbeResultType.cs" />
+    <Compile Include="Probes\FormLoadProbe.cs" />
     <Compile Include="Probes\SingleQueryProbe.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -32,7 +33,10 @@
       <Project>{a5177dfd-2d36-442f-a9c0-b79cd6dc7054}</Project>
       <Name>Zeta.Extreme.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.FrontEnd\Zeta.Extreme.FrontEnd.csproj">
+      <Project>{75E74DED-91CC-4090-B3B2-2E8AE3C085E8}</Project>
+      <Name>Zeta.Extreme.FrontEnd</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

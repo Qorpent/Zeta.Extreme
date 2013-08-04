@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Zeta.Extreme.Model.Querying;
-using Zeta.Extreme;
+﻿using Zeta.Extreme.Model.Querying;
+
 namespace Zeta.Extreme.Benchmark.Probes
 {
 
@@ -64,9 +59,21 @@ namespace Zeta.Extreme.Benchmark.Probes
 				
 			}
 			if (!qresult.IsComplete) {
-					result.ResultType= ProbeResultType.Error;
-					result.Error = qresult.Error;
-				}
+				result.ResultType = ProbeResultType.Error;
+				result.Error = qresult.Error;
+			}
+			else {
+				FillResult(qresult,result);
+			}
+		}
+
+		private void FillResult(QueryResult qresult, IProbeResult result) {
+			var q = (Query) _query;
+			result.Set("evaltype", q.EvaluationType);
+			result.Set("querycache", q.GetCacheKey());
+			result.Set("value", qresult.NumericResult);
+			result.Set("isnull", qresult.IsNull);
+			result.Set("cellid", qresult.CellId);
 		}
 	}
 }

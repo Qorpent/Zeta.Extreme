@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Qorpent.Log;
 
 namespace Zeta.Extreme.Benchmark {
 	/// <summary>
@@ -26,6 +27,10 @@ namespace Zeta.Extreme.Benchmark {
 
 		private IProbeConfig _config;
 		private IList<IProbe> _children;
+		/// <summary>
+		/// Журнал
+		/// </summary>
+		protected IUserLog log;
 
 		/// <summary>
 		/// Родительская проба
@@ -53,7 +58,10 @@ namespace Zeta.Extreme.Benchmark {
 		/// <summary>
 		/// Перекрыть для полноценной конфигурации
 		/// </summary>
-		protected virtual void InternalInitialize(){}
+		protected virtual void InternalInitialize() {
+			var cfg = GetConfig();
+			this.log = cfg.Log ?? new StubUserLog();
+		}
 
 		/// <summary>
 		/// Асинхронное выполнение пробы

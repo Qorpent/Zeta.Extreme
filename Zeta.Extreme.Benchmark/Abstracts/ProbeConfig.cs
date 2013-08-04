@@ -1,4 +1,5 @@
 ﻿using Qorpent.Config;
+using Qorpent.Log;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Querying;
@@ -24,6 +25,26 @@ namespace Zeta.Extreme.Benchmark {
 		/// Опция запрос
 		/// </summary>
 		public const string QUERY = "query";
+		/// <summary>
+		/// Опция запрос
+		/// </summary>
+		public const string LOG = "log";
+		/// <summary>
+		/// Опция шаблон формы
+		/// </summary>
+		public const string FORMTEMPLATE = "formtemplate";
+		/// <summary>
+		/// Опция объект формы
+		/// </summary>
+		public const string FORMOBJ = "formobj";
+		/// <summary>
+		/// Опция год формы
+		/// </summary>
+		public const string FORMYEAR = "formyear";
+		/// <summary>
+		/// Опция период формы
+		/// </summary>
+		public const string FORMPERIOD = "formperiod";
 
 		/// <summary>
 		/// Текущая контекстная сессия
@@ -58,6 +79,46 @@ namespace Zeta.Extreme.Benchmark {
 		{
 			get { return Get<IQuery>(QUERY); }
 			set { Set(QUERY, value); }
+		}
+
+		/// <summary>
+		/// Журнал
+		/// </summary>
+		public IUserLog Log {
+			get { return Get<IUserLog>(LOG); }
+			set { Set(LOG, value); }
+		}
+
+		/// <summary>
+		/// Код формы
+		/// </summary>
+		public string FormTemplate {
+			get { return Get<string>(FORMTEMPLATE); }
+			set { Set(FORMTEMPLATE, value); }
+		}
+
+		/// <summary>
+		/// Ид объекта формы
+		/// </summary>
+		public int FormObj {
+			get { return Get<int>(FORMOBJ); }
+			set { Set(FORMOBJ, value); }
+		}
+
+		/// <summary>
+		/// Год формы
+		/// </summary>
+		public int FormYear {
+			get { return Get<int>(FORMYEAR); }
+			set { Set(FORMYEAR, value); }
+		}
+
+		/// <summary>
+		/// Период формы
+		/// </summary>
+		public int FormPeriod {
+			get { return Get<int>(FORMPERIOD); }
+			set { Set(FORMPERIOD, value); }
 		}
 	}
 }
