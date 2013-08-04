@@ -174,7 +174,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
             query["user"] = new BsonDocument("$ne", user);
             var found = Database.Eval(
-                new BsonJavaScript("chatFindExcludeArchived('" + user + "', " + query.ToJson() + ")")
+                new BsonJavaScript("chatFindExcludeArchived('" + CollectionName+ "', '" + user + "', " + query.ToJson() + ")")
             ).ToBsonDocument();
 
             var array = new List<FormChatItem>();
@@ -210,7 +210,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 
             if (!includeArchived) {
                 var found = Database.Eval(
-                    new BsonJavaScript("chatFindExcludeArchived('" + user + "', " + query.ToJson() + ")")
+                    new BsonJavaScript("chatFindExcludeArchived('" + CollectionName + "', '" + user + "', " + query.ToJson() + ")")
                 ).ToBsonDocument();
 
                 var array = new List<FormChatItem>();
