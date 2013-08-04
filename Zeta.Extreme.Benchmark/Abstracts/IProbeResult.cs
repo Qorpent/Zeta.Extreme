@@ -21,5 +21,20 @@ namespace Zeta.Extreme.Benchmark {
 		/// Подрезультаты
 		/// </summary>
 		IList<IProbeResult> SubResults { get; set; }
+
+		/// <summary>
+		/// Тип результата
+		/// </summary>
+		ProbeResultType ResultType { get; set; }
+
+		/// <summary>
+		/// Тип результата
+		/// </summary>
+		Exception Error { get; set; }
+
+		/// <summary>
+		/// Тип результата
+		/// </summary>
+		string Message { get; set; }
 	}
 }

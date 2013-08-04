@@ -20,6 +20,10 @@ namespace Zeta.Extreme.Benchmark {
 		/// Опция фабрики тем
 		/// </summary>
 		public const string THEMAFACTORY = "themafactory";
+		/// <summary>
+		/// Опция запрос
+		/// </summary>
+		public const string QUERY = "query";
 
 		/// <summary>
 		/// Текущая контекстная сессия
@@ -46,7 +50,14 @@ namespace Zeta.Extreme.Benchmark {
 			get { return Get<IThemaFactory>(THEMAFACTORY); }
 			set { Set(THEMAFACTORY, value); }
 		}
-		
-		
+
+		/// <summary>
+		/// Источник метаданных
+		/// </summary>
+		public IQuery Query
+		{
+			get { return Get<IQuery>(QUERY); }
+			set { Set(QUERY, value); }
+		}
 	}
 }

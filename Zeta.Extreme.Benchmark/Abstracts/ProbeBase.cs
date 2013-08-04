@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -7,6 +8,22 @@ namespace Zeta.Extreme.Benchmark {
 	/// Базовая абстрактная проба
 	/// </summary>
 	public abstract class ProbeBase : IProbe {
+		/// <summary>
+		/// Уникальный идентификатор пробы
+		/// </summary>
+		public string Uid { get; set; }
+
+		/// <summary>
+		/// Returns a string that represents the current object.
+		/// </summary>
+		/// <returns>
+		/// A string that represents the current object.
+		/// </returns>
+		/// <filterpriority>2</filterpriority>
+		public override string ToString() {
+			return GetType().Name + ":" + Uid;
+		}
+
 		private IProbeConfig _config;
 		private IList<IProbe> _children;
 
@@ -61,16 +78,44 @@ namespace Zeta.Extreme.Benchmark {
 		/// <returns></returns>
 		protected virtual IProbeResult InternalExecute(bool async) {
 			var result = new ProbeResult {Probe = this};
-			var sw = Stopwatch.StartNew();
-			if (null == _children || 0 == _children.Count) {
-				ExecuteSelf(result, async);
+			string ignoreMessage = "";
+			if (CheckIgnore(result, out ignoreMessage)) {
+				result.ResultType = ProbeResultType.Ignored;
+				result.Message = ignoreMessage;
+				return result;
 			}
-			else {
-				ExecuteSubProbes(result, async);
+			
+			try {
+				var sw = Stopwatch.StartNew();
+				if (null == _children || 0 == _children.Count) {
+					ExecuteSelf(result, async);
+				}
+				else {
+					ExecuteSubProbes(result, async);
+				}
+				sw.Stop();
+				result.TotalDuration = sw.Elapsed;
+				if (ProbeResultType.Undefined == result.ResultType) {
+					result.ResultType = ProbeResultType.Success;
+				}
+				
 			}
-			sw.Stop();
-			result.TotalDuration = sw.Elapsed;
+			catch (Exception ex) {
+				result.Error = ex;
+				result.ResultType= ProbeResultType.Error;
+
+			}
 			return result;
+		}
+		/// <summary>
+		/// Проверяет состояние игнора пробы
+		/// </summary>
+		/// <param name="result"></param>
+		/// <param name="message"></param>
+		/// <returns></returns>
+		protected virtual bool CheckIgnore(ProbeResult result, out string message) {
+			message = "";
+			return false;
 		}
 
 		/// <summary>
@@ -78,14 +123,18 @@ namespace Zeta.Extreme.Benchmark {
 		/// </summary>
 		/// <param name="result"></param>
 		/// <param name="async"></param>
-		protected abstract void ExecuteSubProbes(IProbeResult result, bool @async);
+		protected virtual void ExecuteSubProbes(IProbeResult result, bool @async) {
+			
+		}
 
 		/// <summary>
 		/// Перекрыть для выполнения собственно терминальной пробы
 		/// </summary>
 		/// <param name="result"></param>
 		/// <param name="async"></param>
-		protected abstract void ExecuteSelf(IProbeResult result, bool async);
+		protected virtual void ExecuteSelf(IProbeResult result, bool async) {
+			
+		}
 
 		/// <summary>
 		/// Акцессор к конфигу

@@ -21,6 +21,19 @@ namespace Zeta.Extreme.Benchmark {
 		public const string SUBRESULTS = "subresults";
 
 		/// <summary>
+		/// 
+		/// </summary>
+		public const string RESULTTYPE = "resulttype";
+		/// <summary>
+		/// 
+		/// </summary>
+		public const string ERROR = "error";
+		/// <summary>
+		/// 
+		/// </summary>
+		public const string MESSAGE = "message";
+
+		/// <summary>
 		/// Обратная ссылка на пробу
 		/// </summary>
 		public IProbe Probe {
@@ -42,6 +55,32 @@ namespace Zeta.Extreme.Benchmark {
 		public IList<IProbeResult> SubResults {
 			get { return Get<IList<IProbeResult>>(SUBRESULTS); }
 			set { Set(SUBRESULTS, value); }
+		}
+
+		/// <summary>
+		/// Тип результата
+		/// </summary>
+		public ProbeResultType ResultType
+		{
+			get { return Get(RESULTTYPE,ProbeResultType.Undefined); }
+			set { Set(RESULTTYPE, value); }
+		}
+
+		/// <summary>
+		/// Тип результата
+		/// </summary>
+		public Exception Error
+		{
+			get { return Get<Exception>(ERROR); }
+			set { Set(ERROR, value); }
+		}
+		/// <summary>
+		/// Тип результата
+		/// </summary>
+		public string Message
+		{
+			get { return Get<string>(MESSAGE); }
+			set { Set(MESSAGE, value); }
 		}
 	}
 }

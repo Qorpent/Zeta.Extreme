@@ -22,5 +22,9 @@ namespace Zeta.Extreme.Benchmark {
 		/// Источник метаданных
 		/// </summary>
 		IThemaFactory ThemaFactory { get; set; }
+		/// <summary>
+		/// Запрос
+		/// </summary>
+		IQuery Query { get; set; }
 	}
 }
