@@ -11,19 +11,20 @@ namespace Zeta.Extreme.Benchmark.Tests.ProbesTests {
 		[Explicit]
 		[Repeat(10)]
 		public void MultiFormBenchmarkTest() {
-			CanLoadFormAndCollectStats();
+			CanLoadFormAndCollectStats("osnpokA.in", 1);
 		}
 
-		[Test]
-		public void CanLoadFormAndCollectStats() {
+		[TestCase("balans2011A.in",11)]
+		[TestCase("osnpokA.in",1)]
+		public void CanLoadFormAndCollectStats(string template, int period) {
 			TestEnvironment.Init();
 			var cfg = new ProbeConfig {
 				MetaCache = TestEnvironment.DefaultMetaCache,
 				ThemaFactory = TestEnvironment.DefaultThemaFactory,
-				FormTemplate = "balans2011A.in",
+				FormTemplate = template,
 				FormObj = 352,
 				FormYear = 2013,
-				FormPeriod = 1
+				FormPeriod = period
 			};
 			var probe = new FormLoadProbe();
 			probe.Initialize(cfg);
