@@ -7,6 +7,7 @@ namespace Zeta.Extreme.Core.Tests {
     public class ZC615NotCalcSUMMAEDFACTCALC_In_z1002820 : SessionTestBase
     {
         [Test]
+		[Ignore("Формула у строки была отключена")]
         public void ZC615_Reproduce_Test() {
             var q = session.Register(new Query {
                 Row = { Code = "z1002820" },

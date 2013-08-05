@@ -258,7 +258,7 @@ namespace Zeta.Extreme {
 		/// <param name="timeout"></param>
 		public void WaitEvaluation(int timeout = -1) {
 			PrimarySource.Wait();
-			ActiveSet.Values.Cast<IQueryWithProcessing>().AsParallel().Where(_ => null == _.Result).ForAll(_ => _.GetResult());
+			ActiveSet.Values.Cast<IQueryWithProcessing>().AsParallel().Where(_ => null == _.Result).ForAll(_ =>_.GetResult());
 			ActiveSet.Clear();
 		}
 
