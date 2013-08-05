@@ -196,7 +196,8 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <returns>
 		/// </returns>
 		public IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids = null, string[] types=null, string[] forms=null,bool includeArchived=false) {
-
+            Database.GetCollection("chatLogs").Insert(BsonDocument.Parse("{includeArchived:" + ((includeArchived) ? ("true") : ("false")) + "}"));
+		    
 			var query = GenerateFindAllMessagesQuery(
                 user,
                 startdate,

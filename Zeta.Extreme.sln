@@ -16,6 +16,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.Form.Tests", "Zeta.Extreme.Form.Tests\Zeta.Extreme.Form.Tests.csproj", "{CC468E11-E17D-4363-967A-51F59190D146}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.FrontEnd", "Zeta.Extreme.FrontEnd\Zeta.Extreme.FrontEnd.csproj", "{75E74DED-91CC-4090-B3B2-2E8AE3C085E8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{880F65EA-1A22-4672-A137-FFC912902112} = {880F65EA-1A22-4672-A137-FFC912902112}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.FrontEnd.Tests", "Zeta.Extreme.FrontEnd.Tests\Zeta.Extreme.FrontEnd.Tests.csproj", "{35C6259A-33A5-4DDD-B6E6-0DEE06DD31EE}"
 EndProject

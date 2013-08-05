@@ -68,7 +68,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             if (document.Contains("revision")) attachment.Revision = document["revision"].ToInt32();
 	        if (document.Contains("type")) attachment.Type = document["type"].ToString();
             foreach (var el in (BsonDocument)document["metadata"]) {
-                attachment.Metadata[el.Name] = el.Value;
+                attachment.Metadata[el.Name] = el.Value.ToString();
             }
 
             if (document.Contains("extension")) attachment.Extension = document["extension"].ToString();
