@@ -196,8 +196,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <returns>
 		/// </returns>
 		public IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids = null, string[] types=null, string[] forms=null,bool includeArchived=false) {
-            Database.GetCollection("chatLogs").Insert(BsonDocument.Parse("{includeArchived:" + ((includeArchived) ? ("true") : ("false")) + "}"));
-		    
 			var query = GenerateFindAllMessagesQuery(
                 user,
                 startdate,
@@ -208,10 +206,12 @@ namespace Zeta.Extreme.MongoDB.Integration {
             );
 
 		    IEnumerable<FormChatItem> result;
-
+            
             if (!includeArchived) {
+
+                var q = "chatFindExcludeArchived('" + CollectionName + "', '" + user.Replace("\\", "\\\\") + "', " + query.ToJson() + ")";
                 var found = Database.Eval(
-                    new BsonJavaScript("chatFindExcludeArchived('" + CollectionName + "', '" + user + "', " + query.ToJson() + ")")
+                    new BsonJavaScript(q)
                 ).ToBsonDocument();
 
                 var array = new List<FormChatItem>();
@@ -263,6 +263,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			}
 
 			var query = new BsonDocument();
+
 			query["time"] = new BsonDocument(
                 "$gt",
                 startdate
