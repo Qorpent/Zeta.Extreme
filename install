@@ -1,5 +1,6 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="..\qorpent.kernel\package-install.targets" />	
+	<Import Project="..\qorpent.kernel\package-install.targets" />
+	<Import Project="..\qorpent.integration\qi-mongo.install" />
 	<PropertyGroup>
 		<DirectImport>True</DirectImport>
 		<IsWeb>True</IsWeb>
@@ -10,10 +11,7 @@
 		<Library Include="Zeta.Extreme.Form" />
 		<Library Include="Zeta.Extreme.BizProcess" />
 		<Library Include="Zeta.Extreme.FrontEnd" />
-		<Library Include="MongoDB.Driver" />
-		<Library Include="MongoDB.Bson" />
 		<Library Include="Zeta.Extreme.MongoDB.Integration" />
-		<Library Include="Qorpent.Integration.MongoDB" />
 		<Config Include="*.base.ioc-manifest.bxl"/>
 		<Ui Include="Zeta.Form.UI" />
 	</ItemGroup>
