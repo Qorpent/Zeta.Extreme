@@ -25,7 +25,8 @@
                 $('<div class="wikitext"/>').html(row["0"].comment.replace(/\s*\r\n/g,'</br>'))
             );
         }
-        api.metadata.getformuladependency.execute({code: rowcode});
+        var colset = $.map($('th.primary'), function(th) { return $(th).attr("title") }).join(";");
+        api.metadata.getformuladependency.execute({code: rowcode, colset: colset, obj: zefs.myform.currentSession.ObjInfo.Id});
     };
 
     var SaveWiki = function(code, text, params) {
@@ -254,23 +255,34 @@
             }
         }
         var tbody = $('<tbody/>');
-        var table = $('<table class="table table-bordered"/>').append(
-            $('<thead/>').append($('<tr/>').append(
+        var header = $('<tr/>').append(
                 $('<th/>').text("Код."),
                 $('<th/>').text("Вн.код"),
                 $('<th/>').text("Форма"),
                 $('<th/>').text("Наименование"),
                 $('<th/>').text("Зав-ть")
-            )), tbody
-        )
+            );
+        var table = $('<table class="table table-bordered"/>').append(
+            $('<thead/>').append(header), tbody
+        );
+        $.each($('th.primary'), function(i, th) {
+            header.append($('<th/>').text($(th).text()));
+        });
+        var primary_cols = $('th.primary');
         $.each(result.dependency, function(i1, d1) {
-            tbody.append($('<tr/>').append(
+            var tr = $('<tr/>').append(
                 $('<td/>').text(d1.outercode),
                 $('<td/>').text(d1.code),
                 $('<td/>').append(d1.form),
                 $('<td/>').text(d1.name),
                 $('<td/>').text(getReadableType(d1.type))
-            ));
+            );
+            tbody.append(tr);
+            if (!!d1.values) {
+                $.each(d1.values, function(i, v) {
+                    tr.append($('<td/>').text(v))
+                });
+            }
         });
         article.append(table);
         if (!!result.forms) {
