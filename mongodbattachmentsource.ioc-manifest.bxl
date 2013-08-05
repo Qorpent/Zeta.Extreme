@@ -18,8 +18,8 @@ defien MONGO_STAT_DB : stat
 
 transient "attachment.source"  MongoDbAttachmentSource : IAttachmentStorage
 	ConnectionString = @MONGO_CONNECTION
-	Database =  @MONGO_FORMDATA_DB
-	Collection = "attachments"
+	DatabaseName =  @MONGO_FORMDATA_DB
+	CollectionName = "attachments"
 
 transient "form.chat.source"  MongoDbFormChatProvider : IFormChatProvider
 	ConnectionString = @MONGO_CONNECTION
