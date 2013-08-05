@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Choose>
+    <When Condition="'$(NoProjRef)'=='True' and '$(Configuration)' != 'Release'  and Exists('$(AllBinPath)\Zeta.Extreme.Benchmark.dll')">
+      <ItemGroup>
+        <Reference Include="Zeta.Extreme.Benchmark">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>$(AllBinPath)\Zeta.Extreme.Benchmark.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="'$(NoProjRef)'=='True' and '$(Configuration)' == 'Release' ">
+      <ItemGroup>
+        <Reference Include="Zeta.Extreme.Benchmark">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>$(AllReleasePath)\Zeta.Extreme.Benchmark.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <ProjectReference Include="..\..\Zeta.Extreme\Zeta.Extreme.Benchmark\Zeta.Extreme.Benchmark.csproj">
+          <Name>Zeta.Extreme.Benchmark</Name>
+        </ProjectReference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+</Project>

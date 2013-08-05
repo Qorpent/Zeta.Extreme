@@ -16,6 +16,8 @@
 // 
 // PROJECT ORIGIN: Zeta.Extreme.Form/ThemaLoaderOptionsHelper.cs
 #endregion
+
+using Qorpent.IO;
 using Zeta.Extreme.BizProcess.Themas;
 
 namespace Zeta.Extreme.Form.Themas {
@@ -27,14 +29,16 @@ namespace Zeta.Extreme.Form.Themas {
 		/// 	Формирует стандартные опции загрузки тем для Zeta.Extreme форм
 		/// </summary>
 		/// <param name="rootdirectory"> </param>
+		/// <param name="source"></param>
 		/// <returns> </returns>
-		public static ThemaLoaderOptions GetExtremeFormOptions(string rootdirectory = null)
+		public static ThemaLoaderOptions GetExtremeFormOptions(string rootdirectory = null, IFileSource source =null)
 		{
 			var result = new ThemaLoaderOptions();
 			if (!string.IsNullOrWhiteSpace(rootdirectory))
 			{
 				result.RootDirectory = rootdirectory;
 			}
+			result.FileSource = source;
 			result.LoadLibraries = false; //библиотеки тоже надо помечать на совместимость
 			result.ElementTypes = ElementType.Form;
 			result.LoadIerarchy = false;

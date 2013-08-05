@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration>Debug</Configuration>
+    <ProjectGuid>{56B336F2-109B-4D42-B31D-187FCA28C5CB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Zeta.Extreme.Benchmark</RootNamespace>
+    <AssemblyName>Zeta.Extreme.Benchmark</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="*.import" />
+    <None Include="*.export" />
+    <EmbeddedResource Include=".\**\*.*resource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstracts\IProbe.cs" />
+    <Compile Include="Abstracts\IProbeConfig.cs" />
+    <Compile Include="Abstracts\IProbeResult.cs" />
+    <Compile Include="Abstracts\ProbeBase.cs" />
+    <Compile Include="Abstracts\ProbeConfig.cs" />
+    <Compile Include="Abstracts\ProbeResult.cs" />
+    <Compile Include="Abstracts\ProbeGroup.cs" />
+    <Compile Include="Abstracts\ProbeResultType.cs" />
+    <Compile Include="Probes\FormLoadProbe.cs" />
+    <Compile Include="Probes\SingleQueryProbe.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
+      <Project>{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}</Project>
+      <Name>Zeta.Extreme.BizProcess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.Core\Zeta.Extreme.Core.csproj">
+      <Project>{a5177dfd-2d36-442f-a9c0-b79cd6dc7054}</Project>
+      <Name>Zeta.Extreme.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.FrontEnd\Zeta.Extreme.FrontEnd.csproj">
+      <Project>{75E74DED-91CC-4090-B3B2-2E8AE3C085E8}</Project>
+      <Name>Zeta.Extreme.FrontEnd</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\..\qorpent.kernel\build.targets" />
+</Project>

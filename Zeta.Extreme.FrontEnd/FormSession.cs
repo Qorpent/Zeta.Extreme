@@ -63,6 +63,7 @@ namespace Zeta.Extreme.FrontEnd {
 		public FormSession() {
 			Parameters = new Dictionary<string, object>();
 			_controlpoints = new List<ControlPointResult>();
+			Application =Qorpent.Applications.Application.Current;
 		}
 
 		/// <summary>
@@ -79,6 +80,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="obj"> </param>
 		/// <param name="subobj"></param>
 		public FormSession(IInputTemplate form, int year, int period, IZetaMainObject obj,IZetaMainObject subobj = null) {
+			Application = Qorpent.Applications.Application.Current;
 			_controlpoints = new List<ControlPointResult>();
 			Parameters = new Dictionary<string, object>();
 			Uid = Guid.NewGuid().ToString();

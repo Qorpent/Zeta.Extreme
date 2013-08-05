@@ -267,6 +267,7 @@ namespace Zeta.Extreme {
 		/// </summary>
 		/// <param name="timeout"> </param>
 		public void WaitPrepare(int timeout = -1) {
+			if (null != Result) return;
 			while (PrepareState.Prepared != PrepareState) {
 				if (PrepareTask != null) {
 					if (!PrepareTask.IsCompleted) {
