@@ -70,6 +70,7 @@
 			<Library Include="MongoDB.Driver" />
 			<Library Include="MongoDB.Bson" />
 			<Library Include="Zeta.Extreme.MongoDB.Integration" />
+			<Library Include="Qorpent.Integration.MongoDB" />
 			<Config Include="*.base.ioc-manifest.bxl"/>
 			<!--
 			<Script Include="Zeta.Form.UI\scripts\*.js"/>
