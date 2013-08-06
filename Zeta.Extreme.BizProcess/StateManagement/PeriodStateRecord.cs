@@ -21,11 +21,13 @@
 
 using System;
 using Qorpent;
+using Qorpent.Serialization;
 
 namespace Zeta.Extreme.BizProcess.StateManagement {
 	/// <summary>
 	///     Запись статуса периода
 	/// </summary>
+	[Serialize]
 	public sealed class PeriodStateRecord {
 		/// <summary>
 		///     Создает стандартную запись
@@ -58,5 +60,10 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		///     Год
 		/// </summary>
 		public int Year;
+
+		/// <summary>
+		/// Группа расписаний
+		/// </summary>
+		public string Grp;
 	}
 }

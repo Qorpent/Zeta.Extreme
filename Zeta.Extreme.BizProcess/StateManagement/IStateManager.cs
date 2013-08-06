@@ -127,9 +127,10 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// </summary>
 		/// <param name="year"></param>
 		/// <param name="period"></param>
+		/// <param name="getParameter"></param>
 		/// <returns>
 		/// </returns>
-		int GetPeriodState(int year, int period);
+		int GetPeriodState(int year, int period, string getParameter);
 
 		/// <summary>
 		///     Еще один вариант проверки возможности установки статуса

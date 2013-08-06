@@ -677,7 +677,10 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <summary>
 		/// 	Обратная ссылка на тему
 		/// </summary>
-		public IThema Thema { get; set; }
+		public IThema Thema {
+			get { return _thema ??(_thema = new Thema() ); }
+			set { _thema = value; }
+		}
 
 		/// <summary>
 		/// 	Статус формы по умолчанию
@@ -964,7 +967,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 			if (IgnorePeriodState) {
 				return true;
 			}
-			return StateManager.GetPeriodState(Year, Period) == 1;
+			return StateManager.GetPeriodState(Year, Period, Thema.GetParameter("deadlinetype","")) == 1;
 		}
 
 		/// <summary>
@@ -1063,7 +1066,8 @@ namespace Zeta.Extreme.Form.InputTemplates {
 					}
 				}
 				if (state == "0ISOPEN") {
-					if (IsPeriodOpen() || 0 == StateManager.GetPeriodState(Year, toperiod)) {
+					if (IsPeriodOpen() || 0 == StateManager.GetPeriodState(Year, toperiod, Thema.GetParameter("deadlinetype","")))
+					{
 						continue;
 					}
 				}
@@ -1217,7 +1221,7 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		/// <returns> </returns>
 		public ScheduleState GetScheduleState() {
 			if (IsOpen) {
-				var periodstate = new PeriodStateManager {System = "Default"}.Get(Year, Period);
+				var periodstate = new PeriodStateManager { System = "Default" }.Get(Year, Period, Thema.GetParameter("deadlinetype",""));
 				var deadline = periodstate.DeadLine;
 				if (deadline.Year <= 1900) {
 					return new ScheduleState {Date = Qorpent.QorpentConst.Date.Begin, Overtime = ScheduleOvertime.None};
@@ -1542,5 +1546,6 @@ namespace Zeta.Extreme.Form.InputTemplates {
 		private string cachedState;
 		private IDetailFilter detailFilter;
 		private IDictionary<string, string> parameters = new Dictionary<string, string>();
+		private IThema _thema;
 	}
 }

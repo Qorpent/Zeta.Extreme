@@ -138,6 +138,7 @@ namespace Zeta.Extreme.FrontEnd {
 						Status = Template.Thema.GetParameter("status", ""),
 						FirstYear = Template.Thema.GetParameter("firstyear", ""),
 						RolePrefix = Template.Thema.GetParameter("roleprefix", ""),
+						PeriodState = ResolveService<IPeriodStateManager>().Get(Template.Year, Template.Period, Template.Thema.GetParameter("deadlinetype","")),
 					};
 			}
 
@@ -1115,7 +1116,7 @@ namespace Zeta.Extreme.FrontEnd {
 			cansave = cansave || cansaveoverblock;
 			if (cansave) {
 				var periodStateManager = new PeriodStateManager();
-				var periodState = periodStateManager.Get(Year, Period);
+				var periodState = periodStateManager.Get(Year, Period,Template.Thema.GetParameter("deadlinetype",""));
 				if (!periodState.State) {
 					cansave = Template.IgnorePeriodState || roles.IsInRole(principal,"IGNOREPERIODSTATE",true);
 					periodstateoverride = cansave;

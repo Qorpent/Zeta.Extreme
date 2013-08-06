@@ -39,9 +39,10 @@ namespace Zeta.Extreme.BizProcess.StateManagement {
 		/// </summary>
 		/// <param name="year"></param>
 		/// <param name="period"></param>
+		/// <param name="grp">Группа формы</param>
 		/// <returns>
 		/// </returns>
-		PeriodStateRecord Get(int year, int period);
+		PeriodStateRecord Get(int year, int period , string grp);
 
 		/// <summary>
 		///     Обновить дедлайн

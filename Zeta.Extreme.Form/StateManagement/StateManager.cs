@@ -163,9 +163,10 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// </summary>
 		/// <param name="year"> </param>
 		/// <param name="period"> </param>
+		/// <param name="getParameter"></param>
 		/// <returns> </returns>
-		public int GetPeriodState(int year, int period) {
-			return new PeriodStateManager().Get(year, period).State ? 1 : 0;
+		public int GetPeriodState(int year, int period, string getParameter) {
+			return new PeriodStateManager().Get(year, period,getParameter).State ? 1 : 0;
 		}
 
 		/// <summary>
@@ -283,7 +284,7 @@ namespace Zeta.Extreme.Form.StateManagement {
 					}
 				}
 				if (!template.IsPeriodOpen()) {
-					var periodstate = GetPeriodState(template.Year, template.Period);
+					var periodstate = GetPeriodState(template.Year, template.Period, template.Thema.GetParameter("deadlinetype",""));
 					if (periodstate == 0 && state == "0ISOPEN") {
 						cause = "Период " + Periods.Get(template.Period).Name + " " + template.Year + "г. закрыт для правки";
 						return false;
