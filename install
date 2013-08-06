@@ -5,14 +5,17 @@
 		<IsWeb>True</IsWeb>
 	</PropertyGroup>
 	<ItemGroup>		
-		<Package Include="qi-mongo"/>
 		<Library Include="Zeta.Extreme.Core" />
 		<Library Include="Zeta.Extreme.Model" />
 		<Library Include="Zeta.Extreme.Form" />
 		<Library Include="Zeta.Extreme.BizProcess" />
 		<Library Include="Zeta.Extreme.FrontEnd" />
+		<Library Include="MongoDB.Driver" />
+		<Library Include="MongoDB.Bson" />
 		<Library Include="Zeta.Extreme.MongoDB.Integration" />
+		<Library Include="Qorpent.Integration.MongoDB" />
 		<Config Include="*.base.ioc-manifest.bxl"/>
-		
+
+		<Ui Include="Zeta.Form.UI" />
 	</ItemGroup>
 </Project>
