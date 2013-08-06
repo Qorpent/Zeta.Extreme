@@ -6,18 +6,11 @@
 		<IsWeb>True</IsWeb>
 	</PropertyGroup>
 	<Import Project="..\Zeta.Extreme\testapp.base" />
-	<Import Project="..\qorpent.ui\install" />
+	
 	<ItemGroup>	
-		
-		<Script Include="..\Zeta.Extreme\Zeta.Form.UI\scripts\*.js"/>
-		<Script Include="..\qorpent.sys\commons\qorpent.wiki.js"/>
-		<Style Include="..\qorpent.sys\commons\qorpent.wiki.css"/>
-		<Style Include="..\Zeta.Extreme\Zeta.Form.UI\styles\*.css"/>
-		<Image Include="..\Zeta.Extreme\Zeta.Form.UI\images\*.*"/>
-		<RootFile Include="..\Zeta.Extreme\Zeta.Form.UI\*.html"/>		
-		
-		
-		
+		<!-- пока заливка автоматическая UI только в дебаг-версии -->
+		<Package Include="qorpent_ui" />
+		<Ui Include="Zeta.Form.UI" />
 		<Config Include="..\deployconfig\devel.rolemap.bxl"/>
 		<Config Include="..\deployconfig\temporalrolefix.rolemap.bxl"/>
 		<Config Include="..\deployconfig\devel.db-connection"/>
