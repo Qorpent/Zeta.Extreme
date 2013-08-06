@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
+using Qorpent.Integration.MongoDB;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.FrontEnd;
@@ -9,14 +10,14 @@ using Zeta.Extreme.Model;
 namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
 {
     [TestFixture]
-    public class MongoDbFormChatProviderTest
-    {
+    public class MongoDbFormChatProviderTest {
         private MongoDbFormChatProvider _provider;
         private MongoDbConnector _connector;
 
         [SetUp]
         public void Setup() {
             _provider = new MongoDbFormChatProvider {
+                ConnectionString = "mongodb://localhost:27018",
                 DatabaseName = "test",
                 CollectionName = "test"
             };
@@ -29,8 +30,9 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
 
             _connector.Collection.RemoveAll();
             _connector.Database.GetCollection(_provider.CollectionName + "_usr").RemoveAll();
-        }
 
+        }
+          
         [Test]
         public void CanSaveItem()
         {
@@ -62,8 +64,6 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
 
             Assert.AreEqual(0, _provider.GetUpdatesCount("SomeOtherUser"));
 
-            /*_provider.SetHaveRead(session.Usr);
-            Assert.AreEqual(0, _provider.GetUpdatesCount(session.Usr));*/
         }
 
         [Test]
@@ -152,6 +152,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
             _provider.AddMessage(session, "test3");
             _provider.AddMessage(session, "test4");
             _provider.AddMessage(session, "test5");
+
+            System.Threading.Thread.Sleep(200);
 
             Assert.AreEqual(3, _provider.GetUpdatesCount("x"));
 

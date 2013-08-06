@@ -17,6 +17,7 @@ using Zeta.Extreme.BizProcess.Forms;
 namespace Zeta.Extreme.MongoDB.Integration.Tests {
     [TestFixture]
     public class MongoDbAttachmentSourceTests : MongoDbAttachmentSourceTestsBase {
+
         [Test]
         public void CanAttachmentToBsonAndBack() {
             Attachment attachment = GetNewAttach();
@@ -49,7 +50,7 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
         [Test]
         public void CanCreateBinFileAndGetUid() {
-            var attachment = new Attachment();
+            var attachment = GetNewAttach();
 
             _mdb.Save(attachment);
 
@@ -125,8 +126,8 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
 
             _mdb.Delete(attachment);
 
-            Attachment not_found = _mdb.Find(attachment).FirstOrDefault();
-            Assert.IsNull(not_found);
+            Attachment notFound = _mdb.Find(attachment).FirstOrDefault();
+            Assert.IsNull(notFound);
         }
 
 
