@@ -1,5 +1,4 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="..\qorpent.kernel\package-install.targets" />
 	<PropertyGroup>
 		<ThemaDir Condition="$(IsWeb)">$(AppDir)\themas</ThemaDir>
 		<DirectImport>True</DirectImport>
