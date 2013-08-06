@@ -13,6 +13,6 @@
 		<Image Include="..\Ugmk.Assoi\*.png"/>
 		<Style Include="..\qorpent.sys\commons\qorpent.wiki.css"/>
 		<Config Include="..\deployconfig\temporalrolefix.rolemap.bxl"/>
-	    <Config Include="..\Zeta.Extreme\mongodbattachmentsource.ioc-manifest.bxl"/>
+	    <Config Include="..\deployconfig\mongodb.test.external.ioc-manifest.bxl"/>
 	</ItemGroup>
 </Project>

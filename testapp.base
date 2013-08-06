@@ -11,7 +11,7 @@
 		<Package Include="qorpent.kernel"/>
 		<Package Include="qorpent.sys"/>
 		<Package Include="Zeta.Extreme" />	
-		<Config Include="..\Zeta.Extreme\mongodbattachmentsource.ioc-manifest.bxl"/>		
+		<Config Include="..\deployconfig\mongodb.test.base.ioc-manifest.bxl"/>		
 	</ItemGroup>
 	
 	<Target Name="AfterDefaultPackageDeploy">
