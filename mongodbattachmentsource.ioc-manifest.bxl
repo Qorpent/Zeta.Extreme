@@ -16,27 +16,27 @@ define MONGO_WIKI_DB : wiki
 defien MONGO_STAT_DB : stat
 
 
-transient "attachment.source"  MongoDbAttachmentSource : IAttachmentStorage
+transient "attachment.source"  MongoDbAttachmentSource , tag='mongodb' : IAttachmentStorage
 	ConnectionString = @MONGO_CONNECTION
 	DatabaseName =  @MONGO_FORMDATA_DB
 	CollectionName = "attachments"
 
-transient "form.chat.source"  MongoDbFormChatProvider : IFormChatProvider
+transient "form.chat.source"  MongoDbFormChatProvider, tag='mongodb' : IFormChatProvider
 	ConnectionString = @MONGO_CONNECTION
 	DatabaseName = @MONGO_FORMDATA_DB
 	CollectionName = "chat"
 
-transient "client.form.stats"  MongoClientStatisticsRegistry : IClientStatisticsRegistry
+transient "client.form.stats"  MongoClientStatisticsRegistry, tag='mongodb' : IClientStatisticsRegistry
 	ConnectionString = @MONGO_CONNECTION
 	DatabaseName = @MONGO_LOGS_DB
 	CollectionName = "clientform"
 
-transient "wiki.mongo.persister"  MongoDbWikiPersister : IWikiPersister
+transient "wiki.mongo.persister"  MongoDbWikiPersister, tag='mongodb' : IWikiPersister
 	ConnectionString = @MONGO_CONNECTION
 	DatabaseName = @MONGO_WIKI_DB
 	CollectionName = "main"
 
-transient "frontendstat.mongodb"  FrontEndStatStorage : IFrontEndStatStorage
+transient "frontendstat.mongodb"  FrontEndStatStorage, tag='mongodb' : IFrontEndStatStorage
 	ConnectionString = @MONGO_CONNECTION
 	DatabaseName = "stat"
 	CollectionName = "FrontEnd"
