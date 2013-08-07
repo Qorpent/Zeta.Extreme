@@ -48,6 +48,11 @@ namespace Zeta.Extreme.Model.MetaStorage {
 				var all = new[] {(Row) root}.Union(root.AllChildren);
 				foreach (var r in all) {
 					r.Code = CodeReplacer.Execute(r.Code);
+					r.Tag = CodeReplacer.Execute(r.Tag);
+					if (r.IsFormula) {
+						r.Formula = CodeReplacer.Execute(r.Formula);
+					}
+
 				}
 			}
 		}

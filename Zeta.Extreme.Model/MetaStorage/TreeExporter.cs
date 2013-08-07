@@ -55,6 +55,7 @@ namespace Zeta.Extreme.Model.MetaStorage {
 				WriteRow(root);
 				WriteEndScript();
 				WriteFooter();
+				Buffer.Flush();
 				return Buffer.ToString();
 			}
 		}
