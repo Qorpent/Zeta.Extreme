@@ -20,7 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="MetaStorage\ExportTreeFilter.cs" />
+    <Compile Include="MetaStorage\ExportTreeFormat.cs" />
+    <Compile Include="MetaStorage\ITreeExporter.cs" />
     <Compile Include="Extensions\TagResolutionExtension.cs" />
+    <Compile Include="MetaStorage\TreeExporter.cs" />
     <Compile Include="Inerfaces\IBizProcess.cs" />
     <Compile Include="Inerfaces\Partial\IWithCurrency.cs" />
     <Compile Include="MetaCaches\MetaExtensions.cs" />

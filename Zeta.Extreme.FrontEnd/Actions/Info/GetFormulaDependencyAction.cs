@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
-using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.Themas;
@@ -278,18 +277,4 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			return GetFormName(row.Parent);
 		}
 	}
-    [Serialize]
-    internal class DependencyDesc {
-        public string code;
-        public string name;
-        public string outercode;
-        public string formcode;
-        public string form;
-        public object[] forms;
-        public string type;
-        public object dependency;
-        public decimal[] values;
-    }
-
-    
 }
