@@ -66,8 +66,8 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			return result;
 		}
 
-		private IZetaRow PerformFilter(IZetaRow root) {
-			var exportroot = (IZetaRow) root.GetCopyOfHierarchy();
+		private IZetaRow PerformFilter(IZetaRow root) 
+		{
 			var filter = new ExportTreeFilter();
 			filter.ExcludeRegex = _excluderegex;
 			if (!string.IsNullOrWhiteSpace(_codereplace)) {
@@ -75,8 +75,8 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 				var replace = _codereplace.Split('~')[1];
 				filter.CodeReplacer = new ReplaceDescriptor {Pattern = pattern, Replacer = replace};
 			}
-			exportroot = filter.Execute(exportroot);
-			return exportroot;
+			var result = filter.Execute(root);
+			return result;
 		}
 	}
 }

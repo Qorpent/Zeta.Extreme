@@ -22,6 +22,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="MetaStorage\ExportTreeFilter.cs" />
     <Compile Include="MetaStorage\ExportTreeFormat.cs" />
+    <Compile Include="MetaStorage\HqlTreeExporter.cs" />
     <Compile Include="MetaStorage\ITreeExporter.cs" />
     <Compile Include="Extensions\TagResolutionExtension.cs" />
     <Compile Include="MetaStorage\TreeExporter.cs" />
