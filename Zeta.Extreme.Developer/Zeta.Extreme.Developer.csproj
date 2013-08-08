@@ -25,6 +25,7 @@
     <Compile Include="Actions\GetThemaAttributesAction.cs" />
     <Compile Include="Analyzers\Analyzer.cs" />
     <Compile Include="Analyzers\ISourceVisitor.cs" />
+    <Compile Include="DeveloperStartUp.cs" />
     <Compile Include="MetaStorage\ExportTreeFilter.cs" />
     <Compile Include="MetaStorage\ExportTreeFormat.cs" />
     <Compile Include="MetaStorage\HqlTreeExporter.cs" />
@@ -54,6 +55,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>

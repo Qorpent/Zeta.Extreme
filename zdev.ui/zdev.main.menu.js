@@ -105,7 +105,11 @@ _.widget.register({
 
 		        ]
 		    },
-		    
+		    "div",
+		    {
+		        title: "Экспорт дерева",
+		        href : './zdev/exporttree.form.qweb'
+		    },
 			"div",
 			{
 				title : "Очистить кэш",

@@ -43,7 +43,12 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 		}
 
 
-
+		/// <summary>
+		/// Выполняет экспорт дерева в строку
+		/// </summary>
+		/// <param name="root"></param>
+		/// <param name="rootmode"></param>
+		/// <returns></returns>
 		public string ProcessExport(IZetaRow root, bool rootmode) {
 			lock (this) {
 				Level = 0;
