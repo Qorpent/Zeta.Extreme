@@ -14,8 +14,8 @@
 		<Style Include="..\qorpent.sys\commons\qorpent.wiki.css"/>
 		<Config Include="..\deployconfig\devel.rolemap.bxl" />
 		<Config Include="..\deployconfig\temporalrolefix.rolemap.bxl" />
-		<Config Include="..\deployconfig\devel.db-connection" />
-		<Config Include="..\deployconfig\mongodb.test.local.ioc-manifest.bxl" />
+		<Config Include="..\deployconfig\devel.sals.db-connection" />
+		<Config Include="..\deployconfig\mongodb.test.sals.ioc-manifest.bxl" />
 		<Ui Include="..\Zeta.Extreme\Zeta.Form.UI"/>
 	</ItemGroup>
 </Project>
