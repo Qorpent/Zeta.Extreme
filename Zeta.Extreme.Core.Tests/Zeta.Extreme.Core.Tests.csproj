@@ -71,7 +71,6 @@
     <Compile Include="FeatureAndBugFix\Zc486PlayBackHang.cs" />
     <Compile Include="FeatureAndBugFix\Zc491CanUseTagAndThemaResolutionInFormulas.cs" />
     <Compile Include="FeatureAndBugFix\Zc491RealData.cs" />
-    <Compile Include="TreeExporter\ExportTreeFilterTest.cs" />
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

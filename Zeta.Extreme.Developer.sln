@@ -33,6 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pkg", "Pkg", "{F755EF91-982
 		zdev.ui\zdev.base.css = zdev.ui\zdev.base.css
 		zdev.ui\zdev.main.menu.js = zdev.ui\zdev.main.menu.js
 		zdev.ui\zdev.ui-load.bxl = zdev.ui\zdev.ui-load.bxl
+		zdev.ui\zdev_export_tree_form.tpl.html = zdev.ui\zdev_export_tree_form.tpl.html
 		zetadev.ioc-manifest.bxl = zetadev.ioc-manifest.bxl
 	EndProjectSection
 EndProject
@@ -61,6 +62,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.Core", "Zeta.Extreme.Core\Zeta.Extreme.Core.csproj", "{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.BizProcess", "Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj", "{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.Core.Tests", "Zeta.Extreme.Core.Tests\Zeta.Extreme.Core.Tests.csproj", "{736C7DE4-EB8F-4CC0-9372-07B55D1E1797}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,6 +150,12 @@ Global
 		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
 		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+		{736C7DE4-EB8F-4CC0-9372-07B55D1E1797}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{736C7DE4-EB8F-4CC0-9372-07B55D1E1797}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{736C7DE4-EB8F-4CC0-9372-07B55D1E1797}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{736C7DE4-EB8F-4CC0-9372-07B55D1E1797}.Release|Any CPU.Build.0 = Release|Any CPU
+		{736C7DE4-EB8F-4CC0-9372-07B55D1E1797}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{736C7DE4-EB8F-4CC0-9372-07B55D1E1797}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,5 +172,6 @@ Global
 		{75E74DED-91CC-4090-B3B2-2E8AE3C085E8} = {13F314AB-36D7-4BDA-B027-6D4D2D9E232A}
 		{A5177DFD-2D36-442F-A9C0-B79CD6DC7054} = {13F314AB-36D7-4BDA-B027-6D4D2D9E232A}
 		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC} = {13F314AB-36D7-4BDA-B027-6D4D2D9E232A}
+		{736C7DE4-EB8F-4CC0-9372-07B55D1E1797} = {13F314AB-36D7-4BDA-B027-6D4D2D9E232A}
 	EndGlobalSection
 EndGlobal

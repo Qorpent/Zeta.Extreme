@@ -29,6 +29,14 @@ namespace Zeta.Extreme.Developer.Actions {
 		private string _root = "";
 
 		[Bind(
+			Name = "exttoprimary",
+			Required = false,
+			Default = false,
+			Help = "Конвертирует расширяемые разделы в первичные"
+		)]
+		private bool _exttoprimary = false;
+
+		[Bind(
 			Name = "codereplace", 
 			ValidatePattern = @"^[^~]+~[^~]+$",
 			Default = "",
@@ -70,6 +78,7 @@ namespace Zeta.Extreme.Developer.Actions {
 		{
 			var filter = new ExportTreeFilter();
 			filter.ExcludeRegex = _excluderegex;
+			filter.ConvertExtToPrimary = _exttoprimary;
 			if (!string.IsNullOrWhiteSpace(_codereplace)) {
 				var pattern = _codereplace.Split('~')[0];
 				var replace = _codereplace.Split('~')[1];
