@@ -31,6 +31,8 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 		/// <returns></returns>
 		public IZetaRow Execute(IZetaRow root) {
 			var copy =(Row) root.GetCopyOfHierarchy();
+			copy.LocalProperties["source"] = root;
+			copy.LocalProperties["filter"] = this;
 			PerformExclude(copy);
 			ReplaceCode(copy);
 			PerformConvertExtToPrimary(copy);

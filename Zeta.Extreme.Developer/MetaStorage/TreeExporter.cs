@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Developer.MetaStorage {
@@ -39,6 +40,10 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 			if (format == ExportTreeFormat.Hql) {
 				return new HqlTreeExporter();
 			}
+			if (format == ExportTreeFormat.BxlMeta)
+			{
+				return new BxlMetaTreeExporter();
+			}
 			throw new Exception("format not supported for now " + format);
 		}
 
@@ -55,6 +60,19 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 				Buffer = new StringWriter();
 				Root = root;
 				Rootmode = rootmode;
+				if (root.LocalProperties.ContainsKey("source")) {
+					SourceRow = root.LocalProperties["source"] as IZetaRow;
+				}
+				else {
+					SourceRow = root;
+				}
+				
+				if (root.LocalProperties.ContainsKey("filter")) {
+					Filter = root.LocalProperties["filter"] as ExportTreeFilter;
+				}
+				else {
+					Filter = new ExportTreeFilter();
+				}
 				WriteHeader();
 				WriteStartScript();
 				WriteRow(root);
@@ -65,9 +83,30 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 			}
 		}
 		/// <summary>
+		/// Фильтр при выгоне
+		/// </summary>
+		protected ExportTreeFilter Filter { get; set; }
+
+		/// <summary>
+		/// Исходная строка импорта
+		/// </summary>
+		protected IZetaRow SourceRow { get; set; }
+
+		/// <summary>
 		/// Метод записи шапки скрипта экспорта
 		/// </summary>
-		protected virtual void WriteHeader() {}
+		protected void WriteHeader()
+		{
+			Buffer.WriteLine(GetSingleCommentStart() + "----------------------------------------------------------------------");
+			Buffer.WriteLine(GetSingleCommentStart() + "		ФАЙЛ ДЕРЕВА ZETA");
+			Buffer.WriteLine(GetSingleCommentStart() + "		метод:			{0}",GetType().Name);
+			Buffer.WriteLine(GetSingleCommentStart() + "		исх. код.:		{0}", SourceRow.Code);
+			Buffer.WriteLine(GetSingleCommentStart() + "		замена кодов:		{0}", Filter.CodeReplacer != null ? (Filter.CodeReplacer.Pattern + "~" + Filter.CodeReplacer.Replacer) : "нет");
+			Buffer.WriteLine(GetSingleCommentStart() + "		регекс удаления:	{0}", string.IsNullOrWhiteSpace(Filter.ExcludeRegex) ? "отсутствует" : Filter.ExcludeRegex);
+			Buffer.WriteLine(GetSingleCommentStart() + "		режим расш.-перв.:	{0}", Filter.ConvertExtToPrimary ? "да" : "нет");
+			Buffer.WriteLine(GetSingleCommentStart() + "		режим рута :		{0}", Rootmode ? "да" : "нет");
+			Buffer.WriteLine(GetSingleCommentStart() + "---------------------------------------------------------------------");
+		}
 		/// <summary>
 		/// Начало скрипта (подготовительные операции)
 		/// </summary>
@@ -109,6 +148,14 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 				}
 				Level--;
 			}
+		}
+
+		/// <summary>
+		/// Возвращает префик комментария
+		/// </summary>
+		/// <returns></returns>
+		protected string GetSingleCommentStart() {
+			return "#";
 		}
 	}
 }

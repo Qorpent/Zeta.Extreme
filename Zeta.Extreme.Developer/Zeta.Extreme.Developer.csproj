@@ -26,6 +26,7 @@
     <Compile Include="Analyzers\Analyzer.cs" />
     <Compile Include="Analyzers\ISourceVisitor.cs" />
     <Compile Include="DeveloperStartUp.cs" />
+    <Compile Include="MetaStorage\BxlMetaTreeExporter.cs" />
     <Compile Include="MetaStorage\ExportTreeFilter.cs" />
     <Compile Include="MetaStorage\ExportTreeFormat.cs" />
     <Compile Include="MetaStorage\HqlTreeExporter.cs" />
