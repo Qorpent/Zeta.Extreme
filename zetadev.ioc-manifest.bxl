@@ -1,7 +1,12 @@
 ref Zeta.Extreme.Developer
+ref Qorpent.Core
+
+using Qorpent.Applications
+using Zeta.Extreme.Developer
 using Zeta.Extreme.Developer.Analyzers
 
 singleton CodeIndex : ICodeIndex
 transient Analyzer : IAnalyzer
+transient DeveloperStartUp : IApplicationStartup
 mvc Zeta.Extreme.Developer
 	

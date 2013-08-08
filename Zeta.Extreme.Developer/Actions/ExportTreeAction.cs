@@ -2,15 +2,15 @@ using System;
 using Qorpent;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
+using Zeta.Extreme.Developer.MetaStorage;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.MetaStorage;
 
-namespace Zeta.Extreme.FrontEnd.Actions.Info {
+namespace Zeta.Extreme.Developer.Actions {
 	/// <summary>
 	/// Действие экспорта дерева форм в виде BXL (по умолчанию HQL-совместимый скрипт)
 	/// </summary>
-	[Action("zefs.exporttree",Arm="dev",Help="Формирует переносимый HQL-скрипт дерева формы",Role="DEVELOPER")]
+	[Action("zdev.exporttree",Arm="dev",Help="Формирует переносимый HQL-скрипт дерева формы",Role="DEVELOPER")]
 	public class ExportTreeAction  : ActionBase {
 		[Bind(
 			Name = "format",
@@ -27,6 +27,14 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			Help = "Корневая строка для экспорта"
 		)] 
 		private string _root = "";
+
+		[Bind(
+			Name = "exttoprimary",
+			Required = false,
+			Default = false,
+			Help = "Конвертирует расширяемые разделы в первичные"
+		)]
+		private bool _exttoprimary = false;
 
 		[Bind(
 			Name = "codereplace", 
@@ -70,6 +78,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		{
 			var filter = new ExportTreeFilter();
 			filter.ExcludeRegex = _excluderegex;
+			filter.ConvertExtToPrimary = _exttoprimary;
 			if (!string.IsNullOrWhiteSpace(_codereplace)) {
 				var pattern = _codereplace.Split('~')[0];
 				var replace = _codereplace.Split('~')[1];

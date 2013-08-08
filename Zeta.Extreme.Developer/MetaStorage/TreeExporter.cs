@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model.MetaStorage {
+namespace Zeta.Extreme.Developer.MetaStorage {
 	/// <summary>
 	/// 
 	/// </summary>
@@ -43,7 +43,12 @@ namespace Zeta.Extreme.Model.MetaStorage {
 		}
 
 
-
+		/// <summary>
+		/// Выполняет экспорт дерева в строку
+		/// </summary>
+		/// <param name="root"></param>
+		/// <param name="rootmode"></param>
+		/// <returns></returns>
 		public string ProcessExport(IZetaRow root, bool rootmode) {
 			lock (this) {
 				Level = 0;

@@ -1,9 +1,11 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Model.MetaStorage {
+namespace Zeta.Extreme.Developer.MetaStorage {
 	/// <summary>
 	/// Настройки фильтрации дерева
 	/// </summary>
@@ -18,6 +20,11 @@ namespace Zeta.Extreme.Model.MetaStorage {
 		public ReplaceDescriptor CodeReplacer { get; set; }
 
 		/// <summary>
+		/// Преобразовать расширяемые разделы в первичные строки
+		/// </summary>
+		public bool ConvertExtToPrimary { get; set; }
+
+		/// <summary>
 		/// Выполняет фильтрацию дерева
 		/// </summary>
 		/// <param name="root"></param>
@@ -26,8 +33,20 @@ namespace Zeta.Extreme.Model.MetaStorage {
 			var copy =(Row) root.GetCopyOfHierarchy();
 			PerformExclude(copy);
 			ReplaceCode(copy);
+			PerformConvertExtToPrimary(copy);
 			copy.ResetAllChildren();
 			return copy;
+		}
+
+		private void PerformConvertExtToPrimary(Row copy) {
+			if (ConvertExtToPrimary) {
+				var exts = copy.AllChildren.Where(_ =>  _.IsMarkSeted("0EXT")).ToArray();
+				foreach (var e in exts) {
+					e.Children.Clear();
+					e.MarkCache = "";
+				}
+				copy.ResetAllChildren();
+			}
 		}
 
 		string ExcludeMask(IZetaRow row) {
@@ -48,7 +67,9 @@ namespace Zeta.Extreme.Model.MetaStorage {
 				var all = new[] {(Row) root}.Union(root.AllChildren);
 				foreach (var r in all) {
 					r.Code = CodeReplacer.Execute(r.Code);
-					r.Tag = CodeReplacer.Execute(r.Tag);
+					if (null != r.Tag) {
+						r.Tag = CodeReplacer.Execute(r.Tag);
+					}
 					if (r.IsFormula) {
 						r.Formula = CodeReplacer.Execute(r.Formula);
 					}

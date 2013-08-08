@@ -6,6 +6,7 @@
 	<Import Project="..\qorpent.sys\baseapp" />
 	<ItemGroup>	
 		<Library Include="Zeta.Extreme.Developer"/>
+		<Library Include="Zeta.Extreme.Model"/>
 		<Config Include="zetadev.ioc-manifest.bxl"/>
     <Ui Include=".\zdev.ui"/>
 	</ItemGroup>

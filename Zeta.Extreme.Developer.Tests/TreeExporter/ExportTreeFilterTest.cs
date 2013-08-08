@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using Qorpent;
+using Zeta.Extreme.Developer.MetaStorage;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.MetaStorage;
 
-namespace Zeta.Extreme.Core.Tests.TreeExporter
+namespace Zeta.Extreme.Developer.Tests.TreeExporter
 {
 	/// <summary>
 	/// Проверяем фильтрацию дерева
@@ -56,6 +56,24 @@ namespace Zeta.Extreme.Core.Tests.TreeExporter
 			result.ResetAllChildren();
 			Assert.AreEqual(2,result.AllChildren.Count());
 			Assert.True(result.AllChildren.Any(_=>_.Code=="d"));
+		}
+		[Test]
+		public void CanChangeExtensibleRowsToPrimary()
+		{
+			filter.ConvertExtToPrimary = true;
+			var root = new Row { Code = "a" };
+			IZetaRow c = null;
+			root.Children.Add(c = new Row { Code = "b", MarkCache = "/0SA/0EXT/" });
+			c.Children.Add(new Row { Code = "e" });
+			root.ResetAllChildren();
+			Assert.AreEqual(2, root.AllChildren.Count());
+
+			var result = (Row)filter.Execute(root);
+			result.ResetAllChildren();
+			
+			Assert.AreEqual("",result.Children.First().MarkCache);
+			Assert.AreEqual("b", result.Children.First().Code);
+			Assert.AreEqual(1, result.AllChildren.Count());
 		}
 	
 	}

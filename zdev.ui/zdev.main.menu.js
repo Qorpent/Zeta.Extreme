@@ -105,13 +105,21 @@ _.widget.register({
 
 		        ]
 		    },
-		    
+		    "div",
+		    {
+		        title: "Экспорт дерева",
+		        onclick: {
+		            modal: { title: "Экспорт дерева", template:'zdev_export_tree_form' , width:400 },
+		        },
+		    },
 			"div",
 			{
 				title : "Очистить кэш",
 				onclick : { 
 					command : "zdev.dropcache" , 
-					onsuccess : { modal : { title : 'Внимание' , text : 'Кэш сброшен' ,fade: true, width: 200 } } 
+					onsuccess: {
+					    modal: { title: 'Внимание', text: 'Кэш сброшен', fade: true, width: 200 }
+					}
 				}
 			}
 		]
