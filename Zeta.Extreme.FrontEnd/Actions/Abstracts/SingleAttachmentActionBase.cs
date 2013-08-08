@@ -25,7 +25,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Attachments {
 	/// <summary>
 	/// 	Базовый класс действий, ориентированных на работу с конкретным присоединенным файлом
 	/// </summary>
-	public class SingleAttachmentActionBase : FormSessionActionBase {
+	public abstract class SingleAttachmentActionBase : FormSessionActionBase {
 		/// <summary>
 		/// 	First phase of execution - override if need special input parameter's processing
 		/// </summary>

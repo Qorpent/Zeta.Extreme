@@ -547,7 +547,6 @@ namespace Zeta.Extreme.Model {
 		}
 
 		private IZetaRow[] _allchildren;
-		private ICollection<IZetaRow> _children;
 		private IDictionary<string, string> columnmap;
 		private IDictionary<string, object> localProperties;
 	}

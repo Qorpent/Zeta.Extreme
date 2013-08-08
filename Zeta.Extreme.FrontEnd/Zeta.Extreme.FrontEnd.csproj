@@ -29,6 +29,8 @@
     <Compile Include="Actions\Communication\SetHaveReadUpdates.cs" />
     <Compile Include="Actions\Communication\SetMessageArchived.cs" />
     <Compile Include="Actions\Info\BizProcessDetailsAction.cs" />
+    <Compile Include="Actions\Info\DependencyDesc.cs" />
+    <Compile Include="Actions\Info\ExportTreeAction.cs" />
     <Compile Include="Actions\Info\GetBizProcessList.cs" />
     <Compile Include="Actions\Info\GetCellHistory.cs" />
     <Compile Include="Actions\Info\GetEvalStack.cs" />
