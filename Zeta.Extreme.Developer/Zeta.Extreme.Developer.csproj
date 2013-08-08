@@ -9,12 +9,14 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="*.import" />
-    <None Include="*.export" />
+    <None Include="Zeta.Extreme.Developer.export" />
+    <None Include="Zeta.Extreme.Model.import" />
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\DropCacheAction.cs" />
+    <Compile Include="Actions\ExportTreeAction.cs" />
     <Compile Include="Actions\GetColAttributesAction.cs" />
     <Compile Include="Actions\GetFormAttributesAction.cs" />
     <Compile Include="Actions\GetParameterAttributesAction.cs" />
@@ -23,6 +25,11 @@
     <Compile Include="Actions\GetThemaAttributesAction.cs" />
     <Compile Include="Analyzers\Analyzer.cs" />
     <Compile Include="Analyzers\ISourceVisitor.cs" />
+    <Compile Include="MetaStorage\ExportTreeFilter.cs" />
+    <Compile Include="MetaStorage\ExportTreeFormat.cs" />
+    <Compile Include="MetaStorage\HqlTreeExporter.cs" />
+    <Compile Include="MetaStorage\ITreeExporter.cs" />
+    <Compile Include="MetaStorage\TreeExporter.cs" />
     <Compile Include="Model\CodeElementCategory.cs" />
     <Compile Include="Model\ElementCodeTypeMap.cs" />
     <Compile Include="Analyzers\Visitors\ElementCodeTypeResolverVisitor.cs" />

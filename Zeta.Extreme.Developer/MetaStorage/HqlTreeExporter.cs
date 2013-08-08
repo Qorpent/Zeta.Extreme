@@ -1,4 +1,4 @@
-namespace Zeta.Extreme.Model.MetaStorage {
+namespace Zeta.Extreme.Developer.MetaStorage {
 	/// <summary>
 	/// Ёкспортер дерева в имеющийс€ традиционный 'HQL'
 	/// </summary>

@@ -2,15 +2,15 @@ using System;
 using Qorpent;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
+using Zeta.Extreme.Developer.MetaStorage;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.MetaStorage;
 
-namespace Zeta.Extreme.FrontEnd.Actions.Info {
+namespace Zeta.Extreme.Developer.Actions {
 	/// <summary>
 	/// Действие экспорта дерева форм в виде BXL (по умолчанию HQL-совместимый скрипт)
 	/// </summary>
-	[Action("zefs.exporttree",Arm="dev",Help="Формирует переносимый HQL-скрипт дерева формы",Role="DEVELOPER")]
+	[Action("zdev.exporttree",Arm="dev",Help="Формирует переносимый HQL-скрипт дерева формы",Role="DEVELOPER")]
 	public class ExportTreeAction  : ActionBase {
 		[Bind(
 			Name = "format",
