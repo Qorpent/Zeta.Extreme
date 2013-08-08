@@ -5,7 +5,8 @@
 		<QISD>False</QISD>
 		<IsWeb>True</IsWeb>
 	</PropertyGroup>
-	<Import Project="testapp.base" />
+	<Import Project="..\Zeta.Extreme\testapp.base" />
+	
 	<ItemGroup>	
 		<Config Include="..\deployconfig\work.db-connection"/>
 		<Config Include="..\deployconfig\devel.rolemap.bxl"/>
