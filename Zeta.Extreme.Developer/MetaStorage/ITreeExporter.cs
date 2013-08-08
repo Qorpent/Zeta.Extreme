@@ -9,8 +9,8 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 		/// Выполняет экспорт дерева в строку
 		/// </summary>
 		/// <param name="exportroot"></param>
-		/// <param name="rootmode"></param>
+		/// <param name="options"></param>
 		/// <returns></returns>
-		string ProcessExport(IZetaRow exportroot, bool rootmode);
+		string ProcessExport(IZetaRow exportroot, TreeExporterOptions options = null);
 	}
 }

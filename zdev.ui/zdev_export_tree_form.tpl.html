@@ -17,10 +17,19 @@
             <label>Элементы для удаления (метки, теги, группы)</label>
             <input name="excludetags" pattern="^(((grp)|(tag)|(mark)):[\w\d_\-]+[\s,]*)+$"
                     title="Должен состоять из набора элементов вида tag:КОДТЕГА, grp:КОДГРУППЫ, mark:КОДМЕТКИ, разделенных запятыми и/или пробелами" />
+            <label>Тип кодировки</label>
+            <select name="codemode">
+                <option value="Full">Полная</option>
+                <option value="RootPrefix">Без корневого</option>
+                <option value="ParentPrefix">Без родительского</option>
+                <option value="NoCode">Без кодов</option>
+            </select>
+            
             <label>Прочие настройки</label>
+
             <label class="checkbox">
                 Не включать ссылку на родителя
-                <input type="checkbox" name="rootmode" />
+                <input type="checkbox" name="detachroot" />
             </label>
             <label class="checkbox">
                 Заменить расширяемые строки первичными

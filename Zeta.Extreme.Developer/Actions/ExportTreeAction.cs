@@ -7,6 +7,9 @@ using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Developer.Actions {
+
+
+
 	/// <summary>
 	/// Действие экспорта дерева форм в виде BXL (по умолчанию HQL-совместимый скрипт)
 	/// </summary>
@@ -45,11 +48,18 @@ namespace Zeta.Extreme.Developer.Actions {
 		private string _codereplace = "";
 
 		[Bind(
-			Name = "rootmode",
+			Name = "detachroot",
 			Default = false,
 			Help = "Режим экспорта в рут-режиме без указания родителя корневой папки"
 		)] 
-		private bool _rootmode = false;
+		private bool _detachroot = false;
+
+		[Bind(
+			Name = "codemode",
+			Default = TreeExporterCodeMode.Default,
+			Help = "Режим генерации с неполным кодом, когда префикс кода удаляется из дочерних"
+		)]
+		private TreeExporterCodeMode _codemode = TreeExporterCodeMode.Default;
 
 
 		[Bind(
@@ -86,7 +96,8 @@ namespace Zeta.Extreme.Developer.Actions {
 			if (null == root) throw new Exception("Нет корневой строки");
 			var exportroot = PerformFilter(root);
 			var rowexporter = TreeExporter.Create(_format);
-			var result = rowexporter.ProcessExport(exportroot,_rootmode);
+			var options = new TreeExporterOptions {DetachRoot = _detachroot, CodeMode = _codemode};
+			var result = rowexporter.ProcessExport(exportroot,options);
 			return result;
 		}
 

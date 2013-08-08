@@ -1,3 +1,4 @@
+using System;
 using Zeta.Extreme.Model;
 
 namespace Zeta.Extreme.Developer.MetaStorage {
@@ -5,8 +6,15 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 	/// Экспортер дерева в имеющийся традиционный 'HQL'
 	/// </summary>
 	public class HqlTreeExporter : TreeExporter {
-		
-
+		/// <summary>
+		/// Hql не поддерживает режима неполных кодов
+		/// </summary>
+		protected override void ValidateOptions()
+		{
+			if (Options.CodeMode != TreeExporterCodeMode.Full) {
+				throw new Exception("code mode " + Options.CodeMode + " not supported, only Full");
+			}
+		}
 		/// <summary>
 		/// Начало скрипта (подготовительные операции)
 		/// </summary>
@@ -40,7 +48,7 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 		/// </summary>
 		protected override void WriteRowBody() {
 			if (Current == Root) {
-				if (!Rootmode) {
+				if (!Options.DetachRoot) {
 					WriteAttribute("Parent", Current.ParentCode);
 				}
 			}

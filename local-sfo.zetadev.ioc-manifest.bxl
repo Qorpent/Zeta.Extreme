@@ -5,6 +5,6 @@ using Zeta.Extreme.Developer.Config
 singleton DeveloperConfig : IDeveloperConfig
 	ThemaComiledFolder="G:\\repos\\.app\\ecot\\tmp\\compiled_themas"
 	ThemaSourceFolders
-		add "C:\\code\\usr\\ugmk\\eco\\data"
-		add "C:\\code\\zeta\\zeta\\sys\\data"
+		add "G:\\repos\\Themas\\SYS"
+		add "G:\\repos\\Themas\\USR"
 	DocFolder="G:\\repos\\zdoc"

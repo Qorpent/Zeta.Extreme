@@ -32,6 +32,8 @@
     <Compile Include="MetaStorage\HqlTreeExporter.cs" />
     <Compile Include="MetaStorage\ITreeExporter.cs" />
     <Compile Include="MetaStorage\TreeExporter.cs" />
+    <Compile Include="MetaStorage\TreeExporterCodeMode.cs" />
+    <Compile Include="MetaStorage\TreeExporterOptions.cs" />
     <Compile Include="Model\CodeElementCategory.cs" />
     <Compile Include="Model\ElementCodeTypeMap.cs" />
     <Compile Include="Analyzers\Visitors\ElementCodeTypeResolverVisitor.cs" />

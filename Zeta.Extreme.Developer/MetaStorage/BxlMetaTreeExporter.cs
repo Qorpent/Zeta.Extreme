@@ -15,8 +15,12 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 			{
 				Buffer.Write("\t");
 			}
-		
-			Buffer.Write(Current.Code);
+			if (string.IsNullOrWhiteSpace(CurrentCode)) {
+				Buffer.Write("row");
+			}
+			else {
+				Buffer.Write(CurrentCode);
+			}
 			Buffer.Write(" ");
 			WriteAttribute("outercode", Current.OuterCode, false);
 			if (Current.RefTo == null || Current.Name == Current.RefTo.Name) {
@@ -30,7 +34,7 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 		/// Начало скрипта (подготовительные операции)
 		/// </summary>
 		protected override void WriteStartScript() {
-			Buffer.WriteLine("zetatree");
+			Buffer.WriteLine("zetatree codemode="+Options.CodeMode);
 		}
 
 		/// <summary>
@@ -48,7 +52,7 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 		{
 			if (Current == Root)
 			{
-				if (!Rootmode)
+				if (!Options.DetachRoot)
 				{
 					WriteAttribute("Parent", Current.ParentCode);
 				}
