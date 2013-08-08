@@ -1,0 +1,10 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<AppDir>../.app/zdev</AppDir>
+	</PropertyGroup>
+	<Import Project="..\Zeta.Extreme\testdeveloper.base" />
+	<ItemGroup>
+		<Config Include="..\deployconfig\devel.sals.db-connection" />
+		<Config Include="..\Zeta.Extreme\local-sals.zetadev.ioc-manifest.bxl"/>
+	</ItemGroup>
+</Project>

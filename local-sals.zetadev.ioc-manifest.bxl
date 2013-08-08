@@ -1,0 +1,10 @@
+ref Zeta.Extreme.Developer
+using Zeta.Extreme.Developer.Config
+
+
+singleton DeveloperConfig : IDeveloperConfig
+	ThemaComiledFolder="C:\\webfarm\\ecot\\tmp\\compiled_themas"
+	ThemaSourceFolders
+		add "C:\\Themas\\SYS"
+		add "C:\\Themas\\USR"
+	DocFolder="C:\\repos\\zdoc"
