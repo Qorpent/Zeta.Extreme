@@ -19,6 +19,7 @@
 #define NEWMODEL
 
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Qorpent.Utils;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
@@ -113,7 +114,18 @@ namespace Zeta.Extreme.Model.Extensions {
 		/// <param name="row"> </param>
 		/// <returns> </returns>
 		public static string GetSortKey(this IZetaRow row) {
-			return string.Format("{0:00000}_{1}_{2}", row.Index, row.OuterCode ?? "", row.Code);
+			return string.Format("{0:00000}_{1}_{2}", row.Index, ConvertToSortNumber(row.OuterCode) ?? "", row.Code);
+		}
+
+		private static string ConvertToSortNumber(string outerCode) {
+			var s = outerCode.Trim().Replace(" ", "").Replace("\t", "");
+			if (Regex.IsMatch(s, @"^(\d+\.?)+$")) {
+				return Regex.Replace(s, @"((\d+)\.?)", _ => {
+					var i = _.Groups[2].ToInt();
+					return (1000 + i).ToString();
+				});
+			}
+			return s;
 		}
 	}
 }

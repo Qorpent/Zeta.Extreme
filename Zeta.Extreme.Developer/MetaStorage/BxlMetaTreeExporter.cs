@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Zeta.Extreme.Developer.MetaStorage {
 	/// <summary>
 	/// Экспортер дерева в имеющийся традиционный 'HQL'
@@ -9,18 +11,26 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 		/// </summary>
 		protected override void WritePreRow()
 		{
-			for (var i = 0; i < Level; i++)
+			for (var i = 0; i <= Level; i++)
 			{
 				Buffer.Write("\t");
 			}
-			
-			Buffer.Write("row ");
+		
 			Buffer.Write(Current.Code);
+			Buffer.Write(" ");
+			WriteAttribute("outercode", Current.OuterCode, false);
 			if (Current.RefTo == null || Current.Name == Current.RefTo.Name) {
 				Buffer.Write(" '");
 				Buffer.Write(Current.Name);
-				Buffer.Write("'");	
+				Buffer.Write("' ");	
 			}
+		}
+
+		/// <summary>
+		/// Начало скрипта (подготовительные операции)
+		/// </summary>
+		protected override void WriteStartScript() {
+			Buffer.WriteLine("zetatree");
 		}
 
 		/// <summary>
@@ -51,32 +61,58 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 			WriteAttribute("tag", Current.Tag);
 			WriteAttribute("marks", Current.MarkCache);
 			WriteAttribute("groups", Current.GroupCache);
-			WriteAttribute("outercode", Current.OuterCode);
+			
 			WriteAttribute("measure", Current.Measure);
 			
 			if (0 != Current.Index)
 			{
 				WriteAttribute("idx", Current.Index.ToString());
 			}
-		
-			if (Current.IsFormula)
-			{
-				WriteAttribute("isformula", "1");
+			if (!string.IsNullOrWhiteSpace(Current.Formula)) {
 				
+				if ("boo" != Current.FormulaType) {
+					WriteAttribute("formulatype", Current.FormulaType);
+				}
+				Buffer.WriteLine();
+				for (var i = 0; i <= Level+1; i++)
+				{
+					Buffer.Write("\t");
+				}
+				var name = "formula";
+				if (!Current.IsFormula) {
+					name = "ignoredformula";
+				}
+				Buffer.Write(name);
+				Buffer.Write("=(");
+				Buffer.Write(Current.Formula);
+				Buffer.Write(")");
 			}
-			WriteAttribute("formulatype", Current.FormulaType);
-			WriteAttribute("formula", Current.Formula.Replace("'", "\'"));
 		}
 
-		private void WriteAttribute(string name, string value)
+		private void WriteAttribute(string name, string value,bool writename =true)
 		{
 			if (!string.IsNullOrWhiteSpace(value)) {
-				Buffer.Write(" ");
-				Buffer.Write(name);
-				Buffer.Write("='");
-				Buffer.Write(value.Trim());
-				Buffer.Write("'");
+				var val = value.Trim();
+				if (writename) {
+					Buffer.Write(name);
+					Buffer.Write("=");
+				}
+				if (val.All(_ => char.IsLetterOrDigit(_) || '-' == _ || '_' == _ || '.' == _)) {
+					Buffer.Write(val);
+					Buffer.Write(" ");
+				}
+				else if (val.Contains('\r') || val.Contains('\n')) {
+					Buffer.Write("\"\"\"");
+					Buffer.Write(val.Trim());
+					Buffer.Write("\"\"\" ");
+				}
+				else {
+					Buffer.Write("'");
+					Buffer.Write(val.Replace("'", "\'").Trim());
+					Buffer.Write("' ");
+				}
 			}
 		}
+		
 	}
 }

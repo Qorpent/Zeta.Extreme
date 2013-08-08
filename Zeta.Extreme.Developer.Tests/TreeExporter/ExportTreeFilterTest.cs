@@ -75,6 +75,66 @@ namespace Zeta.Extreme.Developer.Tests.TreeExporter
 			Assert.AreEqual("b", result.Children.First().Code);
 			Assert.AreEqual(1, result.AllChildren.Count());
 		}
-	
+
+		[Test]
+		public void CanRemoveIndexes()
+		{
+			
+			var root = new Row { Code = "a",Index = 20};
+			
+			var result = (Row)filter.Execute(root);
+			Assert.AreEqual(20, result.Index);
+			filter.ResetAutoIndex = true;
+			result = (Row)filter.Execute(root);
+			Assert.AreEqual(0, result.Index);
+		}
+
+		[Test]
+		public void CanRemoveTags()
+		{
+
+			var root = new Row { Code = "a", Tag="/x:0//y:1/" };
+			var result = (Row)filter.Execute(root);
+			Assert.AreEqual("/x:0//y:1/", result.Tag);
+			filter.ParseExcludes("tag:noform");
+			result = (Row)filter.Execute(root);
+			Assert.AreEqual("/x:0/ /y:1/", result.Tag);
+			filter.ParseExcludes("tag:x");
+			result = (Row)filter.Execute(root);
+			Assert.AreEqual("/y:1/", result.Tag);
+			filter.ParseExcludes("tag:x tag:y");
+			result = (Row)filter.Execute(root);
+			Assert.AreEqual("", result.Tag);
+		}
+
+		[Test]
+		public void CanRemoveGroups()
+		{
+
+			var root = new Row { Code = "a", GroupCache = "/X/Y/" };
+			var result = (Row)filter.Execute(root);
+			Assert.AreEqual("/X/Y/", result.GroupCache);
+			filter.ParseExcludes("grp:X");
+			result = (Row)filter.Execute(root);
+			Assert.AreEqual("/Y/", result.GroupCache);
+			filter.ParseExcludes("grp:X grp:Y");
+			result = (Row)filter.Execute(root);
+			Assert.AreEqual("", result.GroupCache);
+		}
+
+		[Test]
+		public void CanRemoveMarks()
+		{
+
+			var root = new Row { Code = "a", MarkCache = "/X/Y/" };
+			var result = (Row)filter.Execute(root);
+			Assert.AreEqual("/X/Y/", result.MarkCache);
+			filter.ParseExcludes("mark:X");
+			result = (Row)filter.Execute(root);
+			Assert.AreEqual("/Y/", result.MarkCache);
+			filter.ParseExcludes("mark:X mark:Y");
+			result = (Row)filter.Execute(root);
+			Assert.AreEqual("", result.MarkCache);
+		}
 	}
 }

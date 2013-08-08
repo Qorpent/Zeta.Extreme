@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
@@ -11,9 +12,38 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 	/// </summary>
 	public class ExportTreeFilter {
 		/// <summary>
+		/// Позволяет настроить исключения
+		///  </summary>
+		/// <param name="excludestring"></param>
+		public void ParseExcludes(string excludestring) {
+			var allexcludes = excludestring.SmartSplit(splitters:new[]{',',' '});
+			ExcludeTotalString = excludestring;
+			ExcludeGroups = allexcludes.Where(_ => _.StartsWith("grp:")).Select(_ => _.Substring(4)).ToArray();
+			ExcludeMarks = allexcludes.Where(_ => _.StartsWith("mark:")).Select(_ => _.Substring(5)).ToArray();
+			ExcludeTags = allexcludes.Where(_ => _.StartsWith("tag:")).Select(_ => _.Substring(4)).ToArray();
+		}
+		/// <summary>
+		/// Полная запись об удаляемых элементах
+		/// </summary>
+		public string ExcludeTotalString { get; set; }
+
+		/// <summary>
 		/// Регулярное выражение исключения узла
 		/// </summary>
 		public string ExcludeRegex { get; set; }
+
+		/// <summary>
+		/// Список тегов на удаление - чистит теги
+		/// </summary>
+		public string[] ExcludeTags { get; set; }
+		/// <summary>
+		/// Список групп на удаление - чистит теги
+		/// </summary>
+		public string[] ExcludeGroups { get; set; }
+		/// <summary>
+		/// Список меток на удаление - чистит теги
+		/// </summary>
+		public string[] ExcludeMarks { get; set; }
 		/// <summary>
 		/// Замена кода по регексу
 		/// </summary>
@@ -23,6 +53,11 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 		/// Преобразовать расширяемые разделы в первичные строки
 		/// </summary>
 		public bool ConvertExtToPrimary { get; set; }
+
+		/// <summary>
+		/// Позволяет удалить явные отметки об индексе и использовать обновленный скорректированный обработчик outercode
+		/// </summary>
+		public bool ResetAutoIndex { get; set; }
 
 		/// <summary>
 		/// Выполняет фильтрацию дерева
@@ -36,8 +71,69 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 			PerformExclude(copy);
 			ReplaceCode(copy);
 			PerformConvertExtToPrimary(copy);
-			copy.ResetAllChildren();
+			RemoveIndex(copy);
+			RemoveTags(copy);
+			RemoveGroups(copy);
+			RemoveMarks(copy);
+			copy.ResetAllChildren(); 
 			return copy;
+		}
+
+		private void RemoveMarks(Row copy) {
+
+			if (ExcludeMarks.ToBool()) {
+				var all = new[] {copy}.Union(copy.AllChildren).Where(_=>!string.IsNullOrWhiteSpace(_.MarkCache)).ToArray();
+				foreach (var r in all) {
+					foreach (var m in ExcludeMarks) {
+#pragma warning disable 612,618
+						r.MarkCache = SlashListHelper.RemoveMark(r.MarkCache, m);
+#pragma warning restore 612,618
+					}
+				}
+				
+			}
+
+		}
+
+		private void RemoveGroups(Row copy) {
+			if (ExcludeGroups.ToBool())
+			{
+				var all = new[] { copy }.Union(copy.AllChildren).Where(_ => !string.IsNullOrWhiteSpace(_.GroupCache)).ToArray();
+				foreach (var r in all)
+				{
+					foreach (var g in ExcludeGroups)
+					{
+#pragma warning disable 612,618
+						r.GroupCache = SlashListHelper.RemoveMark(r.GroupCache, g);
+#pragma warning restore 612,618
+					}
+				}
+			}
+		}
+
+		private void RemoveTags(Row copy) {
+			if (ExcludeTags.ToBool())
+			{
+				var all = new[] { copy }.Union(copy.AllChildren).Where(_ => !string.IsNullOrWhiteSpace(_.Tag)).ToArray();
+				foreach (var r in all)
+				{
+					foreach (var t in ExcludeTags)
+					{
+#pragma warning disable 612,618
+						r.Tag = TagHelper.RemoveTag(r.Tag, t);
+#pragma warning restore 612,618
+					}
+				}
+			}
+		}
+
+		private void RemoveIndex(IZetaRow copy) {
+			if (ResetAutoIndex) {
+				copy.Index = 0;
+				foreach (var c in copy.AllChildren) {
+					c.Index = 0;
+				}
+			}
 		}
 
 		private void PerformConvertExtToPrimary(Row copy) {

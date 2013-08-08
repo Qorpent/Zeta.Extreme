@@ -12,8 +12,11 @@
             <input name="root" required />
             <label>Замена кодов</label>
             <input name="codereplace" title="Формат данного условия REGEX~REPLACE, например m214~a214" pattern="^[^~]+~[\s\S]+$" />
-            <label>Маска удаления</label>
+            <label>Маска удаления всей строки (применяется как регекс к тегам, меткам и группам)</label>
             <input name="exclude" />
+            <label>Элементы для удаления (метки, теги, группы)</label>
+            <input name="excludetags" pattern="^(((grp)|(tag)|(mark)):[\w\d_\-]+[\s,]*)+$"
+                    title="Должен состоять из набора элементов вида tag:КОДТЕГА, grp:КОДГРУППЫ, mark:КОДМЕТКИ, разделенных запятыми и/или пробелами" />
             <label>Прочие настройки</label>
             <label class="checkbox">
                 Не включать ссылку на родителя
@@ -22,6 +25,10 @@
             <label class="checkbox">
                 Заменить расширяемые строки первичными
                 <input type="checkbox" name="exttoprimary" />
+            </label>
+            <label class="checkbox">
+                Сбросить явное указание индекса строки
+                <input type="checkbox" name="resetindex" />
             </label>
         </fieldset> 
         <hr />

@@ -60,6 +60,22 @@ namespace Zeta.Extreme.Developer.Actions {
 		private string _excluderegex="";
 
 
+		[Bind(
+			Name = "resetindex",
+			Default = false,
+			Help = "Сбрасывает поли индекса (в связи с обновленным алгоритмом расчета порядка строк)"
+		)]
+		private bool _resetindex = false;
+
+		[Bind(
+			Name = "excludetags",
+			Default = "",
+			ValidatePattern = @"^(((grp)|(tag)|(mark)):[\w\d_\-]+[\s,]*)+$",
+			Help = "Позволяет настроить удаление ненужных тегов, групп и прочего"
+		)]
+		private string _excludetags = "";
+
+
 
 		/// <summary>
 		/// Выполняет экспорт дерева из стандартного MetaCache в виде скрипта
@@ -79,10 +95,14 @@ namespace Zeta.Extreme.Developer.Actions {
 			var filter = new ExportTreeFilter();
 			filter.ExcludeRegex = _excluderegex;
 			filter.ConvertExtToPrimary = _exttoprimary;
+			filter.ResetAutoIndex = _resetindex;
 			if (!string.IsNullOrWhiteSpace(_codereplace)) {
 				var pattern = _codereplace.Split('~')[0];
 				var replace = _codereplace.Split('~')[1];
 				filter.CodeReplacer = new ReplaceDescriptor {Pattern = pattern, Replacer = replace};
+			}
+			if (!string.IsNullOrWhiteSpace(_excludetags)) {
+				filter.ParseExcludes(_excludetags);
 			}
 			var result = filter.Execute(root);
 			return result;

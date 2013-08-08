@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Developer.MetaStorage {
@@ -103,8 +104,10 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 			Buffer.WriteLine(GetSingleCommentStart() + "		исх. код.:		{0}", SourceRow.Code);
 			Buffer.WriteLine(GetSingleCommentStart() + "		замена кодов:		{0}", Filter.CodeReplacer != null ? (Filter.CodeReplacer.Pattern + "~" + Filter.CodeReplacer.Replacer) : "нет");
 			Buffer.WriteLine(GetSingleCommentStart() + "		регекс удаления:	{0}", string.IsNullOrWhiteSpace(Filter.ExcludeRegex) ? "отсутствует" : Filter.ExcludeRegex);
+			Buffer.WriteLine(GetSingleCommentStart() + "		удаленные элементы:	{0}", string.IsNullOrWhiteSpace(Filter.ExcludeTotalString) ? "отсутствует" : Filter.ExcludeTotalString);
 			Buffer.WriteLine(GetSingleCommentStart() + "		режим расш.-перв.:	{0}", Filter.ConvertExtToPrimary ? "да" : "нет");
 			Buffer.WriteLine(GetSingleCommentStart() + "		режим рута :		{0}", Rootmode ? "да" : "нет");
+			Buffer.WriteLine(GetSingleCommentStart() + "		сброс индекса :		{0}", Filter.ResetAutoIndex ? "да" : "нет");
 			Buffer.WriteLine(GetSingleCommentStart() + "---------------------------------------------------------------------");
 		}
 		/// <summary>
@@ -143,7 +146,7 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 			if (Current.HasChildren()) {
 				Level++;
 				var children = Current.Children.ToArray();
-				foreach (var c in children) {
+				foreach (var c in children.OrderBy(_=>_.GetSortKey())) {
 					WriteRow(c);
 				}
 				Level--;
