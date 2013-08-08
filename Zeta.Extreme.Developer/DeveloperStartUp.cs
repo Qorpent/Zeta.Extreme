@@ -24,7 +24,7 @@ namespace Zeta.Extreme.Developer
 			if (!application.DatabaseConnections.Exists("Default")) {
 				application.DatabaseConnections.Register(
 					new ConnectionDescriptor {
-						ConnectionString ="Data Source=192.168.26.137;Initial Catalog=eco;Integrated Security=True;Max Pool Size=1000;Application Name=zefs_"+Environment.MachineName,
+						ConnectionString = "Data Source=192.168.26.137;Initial Catalog=eco;Persist Security Info=True;User ID=sfo_home;Password=rhfcysq$0;Application Name=zefs_" + Environment.MachineName,
 						Name = "Default",
 						ConnectionType = typeof(SqlConnection),
 						Evidence= "directstartup"

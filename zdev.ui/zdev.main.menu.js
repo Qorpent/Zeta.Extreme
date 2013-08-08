@@ -108,7 +108,7 @@ _.widget.register({
 		    "div",
 		    {
 		        title: "Экспорт дерева",
-		        href : './zdev/exporttree.form.qweb'
+		        href : './zdev/exporttree.form.qweb?render=string'
 		    },
 			"div",
 			{

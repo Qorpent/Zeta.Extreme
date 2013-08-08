@@ -36,11 +36,11 @@
         <xsl:number value="position()" />
       </td>
       <td class="marks">
-        <xsl:apply-templates select="Doc" m/>ode="marks"/>
+        <xsl:apply-templates select="Doc" mode="marks"/>
       </td>
       <td class="code">
 		<a href="#attr-detail-{@Path}">
-			<xsl:value-of selec/>t/>=/>"@Path"/>
+			<xsl:value-of select="@Path"/>
 		</a>
       </td>
 	   <td class="type">
