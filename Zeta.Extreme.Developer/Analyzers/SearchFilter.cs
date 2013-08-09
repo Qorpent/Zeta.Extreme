@@ -17,6 +17,12 @@
 		public bool CollectValues { get; set; }
 
 		/// <summary>
+		/// Маркер того, что конструкции param xxx "dddd" и param xxxx : dddddd и param xxxx=vvvv следует рассматривать как варант атрибутов
+		/// требуется при анализе тем
+		/// </summary>
+		public bool UseParamAsAttribute { get; set; }
+
+		/// <summary>
 		/// Корень документации
 		/// </summary>
 		public string DocRoot { get; set; }

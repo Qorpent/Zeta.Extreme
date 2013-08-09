@@ -60,8 +60,10 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <returns></returns>
 		public IEnumerable<AttributeDescriptor> GetThemaAttributes(SearchFilter filter = null)
 		{
-			filter = filter ?? new SearchFilter { DocRoot = "themaattr" };
-			return Index.GetAttributes(new[] { "/*[local-name()!='processes' and local-name()!='subst'  and local-name()!='paramlib' and local-name()!='global' and local-name()!='colset' and local-name()!='objset'  and local-name()!='rowset'  and local-name()!='paramset']" }, filter);
+			filter = filter ?? new SearchFilter { DocRoot = "themaattr", UseParamAsAttribute = true};
+			return Index.GetAttributes(
+				new[] { "/*[local-name()!='processes' and local-name()!='subst'  and local-name()!='paramlib' and local-name()!='global' and local-name()!='colset' and local-name()!='objset'  and local-name()!='rowset'  and local-name()!='paramset']" },
+				filter);
 		}
 		/// <summary>
 		/// Выполняет поиск возможных элементов кода и сопоставляет их тип

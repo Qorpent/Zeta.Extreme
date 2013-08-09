@@ -4,9 +4,15 @@ ref Qorpent.Core
 using Qorpent.Applications
 using Zeta.Extreme.Developer
 using Zeta.Extreme.Developer.Analyzers
+using Zeta.Extreme.Developer.CodeMetrics
+
+transient DeveloperStartUp : IApplicationStartup
 
 singleton CodeIndex : ICodeIndex
 transient Analyzer : IAnalyzer
-transient DeveloperStartUp : IApplicationStartup
+
+transient MetricService : IMetricService
+transient CommonFileDataMetricsProvider : IMetricProvider
+
 mvc Zeta.Extreme.Developer
 	

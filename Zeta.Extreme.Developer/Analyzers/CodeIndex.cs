@@ -160,18 +160,47 @@ namespace Zeta.Extreme.Developer.Analyzers {
 					              root + "/@*[" + DeveloperConstants.XpathSysAttributesFilter + "]")
 				             as IEnumerable)
 				.Cast<XAttribute>()
-				.Select(_ => new SimpleAttributeDescriptor {
-					Name = _.Name.LocalName,
-					Value = _.Value,
-					LexInfo = new LexInfo {
-						File = _.Parent.Attr("_file"),
-						Line = _.Parent.Attr("_line").ToInt()
-						,
-						Context = GetContextString(_)
-					}
-				}).ToArray();
+				.Select(_ => ConvertAttributeToAttributeDescriptor(_)).ToArray();
+			if (filter.UseParamAsAttribute) {
+				var secondresult = (
+							 source.XmlContent.XPathEvaluate(
+								  root + "/param")
+							 as IEnumerable)
+				.Cast<XElement>()
+				.Select(ConvertParamToAttributeDescriptor).ToArray();
+				result = result.Union(secondresult).ToArray();
+			}
 			return result;
 		}
+
+		private SimpleAttributeDescriptor ConvertAttributeToAttributeDescriptor(XAttribute _) {
+			return new SimpleAttributeDescriptor {
+				Name = _.Name.LocalName,
+				Value = _.Value,
+				LexInfo = new LexInfo {
+					File = _.Parent.Attr("_file"),
+					Line = _.Parent.Attr("_line").ToInt()
+					,
+					Context = GetContextString(_)
+				}
+			};
+		}
+
+		private static SimpleAttributeDescriptor ConvertParamToAttributeDescriptor(XElement _) {
+			return new SimpleAttributeDescriptor
+			{
+				Name = _.Attr("code"),
+				Value = _.Value,
+				LexInfo = new LexInfo
+				{
+					File = _.Attr("_file"),
+					Line = _.Attr("_line").ToInt()
+					,
+					Context = GetContextString(_)
+				}
+			};
+		}
+
 		/// <summary>
 		/// Утилита подготовки контекста для атрибута
 		/// </summary>

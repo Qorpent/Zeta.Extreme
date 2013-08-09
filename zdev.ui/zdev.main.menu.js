@@ -112,6 +112,11 @@ _.widget.register({
 		            modal: { title: "Экспорт дерева", template:'zdev_export_tree_form' , width:400 },
 		        },
 		    },
+            "div",
+		    {
+		        title: "Рассчитать метрики",
+		        href: './zdev/getmetrics.xml.qweb',
+		    },
 			"div",
 			{
 				title : "Очистить кэш",
