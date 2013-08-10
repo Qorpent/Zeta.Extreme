@@ -45,6 +45,7 @@
       <thead>
         <th>Показатель</th>
         <th>Всего</th>
+        <th>%</th>
         <th>Среднее</th>
         <th>Минимум</th>
         <th>Максимум</th>
@@ -55,7 +56,7 @@
           <td>
             <xsl:value-of select="//item[@SubGroup=$area and @ItemName='filecount' and @Type='']/@Value"/>
           </td>
-          <td colspan="3"/>
+          <td colspan="4"/>
         </tr>
         <xsl:call-template name="file-metric-row">
           <xsl:with-param name="title" select="'Размер'"/>
@@ -73,14 +74,42 @@
           <xsl:with-param name="item" select="'lines'"/>
         </xsl:call-template>
         <xsl:call-template name="file-metric-row">
+          <xsl:with-param name="title" select="'Код'"/>
+          <xsl:with-param name="area" select="$area"/>
+          <xsl:with-param name="item" select="'codelines'"/>
+        </xsl:call-template>
+        <xsl:call-template name="file-metric-row">
+          <xsl:with-param name="title" select="'Комментарии'"/>
+          <xsl:with-param name="area" select="$area"/>
+          <xsl:with-param name="item" select="'commentedlines'"/>
+        </xsl:call-template>
+        <xsl:call-template name="file-metric-row">
           <xsl:with-param name="title" select="'Пустых строк'"/>
           <xsl:with-param name="area" select="$area"/>
           <xsl:with-param name="item" select="'emptylines'"/>
         </xsl:call-template>
         <xsl:call-template name="file-metric-row">
-          <xsl:with-param name="title" select="'Комментариев'"/>
+          <xsl:with-param name="title" select="'Закоментировано кода'"/>
           <xsl:with-param name="area" select="$area"/>
-          <xsl:with-param name="item" select="'commentedlines'"/>
+          <xsl:with-param name="item" select="'commentedcodelines'"/>
+        </xsl:call-template>
+
+        <xsl:call-template name="file-metric-row">
+          <xsl:with-param name="title" select="'Элементов'"/>
+          <xsl:with-param name="area" select="$area"/>
+          <xsl:with-param name="item" select="'elements'"/>
+        </xsl:call-template>
+
+        <xsl:call-template name="file-metric-row">
+          <xsl:with-param name="title" select="'Атрибутов'"/>
+          <xsl:with-param name="area" select="$area"/>
+          <xsl:with-param name="item" select="'attributes'"/>
+        </xsl:call-template>
+
+        <xsl:call-template name="file-metric-row">
+          <xsl:with-param name="title" select="'Текстовых элементов'"/>
+          <xsl:with-param name="area" select="$area"/>
+          <xsl:with-param name="item" select="'texts'"/>
         </xsl:call-template>
       </tbody>
     </table>
@@ -98,6 +127,9 @@
         <xsl:value-of select="//item[@SubGroup=$area and @ItemName=$item and @Type='total']/@Value"/>
       </td>
       <td>
+        <xsl:value-of select="//item[@SubGroup=$area and @ItemName=$item and @Type='perc']/@Value"/>
+      </td>
+      <td>
         <xsl:value-of select="//item[@SubGroup=$area and @ItemName=$item and @Type='avg']/@Value"/>
       </td>
       <td>
@@ -109,4 +141,6 @@
 
     </tr>
   </xsl:template>
+  
+
 </xsl:stylesheet>

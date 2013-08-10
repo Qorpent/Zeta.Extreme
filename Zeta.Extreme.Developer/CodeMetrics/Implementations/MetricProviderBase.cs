@@ -55,8 +55,16 @@ namespace Zeta.Extreme.Developer.CodeMetrics {
 		/// <param name="prefix"></param>
 		/// <param name="mname"></param>
 		/// <param name="get"></param>
-		protected void CollectMetric<T>(T[] data, string prefix, string mname, Func<T, int> get) {
-			CurrentHub.Set(prefix + "total" + mname, data.Select(get).Sum());
+		/// <param name="percbasis"></param>
+		protected void CollectMetric<T>(T[] data, string prefix, string mname, Func<T, int> get , string percbasis = "") {
+			var sum = data.Select(get).Sum();
+			CurrentHub.Set(prefix + "total" + mname, sum);
+			if (!string.IsNullOrWhiteSpace(percbasis)) {
+				var basis = CurrentHub.Get(prefix + "total" + percbasis, 0);
+				var current = sum;
+				var perc = current*100/basis;
+				CurrentHub.Set(prefix + "perc" + mname, perc);
+			}
 			CurrentHub.Set(prefix + "avg" + mname, data.Select(get).Average());
 			CurrentHub.Set(prefix + "max" + mname, data.Select(get).Max());
 			CurrentHub.Set(prefix + "min" + mname, data.Select(get).Min());

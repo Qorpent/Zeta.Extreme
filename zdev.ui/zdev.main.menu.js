@@ -113,10 +113,21 @@ _.widget.register({
 		        },
 		    },
             "div",
-		    {
-		        title: "Рассчитать метрики",
-		        href: './zdev/getmetrics.xml.qweb',
-		    },
+		      {
+		          title: 'Метрики',
+		          items: [
+                      {
+                          title: 'Все, в формате XML',
+                          href: './zdev/getmetrics.xml.qwebb',
+                      },
+                      {
+                          title: 'Все в формате HTML',
+                          href: './zdev/getmetrics.html.qweb?__xslt=zdev-metrics-report',
+                      }
+
+		          ]
+		      },
+
 			"div",
 			{
 				title : "Очистить кэш",
