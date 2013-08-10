@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Themas", "Zeta.Themas\Zeta.Themas.csproj", "{648E0F82-BED9-4F34-8B7C-8C6767D030AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Themas.Compiler", "Zeta.Themas.Compiler\Zeta.Themas.Compiler.csproj", "{BAEEF18A-25A8-434F-ACAB-82EA927670BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Themas.Compiler.Tests", "Zeta.Themas.Compiler.Tests\Zeta.Themas.Compiler.Tests.csproj", "{767385DE-30B7-4B06-B469-7A316E869A31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Themas.Loader", "Zeta.Themas.Loader\Zeta.Themas.Loader.csproj", "{FCC62E51-88AA-4542-A947-BCE82B55D2FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Themas.Loader.Tests", "Zeta.Themas.Loader.Tests\Zeta.Themas.Loader.Tests.csproj", "{79C650A9-4E9D-4806-AEF1-76AD73FAA246}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Themas.Tests", "Zeta.Themas.Tests\Zeta.Themas.Tests.csproj", "{FEBBDB61-51F0-455D-9F31-20A89E439A78}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		SQL2008|Any CPU = SQL2008|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{648E0F82-BED9-4F34-8B7C-8C6767D030AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{648E0F82-BED9-4F34-8B7C-8C6767D030AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{648E0F82-BED9-4F34-8B7C-8C6767D030AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{648E0F82-BED9-4F34-8B7C-8C6767D030AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{648E0F82-BED9-4F34-8B7C-8C6767D030AF}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{648E0F82-BED9-4F34-8B7C-8C6767D030AF}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+		{BAEEF18A-25A8-434F-ACAB-82EA927670BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAEEF18A-25A8-434F-ACAB-82EA927670BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAEEF18A-25A8-434F-ACAB-82EA927670BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAEEF18A-25A8-434F-ACAB-82EA927670BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAEEF18A-25A8-434F-ACAB-82EA927670BE}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{BAEEF18A-25A8-434F-ACAB-82EA927670BE}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+		{767385DE-30B7-4B06-B469-7A316E869A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{767385DE-30B7-4B06-B469-7A316E869A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{767385DE-30B7-4B06-B469-7A316E869A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{767385DE-30B7-4B06-B469-7A316E869A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{767385DE-30B7-4B06-B469-7A316E869A31}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{767385DE-30B7-4B06-B469-7A316E869A31}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+		{FCC62E51-88AA-4542-A947-BCE82B55D2FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCC62E51-88AA-4542-A947-BCE82B55D2FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCC62E51-88AA-4542-A947-BCE82B55D2FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCC62E51-88AA-4542-A947-BCE82B55D2FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCC62E51-88AA-4542-A947-BCE82B55D2FA}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{FCC62E51-88AA-4542-A947-BCE82B55D2FA}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+		{79C650A9-4E9D-4806-AEF1-76AD73FAA246}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79C650A9-4E9D-4806-AEF1-76AD73FAA246}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79C650A9-4E9D-4806-AEF1-76AD73FAA246}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79C650A9-4E9D-4806-AEF1-76AD73FAA246}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79C650A9-4E9D-4806-AEF1-76AD73FAA246}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{79C650A9-4E9D-4806-AEF1-76AD73FAA246}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+		{FEBBDB61-51F0-455D-9F31-20A89E439A78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEBBDB61-51F0-455D-9F31-20A89E439A78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEBBDB61-51F0-455D-9F31-20A89E439A78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEBBDB61-51F0-455D-9F31-20A89E439A78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEBBDB61-51F0-455D-9F31-20A89E439A78}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{FEBBDB61-51F0-455D-9F31-20A89E439A78}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -5,8 +5,8 @@
     <Configuration>Debug</Configuration>
     <ProjectGuid>{FEBBDB61-51F0-455D-9F31-20A89E439A78}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Qorpent.Themas.Tests</RootNamespace>
-    <AssemblyName>Qorpent.Themas.Tests</AssemblyName><AssemblyNameBase>Qorpent.Themas</AssemblyNameBase>
+    <RootNamespace>Zeta.Themas.Tests</RootNamespace>
+    <AssemblyName>Zeta.Themas.Tests</AssemblyName><AssemblyNameBase>Zeta.Themas</AssemblyNameBase>
   </PropertyGroup>
    <Import Project="..\..\qorpent.kernel\build.targets" />
   
