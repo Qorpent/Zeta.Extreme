@@ -23,7 +23,7 @@
 
 #endregion
 
-namespace Qorpent.Themas.Compiler {
+namespace Zeta.Themas.Compiler {
 	/// <summary>
 	/// </summary>
 	public interface IThemaCompilerSetup {

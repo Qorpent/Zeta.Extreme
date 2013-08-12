@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Abstracts {
 	public interface IFormThemaItem : IThemaItem {
 		string LockCode { get; set; }
 		List<IFormLockDepend> InLockDepends { get; }

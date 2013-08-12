@@ -25,7 +25,7 @@
 
 using System;
 
-namespace Qorpent.Themas.Compiler {
+namespace Zeta.Themas.Compiler {
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 	/// <summary>
 	/// </summary>

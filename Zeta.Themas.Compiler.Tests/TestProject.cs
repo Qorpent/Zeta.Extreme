@@ -23,9 +23,9 @@
 
 #endregion
 
-using Qorpent.IO;
+using Qorpent;
 
-namespace Qorpent.Themas.Compiler.Tests {
+namespace Zeta.Themas.Compiler.Tests {
 	public class TestProject : ThemaProject {
 		public TestProject() {
 			Resolver = new FileNameResolver {Root = EnvironmentInfo.RootDirectory};

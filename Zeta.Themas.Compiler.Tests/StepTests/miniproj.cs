@@ -25,7 +25,7 @@
 
 using System.Collections.Generic;
 
-namespace Qorpent.Themas.Compiler.Tests.StepTests {
+namespace Zeta.Themas.Compiler.Tests.StepTests {
 	internal class miniproj : TestProject {
 		public miniproj(params string[] conditions) {
 			SourceFiles = new List<string> {"~/tfolder1/base1.bxl", "~/tfolder2/child1.bxl", "~/tfolder2/child2.bxl"};

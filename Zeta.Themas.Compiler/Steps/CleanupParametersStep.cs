@@ -26,7 +26,7 @@
 using System.Linq;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Optimizes parameters in themas - empty, 'false' and '0' parameters removed as defaults
 	/// </summary>

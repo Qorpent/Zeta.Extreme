@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Comdiv.QWeb.Utils.LogicalExpressionLanguage;
+using Zeta.Themas.Loader.Abstracts;
+using Zeta.Themas.Loader.Factory;
+using Zeta.Themas.Loader.Model.ThemaItemContent;
 
-namespace Comdiv.ThemaLoader.Wrap {
+namespace Zeta.Themas.Loader.Wrap {
 	public class ThemaItemWrapper : IThemaItemWrapper, ILogicTermSource {
 		private IDictionary<string, string> _allcondvalues;
 		private IList<IThemaItemElement> _allelements;

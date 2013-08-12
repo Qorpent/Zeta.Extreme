@@ -26,9 +26,9 @@
 using System;
 using System.IO;
 using Qorpent.Log;
-using Qorpent.Themas.Compiler.Pipelines;
+using Zeta.Themas.Compiler.Pipelines;
 
-namespace Qorpent.Themas.Compiler.Tests {
+namespace Zeta.Themas.Compiler.Tests {
 	public class ThemaCompilerTestBase {
 		protected ThemaCompilerContext execute<T>(ThemaProject proj = null, LogLevel level = LogLevel.Trace)
 			where T : IThemaCompilerSetup, new() {

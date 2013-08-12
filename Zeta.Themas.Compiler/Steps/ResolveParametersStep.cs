@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Qorpent.Utils;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Resolves all parameters in all themas with generic support
 	/// </summary>

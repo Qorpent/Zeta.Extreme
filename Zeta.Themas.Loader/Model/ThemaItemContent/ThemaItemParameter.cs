@@ -1,7 +1,7 @@
 using System;
 using System.Xml.Linq;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Model.ThemaItemContent {
 	public class ThemaItemParameter {
 		private Type _type;
 
@@ -25,7 +25,7 @@ namespace Comdiv.ThemaLoader {
 		public bool Readonly { get; set; }
 
 
-		public ThemaItem ContainingItem { get; set; }
+		public ThemaItem.ThemaItem ContainingItem { get; set; }
 		public XElement XmlSource { get; set; }
 
 		public Type ResolvedType {

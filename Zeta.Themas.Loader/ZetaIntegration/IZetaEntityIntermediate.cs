@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Comdiv.ThemaLoader.ZetaIntegration {
+namespace Zeta.Themas.Loader.ZetaIntegration {
 	public interface IZetaEntityIntermediate {
 		int Id { get; }
 		string Code { get; }

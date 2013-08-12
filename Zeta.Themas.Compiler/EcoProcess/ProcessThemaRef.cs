@@ -26,7 +26,7 @@
 using System.Xml.Linq;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.EcoProcess {
+namespace Zeta.Themas.Compiler.EcoProcess {
 	/// <summary>
 	/// </summary>
 	public class ProcessThemaRef : XmlExtensions.ICustomXmlApplyer {

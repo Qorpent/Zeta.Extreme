@@ -2,10 +2,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using Comdiv.QWeb.Files;
-using Comdiv.QWeb.Serialization.BxlParser;
+using Zeta.Themas.Loader.Abstracts;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Factory {
 	public class FileThemaSource : IThemaSource {
 		public FileThemaSource(params string[] paths) {
 			Paths = paths ?? new string[] {};

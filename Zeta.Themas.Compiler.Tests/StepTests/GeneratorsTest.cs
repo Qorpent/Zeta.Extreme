@@ -29,10 +29,10 @@ using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Qorpent.Log;
-using Qorpent.Themas.Compiler.Pipelines;
 using Qorpent.Utils.Extensions;
+using Zeta.Themas.Compiler.Pipelines;
 
-namespace Qorpent.Themas.Compiler.Tests.StepTests {
+namespace Zeta.Themas.Compiler.Tests.StepTests {
 	[TestFixture]
 	public class GeneratorsTest : ThemaCompilerTestBase {
 		public class SimpleGenerator : IThemaXmlGenerator {

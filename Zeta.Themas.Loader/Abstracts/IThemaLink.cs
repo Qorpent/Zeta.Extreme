@@ -1,6 +1,6 @@
 using System.Xml.Linq;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Abstracts {
 	public interface IThemaLink {
 		string Type { get; set; }
 		string SourceCode { get; set; }

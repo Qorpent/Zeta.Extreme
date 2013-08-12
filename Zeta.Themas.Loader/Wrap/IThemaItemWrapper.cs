@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Zeta.Themas.Loader.Abstracts;
+using Zeta.Themas.Loader.Model.ThemaItemContent;
 
-namespace Comdiv.ThemaLoader.Wrap {
+namespace Zeta.Themas.Loader.Wrap {
 	public interface IThemaItemWrapper {
 		IThemaItem Item { get; }
 		WrapContext Context { get; }

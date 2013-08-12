@@ -26,7 +26,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace Qorpent.Themas.Compiler {
+namespace Zeta.Themas.Compiler {
 	/// <summary>
 	/// 	abstract thema xml generator
 	/// </summary>

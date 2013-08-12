@@ -1,6 +1,6 @@
-using Comdiv.ThemaLoader.Wrap;
+using Zeta.Themas.Loader.Wrap;
 
-namespace Comdiv.ThemaLoader.UI {
+namespace Zeta.Themas.Loader.UI {
 	public class UserThemaTree {
 		public string Usr { get; set; }
 		public WrapContext Context { get; set; }

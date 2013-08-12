@@ -1,6 +1,7 @@
-using Comdiv.ThemaLoader.Wrap;
+using Zeta.Themas.Loader.Abstracts;
+using Zeta.Themas.Loader.Wrap;
 
-namespace Comdiv.ThemaLoader.UI {
+namespace Zeta.Themas.Loader.UI {
 	public class utThemaRoot {
 		private IThemaWrapper _wrap;
 		public string Idx { get; set; }

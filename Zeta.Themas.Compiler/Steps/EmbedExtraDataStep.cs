@@ -24,9 +24,10 @@
 #endregion
 
 using System.Linq;
+using Qorpent;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Imports extradata into thema's XML by code
 	/// </summary>

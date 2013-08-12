@@ -29,7 +29,7 @@ using System.Xml.Linq;
 using Qorpent.Applications;
 using Qorpent.Bxl;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	writes BXL equvalent of compiled themas
 	/// </summary>

@@ -31,7 +31,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler {
+namespace Zeta.Themas.Compiler {
 	/// <summary>
 	/// 	Xml based thema descriptor which is thema definition at compile time
 	/// </summary>

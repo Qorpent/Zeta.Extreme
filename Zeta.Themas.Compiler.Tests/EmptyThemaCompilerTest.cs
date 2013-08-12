@@ -25,9 +25,10 @@
 
 using System;
 using NUnit.Framework;
-using Qorpent.Themas.Compiler.Pipelines;
+using Qorpent;
+using Zeta.Themas.Compiler.Pipelines;
 
-namespace Qorpent.Themas.Compiler.Tests {
+namespace Zeta.Themas.Compiler.Tests {
 	[TestFixture(Description =
 		@"Проверяет общую работу инфраструктуры компилятора,
 без реальной рабочей нагрузки, только общие моменты")]

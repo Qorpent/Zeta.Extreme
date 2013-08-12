@@ -32,7 +32,7 @@ using Qorpent.Applications;
 using Qorpent.IO;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	step for generating html report about compiled instance
 	/// </summary>

@@ -1,17 +1,13 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Security;
 using System.Security.Principal;
 using System.Xml.Linq;
-using Comdiv.QWeb.Factory;
-using Comdiv.QWeb.Files;
-using Comdiv.QWeb.Logging;
-using Comdiv.QWeb.Security;
-using Comdiv.ThemaLoader.ExtensionPoints;
-using Comdiv.ThemaLoader.UI;
-using Comdiv.ThemaLoader.Wrap;
+using Zeta.Themas.Loader.Abstracts;
+using Zeta.Themas.Loader.ExtensionPoints;
+using Zeta.Themas.Loader.UI;
+using Zeta.Themas.Loader.Wrap;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Factory {
 	public class ThemaFactory : IThemaFactory {
 		private readonly IDictionary<string, bool> _security_authorize_cache = new Dictionary<string, bool>();
 		private readonly object refresh_lock = new object();

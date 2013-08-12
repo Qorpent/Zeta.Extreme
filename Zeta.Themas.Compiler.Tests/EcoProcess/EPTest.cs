@@ -24,10 +24,11 @@
 #endregion
 
 using System;
+using Qorpent;
 using Qorpent.Log;
-using Qorpent.Themas.Compiler.Pipelines;
+using Zeta.Themas.Compiler.Pipelines;
 
-namespace Qorpent.Themas.Compiler.Tests.EcoProcess {
+namespace Zeta.Themas.Compiler.Tests.EcoProcess {
 	public class EPTest {
 		public static ThemaCompilerContext Compile(string code, Action<ThemaProject> prepareProject = null) {
 			var project = new ThemaProject {ErrorLevel = ErrorLevel.Error, UseEcoOptimization = true, UseEcoProcess = true};

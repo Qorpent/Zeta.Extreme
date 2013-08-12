@@ -1,6 +1,6 @@
 using System.Xml.Linq;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Abstracts {
 	public interface IElementBasis {
 		string Role { get; set; }
 		string Code { get; set; }

@@ -24,9 +24,10 @@
 #endregion
 
 using System.Linq;
-using Qorpent.Themas.Compiler.EcoProcess;
+using Qorpent;
+using Zeta.Themas.Compiler.EcoProcess;
 
-namespace Qorpent.Themas.Compiler.Steps.EcoProcess {
+namespace Zeta.Themas.Compiler.Steps.EcoProcess {
 	/// <summary>
 	/// </summary>
 	/// <remarks>

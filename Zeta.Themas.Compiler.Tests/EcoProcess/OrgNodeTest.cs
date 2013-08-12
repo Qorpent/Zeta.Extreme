@@ -27,7 +27,7 @@ using System.Linq;
 using NUnit.Framework;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Tests.EcoProcess {
+namespace Zeta.Themas.Compiler.Tests.EcoProcess {
 	[TestFixture]
 	public class OrgNodeTest {
 		[Test]

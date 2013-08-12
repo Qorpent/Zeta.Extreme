@@ -25,7 +25,7 @@
 
 using System.Collections.Generic;
 
-namespace Qorpent.Themas.Compiler.EcoProcess {
+namespace Zeta.Themas.Compiler.EcoProcess {
 	/// <summary>
 	/// </summary>
 	public class OrgNode {

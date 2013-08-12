@@ -1,4 +1,6 @@
-﻿namespace Comdiv.ThemaLoader.Wrap {
+﻿using Zeta.Themas.Loader.Abstracts;
+
+namespace Zeta.Themas.Loader.Wrap {
 	public class FormThemaItemWrapper : ThemaItemWrapper, IFormThemaItemWrapper {
 		protected internal FormThemaItemWrapper(IThemaItem item, IThemaWrapper wrapper) : base(item, wrapper) {
 		}

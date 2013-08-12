@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Extracts well-known thema parts/sets and extensions
 	/// </summary>

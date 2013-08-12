@@ -27,9 +27,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Qorpent;
 using Qorpent.Applications;
 
-namespace Qorpent.Themas.Compiler.CompilerApp {
+namespace Zeta.Themas.Compiler.CompilerApp {
 	/// <summary>
 	/// </summary>
 	public class CompilerConsoleApplication {

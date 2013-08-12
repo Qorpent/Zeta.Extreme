@@ -28,7 +28,7 @@ using System.Xml.Linq;
 using Qorpent.Log;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Find and stores in context.Globals , excluding from source files
 	/// </summary>

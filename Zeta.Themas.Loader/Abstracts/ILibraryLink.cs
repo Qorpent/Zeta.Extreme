@@ -1,4 +1,4 @@
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Abstracts {
 	public interface ILibraryLink {
 		string SourceCode { get; set; }
 		string TargetCode { get; set; }

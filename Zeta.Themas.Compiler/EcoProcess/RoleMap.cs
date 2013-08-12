@@ -23,7 +23,7 @@
 
 #endregion
 
-namespace Qorpent.Themas.Compiler.EcoProcess {
+namespace Zeta.Themas.Compiler.EcoProcess {
 	/// <summary>
 	/// </summary>
 	public class RoleMap {

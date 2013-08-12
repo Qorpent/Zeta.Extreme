@@ -28,10 +28,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Xml.Linq;
 using Qorpent.Log;
-using Qorpent.Themas.Compiler.EcoProcess;
 using Qorpent.Utils.Extensions;
+using Zeta.Themas.Compiler.EcoProcess;
 
-namespace Qorpent.Themas.Compiler {
+namespace Zeta.Themas.Compiler {
 	/// <summary>
 	/// 	main context for thema compiler
 	/// </summary>

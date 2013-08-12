@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Factory {
 	[Serializable]
 	public class ThemaLoaderException : Exception {
 		//

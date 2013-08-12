@@ -25,9 +25,10 @@
 
 using System.Linq;
 using System.Xml.Linq;
+using Qorpent;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Embeds item parameters into element
 	/// </summary>

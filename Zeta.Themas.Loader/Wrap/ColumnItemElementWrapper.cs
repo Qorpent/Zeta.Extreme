@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
-using Comdiv.ThemaLoader.ZetaIntegration;
+using Zeta.Themas.Loader.Abstracts;
+using Zeta.Themas.Loader.Factory;
+using Zeta.Themas.Loader.ZetaIntegration;
 
-namespace Comdiv.ThemaLoader.Wrap {
+namespace Zeta.Themas.Loader.Wrap {
 	public class ColumnItemElementWrapper : ThemaItemElementWrapper, IColumnItemElementWrapper {
 		private string _forgroup;
 		private string _forperiods;

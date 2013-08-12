@@ -25,7 +25,7 @@
 
 using System.Linq;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Cleanup parameters due to ECO logic ( bool(active.)==false drops all parameters with same generic)
 	/// 	worked only if EcoOptimization of project is true (by default)

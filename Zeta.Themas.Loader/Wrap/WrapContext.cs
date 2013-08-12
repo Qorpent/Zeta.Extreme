@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Comdiv.ThemaLoader.Wrap {
+namespace Zeta.Themas.Loader.Wrap {
 	public class WrapContext {
 		private object _targetObject;
 

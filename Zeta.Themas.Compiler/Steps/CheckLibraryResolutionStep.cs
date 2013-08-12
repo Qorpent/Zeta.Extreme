@@ -26,9 +26,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Qorpent;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	verify step to check that all uselib resolved
 	/// </summary>

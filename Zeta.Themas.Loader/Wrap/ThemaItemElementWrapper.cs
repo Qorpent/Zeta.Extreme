@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Xml.Linq;
-using Comdiv.ThemaLoader.ZetaIntegration;
+using Zeta.Themas.Loader.Abstracts;
+using Zeta.Themas.Loader.ZetaIntegration;
 
-namespace Comdiv.ThemaLoader.Wrap {
+namespace Zeta.Themas.Loader.Wrap {
 	public class ThemaItemElementWrapper : IThemaItemElementWrapper {
 		private bool? _authorized;
 		private string _code;

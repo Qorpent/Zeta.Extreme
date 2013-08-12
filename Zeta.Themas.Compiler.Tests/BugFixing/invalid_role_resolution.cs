@@ -24,9 +24,9 @@
 #endregion
 
 using NUnit.Framework;
-using Qorpent.Themas.Compiler.Pipelines;
+using Zeta.Themas.Compiler.Pipelines;
 
-namespace Qorpent.Themas.Compiler.Tests.BugFixing {
+namespace Zeta.Themas.Compiler.Tests.BugFixing {
 	[TestFixture]
 	public class invalid_role_resolution : BugFixingThemaTest {
 		[Test]

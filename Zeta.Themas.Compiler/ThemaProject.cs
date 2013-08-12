@@ -29,11 +29,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Qorpent;
 using Qorpent.IO;
 using Qorpent.Log;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler {
+namespace Zeta.Themas.Compiler {
 	/// <summary>
 	/// 	Project definition for thema compiler
 	/// </summary>

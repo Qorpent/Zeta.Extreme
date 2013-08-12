@@ -1,6 +1,6 @@
-using Comdiv.ThemaLoader.Wrap;
+using Zeta.Themas.Loader.Wrap;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Abstracts {
 	public interface IThemaItemElement : IElementBasis {
 		string Group { get; set; }
 		string CustomCode { get; set; }

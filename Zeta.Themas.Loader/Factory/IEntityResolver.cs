@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Factory {
 	public interface IEntityResolver {
 		T Get<T>(object key);
 		object Get(Type type, object key);

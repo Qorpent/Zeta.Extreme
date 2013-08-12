@@ -1,4 +1,4 @@
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Abstracts {
 	public interface IColumnItemElement : IThemaItemElement {
 		string ForPeriods { get; set; }
 		string ForGroup { get; set; }

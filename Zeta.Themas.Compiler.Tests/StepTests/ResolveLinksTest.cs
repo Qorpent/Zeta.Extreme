@@ -26,9 +26,9 @@
 using System.Linq;
 using NUnit.Framework;
 using Qorpent.Log;
-using Qorpent.Themas.Compiler.Pipelines;
+using Zeta.Themas.Compiler.Pipelines;
 
-namespace Qorpent.Themas.Compiler.Tests.StepTests {
+namespace Zeta.Themas.Compiler.Tests.StepTests {
 	[TestFixture]
 	public class ResolveLinksTest : ThemaCompilerTestBase {
 		[Test]

@@ -26,9 +26,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Qorpent.Themas.Compiler.Steps;
+using Qorpent;
+using Zeta.Themas.Compiler.Steps;
 
-namespace Qorpent.Themas.Compiler {
+namespace Zeta.Themas.Compiler {
 	/// <summary>
 	/// </summary>
 	/// <remarks>

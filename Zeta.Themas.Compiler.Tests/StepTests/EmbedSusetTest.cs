@@ -26,10 +26,10 @@
 using System.Linq;
 using NUnit.Framework;
 using Qorpent.Log;
-using Qorpent.Themas.Compiler.Pipelines;
-using Qorpent.Themas.Compiler.Steps;
+using Zeta.Themas.Compiler.Pipelines;
+using Zeta.Themas.Compiler.Steps;
 
-namespace Qorpent.Themas.Compiler.Tests.StepTests {
+namespace Zeta.Themas.Compiler.Tests.StepTests {
 	[TestFixture]
 	public class EmbedSusetTest : ThemaCompilerTestBase {
 		[Test]

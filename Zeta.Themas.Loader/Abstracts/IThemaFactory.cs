@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Comdiv.QWeb.Factory;
-using Comdiv.QWeb.Files;
-using Comdiv.QWeb.Logging;
-using Comdiv.QWeb.Security;
-using Comdiv.ThemaLoader.Wrap;
+using Zeta.Themas.Loader.Factory;
+using Zeta.Themas.Loader.Wrap;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Abstracts {
 	public interface IThemaFactory {
 		IFileNameResolver FileResolver { get; set; }
 		IThemaCollection Themas { get; set; }

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Zeta.Themas.Loader.Abstracts;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Factory {
 	public class DirectThemaSource : IThemaSource {
 		private readonly XElement[] _xmlSources;
 

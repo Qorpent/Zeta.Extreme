@@ -25,7 +25,7 @@
 
 using System.Xml.Linq;
 
-namespace Qorpent.Themas.Compiler {
+namespace Zeta.Themas.Compiler {
 	/// <summary>
 	/// </summary>
 	public class ThemaLink {

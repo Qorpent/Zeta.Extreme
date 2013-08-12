@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Comdiv.QWeb.Serialization.BxlParser;
+using Zeta.Themas.Loader.Abstracts;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Factory {
 	public class BxlThemaSource : IThemaSource {
 		private readonly string bxl;
 

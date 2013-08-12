@@ -1,6 +1,7 @@
 ﻿using System.Security.Principal;
+using Zeta.Themas.Loader.Abstracts;
 
-namespace Comdiv.ThemaLoader.Wrap {
+namespace Zeta.Themas.Loader.Wrap {
 	public class ThemaWrapperFactory : IThemaWrapperFactory {
 		private readonly IThemaFactory factory;
 		private readonly string usr;

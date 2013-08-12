@@ -26,7 +26,7 @@
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	resolves self and imported elements and their extensions to single XElement
 	/// </summary>

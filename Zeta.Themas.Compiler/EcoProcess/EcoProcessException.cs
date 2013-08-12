@@ -28,7 +28,7 @@ using System.Runtime.Serialization;
 using System.Xml.Linq;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.EcoProcess {
+namespace Zeta.Themas.Compiler.EcoProcess {
 	/// <summary>
 	/// 	general exception on ecoprocess module processing
 	/// </summary>

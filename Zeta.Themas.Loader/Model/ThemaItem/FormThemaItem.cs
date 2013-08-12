@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using Zeta.Themas.Loader.Abstracts;
+using Zeta.Themas.Loader.Model.ThemaItemContent;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Model.ThemaItem {
 	public class FormThemaItem : ThemaItem, IFormThemaItem {
 		public FormThemaItem() {
 			InLockDepends = new List<IFormLockDepend>();

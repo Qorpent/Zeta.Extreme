@@ -26,7 +26,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Process globals in XML data
 	/// </summary>

@@ -26,9 +26,10 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
+using Qorpent;
 using Qorpent.Log;
 
-namespace Qorpent.Themas.Compiler {
+namespace Zeta.Themas.Compiler {
 	/// <summary>
 	/// 	base class for thema compiler
 	/// </summary>

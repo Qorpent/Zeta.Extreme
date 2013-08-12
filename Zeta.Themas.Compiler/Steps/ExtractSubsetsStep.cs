@@ -27,7 +27,7 @@ using System.Linq;
 using Qorpent.Log;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Extracts well-known elements subset to context.SubsetIndex dictionary
 	/// </summary>

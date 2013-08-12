@@ -30,7 +30,7 @@ using Qorpent.Applications;
 using Qorpent.IO;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Enumerate all source file dirs,lists and masks and
 	/// 	generate full list of full paths to source files

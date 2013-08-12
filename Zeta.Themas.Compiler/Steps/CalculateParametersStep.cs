@@ -27,7 +27,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Calculates parameters in themas with patterns "@name" and "...${name}..."
 	/// </summary>

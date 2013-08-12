@@ -25,7 +25,7 @@
 
 using System.Linq;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Extracts proprties of thema
 	/// </summary>

@@ -1,4 +1,4 @@
-﻿namespace Comdiv.ThemaLoader.Wrap {
+﻿namespace Zeta.Themas.Loader.Wrap {
 	public enum ParameterResolveLevel {
 		None,
 		Definition,

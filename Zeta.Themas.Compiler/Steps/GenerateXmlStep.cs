@@ -29,7 +29,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Generates XML representation of each thema
 	/// </summary>

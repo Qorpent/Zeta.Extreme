@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Abstracts {
 	public interface IThemaLoader {
 		IThemaFactory Factory { get; set; }
 		List<XElement> ThemaElements { get; }

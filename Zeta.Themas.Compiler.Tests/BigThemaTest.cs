@@ -25,9 +25,9 @@
 
 using NUnit.Framework;
 using Qorpent.Log;
-using Qorpent.Themas.Compiler.Pipelines;
+using Zeta.Themas.Compiler.Pipelines;
 
-namespace Qorpent.Themas.Compiler.Tests {
+namespace Zeta.Themas.Compiler.Tests {
 	[TestFixture]
 	[Category("LARGE")]
 	public class BigThemaTest : ThemaCompilerTestBase {

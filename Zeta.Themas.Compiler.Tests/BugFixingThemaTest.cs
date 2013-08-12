@@ -25,7 +25,7 @@
 
 using System.Collections.Generic;
 
-namespace Qorpent.Themas.Compiler.Tests {
+namespace Zeta.Themas.Compiler.Tests {
 	public class BugFixingThemaTest : ThemaCompilerTestBase {
 		protected override ThemaProject getDefaultProject() {
 			var result = new TestProject();

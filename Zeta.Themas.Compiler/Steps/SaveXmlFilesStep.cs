@@ -27,11 +27,12 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
+using Qorpent;
 using Qorpent.Applications;
 using Qorpent.IO;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Saves generated XML and Extra data to TargetFolder of project
 	/// </summary>

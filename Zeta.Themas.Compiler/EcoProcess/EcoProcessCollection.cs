@@ -29,7 +29,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.EcoProcess {
+namespace Zeta.Themas.Compiler.EcoProcess {
 	/// <summary>
 	/// </summary>
 	/// <remarks>
@@ -46,7 +46,7 @@ namespace Qorpent.Themas.Compiler.EcoProcess {
 		}
 
 		/// <summary>
-		/// 	Gets the <see cref="Qorpent.Themas.Compiler.EcoProcess.Process" /> with the specified code.
+		/// 	Gets the <see cref="Process" /> with the specified code.
 		/// </summary>
 		/// <remarks>
 		/// </remarks>

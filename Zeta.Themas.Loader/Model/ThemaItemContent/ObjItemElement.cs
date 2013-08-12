@@ -1,7 +1,8 @@
 using System.Xml.Linq;
-using Comdiv.ThemaLoader.Wrap;
+using Zeta.Themas.Loader.Abstracts;
+using Zeta.Themas.Loader.Wrap;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Model.ThemaItemContent {
 	public class ObjItemElement : ThemaItemElement, IObjItemElement {
 		public ObjItemElement(XElement e = null) : base(e) {
 			Type = "obj";

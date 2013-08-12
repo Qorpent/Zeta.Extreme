@@ -25,7 +25,7 @@
 
 using System.Linq;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	removes all non-working themas
 	/// </summary>

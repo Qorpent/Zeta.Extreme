@@ -26,10 +26,11 @@
 using System;
 using System.IO;
 using System.Xml.Linq;
+using Qorpent;
 using Qorpent.Applications;
 using Qorpent.Bxl;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Prepare xml representation of source files in context.SourceFileXml
 	/// </summary>

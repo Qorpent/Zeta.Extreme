@@ -1,6 +1,7 @@
 using System.Xml.Linq;
+using Zeta.Themas.Loader.Abstracts;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Model.Thema {
 	public class ThemaLink : IThemaLink {
 		#region IThemaLink Members
 

@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Resolves all elements,sets and extensions to 'imported' dictionaries (not in resolved)
 	/// </summary>

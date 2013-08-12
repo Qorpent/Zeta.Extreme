@@ -26,7 +26,7 @@
 using System.Linq;
 using Qorpent.Utils;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Embeds all thema parameters in thema's elements
 	/// </summary>

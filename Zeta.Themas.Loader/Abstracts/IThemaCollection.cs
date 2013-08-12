@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Zeta.Themas.Loader.Factory;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Abstracts {
 	public interface IThemaCollection {
 		ThemaFactory Factory { get; set; }
 		IDictionary<string, IThema> Index { get; }

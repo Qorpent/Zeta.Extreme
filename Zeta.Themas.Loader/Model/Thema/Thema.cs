@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Zeta.Themas.Loader.Abstracts;
+using Zeta.Themas.Loader.Model.ThemaItem;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Model.Thema {
 	public class Thema : IThema {
 		private string[] _forgroup;
 

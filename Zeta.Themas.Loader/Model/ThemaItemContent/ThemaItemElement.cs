@@ -1,7 +1,8 @@
 using System.Xml.Linq;
-using Comdiv.ThemaLoader.Wrap;
+using Zeta.Themas.Loader.Abstracts;
+using Zeta.Themas.Loader.Wrap;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Model.ThemaItemContent {
 	public class ThemaItemElement : IThemaItemElement {
 		public ThemaItemElement(XElement e = null) {
 			if (null != e) e.Apply(this);

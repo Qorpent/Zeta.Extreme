@@ -1,4 +1,6 @@
-﻿namespace Comdiv.ThemaLoader.Wrap {
+﻿using Zeta.Themas.Loader.Model.ThemaItemContent;
+
+namespace Zeta.Themas.Loader.Wrap {
 	public class ParameterValue {
 		private string _resolved;
 		private object _value;

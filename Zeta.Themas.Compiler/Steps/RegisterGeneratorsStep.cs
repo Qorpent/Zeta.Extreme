@@ -25,9 +25,10 @@
 
 using System;
 using System.Linq;
+using Qorpent;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Extract "register" elements with "compile" attribute and set them into context.Generators dictionary
 	/// </summary>

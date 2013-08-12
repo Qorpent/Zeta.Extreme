@@ -1,4 +1,6 @@
-namespace Comdiv.ThemaLoader.UI {
+using Zeta.Themas.Loader.Abstracts;
+
+namespace Zeta.Themas.Loader.UI {
 	public class utThemaGroup {
 		public string Idx { get; set; }
 		public string Code { get; set; }

@@ -28,7 +28,7 @@ using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Tests {
+namespace Zeta.Themas.Compiler.Tests {
 	[Action("thema.compilesingle")]
 	public class CompileSingleAction {
 		public CompileSingleAction(string text, string projbxl) {

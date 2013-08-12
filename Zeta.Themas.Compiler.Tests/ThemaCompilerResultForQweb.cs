@@ -28,7 +28,7 @@ using System.Xml.Linq;
 using Qorpent.Applications;
 using Qorpent.Serialization;
 
-namespace Qorpent.Themas.Compiler.Tests {
+namespace Zeta.Themas.Compiler.Tests {
 	[Serialize]
 	public class ThemaCompilerResultForQweb {
 		public ThemaCompilerResultForQweb(ThemaCompilerContext context) {

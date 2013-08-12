@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Comdiv.ThemaLoader.ZetaIntegration;
+using Zeta.Themas.Loader.Abstracts;
+using Zeta.Themas.Loader.Model.ThemaItemContent;
+using Zeta.Themas.Loader.ZetaIntegration;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Model.ThemaItem {
 	public class ThemaItem : IThemaItem {
 		private readonly IDictionary<string, string> _nativeparameters = new Dictionary<string, string>();
 		private int[] _listforperiods;

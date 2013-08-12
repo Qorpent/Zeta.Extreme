@@ -1,4 +1,6 @@
-namespace Comdiv.ThemaLoader {
+using Zeta.Themas.Loader.Abstracts;
+
+namespace Zeta.Themas.Loader.Model.ThemaItemContent {
 	public class LibraryLink : ILibraryLink {
 		#region ILibraryLink Members
 

@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Comdiv.QWeb.Logging;
+using Zeta.Themas.Loader.Abstracts;
+using Zeta.Themas.Loader.Model.Thema;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Factory {
 	public class Loader : IThemaLoader {
 		private readonly ILogListener log;
 

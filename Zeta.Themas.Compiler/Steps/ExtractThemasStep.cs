@@ -28,7 +28,7 @@ using System.Linq;
 using Qorpent.Log;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Extracts well-known paramlib/param and root/param elements into context.ParameterIndex dictionary
 	/// </summary>

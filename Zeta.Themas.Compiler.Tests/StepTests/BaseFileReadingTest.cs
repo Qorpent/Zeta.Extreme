@@ -29,9 +29,9 @@ using System.Linq;
 using NUnit.Framework;
 using Qorpent.Applications;
 using Qorpent.Bxl;
-using Qorpent.Themas.Compiler.Pipelines;
+using Zeta.Themas.Compiler.Pipelines;
 
-namespace Qorpent.Themas.Compiler.Tests.StepTests {
+namespace Zeta.Themas.Compiler.Tests.StepTests {
 	[TestFixture]
 	public class BaseFileReadingTest : ThemaCompilerTestBase {
 		private readonly IBxlParser bxl = Application.Current.Bxl.GetParser();

@@ -29,7 +29,7 @@ using Qorpent.Applications;
 using Qorpent.Dsl.LogicalExpressions;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	checks that xml block match conditions of project
 	/// </summary>

@@ -1,7 +1,8 @@
-using Comdiv.ThemaLoader.UI;
-using Comdiv.ThemaLoader.Wrap;
+using Zeta.Themas.Loader.Factory;
+using Zeta.Themas.Loader.UI;
+using Zeta.Themas.Loader.Wrap;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Abstracts {
 	public interface IUserThemaTreeBuilder {
 		ThemaFactory Factory { get; set; }
 		UserThemaTree BuildTree(string usr = null, WrapContext context = null);

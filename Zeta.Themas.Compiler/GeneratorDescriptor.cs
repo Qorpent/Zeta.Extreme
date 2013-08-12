@@ -27,7 +27,7 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Qorpent.Themas.Compiler {
+namespace Zeta.Themas.Compiler {
 	/// <summary>
 	/// 	descriptror for custom generator class
 	/// </summary>

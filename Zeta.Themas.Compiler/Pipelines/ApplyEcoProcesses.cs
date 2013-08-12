@@ -23,9 +23,9 @@
 
 #endregion
 
-using Qorpent.Themas.Compiler.Steps.EcoProcess;
+using Zeta.Themas.Compiler.Steps.EcoProcess;
 
-namespace Qorpent.Themas.Compiler.Pipelines {
+namespace Zeta.Themas.Compiler.Pipelines {
 	/// <summary>
 	/// </summary>
 	/// <remarks>

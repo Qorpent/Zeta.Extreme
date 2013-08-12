@@ -25,7 +25,7 @@
 
 using System.IO;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	reads raw content of source files in context.SourceFileData
 	/// </summary>

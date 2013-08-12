@@ -1,4 +1,4 @@
-﻿namespace Comdiv.ThemaLoader.ZetaIntegration {
+﻿namespace Zeta.Themas.Loader.ZetaIntegration {
 	public interface IZetaObjIntermediate : IZetaEntityIntermediate {
 		string Path { get; }
 		string ParentCode { get; }

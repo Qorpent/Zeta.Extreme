@@ -26,7 +26,7 @@
 using System.Linq;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler.Steps {
+namespace Zeta.Themas.Compiler.Steps {
 	/// <summary>
 	/// 	Extract linktype elements and creates dictionary from them
 	/// </summary>

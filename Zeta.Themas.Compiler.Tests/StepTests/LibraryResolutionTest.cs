@@ -27,7 +27,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 
-namespace Qorpent.Themas.Compiler.Tests.StepTests {
+namespace Zeta.Themas.Compiler.Tests.StepTests {
 	[TestFixture]
 	public class LibraryResolutionTest : ThemaCompilerTestBase {
 		[Test]

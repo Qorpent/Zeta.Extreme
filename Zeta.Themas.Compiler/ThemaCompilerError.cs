@@ -24,10 +24,11 @@
 #endregion
 
 using System;
+using Qorpent;
 using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
 
-namespace Qorpent.Themas.Compiler {
+namespace Zeta.Themas.Compiler {
 	// ReSharper disable MemberCanBePrivate.Global
 	/// <summary>
 	/// 	compiler error descriptor

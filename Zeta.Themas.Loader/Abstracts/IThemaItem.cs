@@ -1,7 +1,9 @@
 using System.Collections.Generic;
-using Comdiv.ThemaLoader.ZetaIntegration;
+using Zeta.Themas.Loader.Model.ThemaItem;
+using Zeta.Themas.Loader.Model.ThemaItemContent;
+using Zeta.Themas.Loader.ZetaIntegration;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Abstracts {
 	public interface IThemaItem : IElementBasis {
 		IThema Thema { get; set; }
 		IList<ILibraryLink> LibraryLinks { get; }

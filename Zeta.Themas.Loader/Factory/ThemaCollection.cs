@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Zeta.Themas.Loader.Abstracts;
 
-namespace Comdiv.ThemaLoader {
+namespace Zeta.Themas.Loader.Factory {
 	public class ThemaCollection : IThemaCollection {
 		public ThemaCollection() {
 			Index = new Dictionary<string, IThema>();

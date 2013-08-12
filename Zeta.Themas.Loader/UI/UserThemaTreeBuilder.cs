@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using Comdiv.ThemaLoader.Wrap;
+using Zeta.Themas.Loader.Abstracts;
+using Zeta.Themas.Loader.Factory;
+using Zeta.Themas.Loader.Wrap;
 
-namespace Comdiv.ThemaLoader.UI {
+namespace Zeta.Themas.Loader.UI {
 	public class UserThemaTreeBuilder : IUserThemaTreeBuilder {
 		#region IUserThemaTreeBuilder Members
 
