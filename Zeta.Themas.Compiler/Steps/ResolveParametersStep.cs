@@ -79,8 +79,8 @@ namespace Qorpent.Themas.Compiler.Steps {
 						current = thema.ResolvedParameters[complex.Name];
 					}
 					current = complex.Type == "+"
-						          ? ComplexStringHelper.Set(current, sp.Value)
-						          : ComplexStringHelper.Remove(current, sp.Value);
+						          ? ComplexStringExtension.Set(current, sp.Value)
+						          : ComplexStringExtension.Remove(current, sp.Value);
 					thema.ResolvedParameters[complex.Name] = current;
 				}
 			}

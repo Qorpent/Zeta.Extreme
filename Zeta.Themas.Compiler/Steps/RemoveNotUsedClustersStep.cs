@@ -56,7 +56,7 @@ namespace Qorpent.Themas.Compiler.Steps {
 		private bool NotMatchCluster(ThemaDescriptor t) {
 			var proceed = false;
 			if (t.IsWorking) {
-				var cl = ComplexStringHelper.Parse(t.GetParam("cluster"));
+				var cl = ComplexStringExtension.Parse(t.GetParam("cluster"));
 				proceed = !cl.Any(c => Context.Project.Clusters.Contains(c.Key));
 			}
 			return proceed;

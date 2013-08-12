@@ -39,6 +39,7 @@ namespace Qorpent.Themas.Compiler.Steps {
 		/// <remarks>
 		/// </remarks>
 		protected override void InternalProcess() {
+		
 			foreach (var t in Context.Themas.Values) {
 				foreach (var e in t.Items) {
 					var t1 = t;
@@ -49,10 +50,11 @@ namespace Qorpent.Themas.Compiler.Steps {
 						var pluslist = p.Attribute("__PLUS__list");
 						var minuslist = p.Attribute("__MINUS__list");
 						if (null != pluslist && null != list) {
-							list.Value = ComplexStringHelper.Set(list.Value, pluslist.Value);
+							
+							list.Value = ComplexStringExtension.Set(list.Value, pluslist.Value);
 						}
 						if (null != minuslist && null != list) {
-							list.Value = ComplexStringHelper.Remove(list.Value, minuslist.Value);
+							list.Value = ComplexStringExtension.Remove(list.Value, minuslist.Value);
 						}
 						if (null != pluslist) {
 							pluslist.Remove();
