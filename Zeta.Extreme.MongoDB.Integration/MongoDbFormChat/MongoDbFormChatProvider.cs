@@ -140,7 +140,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             var item = UsrCollection.FindOne(
                 Query.And(
                     Query.EQ("message_id", "ALL"),
-                    Query.EQ("user", user)
+                    Query.EQ("user", "" + user)
                 )  
             );
 
@@ -209,7 +209,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
             
             if (!includeArchived) {
 
-                var q = "chatFindExcludeArchived('" + CollectionName + "', '" + user.Replace("\\", "\\\\") + "', " + query.ToJson() + ")";
+                var q = "chatFindExcludeArchived('" + CollectionName + "', /^" + user.Replace("\\", "\\\\") + "$/i, " + query.ToJson() + ")";
                 var found = Database.Eval(
                     new BsonJavaScript(q)
                 ).ToBsonDocument();
@@ -236,7 +236,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
                         new BsonDocument(
                             new Dictionary<string, object> {
 						        {"message_id", formChatItem.Id},
-						        {"user", user}
+						        {"user", ""+user+""}
 					        }
                         )
                     )

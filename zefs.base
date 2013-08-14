@@ -1,0 +1,18 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<ThemaDir Condition="$(IsWeb)">$(AppDir)\themas</ThemaDir>
+		<DirectImport>True</DirectImport>
+		<IsWeb>True</IsWeb>
+	</PropertyGroup>
+	<ItemGroup>
+		<Package Include="qorpent.kernel"/>
+		<Package Include="qorpent.sys" />
+		<Package Include="qorpent.ui" />
+		<Package Include="Zeta.Extreme" />
+		<Package Include="Ugmk.Assoi" />
+	</ItemGroup>
+	<Target Name="AfterDefaultPackageDeploy">
+			<Copy Condition="$(IsWeb)"  SourceFiles="@(Thema)"  DestinationFolder="$(ThemaDir)"  SkipUnchangedFiles="true"  />	
+	</Target>
+	<Import Project="..\qorpent.kernel\package-install.targets" />	
+</Project>

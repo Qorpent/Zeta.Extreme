@@ -1,6 +1,6 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<Import Project="..\Zeta.Extreme\ze.app.base" />
 	<ItemGroup>	
-		<Config Include="..\deployconfig\mongodb.test.base.ioc-manifest.bxl"/>		
+		<Config Include="..\deployconfig\mongodb.test.base.ioc-manifest.bxl"/>
 	</ItemGroup>
 </Project>
