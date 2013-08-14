@@ -128,11 +128,6 @@ namespace Zeta.Extreme.FrontEnd {
 				};
 
 			if (null != Template.Thema) {
-
-                if (ResolveService<IPeriodStateManager>() == null) {
-                    throw new Exception("fucking null");
-                }
-
 				var holdlogin = Template.Thema.GetParameter("hold.responsibility");
 				FormInfo = new
 					{
