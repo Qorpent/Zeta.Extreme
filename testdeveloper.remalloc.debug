@@ -4,8 +4,8 @@
 	</PropertyGroup>
 	<Import Project="..\Zeta.Extreme\testdeveloper.base" />
 	<ItemGroup>
-		<Config Include="..\deployconfig\devel.sals.db-connection" />
+		<Config Include="..\deployconfig\devel.remalloc.db-connection" />
 		<Config Include="..\deployconfig\devel.rolemap.bxl" />
-		<Config Include="..\Zeta.Extreme\local-sals.zetadev.ioc-manifest.bxl"/>
+		<Config Include="..\Zeta.Extreme\local-remalloc.zetadev.ioc-manifest.bxl"/>
 	</ItemGroup>
 </Project>
