@@ -1,0 +1,41 @@
+
+namespace eco.periods
+	class jan
+		period 11 Январь
+		
+	class nojan
+		period 12  Февраль
+		period 13  Март 
+		period 14  Апрель
+		period 15  Май
+		period 16  Июнь
+		period 17  Июль
+		period 18  Август
+		period 19  Сентябрь
+		period 110 Октябрь
+		period 111 Ноябрь
+		period 112 Декабрь
+		
+	class month
+		include jan body
+		include nojan body
+		
+	class sumkvart
+		period 1 "3 мес"
+		period 2 "6 мес"
+		period 3 "9 мес" 
+		period 4 "12 мес"
+		
+	class fact
+		include month body
+		include sumkvart body
+		
+	class formulas
+		period -201 "Cуммовой месяц" formula="11=11,12=22,13=3"
+	
+	class startperiods
+		include fact body
+		
+	class allperiods
+		include fact body
+		include formulas body
