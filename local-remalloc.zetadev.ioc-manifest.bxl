@@ -7,4 +7,4 @@ singleton DeveloperConfig : IDeveloperConfig
 	ThemaSourceFolders
 		add "C:\\Themas\\SYS"
 		add "C:\\Themas\\USR"
-	DocFolder="C:\\UMMC\\.zdoc"
+	DocFolder="C:\\UMMC\\zdoc"
