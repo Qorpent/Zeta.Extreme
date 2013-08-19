@@ -1,22 +1,24 @@
 
 #################################################################################
-##     ЭКСПОРТ ПЕРИОДОВ ИЗ БД ECO ПО СОСТОЯНИЮ НА  19.08.2013 14:49:32       
+##     ЭКСПОРТ ПЕРИОДОВ ИЗ БД ECO ПО СОСТОЯНИЮ НА  19.08.2013 14:49:32      
+##     проверка периода 
+##     select year,count(id) from data where period =258 group by year 
 #################################################################################
 namespace zeta.old.periods.export
 
-	class periods_m category='m'
-		period 11 'янв.' months=1 start='1899-01-01' finish='1899-01-31'
-		period 12 'фев.' months=1 start='1899-02-01' finish='1899-02-28'
-		period 13 'март' months=1 start='1899-03-01' finish='1899-03-31'
-		period 14 'апр.' months=1 start='1899-04-01' finish='1899-04-30'
-		period 15 'май' months=1 start='1899-05-01' finish='1899-05-31'
-		period 16 'июнь' months=1 start='1899-06-01' finish='1899-06-30'
-		period 17 'июль' months=1 start='1899-07-01' finish='1899-07-31'
-		period 18 'авг.' months=1 start='1899-08-01' finish='1899-08-31'
-		period 19 'сен.' months=1 start='1899-09-01' finish='1899-09-30'
-		period 110 'окт.' months=1 start='1899-10-01' finish='1899-10-31'
-		period 111 'нояб.' months=1 start='1899-11-01' finish='1899-11-30'
-		period 112 'дек.' months=1 start='1899-12-01' finish='1899-12-31'
+	class month months=1
+		period 11 'янв.' fullname='Январь' 	start='1899-01-01' finish='1899-01-31'
+		period 12 'фев.'  					start='1899-02-01' finish='1899-02-28'
+		period 13 'март'  					start='1899-03-01' finish='1899-03-31'
+		period 14 'апр.'  start='1899-04-01' finish='1899-04-30'
+		period 15 'май' start='1899-05-01' finish='1899-05-31'
+		period 16 'июнь'  start='1899-06-01' finish='1899-06-30'
+		period 17 'июль'  start='1899-07-01' finish='1899-07-31'
+		period 18 'авг.' start='1899-08-01' finish='1899-08-31'
+		period 19 'сен.' start='1899-09-01' finish='1899-09-30'
+		period 110 'окт.' start='1899-10-01' finish='1899-10-31'
+		period 111 'нояб.'  start='1899-11-01' finish='1899-11-30'
+		period 112 'дек.'  start='1899-12-01' finish='1899-12-31'
 
 	class periods_ma category='ma'
 		period 1 'I кв' months=3 start='1899-01-01' finish='1899-03-31'
