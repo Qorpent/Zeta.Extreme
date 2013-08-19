@@ -56,6 +56,19 @@
 	_КОЛ_КОН = "Кол-во на кон. {2} {0}"
 	_ЦЕНА_КОН = "Цена на кон. {2} {0}, руб."
 	_СУММА_КОН = "Сумма на кон. {2} {0}, тыс. руб."
+	_INT = "#,#" # в колонках и параметрах, разобраться....
+	_DEC1 = "#,0.0"
+	_DEC2 = "#,0.00"
+	_DEC3 = "#,0.000"
+	# Тут наверное имелся ввиду DEC4!!! Описка и надо исправить!
+	#_DEC3 = "#,0.0000"
+	_NUM1 = "#,#.#"
+	_NUM2 = "#,#.##"
+	_NUM3 = "#,#.###"
+	_NUM4 = "#,#.####"
+	_STYLE_PLAN = ""
+	_STYLE_TPFP = "border-right:solid 2px black;border-left:solid 2px black;"
+	
 	
 +class thema		
 	_ФОРМА_ПО_ФАКТУ = "A"
@@ -137,6 +150,8 @@
 	_NAME_TRUD = "Отчет по труду"
 	_NAME_PERS = "Информация о персонале"
 	_NAME_ZHILPR = "Реализация жилищной программы"
+	
+
 
 +class paramset
 	global _СПИСОК_СТРАН : ":Все страны|"
@@ -429,6 +444,8 @@
 	NDS : НДС |
 	SNDS : С НДС
 	"""
+	
+	global _STYLE_OLAP : """[objtype=otr] td, [objtype=h] td, [objtype=og] td, [objtype=alldb] td{background-color:gray; color:white; font-size:10pt; font-weight:bold; }"""
 		
 	#в парамлибе - нужно отдельно выносить?
 	global _ПАЛИТРАОСНОВНЫХЦВЕТОВ :
