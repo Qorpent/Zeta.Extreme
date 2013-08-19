@@ -8,18 +8,18 @@
 namespace zeta.old.periods.export
 
 	class month months=1
-		period 11 'янв.' fullname='Январь' 	start='1899-01-01' finish='1899-01-31'
-		period 12 'фев.' fullname='Февраль'	start='1899-02-01' finish='1899-02-28'
-		period 13 'март' fullname='Март'		start='1899-03-01' finish='1899-03-31'
-		period 14 'апр.' fullname='Апрель' 	start='1899-04-01' finish='1899-04-30'
-		period 15 'май' 	fullname='Май'		start='1899-05-01' finish='1899-05-31'
-		period 16 'июнь' fullname='Июнь' 	start='1899-06-01' finish='1899-06-30'
-		period 17 'июль' fullname='Июль'     start='1899-07-01' finish='1899-07-31'
-		period 18 'авг.' fullname='Август' 	start='1899-08-01' finish='1899-08-31'
-		period 19 'сен.' fullname='Сентябрь'	start='1899-09-01' finish='1899-09-30'
-		period 110 'окт.' fullname='Октябрь' start='1899-10-01' finish='1899-10-31'
-		period 111 'нояб.' fullname='Ноябрь'	start='1899-11-01' finish='1899-11-30'
-		period 112 'дек.' fullname='Декабрь'	start='1899-12-01' finish='1899-12-31'
+		period 11 'янв.' fullname='Январь' 					start='1899-01-01' finish='1899-01-31'
+		period 12 'фев.' fullname='Февраль'					start='1899-02-01' finish='1899-02-28'
+		period 13 'март' fullname='Март'						start='1899-03-01' finish='1899-03-31'
+		period 14 'апр.' fullname='Апрель' 					start='1899-04-01' finish='1899-04-30'
+		period 15 'май' 	fullname='Май'						start='1899-05-01' finish='1899-05-31'
+		period 16 'июнь' fullname='Июнь' 					start='1899-06-01' finish='1899-06-30'
+		period 17 'июль' fullname='Июль'     				start='1899-07-01' finish='1899-07-31'
+		period 18 'авг.' fullname='Август' 					start='1899-08-01' finish='1899-08-31'
+		period 19 'сен.' fullname='Сентябрь'					start='1899-09-01' finish='1899-09-30'
+		period 110 'окт.' fullname='Октябрь' 				start='1899-10-01' finish='1899-10-31'
+		period 111 'нояб.' fullname='Ноябрь'					start='1899-11-01' finish='1899-11-30'
+		period 112 'дек.' fullname='Декабрь'					start='1899-12-01' finish='1899-12-31'
 
 	class periods_ma category='ma'
 		period 1 'I кв' fullname='I квартал' 		months=3 start='1899-01-01' finish='1899-03-31'
@@ -34,10 +34,10 @@ namespace zeta.old.periods.export
 		period 210 '10 мес' fullname='10 месяцев'	months=10 start='1899-01-01' finish='1899-10-31'
 		period 211 '11 мес' fullname='11 месяцев'	months=11 start='1899-01-01' finish='1899-11-30'
 
-	class periods_k category='k'
-		period 32 '2 корр' months=3
-		period 33 '3 корр' months=3
-		period 34 '4 корр' months=3
+	class periods_k months=3 category='k'
+		period 32 '2 корр' fullname='' 
+		period 33 '3 корр' fullname='' 
+		period 34 '4 корр' fullname='' 
 
 	class periods_K category='K'
 		period 42 'II кв.' months=3 start='1899-04-01' finish='1899-06-30'
