@@ -111,6 +111,11 @@ _.widget.register({
 		        onclick: {
 		            modal: { title: "Экспорт дерева", template:'zdev_export_tree_form' , width:400 },
 		        },
+		        
+		    },
+		    {
+		        title: "Экспорт Периодов",
+		        href: './zdev/exportperiods.string.qweb',
 		    },
             "div",
 		      {

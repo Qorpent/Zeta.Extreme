@@ -16,6 +16,7 @@
   <ItemGroup>
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\DropCacheAction.cs" />
+    <Compile Include="Actions\ExportPeriods.cs" />
     <Compile Include="Actions\ExportTreeAction.cs" />
     <Compile Include="Actions\GetColAttributesAction.cs" />
     <Compile Include="Actions\GetFormAttributesAction.cs" />
@@ -37,14 +38,15 @@
     <Compile Include="CodeMetrics\MetricService.cs" />
     <Compile Include="CodeMetrics\MetricTendency.cs" />
     <Compile Include="DeveloperStartUp.cs" />
-    <Compile Include="MetaStorage\BxlMetaTreeExporter.cs" />
-    <Compile Include="MetaStorage\ExportTreeFilter.cs" />
-    <Compile Include="MetaStorage\ExportTreeFormat.cs" />
-    <Compile Include="MetaStorage\HqlTreeExporter.cs" />
-    <Compile Include="MetaStorage\ITreeExporter.cs" />
-    <Compile Include="MetaStorage\TreeExporter.cs" />
-    <Compile Include="MetaStorage\TreeExporterCodeMode.cs" />
-    <Compile Include="MetaStorage\TreeExporterOptions.cs" />
+    <Compile Include="MetaStorage\Periods\PeriodsExporter.cs" />
+    <Compile Include="MetaStorage\Tree\BxlMetaTreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\ExportTreeFilter.cs" />
+    <Compile Include="MetaStorage\Tree\ExportTreeFormat.cs" />
+    <Compile Include="MetaStorage\Tree\HqlTreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\ITreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\TreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\TreeExporterCodeMode.cs" />
+    <Compile Include="MetaStorage\Tree\TreeExporterOptions.cs" />
     <Compile Include="Model\CodeElementCategory.cs" />
     <Compile Include="Model\ElementCodeTypeMap.cs" />
     <Compile Include="Analyzers\Visitors\ElementCodeTypeResolverVisitor.cs" />
