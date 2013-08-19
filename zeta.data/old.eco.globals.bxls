@@ -41,6 +41,8 @@
 	_KORR = "в т.ч. перерасчет за прошл. годы"
 	_TEMPROSTA = "Темп роста {2} {0} (%)"
 	_OTKLPRED = "Откл. от факта {2} {0}"
+	_TEKPLANPERIODS = "251,252,253,254,3512"
+	_ALLPLANPERIODS = "301,251,252,253,254,3512" # не используется
 	
 +class thema		
 	_ФОРМА_ПО_ФАКТУ = "A"
@@ -150,5 +152,20 @@
 	_TAB_UND = "14. Подписи"
 	_TAB_TBL = "16. Таблица"
 	_TAB_SYS = "20. Система"
-		
+	_ГП_ЧАСТИ = "80. Разделы отчета"		
+	_ГП_СЛОИ = "90. Слои отчета"
+	_ГП_ПРОТ = "70. Сведения о документе" # не встречается, но пока не удалила...	
+	
 
+	
+	#в парамлибе - нужно отдельно выносить?
+	global _ПАЛИТРАОСНОВНЫХЦВЕТОВ :
+	"""
+	#FFFFFF : Белый |
+	#000000 : Черный |
+	#DDDDDD : Светло-серый |
+	#FFFF80 : Желтый |
+	#82CBFF : Свето-голубой
+	"""
+
+	global _SP_STYLE : "font-size:9pt;background-color:#FFFFFF;padding-left:0px;padding-top:2px;padding-bottom:2px;text-align:left !important;white-space: normal !important;"
