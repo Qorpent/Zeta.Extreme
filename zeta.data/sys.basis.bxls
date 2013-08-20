@@ -16,4 +16,3 @@ class paramset abstract static
 
 class objset abstract static
 	import global
-	

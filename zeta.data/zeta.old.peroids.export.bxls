@@ -5,8 +5,8 @@
 ##     select year,count(id) from data where period =258 group by year 
 #################################################################################
 namespace zeta.old.periods.export
-
-	class month months=1
+	
+	class month months=1 if='USEOLDECO | USEALL'
 		period 11 'янв.' fullname='Январь' 	start='1899-01-01' finish='1899-01-31'
 		period 12 'фев.' fullname='Февраль'	start='1899-02-01' finish='1899-02-28'
 		period 13 'март' fullname='Март'		start='1899-03-01' finish='1899-03-31'
@@ -20,7 +20,7 @@ namespace zeta.old.periods.export
 		period 111 'нояб.' fullname='Ноябрь'	start='1899-11-01' finish='1899-11-30'
 		period 112 'дек.' fullname='Декабрь'	start='1899-12-01' finish='1899-12-31'
 
-	class periods_ma category='ma'
+	class periods_ma category='ma'  if='USEOLDECO | USEALL'
 		period 1 'I кв' months=3 start='1899-01-01' finish='1899-03-31'
 		period 2 'I пг' months=6 start='1899-01-01' finish='1899-06-30'
 		period 3 '9 мес' months=9 start='1899-01-01' finish='1899-09-30'
@@ -33,12 +33,12 @@ namespace zeta.old.periods.export
 		period 210 '10 мес' months=10 start='1899-01-01' finish='1899-10-31'
 		period 211 '11 мес' months=11 start='1899-01-01' finish='1899-11-30'
 
-	class periods_k category='k'
+	class periods_k category='k'  if='USEOLDECO | USEALL'
 		period 32 '2 корр' months=3
 		period 33 '3 корр' months=3
 		period 34 '4 корр' months=3
 
-	class periods_K category='K'
+	class periods_K category='K'  if='USEOLDECO | USEALL'
 		period 42 'II кв.' months=3 start='1899-04-01' finish='1899-06-30'
 		period 43 'III кв.' months=3 start='1899-07-01' finish='1899-09-30'
 		period 44 'IV кв.' months=3 start='1899-10-01' finish='1899-12-31'
@@ -79,7 +79,7 @@ namespace zeta.old.periods.export
 		period 2543 'План версия 4 (кв 3)' months=3
 		period 2544 'План версия 4 (кв 4)' months=3
 
-	class periods_Y category='Y'
+	class periods_Y category='Y'  if='USEOLDECO | USEALL'
 		period 251 'Пл.1' months=12 start='1899-01-01' finish='1899-12-31'
 		period 252 'Пл.2' months=12 start='1899-01-01' finish='1899-12-31'
 		period 253 'Пл.3' months=12 start='1899-01-01' finish='1899-12-31'
@@ -101,12 +101,12 @@ namespace zeta.old.periods.export
 		period 401 'Ож. год' months=12 finish='1899-12-31'
 		period 6212 '12 мес.' months=12 start='1899-01-01' finish='1899-12-31'
 
-	class periods_R category='R'
+	class periods_R category='R'  if='USEOLDECO | USEALL'
 		period 31 '1 корр' months=3
 		period 3511 'Пл. 1 вер. 1'
 		period 3512 'на директорат'
 
-	class periods_Q category='Q'
+	class periods_Q category='Q'  if='USEOLDECO | USEALL'
 		period 303 'I кв.' months=3 start='1899-01-01' finish='1899-03-31'
 		period 306 'I пг.' months=6 start='1899-01-01' finish='1899-06-30'
 		period 309 '9 мес.' months=9 start='1899-01-01' finish='1899-09-30'
@@ -116,7 +116,7 @@ namespace zeta.old.periods.export
 		period 623 '3 мес.' months=3 start='1899-01-01' finish='1899-03-31'
 		period 629 '9 мес.' months=9 start='1899-01-01' finish='1899-09-30'
 
-	class periods_ category=''
+	class periods_ category=''  if='USEOLDECO | USEALL'
 		period 3513 'Пл. 1 вер. 3'
 		period 3521 'Пл. 2 вер. 1'
 		period 3522 'Пл. 2 вер. 2'
@@ -128,7 +128,7 @@ namespace zeta.old.periods.export
 		period 3542 'Пл. 4 вер. 2'
 		period 3543 'Пл. 4 вер. 3'
 
-	class periods_M category='M'
+	class periods_M category='M'  if='USEOLDECO | USEALL'
 		period 611 'янв.' months=1 start='1899-01-01' finish='1899-01-31'
 		period 612 'фев.' months=1 start='1899-02-01' finish='1899-01-28'
 		period 613 'март' months=1 start='1899-03-01' finish='1899-03-31'
@@ -142,7 +142,7 @@ namespace zeta.old.periods.export
 		period 6111 'ноя.' months=1 start='1899-11-01'
 		period 6112 'дек.' months=1 start='1899-12-01' finish='1899-12-31'
 
-	class periods_MA category='MA'
+	class periods_MA category='MA'  if='USEOLDECO | USEALL'
 		period 622 '2 мес.' months=2 start='1899-01-01'
 		period 624 '4 мес.' months=4 start='1899-01-01' finish='1899-04-30'
 		period 625 '5 мес.' months=5 start='1899-01-01' finish='1899-05-31'
@@ -152,7 +152,7 @@ namespace zeta.old.periods.export
 		period 6210 '10 мес.' months=10 start='1899-01-01' finish='1899-10-31'
 		period 6211 '11 мес.' months=11 start='1899-01-01' finish='1899-11-30'
 
-	class periods_nocategory category='nocategory'
+	class periods_nocategory category='nocategory'  if='USEOLDECO | USEALL'
 		period 46 'II пг' months=6 start='1899-07-01' finish='1899-12-31'
 		period 49 '9 ост.м.' months=9 start='1899-04-01' finish='1899-12-31'
 		period 402 'Ож. год' months=12 start='1899-01-01' finish='1899-12-31'
@@ -162,7 +162,7 @@ namespace zeta.old.periods.export
 		period 444 'ож. 4 кв.' months=3 start='1899-10-01' finish='1899-12-31'
 		period 446 'Ож. II пг' months=6 start='1899-07-01' finish='1899-12-31'
 		period 449 'Ож. 9 ост.м.' months=9 start='1899-04-01' finish='1899-12-31'
-	class formulas
+	class formulas  if='USEOLDECO | USEALL'
 		period -602 'Опер. план с н.г.'
 			formula = '11=611,12=622,13=623,14=624,15=625,16=626,17=627,18=628,19=629,110=6210,111=6211,112=6212,22=622,1=623,24=624,25=625,2=626,27=627,28=628,3=629,210=6210,211=6211,4=6212'
 		period -601 'Опер. план'
