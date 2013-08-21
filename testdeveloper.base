@@ -4,10 +4,11 @@
 		<IsWeb>True</IsWeb>
 	</PropertyGroup>
 	<Import Project="..\qorpent.sys\baseapp" />
-	<ItemGroup>	
+	<ItemGroup>
+		<Config Include="..\deployconfig\devel.rolemap.bxl" />
 		<Library Include="Zeta.Extreme.Developer"/>
 		<Library Include="Zeta.Extreme.Model"/>
 		<Config Include="zetadev.ioc-manifest.bxl"/>
-    <Ui Include=".\zdev.ui"/>
+		<Ui Include=".\zdev.ui"/>
 	</ItemGroup>
 </Project>
