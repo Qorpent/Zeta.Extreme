@@ -1,0 +1,4 @@
+namespace demo if='DEMO'
+	class demo_colset 
+		import colset 
+		# тут надо будет собственно попытаться сделать колонки (колсет) - пробник

@@ -4,8 +4,12 @@ class global abstract static
 
 class thema abstract static
 	import global
-
+	
 class rowset abstract static
+	import global
+	
+class tree abstract static
+	codemode=RootPrefix
 	import global
 	
 class colset abstract static
