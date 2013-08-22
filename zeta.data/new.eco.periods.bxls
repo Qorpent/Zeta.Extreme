@@ -66,6 +66,7 @@ namespace zeta.old.periods.export
 		period 2511 'План версия 1 (кв 1)' months=3
 		period 2512 'План версия 1 (кв 2)' months=3
 		period 2513 'План версия 1 (кв 3)' months=3
+		# ? два одинаковых периода
 		period 2514 'План версия 1 (кв 4)' months=3
 		period 2514 'План версия 2 (кв 4)' months=3
 		period 2521 'План версия 2 (кв 1)' months=3
