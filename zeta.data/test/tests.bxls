@@ -1,6 +1,6 @@
-namespace test
+namespace test if='USETESTS | USEALL'
 	namespace columns
-		colset test if='USETESTS | USEALL'
+		colset test 
 			col 
 				period jan '${_ЯНВ}' 
 				period plangod '${_ПЛАНГОД}'
@@ -9,6 +9,6 @@ namespace test
 				col forperiods='eco.periods.fact'
 
 	namespace parameters		
-		paramset test if='USETESTS | USEALL'
+		paramset test
 			import some_not_existed
 			col period='${_ЯНВ}'
