@@ -1,0 +1,14 @@
+namespace demo.blocks
+
+	class subsystem abstract
+		element block
+
+	subsystem eco
+		block fin 
+		block dds
+	
+	subsystem personal
+		block trud
+		block zarp
+	
+	subsystem proizv

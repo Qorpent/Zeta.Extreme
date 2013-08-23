@@ -15,5 +15,7 @@ tmp
 # mstest test results
 TestResults
 
-
+.log
+.output
+.tmp
 .idea

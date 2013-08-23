@@ -3,42 +3,64 @@
 ##     ЭКСПОРТ ПЕРИОДОВ ИЗ БД ECO ПО СОСТОЯНИЮ НА  19.08.2013 14:49:32      
 ##     проверка периода 
 ##     select year,count(id) from data where period =258 group by year 
+##		select year,period,count(id) from data where period in (33,32,258) group by year ,period order by period,year
 #################################################################################
-namespace zeta.old.periods.export
+namespace zeta
+	class periodset abstract 
+		runtime='Zeta.Extreme.Model.PeriodSet, Zeta.Extreme.Model'
+namespace zeta.eco.periods if='!OLDONLY'
+	class month "Факт по месяцам" months=1 fact=true menu=true
+		import periodset
+		period 11 'янв.' fullname='Январь' 		start='1899-01-01' finish='1899-01-31'
+		period 12 'фев.' fullname='Февраль'		start='1899-02-01' finish='1899-02-28'
+		period 13 'март' fullname='Март'			start='1899-03-01' finish='1899-03-31'
+		period 14 'апр.' fullname='Апрель' 		start='1899-04-01' finish='1899-04-30'
+		period 15 'май' 	fullname='Май'			start='1899-05-01' finish='1899-05-31'
+		period 16 'июнь' fullname='Июнь' 			start='1899-06-01' finish='1899-06-30'
+		period 17 'июль' fullname='Июль'     		start='1899-07-01' finish='1899-07-31'
+		period 18 'авг.' fullname='Август' 		start='1899-08-01' finish='1899-08-31'
+		period 19 'сен.' fullname='Сентябрь'		start='1899-09-01' finish='1899-09-30'
+		period 110 'окт.' fullname='Октябрь' 		start='1899-10-01' finish='1899-10-31'
+		period 111 'нояб.' fullname='Ноябрь'		start='1899-11-01' finish='1899-11-30'
+		period 112 'дек.' fullname='Декабрь'		start='1899-12-01' finish='1899-12-31'
+		
+	class planmonth "План по месяцам" months=1 plan=true
+		import periodset
+		period 611 'янв.' start='1899-01-01' finish='1899-01-31'
+		period 612 'фев.' start='1899-02-01' finish='1899-01-28'
+		period 613 'март' start='1899-03-01' finish='1899-03-31'
+		period 614 'апр.' start='1899-04-01' finish='1899-04-30'
+		period 615 'май'  start='1899-05-01' finish='1899-05-31'
+		period 616 'июнь' start='1899-06-01' finish='1899-06-30'
+		period 617 'июль' start='1899-07-01' finish='1899-07-31'
+		period 618 'авг.' start='1899-08-01' finish='1899-08-31'
+		period 619 'сен.' start='1899-09-01' finish='1899-09-30'
+		period 6110 'окт.' start='1899-10-01' finish='1899-10-31'
+		period 6111 'ноя.' start='1899-11-01'
+		period 6112 'дек.' start='1899-12-01' finish='1899-12-31'
 
-	class month months=1
-		period 11 'янв.' fullname='Январь' 	start='1899-01-01' finish='1899-01-31'
-		period 12 'фев.' fullname='Февраль'	start='1899-02-01' finish='1899-02-28'
-		period 13 'март' fullname='Март'		start='1899-03-01' finish='1899-03-31'
-		period 14 'апр.' fullname='Апрель' 	start='1899-04-01' finish='1899-04-30'
-		period 15 'май' 	fullname='Май'		start='1899-05-01' finish='1899-05-31'
-		period 16 'июнь' fullname='Июнь' 	start='1899-06-01' finish='1899-06-30'
-		period 17 'июль' fullname='Июль'     start='1899-07-01' finish='1899-07-31'
-		period 18 'авг.' fullname='Август' 	start='1899-08-01' finish='1899-08-31'
-		period 19 'сен.' fullname='Сентябрь'	start='1899-09-01' finish='1899-09-30'
-		period 110 'окт.' fullname='Октябрь' start='1899-10-01' finish='1899-10-31'
-		period 111 'нояб.' fullname='Ноябрь'	start='1899-11-01' finish='1899-11-30'
-		period 112 'дек.' fullname='Декабрь'	start='1899-12-01' finish='1899-12-31'
+	class summonth fact=true
+		import periodset
+		period 1 'I кв' fullname='3 месяца' 		months=3 start='1899-01-01' finish='1899-03-31'
+		period 2 'I пг' fullname='6 месяцев'   	months=6 start='1899-01-01' finish='1899-06-30'
+		period 3 '9 мес' fullname='9 месяцев'		months=9 start='1899-01-01' finish='1899-09-30'
+		period 4 'Год' fullname='12 месяцев'				months=12 start='1899-01-01' finish='1899-12-31'
+		period 22 '2 мес' fullname='2 месяца'		months=2 start='1899-01-01' finish='1899-02-28'
+		period 24 '4 мес' fullname='4 месяца'		months=4 start='1899-01-01' finish='1899-04-30'
+		period 25 '5 мес' fullname='5 месяцев'		months=5 start='1899-01-01' finish='1899-05-31'
+		period 27 '7 мес' fullname='7 месяцев'		months=7 start='1899-01-01' finish='1899-07-31'
+		period 28 '8 мес' fullname='8 месяцев'  		months=8 start='1899-01-01' finish='1899-08-31'
+		period 210 '10 мес' fullname='10 месяцев'	months=10 start='1899-01-01' finish='1899-10-31'
+		period 211 '11 мес' fullname='11 месяцев'	months=11 start='1899-01-01' finish='1899-11-30'
 
-	class periods_ma category='ma'
-		period 1 'I кв' months=3 start='1899-01-01' finish='1899-03-31'
-		period 2 'I пг' months=6 start='1899-01-01' finish='1899-06-30'
-		period 3 '9 мес' months=9 start='1899-01-01' finish='1899-09-30'
-		period 4 'Год' months=12 start='1899-01-01' finish='1899-12-31'
-		period 22 '2 мес' months=2 start='1899-01-01' finish='1899-02-28'
-		period 24 '4 мес' months=4 start='1899-01-01' finish='1899-04-30'
-		period 25 '5 мес' months=5 start='1899-01-01' finish='1899-05-31'
-		period 27 '7 мес' months=7 start='1899-01-01' finish='1899-07-31'
-		period 28 '8 мес' months=8 start='1899-01-01' finish='1899-08-31'
-		period 210 '10 мес' months=10 start='1899-01-01' finish='1899-10-31'
-		period 211 '11 мес' months=11 start='1899-01-01' finish='1899-11-30'
-
-	class periods_k category='k'
-		period 32 '2 корр' months=3
-		period 33 '3 корр' months=3
-		period 34 '4 корр' months=3
+	class periods_k months=3 category='k'
+		import periodset
+		period 32 '2 корр' fullname='' 
+		period 33 '3 корр' fullname='' 
+		period 34 '4 корр' fullname='' 
 
 	class periods_K category='K'
+		import periodset
 		period 42 'II кв.' months=3 start='1899-04-01' finish='1899-06-30'
 		period 43 'III кв.' months=3 start='1899-07-01' finish='1899-09-30'
 		period 44 'IV кв.' months=3 start='1899-10-01' finish='1899-12-31'
@@ -65,6 +87,7 @@ namespace zeta.old.periods.export
 		period 2511 'План версия 1 (кв 1)' months=3
 		period 2512 'План версия 1 (кв 2)' months=3
 		period 2513 'План версия 1 (кв 3)' months=3
+		# ? два одинаковых периода
 		period 2514 'План версия 1 (кв 4)' months=3
 		period 2514 'План версия 2 (кв 4)' months=3
 		period 2521 'План версия 2 (кв 1)' months=3
@@ -80,10 +103,11 @@ namespace zeta.old.periods.export
 		period 2544 'План версия 4 (кв 4)' months=3
 
 	class periods_Y category='Y'
-		period 251 'Пл.1' months=12 start='1899-01-01' finish='1899-12-31'
-		period 252 'Пл.2' months=12 start='1899-01-01' finish='1899-12-31'
-		period 253 'Пл.3' months=12 start='1899-01-01' finish='1899-12-31'
-		period 254 'Пл.4' months=12 start='1899-01-01' finish='1899-12-31'
+		import periodset
+		period 251 'Пл.1' fullname='План версия 1' months=12 start='1899-01-01' finish='1899-12-31'
+		period 252 'Пл.2' fullname='План версия 2' months=12 start='1899-01-01' finish='1899-12-31'
+		period 253 'Пл.3' fullname='План версия 3' months=12 start='1899-01-01' finish='1899-12-31'
+		period 254 'Пл.4' fullname='План версия 4' months=12 start='1899-01-01' finish='1899-12-31'
 		period 255 'План версия 5' start='1899-01-01' finish='1899-12-31'
 		period 256 'План версия 6' start='1899-01-01' finish='1899-12-31'
 		period 257 'План версия 7' start='1899-01-01' finish='1899-12-31'
@@ -97,16 +121,18 @@ namespace zeta.old.periods.export
 		period 293 'Подготовка плана 3'
 		period 294 'Подготовка плана 4'
 		period 295 'Подготовка плана 5'
-		period 301 'Год' months=12
+		period 301 'Год' fullname='Утвержденный годовой план' months=12
 		period 401 'Ож. год' months=12 finish='1899-12-31'
 		period 6212 '12 мес.' months=12 start='1899-01-01' finish='1899-12-31'
 
 	class periods_R category='R'
+		import periodset
 		period 31 '1 корр' months=3
 		period 3511 'Пл. 1 вер. 1'
 		period 3512 'на директорат'
 
 	class periods_Q category='Q'
+		import periodset
 		period 303 'I кв.' months=3 start='1899-01-01' finish='1899-03-31'
 		period 306 'I пг.' months=6 start='1899-01-01' finish='1899-06-30'
 		period 309 '9 мес.' months=9 start='1899-01-01' finish='1899-09-30'
@@ -117,6 +143,7 @@ namespace zeta.old.periods.export
 		period 629 '9 мес.' months=9 start='1899-01-01' finish='1899-09-30'
 
 	class periods_ category=''
+		import periodset
 		period 3513 'Пл. 1 вер. 3'
 		period 3521 'Пл. 2 вер. 1'
 		period 3522 'Пл. 2 вер. 2'
@@ -128,21 +155,10 @@ namespace zeta.old.periods.export
 		period 3542 'Пл. 4 вер. 2'
 		period 3543 'Пл. 4 вер. 3'
 
-	class periods_M category='M'
-		period 611 'янв.' months=1 start='1899-01-01' finish='1899-01-31'
-		period 612 'фев.' months=1 start='1899-02-01' finish='1899-01-28'
-		period 613 'март' months=1 start='1899-03-01' finish='1899-03-31'
-		period 614 'апр.' months=1 start='1899-04-01' finish='1899-04-30'
-		period 615 'май' months=1 start='1899-05-01' finish='1899-05-31'
-		period 616 'июнь' months=1 start='1899-06-01' finish='1899-06-30'
-		period 617 'июль' months=1 start='1899-07-01' finish='1899-07-31'
-		period 618 'авг.' months=1 start='1899-08-01' finish='1899-08-31'
-		period 619 'сен.' months=1 start='1899-09-01' finish='1899-09-30'
-		period 6110 'окт.' months=1 start='1899-10-01' finish='1899-10-31'
-		period 6111 'ноя.' months=1 start='1899-11-01'
-		period 6112 'дек.' months=1 start='1899-12-01' finish='1899-12-31'
+	
 
 	class periods_MA category='MA'
+		import periodset
 		period 622 '2 мес.' months=2 start='1899-01-01'
 		period 624 '4 мес.' months=4 start='1899-01-01' finish='1899-04-30'
 		period 625 '5 мес.' months=5 start='1899-01-01' finish='1899-05-31'
@@ -153,6 +169,7 @@ namespace zeta.old.periods.export
 		period 6211 '11 мес.' months=11 start='1899-01-01' finish='1899-11-30'
 
 	class periods_nocategory category='nocategory'
+		import periodset
 		period 46 'II пг' months=6 start='1899-07-01' finish='1899-12-31'
 		period 49 '9 ост.м.' months=9 start='1899-04-01' finish='1899-12-31'
 		period 402 'Ож. год' months=12 start='1899-01-01' finish='1899-12-31'
@@ -162,7 +179,10 @@ namespace zeta.old.periods.export
 		period 444 'ож. 4 кв.' months=3 start='1899-10-01' finish='1899-12-31'
 		period 446 'Ож. II пг' months=6 start='1899-07-01' finish='1899-12-31'
 		period 449 'Ож. 9 ост.м.' months=9 start='1899-04-01' finish='1899-12-31'
+		
+		
 	class formulas
+		import periodset
 		period -602 'Опер. план с н.г.'
 			formula = '11=611,12=622,13=623,14=624,15=625,16=626,17=627,18=628,19=629,110=6210,111=6211,112=6212,22=622,1=623,24=624,25=625,2=626,27=627,28=628,3=629,210=6210,211=6211,4=6212'
 		period -601 'Опер. план'
