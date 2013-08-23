@@ -11,6 +11,7 @@ class rowset abstract static
 class tree abstract static
 	codemode=RootPrefix
 	import global
+	element autothema
 	
 class colset abstract static
 	import global

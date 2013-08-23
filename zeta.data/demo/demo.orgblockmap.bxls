@@ -1,3 +1,7 @@
+namespace demo 
+	+class demo_balans
+		~autothema block=demo.blocks.fin
+		
 namespace demo.blocks  if='DEMO'
 	~class eco owner=demo.org.ub
 		~block fin curator=maincurator
