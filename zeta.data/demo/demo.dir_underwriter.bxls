@@ -1,0 +1,23 @@
+#----------------------------------------------------------------------
+#		ФАЙЛ ДЕРЕВА ZETA
+#		метод:			BxlMetaTreeExporter
+#		исх. код.:		DIR_UNDERWRITER
+#		замена кодов:		нет
+#		регекс удаления:	отсутствует
+#		удаленные элементы:	отсутствует
+#		режим расш.-перв.:	да
+#		без родителя :		да
+#		режим кодировки :	Default
+#		сброс индекса :		да
+#---------------------------------------------------------------------
+zetatree codemode=Default
+	DIR_UNDERWRITER  'Подписывающие лица' tag='/prefix:UND_/' 
+		UND_GBUH GBUH  'Главный бухгалтер' tag='/extslot:buh,ecobuh/' 
+		UND_GDIR GDIR  'Генеральный директор' tag='/extslot:ecodir//assert:true/' 
+		UND_INVDIR INVDIR  'Директор по инвестициям' tag='/extslot:ecoidir//assert:true/' 
+		UND_KOMDIR KOMDIR  'Коммерческий директор' tag='/assert:true/' 
+		UND_PLAN PLAN  'Начальник ПЭО' tag='/extslot:ecoplan/' 
+		UND_RUDDIR RUDDIR  'Директор по горному производству' tag='/extslot:ecorud//assert:true/' 
+		UND_SOCDIR SOCDIR  'Директор по социальным вопросам' tag='/assert:true/' 
+		UND_TEHDIR TEHDIR  'Технический директор' tag='/extslot:ecoteh//assert:true/' 
+		UND_TRUD TRUD  'Начальник отдела труда' tag='/extslot:ecotrud/' 
