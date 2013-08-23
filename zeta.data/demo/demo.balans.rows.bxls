@@ -2,7 +2,6 @@
 namespace demo if='DEMO'
 	class demo_balans 
 		import tree
-		autothema colset = 'demo_colset'
 		title m111 "Бухгалтерский баланс"
 			sum 110 "АКТИВ"
 				sum 1100 "I. ВНЕОБОРОТНЫЕ АКТИВЫ"

@@ -5,6 +5,6 @@ namespace demo.org
 		person leader 'Начальник'
 		person maincurator 'Главный куратор системы'
 		
-	node ub
-	node personal
-	node proizv
+	node ub 'Управление бюджетирования'
+	node personal 'Служба персонала'
+	node proizv 'Производство'

@@ -1,11 +1,15 @@
-namespace demo 
+namespace demo if='DEMO'
+
 	+class demo_balans
-		~autothema block=demo.blocks.fin
+		autothema block=demo.blocks.fin colset=demo.demo_colset
 		
-namespace demo.blocks  if='DEMO'
-	~class eco owner=demo.org.ub
-		~block fin curator=maincurator
-	~class proizv owner=demo.org.proizv
-	~class personal owner=demo.org.personal
+	namespace blocks
+
+		~class eco owner=demo.org.ub
+			~block fin curator=maincurator
+			
+		~class proizv owner=demo.org.proizv
+		
+		~class personal owner=demo.org.personal
 	
 	

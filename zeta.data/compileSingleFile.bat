@@ -1,2 +1,2 @@
-..\..\.build\bin\all\bsc.exe --out-layout SingleFile
+..\..\.build\bin\all\bsc.exe --out-layout SingleFile+TreeNamespace
 pause
