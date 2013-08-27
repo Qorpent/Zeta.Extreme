@@ -38,7 +38,7 @@ namespace Zeta.Extreme.Benchmark.Tests.ProbesTests {
 			Assert.NotNull(stats);
 			Console.WriteLine(new XmlSerializer().Serialize("stats",stats));
 			foreach (var p in result.GetNames(true)) {
-				Console.WriteLine("{0} = {1}", p, result.Get(p));
+				Console.WriteLine("{0} = {1}", p, result.Get<string>(p));
 			}
 
 		}

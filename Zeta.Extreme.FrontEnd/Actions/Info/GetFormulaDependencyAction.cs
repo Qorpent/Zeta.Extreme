@@ -129,39 +129,42 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 				if (child) return null;
 				return "Строка не является формулой";
 			}
-
+			IList<Query> rootresults = new List<Query>();
+			foreach (var c in Colset)
+			{
+				var q = new Query(r.Code, c.Code, ObjId, c.Year, c.Period);
+				q = (Query)DataSession.GetUnderlinedSession().Register(q);
+				q.GetResult();
+				rootresults.Add(q);
+			}
 			if (r.IsFormula) {
 
-				return GetFormulaDependency(r, child);
+				return GetFormulaDependency(r, child,rootresults);
 			}
 
 			if (r.RefTo != null) {
-				return GetRefDependency(r, child);
+				return GetRefDependency(r, child, rootresults);
 			}
 
 			if (r.ExRefTo != null)
 			{
-				return GetExRefDependency(r, child);
+				return GetExRefDependency(r, child, rootresults);
 			}
 
 			return null;
 		}
 		AuthorizeHelper authhelper = new AuthorizeHelper();
 		private IList<object> refforms = new List<object>();
-		private object GetExRefDependency(IZetaRow r, bool child)
+		private object GetExRefDependency(IZetaRow r, bool child, IList<Query> rootresults)
 		{
 			IList<string> codes = new List<string>();
 			codes.Add(r.ExRefTo.Code);
 			var myForm = GetFormName(r);
 			var forms = getForms(myForm);
 			
-			var depinfo = GetDepList(codes,"exref");
-			IList<Query> rootresults = new List<Query>();
-			foreach (var c in Colset) {
-				var q = new Query(r.Code, c.Code, ObjId, c.Year, c.Period);
-				DataSession.Eval(q);
-				rootresults.Add(q);
-			}
+			
+			
+			var depinfo = GetDepList(codes, "exref",rootresults);
 
 			if (child)
 			{
@@ -179,14 +182,27 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			
 		}
 
-		private object[] GetDepList(IList<string> codes,string type) {
+		private object[] GetDepList(IList<string> codes, string type, IList<Query> rootresults) {
 			var result = codes.Select(_ => MetaCache.Default.Get<IZetaRow>(_)).Select(_ => ConvertToDependency(_, type)).ToArray();
 		    if (NeedData) {
 		        foreach (var d in result) {
-		            var vals = new List<decimal>();
-		            foreach (var c in Colset) {
-		                var q = new Query(d.code, c.Code, ObjId, c.Year, c.Period);
-		                vals.Add(DataSession.Eval(q).NumericResult);
+		            var vals = new List<string>();
+					
+		            foreach (var q in rootresults) {
+			            var res = "";
+			            var deps = q.FindDependencyResult(d.code).ToArray();
+						if (0 == deps.Length) {
+							res = "-";
+						}
+						else if (1 == deps.Length) {
+							res = deps[0].GetResult().NumericResult.ToString("#,0.##");
+						}
+						else {
+							foreach (var dv in deps) {
+								res += string.Format("{0}({1},{2})<br/>", dv.GetResult().NumericResult.ToString("#,0.##"), dv.Col.Code, dv.Time.Period);
+							}
+						}
+			            vals.Add(res);
 		            }
 		            d.values = vals.ToArray();
 		        }
@@ -218,13 +234,13 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			return new {code = t.Code, name = t.Name, allow = authhelper.IsAllowed(t.GetAllForms().First())};
 		}
 
-		private object GetRefDependency(IZetaRow r, bool child)
+		private object GetRefDependency(IZetaRow r, bool child, IList<Query> rootresults)
 		{
 			IList<string> codes = new List<string>();
 			codes.Add(r.RefTo.Code);
 			var myForm = GetFormName(r);
 			var forms = getForms(myForm);
-			var depinfo = GetDepList(codes, "ref");
+			var depinfo = GetDepList(codes, "ref", rootresults);
 			if (child)
 			{
 				return depinfo;
@@ -239,7 +255,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			return ExRefDependency(r, child, myForm, forms, "ref", depinfo);
 		}
 
-		private object GetFormulaDependency(IZetaRow r, bool child) {
+		private object GetFormulaDependency(IZetaRow r, bool child, IList<Query> rootresults) {
 			var foreignRowCodes = Regex.Matches(r.Formula, @"\$([\w\d_]+)");
 			IList<string> codes = new List<string>();
 			foreach (Match codeMatches in foreignRowCodes) {
@@ -251,7 +267,7 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 
 			var myForm = GetFormName(r);
 			var forms = getForms(myForm);
-			var depinfo = GetDepList(codes,"formula");
+			var depinfo = GetDepList(codes,"formula", rootresults);
 
 			foreach (var form in forms)
 			{

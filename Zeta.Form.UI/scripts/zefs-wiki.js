@@ -280,7 +280,7 @@
             tbody.append(tr);
             if (!!d1.values) {
                 $.each(d1.values, function(i, v) {
-                    tr.append($('<td/>').text(v))
+                    tr.append($('<td/>').html(v))
                 });
             }
         });
