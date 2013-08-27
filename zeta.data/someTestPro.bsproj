@@ -1,3 +1,5 @@
 class testproj
-	Exclude : "p:eco"
-	Out-Layout : "PlainNamespace+IncludeWork"
+	Layout PlainNamespace
+	OutDirectory .testproj
+	Exclude
+		Path eco
