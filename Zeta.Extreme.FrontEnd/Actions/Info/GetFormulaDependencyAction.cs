@@ -154,7 +154,15 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			codes.Add(r.ExRefTo.Code);
 			var myForm = GetFormName(r);
 			var forms = getForms(myForm);
+			
 			var depinfo = GetDepList(codes,"exref");
+			IList<Query> rootresults = new List<Query>();
+			foreach (var c in Colset) {
+				var q = new Query(r.Code, c.Code, ObjId, c.Year, c.Period);
+				DataSession.Eval(q);
+				rootresults.Add(q);
+			}
+
 			if (child)
 			{
 				return depinfo;
