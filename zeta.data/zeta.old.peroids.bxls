@@ -1,0 +1,21 @@
+
+#################################################################################
+##     ЭКСПОРТ ПЕРИОДОВ ИЗ БД ECO ПО СОСТОЯНИЮ НА  19.08.2013 14:49:32      
+##     проверка периода 
+##     select year,count(id) from data where period =258 group by year 
+#################################################################################
+namespace zeta
+	
+	class month months=1 if='USEOLDECO | USEALL'
+		period 11 'янв.' fullname='Январь' 	start='1899-01-01' finish='1899-01-31'
+		period 12 'фев.' fullname='Февраль'	start='1899-02-01' finish='1899-02-28'
+		period 13 'март' fullname='Март'		start='1899-03-01' finish='1899-03-31'
+		period 14 'апр.' fullname='Апрель' 	start='1899-04-01' finish='1899-04-30'
+		period 15 'май' 	fullname='Май'		start='1899-05-01' finish='1899-05-31'
+		period 16 'июнь' fullname='Июнь' 	start='1899-06-01' finish='1899-06-30'
+		period 17 'июль' fullname='Июль'     start='1899-07-01' finish='1899-07-31'
+		period 18 'авг.' fullname='Август' 	start='1899-08-01' finish='1899-08-31'
+		period 19 'сен.' fullname='Сентябрь'	start='1899-09-01' finish='1899-09-30'
+		period 110 'окт.' fullname='Октябрь' start='1899-10-01' finish='1899-10-31'
+		period 111 'нояб.' fullname='Ноябрь'	start='1899-11-01' finish='1899-11-30'
+		period 112 'дек.' fullname='Декабрь'	start='1899-12-01' finish='1899-12-31'
