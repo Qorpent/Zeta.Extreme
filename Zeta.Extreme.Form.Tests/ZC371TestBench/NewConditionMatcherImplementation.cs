@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Qorpent.Dsl.LogicalExpressions;
 using Qorpent.Utils.Extensions;
+using Qorpent.Utils.LogicalExpressions;
 
 namespace Zeta.Extreme.Form.Tests.ZC371TestBench {
 	public class NewConditionMatcherImplementation : ConditionMatcherBase {

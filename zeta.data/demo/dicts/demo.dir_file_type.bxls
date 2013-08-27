@@ -1,0 +1,24 @@
+#----------------------------------------------------------------------
+#		ФАЙЛ ДЕРЕВА ZETA
+#		метод:			BxlMetaTreeExporter
+#		исх. код.:		DIR_FILE_TYPES
+#		замена кодов:		нет
+#		регекс удаления:	отсутствует
+#		удаленные элементы:	отсутствует
+#		режим расш.-перв.:	да
+#		без родителя :		да
+#		режим кодировки :	Default
+#		сброс индекса :		да
+#---------------------------------------------------------------------
+zetatree codemode=Default
+	DIR_FILE_TYPES  'Типы прикрепленных файлов формы' tag='/prefix:DIR_FILE_TYPE_/' 
+		DIR_FILE_TYPE_balans balans  'Баланс (balans)' tag='/form:balans2011/' 
+		DIR_FILE_TYPE_changes changes  'Письмо с перераспределением (changes)' tag='/form:rashsn,inv/' 
+		DIR_FILE_TYPES_corrective corrective  'Письмо с коррективами (corrective)' tag='/form:trud/' 
+		DIR_FILE_TYPE_description description  'Разъяснение (description)' tag='/form:any/' 
+		DIR_FILE_TYPE_freeact freeact  'Чистые активы (freeact)' tag='/form:free_active2011/' 
+		DIR_FILE_TYPE_m_uploaddata m_uploaddata  'Файл подгрузки данных (m_uploaddata)' tag='/form:reserve/' 
+		DIR_FILE_TYPE_prib prib  'Отчет о прибылях и убытках (prib)' tag='/form:prib2011/' 
+		DIR_FILE_TYPE_rp rp  'Анализ реализованной продукции (rp)' tag='/form:finres/' 
+		DIR_FILE_TYPE_stfr stfr  'Стандарт фин. отчетности (stfr)' tag='/form:balans2011/' 
+		DIR_FILE_TYPE_tp tp  'Анализ товарной продукции (tp)' tag='/form:zatr/' 
