@@ -11,6 +11,6 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 		public object[] forms;
 		public string type;
 		public object dependency;
-		public decimal[] values;
+		public string[] values;
 	}
 }
