@@ -1,0 +1,3 @@
+class testproj
+	Exclude : "p:eco"
+	Out-Layout : "PlainNamespace+IncludeWork"
