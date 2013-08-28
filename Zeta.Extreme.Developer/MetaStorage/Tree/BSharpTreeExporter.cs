@@ -164,7 +164,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			var deplist = new List<string>();
 			foreach (var f in new[] {exportroot}.Union(exportroot.AllChildren)) {
 				if (f.RefTo != null) {
-					if (f.RefTo.Code != exportroot.Code) {
+					if (f.RefTo.Code.Substring(0,4) != exportroot.Code) {
 						deplist.Add("ref:" + f.RefTo.Code);
 						
 					}
@@ -178,7 +178,8 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 					var codes = Regex.Matches(f.Formula, @"\$([\w_\d]+)")
 					                 .OfType<Match>().Select(_ => _.Groups[1]).ToArray();
 					foreach (var c in codes) {
-						if (c.Value != exportroot.Code) {
+						if (c.Value.Substring(0, 4) != exportroot.Code)
+						{
 							deplist.Add(type + c.Value);
 						}
 					}
@@ -189,7 +190,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 				AddBigComment("");
 				AddBigComment("Обнаружены зависимости от других форм");
 				foreach (var f in formlist) {
-					AddBigComment("        "+f);
+					AddBigComment("        "+f.Replace(":"," : "));
 				}
 			}
 		}
