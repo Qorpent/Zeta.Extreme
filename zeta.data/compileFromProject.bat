@@ -1,2 +1,2 @@
-..\..\.build\bin\all\bsc.exe --project testproj
+..\..\.build\bin\all\bsc.exe --project test
 pause

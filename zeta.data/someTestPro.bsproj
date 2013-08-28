@@ -1,5 +1,2 @@
-class testproj
-	Layout PlainNamespace
-	OutDirectory .testproj
-	Exclude
-		Path eco
+project test
+	OutputDirectory .testproj
