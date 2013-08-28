@@ -164,18 +164,22 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			var deplist = new List<string>();
 			foreach (var f in new[] {exportroot}.Union(exportroot.AllChildren)) {
 				if (f.RefTo != null) {
-					deplist.Add(f.RefTo.Code);
+					deplist.Add("ref:"+f.RefTo.Code);
 					continue;
 				}
 				if (f.IsFormula) {
+					var type = "frm:";
+					if (f.MarkCache.Contains("CONTROLPOINT")) {
+						type = "cpt:";
+					}
 					var codes = Regex.Matches(f.Formula, @"\$([\w_\d]+)")
 					                 .OfType<Match>().Select(_ => _.Groups[1]).ToArray();
 					foreach (var c in codes) {
-						deplist.Add(c.Value);
+						deplist.Add(type+c.Value);
 					}
 				}
 			}
-			var formlist = deplist.Select(_ => _.Substring(0, 4)).Distinct().Where(_=>_!=exportroot.Code).OrderBy(_ => _).ToArray();
+			var formlist = deplist.Select(_ => _.Substring(0, 8)).Distinct().Where(_=>_!=exportroot.Code).OrderBy(_ => _).ToArray();
 			if (0 != formlist.Length) {
 				AddBigComment("");
 				AddBigComment("Обнаружены зависимости от других форм");
