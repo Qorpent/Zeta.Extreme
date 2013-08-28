@@ -138,74 +138,7 @@
             new TagMap("nds_avans"){Group="nds"},
             new TagMap("extslot"),
             new TagMap("export",AttributeType.Bool),
-            
-
-
-
-
-
-CALC_OP	, z210400, z2504000, z2604000, z4104000, z4202800	7	a=v
-pr_tablestyle	, _dobpok, _factor, _macropok, _osnfinpok, _osn...	6	-
-olap_nal	, 1	6	g=olap
-oknull	, 1	6	a
-nds_nob	, m224921, m2249263, m224927, m224929, m224942	6	g=nds
-linkconto1	, BA010_931, BA010_932, BA045_01, BA060_01	6	a=v
-fr_filter	, DIR_REPORTS_PRES	6	-
-assert	, true	6	a
-olap_uslchop	, 1	5	g=olap
-view	, m140_filter, m140view, verstka_1	4	-
-tagforobj	, 1	4	a
-pr_decimals	, 0, 2	4	-
-osn_prod		4	a
-fstr	, 1	4	a
-useosv	, 1	3	a
-SWK	, m1301200, m1302100	3	a=v
-prot	, pr	3	-
-pr_linethikness	, 4	3	-
-pr_filter	, m140	3	-
-olap__nds19	, 1	3	g=olap
-formfilter	, 1	3	a
-casplitdiv	, 1	3	a
-biztran	, SALE90, SIR003, SIR1091	3	a=v
-afdep	, m111, m112, this	3	a=v
-type	, ;CE_KSG;, ;CE_SCR;CE_MZR;	2	a=v
-ts_showroot	, true	2	-
-sourcelink	, DS=Pd, NDSLINK=NDS	2	a=v
-showvalues	, 0	2	a
-rows	, m111, m260170,m260180	2	a=v
-prtr	, 2, 3	2	a=v
-prg_showvalues	, 0, 1	2	-
-prb	, 1	2	a
-olap_tep		2	g=olap
-objset	, 536,467	2	-
-masterrow	, true	2	a
-castruc	, CA_STRUCT	2	a=v
-carole	, DK_PP, DK_PZ	2	a=v
-CALC_TP	, z2505000, z2605000	2	a=v
-CALC_RP	, z2506000, z2606000	2	a=v
-usedoughnut2d	, 1	1	-
-usedoughnut	, 1	1	-
-usearea	, 1	1	-
-ts_rootrow	, m203200	1	-
-total	, 1	1	a
-tagfordetail	, 1	1	a
-roleprefix	, FIN	1	a=v
-protocolview	, m140table	1	-
-primary	, 0	1	a
-prg_showsum	, 1	1	-
-ppvalues	, dfs	1	-
-pptarget	, nkls	1	-
-ppsource	, sdlfj	1	-
-pplevel	, 1	1	-
-ppformat	, sdlj	1	-
-olap_sir	, 1	1	g=olap
-KOLDIV1000	, 1	1	a
-deplist	, this	1	a=v
-dependent	, 0	1	a
-checklimit	, 1.0	1	a
-bt	, mtr	1	a=v
-aliased	, dscd	1	a=v
-
+      
 
         };
     }
