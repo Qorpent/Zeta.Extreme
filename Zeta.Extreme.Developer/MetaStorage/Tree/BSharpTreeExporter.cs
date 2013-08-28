@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Qorpent.Applications;
 using Qorpent.Utils.Extensions;
@@ -151,8 +153,36 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			AddBigComment("Время генерации", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 			AddBigComment("ID строки в БД", exportroot.Id.ToString());
 			AddBigComment("Максимальная версия строк в форме", new[] { exportroot }.Union(exportroot.AllChildren).Max(_ => _.Version).ToString("yyyy-MM-dd HH:mm:ss"));
+
+			WriteOutReferencesComment(exportroot);
+
 			EndBigComment();
 			sb.AppendLine();
+		}
+
+		private void WriteOutReferencesComment(IZetaRow exportroot) {
+			var deplist = new List<string>();
+			foreach (var f in new[] {exportroot}.Union(exportroot.AllChildren)) {
+				if (f.RefTo != null) {
+					deplist.Add(f.RefTo.Code);
+					continue;
+				}
+				if (f.IsFormula) {
+					var codes = Regex.Matches(f.Formula, @"\$([\w_\d]+)")
+					                 .OfType<Match>().Select(_ => _.Groups[1]).ToArray();
+					foreach (var c in codes) {
+						deplist.Add(c.Value);
+					}
+				}
+			}
+			var formlist = deplist.Select(_ => _.Substring(0, 4)).Distinct().Where(_=>_!=exportroot.Code).OrderBy(_ => _).ToArray();
+			if (0 != formlist.Length) {
+				AddBigComment("");
+				AddBigComment("Обнаружены зависимости от других форм");
+				foreach (var f in formlist) {
+					AddBigComment("        "+f);
+				}
+			}
 		}
 	}
 }

@@ -41,7 +41,7 @@ namespace Zeta.Extreme.Developer.Actions {
 		[Bind(
 			Name = "namespace",
 			Required = false,
-			Default = false,
+			Default = null,
 			Help = "Пространство имен для BSharp"
 		)]
 		private string _namespace = null;
@@ -49,7 +49,7 @@ namespace Zeta.Extreme.Developer.Actions {
 		[Bind(
 			Name = "classname",
 			Required = false,
-			Default = false,
+			Default = null,
 			Help = "Имя класса для BSharp"
 		)]
 		private string _classname = null;
