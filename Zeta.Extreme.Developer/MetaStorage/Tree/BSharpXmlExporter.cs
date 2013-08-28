@@ -140,12 +140,12 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 							}
 						}
 						else {
-							var n = v.Key;
+							var n = v.Key.Trim();
 
 							
 
 							if (!string.IsNullOrWhiteSpace(map.Attribute)) {
-								n = map.Attribute;
+								n = map.Attribute.Trim();
 							}
 							
 							if (map.AttributeType == AttributeType.Bool) {
@@ -170,21 +170,21 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 			foreach (var m in marks) {
 				var map = DefaultBsMappings.DefaultRowMarks.FirstOrDefault(_ => _.SourceName == m);
 				if (null == map) {
-					yield return m;
+					yield return m.Trim();
 				}
 				else {
 					if (!map.Ignore) {
 						if (map.Error) {
-							yield return "error:" + m;
+							yield return "error:" + m.Trim();
 						}
 						else {
 							if (!string.IsNullOrWhiteSpace(map.Element)) {
-								yield return map.Element;
+								yield return map.Element.Trim();
 							}else if (!string.IsNullOrWhiteSpace(map.Attribute)) {
-								yield return map.Attribute;
+								yield return map.Attribute.Trim();
 							}
 							else {
-								yield return m;
+								yield return m.Trim();
 							}
 						}
 					}
