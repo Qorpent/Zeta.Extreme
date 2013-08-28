@@ -1,4 +1,4 @@
-namespace Zeta.Extreme.Developer.MetaStorage {
+namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 	/// <summary>
 	/// Режим генерации кодов
 	/// </summary>

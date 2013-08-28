@@ -40,6 +40,8 @@
     <Compile Include="DeveloperStartUp.cs" />
     <Compile Include="MetaStorage\Periods\PeriodsExporter.cs" />
     <Compile Include="MetaStorage\Tree\AttributeType.cs" />
+    <Compile Include="MetaStorage\Tree\BSharpTreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\BSharpXmlExporter.cs" />
     <Compile Include="MetaStorage\Tree\BxlMetaTreeExporter.cs" />
     <Compile Include="MetaStorage\Tree\DefaultBSMappings.cs" />
     <Compile Include="MetaStorage\Tree\ExportTreeFilter.cs" />
