@@ -101,6 +101,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 			if (r.IsFormula) return RowType.Formula;
 			if (marks.Contains("sum")) return RowType.Sum;
 			if(r.RefTo!=null||r.RefId!=null)return RowType.Ref;
+			if(r.HasChildren())return RowType.Title;
 			return RowType.Primary;
 		}
 
