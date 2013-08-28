@@ -10,7 +10,7 @@
 			
 			new TagMap("0SA") {Element="sum"},
             new TagMap("0CAPTION") {Element="title"},
-            new TagMap("CONTROLPOINT") {Element="controlpoint "},
+            new TagMap("CONTROLPOINT") {Element="controlpoint"},
             
             new TagMap("0NOSUM", AttributeType.Bool,"nosum"),
 			new TagMap("CALCSUM", AttributeType.Bool,"calcsum"),
