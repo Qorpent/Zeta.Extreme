@@ -46,6 +46,42 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 			
 			e.SetAttributeValue("code",code);
 			e.SetAttributeValue("name",r.Name);
+
+			if (!string.IsNullOrWhiteSpace(r.OuterCode) && code!=r.OuterCode) {
+				e.SetAttributeValue("outer",r.OuterCode);
+			}
+
+			if (type == RowType.Formula) {
+				e.SetAttributeValue("formula",r.Formula);
+				if (r.FormulaType != "boo" && r.FormulaType != "cs") {
+					e.SetAttributeValue("formulatype",r.FormulaType);
+				}
+			}
+
+			if (r.RefTo != null || r.RefId != null) {
+				e.SetAttributeValue("ref",r.RefTo==null?(object)r.RefId:r.RefTo.Code);
+			}
+
+			if (!string.IsNullOrWhiteSpace(r.GroupCache)) {
+				e.SetAttributeValue("groups",r.GroupCache);
+			}
+
+			if (!string.IsNullOrWhiteSpace(r.Measure)) {
+				e.SetAttributeValue("measure",r.Measure);
+			}
+
+			foreach (var m in marks) {
+				if(m=="sum")continue;
+				if (m == "controlpoint") continue;
+				if (m == "title") continue;
+				e.SetAttributeValue(m,"");
+			}
+
+			foreach (var t in tags) {
+				e.SetAttributeValue(t.Key, t.Value);
+			}
+
+
 			return e;
 		}
 

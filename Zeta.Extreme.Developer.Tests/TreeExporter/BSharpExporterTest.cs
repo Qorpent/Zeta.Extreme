@@ -30,6 +30,7 @@ namespace Zeta.Extreme.Developer.Tests.TreeExporter
 				Id=1718, Code = "m111", Name = "Баланс", MarkCache = "/0CAPTION/", Version=new DateTime(2013,5,12,13,44,34),
 				Children = {
 					new Row{Code="m111110",Name="Актив", MarkCache = "0SA"},
+					new Row{Code="m111120",Name="Формула",IsFormula = true, Formula="$m113456? * $a214567@Pd?" },
 				}
 			};
 		}

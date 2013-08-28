@@ -78,14 +78,57 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 
 		private void RenderSelfClass(XElement e, int level) {
 			sb.AppendLine();
+			DoTab(level);
+			sb.Append(e.Name.LocalName);
+			sb.Append(" ");
+			sb.Append(e.Attr("code"));
+			sb.Append(" '" + e.Attr("name").Replace("'", "\\'") + "' ");
+			foreach (var a in e.Attributes()) {
+				if (a.Name.LocalName == "formula") continue;
+				if (a.Name.LocalName == "code") continue;
+				if (a.Name.LocalName == "name") continue;
+				if (a.Value == "") {
+					sb.Append(a.Name.LocalName);
+					sb.Append(" ");
+				}
+				else {
+					if (a.Value.All(_ => char.IsLetterOrDigit(_) || _ == '.')) {
+						sb.Append(a.Name.LocalName);
+						sb.Append("=");
+						sb.Append(a.Value);
+						sb.Append(" ");
+					}
+					else {
+						sb.Append(a.Name.LocalName);
+						sb.Append("='");
+						sb.Append(a.Value.Replace("'","\\'"));
+						sb.Append("' ");
+					}
+				}
+			}
+
+			var f = e.Attribute("formula");
+			if (null != f) {
+				if (e.Elements().Any()) {
+					sb.Append(" formula=(");
+				}
+				else {
+					sb.Append(" : (");
+				}
+				sb.AppendLine();
+				DoTab(level + 1);
+				sb.Append(f.Value);
+				sb.AppendLine();
+				DoTab(level);
+				sb.Append(")");
+			}
+		}
+
+		private void DoTab(int level) {
 			sb.Append(CLS_CNT_TAB);
 			for (var i = 0; i < level; i++) {
 				sb.Append("\t");
 			}
-			sb.Append(e.Name.LocalName);
-			sb.Append(" ");
-			sb.Append(e.Attr("code"));
-			sb.Append(" '" + e.Attr("name").Replace("'", "\'") + "' ");
 		}
 
 		private void RenderClassStart(XElement xml) {
