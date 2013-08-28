@@ -1,6 +1,6 @@
 using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Developer.MetaStorage {
+namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 	/// <summary>
 	/// 
 	/// </summary>
