@@ -137,7 +137,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			var cls = xml.Element("class");
 			sb.AppendFormat("namespace {0}", xml.Attr("code"));
 			sb.AppendLine();
-			sb.AppendFormat("{0}class {1} '{2}' formcode={3}", CLS_TAB, cls.Attr("code"), cls.Attr("name"), cls.Attr("formcode"));
+			sb.AppendFormat("{0}class {1} '{2}' formcode={3} stopinterpolate=all", CLS_TAB, cls.Attr("code"), cls.Attr("name"), cls.Attr("formcode"));
 			sb.AppendLine();
 			sb.AppendFormat("{0}import {1}", CLS_CNT_TAB, cls.Element("import").Attr("code"));
 		}

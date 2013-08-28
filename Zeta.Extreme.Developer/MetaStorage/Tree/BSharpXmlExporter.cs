@@ -65,7 +65,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 			}
 
 			if (!string.IsNullOrWhiteSpace(r.GroupCache)) {
-				e.SetAttributeValue("groups",r.GroupCache);
+				e.SetAttributeValue("groups",string.Join(" ",r.GroupCache.SmartSplit()));
 			}
 
 			if (!string.IsNullOrWhiteSpace(r.Measure)) {
