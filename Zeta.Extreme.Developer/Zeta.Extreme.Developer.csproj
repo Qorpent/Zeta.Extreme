@@ -39,7 +39,9 @@
     <Compile Include="CodeMetrics\MetricTendency.cs" />
     <Compile Include="DeveloperStartUp.cs" />
     <Compile Include="MetaStorage\Periods\PeriodsExporter.cs" />
+    <Compile Include="MetaStorage\Tree\AttributeType.cs" />
     <Compile Include="MetaStorage\Tree\BxlMetaTreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\DefaultBSMappings.cs" />
     <Compile Include="MetaStorage\Tree\ExportTreeFilter.cs" />
     <Compile Include="MetaStorage\Tree\ExportTreeFormat.cs" />
     <Compile Include="MetaStorage\Tree\HqlTreeExporter.cs" />

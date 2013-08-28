@@ -1,27 +1,6 @@
 ﻿namespace Zeta.Extreme.Developer.MetaStorage.Tree
 {
 	/// <summary>
-	/// 
-	/// </summary>
-	public enum AttributeType {
-		/// <summary>
-		/// Никакой
-		/// </summary>
-		None,
-		/// <summary>
-		/// Прячущийся бул
-		/// </summary>
-		Bool,
-		/// <summary>
-		/// Явный бул
-		/// </summary>
-		Bool10,
-		/// <summary>
-		/// Значение
-		/// </summary>
-		Value,
-	}
-	/// <summary>
 	/// Разметка тегов и меток при выгоне в новый язык
 	/// </summary>
 	public class TagMap
@@ -74,23 +53,5 @@
 		/// Целевая группа
 		/// </summary>
 		public string Group { get; set; }
-		/// <summary>
-		/// Стандартный мапинг меток для строк по AP-107
-		/// </summary>
-		public static TagMap[] DefaultRowMarks = new[] {
-				new TagMap("0PARTITION") {Ignore = true},
-				new TagMap("0SA") {Element="sum"},
-				new TagMap("0NOSUM", AttributeType.Bool,"nosum"),
-				new TagMap("0AA"){Error=true},
-			};
-		/// <summary>
-		/// Стандартный мапинг тегов длястрок  по AP-108
-		/// </summary>
-		public static TagMap[] DefaultRowTags = new[] {
-				new TagMap("active",AttributeType.Bool),
-				new TagMap("vgrp"),
-				new TagMap("olap_tmc"){Group="olap"},
-			};
-		
 	}
 }
