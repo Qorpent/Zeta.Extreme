@@ -15,7 +15,7 @@ namespace Zeta.Extreme.Developer.Actions {
 	public class ExportTreeAction  : ActionBase {
 		[Bind(
 			Name = "format",
-			Constraint = new object[] { ExportTreeFormat.BxlMeta,ExportTreeFormat.Hql,  },
+            Constraint = new object[] { ExportTreeFormat.BSharp, ExportTreeFormat.BxlMeta, ExportTreeFormat.Hql, },
 			Help = "Формат представления экспортного дерева",
 			Default = ExportTreeFormat.Hql
 		)]
