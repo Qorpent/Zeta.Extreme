@@ -164,7 +164,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			var deplist = new List<string>();
 			foreach (var f in new[] {exportroot}.Union(exportroot.AllChildren)) {
 				if (f.RefTo != null) {
-					deplist.Add("ref:"+f.RefTo.Code);
+					if (f.RefTo.Code != exportroot.Code) {
+						deplist.Add("ref:" + f.RefTo.Code);
+						
+					}
 					continue;
 				}
 				if (f.IsFormula) {
@@ -175,7 +178,9 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 					var codes = Regex.Matches(f.Formula, @"\$([\w_\d]+)")
 					                 .OfType<Match>().Select(_ => _.Groups[1]).ToArray();
 					foreach (var c in codes) {
-						deplist.Add(type+c.Value);
+						if (c.Value != exportroot.Code) {
+							deplist.Add(type + c.Value);
+						}
 					}
 				}
 			}
