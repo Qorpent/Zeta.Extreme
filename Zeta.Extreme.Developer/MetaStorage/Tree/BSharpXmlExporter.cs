@@ -51,10 +51,12 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 				e.SetAttributeValue("outer",r.OuterCode);
 			}
 
-			if (type == RowType.Formula) {
-				e.SetAttributeValue("formula",r.Formula);
-				if (r.FormulaType != "boo" && r.FormulaType != "cs") {
-					e.SetAttributeValue("formulatype",r.FormulaType);
+			if (type == RowType.Formula || type==  RowType.ControlPoint) {
+				if (!string.IsNullOrWhiteSpace(r.Formula)) {
+					e.SetAttributeValue("formula", r.Formula);
+					if (r.FormulaType != "boo" && r.FormulaType != "cs") {
+						e.SetAttributeValue("formulatype", r.FormulaType);
+					}
 				}
 			}
 
