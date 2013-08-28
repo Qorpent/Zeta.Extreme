@@ -175,7 +175,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 				else {
 					if (!map.Ignore) {
 						if (map.Error) {
-							yield return "error:" + m.Trim();
+							yield return "ERROR_" + m.Trim();
 						}
 						else {
 							if (!string.IsNullOrWhiteSpace(map.Element)) {
