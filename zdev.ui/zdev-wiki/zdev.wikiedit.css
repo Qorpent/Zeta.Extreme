@@ -1,4 +1,5 @@
-#wiki-list {
+#wiki-list,
+#wiki-attach {
 	padding-left: 15px;
 }
 
@@ -9,15 +10,12 @@
 	-moz-box-sizing: border-box;
 }
 
+.wiki-preview
 .wiki-source {
 	margin-right: 15px;
 }
 
-.wiki-preview {
-	margin-right: 15px;
-}
-
-.wiki-link {
+.wiki-article-link {
 	position: relative;
 	overflow: hidden;
 	width: 235px;
@@ -27,14 +25,14 @@
 	box-sizing: border-box;
 }
 
-.wiki-link>i {
+.wiki-article-link>i {
 	position: absolute;
 }
 
-.wiki-link>.wiki-delete-btn {
+.wiki-article-link>.wiki-delete-btn {
 	right: 0;
 }
 
-.wiki-link>.wiki-edit-btn {
+.wiki-article-link>.wiki-edit-btn {
 	right: 18px;
 }
