@@ -30,7 +30,7 @@ namespace Zeta.Extreme.FrontEnd.Actions {
 	/// <summary>
 	/// 	Базовое действие для стартующих сессию
 	/// </summary>
-	public class SessionStartBase : FormServerActionBase {
+	public abstract class SessionStartBase : FormServerActionBase {
 		/// <summary>
 		/// 	Second phase - validate INPUT/REQUEST parameters here - it called before PREPARE so do not try validate
 		/// 	second-level internal state and authorization - only INPUT PARAMETERS must be validated

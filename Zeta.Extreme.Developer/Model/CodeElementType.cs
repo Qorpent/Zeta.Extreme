@@ -1,226 +1,281 @@
-﻿namespace Zeta.Extreme.Developer.Model {
+﻿using System;
+
+namespace Zeta.Extreme.Developer.Model
+{
 	/// <summary>
 	/// Тип элементов кода темы
 	/// </summary>
-	public enum CodeElementType {
+	[Flags]
+	public enum CodeElementType : long
+	{
+		//FREE 33,38,39,53,55
+
 		/// <summary>
 		/// Неопределенный
 		/// </summary>
-		Undefined,
+		Undefined = 1L<<63,
 		/// <summary>
 		/// Библиотека параметров
 		/// </summary>
-		ParamLib,
+		ParamLib = 1,
 		/// <summary>
 		/// Параметр, определенные в библиотеке
 		/// </summary>
-		ParamDefLib,
+		ParamDefLib = 1L<<1,
 		/// <summary>
 		/// Указание параметра в корне (обычно в импортируемом файле)
 		/// </summary>
-		ParamDefRoot,
+		ParamDefRoot = 1L<<2,
 		/// <summary>
 		/// Статический параметр, определенный локально
 		/// </summary>
-		ReportParamDefLocalVar,
+		ReportParamDefLocalVar = 1L<<3,
 		/// <summary>
 		/// Динамический параметр, определенный локально
 		/// </summary>
-		ReportParamDefLocalParam,
+		ReportParamDefLocalParam = 1L<< 4,
 		/// <summary>
-		/// Параметр, определенный локально
+		/// Параметр, определенный локально в форме
 		/// </summary>
-		ReportParamDefLocal = ReportParamDefLocalVar | ReportParamDefLocalParam,
+		ParamInForm = 1L<< 5,
 		/// <summary>
-		/// Определение параметра
+		/// Параметр, показываемый локально в отчете
 		/// </summary>
-		ParamDef = ReportParamDefLocal | ParamDefLib | ParamDefRoot,
+		ParamShowReport = 1L<< 6,
+		/// <summary>
+		///Параметр определяемый в наборе параметров (аналог колсета)
+		/// </summary>
+		ParamInParamset = 1L<< 7,
 		/// <summary>
 		/// Набор параметров (аналог колсета)
 		/// </summary>
-		ParamSet,
+		ParamSet = 1L<< 8,
 		/// <summary>
 		/// Ссылка ASK на параметр в paramset
 		/// </summary>
-		ParamAskInParamset,
+		ParamAskInParamset = 1L<< 9,
 		/// <summary>
 		/// Запрос на парамтер в определении отчета
 		/// </summary>
-		ParamAskInReportDef,
+		ParamAskInReportDef = 1L<< 10,
 		/// <summary>
 		/// Запрос параметра в репортсете
 		/// </summary>
-		ParamAskInReportSet,
+		ParamAskInReportSet = 1L<< 11,
 		/// <summary>
 		/// Запрос параметра в расширении отчета
 		/// </summary>
-		ParamAskInReportSetEx,
-		/// <summary>
-		/// Определение парамтера на запрос в отчете
-		/// </summary>
-		ParamAskInReport = ParamAskInReportDef | ParamAskInReportSet | ParamAskInReportSetEx,
+		ParamAskInReportSetEx = 1L<< 12,
+		
 		/// <summary>
 		/// Определение запроса параметра в колсете
 		/// </summary>
-		ParamAskReferenceInColset ,
-		/// <summary>
-		/// Запрос параметра в целом
-		/// </summary>
-		ParamAsk = ParamAskInReport | ParamAskReferenceInColset,
+		ParamAskReferenceInColset = 1L<< 13,
+	
 
 		/// <summary>
 		/// Утверждение на параметр в paramset
 		/// </summary>
-		ParamUseInParamset,
+		ParamUseInParamset = 1L<< 14,
 		/// <summary>
 		/// Утверждение на парамтер в определении отчета
 		/// </summary>
-		ParamUseInReportDef,
+		ParamUseInReportDef = 1L<< 15,
 		/// <summary>
 		/// Утверждение параметра в репортсете
 		/// </summary>
-		ParamUseInReportSet,
+		ParamUseInReportSet = 1L<< 16,
 		/// <summary>
 		/// Утверждение параметра в расширении отчета
 		/// </summary>
-		ParamUseInReportSetEx,
-		/// <summary>
-		/// Утверждение парамтера  в отчете
-		/// </summary>
-		ParamUseInReport = ParamUseInReportDef | ParamUseInReportSet | ParamUseInReportSetEx,
+		ParamUseInReportSetEx = 1L<< 17,
+	
 		/// <summary>
 		/// Утверждение  параметра в колсете
 		/// </summary>
-		ParamUseReferenceInColset,
-		/// <summary>
-		/// Утверждение параметра в целом
-		/// </summary>
-		ParamUse = ParamUseInReport | ParamUseReferenceInColset,
+		ParamUseReferenceInColset = 1L<< 18,
 
-		/// <summary>
-		/// Ссылка на параметр
-		/// </summary>
-		ParamRef = ParamUse|ParamAsk,
 
 		/// <summary>
 		/// Определение колсета
 		/// </summary>
-		Colset,
-		
+		Colset = 1L<< 19,
+
 		/// <summary>
 		/// Импорт колсета в другой колсет
 		/// </summary>
-		ColsetImportIntoColset,
+		ColsetImportIntoColset = 1L<< 20,
 		/// <summary>
 		/// Колонка, определенная в колсете
 		/// </summary>
-		ColInColset,
+		ColInColset = 1L<< 21,
+		/// <summary>
+		/// Импорт, наследование тем
+		/// </summary>
+		Imports = 1L<< 22,
+		/// <summary>
+		/// Импорт парамсета
+		/// </summary>
+		ImportParamset = 1L<< 23,
 
 		/// <summary>
 		/// Колонка, определенная в отчете
 		/// </summary>
-		ColInReport,
+		ColInReport = 1L<< 24,
 		/// <summary>
 		/// Колонка, определенная в форме
 		/// </summary>
-		ColInForm,
+		ColInForm = 1L<< 25,
 
+		
 		/// <summary>
-		/// Определение колонки
+		/// Подключение расширения
 		/// </summary>
-		Col = ColInReport|ColInColset|ColInForm,
+		Extension = 1L<< 26,
 		/// <summary>
-		/// Правило для колонки
+		/// Набор объектов
 		/// </summary>
-		ColCheckRule,
+		Objset = 1L<< 27,
 
 		/// <summary>
 		/// Тема, объявленная как унаследованная
 		/// </summary>
-		ThemaInherited,
+		ThemaInherited = 1L<< 28,
 		/// <summary>
 		/// Тема объявленная прямо тегом Thema
 		/// </summary>
-		ThemaRooted,
-		/// <summary>
-		/// Определение темы
-		/// </summary>
-		Thema = ThemaInherited | ThemaRooted,
+		ThemaRooted = 1L<< 29,
+		
 		/// <summary>
 		/// Определение автозамены языка
 		/// </summary>
-		SubstDefinition,
+		SubstDefinition = 1L<< 30,
 		/// <summary>
 		/// Пользовательские расширения контента
 		/// </summary>
-		ContentExtensions,
+		ContentExtensions = 1L<< 31,
+		
+		/// <summary>
+		/// Явный параметр темы
+		/// </summary>
+		ThemaParameter = 1L << 32,
+
+
+		/// <summary>
+		/// Объект в группе объектов
+		/// </summary>		
+		ObjectInObjset = 1L<< 34,
+
+		/// <summary>
+		/// Привязка объекта в отчет
+		/// </summary>			
+		ObjectInReport = 1L<< 35,
+
+		/// <summary>
+		/// Сам по себе генератор
+		/// </summary>
+		Generator =1L<<36,
+		/// <summary>
+		/// Нутро генератора
+		/// </summary>
+		GeneratorInternal = 1L<<37,
+		
 
 		/// <summary>
 		/// Исходное определение отчета
 		/// </summary>
-		ReportDef,
+		ReportDef = 1L<< 40,
 		/// <summary>
 		/// Определение нутра отчета
 		/// </summary>
-		ReportSet,
+		ReportSet = 1L<< 41,
 		/// <summary>
 		/// Расширение нутра отчета
 		/// </summary>
-		ReportSetEx,
+		ReportSetEx = 1L<< 42,
 		/// <summary>
-		/// Определение отчета в целом
+		/// Спрятать параметры в отчете
 		/// </summary>
-		Report  = ReportDef|ReportSet|ReportSetEx,
+		HideParamInReport = 1L<< 43,
+		
 
 		/// <summary>
 		/// Исходное определение формы
 		/// </summary>
-		FormDef,
+		FormDef = 1L<< 44,
+		/// <summary>
+		/// Пользовательское расширение
+		/// </summary>
+		FormProcesses = 1L<< 45,
+
 		/// <summary>
 		/// Определение нутра формы
 		/// </summary>
-		FormSet,
+		FormSet = 1L<< 46,
 		/// <summary>
 		/// Расширение нутра формы
 		/// </summary>
-		FormSetEx,
-		/// <summary>
-		/// Определение формы в целом
-		/// </summary>
-		Form = FormDef | FormSet | FormSetEx,
-
+		FormSetEx = 1L<< 47,
+		
 		/// <summary>
 		/// Импорт библиотеки в отчет
 		/// </summary>
-		UseLibReport ,
+		UseLibReport = 1L<< 48,
 
 
 		/// <summary>
 		/// Импорт библиотеки в форму
 		/// </summary>
-		UseLibForm,
-		/// <summary>
-		/// Импорт библиотеки в целом
-		/// </summary>
-		UseLib = UseLibReport|UseLibForm,
+		UseLibForm = 1L<<49,
+		
 		/// <summary>
 		/// Импорт колсета в форму
 		/// </summary>
-		ColsetImportIntoForm,
+		ColsetImportIntoForm = 1L<< 50,
 		/// <summary>
 		/// Импорт колсета в отчет
 		/// </summary>
-		ColsetImportIntoReport,
+		ColsetImportIntoReport = 1L<< 51,
+
+		
+		/// <summary>
+		/// Глобальное значение
+		/// </summary>
+		Global = 1L<< 52,
 
 		/// <summary>
-		/// Импорт колсета в тему
+		/// Строка среди строк
 		/// </summary>
-		ColsetImportIntoThema = ColsetImportIntoForm |ColsetImportIntoReport,
-		/// <summary>
-		/// Импорт колсета в целом
-		/// </summary>
-		ColsetImport = ColsetImportIntoColset | ColsetImportIntoForm |ColsetImportIntoReport,
+		RowInRows = 1L<< 54,
 
+		/// <summary>
+		/// Строки
+		/// </summary>
+		Rows = 1L<< 56,
+		/// <summary>
+		/// Строка в форме
+		/// </summary>
+		RowInForm = 1L<< 57,
+		/// <summary>
+		/// Строка в отчете
+		/// </summary>
+		RowInReport = 1L<< 58,
+		/// <summary>
+		/// Строка определяемая в наборе строк (аналог колсета, парамсета)
+		/// </summary>
+		RowInRowSet = 1L<< 59,
+		/// <summary>
+		/// Определение форм в расширении "процессы"
+		/// </summary>
+		ContentExtension = 1L<< 60,
+		/// <summary>
+		/// Набор строк
+		/// </summary>
+		Rowset = 1L<< 61,/// <summary>
+		/// Правило для колонки
+		/// </summary>
+		ColCheckRule = 1L<< 62,
+		
 		
 	}
 }

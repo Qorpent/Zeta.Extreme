@@ -32,7 +32,7 @@ $.extend(root.render, {
             colgroup.append($('<col class="data"/>').attr("idx",col.idx));
             var th = $('<th class="data"/>').attr({
                 "idx": col.idx,
-                "title": col.code + " " + col.year + " " + col.period
+                "title": col.code + "," + col.period + "," + col.year
             }).text(col.name);
             if (col.isprimary) {
                 th.addClass("primary");

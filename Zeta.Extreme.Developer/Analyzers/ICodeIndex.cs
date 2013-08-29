@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using Zeta.Extreme.Developer.Model;
 
 namespace Zeta.Extreme.Developer.Analyzers {
@@ -14,6 +15,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <param name="filter"></param>
 		/// <returns></returns>
 		IEnumerable<AttributeDescriptor> GetAttributes(string[] roots, SearchFilter filter = null);
+		
 
 		/// <summary>
 		/// Вернуть полный список исходных XML
@@ -32,5 +34,13 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <param name="filter"></param>
 		/// <returns></returns>
 		IEnumerable<ElementCodeTypeMap> GetElementCodeMap(SearchFilter filter);
+
+
+		/// <summary>
+		/// Выполняет поиск элементов по заданым условиям
+		/// </summary>
+		/// <param name="filter"></param>
+		/// <returns></returns>
+		IEnumerable<XElement> SelectElements(SearchFilter filter);
 	}
 }

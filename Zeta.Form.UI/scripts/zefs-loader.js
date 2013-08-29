@@ -58,6 +58,7 @@ document.write('<script src="scripts/zefs-formsubobj.js"></script>');
 document.write('<script src="scripts/zefs-wiki.js"></script>');
 document.write('<script src="_sys/getjs.file.qweb?scriptname=zefs-formdetails"></script>');
 //document.write('<script src="scripts/zefs-formdependence.js"></script>');
+document.write('<script src="scripts/zefs-formdeadline.js"></script>');
 document.write('<script src="scripts/zefs-formkurator.js"></script>');
 document.write('<script src="scripts/zefs-formusers.js"></script>');
 document.write('<script src="scripts/zefs-formvaluta.js"></script>');

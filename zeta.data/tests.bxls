@@ -1,0 +1,14 @@
+namespace test
+	namespace columns
+		colset test if='USETESTS | USEALL'
+			col 
+				period jan '${_ЯНВ}' 
+				period plangod '${_ПЛАНГОД}'
+				period nojan '${_НЕ_ЯНВ}'
+				period month '${_ТОЛЬКО_МЕС}'
+				col forperiods='eco.periods.fact'
+
+	namespace parameters		
+		paramset test if='USETESTS | USEALL'
+			import some_not_existed
+			col period='${_ЯНВ}'

@@ -55,5 +55,12 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// </summary>
 		/// <returns></returns>
 		IEnumerable<ElementCodeTypeMap> GetElementTypeMap(SearchFilter filter = null);
+
+		/// <summary>
+		/// Получает элементы, относящиеся к параметрам
+		/// </summary>
+		/// <param name="filter"></param>
+		/// <returns></returns>
+		IEnumerable<ParameterDescriptor> GetParameters(SearchFilter filter = null);
 	}
 }

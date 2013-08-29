@@ -81,6 +81,11 @@ $.extend(api,(function(){
                         data : []
                     });
                     obj.FormInfo.CodeOnly = obj.FormInfo.Code.replace(/[A|B]\.in/, '');
+                    var ps = obj.FormInfo.PeriodState;
+                    if (!!ps) {
+                        ps.DeadLine =  eval(ps.DeadLine.substring(2));
+                        ps.UDeadLine =  eval(ps.UDeadLine.substring(2));
+                    }
                     return obj;
                 }
             }),

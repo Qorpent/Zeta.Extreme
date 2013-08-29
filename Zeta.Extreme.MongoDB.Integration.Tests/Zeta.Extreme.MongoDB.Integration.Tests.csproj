@@ -54,15 +54,10 @@
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceSerializer\MongoDbAttachmentSourceSerializerTestsBase.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTests.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsBase.cs" />
-    <Compile Include="MongoDbConnectorTests.cs" />
-    <Compile Include="MongoDbConnectorTestsBase.cs" />
     <Compile Include="MongoDbFormChat\MongoDbFormChatProviderTest.cs" />
     <Compile Include="MongoDbFormChat\MongoDbFormChatSerializerTest.cs" />
-    <Compile Include="MongoDbLogs\MongoDbLogsTests.cs" />
-    <Compile Include="MongoDbLogs\MongoDbLogsTestsBase.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsP1358.cs" />
     <Compile Include="MongoDbAttachmentSource\MongoDbAttachmentSourceTestsP1362FindPattern.cs" />
-    <Compile Include="Wiki\WikiTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\mongo-csharp-driver\MongoDB.Bson\MongoDB.Bson.csproj">
@@ -72,6 +67,10 @@
     <ProjectReference Include="..\..\mongo-csharp-driver\MongoDB.Driver\MongoDB.Driver.csproj">
       <Project>{ae5166cd-76b0-4911-bd80-ced9521f37a1}</Project>
       <Name>MongoDB.Driver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\qorpent.integration\Qorpent.Integration.MongoDB\Qorpent.Integration.MongoDB.csproj">
+      <Project>{31ce132d-bfe7-443e-b68c-8c05f0751bc5}</Project>
+      <Name>Qorpent.Integration.MongoDB</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\qorpent.sys\Qorpent.Core\Qorpent.Core.csproj">
       <Project>{880f65ea-1a22-4672-a137-ffc91290a209}</Project>
@@ -91,9 +90,33 @@
       <Project>{62f22ffa-a1cf-4a74-838c-9ab33a9442ea}</Project>
       <Name>Qorpent.IoC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.IO\Qorpent.IO.csproj">
+      <Project>{426c92df-3c40-426c-b0be-40a1df9044c2}</Project>
+      <Name>Qorpent.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Log\Qorpent.Log.csproj">
+      <Project>{77d47855-a3d4-4b92-9fc0-c2edee27a8a7}</Project>
+      <Name>Qorpent.Log</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Mvc\Qorpent.Mvc.csproj">
+      <Project>{96885c8f-ad20-41b4-86ee-bc9b3d47d9f9}</Project>
+      <Name>Qorpent.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Security\Qorpent.Security.csproj">
+      <Project>{ecb429bc-3e76-4fcd-897e-235b546c8738}</Project>
+      <Name>Qorpent.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Serialization\Qorpent.Serialization.csproj">
+      <Project>{21971f28-8ed8-4f50-b623-e9db2658af54}</Project>
+      <Name>Qorpent.Serialization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
       <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
       <Name>Qorpent.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.BizProcess.Tests\Zeta.Extreme.BizProcess.Tests.csproj">
+      <Project>{B399520C-20AE-4C8F-9C30-72ACC60B780B}</Project>
+      <Name>Zeta.Extreme.BizProcess.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj">
       <Project>{44653de7-dee5-4960-a906-e0d6b1f83fcc}</Project>

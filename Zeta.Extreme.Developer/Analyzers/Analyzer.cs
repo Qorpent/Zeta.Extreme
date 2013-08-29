@@ -29,7 +29,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <returns></returns>
 		public IEnumerable<AttributeDescriptor> GetParameterAttributes(SearchFilter filter = null) {
 			filter = filter ?? new SearchFilter {  DocRoot = "paramattr" };
-			return Index.GetAttributes(new[] { "/paramlib/param", "/*/out/param", "/*/out/var" }, filter);
+			return Index.GetAttributes(new[] { "//*[@CodeCategory='Param']" }, filter);
 		}
 
 		/// <summary>
@@ -60,8 +60,10 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <returns></returns>
 		public IEnumerable<AttributeDescriptor> GetThemaAttributes(SearchFilter filter = null)
 		{
-			filter = filter ?? new SearchFilter { DocRoot = "themaattr" };
-			return Index.GetAttributes(new[] { "/*[local-name()!='processes' and local-name()!='subst'  and local-name()!='paramlib' and local-name()!='global' and local-name()!='colset' and local-name()!='objset'  and local-name()!='rowset'  and local-name()!='paramset']" }, filter);
+			filter = filter ?? new SearchFilter { DocRoot = "themaattr", UseParamAsAttribute = true};
+			return Index.GetAttributes(
+				new[] { "/*[local-name()!='processes' and local-name()!='subst'  and local-name()!='paramlib' and local-name()!='global' and local-name()!='colset' and local-name()!='objset'  and local-name()!='rowset'  and local-name()!='paramset']" },
+				filter);
 		}
 		/// <summary>
 		/// Выполняет поиск возможных элементов кода и сопоставляет их тип
@@ -92,8 +94,30 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <returns></returns>
 		public IEnumerable<AttributeDescriptor> GetColsetAttribtes(SearchFilter filter = null) {
 			filter = filter ?? new SearchFilter {AttributeValueLimit = 40, ReferenceLimit = 50, DocRoot="colattr"};
-			return Index.GetAttributes(new[] { "/colset/col", "/*/out/col", "/*/form/col" }, filter);
+			return Index.GetAttributes(new[] { "//*[@CodeCategory='Column']" }, filter);
 		}
+		/// <summary>
+		/// Получает элементы, относящиеся к параметрам
+		/// </summary>
+		/// <param name="filter"></param>
+		/// <returns></returns>
+		public IEnumerable<ParameterDescriptor> GetParameters(SearchFilter filter = null) {
+			filter = filter ?? new SearchFilter { DocRoot = "param", BaseSelector = "//*[@CodeCategory='Param' or @CodeCategory='ParamRef']" };
+			var elements = Index.SelectElements(filter).ToArray();
+			var codegrouped = elements.GroupBy(_ => _.Attr("code"));
+			var parameters = codegrouped.Select(_ => {
+				var result = new ParameterDescriptor {
+					Code = _.Key,
+					Name = _.Max(__ => __.Attr("name")),
+					Definitions = _.Where(__ => __.Attr("CodeCategory") == "Param").Select(__ => new ElementDescriptor(__)).ToArray(),
+					References = _.Where(__ => __.Attr("CodeCategory") == "ParamRef").Select(__ => new ElementDescriptor(__)).ToArray()
+				};
+
+				return result;
+			});
+
+			return parameters.ToArray();
+		} 
 	}
 
 }

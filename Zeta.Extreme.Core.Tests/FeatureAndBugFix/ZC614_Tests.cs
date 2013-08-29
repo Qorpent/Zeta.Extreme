@@ -89,12 +89,12 @@ namespace Zeta.Extreme.Core.Tests {
 
         [Test]
         public void Lock_Formula_Keep_Lock_Formula_On_Direct_Changes() {
-            _session.MetaCache.Set(new Column {Code = "SUMMA"});
+			_session.MetaCache.Set(new Column { Code = "Lock_Formula_Keep_Lock_Formula_On_Direct_Changes_SUMMA" });
             var q1 = new Query
             {
                 Obj = { Id = 777777, IsFormula = true, Formula = "888888,1888888,2888888" }
                 ,
-                Col = { Native = new Column { Code = "Lock_Formula_Keep_Lock_Formula_On_Direct_Changes_X", IsFormula = true, Formula = "@SUMMA?", FormulaType = "boo", MarkCache = "/AGGREGATEOBJ/" } }
+				Col = { Native = new Column { Code = "Lock_Formula_Keep_Lock_Formula_On_Direct_Changes_X", IsFormula = true, Formula = "@Lock_Formula_Keep_Lock_Formula_On_Direct_Changes_SUMMA?", FormulaType = "boo", MarkCache = "/AGGREGATEOBJ/" } }
             };
            
             var realq1 = _session.Register(q1);

@@ -4,11 +4,11 @@
 >
   <xsl:import href="zdev-references.xslt"/>
   <xsl:import href="zdev-doc.xslt"/>
-  
+
   <xsl:param name="selfname" >default</xsl:param>
   <xsl:param name="docroot" >attr</xsl:param>
   <xsl:param name="title">УКАЖИТЕ ИМЯ ОТЧЕТА</xsl:param>
-  
+
   <xsl:template match="@* | node()">
     <xsl:copy>
       <xsl:apply-templates select="@* | node()"/>
@@ -21,7 +21,7 @@
         <title>
           <xsl:value-of select="$title"/>
         </title>
-		<script src="../scripts/jquery.min.js" type="text/javascript">&#160;</script>
+        <script src="../scripts/jquery.min.js" type="text/javascript">&#160;</script>
         <meta generator="qorpent:xslt-render(${selfname}.xslt)" />
         <link rel="stylesheet" href="../styles/{$selfname}.css" />
       </head>
@@ -36,5 +36,5 @@
 
   </xsl:template>
 
-  
+
 </xsl:stylesheet>

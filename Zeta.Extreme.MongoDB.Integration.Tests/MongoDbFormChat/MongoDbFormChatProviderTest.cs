@@ -1,24 +1,55 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
+using Qorpent;
+using Qorpent.Integration.MongoDB;
+using Qorpent.IoC;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.BizProcess.StateManagement;
 using Zeta.Extreme.Form.InputTemplates;
+using Zeta.Extreme.Form.StateManagement;
+using Zeta.Extreme.Form.Themas;
 using Zeta.Extreme.FrontEnd;
 using Zeta.Extreme.Model;
 
 namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
 {
+    public class StubPeriodStateManager : IPeriodStateManager {
+        public string System { get; set; }
+        public string Database { get; set; }
+        public PeriodStateRecord Get(int year, int period, string grp) {
+            return new PeriodStateRecord() {
+                DeadLine = DateTime.Now,
+                Period = 222,
+                State = true,
+                Grp = "sdffs",
+                UDeadLine = DateTime.Now,
+                Year = 2013
+           
+            };
+        }
+
+        public void UpdateDeadline(PeriodStateRecord record) {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateUDeadline(PeriodStateRecord record) {
+            throw new NotImplementedException();
+        }
+    }
+
     [TestFixture]
-    public class MongoDbFormChatProviderTest
-    {
+    public class MongoDbFormChatProviderTest : ServiceBase {
         private MongoDbFormChatProvider _provider;
         private MongoDbConnector _connector;
+
 
         [SetUp]
         public void Setup() {
             _provider = new MongoDbFormChatProvider {
-                DatabaseName = "test",
-                CollectionName = "test"
+                ConnectionString = "mongodb://localhost:27018",
+                DatabaseName = "formdata",
+                CollectionName = "chat"
             };
 
             _connector = new MongoDbConnector {
@@ -31,6 +62,11 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
             _connector.Database.GetCollection(_provider.CollectionName + "_usr").RemoveAll();
         }
 
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp() {
+            Container.Register(new ComponentDefinition<IPeriodStateManager, StubPeriodStateManager>(Lifestyle.Transient));
+        }
+          
         [Test]
         public void CanSaveItem()
         {
@@ -62,8 +98,6 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
 
             Assert.AreEqual(0, _provider.GetUpdatesCount("SomeOtherUser"));
 
-            /*_provider.SetHaveRead(session.Usr);
-            Assert.AreEqual(0, _provider.GetUpdatesCount(session.Usr));*/
         }
 
         [Test]
@@ -153,8 +187,34 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
             _provider.AddMessage(session, "test4");
             _provider.AddMessage(session, "test5");
 
+            System.Threading.Thread.Sleep(200);
+
             Assert.AreEqual(3, _provider.GetUpdatesCount("x"));
 
+        }
+
+        [Test]
+        [TestCase(2004, null, null, false, 2)]
+        [TestCase(2006, null, null, true, 2)]
+        [TestCase(1991, "2,4", null, false, 1)]
+        [TestCase(1991, "2,4", null, true, 2)]
+        [TestCase(1991, "4", null, true, 1)]
+        [TestCase(1991, "4", null, false, 0)]
+        [TestCase(1991, "2", null, false, 1)]
+        [TestCase(1991, null, null, false, 2)]
+        [TestCase(1991, null, null, true, 4)]
+        public void CanFindAllWithDifferentCase(int year, string objids, string typenames, bool includeread, int count) {
+            PrepareMessagesForFindAll();
+            int[] objs = null;
+            string[] types = null;
+            if (!string.IsNullOrWhiteSpace(objids)) {
+                objs = objids.Split(',').Select(ConvertExtensions.ToInt).ToArray();
+            }
+            if (!string.IsNullOrWhiteSpace(typenames)) {
+                types = typenames.Split(',');
+            }
+            var allmessagesNoFilters = _provider.FindAll("X", new DateTime(year, 1, 1), objs, types, null, includeread).ToArray();
+            Assert.AreEqual(count, allmessagesNoFilters.Length);
         }
 
         private void PrepareMessagesForFindAll()
@@ -178,9 +238,12 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
         }
 
         private FormSession GetFormSession() {
+            var thema = new Thema {Code = "x"};
+            thema.Parameters.Add("deadlinetype", "sdasdd");
             return new FormSession(
                 new InputTemplate {
-                    Code = "x"
+                    Code = "x",
+                    Thema = thema
                 },
                 2012,
                 1,

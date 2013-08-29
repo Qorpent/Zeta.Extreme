@@ -17,6 +17,12 @@
 		public bool CollectValues { get; set; }
 
 		/// <summary>
+		/// Маркер того, что конструкции param xxx "dddd" и param xxxx : dddddd и param xxxx=vvvv следует рассматривать как варант атрибутов
+		/// требуется при анализе тем
+		/// </summary>
+		public bool UseParamAsAttribute { get; set; }
+
+		/// <summary>
 		/// Корень документации
 		/// </summary>
 		public string DocRoot { get; set; }
@@ -39,6 +45,12 @@
 		/// При каком количестве референсов происходит возврат псевдо-референса "много"
 		/// </summary>
 		public int ReferenceLimit { get; set; }
+
+		/// <summary>
+		/// Указывается как селектор элементов для ряда команд
+		/// </summary>
+		public string BaseSelector { get; set; }
+
 
 		/// <summary>
 		/// Приведение к строке для ключа

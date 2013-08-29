@@ -19,10 +19,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver; 
 using MongoDB.Driver.Builders;
+using Qorpent.Integration.MongoDB;
 using Qorpent.IoC;
 using Zeta.Extreme.BizProcess.Forms;
 
@@ -31,23 +33,26 @@ namespace Zeta.Extreme.MongoDB.Integration {
 	///     Mongo - реализация чата формы
 	/// </summary>
 	[ContainerComponent(Lifestyle.Transient, ServiceType = typeof (IFormChatProvider))]
-	public class MongoDbFormChatProvider : MongoBasedServiceBase, IFormChatProvider {
-		/// <summary>
-		/// </summary>
-        public MongoDbFormChatProvider() {
-			ConnectionString = "mongodb://localhost:27017";
-			DatabaseName = "MongoAttachedProviderBase";
-			CollectionName = GetType().Name;
-		}
+	public class MongoDbFormChatProvider : MongoDbBasedServiceBase, IFormChatProvider {
 
         /// <summary>
+        /// 
+        /// </summary>
+	    private MongoCollection<BsonDocument> UsrCollection {
+	        get {
+                return Database.GetCollection<BsonDocument>(
+                    CollectionName + "_usr"
+                );
+	        }
+	    }
+
+	    /// <summary>
 		///     Поиск связанных с сессией сообщений чата
 		/// </summary>
 		/// <param name="session"></param>
 		/// <returns>
 		/// </returns>
 		public IEnumerable<FormChatItem> GetSessionItems(IFormSession session) {
-			
             return Collection.Find(
                 new QueryDocument(
                     MongoDbFormChatSerializer.SessionToSearchDocument(session)    
@@ -63,13 +68,11 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <param name="session"></param>
 		/// <param name="message"></param>
 		/// <param name="type"></param>
-		/// <returns>
-		/// </returns>
+		/// <returns></returns>
 		public FormChatItem AddMessage(IFormSession session, string message, string type="default") {
-			type = type ?? "default";
 			var item = new FormChatItem {
 			    Text = message,
-				Type = type
+                Type = type ?? "default"
 			};
             
 			Collection.Save(
@@ -89,27 +92,15 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <param name="uid"></param>
 		/// <param name="user"></param>
 		public void Archive(string uid, string user) {
-
-            var collection = SelectUsrCollection();
             var query = MakeSearchQueryForUsrCollection(uid, user);
-			var item = collection.FindOne(
+            var item = UsrCollection.FindOne(
                 new QueryDocument(query)
             ) ?? query;
 
 		    MongoDbFormChatSerializer.SetArchived(item);
 
-			collection.Save(item);
+            UsrCollection.Save(item);
 		}
-
-        /// <summary>
-        ///     Selects the COLLECTIONAME_usr collection
-        /// </summary>
-        /// <returns></returns>
-        private MongoCollection<BsonDocument> SelectUsrCollection() {
-            return Database.GetCollection<BsonDocument>(
-                CollectionName + "_usr"
-            );
-        }
 
         /// <summary>
         /// 
@@ -118,12 +109,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
         /// <param name="user"></param>
         /// <returns></returns>
         private BsonDocument MakeSearchQueryForUsrCollection(string uid, string user) {
-            return new BsonDocument(
-                new Dictionary<string, object> {
-					{"message_id", uid},
-					{"user", user}
-			    }
-            );
+            return BsonDocument.Parse("{message_id : '" + uid + "', user : '" + user.Replace("\\", "\\\\") + "'}");
         }
 
 		/// <summary>
@@ -132,18 +118,16 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// </summary>
 		/// <param name="user"></param>
 		public void SetHaveRead(string user) {
-           
-            var collection = SelectUsrCollection();
             var query = MakeSearchQueryForUsrCollection("ALL", user);
 
 			var document = (
-                collection.FindOne(
+                UsrCollection.FindOne(
 			        new QueryDocument(query)
 		        )
             ) ?? query;
 
             document.Set("lastread", DateTime.Now);
-            collection.Save(document);
+            UsrCollection.Save(document);
 		}
 
 		/// <summary>
@@ -153,10 +137,10 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <returns>
 		/// </returns>
 		public DateTime GetLastRead(string user) {
-            var item = SelectUsrCollection().FindOne(
+            var item = UsrCollection.FindOne(
                 Query.And(
                     Query.EQ("message_id", "ALL"),
-                    Query.EQ("user", user)
+                    Query.EQ("user", "" + user)
                 )  
             );
 
@@ -187,8 +171,18 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 forms,
                 false
             );
-			query["user"] = new BsonDocument("$ne",user);
-			return Collection.Count(new QueryDocument(query));
+
+            query["user"] = new BsonDocument("$ne", user);
+            var found = Database.Eval(
+                new BsonJavaScript("chatFindExcludeArchived('" + CollectionName+ "', '" + user + "', " + query.ToJson() + ")")
+            ).ToBsonDocument();
+
+            var array = new List<FormChatItem>();
+            foreach (var el in found.ToDictionary()) {
+                array.Add(MongoDbFormChatSerializer.BsonToChatItem(found[el.Key].AsBsonDocument));
+            }
+
+			return array.Count;
 		}
 
 		/// <summary>
@@ -202,7 +196,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
 		/// <returns>
 		/// </returns>
 		public IEnumerable<FormChatItem> FindAll(string user, DateTime startdate, int[] objids = null, string[] types=null, string[] forms=null,bool includeArchived=false) {
-
 			var query = GenerateFindAllMessagesQuery(
                 user,
                 startdate,
@@ -212,21 +205,38 @@ namespace Zeta.Extreme.MongoDB.Integration {
                 includeArchived
             );
 
-			var result = Collection.Find(
-                new QueryDocument(query)
-            ).SetSortOrder(
-                SortBy.Ascending("time")
-            ).Select(
-                MongoDbFormChatSerializer.BsonToChatItem
-            ).ToArray();
+		    IEnumerable<FormChatItem> result;
+            
+            if (!includeArchived) {
+
+                var q = "chatFindExcludeArchived('" + CollectionName + "', /^" + user.Replace("\\", "\\\\") + "$/i, " + query.ToJson() + ")";
+                var found = Database.Eval(
+                    new BsonJavaScript(q)
+                ).ToBsonDocument();
+
+                var array = new List<FormChatItem>();
+                foreach (var el in found.ToDictionary()) {
+                    array.Add(MongoDbFormChatSerializer.BsonToChatItem(found[el.Key].AsBsonDocument));
+                }
+
+                result = array;
+            } else {
+              result = Collection.Find(
+                    new QueryDocument(query)
+                ).SetSortOrder(
+                    SortBy.Ascending("time")
+                ).Select(
+                    MongoDbFormChatSerializer.BsonToChatItem
+                ).ToArray();
+            }
 
 			foreach (var formChatItem in result) {
-                var usrdata = SelectUsrCollection().FindOne(
+                var usrdata = UsrCollection.FindOne(
                     new QueryDocument(
                         new BsonDocument(
                             new Dictionary<string, object> {
 						        {"message_id", formChatItem.Id},
-						        {"user", user}
+						        {"user", ""+user+""}
 					        }
                         )
                     )
@@ -253,6 +263,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			}
 
 			var query = new BsonDocument();
+
 			query["time"] = new BsonDocument(
                 "$gt",
                 startdate
@@ -276,17 +287,6 @@ namespace Zeta.Extreme.MongoDB.Integration {
 				query["form"] = new BsonDocument(
                     "$in",
                     new BsonArray(forms)
-                );
-			}
-
-			if (!includeArchived) {
-				query["$where"] = string.Format(
-					"!db.{0}_usr.findOne({{message_id:this._id, user:'{1}', archive:true}})",
-					CollectionName,
-                    user.Replace(
-                        "\\",
-                        "\\\\"
-                    )
                 );
 			}
 

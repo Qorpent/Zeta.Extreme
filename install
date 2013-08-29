@@ -1,90 +1,18 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="..\qorpent.kernel\package-install.targets" />	
-	<!--  INSTALL MANIFEST OF Zeta.Extreme PACKAGE 
-	
-	THIS IS TMPLATE BASED ON ..\qorpent.kernel\install.targets and matches Qorpent design for
-	file allocation.
-	
-	It treats PKG as set of source code for binary DLL's (and can compile them if not found in .build
-	and as set of files that can by copyed to application independely and safe for other packages
-	and this content will be automatically incorporated into application by Qorpent framework
-	
-	If this model is not option of your package you can totally rewrite install (only requirement
-	is to have Build target).
-	
-	If You have more than one feature in or different configurations of package - provide CustomPackageCondition
-	to have first-look criteria for including package in install process and define some conditions
-	on your Library, Script, Config and so on items.
-	
-	Template serves Web application deployment and Console application deployment
-	Main design is that if U have one-feature project with simple set 
-	of deployed items (DLL+ioc-manifest+some visual resources) 
-	completing of INSTALL is very simple.
-	
-
-	-->
-
+	<Import Project="..\qorpent.kernel\package-install.targets" />
 	<PropertyGroup>
-		<!-- change CustomPackageCondition to valid expression if U want provide custom way to detect 
-		package activiti in installation, by default - package is active if it's name is in 
-		project properties with =True -->
-		<CustomPackageCondition Condition="'NO'=='YES'">True</CustomPackageCondition>
-		
-		<!-- U can change main condition, but do not delete it if you use usual install.targets logic -->
-		<PackageCondition Condition="'$(Zeta_Extreme)'=='True' or '$(CustomPackageCondition)'=='True' ">True</PackageCondition>
-		
-		<PackageName>Zeta.Extreme</PackageName>
+		<DirectImport>True</DirectImport>
+		<IsWeb>True</IsWeb>
 	</PropertyGroup>
-	
-	<!-- 
-		IT IS YOUR MAIN GOAL - VALIDLY FILL LIST OF DEPLOYABLE RESOURCES 
-		NO DEFAULT IMPLEMENTATION PROVIDED BY QORPENT KERNEL - YOU MUST
-		DETERMINE DEPLOY FILE SET EXPLICITLY
-	-->
 	<ItemGroup>
-		<!-- USAGE:
-			1. 'Library' to describe compilable C# .dll to be shipped as binary (will be compiled if not exists in .build/bin/all),
-			use only AssemblyName without path, .dll or .csproj
-				ex: <Library Include="My.Lib"/> 
-			2. 'Config' to describe configuration file to be shipped with package to application 
-				ex: <Config Include="commons\mylib.ioc-manifest.bxl" />
-			3. 'SafeConfig' to describe DEFAULT config files which must be shipped ONLY if it's not existed on target yet
-				ex: <SafeConfig Include="default.users.list.bxl" />
-				
-			ONLY WEB APPLICATION USAGE (will be ignored for console by default):
-			4. 'RootFile' to provide info about top-most files for web applications
-				ex: <RootFile Include="commons\web.config" Condition="$(IsWeb) />
-			5. 'Style' - css/image file to be placed in standard StyleDir	
-			6. 'Script' - js file to be placed in standard ScriptDir	
-			7. 'Image' - image files to be placed in standard ImageDir
-			8. 'View' - VBXL and it's resource to be placed in Root (lowest level) View directory with RELATIVE PATH
-			9. 'UsrView' - VBXL and it's resource to be placed in Usr (top level) View directory with RELATIVE PATH
-			
-		-->
-		
-			<Library Include="Zeta.Extreme.Core" />
-			<Library Include="Zeta.Extreme.Model" />
-			<Library Include="Zeta.Extreme.Form" />
-			<Library Include="Zeta.Extreme.BizProcess" />
-			<Library Include="Zeta.Extreme.FrontEnd" />
-			<Library Include="MongoDB.Driver" />
-			<Library Include="MongoDB.Bson" />
-			<Library Include="Zeta.Extreme.MongoDB.Integration" />
-			<Config Include="*.base.ioc-manifest.bxl"/>
-			<!--
-			<Script Include="Zeta.Form.UI\scripts\*.js"/>
-			<Style Include="Zeta.Form.UI\styles\*.css"/>
-			<Image Include="Zeta.Form.UI\images\*.*"/>
-			<RootFile Include="Zeta.Form.UI\*.html"/>
-		-->
-
-			
-			
+		<Package Include="baseapp" />
+		<Package Include="qi-mongo" />
+		<Library Include="Zeta.Extreme.Core" />
+		<Library Include="Zeta.Extreme.Model" />
+		<Library Include="Zeta.Extreme.Form" />
+		<Library Include="Zeta.Extreme.BizProcess" />
+		<Library Include="Zeta.Extreme.FrontEnd" />
+		<Library Include="Zeta.Extreme.MongoDB.Integration" />
+		<Config Include="*.base.ioc-manifest.bxl"/>
 	</ItemGroup>
-	
-	
-	<Target Name="AfterDefaultPackageDeploy">
-		<!-- IMPLEMENT SOME ACTIONS HERE IF TO PROVIDE NON STANDARD DEPLOYMENT IF NEEDED -->
-	</Target>
-	
 </Project>

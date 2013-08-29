@@ -9,16 +9,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pkg", "Pkg", "{F755EF91-982
 	ProjectSection(SolutionItems) = preProject
 		local-sfo.zetadev.ioc-manifest.bxl = local-sfo.zetadev.ioc-manifest.bxl
 		zdev.ui\paramattributes.sample.xml = zdev.ui\paramattributes.sample.xml
+		testapp.debug = testapp.debug
 		testdeveloper.base = testdeveloper.base
+		testdeveloper.debug = testdeveloper.debug
 		zdev.ui\zdev-attr-stat-report.xslt = zdev.ui\zdev-attr-stat-report.xslt
 		zdev.ui\zdev-colattributes-report.css = zdev.ui\zdev-colattributes-report.css
 		zdev.ui\zdev-colattributes-report.xslt = zdev.ui\zdev-colattributes-report.xslt
 		zdev.ui\zdev-doc.xslt = zdev.ui\zdev-doc.xslt
 		zdev.ui\zdev-formattributes-report.css = zdev.ui\zdev-formattributes-report.css
 		zdev.ui\zdev-formattributes-report.xslt = zdev.ui\zdev-formattributes-report.xslt
+		zdev.ui\zdev-metrics-report.xslt = zdev.ui\zdev-metrics-report.xslt
+		zdev.ui\zdev-getelementsmap-report.css = zdev.ui\zdev-getelementsmap-report.css
 		zdev.ui\zdev-getelementsmap-report.xslt = zdev.ui\zdev-getelementsmap-report.xslt
 		zdev.ui\zdev-paramattributes-report.css = zdev.ui\zdev-paramattributes-report.css
 		zdev.ui\zdev-paramattributes-report.xslt = zdev.ui\zdev-paramattributes-report.xslt
+		zdev.ui\zdev-metrics-report.css = zdev.ui\zdev-metrics-report.css
+		zdev.ui\zdev-parameters-report.css = zdev.ui\zdev-parameters-report.css
+		zdev.ui\zdev-parameters-report.xslt = zdev.ui\zdev-parameters-report.xslt
 		zdev.ui\zdev-references.xslt = zdev.ui\zdev-references.xslt
 		zdev.ui\zdev-report-common.xslt = zdev.ui\zdev-report-common.xslt
 		zdev.ui\zdev-reportattributes-report.css = zdev.ui\zdev-reportattributes-report.css
@@ -28,6 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pkg", "Pkg", "{F755EF91-982
 		zdev.ui\zdev.base.css = zdev.ui\zdev.base.css
 		zdev.ui\zdev.main.menu.js = zdev.ui\zdev.main.menu.js
 		zdev.ui\zdev.ui-load.bxl = zdev.ui\zdev.ui-load.bxl
+		zdev.ui\zdev_export_tree_form.tpl.html = zdev.ui\zdev_export_tree_form.tpl.html
 		zetadev.ioc-manifest.bxl = zetadev.ioc-manifest.bxl
 	EndProjectSection
 EndProject
@@ -41,13 +49,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.IoC", "..\qorpent.s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.IoC.Tests", "..\qorpent.sys\Qorpent.IoC.Tests\Qorpent.IoC.Tests.csproj", "{0403B026-5047-41A4-98EE-62F2D92B812C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.Bxl", "..\qorpent.sys\Qorpent.Bxl\Qorpent.Bxl.csproj", "{381DEC86-5709-4A64-BD9F-462E792884CE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.IO", "..\qorpent.sys\Qorpent.IO\Qorpent.IO.csproj", "{426C92DF-3C40-426C-B0BE-40A1DF9044C2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.Serialization", "..\qorpent.sys\Qorpent.Serialization\Qorpent.Serialization.csproj", "{21971F28-8ED8-4F50-B623-E9DB2658AF54}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.Mvc", "..\qorpent.sys\Qorpent.Mvc\Qorpent.Mvc.csproj", "{96885C8F-AD20-41B4-86EE-BC9B3D47D9F9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZE", "ZE", "{13F314AB-36D7-4BDA-B027-6D4D2D9E232A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.Model", "Zeta.Extreme.Model\Zeta.Extreme.Model.csproj", "{A4442A74-4590-4BA3-B44C-56C98CE4A088}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.Core", "Zeta.Extreme.Core\Zeta.Extreme.Core.csproj", "{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.BizProcess", "Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj", "{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,12 +106,6 @@ Global
 		{0403B026-5047-41A4-98EE-62F2D92B812C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0403B026-5047-41A4-98EE-62F2D92B812C}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
 		{0403B026-5047-41A4-98EE-62F2D92B812C}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
-		{381DEC86-5709-4A64-BD9F-462E792884CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{381DEC86-5709-4A64-BD9F-462E792884CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{381DEC86-5709-4A64-BD9F-462E792884CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{381DEC86-5709-4A64-BD9F-462E792884CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{381DEC86-5709-4A64-BD9F-462E792884CE}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
-		{381DEC86-5709-4A64-BD9F-462E792884CE}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
 		{426C92DF-3C40-426C-B0BE-40A1DF9044C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{426C92DF-3C40-426C-B0BE-40A1DF9044C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{426C92DF-3C40-426C-B0BE-40A1DF9044C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -116,6 +124,24 @@ Global
 		{96885C8F-AD20-41B4-86EE-BC9B3D47D9F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{96885C8F-AD20-41B4-86EE-BC9B3D47D9F9}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
 		{96885C8F-AD20-41B4-86EE-BC9B3D47D9F9}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+		{A4442A74-4590-4BA3-B44C-56C98CE4A088}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4442A74-4590-4BA3-B44C-56C98CE4A088}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4442A74-4590-4BA3-B44C-56C98CE4A088}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4442A74-4590-4BA3-B44C-56C98CE4A088}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4442A74-4590-4BA3-B44C-56C98CE4A088}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{A4442A74-4590-4BA3-B44C-56C98CE4A088}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+		{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,9 +151,11 @@ Global
 		{880F65EA-1A22-4672-A137-FFC912902112} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{62F22FFA-A1CF-4A74-838C-9AB33A9442EA} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{0403B026-5047-41A4-98EE-62F2D92B812C} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
-		{381DEC86-5709-4A64-BD9F-462E792884CE} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{426C92DF-3C40-426C-B0BE-40A1DF9044C2} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{21971F28-8ED8-4F50-B623-E9DB2658AF54} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{96885C8F-AD20-41B4-86EE-BC9B3D47D9F9} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
+		{A4442A74-4590-4BA3-B44C-56C98CE4A088} = {13F314AB-36D7-4BDA-B027-6D4D2D9E232A}
+		{A5177DFD-2D36-442F-A9C0-B79CD6DC7054} = {13F314AB-36D7-4BDA-B027-6D4D2D9E232A}
+		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC} = {13F314AB-36D7-4BDA-B027-6D4D2D9E232A}
 	EndGlobalSection
 EndGlobal

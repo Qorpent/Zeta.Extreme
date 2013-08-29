@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
-using Qorpent.Serialization;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Themas;
 using Zeta.Extreme.Form.Themas;
@@ -68,8 +67,22 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
                 var coldescs = ColsetDesc.Split(';');
                 IList<ColumnDesc> cols = new List<ColumnDesc>();
                 foreach (var coldesc in coldescs) {
-                    var parsedcol = coldesc.Split(',');
-                    var col = new ColumnDesc(parsedcol[0], parsedcol[1].ToInt(), parsedcol[2].ToInt());
+                    var parsedcol = coldesc.SmartSplit(false,true,',');
+	                var col = new ColumnDesc();
+					foreach (var c in parsedcol) {
+						if (c.All(char.IsDigit)) {
+							var yp = Convert.ToInt32(c);
+							if ((yp >= 1995) && (yp <= 2030)) {
+								col.Year = yp;
+							}
+							else {
+								col.Period = yp;
+							}
+						}
+						else {
+							col.Code = c;
+						}
+					}
                     cols.Add(col);
                 }
                 Colset = cols.ToArray();
@@ -278,18 +291,4 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			return GetFormName(row.Parent);
 		}
 	}
-    [Serialize]
-    internal class DependencyDesc {
-        public string code;
-        public string name;
-        public string outercode;
-        public string formcode;
-        public string form;
-        public object[] forms;
-        public string type;
-        public object dependency;
-        public decimal[] values;
-    }
-
-    
 }

@@ -4,8 +4,11 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using NUnit.Framework;
+using Qorpent;
+using Qorpent.IoC;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.BizProcess.Forms;
+using Zeta.Extreme.BizProcess.StateManagement;
 using Zeta.Extreme.Form.InputTemplates;
 using Zeta.Extreme.FrontEnd;
 using Zeta.Extreme.Model;
@@ -13,8 +16,13 @@ using Zeta.Extreme.Model;
 namespace Zeta.Extreme.MongoDB.Integration.Tests.MongoDbFormChat
 {
 	[TestFixture]
-	public class MongoDbFormChatSerializerTest
+	public class MongoDbFormChatSerializerTest : ServiceBase
 	{
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp() {
+            Container.Register(new ComponentDefinition<IPeriodStateManager, StubPeriodStateManager>(Lifestyle.Transient));
+        }
+
 		[Test]
 		public void NormalizationTest() {
 			var doc = new FormChatItem{Text = "xxx"};

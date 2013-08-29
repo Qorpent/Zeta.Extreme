@@ -46,5 +46,10 @@ namespace Zeta.Extreme.Developer.Model {
 		/// </summary>
 		[SerializeNotNullOnly]
 		public string TagNames { get; set; }
+		/// <summary>
+		/// Имена задействованных тегов
+		/// </summary>
+		[SerializeNotNullOnly]
+		public CodeElementCategory Category { get; set; }
 	}
 }

@@ -23,6 +23,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Qorpent.Dsl;
+using Qorpent.Json;
 
 namespace Zeta.Extreme.FrontEnd.Tests
 {
@@ -32,7 +33,7 @@ namespace Zeta.Extreme.FrontEnd.Tests
 		[Test]
 		public void BasicParse() {
 			var str = @"{""0"":{""id"":""6:3"",""value"":""32345""},""1"":{""id"":""7:3"",""value"":""23626""}}";
-			Console.WriteLine(new JsonToXmlParser().Parse(str));
+			Console.WriteLine(new JsonParser().Parse(str));
 		}
 	}
 }

@@ -57,17 +57,25 @@ namespace Zeta.Extreme.Form.StateManagement {
 		/// </summary>
 		/// <param name="year"> </param>
 		/// <param name="period"> </param>
+		/// <param name="grp"></param>
 		/// <returns> </returns>
-		public PeriodStateRecord Get(int year, int period) {
+		public PeriodStateRecord Get(int year, int period, string grp ) {
+			grp = grp ?? "";
 			var result = new PeriodStateRecord();
+			if (!string.IsNullOrWhiteSpace(grp)) {
+				result = Get(year, period, "");
+			}
 			result.Year = year;
 			result.Period = period;
+			result.Grp = grp;
 			IDictionary<string, object> dict = null;
 			indatabase(
 				c =>
 				dict =
 				c.ExecuteDictionary(
-					"select state,deadline,udeadline from usm.periodstate where year=" + year + " and period=" + period, null));
+					"select state,deadline,udeadline from usm.periodstate where year=" + year + " and period=" + period+" and grp='"+grp+"'", null));
+			
+
 			result.State = dict.SafeGet("state",result.State);
 			result.DeadLine = dict.SafeGet("deadline", result.DeadLine);
 			result.UDeadLine = dict.SafeGet("udeadline", result.UDeadLine);
@@ -86,6 +94,8 @@ namespace Zeta.Extreme.Form.StateManagement {
 					new {year=record.Year, period=record.Period,state=record.State?1:0}
 					));
 		}
+
+
 
 		/// <summary>
 		/// 	Обновить дедлайн

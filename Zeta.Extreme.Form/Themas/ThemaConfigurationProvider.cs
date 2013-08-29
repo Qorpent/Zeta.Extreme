@@ -158,6 +158,10 @@ namespace Zeta.Extreme.Form.Themas {
 		}
 
 		private string[] GetFileList() {
+			if (null != Options.FileSource) {
+				return Options.FileSource.GetFileNames().ToArray();
+			}
+
 			string[] files = null;
 			_cfgVersion = new DateTime();
 
@@ -181,14 +185,16 @@ namespace Zeta.Extreme.Form.Themas {
 
 		private IEnumerable<XElement> LoadFiles(string[] files, IList<string> filters) {
 			foreach (var f in files) {
-				if (File.GetLastWriteTime(f) > _cfgVersion) {
-					_cfgVersion = File.GetLastWriteTime(f);
+				if (null != Options.FileSource) {
+					if (File.GetLastWriteTime(f) > _cfgVersion) {
+						_cfgVersion = File.GetLastWriteTime(f);
+					}
 				}
-				var txt = File.ReadAllText(f);
+				var txt = ReadFileText(f);
 
 				if (!string.IsNullOrWhiteSpace(Options.FilterParameters)) {
 					if (Options.LoadLibraries && txt.Substring(0, 30).Contains("lib\"")) {
-						yield return XElement.Load(f);
+						yield return LoadXmlFile(f);
 						continue;
 					}
 
@@ -196,7 +202,8 @@ namespace Zeta.Extreme.Form.Themas {
 						if (!txt.Contains("<param id=\"" + flag + "\"")) {
 							continue;
 						}
-						var x = XElement.Load(f);
+
+						var x = LoadXmlFile(f);
 						var e = x.Elements("param").FirstOrDefault(_ => XmlExtensions.Attr(_, "id") == flag);
 						if (null == e) {
 							continue;
@@ -214,14 +221,24 @@ namespace Zeta.Extreme.Form.Themas {
 					continue;
 				}
 				if (filters.Count == 0) {
-					yield return XElement.Load(f);
+					yield return LoadXmlFile(f);
 				}
 				else {
 					if (null != filters.FirstOrDefault(_ => f.Like(_))) {
-						yield return XElement.Load(f);
+						yield return LoadXmlFile(f);
 					}
 				}
 			}
+		}
+
+		private string ReadFileText(string f) {
+			if(null==Options.FileSource)return File.ReadAllText(f);
+			return new StreamReader(Options.FileSource.Open(f)).ReadToEnd();
+		}
+
+		private  XElement LoadXmlFile(string f) {
+			if(null==Options.FileSource)return XElement.Load(f);
+			return XElement.Load(Options.FileSource.Open(f));
 		}
 
 		private IEnumerable<XElement> LoadDirectSources() {

@@ -2,6 +2,7 @@
 using Qorpent.IoC;
 using Qorpent.Mvc;
 using Zeta.Extreme.Developer.Analyzers;
+using Zeta.Extreme.Model.MetaCaches;
 
 namespace Zeta.Extreme.Developer.Actions {
 	/// <summary>
@@ -19,7 +20,12 @@ namespace Zeta.Extreme.Developer.Actions {
 		/// </summary>
 		/// <returns></returns>
 		protected override object MainProcess() {
+			Periods.Reload();
+			RowCache.start();
+			ColumnCache.Start();
+			ObjCache.Start();
 			return Application.Events.Call<ResetEventResult>(new ResetEventData(new[] {"zdev.cache"}), User);
+			
 		}
 	}
 }

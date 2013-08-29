@@ -7,6 +7,12 @@ singleton DeveloperConfig : IDeveloperConfig
 	
 
 	ThemaSourceFolders
+<<<<<<< HEAD
 		add "C:\\rep\\themas\\sysdata"
 		add "C:\\rep\\themas\\usrdata"
 	DocFolder="C:\\rep\zdoc"
+=======
+		add "G:\\repos\\Themas\\SYS"
+		add "G:\\repos\\Themas\\USR"
+	DocFolder="G:\\repos\\zdoc"
+>>>>>>> origin/master

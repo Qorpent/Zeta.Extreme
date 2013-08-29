@@ -18,6 +18,7 @@
 #endregion
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Qorpent.IO;
 
 namespace Zeta.Extreme.BizProcess.Themas {
 	/// <summary>
@@ -45,6 +46,10 @@ namespace Zeta.Extreme.BizProcess.Themas {
 		/// Дополнительный источник свойств
 		/// </summary>
 		public IBizCasePropertySource[] PropertySources { get; set; }
+		/// <summary>
+		/// Источник для загрузки файлов
+		/// </summary>
+		public IFileSource FileSource { get; set; }
 
 
 		/// <summary>

@@ -44,7 +44,12 @@
 		</a>
       </td>
 	   <td class="type">
-        <xsl:value-of select="@Type"/>
+        
+        <xsl:apply-templates select="@Type"/>
+      <xsl:if test="@Category != 'Undefined'">
+          (<xsl:value-of select="@Category"/>)
+      
+      </xsl:if>
       </td>
 	  
        
@@ -69,6 +74,14 @@
         </td>
     </tr>
   </xsl:template>
+
+  <xsl:template match="@Type">
+    <span class="type-{.}">
+    <xsl:value-of select="."/>
+    </span>
+  </xsl:template>
+  
+  
   <xsl:template match="result/item" mode="elemmap-detail">
     <h3>
       <a name="attr-detail-{@Path}"/> Элемент <xsl:value-of select="@Path"/> ( <xsl:value-of select="@Type"/>)

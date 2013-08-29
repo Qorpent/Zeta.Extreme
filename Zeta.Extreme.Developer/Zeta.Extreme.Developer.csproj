@@ -9,27 +9,54 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="*.import" />
-    <None Include="*.export" />
+    <None Include="Zeta.Extreme.Developer.export" />
+    <None Include="Zeta.Extreme.Model.import" />
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\GetSubstAttributesAction.cs" />
     <Compile Include="Actions\DropCacheAction.cs" />
+    <Compile Include="Actions\ExportPeriods.cs" />
+    <Compile Include="Actions\ExportTreeAction.cs" />
     <Compile Include="Actions\GetColAttributesAction.cs" />
     <Compile Include="Actions\GetFormAttributesAction.cs" />
+    <Compile Include="Actions\GetMetricsAction.cs" />
     <Compile Include="Actions\GetParameterAttributesAction.cs" />
+    <Compile Include="Actions\GetParamsAction.cs" />
     <Compile Include="Actions\GetReportAttributesAction.cs" />
     <Compile Include="Actions\GetThemaAttributesAction.cs" />
     <Compile Include="Actions\HWOutAction.cs" />
     <Compile Include="Analyzers\Analyzer.cs" />
+    <Compile Include="CodeMetrics\Implementations\CommonFileDataMetricsProvider.cs" />
+    <Compile Include="CodeMetrics\Implementations\MetricProviderBase.cs" />
+    <Compile Include="CodeMetrics\MetricImportance.cs" />
+    <Compile Include="CodeMetrics\MetricResult.cs" />
+    <Compile Include="CodeMetrics\IMetricProvider.cs" />
+    <Compile Include="CodeMetrics\IMetricService.cs" />
     <Compile Include="Analyzers\ISourceVisitor.cs" />
+    <Compile Include="CodeMetrics\MetricCollectOptions.cs" />
+    <Compile Include="CodeMetrics\MetricHub.cs" />
+    <Compile Include="CodeMetrics\MetricService.cs" />
+    <Compile Include="CodeMetrics\MetricTendency.cs" />
+    <Compile Include="DeveloperStartUp.cs" />
+    <Compile Include="MetaStorage\Periods\PeriodsExporter.cs" />
+    <Compile Include="MetaStorage\Tree\BxlMetaTreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\ExportTreeFilter.cs" />
+    <Compile Include="MetaStorage\Tree\ExportTreeFormat.cs" />
+    <Compile Include="MetaStorage\Tree\HqlTreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\ITreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\TreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\TreeExporterCodeMode.cs" />
+    <Compile Include="MetaStorage\Tree\TreeExporterOptions.cs" />
+    <Compile Include="Model\CodeElementCategory.cs" />
     <Compile Include="Model\ElementCodeTypeMap.cs" />
     <Compile Include="Analyzers\Visitors\ElementCodeTypeResolverVisitor.cs" />
     <Compile Include="Analyzers\DeveloperConstants.cs" />
     <Compile Include="Model\CodeElementType.cs" />
     <Compile Include="Model\ElementDescriptor.cs" />
     <Compile Include="Actions\GetElementsMapAction.cs" />
+    <Compile Include="Model\ParameterDescriptor.cs" />
     <Compile Include="Utils\DocumentationHelper.cs" />
     <Compile Include="Analyzers\IAnalyzer.cs" />
     <Compile Include="Analyzers\ICodeIndex.cs" />
@@ -46,6 +73,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>

@@ -35,7 +35,11 @@
                 if (s.FormInfo.Code.search(/A\.in/) != -1) periodtype = " (факт)";
                 else if (s.FormInfo.Code.search(/B\.in/) != -1) periodtype = " (план)";
             }
-            formname.text(s.FormInfo.Name + " " + s.ObjInfo.Name + periodtype + " за");
+            if (s.FormInfo.Name.length > 60) {
+                formname.text(s.ObjInfo.Name + " " + s.FormInfo.Name + " " + periodtype + " за");    
+            } else {
+                formname.text(s.FormInfo.Name + " " + s.ObjInfo.Name + periodtype + " за"); 
+            }
             formyear.text(s.Year + " год");
         }
     });

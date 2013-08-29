@@ -1,1 +1,7 @@
 ﻿@import url('zdev.base.css');
+.type-Undefined {
+    background-color: yellow;
+}
+.obsolete-true .type-Undefined , .error-true .type-Undefined{
+    background-color: inherit;
+}

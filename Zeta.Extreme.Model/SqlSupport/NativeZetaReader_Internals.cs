@@ -255,6 +255,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Tag = r.GetString(6),
 					StartDate = r.GetDateTime(7),
 					EndDate = r.GetDateTime(8),
+					Category = r.GetString(9),
 				};
 			return x;
 		}

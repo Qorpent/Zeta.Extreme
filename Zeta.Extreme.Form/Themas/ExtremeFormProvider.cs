@@ -22,6 +22,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Qorpent;
+using Qorpent.IO;
 using Qorpent.IoC;
 using Zeta.Extreme.BizProcess.Themas;
 
@@ -44,6 +45,18 @@ namespace Zeta.Extreme.Form.Themas {
 		/// <param name="connectionString">Дополнительная строка для проверки интеграции с БД</param>
 		public ExtremeFormProvider(string rootdir, string connectionString="") {
 			_rootdir = rootdir;
+			ConnectionString = connectionString;
+			_loadTask = Task.Run(() => DoLoad());
+		}
+
+		/// <summary>
+		/// 	Провайдер с указанной папкой для загрузки, загрузка начинается асинхронно
+		/// </summary>
+		/// <param name="source"> </param>
+		/// <param name="connectionString">Дополнительная строка для проверки интеграции с БД</param>
+		public ExtremeFormProvider(IFileSource source, string connectionString = "")
+		{
+			_source = source;
 			ConnectionString = connectionString;
 			_loadTask = Task.Run(() => DoLoad());
 		}
@@ -125,7 +138,7 @@ namespace Zeta.Extreme.Form.Themas {
 		/// </summary>
 		public void DoLoad() {
 			lock (_loadsync) {
-				var options = ThemaLoaderOptionsHelper.GetExtremeFormOptions(_rootdir);
+				var options = ThemaLoaderOptionsHelper.GetExtremeFormOptions(_rootdir,_source);
 				options.DirectThemaConfigurations = _directdefs;
 				options.PropertySources = _propertysoruces;
 				var configurator = new ThemaConfigurationProvider(options){ConnectionString = ConnectionString};
@@ -141,5 +154,6 @@ namespace Zeta.Extreme.Form.Themas {
 		private Task _loadTask;
 		private XElement[] _directdefs;
 		private IBizCasePropertySource[] _propertysoruces;
+		private IFileSource _source;
 	}
 }

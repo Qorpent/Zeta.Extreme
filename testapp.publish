@@ -5,14 +5,12 @@
 		<QISD>False</QISD>
 		<IsWeb>True</IsWeb>
 	</PropertyGroup>
-	<Import Project="testapp.base" />
+	<Import Project="..\Zeta.Extreme\testapp.base" />
+	
 	<ItemGroup>	
 		<Config Include="..\deployconfig\work.db-connection"/>
 		<Config Include="..\deployconfig\devel.rolemap.bxl"/>
-		<Script	Include="..\qorpent.sys\commons\qorpent.wiki.js"/>
-		<Image Include="..\Ugmk.Assoi\*.png"/>
-		<Style Include="..\qorpent.sys\commons\qorpent.wiki.css"/>
 		<Config Include="..\deployconfig\temporalrolefix.rolemap.bxl"/>
-	    <Config Include="..\Zeta.Extreme\mongodbattachmentsource.ioc-manifest.bxl"/>
+	    <Config Include="..\deployconfig\mongodb.test.external.ioc-manifest.bxl"/>
 	</ItemGroup>
 </Project>

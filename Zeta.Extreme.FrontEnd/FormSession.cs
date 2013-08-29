@@ -63,6 +63,7 @@ namespace Zeta.Extreme.FrontEnd {
 		public FormSession() {
 			Parameters = new Dictionary<string, object>();
 			_controlpoints = new List<ControlPointResult>();
+			Application =Qorpent.Applications.Application.Current;
 		}
 
 		/// <summary>
@@ -79,6 +80,7 @@ namespace Zeta.Extreme.FrontEnd {
 		/// <param name="obj"> </param>
 		/// <param name="subobj"></param>
 		public FormSession(IInputTemplate form, int year, int period, IZetaMainObject obj,IZetaMainObject subobj = null) {
+			Application = Qorpent.Applications.Application.Current;
 			_controlpoints = new List<ControlPointResult>();
 			Parameters = new Dictionary<string, object>();
 			Uid = Guid.NewGuid().ToString();
@@ -136,6 +138,7 @@ namespace Zeta.Extreme.FrontEnd {
 						Status = Template.Thema.GetParameter("status", ""),
 						FirstYear = Template.Thema.GetParameter("firstyear", ""),
 						RolePrefix = Template.Thema.GetParameter("roleprefix", ""),
+						PeriodState = ResolveService<IPeriodStateManager>().Get(Template.Year, Template.Period, Template.Thema.GetParameter("deadlinetype","")),
 					};
 			}
 
@@ -1113,7 +1116,7 @@ namespace Zeta.Extreme.FrontEnd {
 			cansave = cansave || cansaveoverblock;
 			if (cansave) {
 				var periodStateManager = new PeriodStateManager();
-				var periodState = periodStateManager.Get(Year, Period);
+				var periodState = periodStateManager.Get(Year, Period,Template.Thema.GetParameter("deadlinetype",""));
 				if (!periodState.State) {
 					cansave = Template.IgnorePeriodState || roles.IsInRole(principal,"IGNOREPERIODSTATE",true);
 					periodstateoverride = cansave;

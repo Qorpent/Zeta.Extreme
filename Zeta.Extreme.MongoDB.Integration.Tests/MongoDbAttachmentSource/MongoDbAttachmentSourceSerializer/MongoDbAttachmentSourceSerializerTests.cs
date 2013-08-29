@@ -1,4 +1,5 @@
 ﻿using System;
+using MongoDB.Bson;
 using NUnit.Framework;
 using Zeta.Extreme.BizProcess.Forms;
 using Zeta.Extreme.MongoDB.Integration;
@@ -30,5 +31,10 @@ namespace Zeta.Extreme.MongoDB.Integration.Tests {
             Assert.AreEqual(attachment.Extension, inAttachment.Extension);
         }
 
+        [Test]
+        public void CanParseNullReturn() {
+            var attachment = MongoDbAttachmentSourceSerializer.BsonToAttachment(new BsonDocument());
+            
+        }
     }
 }

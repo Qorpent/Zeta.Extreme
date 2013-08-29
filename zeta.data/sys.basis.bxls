@@ -1,0 +1,18 @@
+# Кейс как работать с глобалами в новой системе
+
+class global abstract static
+
+class thema abstract static
+	import global
+
+class rowset abstract static
+	import global
+	
+class colset abstract static
+	import global
+	
+class paramset abstract static
+	import global
+
+class objset abstract static
+	import global

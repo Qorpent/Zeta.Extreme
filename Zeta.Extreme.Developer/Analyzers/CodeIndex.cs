@@ -160,18 +160,47 @@ namespace Zeta.Extreme.Developer.Analyzers {
 					              root + "/@*[" + DeveloperConstants.XpathSysAttributesFilter + "]")
 				             as IEnumerable)
 				.Cast<XAttribute>()
-				.Select(_ => new SimpleAttributeDescriptor {
-					Name = _.Name.LocalName,
-					Value = _.Value,
-					LexInfo = new LexInfo {
-						File = _.Parent.Attr("_file"),
-						Line = _.Parent.Attr("_line").ToInt()
-						,
-						Context = GetContextString(_)
-					}
-				}).ToArray();
+				.Select(_ => ConvertAttributeToAttributeDescriptor(_)).ToArray();
+			if (filter.UseParamAsAttribute) {
+				var secondresult = (
+							 source.XmlContent.XPathEvaluate(
+								  root + "/param")
+							 as IEnumerable)
+				.Cast<XElement>()
+				.Select(ConvertParamToAttributeDescriptor).ToArray();
+				result = result.Union(secondresult).ToArray();
+			}
 			return result;
 		}
+
+		private SimpleAttributeDescriptor ConvertAttributeToAttributeDescriptor(XAttribute _) {
+			return new SimpleAttributeDescriptor {
+				Name = _.Name.LocalName,
+				Value = _.Value,
+				LexInfo = new LexInfo {
+					File = _.Parent.Attr("_file"),
+					Line = _.Parent.Attr("_line").ToInt()
+					,
+					Context = GetContextString(_)
+				}
+			};
+		}
+
+		private static SimpleAttributeDescriptor ConvertParamToAttributeDescriptor(XElement _) {
+			return new SimpleAttributeDescriptor
+			{
+				Name = _.Attr("code"),
+				Value = _.Value,
+				LexInfo = new LexInfo
+				{
+					File = _.Attr("_file"),
+					Line = _.Attr("_line").ToInt()
+					,
+					Context = GetContextString(_)
+				}
+			};
+		}
+
 		/// <summary>
 		/// Утилита подготовки контекста для атрибута
 		/// </summary>
@@ -293,10 +322,11 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		/// <param name="filter"></param>
 		/// <returns></returns>
 		public IEnumerable<ElementCodeTypeMap> GetElementCodeMap(SearchFilter filter) {
-			var allelements = GetAllSources().Select(_ => _.XmlContent).SelectMany(_ => _.Descendants())
+
+			var allelements = GetAllSources().Select(_ => _.XmlContent).SelectMany(_ => GetSubElements(_,filter))
 								   .Select(
 									   _ =>
-									   new { e = _, key = GetPath(_), t = _.Attr("CodeType"), r = new ItemReference(_) }).ToArray();
+									   new { e = _, key = GetPath(_), c=_.Attr("CodeCategory") , t = _.Attr("CodeType"), r = new ItemReference(_) }).ToArray();
 
 			var grouppedelements = allelements.GroupBy(_ => _.key);
 
@@ -307,9 +337,12 @@ namespace Zeta.Extreme.Developer.Analyzers {
 					{
 						Path = _.Key,
 						Type = (CodeElementType)Enum.Parse(typeof(CodeElementType), _.First().t),
-
+						
 					};
-
+					var c = _.First().c;
+					if (!string.IsNullOrWhiteSpace(c)) {
+						result.Category = (CodeElementCategory) Enum.Parse(typeof(CodeElementCategory), c);
+					}
 					
 					if (result.Path == "/*") {
 						result.TagNames = string.Join(", ", _.Select(__ => __.e.Name.LocalName).Distinct());
@@ -338,6 +371,20 @@ namespace Zeta.Extreme.Developer.Analyzers {
 					return result;
 				}
 				);
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="filter"></param>
+		/// <returns></returns>
+		public IEnumerable<XElement> SelectElements(SearchFilter filter) {
+			return GetAllSources().Select(_ => _.XmlContent).SelectMany(_ => GetSubElements(_, filter));
+		}
+
+		private static IEnumerable<XElement> GetSubElements(XElement _, SearchFilter filter) {
+			if(string.IsNullOrWhiteSpace(filter.BaseSelector)) return _.Descendants();
+			return _.XPathSelectElements(filter.BaseSelector);
+
 		}
 
 		private static ItemReference[] GroupReferencesByFile(ItemReference[] secondlevel) {

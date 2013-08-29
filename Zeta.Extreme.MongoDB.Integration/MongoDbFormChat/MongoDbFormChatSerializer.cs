@@ -47,8 +47,7 @@ namespace Zeta.Extreme.MongoDB.Integration {
 			result.Time = document["time"].ToLocalTime();
 			if (document.Contains("type")) {
 				result.Type = document["type"].AsString;
-			}
-			else {
+			} else {
 				result.Type = "default";
 			}
 			result.Target = "";

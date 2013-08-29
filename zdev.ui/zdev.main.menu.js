@@ -12,7 +12,15 @@ _.widget.register({
 			{
 				title:'Параметры отчетов',
 				icon : 'icon-wrench',
-				items : [
+				items: [
+				    {
+				        title: 'Список параметров (полный в XML)',
+				        href: './zdev/params.xml.qweb',
+				    },
+				    {
+				        title: 'Список параметров (полный в HTML)',
+				        href: './zdev/params.html.qweb?__xslt=zdev-parameters-report',
+				    },
 					{
 						title : 'Атрибуты параметров (полный в XML)',
 						href : './zdev/paramattributes.xml.qweb',
@@ -111,13 +119,42 @@ _.widget.register({
 
 		        ]
 		    },
-		    
+		    "div",
+		    {
+		        title: "Экспорт дерева",
+		        onclick: {
+		            modal: { title: "Экспорт дерева", template:'zdev_export_tree_form' , width:400 },
+		        },
+		        
+		    },
+		    {
+		        title: "Экспорт Периодов",
+		        href: './zdev/exportperiods.string.qweb',
+		    },
+            "div",
+		      {
+		          title: 'Метрики',
+		          items: [
+                      {
+                          title: 'Все, в формате XML',
+                          href: './zdev/getmetrics.xml.qwebb',
+                      },
+                      {
+                          title: 'Все в формате HTML',
+                          href: './zdev/getmetrics.html.qweb?__xslt=zdev-metrics-report',
+                      }
+
+		          ]
+		      },
+
 			"div",
 			{
 				title : "Очистить кэш",
 				onclick : { 
 					command : "zdev.dropcache" , 
-					onsuccess : { modal : { title : 'Внимание' , text : 'Кэш сброшен' ,fade: true, width: 200 } } 
+					onsuccess: {
+					    modal: { title: 'Внимание', text: 'Кэш сброшен', fade: true, width: 200 }
+					}
 				}
 			}
 		]
