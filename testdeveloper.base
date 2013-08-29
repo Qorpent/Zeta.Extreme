@@ -8,6 +8,7 @@
 		<Library Include="Zeta.Extreme.Developer"/>
 		<Library Include="Zeta.Extreme.Model"/>
 		<Config Include="zetadev.ioc-manifest.bxl"/>
-    <Ui Include=".\zdev.ui"/>
+		<Package Include="qi-mongo" />
+		<Ui Include=".\zdev.ui"/>
 	</ItemGroup>
 </Project>
