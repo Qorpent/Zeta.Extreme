@@ -51,6 +51,33 @@ namespace Zeta.Extreme {
 			Currency = PrimaryConstants.VALUTA_NONE;
 		}
 		/// <summary>
+		/// Находит зависимости по строке
+		/// </summary>
+		/// <param name="rowcode"></param>
+		/// <returns></returns>
+		public IEnumerable<IQuery> FindDependencyResult(string rowcode) {
+			if (Row.Code == rowcode) yield return this;
+			if (IsPrimary) yield break;
+			if (null != FormulaDependency) {
+				foreach (var q in FormulaDependency.OfType<Query>()) {
+					foreach (var d in q.FindDependencyResult(rowcode)) {
+						yield return d;
+					}
+				}
+			}
+			if (null != SummaDependency) {
+				foreach (var d in SummaDependency) {
+					var q = d.Item2 as Query;
+					if (null != q) {
+						foreach (var d_ in q.FindDependencyResult(rowcode)) {
+							yield return d_;
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
 		/// Простой конструктор типовых запросов
 		/// </summary>
 		/// <param name="rowcode"></param>

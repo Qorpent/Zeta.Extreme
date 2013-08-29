@@ -19,6 +19,7 @@
     <Compile Include="CodeIndexBasedTest.cs" />
     <Compile Include="CodeIndexTest.cs" />
     <Compile Include="TestOfSysXPath.cs" />
+    <Compile Include="TreeExporter\BSharpExporterTest.cs" />
     <Compile Include="TreeExporter\ExportTreeFilterTest.cs" />
   </ItemGroup>
   <ItemGroup>

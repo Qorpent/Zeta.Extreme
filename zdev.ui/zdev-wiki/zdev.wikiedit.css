@@ -1,0 +1,38 @@
+#wiki-list,
+#wiki-attach {
+	padding-left: 15px;
+}
+
+#wikiEditSource textarea {
+	width: 100%;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+.wiki-preview
+.wiki-source {
+	margin-right: 15px;
+}
+
+.wiki-article-link {
+	position: relative;
+	overflow: hidden;
+	width: 235px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding-right: 30px !important;
+	box-sizing: border-box;
+}
+
+.wiki-article-link>i {
+	position: absolute;
+}
+
+.wiki-article-link>.wiki-delete-btn {
+	right: 0;
+}
+
+.wiki-article-link>.wiki-edit-btn {
+	right: 18px;
+}

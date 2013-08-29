@@ -112,5 +112,38 @@ namespace Zeta.Extreme.Model {
 		///     Ќазвание
 		/// </summary>
 		public virtual DateTime Version { get; set; }
+        /// <summary>
+        /// ѕровер€ет наличие установленного тега, свер€ет его значение
+        /// </summary>
+        /// <param name="tagname"></param>
+        /// <param name="testvalue"></param>
+        /// <returns></returns>
+        public virtual bool IsTagSet(string tagname, string testvalue = null)
+        {
+            if (string.IsNullOrWhiteSpace(Tag)) return false;
+            if (null == testvalue)
+            {
+                return Tag.Contains("/" + tagname + ":");
+            }
+            return Tag.Replace(" ", "").Contains("/" + tagname + ":" + testvalue + "/");
+        }
+
+        /// <summary>
+        /// ¬озвращает наличие установленного тега
+        /// </summary>
+        /// <param name="tagname"></param>
+        /// <returns></returns>
+        public virtual string TagGet(string tagname)
+        {
+            if (string.IsNullOrWhiteSpace(Tag)) return string.Empty;
+            var teststr = "/" + tagname + ":";
+            var startindex = Tag.IndexOf(teststr, StringComparison.Ordinal);
+            if (-1 == startindex) return string.Empty;
+            startindex += teststr.Length;
+            var endindex = Tag.IndexOf("/", startindex, StringComparison.Ordinal);
+            if (-1 == endindex) return string.Empty;
+            var length = endindex - startindex;
+            return Tag.Substring(startindex, length).Trim();
+        }
 	}
 }

@@ -41,11 +41,16 @@
     <Compile Include="CodeMetrics\MetricTendency.cs" />
     <Compile Include="DeveloperStartUp.cs" />
     <Compile Include="MetaStorage\Periods\PeriodsExporter.cs" />
+    <Compile Include="MetaStorage\Tree\AttributeType.cs" />
+    <Compile Include="MetaStorage\Tree\BSharpTreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\BSharpXmlExporter.cs" />
     <Compile Include="MetaStorage\Tree\BxlMetaTreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\DefaultBSMappings.cs" />
     <Compile Include="MetaStorage\Tree\ExportTreeFilter.cs" />
     <Compile Include="MetaStorage\Tree\ExportTreeFormat.cs" />
     <Compile Include="MetaStorage\Tree\HqlTreeExporter.cs" />
     <Compile Include="MetaStorage\Tree\ITreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\TagMap.cs" />
     <Compile Include="MetaStorage\Tree\TreeExporter.cs" />
     <Compile Include="MetaStorage\Tree\TreeExporterCodeMode.cs" />
     <Compile Include="MetaStorage\Tree\TreeExporterOptions.cs" />

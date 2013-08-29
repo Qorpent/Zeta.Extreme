@@ -1,4 +1,4 @@
-namespace Zeta.Extreme.Developer.MetaStorage {
+namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 	/// <summary>
 	/// Опции генератора схемы
 	/// </summary>
@@ -17,6 +17,14 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 		/// Режим генерации кодов
 		/// </summary>
 		public TreeExporterCodeMode CodeMode { get; set; }
+		/// <summary>
+		/// Пространство имен для выгона B#
+		/// </summary>
+		public string Namespace { get; set; }
 
+		/// <summary>
+		/// Имя класса для выгона B#
+		/// </summary>
+		public string ClassName { get; set; }
 	}
 }

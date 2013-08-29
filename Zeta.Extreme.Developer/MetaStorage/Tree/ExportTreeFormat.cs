@@ -1,4 +1,4 @@
-namespace Zeta.Extreme.Developer.MetaStorage {
+namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 	/// <summary>
 	/// 
 	/// </summary>
@@ -15,6 +15,10 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 		/// <summary>
 		/// Нативный SQL скрипт
 		/// </summary>
-		Sql
+		Sql,
+		/// <summary>
+		/// Новый язык
+		/// </summary>
+		BSharp
 	}
 }

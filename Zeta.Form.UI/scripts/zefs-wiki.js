@@ -19,7 +19,7 @@
         var row = $.map(zefs.myform.currentSession.structure.rows, function(r) { if (r.code == rowcode && !!r.comment) return r; });
         if (row.length > 0) {
             var commentarticle = $('<div class="commentarticle"/>').attr("id", "commentarticle_" + rowcode);
-            commentarticle.insertAfter($("#wikiarticle__row_" + rowcode + "_default"));
+            $("#wikiarticle__row_" + rowcode + "_default>.wikitext").append(commentarticle);
             commentarticle.append(
                 $('<div class="wikititle"/>').text("Комментарий к строке"),
                 $('<div class="wikitext"/>').html(row["0"].comment.replace(/\s*\r\n/g,'</br>'))
@@ -243,7 +243,7 @@
         if (typeof result == "string") return;
         var code = result.code || "";
         var article = $('<div class="detailsarticle"/>').attr("id", "detailsarticle_" + code);
-        article.insertAfter($("#wikiarticle__row_" + code + "_default"));
+        $("#wikiarticle__row_" + code + "_default>.wikitext").append(article);
         var title = $('<div class="wikititle"/>').text("Зависимости формулы");
         article.append(title);
         var getReadableType = function(type) {
@@ -280,7 +280,9 @@
             tbody.append(tr);
             if (!!d1.values) {
                 $.each(d1.values, function(i, v) {
-                    tr.append($('<td/>').text(v))
+                    // Фагим сказал менять запятую между цифрами на пробел
+                    v = v.replace(/(\d),(\d)/, "$1 $2");
+                    tr.append($('<td/>').html(v));
                 });
             }
         });

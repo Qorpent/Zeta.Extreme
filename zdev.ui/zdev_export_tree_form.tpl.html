@@ -4,6 +4,7 @@
             <legend>Параметры вызова</legend>
             <label>Язык генератора</label>
             <select name="format">
+                <option value="BSharp">B#</option>
                 <option value="Hql">Hql</option>
                 <option value="BxlMeta">BxlMeta</option>
                 <option value="Sql">Sql</option>
@@ -26,7 +27,10 @@
             </select>
             
             <label>Прочие настройки</label>
-
+            <label>Пространство имен B#</label>
+            <input name="namespace" />
+            <label>Имя класа B#</label>
+            <input name="classname" />
             <label class="checkbox">
                 Не включать ссылку на родителя
                 <input type="checkbox" name="detachroot" />
