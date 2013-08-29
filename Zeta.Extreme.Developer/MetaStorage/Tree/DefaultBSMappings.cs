@@ -199,6 +199,8 @@
             new TagMap("deplist"),
             new TagMap("bt"),
             new TagMap("aliased"),
+            new TagMap("noblocker",AttributeType.Bool),
+            
 
         };
     }
