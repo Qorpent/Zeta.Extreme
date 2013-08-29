@@ -4,7 +4,7 @@ using System.Linq;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
-namespace Zeta.Extreme.Developer.MetaStorage {
+namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 	/// <summary>
 	/// 
 	/// </summary>
@@ -44,6 +44,10 @@ namespace Zeta.Extreme.Developer.MetaStorage {
 			if (format == ExportTreeFormat.BxlMeta)
 			{
 				return new BxlMetaTreeExporter();
+			}
+			if (format == ExportTreeFormat.BSharp)
+			{
+				return new BSharpTreeExporter();
 			}
 			throw new Exception("format not supported for now " + format);
 		}

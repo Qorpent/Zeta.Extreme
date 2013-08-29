@@ -1,0 +1,4 @@
+class project abstract 
+	Layout TreeNamespace+IncludeWork
+	LogLevel Info
+	InputExtension bxls

@@ -3,6 +3,7 @@ using Qorpent;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 using Zeta.Extreme.Developer.MetaStorage;
+using Zeta.Extreme.Developer.MetaStorage.Tree;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 
@@ -14,7 +15,7 @@ namespace Zeta.Extreme.Developer.Actions {
 	public class ExportTreeAction  : ActionBase {
 		[Bind(
 			Name = "format",
-			Constraint = new object[] { ExportTreeFormat.BxlMeta,ExportTreeFormat.Hql,  },
+            Constraint = new object[] { ExportTreeFormat.BSharp, ExportTreeFormat.BxlMeta, ExportTreeFormat.Hql, },
 			Help = "Формат представления экспортного дерева",
 			Default = ExportTreeFormat.Hql
 		)]
@@ -35,6 +36,23 @@ namespace Zeta.Extreme.Developer.Actions {
 			Help = "Конвертирует расширяемые разделы в первичные"
 		)]
 		private bool _exttoprimary = false;
+
+
+		[Bind(
+			Name = "namespace",
+			Required = false,
+			Default = null,
+			Help = "Пространство имен для BSharp"
+		)]
+		private string _namespace = null;
+
+		[Bind(
+			Name = "classname",
+			Required = false,
+			Default = null,
+			Help = "Имя класса для BSharp"
+		)]
+		private string _classname = null;
 
 		[Bind(
 			Name = "codereplace", 
@@ -93,7 +111,7 @@ namespace Zeta.Extreme.Developer.Actions {
 			if (null == root) throw new Exception("Нет корневой строки");
 			var exportroot = PerformFilter(root);
 			var rowexporter = TreeExporter.Create(_format);
-			var options = new TreeExporterOptions {DetachRoot = _detachroot, CodeMode = _codemode};
+			var options = new TreeExporterOptions {DetachRoot = _detachroot, CodeMode = _codemode,Namespace = _namespace,ClassName = _classname};
 			var result = rowexporter.ProcessExport(exportroot,options);
 			return result;
 		}
@@ -104,6 +122,7 @@ namespace Zeta.Extreme.Developer.Actions {
 			filter.ExcludeRegex = _excluderegex;
 			filter.ConvertExtToPrimary = _exttoprimary;
 			filter.ResetAutoIndex = _resetindex;
+		
 			if (!string.IsNullOrWhiteSpace(_codereplace)) {
 				var pattern = _codereplace.Split('~')[0];
 				var replace = _codereplace.Split('~')[1];

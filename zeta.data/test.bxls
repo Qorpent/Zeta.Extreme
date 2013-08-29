@@ -1,0 +1,8 @@
+namespace test
+	class test
+		a = 2
+namespace testr
+	class test2
+		a = 2
+	class tezt
+		b = 3

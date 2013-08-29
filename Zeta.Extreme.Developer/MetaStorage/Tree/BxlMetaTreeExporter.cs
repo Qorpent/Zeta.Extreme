@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Zeta.Extreme.Developer.MetaStorage {
+namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 	/// <summary>
 	/// Ёкспортер дерева в имеющийс€ традиционный 'HQL'
 	/// </summary>
