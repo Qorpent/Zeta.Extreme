@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Developer.MetaStorage.Tree
@@ -32,7 +34,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 		private void GenerateRow(XElement target, IZetaRow r,IZetaRow root) {
 			var e = CreateElement(r,root);
 			target.Add(e);
-			foreach (var c in r.Children) {
+			foreach (var c in r.Children.OrderBy(_=>_.GetSortKey())) {
 				GenerateRow(e,c,root);
 			}
 		}
