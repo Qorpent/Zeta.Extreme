@@ -114,8 +114,14 @@ _.widget.register({
 		        
 		    },
 		    {
-		        title: "Экспорт Периодов",
+		        title: "Экспорт периодов",
 		        href: './zdev/exportperiods.string.qweb',
+		    },
+		    {
+		        title: "Экспорт зависимостей формы (DOT)",
+		        onclick: {
+		            modal: { title: "Экспорт дерева", template: 'zdev_export_dep_dot', width: 400 },
+		        },
 		    },
             "div",
 		      {
