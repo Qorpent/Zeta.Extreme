@@ -66,7 +66,7 @@ window._ = window._ || {};
             this.wikilist = wikilist;
             var events = [{
                 event: "click",
-                selector: ".wiki-link, .wiki-edit",
+                selector: ".wiki-article-link",
                 handler: function(e) { 
                     e.preventDefault();
                     e.stopPropagation(); 
@@ -107,11 +107,7 @@ window._ = window._ || {};
             }];
             
             var list = _.render.compile("zdev_wikilist", this.wikilist, events);
-            if (this.list) {
-                this.list.append(list);
-            } else {
-                this.list = list;
-            }
+            this.list = list;
             _.layout.update("left", list);
         },
 
