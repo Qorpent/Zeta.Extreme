@@ -19,6 +19,7 @@
     <Compile Include="Actions\ExportDependencyDot.cs" />
     <Compile Include="Actions\ExportFormulaDependencyDot.cs" />
     <Compile Include="Actions\ExportPeriods.cs" />
+    <Compile Include="Actions\ExportPrimaryDependencyDot.cs" />
     <Compile Include="Actions\ExportTreeAction.cs" />
     <Compile Include="Actions\GetColAttributesAction.cs" />
     <Compile Include="Actions\GetFormAttributesAction.cs" />

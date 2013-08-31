@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model;
+using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
+using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Developer.MetaStorage.Tree {
@@ -52,12 +55,23 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			var graph = GetFormulaDependencyGraph(r);
 			return ConvertToDot(graph);
 		}
+
+		/// <summary>
+		/// Формирует скрипт для DOT с зависимостями для первички
+		/// </summary>
+		/// <param name="r"></param>
+		public static string GetPrimaryDependencyDot(IZetaRow r)
+		{
+			var graph = GetPrimaryDependencyGraph(r,null);
+			return ConvertToDot(graph);
+		}
 		private static string ConvertToDot(GraphIndex graph) {
 			var result = new StringBuilder();
 			result.AppendLine("digraph G {");
 			result.AppendLine("\trankdir=LR");
 			foreach (var n in graph.Nodes) {
-				if (n.StartsWith("s_") || n.StartsWith("f_") || n.StartsWith("p_")) {
+				if (null == n) continue;
+				if (n.StartsWith("s_") || n.StartsWith("f_") || n.StartsWith("p_")||n.StartsWith("r_")) {
 					var label = n.Substring(2).Replace("_DOT_",".");
 					var shape = "ellipse";
 					if (n.StartsWith("s_")) {
@@ -66,6 +80,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 					else if (n.StartsWith("f_")) {
 						shape = "cds";
 					}
+					else if (n.StartsWith("r_"))
+					{
+						shape = "egg";
+					}
 					result.AppendLine("\t" + n + " [shape=" + shape + ";label=\"" + label + "\"]");
 				}
 				else {
@@ -73,6 +91,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 				}
 			}
 			foreach (var e in graph.Edges) {
+				if (null == e.Item1 || null == e.Item3) continue;
 				if (e.Item2 == "cpt") continue;
 				var color = "black";
 				if (e.Item2 == "cpt") {
@@ -81,10 +100,11 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 				if (e.Item2 == "frm") {
 					color = "blue";
 				}
-				if (e.Item2 == "ref" || e.Item2=="sum") {
+				if (e.Item2 == "ref" ) {
 					color = "brown";
 				}
-				result.AppendLine("\t" + e.Item1 + "->" + e.Item3 + " [color=" + color + "]");
+				
+				result.AppendLine("\t" + e.Item3 + "->" + e.Item1 + " [color=" + color + "]");
 			}
 			result.AppendLine("}");
 			return result.ToString();
@@ -124,12 +144,90 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <returns></returns>
+		public static GraphIndex GetPrimaryDependencyGraph(IZetaRow root,GraphIndex index) {
+			index = index ?? new GraphIndex();
+			var code = GetRowCode(root);
+			if (!index.Nodes.Contains(code)) {
+				index.Nodes.Add(code);
+			}
+			var references = RowCache.Bycode.Values.Where(
+				_ => 
+					(null != _.RefTo && _.RefTo.Code == root.Code)
+					||
+					(null!= _.ExRefTo && _.ExRefTo.Code==root.Code)
+					
+					).ToArray();
+			foreach (var r in references) {
+				if (r.Code == root.Code) continue;
+				var e = new Tuple<string, string, string>(GetRowCode(r), "ref", code);
+				if (!index.Edges.Contains(e)) {
+					index.Edges.Add(e);
+					GetPrimaryDependencyGraph(r, index);
+				}
+				
+			}
+			if (!root.IsMarkSeted("0NOSUM")) {
+				var current = root.Parent;
+				while (null != current) {
+					if (current.IsMarkSeted("0SA")) {
+						break;
+					}
+					current = current.Parent;
+				}
+				if (null != current) {
+					var e = new Tuple<string, string, string>(GetRowCode(current), "sum", code);
+					if (!index.Edges.Contains(e))
+					{
+						index.Edges.Add(e);
+						GetPrimaryDependencyGraph(current, index);
+					}
+					
+				}
+			}
+			if (!string.IsNullOrWhiteSpace(root.GroupCache)) {
+				var groups = root.GroupCache.SmartSplit(false, true, ' ', ';', '/');
+				var grsums = RowCache.Bycode.Values.Where(_ => !string.IsNullOrWhiteSpace(_.GroupCache) && _.IsMarkSeted("0SA")).ToArray();
+				foreach (var gs in grsums) {
+					if (gs.Code == root.Code) continue;
+					var tgroups = gs.GroupCache.SmartSplit(false, true, ' ', ';', '/');
+					if (tgroups.Intersect(groups).Any()) {
+						var e = new Tuple<string, string, string>(GetRowCode(gs), "sum", code);
+						if (!index.Edges.Contains(e))
+						{
+							index.Edges.Add(e);
+							GetPrimaryDependencyGraph(gs, index);
+						}
+						
+					}
+				}
+			}
+			
+			var formulas = RowCache.Formulas.Where(_ => _.Formula.Contains("$"+root.Code)).ToArray();
+			foreach (var f in formulas) {
+				if (Regex.IsMatch(f.Formula, @"\$" + root.Code + @"[\@\.\?]")) {
+					var e = new Tuple<string, string, string>(GetRowCode(f), "frm", code);
+					if (!index.Edges.Contains(e))
+					{
+						index.Edges.Add(e);
+						GetPrimaryDependencyGraph(f, index);
+					}
+					
+				}
+			}
+			return index;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
 		/// <param name="q"></param>
 		/// <param name="index"></param>
 		/// <returns></returns>
 		public static GraphIndex GetQueryRowDependencyGraph(Query q, GraphIndex index=null) {
 			index = index ?? new GraphIndex();
 			var code = GetRowCode(q);
+			if (null == code) return index;
 			if (!index.Nodes.Contains(code)) {
 				index.Nodes.Add(code);
 			}
@@ -183,6 +281,27 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			}
 			code = prefix + "_"+code;
 			return code.Replace(".","_DOT_");
+		}
+
+		private static string GetRowCode(IZetaRow r) {
+			
+			if (null != r.RefTo || null!=r.ExRefTo) {
+				return "r_" + r.Code;
+			}
+			if (r.IsMarkSeted("0SA")) {
+				return "s_" + r.Code;
+			}
+			if (!r.IsFormula) {
+				return "p_" + r.Code;
+			}
+			var s = new Session();
+			var q = new Query(r.Code, "Б1", 352, 2013, 1);
+			q = (Query)s.Register(q);
+			s.WaitPreparation();
+			if (null == q) {
+				return null;
+			}
+			return GetRowCode(q);
 		}
 
 		/// <summary>
