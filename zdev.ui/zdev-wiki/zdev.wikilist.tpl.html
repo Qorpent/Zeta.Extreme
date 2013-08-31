@@ -1,14 +1,14 @@
+<div id="wiki-attach">
+	<legend>Загрузка файлов</legend>
+	{{>zdev_wikiattach}}
+</div>
 <div id="wiki-list">
 	<legend>Список статей<button class="btn btn-mini btn-success wiki-create"><i class="icon-plus icon-white"/></button></legend>
 	<ul class="nav nav-list">
 		{{#pages}}
-		<li class="nav-item">
+		<li class="nav-item wiki-{{Type}}">
 			<a class="wiki-article-link" wikicode="{{Code}}">{{Name}} [{{Code}}]<i class="icon-trash pull-right wiki-delete-btn"></i></a>
 		</li>
 		{{/pages}}
 	</ul>
-</div>
-<div id="wiki-attach">
-	<legend>Загрузка файлов</legend>
-	{{>zdev_wikiattach}}
 </div>

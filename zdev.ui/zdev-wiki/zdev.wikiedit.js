@@ -8,6 +8,7 @@ window._ = window._ || {};
         wikilist: null,
         wikisource: null,
         preview: null,
+        previewhtml: null,
         source: null,
         text: null,
         code: null,
@@ -18,7 +19,7 @@ window._ = window._ || {};
                 event: "click",
                 selector: "#wikiPreviewBtn",
                 handler: $.proxy(function(e) { 
-                    this.preview.html(qwiki.toHTML(this.text.val()));
+                    this.previewhtml.html(qwiki.toHTML(this.text.val()));
                 }, this)
             }, {
                 event: "click",
@@ -31,24 +32,21 @@ window._ = window._ || {};
                 event: "keyup",
                 selector: "#wikiEditText.autopreview",
                 handler: $.proxy(function(e) {
-                    this.preview.html(qwiki.toHTML($(e.target).val()));
+                    this.previewhtml.html(qwiki.toHTML($(e.target).val()));
                 }, this)
             }];
             var editor = _.render.compile("zdev_wikiedit", this.wikisource, events);
-            this.preview = editor.find('#wikiEditPreview');
+            this.preview = editor.find('.wiki-preview');
             this.source = editor.find('.wiki-source');
             this.text = editor.find("#wikiEditText");
             this.code = editor.find("#wikiEditCode");
             this.title = editor.find("#wikiEditTitle");
-            if (this.editor) {
-                this.editor.append(editor);
-            } else {
-                this.editor = editor;
-            }
+            this.previewhtml = editor.find("#wikiEditPreview");
+            this.editor = editor;
             editor.fluidlayout();
             _.layout.update("body", editor);
             if (!!this.wikisource) {
-                this.preview.html(qwiki.toHTML(this.wikisource.Text));
+                this.previewhtml.html(qwiki.toHTML(this.wikisource.Text));
             }
             _.layout.body().on("mouseup", "*", $.proxy(function(e) {
                 e.stopPropagation();
@@ -104,11 +102,57 @@ window._ = window._ || {};
                         });
                     }
                 }
+            }, {
+                event: "change",
+                selector: ".wiki-attach-file",
+                handler: $.proxy(function(e) {
+                    this.attachname.val(e.target.files[0].name);
+                    this.attachcode.focus();
+                }, this)
+            }, {
+                event: "click",
+                selector: ".wiki-attach-select",
+                handler: $.proxy(function() {
+                    this.attachfile.trigger("click");
+                }, this)
+            }, {
+                event: "click",
+                selector: ".wiki-attach-submit",
+                handler: $.proxy(function(e) {
+                    e.preventDefault();
+                    if (this.attachcode.val() != "") {
+                        var fd = new FormData();
+                        fd.append("code", this.attachcode.val());
+                        fd.append("title", this.attachname.val());
+                        fd.append("datafile", this.attachfile.get(0).files[0]);
+                        this.attach(fd);
+                    } else {
+                        this.attachcode.focus();
+                    }
+                }, this)
             }];
             
             var list = _.render.compile("zdev_wikilist", this.wikilist, events);
             this.list = list;
+            this.attachfile = list.find(".wiki-attach-file");
+            this.attachname = list.find(".wiki-attach-name");
+            this.attachcode = list.find(".wiki-attach-code");
+            this.attachselect = list.find(".wiki-attach-select");
+            this.attachsubmit = list.find(".wiki-attach-submit");
             _.layout.update("left", list);
+        },
+
+        attach: function(formdata) {
+            var wikiattach = _.api.wiki.savefile.safeClone();
+            wikiattach.onSuccess(function(e, result) {
+                $('<p/>').text(message).miamodal({
+                    resizable: false,
+                    closebutton: false,
+                    autoclose: 2000,
+                    width: 300
+                });
+            });
+            wikiattach.execute(formdata);
         },
 
         save: function() {
