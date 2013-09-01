@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Qorpent.Applications;
 using Qorpent.Utils.Extensions;
@@ -161,31 +159,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		}
 
 		private void WriteOutReferencesComment(IZetaRow exportroot) {
-			var deplist = new List<string>();
-			foreach (var f in new[] {exportroot}.Union(exportroot.AllChildren)) {
-				if (f.RefTo != null) {
-					if (f.RefTo.Code.Substring(0,4) != exportroot.Code) {
-						deplist.Add("ref:" + f.RefTo.Code);
-						
-					}
-					continue;
-				}
-				if (f.IsFormula) {
-					var type = "frm:";
-					if (f.MarkCache.Contains("CONTROLPOINT")) {
-						type = "cpt:";
-					}
-					var codes = Regex.Matches(f.Formula, @"\$([\w_\d]+)")
-					                 .OfType<Match>().Select(_ => _.Groups[1]).ToArray();
-					foreach (var c in codes) {
-						if (c.Value.Substring(0, 4) != exportroot.Code)
-						{
-							deplist.Add(type + c.Value);
-						}
-					}
-				}
-			}
-			var formlist = deplist.Select(_ => _.Substring(0, 8)).Distinct().Where(_=>_!=exportroot.Code).OrderBy(_ => _).ToArray();
+			var formlist = FormDependencyHelper.GetFormList(exportroot);
 			if (0 != formlist.Length) {
 				AddBigComment("");
 				AddBigComment("Обнаружены зависимости от других форм");

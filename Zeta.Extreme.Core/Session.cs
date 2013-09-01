@@ -428,6 +428,10 @@ namespace Zeta.Extreme {
 		/// ’ранилище формул сессии
 		/// </summary>
 		public IFormulaStorage FormulaStorage { get; set; }
+		/// <summary>
+		/// —пециальный режим работы If в режиме подготовки - безусловна€ индексаци€ всех веток
+		/// </summary>
+		public bool ExpandConditionalFormulas { get; set; }
 
 		/// <summary>
 		///     ѕозвол€ет вернуть использованную подсессию в пул

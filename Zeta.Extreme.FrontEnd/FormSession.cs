@@ -735,7 +735,9 @@ namespace Zeta.Extreme.FrontEnd {
 
 					if (null != q) {
 						if (c._.ControlPoint && r.Native.IsMarkSeted("CONTROLPOINT")) {
-							_controlpoints.Add(new ControlPointResult {Col = c._, Row = r.Native, Query = q});
+							if (!r.Native.Tag.Contains("/noblocker:1/")) {
+								_controlpoints.Add(new ControlPointResult {Col = c._, Row = r.Native, Query = q});
+							}
 						}
 						queries[key] = q;
 					}

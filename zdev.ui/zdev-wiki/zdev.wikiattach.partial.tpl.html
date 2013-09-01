@@ -1,13 +1,10 @@
-<div class="wiki-attachfiles-form">
-    <form method="post" style="display: block;" class="non-printable">
-        <button type="button" class="btn btn-mini wiki-file-source">Выбрать файл</button>
-        <input class="wiki-file" type="file" name="datafile" style="display: none;">
-        <input class="wiki-file-code input-small" name="code" type="text" placeholder="Код" style="padding: 0 6px;">
-        <input class="wiki-file-name input-normal" type="text" name="title" placeholder="Название" style="padding: 0 6px;">
-        <button class="wiki-file-attach btn btn-mini btn-primary" type="submit">Прикрепить</button>
-        <div class="wiki-file-message"></div>
-    </form>
-    <div class="progress progress-striped active" style="display: none;">
-        <div class="bar" style="width: 1%;"></div>
-    </div>
+<div class="progress progress-striped active hidden">
+    <div class="bar" style="width: 1%;"></div>
 </div>
+<form method="post" class="non-printable">
+    <input class="wiki-attach-name" type="text" name="title" placeholder="Имя файла">
+    <input class="wiki-attach-code" name="code" required type="text" placeholder="Код">
+    <input class="wiki-attach-file" type="file" name="datafile" style="display: none">
+    <button type="button" class="btn btn-small wiki-attach-select">Выбрать файл</button>
+    <button class="wiki-attach-submit btn btn-small btn-primary" type="submit">Прикрепить</button><div class="wiki-attach-message"></div>
+</form>

@@ -16,7 +16,10 @@
   <ItemGroup>
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\DropCacheAction.cs" />
+    <Compile Include="Actions\ExportDependencyDot.cs" />
+    <Compile Include="Actions\ExportFormulaDependencyDot.cs" />
     <Compile Include="Actions\ExportPeriods.cs" />
+    <Compile Include="Actions\ExportPrimaryDependencyDot.cs" />
     <Compile Include="Actions\ExportTreeAction.cs" />
     <Compile Include="Actions\GetColAttributesAction.cs" />
     <Compile Include="Actions\GetFormAttributesAction.cs" />
@@ -46,6 +49,7 @@
     <Compile Include="MetaStorage\Tree\DefaultBSMappings.cs" />
     <Compile Include="MetaStorage\Tree\ExportTreeFilter.cs" />
     <Compile Include="MetaStorage\Tree\ExportTreeFormat.cs" />
+    <Compile Include="MetaStorage\Tree\FormDependencyHelper.cs" />
     <Compile Include="MetaStorage\Tree\HqlTreeExporter.cs" />
     <Compile Include="MetaStorage\Tree\ITreeExporter.cs" />
     <Compile Include="MetaStorage\Tree\TagMap.cs" />
@@ -74,7 +78,12 @@
     <Compile Include="Config\DeveloperConfig.cs" />
     <Compile Include="Config\IDeveloperConfig.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Zeta.Extreme.Core\Zeta.Extreme.Core.csproj">
+      <Project>{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}</Project>
+      <Name>Zeta.Extreme.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />

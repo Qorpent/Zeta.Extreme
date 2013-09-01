@@ -6,6 +6,7 @@ pkg zeta.dev level=auth
 	load zdev.wikiattach.partial.tpl.html
 	load zdev.wikiarticle.partial.tpl.html
 	load zdev_export_tree_form.tpl.html
+	load zdev_export_dep_dot.tpl.html
 
 	# Виджет редактора wiki-стрниц
 	widget zdev.wikiedit
