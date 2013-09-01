@@ -44,8 +44,7 @@ namespace zeta.export.forms
 				primary 2460 'Прочее' groups='ЧП11 ФР11' minus olap=fin sap-region=BUH sap-form=002 sap-use 
 			sum 2400 'Чистая прибыль (убыток)' groups=ЧП11 measure='/dir120711/' sap-region=BUH sap-form=002 sap-use olap=fin 
 			title 250 'СПРАВОЧНО:' outer=2500 sap-region=BUH sap-form=002 sap-use 
-				primary 2510 'Результат от переоценки внеоборотных активов, не включаемый в чистую прибыль (убыток) (+/-)
-' groups=ФР11 sap-region=BUH sap-form=002 sap-use olap=finrez 
+				primary 2510 'Результат от переоценки внеоборотных активов, не включаемый в чистую прибыль (убыток) (+/-)' groups=ФР11 sap-region=BUH sap-form=002 sap-use olap=finrez 
 				primary 2520 'Результат от прочих операций, не включаемый в чистую прибыль (убыток) (+/-)' groups=ФР11 sap-region=BUH sap-form=002 sap-use olap=finrez 
 				sum 2500 'Совокупный финансовый результат' groups=ФР11 sap-region=BUH sap-form=002 sap-use 
 				primary 2900 'Базовая прибыль (убыток)' sap-region=BUH sap-form=002 sap-use 

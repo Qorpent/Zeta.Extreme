@@ -30,7 +30,7 @@
 ####################################################################################################
 
 namespace zeta.export.forms
-	class a111 'Бухгалтерский баланс (аналитика)' formcode=a111 stopinterpolate=all
+	class a111 'Бухгалтерский баланс (аналитика)' formcode=a111 stopinterpolate=all prototype=zetaform
 		import tree
 		title a111 'Бухгалтерский баланс (аналитика)' 
 			formula 1000 'АКТИВ'  : (

@@ -1,7 +1,6 @@
-namespace demo if='DEMO'
-
-	+class demo_balans
-		autothema block=^demo.blocks.fin colset=^demo.demo_colset
+namespace demo
+	+class zeta.export.forms.m111
+		autothema subsystem=^demo.blocks.eco block=fin colset=^demo.demo_colset
 		
 	namespace blocks
 
