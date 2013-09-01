@@ -2,6 +2,14 @@
     #consoleHeader {
         display: none;
     }
+    
+    #consolePageHeader {
+        position: static !important;
+    }
+    
+    #consoleTools {
+        display: none !important;
+    }
 
     #consoleBody {
         margin-top: 0 !important;
@@ -11,8 +19,10 @@
         position: static !important;
     }
 
-    .kurator.label,
-    .zefsextrapannel {
+    .zefsformkurator,
+    .zefsformusers,
+    .zefsextrapannel,
+    .formdeadline {
         display: none !important;
     }
 
