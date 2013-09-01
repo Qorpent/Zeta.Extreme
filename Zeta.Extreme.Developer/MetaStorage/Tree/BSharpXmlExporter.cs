@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
 
@@ -23,7 +21,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 			var nse = new XElement("namespace", new XAttribute("code", ns));
 			var clse = new XElement("class", 
 				new XAttribute("code", cls),
-				new XAttribute("name",root.Name),
+				new XAttribute("name",root.Name.Trim().Replace("\r","\\r").Replace("\n","\\n")),
 				new XAttribute("formcode",root.Code));
 			nse.Add(clse);
 			clse.Add(new XElement("import", new XAttribute("code", "tree")));
