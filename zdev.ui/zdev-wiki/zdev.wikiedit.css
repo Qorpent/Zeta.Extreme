@@ -7,6 +7,11 @@
 	margin-bottom: 10px;
 }
 
+#wikiEditSource,
+#wikiEditPreview {
+	overflow-y: auto;
+}
+
 #wikiEditSource textarea {
 	width: 100%;
 	box-sizing: border-box;
