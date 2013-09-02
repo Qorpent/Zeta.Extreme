@@ -64,6 +64,13 @@
     <Compile Include="Model\ElementDescriptor.cs" />
     <Compile Include="Actions\GetElementsMapAction.cs" />
     <Compile Include="Model\ParameterDescriptor.cs" />
+    <Compile Include="Scripting\CleanCommand.cs" />
+    <Compile Include="Scripting\GenerateDictCommand.cs" />
+    <Compile Include="Scripting\GenerateFormCommand.cs" />
+    <Compile Include="Scripting\IScriptCommand.cs" />
+    <Compile Include="Scripting\Script.cs" />
+    <Compile Include="Scripting\ScriptCommandBase.cs" />
+    <Compile Include="Scripting\ScriptCommandFactory.cs" />
     <Compile Include="Utils\DocumentationHelper.cs" />
     <Compile Include="Analyzers\IAnalyzer.cs" />
     <Compile Include="Analyzers\ICodeIndex.cs" />
@@ -89,8 +96,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Script\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

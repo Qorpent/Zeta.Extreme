@@ -18,5 +18,15 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Zeta.Extreme.Developer\Zeta.Extreme.Developer.csproj">
+      <Project>{a6adc6df-7306-42d5-a674-3d847390ca29}</Project>
+      <Name>Zeta.Extreme.Developer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

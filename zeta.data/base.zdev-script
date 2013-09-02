@@ -1,0 +1,2 @@
+class zdev-script prototype=zdev-script abstract
+	_localzdev = "https://127.0.0.1/zdev"
