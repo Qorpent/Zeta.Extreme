@@ -64,6 +64,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.Core", "Zeta.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.BizProcess", "Zeta.Extreme.BizProcess\Zeta.Extreme.BizProcess.csproj", "{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.Developer.Script.Executor", "Zeta.Extreme.Developer.Script.Executor\Zeta.Extreme.Developer.Script.Executor.csproj", "{6AFC7C98-FC6D-4A43-BB4D-6206108743B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -143,6 +145,12 @@ Global
 		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
 		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+		{6AFC7C98-FC6D-4A43-BB4D-6206108743B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AFC7C98-FC6D-4A43-BB4D-6206108743B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AFC7C98-FC6D-4A43-BB4D-6206108743B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AFC7C98-FC6D-4A43-BB4D-6206108743B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AFC7C98-FC6D-4A43-BB4D-6206108743B0}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{6AFC7C98-FC6D-4A43-BB4D-6206108743B0}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

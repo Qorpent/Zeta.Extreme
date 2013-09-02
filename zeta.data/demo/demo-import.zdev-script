@@ -1,0 +1,20 @@
+class demo_import_old_zeta prototype=zdev-script
+
+	node = "https://127.0.0.1/zdev"
+	
+	formdir = ./import/forms
+	dictdir = ./import/dicts
+	formns = demo.import.forms
+	dictns = demo.import.forms
+	
+	clean ${formdir}
+	
+	clean ${dictdir}
+	
+	set namespace="demo.import.forms" into = ${formdir}
+		generate-form a111 withdependency
+			
+			
+	set namespace = "demo.import.dict" into=${dictdir}
+		generate-dict dir120 'dir_measure'
+		generate-dict DIR_OFFICE 'dir_org'
