@@ -137,6 +137,13 @@ _.widget.register({
 		            modal: { title: "Экспорт графика использования строки", template: 'zdev_export_dep_dot', width: 400 },
 		        },
 		    },
+		    {
+		        title: "Создать скрипт переноса формулы в первичную строку",
+		        type: 'primary',
+		        onclick: {
+		            modal: { title: "Скрипт переноса формулы в первичную строку", template: 'zdev_formula_to_primary', width: 400 },
+		        },
+		    },
             "div",
 		      {
 		          title: 'Метрики',
