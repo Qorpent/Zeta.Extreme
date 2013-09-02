@@ -159,6 +159,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 					
 					).ToArray();
 			foreach (var r in references) {
+				if (r.IsMarkSeted("CONTROLPOINT")) continue;
 				if (r.Code == root.Code) continue;
 				var e = new Tuple<string, string, string>(GetRowCode(r), "ref", code);
 				if (!index.Edges.Contains(e)) {
@@ -168,6 +169,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 				
 			}
 			if (!root.IsMarkSeted("0NOSUM")) {
+				
 				var current = root.Parent;
 				while (null != current) {
 					if (current.IsMarkSeted("0SA")) {
@@ -176,11 +178,13 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 					current = current.Parent;
 				}
 				if (null != current) {
-					var e = new Tuple<string, string, string>(GetRowCode(current), "sum", code);
-					if (!index.Edges.Contains(e))
-					{
-						index.Edges.Add(e);
-						GetPrimaryDependencyGraph(current, index);
+					if (!current.IsMarkSeted("CONTROLPOINT")) {
+						var e = new Tuple<string, string, string>(GetRowCode(current), "sum", code);
+						if (!index.Edges.Contains(e))
+						{
+							index.Edges.Add(e);
+							GetPrimaryDependencyGraph(current, index);
+						}
 					}
 					
 				}
@@ -189,6 +193,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 				var groups = root.GroupCache.SmartSplit(false, true, ' ', ';', '/');
 				var grsums = RowCache.Bycode.Values.Where(_ => !string.IsNullOrWhiteSpace(_.GroupCache) && _.IsMarkSeted("0SA")).ToArray();
 				foreach (var gs in grsums) {
+					if (gs.IsMarkSeted("CONTROLPOINT")) continue;
 					if (gs.Code == root.Code) continue;
 					var tgroups = gs.GroupCache.SmartSplit(false, true, ' ', ';', '/');
 					if (tgroups.Intersect(groups).Any()) {
@@ -205,6 +210,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			
 			var formulas = RowCache.Formulas.Where(_ => _.Formula.Contains("$"+root.Code)).ToArray();
 			foreach (var f in formulas) {
+				if (f.IsMarkSeted("CONTROLPOINT")) continue;
 				if (Regex.IsMatch(f.Formula, @"\$" + root.Code + @"[\@\.\?]")) {
 					var e = new Tuple<string, string, string>(GetRowCode(f), "frm", code);
 					if (!index.Edges.Contains(e))
@@ -234,6 +240,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			if (q.IsPrimary) return index;
 			if (null != q.FormulaDependency) {
 				foreach (Query cq in q.FormulaDependency) {
+					if (cq.Row.Native.IsMarkSeted("CONTROLPOINT")) continue;
 					var tuple = new Tuple<string, string, string>(code, "frm",GetRowCode(cq));
 					if (!index.Edges.Contains(tuple)) {
 						index.Edges.Add(tuple);
@@ -243,6 +250,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			if (null != q.SummaDependency) {
 				foreach (Query cq in q.SummaDependency.Select(_ => _.Item2))
 				{
+					if (cq.Row.Native.IsMarkSeted("CONTROLPOINT")) continue;
 					var tuple = new Tuple<string, string, string>(code, "sum", GetRowCode(cq));
 					if (!index.Edges.Contains(tuple))
 					{
@@ -254,6 +262,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			if (null != q.FormulaDependency)
 			{
 				foreach (Query cq in q.FormulaDependency) {
+					if (cq.Row.Native.IsMarkSeted("CONTROLPOINT")) continue;
 					GetQueryRowDependencyGraph(cq, index);
 				}
 			}
@@ -261,6 +270,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			{
 				foreach (Query cq in q.SummaDependency.Select(_=>_.Item2))
 				{
+					if (cq.Row.Native.IsMarkSeted("CONTROLPOINT")) continue;
 					GetQueryRowDependencyGraph(cq, index);
 				}
 			}
