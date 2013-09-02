@@ -25,6 +25,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 
 		private const string BIG_COMMENT_LINE = "####      {0,-80}      ####";
 		private const string BIG_COMMENT_LINE_DOUBLE = "####      {0,-43}: {1,-35}      ####";
+		/// <summary>
+		/// Признак режима "словарь" - все кроме title, заменяется item + используется ValueRedirect
+		/// </summary>
+		public bool UseDictMode { get; set; }
 
 		/// <summary>
 		/// Выполняет экспорт дерева в строку
@@ -33,7 +37,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		/// <param name="options"></param>
 		/// <returns></returns>
 		public string ProcessExport(IZetaRow exportroot, TreeExporterOptions options = null) {
-			var xml = new BSharpXmlExporter().Export(exportroot, options.Namespace, options.ClassName);
+			var xml = new BSharpXmlExporter().Export(exportroot, options.Namespace, options.ClassName, UseDictMode,options.ValueRedirect);
 			return ConvertXmlToBSharp(exportroot,xml, options);
 		}
 
@@ -105,8 +109,30 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 						sb.Append("' ");
 					}
 				}
+				
 			}
-
+			if (e.Name.LocalName == "item")
+			{
+				string val = "";
+				if (null != e.Attribute("value"))
+				{
+					val = e.Attr("val");
+				}
+				else
+				{
+					var t = e.Nodes().OfType<XText>().FirstOrDefault();
+					if (null != t)
+					{
+						val = t.Value;
+					}
+				}
+				if (!string.IsNullOrWhiteSpace(val))
+				{
+					sb.Append(" : '");
+					sb.Append(val);
+					sb.Append("'");
+				}
+			}
 			var f = e.Attribute("formula");
 			if (null != f) {
 				if (e.Elements().Any()) {

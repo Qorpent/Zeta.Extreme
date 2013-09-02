@@ -23,7 +23,7 @@ namespace Zeta.Extreme.Developer.Scripting {
 		/// Установить родительский скрипт
 		/// </summary>
 		/// <param name="script"></param>
-		public void SetParent(Script script) {
+		public virtual void SetParent(Script script) {
 			Script = script;
 			Log = script.Log;
 		}

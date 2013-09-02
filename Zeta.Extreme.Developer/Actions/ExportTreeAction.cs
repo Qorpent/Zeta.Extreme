@@ -15,7 +15,7 @@ namespace Zeta.Extreme.Developer.Actions {
 	public class ExportTreeAction  : ActionBase {
 		[Bind(
 			Name = "format",
-            Constraint = new object[] { ExportTreeFormat.BSharp, ExportTreeFormat.BxlMeta, ExportTreeFormat.Hql, },
+			Constraint = new object[] { ExportTreeFormat.BSharp, ExportTreeFormat.BSharpDict, ExportTreeFormat.BxlMeta, ExportTreeFormat.Hql, },
 			Help = "Формат представления экспортного дерева",
 			Default = ExportTreeFormat.Hql
 		)]
@@ -45,6 +45,13 @@ namespace Zeta.Extreme.Developer.Actions {
 			Help = "Пространство имен для BSharp"
 		)]
 		private string _namespace = null;
+		[Bind(
+			Name = "value",
+			Required = false,
+			Default = null,
+			Help = "Смещение атрибута в значение для словарей"
+		)]
+		private string _value = null;
 
 		[Bind(
 			Name = "classname",
@@ -111,7 +118,7 @@ namespace Zeta.Extreme.Developer.Actions {
 			if (null == root) throw new Exception("Нет корневой строки");
 			var exportroot = PerformFilter(root);
 			var rowexporter = TreeExporter.Create(_format);
-			var options = new TreeExporterOptions {DetachRoot = _detachroot, CodeMode = _codemode,Namespace = _namespace,ClassName = _classname};
+			var options = new TreeExporterOptions {DetachRoot = _detachroot, CodeMode = _codemode,Namespace = _namespace,ClassName = _classname,ValueRedirect=_value};
 			var result = rowexporter.ProcessExport(exportroot,options);
 			return result;
 		}

@@ -15,7 +15,9 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public XElement Export(IZetaRow root, string ns = "zeta.export.forms", string cls = null) {
+		public XElement Export(IZetaRow root, string ns = "zeta.export.forms", string cls = null, bool dictmode = false, string valuerediect = null) {
+			this.UseDict = dictmode;
+			this.ValueRedirect = valuerediect;
 			ns = string.IsNullOrWhiteSpace(ns) ? "zeta.export.forms" : ns;
 			cls = string.IsNullOrWhiteSpace(cls) ? root.Code: cls;
 			var nse = new XElement("namespace", new XAttribute("code", ns));
@@ -28,6 +30,14 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 			GenerateRow(clse, root,root);
 			return nse;
 		}
+		/// <summary>
+		/// Перевод значения для словаря
+		/// </summary>
+		protected string ValueRedirect { get; set; }
+		/// <summary>
+		/// Признак режима словаря
+		/// </summary>
+		protected bool UseDict { get; set; }
 
 		private void GenerateRow(XElement target, IZetaRow r,IZetaRow root) {
 			var e = CreateElement(r,root);
@@ -41,6 +51,9 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 			var marks = GetMarks(r).ToArray();
 			var tags = GetTags(r);
 			var type = DetermineType(r, marks, tags);
+			if (UseDict && type != RowType.Title) {
+				type = RowType.Item;
+			}
 			var code = DetermineCode(r, root);
 			var e = new XElement(type.ToString().ToLower());
 			
@@ -83,6 +96,23 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 				e.SetAttributeValue(t.Key, t.Value);
 			}
 
+			if (type==RowType.Item && !string.IsNullOrWhiteSpace(ValueRedirect)) {
+				var attr = e.Attribute(ValueRedirect);
+				if (null != attr) {
+					var val = attr.Value;	
+					attr.Remove();
+					if (!string.IsNullOrWhiteSpace(val)) {
+						if (r.HasChildren()) {
+							e.SetAttributeValue("value", val);
+						}
+						else {
+							e.Value = val;
+						}
+					}
+				}
+				
+				
+			}
 
 			return e;
 		}
@@ -111,7 +141,8 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 			ControlPoint,
 			Ref,
 			Sum,
-			Title
+			Title,
+			Item
 		}
 
 		private IDictionary<string,string> GetTags(IZetaRow root) {

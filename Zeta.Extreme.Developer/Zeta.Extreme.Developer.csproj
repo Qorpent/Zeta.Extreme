@@ -66,6 +66,7 @@
     <Compile Include="Model\ParameterDescriptor.cs" />
     <Compile Include="Scripting\CleanCommand.cs" />
     <Compile Include="Scripting\GenerateDictCommand.cs" />
+    <Compile Include="Scripting\GenerateFormActionBase.cs" />
     <Compile Include="Scripting\GenerateFormCommand.cs" />
     <Compile Include="Scripting\IScriptCommand.cs" />
     <Compile Include="Scripting\Script.cs" />

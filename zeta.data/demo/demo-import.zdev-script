@@ -3,8 +3,8 @@ zdev-script demo_import
 	_basens = demo.import
 	_formdir = ${_dir}/import/forms
 	_dictdir = ${_dir}/import/dicts
-	_formns = ${basens}.forms
-	_dictns = ${basens}.dicts
+	_formns = ${_basens}.forms
+	_dictns = ${_basens}.dicts
 
 	# очищаем директории от текущего контента
 	clean ${_formdir}
@@ -25,3 +25,5 @@ zdev-script demo_import
 			generate-dict dir120 'dir_measure' value=measure
 			# орг-структура
 			generate-dict DIR_OFFICE 'dir_org'
+			# типы налогов
+			generate-dict NALTYPE 'dir_naltype'
