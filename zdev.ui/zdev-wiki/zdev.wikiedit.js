@@ -39,6 +39,7 @@ window._ = window._ || {};
             this.preview = editor.find('.wiki-preview');
             this.source = editor.find('.wiki-source');
             this.text = editor.find("#wikiEditText");
+            this.text.attr("rows", this.wikisource.Text.split(/\r*\n/).length);
             this.code = editor.find("#wikiEditCode");
             this.title = editor.find("#wikiEditTitle");
             this.previewhtml = editor.find("#wikiEditPreview");
@@ -54,8 +55,8 @@ window._ = window._ || {};
             }, this));
             $(window).resize($.proxy(function() {
                 var h = $(window).height() - _.layout.header().height();
-                this.preview.height(h - 50);
-                this.source.height(h - 50);
+                this.previewhtml.height(h - 100);
+                editor.find("#wikiEditSource").height(h - 100);
             }, this));
             $(window).trigger("resize");
         },
@@ -145,7 +146,7 @@ window._ = window._ || {};
         attach: function(formdata) {
             var wikiattach = _.api.wiki.savefile.safeClone();
             wikiattach.onSuccess(function(e, result) {
-                $('<p/>').text(message).miamodal({
+                $('<p/>').text("Файл прикреплен").miamodal({
                     resizable: false,
                     closebutton: false,
                     autoclose: 2000,
