@@ -1,14 +1,14 @@
 pkg zeta.dev level=auth
 	uses qorpent.core
 	load zdev.main.css
-	load zdev.wrapper.js
+	#load zdev.wrapper.js
 	load zdev.main.menu.js
-	load zdev.wikiattach.partial.tpl.html
-	load zdev.wikiarticle.partial.tpl.html
+	#load zdev.wikiattach.partial.tpl.html
+	#load zdev.wikiarticle.partial.tpl.html
 	load zdev_export_tree_form.tpl.html
 	load zdev_export_dep_dot.tpl.html
 
 	# Виджет редактора wiki-стрниц
-	widget zdev.wikiedit
+	#widget zdev.wikiedit
 
-	load zdev.wikilist.tpl.html
+	#load zdev.wikilist.tpl.html
