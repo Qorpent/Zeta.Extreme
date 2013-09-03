@@ -1,0 +1,43 @@
+####################################################################################################
+####                                                                                            ####
+####      Экспорт формы из БД Zeta                                                              ####
+####                                                                                            ####
+####      Исходный код корневой строки формы         : NALTYPE                                  ####
+####      Заданное пространство имен                 : demo.import.dicts                        ####
+####      Заданное имя класса                        : dir_naltype                              ####
+####      Исполнитель                                : local\comdiv                             ####
+####      Время генерации                            : 2013-09-02 17:20:38                      ####
+####      ID строки в БД                             : 24374                                    ####
+####      Максимальная версия строк в форме          : 2012-10-11 16:07:07                      ####
+####                                                                                            ####
+####################################################################################################
+
+namespace demo.import.dicts
+	class dir_naltype 'Виды налогов' formcode=NALTYPE stopinterpolate=all
+		import tree
+		item NALTYPE 'Виды налогов' 
+			item 110 'Налог на прибыль' groups='naltype_prib' 
+			item 120 'Налог на имущество' groups='naltype_im' 
+			item 130 'Налог на доходы физических лиц' groups='naltype_ndfl' 
+			item 140 'Налог на доходы иностранных юридических лиц' groups='naltype_inul' 
+			item 145 'Налог на рекламу' groups='naltype_rekl' 
+			item 150 'Налог на прибыль с дивидендов' groups='naltype_divid' 
+			item 160 'Плата за негативное воздействие на окружающую среду' groups='naltype_nvos' 
+			item 170 'Водный налог' groups='naltype_voda' 
+			item 180 'Налог на добычу полезных ископаемых' groups='naltype_ndpi' 
+			item 190 'Плата за древесину, отпускаемую на корню' groups='naltype_derevo' 
+			item 200 'Земельный налог' groups='naltype_zemnal' 
+			item 210 'Арендная плата за землю' groups='naltype_arendazem' 
+			item 220 'Налог на вмененный доход' groups='naltype_vmen' 
+			item 230 'Транспортный налог' groups='naltype_trans' 
+			item 240 'Акцизы' groups='naltype_akciz' 
+			item 250 'Единый сельскохозяйственный налог' groups='naltype_shnal' 
+			item 290 'Прочие налоги, платежи и сборы' groups='naltype_proch' 
+			item 400 'Внебюджетные фонды' groups='naltype_vf' 
+			item 410 'Пенсионный фонд' groups='naltype_pf' 
+			item 420 'Фонд социального страхования' groups='naltype_fss' 
+			item 430 'Федеральный фонд ОМС' groups='naltype_ffoms' 
+			item 440 'Территориальный фонд ОМС' groups='naltype_tfoms' 
+			item 450 'Страхование от несчастных случаев на производстве' groups='naltype_sonsp' 
+			item 600 'НДС' groups='naltype_nds' 
+			item 650 'Экспортные пошлины' groups='naltype_eksp' 

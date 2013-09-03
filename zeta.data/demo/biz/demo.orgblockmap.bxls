@@ -1,15 +1,14 @@
-namespace demo if='DEMO'
-
-	+class demo_balans
-		autothema block=^demo.blocks.fin colset=^demo.demo_colset
+namespace demo
+	+class zeta.export.forms.m111 'map-biz'
+		autothema subsystem=^demo.blocks.eco block=fin colset=^demo.demo_colset
 		
 	namespace blocks
 
-		~class eco owner=^demo.org.ub
+		~class eco 'map-own' owner=^demo.org.ub 
 			~block fin curator=maincurator
 			
-		~class proizv owner=^demo.org.proizv
+		~class proizv 'map-own' owner=^demo.org.proizv 
 		
-		~class personal owner=^demo.org.personal
+		~class personal 'map-own' owner=^demo.org.personal
 	
 	

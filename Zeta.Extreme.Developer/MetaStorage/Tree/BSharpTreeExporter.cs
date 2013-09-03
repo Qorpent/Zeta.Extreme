@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Qorpent.Applications;
 using Qorpent.Utils.Extensions;
@@ -27,6 +25,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 
 		private const string BIG_COMMENT_LINE = "####      {0,-80}      ####";
 		private const string BIG_COMMENT_LINE_DOUBLE = "####      {0,-43}: {1,-35}      ####";
+		/// <summary>
+		/// Признак режима "словарь" - все кроме title, заменяется item + используется ValueRedirect
+		/// </summary>
+		public bool UseDictMode { get; set; }
 
 		/// <summary>
 		/// Выполняет экспорт дерева в строку
@@ -35,7 +37,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		/// <param name="options"></param>
 		/// <returns></returns>
 		public string ProcessExport(IZetaRow exportroot, TreeExporterOptions options = null) {
-			var xml = new BSharpXmlExporter().Export(exportroot, options.Namespace, options.ClassName);
+			var xml = new BSharpXmlExporter().Export(exportroot, options.Namespace, options.ClassName, UseDictMode,options.ValueRedirect);
 			return ConvertXmlToBSharp(exportroot,xml, options);
 		}
 
@@ -107,8 +109,30 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 						sb.Append("' ");
 					}
 				}
+				
 			}
-
+			if (e.Name.LocalName == "item")
+			{
+				string val = "";
+				if (null != e.Attribute("value"))
+				{
+					val = e.Attr("val");
+				}
+				else
+				{
+					var t = e.Nodes().OfType<XText>().FirstOrDefault();
+					if (null != t)
+					{
+						val = t.Value;
+					}
+				}
+				if (!string.IsNullOrWhiteSpace(val))
+				{
+					sb.Append(" : '");
+					sb.Append(val);
+					sb.Append("'");
+				}
+			}
 			var f = e.Attribute("formula");
 			if (null != f) {
 				if (e.Elements().Any()) {
@@ -161,31 +185,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		}
 
 		private void WriteOutReferencesComment(IZetaRow exportroot) {
-			var deplist = new List<string>();
-			foreach (var f in new[] {exportroot}.Union(exportroot.AllChildren)) {
-				if (f.RefTo != null) {
-					if (f.RefTo.Code.Substring(0,4) != exportroot.Code) {
-						deplist.Add("ref:" + f.RefTo.Code);
-						
-					}
-					continue;
-				}
-				if (f.IsFormula) {
-					var type = "frm:";
-					if (f.MarkCache.Contains("CONTROLPOINT")) {
-						type = "cpt:";
-					}
-					var codes = Regex.Matches(f.Formula, @"\$([\w_\d]+)")
-					                 .OfType<Match>().Select(_ => _.Groups[1]).ToArray();
-					foreach (var c in codes) {
-						if (c.Value.Substring(0, 4) != exportroot.Code)
-						{
-							deplist.Add(type + c.Value);
-						}
-					}
-				}
-			}
-			var formlist = deplist.Select(_ => _.Substring(0, 8)).Distinct().Where(_=>_!=exportroot.Code).OrderBy(_ => _).ToArray();
+			var formlist = FormDependencyHelper.GetFormList(exportroot);
 			if (0 != formlist.Length) {
 				AddBigComment("");
 				AddBigComment("Обнаружены зависимости от других форм");

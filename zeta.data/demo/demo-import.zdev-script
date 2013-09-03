@@ -1,0 +1,29 @@
+zdev-script demo_import
+	# определения основных констант скрипта
+	_basens = demo.import
+	_formdir = ${_dir}/import/forms
+	_dictdir = ${_dir}/import/dicts
+	_formns = ${_basens}.forms
+	_dictns = ${_basens}.dicts
+
+	# очищаем директории от текущего контента
+	clean ${_formdir}
+	clean ${_dictdir}
+	
+	# работаем с локальным ZDEV
+	set node = ${_localzdev}
+		
+		# скрипты генерации форм
+		set namespace=${_formns} into = ${_formdir}
+			# затаскиваем a111 со всеми зависимостями
+			generate-form a111 withdependency
+				
+				
+		# скрипты генерации словарей
+		set namespace = ${_dictns} into=${_dictdir}
+			# единицы измерения
+			generate-dict dir120 'dir_measure' value=measure
+			# орг-структура
+			generate-dict DIR_OFFICE 'dir_org'
+			# типы налогов
+			generate-dict NALTYPE 'dir_naltype'

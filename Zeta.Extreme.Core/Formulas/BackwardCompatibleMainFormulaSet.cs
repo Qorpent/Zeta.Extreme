@@ -120,10 +120,18 @@ namespace Zeta.Extreme {
 					val1();
 					return val2();
 				}
-				if (condition.Compile()()) {
-					return val1();
+				var s = this._host.Query.Session as Session;
+				if (null == s || !s.ExpandConditionalFormulas) {
+					if (condition.Compile()()) {
+						return val1();
+					}
+					return val2();
 				}
-				return val2();
+				else {
+					val1();
+					return val2();
+				}
+
 			}
 			if (condition.Compile()()) {
 				return val1();

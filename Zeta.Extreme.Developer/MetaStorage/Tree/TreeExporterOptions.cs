@@ -26,5 +26,9 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		/// Имя класса для выгона B#
 		/// </summary>
 		public string ClassName { get; set; }
+		/// <summary>
+		/// Поддержка режима экспорта в режиме "словарь"
+		/// </summary>
+		public string ValueRedirect { get; set; }
 	}
 }

@@ -1,0 +1,24 @@
+﻿<div class="export-tree-form">
+    <form action="./zdev/formulatoprimary.string.qweb"  target="_blank">
+        <fieldset>
+           
+            <label>Код формулы</label>
+            <input name="root" required />
+            <label>Коды колонок через запятую</label>
+            <input name="columns" required value="Б1"/>
+             <label class="checkbox">
+                Только показать метрики
+                <input type="checkbox" name="metrics" onclick="
+    var form = $(this).closest('form');
+    if (this.checked) {
+        $(form).attr('action',$(form).attr('action').replace('.string.','.xml.'));
+    } else {
+        $(form).attr('action',$(form).attr('action').replace('.xml.','.string.'));
+    }
+    "/>
+            </label>
+        </fieldset> 
+        <hr />
+        <input type="submit" value="Сформировать"/>
+    </form>
+</div>

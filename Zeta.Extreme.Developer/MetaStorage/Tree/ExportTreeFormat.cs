@@ -19,6 +19,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		/// <summary>
 		/// Новый язык
 		/// </summary>
-		BSharp
+		BSharp,
+		/// <summary>
+		/// Режим словаря для нового языка
+		/// </summary>
+		BSharpDict
 	}
 }

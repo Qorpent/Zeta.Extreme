@@ -1,4 +1,6 @@
-class project abstract 
+class project abstract
+	GenerateSrcPkg = true
+	SrcPkgName = '${code}.bssrc'
 	Layout TreeNamespace+IncludeWork
 	LogLevel Info
 	InputExtension bxls

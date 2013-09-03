@@ -1,0 +1,108 @@
+####################################################################################################
+####                                                                                            ####
+####      Экспорт формы из БД Zeta                                                              ####
+####                                                                                            ####
+####      Исходный код корневой строки формы         : m112                                     ####
+####      Заданное пространство имен                 : demo.import.forms                        ####
+####      Заданное имя класса                                                                   ####
+####      Исполнитель                                : local\comdiv                             ####
+####      Время генерации                            : 2013-09-02 17:20:35                      ####
+####      ID строки в БД                             : 11936                                    ####
+####      Максимальная версия строк в форме          : 2013-08-28 16:18:39                      ####
+####                                                                                            ####
+####      Обнаружены зависимости от других форм                                                 ####
+####              frm : m212                                                                    ####
+####              frm : m230                                                                    ####
+####                                                                                            ####
+####################################################################################################
+
+namespace demo.import.forms
+	class m112 'Прибыли и убытки (форма № 2 ФО) 2011' formcode=m112 stopinterpolate=all
+		import tree
+		title m112 'Прибыли и убытки (форма № 2 ФО) 2011' showcode OLAP_COLF=Б1 OLAP_COLP=Б1 export afdep=m111 sap-region=BUH sap-form=002 sap-use 
+			title 210 'Доходы и расходы от обычных видов деятельности' outer=2100 sap-region=BUH sap-form=002 sap-use 
+				primary 2110 'Выручка' groups='ВП11 ПП11 ПН11 ЧП11 ФР11' measure='/dir120711/' olap=fin sap-region=BUH sap-form=002 sap-use 
+				primary 2120 'Себестоимость продаж' groups='ВП11 ПП11 ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 
+				sum 2100 'Валовая прибыль (убыток)' groups=ВП11 sap-region=BUH sap-form=002 sap-use 
+				primary 2210 'Расходы на продажу' groups='ПП11 ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 
+				primary 2220 'Управленческие расходы' groups='ПП11 ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 
+			sum 2200 'Прибыль (убыток) от продаж' groups=ПП11 olap=fin sap-region=BUH sap-form=002 sap-use 
+				primary 2310 'Доходы от участия в других организациях' groups='ПН11 ЧП11 ФР11' sap-region=BUH sap-form=002 sap-use 
+				primary 2320 'Проценты к получению' groups='ПН11 ЧП11 ФР11' sap-region=BUH sap-form=002 sap-use 
+				primary 2330 'Проценты к уплате' groups='ПН11 ЧП11 ФР11' measure='/dir120711/' minus sap-region=BUH sap-form=002 sap-use 
+				primary 2340 'Прочие доходы' groups='ПН11 ЧП11 ФР11' sap-region=BUH sap-form=002 sap-use 
+				primary 2350 'Прочие расходы' groups='ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 
+				primary m212235 'в т.ч. положительные курсовые разницы' outer=2341 groups=КУРС vgrp=';КУРС;' olap=fin 
+				primary m212236 'в т.ч. отрицательные курсовые разницы' outer=2351 groups=КУРС minus vgrp=';КУРС;' olap=fin 
+			sum 2300 'Прибыль (убыток) до налогообложения' groups=ПН11 olap=finrez sap-region=BUH sap-form=002 sap-use 
+				primary 2410 'Текущий налог на прибыль' groups='ЧП11 ФР11' minus olap=finrez sap-region=BUH sap-form=002 sap-use 
+				primary 2421 'в т.ч. постоянные налоговые обязательства (активы)' olap=finrez sap-region=BUH sap-form=002 sap-use 
+				primary 2430 'Изменение отложенных налоговых обязательств' groups='ЧП11 ФР11' minus olap=fin sap-region=BUH sap-form=002 sap-use 
+				primary 2450 'Изменение отложенных налоговых активов' groups='ЧП11 ФР11' olap=fin sap-region=BUH sap-form=002 sap-use 
+				primary 2460 'Прочее' groups='ЧП11 ФР11' minus olap=fin sap-region=BUH sap-form=002 sap-use 
+			sum 2400 'Чистая прибыль (убыток)' groups=ЧП11 measure='/dir120711/' sap-region=BUH sap-form=002 sap-use olap=fin 
+			title 250 'СПРАВОЧНО:' outer=2500 sap-region=BUH sap-form=002 sap-use 
+				primary 2510 'Результат от переоценки внеоборотных активов, не включаемый в чистую прибыль (убыток) (+/-)
+' groups=ФР11 sap-region=BUH sap-form=002 sap-use olap=finrez 
+				primary 2520 'Результат от прочих операций, не включаемый в чистую прибыль (убыток) (+/-)' groups=ФР11 sap-region=BUH sap-form=002 sap-use olap=finrez 
+				sum 2500 'Совокупный финансовый результат' groups=ФР11 sap-region=BUH sap-form=002 sap-use 
+				primary 2900 'Базовая прибыль (убыток)' sap-region=BUH sap-form=002 sap-use 
+				primary 2910 'Разводненная прибыль (убыток) на акцию' sap-region=BUH sap-form=002 sap-use 
+			controlpoint 800 'ПРОВЕРКА формы "Отчет о ПиУ (версии 2011)"' sap-region=BUH sap-form=002 sap-use 
+				controlpoint 810 '[стр. 2500 "Совокупный финансовый результат" ] - [изменение строки 1372 бухгалтерского баланса  "Нераспределенная прибыль текущего периода] = 0' nodosum sap-region=BUH sap-form=002 sap-use  : (
+					f.If ( ( ismonth and not periodin( 11 ) ) or ( periodin (42,43,44,444,446) ) , { $m1122500? + $m1124020? - $m1111372@DELTA? } , { f.round ( $m1122500?  + $m1124020? - $m1111372@Б2? ) } )
+				)
+				controlpoint 815 '[стр. 2500 "Совокупный финансовый результат" ] - [стр. 401.1 Изменение стр. 2500] - [изменение стр. 1370 бухгалтерского баланса "Нераспределеннная прибыль (непокрытый убыток)] = 0' olap=finrez  : (
+					f.round ( $m1122500? - $m2124011? - $m1111370@DELTA? + $m1124020? + $m1124020? )
+				)
+				controlpoint 820 '[начисленный налог на прибыль в отчете по налогам за вычетом корректива] - [текущий налог на прибыль] = 0' olap=finrez  : (
+					$m220110@Pd? - $m220110@Pd_korr? - $m1122410?
+				)
+				controlpoint 825 'Изменение отложенных налоговых обязательств [ф.ББ стр.1420"Изменение" - ф.ОПиУ стр.2430] = 0' olap=finrez  : (
+					f.round (- $m1111420@DELTA? + $m1122430@Б1? )
+				)
+				controlpoint 826 'Изменение отложенных налоговых активов [ф. ББ стр.1180"Изменение" - ф.ОПиУ стр.2450] = 0' olap=finrez  : (
+					f.round (- $m1111160@DELTA? + $m1122450@Б1? )
+				)
+			title 900 'Коррективы по переходу на новый отчет о прибылях и убытках' nooutput noinput sap-region=BUH sap-form=002 sap-use 
+				primary 910 'Перевод прочих платежей из прибыли в результат от прочих операций, не включаемый в чистую прибыль' sap-region=BUH sap-form=002 sap-use 
+			title m212205 'Расшифровка отдельных прибылей и убытков' 
+				primary m212203 'Реализация на экспорт' outer=203 
+				primary m212210 'Штрафы, пени и неустойки, призанные или по которым плучены решения суда (арбитражного суда) об их взыскании (+/-)' outer=210 
+				primary m212220 'Прибыль (убыток) прошлых лет (+/-)' outer=220 
+				primary m212230 'Возмещение убытков, причиненных неисполнением или ненадлежащим исполнением обязательств' outer=230 
+				sum m212240 'Результат по курсовым разницам (+/-)' outer=240 
+					primary m212241 'курсовые разницы по дебиторской задолженности' outer=241 groups=КУРС minus vgrp=';КУРС;' 
+					primary m212242 'курсовые разницы по кредиторской задолженности' outer=242 groups=КУРС minus vgrp=';КУРС;' 
+					primary m212243 'курсовые разницы по финансовым вложениям' outer=243 groups=КУРС minus vgrp=';КУРС;' 
+					primary m212244 'курсовые разницы по кредитам и займам' outer=244 groups=КУРС minus vgrp=';КУРС;' 
+					sum m212245 'прочие курсовые разницы' outer=245 groups=КУРС vgrp=';КУРС;' 
+				primary m212250 'Списание кредиторской задолженности' outer=250 
+				primary m212260 'Списание дебиторской задолженности' outer=260 
+				primary m212270 'Расходы на собственные нужды' outer=270 
+				title 280 'Резерв по сомнительным долгам' sap-region=BUH sap-form=002 sap-use 
+					formula 281 'Сальдо на начало периода' sap-region=BUH sap-form=002 sap-use  : (
+						$m230800@DZRn? + $m230900@DZRn?
+					)
+					primary 282 'Восстановление резерва (оплата просроченной дебиторской задолженности, включенной в резерв)' sap-region=BUH sap-form=002 sap-use 
+					primary 283 'Списание резерва (списание на убытки дебиторской задолженности нереальной к взысканию)' sap-region=BUH sap-form=002 sap-use 
+					formula 284 'Создание резерва за период' sap-region=BUH sap-form=002 sap-use  : (
+						- $m112281? + $m112282? + $m112283? + $m112285?
+					)
+					formula 285 'Сальдо на конец периода' sap-region=BUH sap-form=002 sap-use  : (
+						$m230800@DZRk? + $m230900@DZRk?
+					)
+				formula 290 'Чистая прибыль без учета КР'  : (
+					$m1122400? - $m212240?
+				)
+			sum m2124011 'Изменение стр.2500 "Совокупный финансовый результат" при отражении в форме "Баланс (форма № 1 ФО)"' outer=401.1 nosum olap=finrez 
+				primary 4021 'Изменение в уставном капитале' outer=401.11 
+				primary m2124012 'Изменение в резервном капитале' outer=401.2 olap=finrez 
+				primary m2124013 'Выплата дивидендов' outer=401.3 olap=finrez 
+				primary m2124014 'Изменение в добавочном капитале' outer=401.4 olap=finrez 
+				primary m2124015 'Пополнение оборотных средств (строка 134 форма №4 ФО)' outer=401.5 obsolete=2012 
+				primary m2124016 'Отложенные налоговые активы' outer=401.6 olap=finrez 
+				primary m2124017 'Изменение налога на прибыль прошлых лет' outer=401.7 olap=finrez 
+				primary m2124018 'Прочие изменения' outer=401.8 olap=finrez 
+				primary m2124019 'Переоценка ОС' outer=401.9 olap=finrez 
+				primary 4020 'Реорганизация юридического лица' outer=401.10 olap=finrez 

@@ -49,6 +49,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			{
 				return new BSharpTreeExporter();
 			}
+			if (format == ExportTreeFormat.BSharpDict)
+			{
+				return new BSharpTreeExporter(){UseDictMode=true};
+			}
 			throw new Exception("format not supported for now " + format);
 		}
 
