@@ -141,7 +141,11 @@ _.widget.register({
 		        title: "Создать скрипт переноса формулы в первичную строку",
 		        type: 'primary',
 		        onclick: {
-		            modal: { title: "Скрипт переноса формулы в первичную строку", template: 'zdev_formula_to_primary', width: 400 },
+		            modal: {
+		                title: "Скрипт переноса формулы в первичную строку",
+		                template: 'zdev_formula_to_primary',
+		                width: 600,
+		            },
 		        },
 		    },
             "div",
@@ -173,3 +177,12 @@ _.widget.register({
 		]
 	}
 });
+_.zdev = _.zdev || {};
+_.zdev.formula_to_primary.onClickMetricCheckbox = function(e) {
+    var form = $(this).closest('form');
+    if (this.checked) {
+        $(form).attr('action', $(form).attr('action').replace('.string.', '.xml.'));
+    } else {
+        $(form).attr('action', $(form).attr('action').replace('.xml.', '.string.'));
+    }
+};

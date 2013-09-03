@@ -13,26 +13,41 @@ namespace Zeta.Extreme.Developer.Actions {
 	[Action("zdev.formulatoprimary", Arm = "dev", Help = "Готовит скрипты переноса формул в первичку", Role = "DEVELOPER")]
 	public class FormulaToPrimaryAction : ActionBase
 	{
-		[Bind]
+		[Bind(Required = true)]
 		private string root { get; set; }
 		[Bind]
-		private bool metrics { get; set; }
+		private string target { get; set; }
 		[Bind]
+		private bool metrics { get; set; }
+		[Bind(Required = true)]
 		private string columns { get; set; }
+		[Bind]
+		private string years { get; set; }
+		[Bind]
+		private string periods { get; set; }
+		[Bind]
+		private string objects { get; set; }
+		[Bind(Default = "transfer")]
+		private string usercode { get; set; }
 
 		/// <summary>
 		/// 	processing of execution - main method of action
 		/// </summary>
 		/// <returns> </returns>
 		protected override object MainProcess() {
-			var row = MetaCache.Default.Get<IZetaRow>(root);
-			if (string.IsNullOrWhiteSpace(columns)) {
-				columns = "Б1";
-			}
+			var task = new TransferTask {
+				SourceCode = root,
+				TargetCode = target,
+				ColumnCodes = columns.SmartSplit().ToArray(),
+				Years = years.SmartSplit().Select(_ => _.ToInt()).ToArray(),
+				Periods = periods.SmartSplit().Select(_ => _.ToInt()).ToArray(),
+				ObjectIds = objects.SmartSplit().Select(_ => _.ToInt()).ToArray(),
+				UserCode = string.IsNullOrWhiteSpace(usercode)?"transfer":usercode,
+			};
 			if (metrics) {
-				return new FormulaToPrimaryHelper().CalculateMetrics(row, columns.SmartSplit().ToArray());
+				return task;
 			}
-			return new FormulaToPrimaryHelper().GenerateScript(row, columns.SmartSplit().ToArray());
+			return new TransferHelper().GenerateScript(task);
 		}
 	}
 }

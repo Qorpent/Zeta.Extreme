@@ -1,21 +1,57 @@
 ﻿<div class="export-tree-form">
-    <form action="./zdev/formulatoprimary.string.qweb"  target="_blank">
-        <fieldset>
-           
+    <form action="./zdev/formulatoprimary.xml.qweb"  target="_blank">
+        <fieldset>  
             <label>Код формулы</label>
-            <input name="root" required />
+            <input class="fill-modal" name="root" required 
+                   placeholder="Укажите код строки, по которой вычисляются значения" 
+                   title="Код исходной строки, вычисленное значение по которой должно быть сохранено" 
+                />
+            <label>Код первичной строки</label>
+            <input class="fill-modal" name="target" 
+                   placeholder="Укажите код целевой строки (если отличается от формулы)"
+                   title="Код целевой строки, в которую происходит прокачка, по умолчанию - совпадает с исходной" 
+                />
             <label>Коды колонок через запятую</label>
-            <input name="columns" required value="Б1"/>
-             <label class="checkbox">
+            <input class="fill-modal" name="columns" required  
+                   placeholder="Обязательно, система сама не в состоянии вычислить набор колонок"
+                   title="Колонки, по которым производится прокачка, обязательно указать вручную,
+                 так как система не в состоянии проследить использование формулы в колсетах"
+                />
+            <label>Года через запятую</label>
+            <input class="fill-modal" name="years"   
+                   placeholder="Если не указано - будет рассчитано автоматически"
+                   title="Года, по которым производится прокачка данных, если не указано - система
+                    пытается рассчитать набор необходимых для перекачки годов
+                "
+                />
+            <label>Периоды через запятую</label>
+            <input class="fill-modal" name="periods"   placeholder="Если не указано - будет рассчитано автоматически"
+                   title="Периоды, по которым производится прокачка данных, если не указано - система
+                    пытается рассчитать набор необходимых для перекачки периодов
+                "
+                />
+            <label>ID объектов через запятую</label>
+            <input class="fill-modal" name="objects"   placeholder="Если не указано - будет рассчитано автоматически"
+                   title="Объекты, по которым производится прокачка данных, если не указано - система
+                    пытается рассчитать набор необходимых для перекачки объектов
+                "
+                />
+            <label>Код "пользователя"</label>
+            <input class="fill-modal" name="usercode"   placeholder="transfer"
+                 title="Условный код пользователя сопоставляемый ячейкам, может идентифицировать сеансы переноса
+                "
+                />
+            <label class="checkbox" >
                 Только показать метрики
-                <input type="checkbox" name="metrics" onclick="
-    var form = $(this).closest('form');
-    if (this.checked) {
-        $(form).attr('action',$(form).attr('action').replace('.string.','.xml.'));
-    } else {
-        $(form).attr('action',$(form).attr('action').replace('.xml.','.string.'));
-    }
-    "/>
+                <input checked="checked" type="checkbox" name="metrics" title="Включает режим расчета статистики переноса без его непосредственного выполнения" 
+                       onclick="
+                        var form = $(this).closest('form');
+                        if (this.checked) {
+                            $(form).attr('action',$(form).attr('action').replace('.string.','.xml.'));
+                        } else {
+                            $(form).attr('action',$(form).attr('action').replace('.xml.','.string.'));
+                        }
+                 "/>
             </label>
         </fieldset> 
         <hr />

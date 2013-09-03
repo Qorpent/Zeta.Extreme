@@ -105,6 +105,10 @@ namespace Zeta.Extreme {
 			Time.Year = year;
 			Time.Period = period;
 		}
+		/// <summary>
+		/// Дополнительные присоединенные данные
+		/// </summary>
+		public object Data { get; set; }
 
 		/// <summary>
 		/// 	Дочерние запросы

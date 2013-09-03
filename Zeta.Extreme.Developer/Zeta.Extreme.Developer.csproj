@@ -41,7 +41,9 @@
     <Compile Include="CodeMetrics\MetricHub.cs" />
     <Compile Include="CodeMetrics\MetricService.cs" />
     <Compile Include="CodeMetrics\MetricTendency.cs" />
-    <Compile Include="DataMigrations\FormulaToPrimaryHelper.cs" />
+    <Compile Include="DataMigrations\TransferHelper.cs" />
+    <Compile Include="DataMigrations\TransferTask.cs" />
+    <Compile Include="DataMigrations\TransferRecord.cs" />
     <Compile Include="DeveloperStartUp.cs" />
     <Compile Include="MetaStorage\Periods\PeriodsExporter.cs" />
     <Compile Include="MetaStorage\Tree\AttributeType.cs" />
