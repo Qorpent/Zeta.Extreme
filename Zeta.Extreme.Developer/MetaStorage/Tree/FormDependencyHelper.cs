@@ -44,7 +44,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		/// <param name="r"></param>
 		public static string GetDependencyDot(IZetaRow r) {
 			var graph = GetDependencyGraph(r);
-			return ConvertToDot(graph);
+			return ConvertToDot(graph,false);
 		}
 		/// <summary>
 		/// Формирует скрипт для DOT с зависимостями
@@ -53,7 +53,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		public static string GetFormulaDependencyDot(IZetaRow r)
 		{
 			var graph = GetFormulaDependencyGraph(r);
-			return ConvertToDot(graph);
+			return ConvertToDot(graph,true);
 		}
 
 		/// <summary>
@@ -63,31 +63,30 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		public static string GetPrimaryDependencyDot(IZetaRow r)
 		{
 			var graph = GetPrimaryDependencyGraph(r,null);
-			return ConvertToDot(graph);
+			return ConvertToDot(graph,true);
 		}
-		private static string ConvertToDot(GraphIndex graph) {
+		private static string ConvertToDot(GraphIndex graph, bool clustered) {
 			var result = new StringBuilder();
 			result.AppendLine("digraph G {");
 			result.AppendLine("\trankdir=LR");
-			foreach (var n in graph.Nodes) {
-				if (null == n) continue;
-				if (n.StartsWith("s_") || n.StartsWith("f_") || n.StartsWith("p_")||n.StartsWith("r_")) {
-					var label = n.Substring(2).Replace("_DOT_",".");
-					var shape = "ellipse";
-					if (n.StartsWith("s_")) {
-						shape = "box3d";
+			if (clustered) {
+				var groups = graph.Nodes.GroupBy(_ => _.Substring(2, 4));
+				var i = 0;
+				foreach (var g in groups) {
+					result.AppendLine("subgraph cluster_" + (i++) + "{");
+					result.AppendLine("label=" + g.Key);
+					result.AppendLine("color=blue");
+					foreach (var n in g) {
+						RenderNode(n,result);
 					}
-					else if (n.StartsWith("f_")) {
-						shape = "cds";
-					}
-					else if (n.StartsWith("r_"))
-					{
-						shape = "egg";
-					}
-					result.AppendLine("\t" + n + " [shape=" + shape + ";label=\"" + label + "\"]");
+
+					result.AppendLine("}");
 				}
-				else {
-					result.AppendLine("\t" + n);
+			}
+			else {
+				foreach (var n in graph.Nodes)
+				{
+					RenderNode(n, result);
 				}
 			}
 			foreach (var e in graph.Edges) {
@@ -108,6 +107,27 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			}
 			result.AppendLine("}");
 			return result.ToString();
+		}
+
+		private static void RenderNode(string n, StringBuilder result) {
+			if (null == n) return;
+			if (n.StartsWith("s_") || n.StartsWith("f_") || n.StartsWith("p_") || n.StartsWith("r_")) {
+				var label = n.Substring(2).Replace("_DOT_", ".");
+				var shape = "ellipse";
+				if (n.StartsWith("s_")) {
+					shape = "box3d";
+				}
+				else if (n.StartsWith("f_")) {
+					shape = "cds";
+				}
+				else if (n.StartsWith("r_")) {
+					shape = "egg";
+				}
+				result.AppendLine("\t" + n + " [shape=" + shape + ";label=\"" + label + "\"]");
+			}
+			else {
+				result.AppendLine("\t" + n);
+			}
 		}
 
 		class StubPs : IPrimarySource {
