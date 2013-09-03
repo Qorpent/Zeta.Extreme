@@ -17,28 +17,6 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 	/// </summary>
 	public class FormDependencyHelper {
 		/// <summary>
-		/// Промежуточный индекс узлов
-		/// </summary>
-		public class GraphIndex {
-			/// <summary>
-			/// 
-			/// </summary>
-			public GraphIndex() {
-				Nodes = new List<string>();
-				Edges = new List<Tuple<string, string, string>>();
-			}
-			/// <summary>
-			/// Узлы
-			/// </summary>
-			public IList<string> Nodes { get; private set; }
-			/// <summary>
-			/// Ребра
-			/// </summary>
-			public IList<Tuple<string, string,string>> Edges { get; private set; }
-		}
-
-
-		/// <summary>
 		/// Формирует скрипт для DOT с зависимостями
 		/// </summary>
 		/// <param name="r"></param>
@@ -65,12 +43,12 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			var graph = GetPrimaryDependencyGraph(r,null);
 			return ConvertToDot(graph,true);
 		}
-		private static string ConvertToDot(GraphIndex graph, bool clustered) {
+		private static string ConvertToDot(OldDependencyGraph oldDependencyGraph, bool clustered) {
 			var result = new StringBuilder();
 			result.AppendLine("digraph G {");
 			result.AppendLine("\trankdir=LR");
 			if (clustered) {
-				var groups = graph.Nodes.GroupBy(_ => _.Substring(2, 4));
+				var groups = oldDependencyGraph.Nodes.GroupBy(_ => _.Substring(2, 4));
 				var i = 0;
 				foreach (var g in groups) {
 					result.AppendLine("subgraph cluster_" + (i++) + "{");
@@ -84,12 +62,12 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 				}
 			}
 			else {
-				foreach (var n in graph.Nodes)
+				foreach (var n in oldDependencyGraph.Nodes)
 				{
 					RenderNode(n, result);
 				}
 			}
-			foreach (var e in graph.Edges) {
+			foreach (var e in oldDependencyGraph.Edges) {
 				if (null == e.Item1 || null == e.Item3) continue;
 				if (e.Item2 == "cpt") continue;
 				var color = "black";
@@ -153,20 +131,20 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public static GraphIndex GetFormulaDependencyGraph(IZetaRow root, int objid=352,string colcode= "Б1", int year=2012,int period=1, bool expandifs= true) {
+		public static OldDependencyGraph GetFormulaDependencyGraph(IZetaRow root, int objid=352,string colcode= "Б1", int year=2012,int period=1, bool expandifs= true) {
 			var session = new Session {PrimarySource = new StubPs(),ExpandConditionalFormulas=expandifs};
 			var query = new Query(root.Code, colcode, objid, year, period);
 			query = (Query)session.Register(query);
 			session.WaitPreparation();
-			return GetQueryRowDependencyGraph(query,new GraphIndex());
+			return GetQueryRowDependencyGraph(query,new OldDependencyGraph());
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public static GraphIndex GetPrimaryDependencyGraph(IZetaRow root,GraphIndex index) {
-			index = index ?? new GraphIndex();
+		public static OldDependencyGraph GetPrimaryDependencyGraph(IZetaRow root,OldDependencyGraph index) {
+			index = index ?? new OldDependencyGraph();
 			var code = GetRowCode(root);
 			if (!index.Nodes.Contains(code)) {
 				index.Nodes.Add(code);
@@ -250,8 +228,8 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		/// <param name="q"></param>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static GraphIndex GetQueryRowDependencyGraph(Query q, GraphIndex index=null) {
-			index = index ?? new GraphIndex();
+		public static OldDependencyGraph GetQueryRowDependencyGraph(Query q, OldDependencyGraph index=null) {
+			index = index ?? new OldDependencyGraph();
 			var code = GetRowCode(q);
 			if (null == code) return index;
 			if (!index.Nodes.Contains(code)) {
@@ -340,8 +318,8 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		/// <param name="root"></param>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static GraphIndex GetDependencyGraph(IZetaRow root,GraphIndex index = null) {
-			index = index ?? new GraphIndex();
+		public static OldDependencyGraph GetDependencyGraph(IZetaRow root,OldDependencyGraph index = null) {
+			index = index ?? new OldDependencyGraph();
 			if (index.Nodes.Contains(root.Code)) {
 				return index;
 			}
