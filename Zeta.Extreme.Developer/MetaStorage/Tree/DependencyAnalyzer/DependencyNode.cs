@@ -20,10 +20,30 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		public DependencyNode(IZetaRow row) {
 			Row = row;
 			Code = GetDotCode(row);
-			BaseCode = Code.Substring(0, 4);
+			Tooltip = row.Name;
+			BaseCode = row.Code.Substring(0, 4);
 			Type = GetNodeType(row);
 			Label = row.Code;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string Tooltip { get; set; }
+
+		/// <summary>
+		/// Признак специально запрошенного узла
+		/// </summary>
+		public bool IsTarget { get; set; }
+
+		/// <summary>
+		/// Признак терминального узла
+		/// </summary>
+		public bool IsTerminal { get; set; }
+
+		/// <summary>
+		/// Признак того, что узел не был дораскрыт из-за ограничений уровня
+		/// </summary>
+		public bool IsNotFullyLeveled { get; set; }
 		/// <summary>
 		/// Код узла
 		/// </summary>

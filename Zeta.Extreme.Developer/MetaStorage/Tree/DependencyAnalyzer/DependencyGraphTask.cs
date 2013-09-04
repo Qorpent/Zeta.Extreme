@@ -69,16 +69,18 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 			}
 
 			return IncludeType.SelfAndDescendants;
-		}	
+		}
+
 		/// <summary>
 		/// Отрисовывает задачу в виде DOT
 		/// </summary>
+		/// <param name="uri"></param>
 		/// <returns></returns>
-		public string Render() {
+		public string Render(Uri uri =null) {
 			if (null == ResultGraph) {
 				Build();
 			}
-			return new DependencyGraphDotRender().Render(ResultGraph);
+			return new DependencyGraphDotRender().Render(ResultGraph,uri);
 		}
 
 		/// <summary>
@@ -88,7 +90,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 			if (null == ResultGraph)
 			{
 				ResultGraph = new DependencyGraph();
-				ResultGraph.Clusterize = this.Clusterize;
+				ResultGraph.Clusterize = Clusterize;
 				ResultGraph.Code = Code;
 				if (string.IsNullOrWhiteSpace(ResultGraph.Code)) {
 					ResultGraph.Code = DependencyNode.GetDotCode(StartRow) + "_" + Direction;

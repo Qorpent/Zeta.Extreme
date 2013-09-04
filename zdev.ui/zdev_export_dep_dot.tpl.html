@@ -1,9 +1,35 @@
 ﻿<div class="export-tree-form">
-    <form action="./zdev/export{{item.type}}dependencydot.dot.qweb" target="_blank">
+    <form action="./zdev/dependencygraph.dot.qweb" target="_blank">
         <fieldset>
            
             <label>Код корневой строки</label>
-            <input name="root" required />
+            <input class="fill-modal" name="root" required />
+             <label>Глубина развертки</label>
+            <input class="fill-modal" name="depth" placeholder="Без ограничений" />
+            <label class="checkbox" >
+                Объединять строки одной формы в группу
+                <input checked="checked" type="checkbox" name="clusterize" />
+            </label>
+            <label>Направление развертки</label>
+            <select class="fill-modal" name="dir" >
+                <option value="Down">Вниз (от чего зависит)</option>
+                <option value="Up">Вверх (что от него зависит)</option>
+                <option value="Both">Все</option>
+            </select>
+             <label>Ограничение на тип узлов</label>
+            <input class="fill-modal" name="nodetypes" value="Formula+Sum+Ref+Primary"
+                   title="Сочетание Formula,Sum,Ref,Primary,Controlpoint" />
+             <label>Ограничение на тип связей</label>
+            <input class="fill-modal" name="edgetypes" value="Formula+Sum+Ref+ExRef"
+                   title="Сочетание Formula,Sum,Ref,ExRef через '+'" />
+            
+            <label>Префиксы терминальных узлов</label>
+            <input class="fill-modal" name="terminals" placeholder="Начала кодов строк, разделенные запятыми"
+                title="Узлы, с указанными здесь началами кодов будут выводится, но их дочерние связи - нет" />
+            
+            <label>Префиксы игнорируемых узлов</label>
+            <input class="fill-modal" name="ignores" placeholder="Начала кодов строк, разделенные запятыми"
+                title="Узлы, с указанными здесь началами кодов не будут выводится" />
             
         </fieldset> 
         <hr />

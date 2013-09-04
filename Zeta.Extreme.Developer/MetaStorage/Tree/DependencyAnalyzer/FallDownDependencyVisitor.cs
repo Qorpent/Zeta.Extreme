@@ -50,12 +50,23 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 			var incltype = task.GetIncludeType(query.Row.Native);
 			if (incltype == IncludeType.None) return;
 			var node = task.ResultGraph.RegisterNode(query.Row.Native);
+			if (level == 0) {
+				node.IsTarget = true;
+			}
 			if (IncludeType.SelfAndDescendants == incltype) {
 				if (node.Type != DependencyNodeType.Primary) {
 					if (task.Depth == 0 || level < task.Depth) {
 						ProcessDependencies(task, query, level + 1);
 					}
+					else {
+						if (query.SummaDependency.Any() || query.FormulaDependency.Any()) {
+							node.IsNotFullyLeveled = true;
+						}
+					}
 				}
+			}
+			else {
+				node.IsTerminal = true;
 			}
 
 		}
@@ -70,9 +81,15 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 			if (task.EdgeTypes.HasFlag(testtype)) {
 				foreach (Query f in collection) {
 					if (task.GetIncludeType(f.Row.Native) != IncludeType.None) {
-						task.ResultGraph.RegisterEdge(query.Row.Native, f.Row.Native, testtype);
-						InternalProcess(task, f, level);
+						task.ResultGraph.RegisterEdge(f.Row.Native, query.Row.Native, testtype, false);
+
 					}
+					else {
+						task.ResultGraph.RegisterEdge(f.Row.Native, query.Row.Native, testtype, true);
+					}
+				}
+				foreach (Query f in collection) {
+					InternalProcess(task, f, level);
 				}
 			}
 		}

@@ -2,7 +2,6 @@ using System.Linq;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Developer.MetaStorage.Tree;
 using Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
@@ -61,7 +60,7 @@ namespace Zeta.Extreme.Developer.Actions {
 		/// <returns></returns>
 		protected override object MainProcess()
 		{
-			return task.Render();
+			return task.Render(Context.Uri);
 		}
 	}
 }
