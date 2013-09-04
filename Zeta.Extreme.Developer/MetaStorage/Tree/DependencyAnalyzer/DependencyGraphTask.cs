@@ -8,6 +8,15 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 	/// </summary>
 	public class DependencyGraphTask {
 		/// <summary>
+		/// 
+		/// </summary>
+		public DependencyGraphTask() {
+			NodeTypes = DependencyNodeType.Default;
+			EdgeTypes = DependencyEdgeType.Default;
+			Direction = DependencyDirection.Default;
+
+		}
+		/// <summary>
 		/// Код задачи/графа
 		/// </summary>
 		public string Code { get; set; }
