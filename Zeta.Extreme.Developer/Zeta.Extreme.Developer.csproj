@@ -17,7 +17,7 @@
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\DropCacheAction.cs" />
     <Compile Include="Actions\ExportDependencyDot.cs" />
-    <Compile Include="Actions\ExportFormulaDependencyDot.cs" />
+    <Compile Include="Actions\DependencyGraphAction.cs" />
     <Compile Include="Actions\ExportPeriods.cs" />
     <Compile Include="Actions\ExportPrimaryDependencyDot.cs" />
     <Compile Include="Actions\ExportTreeAction.cs" />
@@ -55,7 +55,10 @@
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyEdge.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyEdgeType.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyGraph.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyGraphDotRender.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyNode.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\FallDownDependencyVisitor.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\GoUpDependencyVisitor.cs" />
     <Compile Include="MetaStorage\Tree\OldDependencyGraph.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyGraphTask.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyNodeType.cs" />

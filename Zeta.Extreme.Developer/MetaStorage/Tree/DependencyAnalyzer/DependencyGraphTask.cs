@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
@@ -7,9 +8,17 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 	/// </summary>
 	public class DependencyGraphTask {
 		/// <summary>
+		/// Код задачи/графа
+		/// </summary>
+		public string Code { get; set; }
+		/// <summary>
 		/// Стартовая строка
 		/// </summary>
 		public IZetaRow StartRow { get; set; }
+		/// <summary>
+		/// Направление развертки графа
+		/// </summary>
+		public DependencyDirection Direction { get; set; }
 		/// <summary>
 		/// Типы включаемых узлов
 		/// </summary>
@@ -18,6 +27,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		/// Типы включаемых переходов
 		/// </summary>
 		public DependencyEdgeType EdgeTypes { get; set; }
+		/// <summary>
+		/// Разбивать зависимости по кластерам
+		/// </summary>
+		public bool Clusterize { get; set; }
 		/// <summary>
 		/// Маски терминальных узлов
 		/// </summary>
@@ -33,7 +46,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		/// <summary>
 		/// Результирующий граф
 		/// </summary>
-		public OldDependencyGraph ResultGraph { get; set; }
+		public DependencyGraph ResultGraph { get; set; }
 		/// <summary>
 		/// Возвращает вариант включения в граф
 		/// </summary>
@@ -57,8 +70,40 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 
 			return IncludeType.SelfAndDescendants;
 		}	
-		
-		
+		/// <summary>
+		/// Отрисовывает задачу в виде DOT
+		/// </summary>
+		/// <returns></returns>
+		public string Render() {
+			if (null == ResultGraph) {
+				Build();
+			}
+			return new DependencyGraphDotRender().Render(ResultGraph);
+		}
 
+		/// <summary>
+		/// Построить граф
+		/// </summary>
+		public void Build() {
+			if (null == ResultGraph)
+			{
+				ResultGraph = new DependencyGraph();
+				ResultGraph.Clusterize = this.Clusterize;
+				ResultGraph.Code = Code;
+				if (string.IsNullOrWhiteSpace(ResultGraph.Code)) {
+					ResultGraph.Code = DependencyNode.GetDotCode(StartRow) + "_" + Direction;
+				}
+			}
+			if (Direction.HasFlag(DependencyDirection.Down))
+			{
+				new FallDownDependencyVisitor().Process(this);
+			}
+			if (Direction.HasFlag(DependencyDirection.Up))
+			{
+				new GoUpDependencyVisitor().Process(this);
+			}
+			
+		}
+		
 	}
 }

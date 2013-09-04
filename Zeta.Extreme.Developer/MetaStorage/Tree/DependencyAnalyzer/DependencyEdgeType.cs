@@ -22,5 +22,9 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		/// Формула
 		/// </summary>
 		Formula = 1<<3,
+		/// <summary>
+		/// Набор по умолчанию
+		/// </summary>
+		Default = Sum | Ref | ExRef | Formula
 	}
 }
