@@ -23,7 +23,7 @@ namespace Zeta.Extreme.Developer.Actions {
 		private DependencyNodeType nodetypes { get; set; }
 		[Bind(Default = DependencyEdgeType.Default, Help = "Типы переходов для отрисовки")]
 		private DependencyEdgeType edgetypes { get; set; }
-		[Bind(Default = true, Help = "Объединять строки в кластеры по формам")]
+		[Bind( Help = "Объединять строки в кластеры по формам")]
 		private bool clusterize { get; set; }
 		[Bind( Help="Маски терминальных узлов")]
 		private string terminals { get; set; }
@@ -31,6 +31,8 @@ namespace Zeta.Extreme.Developer.Actions {
 		private string ignores { get; set; }
 		[Bind(Help="Глубина уровней отрисовки")]
 		private int depth { get; set; }
+		[Bind(Help = "Показать легенду")]
+		private bool showlegend { get; set; }
 		/// <summary>
 		/// 
 		/// </summary>
@@ -50,6 +52,7 @@ namespace Zeta.Extreme.Developer.Actions {
 				NodeTypes = nodetypes,
 				IgnoreMasks = ignores.SmartSplit().ToArray(),
 				TerminalMasks = terminals.SmartSplit().ToArray(),
+				ShowLegend = showlegend,
 			};
 			return task;
 		}

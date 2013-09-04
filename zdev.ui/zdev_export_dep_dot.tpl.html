@@ -10,17 +10,22 @@
                 Объединять строки одной формы в группу
                 <input checked="checked" type="checkbox" name="clusterize" />
             </label>
+            <label class="checkbox" >
+               Показать легенду
+                <input type="checkbox" name="showlegend" />
+            </label>
             <label>Направление развертки</label>
             <select class="fill-modal" name="dir" >
+                <option value="Both">Все</option>
                 <option value="Down">Вниз (от чего зависит)</option>
                 <option value="Up">Вверх (что от него зависит)</option>
-                <option value="Both">Все</option>
+                
             </select>
              <label>Ограничение на тип узлов</label>
-            <input class="fill-modal" name="nodetypes" value="Formula+Sum+Ref+Primary"
+            <input class="fill-modal" name="nodetypes" placeholder="Formula+Sum+Ref+Primary"
                    title="Сочетание Formula,Sum,Ref,Primary,Controlpoint" />
              <label>Ограничение на тип связей</label>
-            <input class="fill-modal" name="edgetypes" value="Formula+Sum+Ref+ExRef"
+            <input class="fill-modal" name="edgetypes" placeholder="Formula+Sum+Ref+ExRef"
                    title="Сочетание Formula,Sum,Ref,ExRef через '+'" />
             
             <label>Префиксы терминальных узлов</label>

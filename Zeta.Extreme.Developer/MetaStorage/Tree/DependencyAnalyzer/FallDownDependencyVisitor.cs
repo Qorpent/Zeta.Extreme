@@ -85,7 +85,9 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 
 					}
 					else {
-						task.ResultGraph.RegisterEdge(f.Row.Native, query.Row.Native, testtype, true);
+						if (task.NodeTypes.HasFlag(DependencyNode.GetNodeType(f.Row.Native))) {
+							task.ResultGraph.RegisterEdge(f.Row.Native, query.Row.Native, testtype, true);
+						}
 					}
 				}
 				foreach (Query f in collection) {

@@ -19,7 +19,6 @@
     <Compile Include="Actions\ExportDependencyDot.cs" />
     <Compile Include="Actions\DependencyGraphAction.cs" />
     <Compile Include="Actions\ExportPeriods.cs" />
-    <Compile Include="Actions\ExportPrimaryDependencyDot.cs" />
     <Compile Include="Actions\ExportTreeAction.cs" />
     <Compile Include="Actions\FormulaToPrimaryAction.cs" />
     <Compile Include="Actions\GetColAttributesAction.cs" />

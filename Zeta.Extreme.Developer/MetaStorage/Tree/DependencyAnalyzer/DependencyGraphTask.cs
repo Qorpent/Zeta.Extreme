@@ -95,6 +95,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 				if (string.IsNullOrWhiteSpace(ResultGraph.Code)) {
 					ResultGraph.Code = DependencyNode.GetDotCode(StartRow) + "_" + Direction;
 				}
+				ResultGraph.ShowLegend = ShowLegend;
 			}
 			if (Direction.HasFlag(DependencyDirection.Down))
 			{
@@ -106,6 +107,9 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 			}
 			
 		}
-		
+		/// <summary>
+		/// Показать легенду
+		/// </summary>
+		public bool ShowLegend { get; set; }
 	}
 }

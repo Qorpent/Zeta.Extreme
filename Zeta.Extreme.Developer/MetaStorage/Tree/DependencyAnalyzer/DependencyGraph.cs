@@ -31,7 +31,11 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		/// Код графа
 		/// </summary>
 		public string Code { get; set; }
-		
+		/// <summary>
+		/// Показать легенду
+		/// </summary>
+		public bool ShowLegend { get; set; }
+
 		/// <summary>
 		/// Регистрирует нод в случае отсутствия
 		/// </summary>

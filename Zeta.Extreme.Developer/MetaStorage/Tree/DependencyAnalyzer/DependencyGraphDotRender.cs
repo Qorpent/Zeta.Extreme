@@ -51,9 +51,16 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 			WriteAttr(RANKDIR,"LR");
 			WriteAttr("fontname","Tahoma");
 			WriteAttr("fontsize","9");
+			WriteAttr("ranksep","0.01");
+			WriteAttr("nodesep","0.1");
+			WriteAttr("quantum","0.01");
+			WriteAttr("esep","0.01");
+			WriteAttr("sep","0.01");
 			buffer.AppendLine("node[fontsize=9]");
 			buffer.AppendLine();
-			WriteLegend();
+			if (g.ShowLegend) {
+				WriteLegend();
+			}
 			WriteNodes();
 			WriteEdges();
 			WriteGraphEnd();

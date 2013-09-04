@@ -4,6 +4,7 @@ using System.Linq;
 using Qorpent.Applications;
 using Qorpent.Serialization;
 using Zeta.Extreme.Developer.MetaStorage.Tree;
+using Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 
@@ -99,12 +100,12 @@ namespace Zeta.Extreme.Developer.DataMigrations {
 		{
 			get
 			{
-				if (null == _sourcePrimaries)
-				{
-					var depGraph = FormDependencyHelper.GetFormulaDependencyGraph(Source);
-					_sourcePrimaries = depGraph.Nodes
-					                           .Where(_ => _.StartsWith("p_"))
-					                           .Select(_ => _.Substring(2))
+				if (null == _sourcePrimaries) {
+					var graphtask = new DependencyGraphTask {StartRow = Source, Direction = DependencyDirection.Down};
+					graphtask.Build();
+					_sourcePrimaries = graphtask.ResultGraph.Nodes.Values
+					                           .Where(_ => _.Type==DependencyNodeType.Primary)
+					                           .Select(_ => _.Label)
 					                           .Select(_ => MetaCache.Default.Get<IZetaRow>(_))
 					                           .ToArray();
 												  

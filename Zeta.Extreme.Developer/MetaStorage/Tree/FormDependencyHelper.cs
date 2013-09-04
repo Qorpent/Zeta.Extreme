@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.MetaCaches;
-using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 	/// <summary>
@@ -24,25 +20,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			var graph = GetDependencyGraph(r);
 			return ConvertToDot(graph,false);
 		}
-		/// <summary>
-		/// Формирует скрипт для DOT с зависимостями
-		/// </summary>
-		/// <param name="r"></param>
-		public static string GetFormulaDependencyDot(IZetaRow r)
-		{
-			var graph = GetFormulaDependencyGraph(r);
-			return ConvertToDot(graph,true);
-		}
-
-		/// <summary>
-		/// Формирует скрипт для DOT с зависимостями для первички
-		/// </summary>
-		/// <param name="r"></param>
-		public static string GetPrimaryDependencyDot(IZetaRow r)
-		{
-			var graph = GetPrimaryDependencyGraph(r,null);
-			return ConvertToDot(graph,true);
-		}
+		
 		private static string ConvertToDot(OldDependencyGraph oldDependencyGraph, bool clustered) {
 			var result = new StringBuilder();
 			result.AppendLine("digraph G {");
@@ -108,174 +86,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			}
 		}
 
-		class StubPs : IPrimarySource {
-			public void Register(IQuery query) {
-				query.Result = new QueryResult(1);
-			}
-
-			public void Register(string preparedQuery) {
-				
-			}
-
-			public Task Collect() {
-				return Task.Run(() => { });
-			}
-
-			public void Wait(int timeout = -1) {
 	
-			}
-
-			public IList<string> QueryLog { get; private set; }
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns></returns>
-		public static OldDependencyGraph GetFormulaDependencyGraph(IZetaRow root, int objid=352,string colcode= "Б1", int year=2012,int period=1, bool expandifs= true) {
-			var session = new Session {PrimarySource = new StubPs(),ExpandConditionalFormulas=expandifs};
-			var query = new Query(root.Code, colcode, objid, year, period);
-			query = (Query)session.Register(query);
-			session.WaitPreparation();
-			return GetQueryRowDependencyGraph(query,new OldDependencyGraph());
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns></returns>
-		public static OldDependencyGraph GetPrimaryDependencyGraph(IZetaRow root,OldDependencyGraph index) {
-			index = index ?? new OldDependencyGraph();
-			var code = GetRowCode(root);
-			if (!index.Nodes.Contains(code)) {
-				index.Nodes.Add(code);
-			}
-			var references = RowCache.Bycode.Values.Where(
-				_ => 
-					(null != _.RefTo && _.RefTo.Code == root.Code)
-					||
-					(null!= _.ExRefTo && _.ExRefTo.Code==root.Code)
-					
-					).ToArray();
-			foreach (var r in references) {
-				if (r.IsMarkSeted("CONTROLPOINT")) continue;
-				if (r.Code == root.Code) continue;
-				var e = new Tuple<string, string, string>(GetRowCode(r), "ref", code);
-				if (!index.Edges.Contains(e)) {
-					index.Edges.Add(e);
-					GetPrimaryDependencyGraph(r, index);
-				}
-				
-			}
-			if (!root.IsMarkSeted("0NOSUM")) {
-				
-				var current = root.Parent;
-				while (null != current) {
-					if (current.IsMarkSeted("0SA")) {
-						break;
-					}
-					current = current.Parent;
-				}
-				if (null != current) {
-					if (!current.IsMarkSeted("CONTROLPOINT")) {
-						var e = new Tuple<string, string, string>(GetRowCode(current), "sum", code);
-						if (!index.Edges.Contains(e))
-						{
-							index.Edges.Add(e);
-							GetPrimaryDependencyGraph(current, index);
-						}
-					}
-					
-				}
-			}
-			if (!string.IsNullOrWhiteSpace(root.GroupCache)) {
-				var groups = root.GroupCache.SmartSplit(false, true, ' ', ';', '/');
-				var grsums = RowCache.Bycode.Values.Where(_ => !string.IsNullOrWhiteSpace(_.GroupCache) && _.IsMarkSeted("0SA")).ToArray();
-				foreach (var gs in grsums) {
-					if (gs.IsMarkSeted("CONTROLPOINT")) continue;
-					if (gs.Code == root.Code) continue;
-					var tgroups = gs.GroupCache.SmartSplit(false, true, ' ', ';', '/');
-					if (tgroups.Intersect(groups).Any()) {
-						var e = new Tuple<string, string, string>(GetRowCode(gs), "sum", code);
-						if (!index.Edges.Contains(e))
-						{
-							index.Edges.Add(e);
-							GetPrimaryDependencyGraph(gs, index);
-						}
-						
-					}
-				}
-			}
-			
-			var formulas = RowCache.Formulas.Where(_ => _.Formula.Contains("$"+root.Code)).ToArray();
-			foreach (var f in formulas) {
-				if (f.IsMarkSeted("CONTROLPOINT")) continue;
-				if (Regex.IsMatch(f.Formula, @"\$" + root.Code + @"[\@\.\?]")) {
-					var e = new Tuple<string, string, string>(GetRowCode(f), "frm", code);
-					if (!index.Edges.Contains(e))
-					{
-						index.Edges.Add(e);
-						GetPrimaryDependencyGraph(f, index);
-					}
-					
-				}
-			}
-			return index;
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="q"></param>
-		/// <param name="index"></param>
-		/// <returns></returns>
-		public static OldDependencyGraph GetQueryRowDependencyGraph(Query q, OldDependencyGraph index=null) {
-			index = index ?? new OldDependencyGraph();
-			var code = GetRowCode(q);
-			if (null == code) return index;
-			if (!index.Nodes.Contains(code)) {
-				index.Nodes.Add(code);
-			}
-			if (q.IsPrimary) return index;
-			if (null != q.FormulaDependency) {
-				foreach (Query cq in q.FormulaDependency) {
-					if (cq.Row.Native.IsMarkSeted("CONTROLPOINT")) continue;
-					var tuple = new Tuple<string, string, string>(code, "frm",GetRowCode(cq));
-					if (!index.Edges.Contains(tuple)) {
-						index.Edges.Add(tuple);
-					}
-				}
-			}
-			if (null != q.SummaDependency) {
-				foreach (Query cq in q.SummaDependency.Select(_ => _.Item2))
-				{
-					if (cq.Row.Native.IsMarkSeted("CONTROLPOINT")) continue;
-					var tuple = new Tuple<string, string, string>(code, "sum", GetRowCode(cq));
-					if (!index.Edges.Contains(tuple))
-					{
-						index.Edges.Add(tuple);
-					}
-				}
-			}
-
-			if (null != q.FormulaDependency)
-			{
-				foreach (Query cq in q.FormulaDependency) {
-					if (cq.Row.Native.IsMarkSeted("CONTROLPOINT")) continue;
-					GetQueryRowDependencyGraph(cq, index);
-				}
-			}
-			if (null != q.SummaDependency)
-			{
-				foreach (Query cq in q.SummaDependency.Select(_=>_.Item2))
-				{
-					if (cq.Row.Native.IsMarkSeted("CONTROLPOINT")) continue;
-					GetQueryRowDependencyGraph(cq, index);
-				}
-			}
-
-			return index;
-		}
-
 		private static string GetRowCode(Query q) {
 			var code = q.Row.Code;
 			var prefix = "p";
@@ -289,27 +100,6 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			}
 			code = prefix + "_"+code;
 			return code.Replace(".","_DOT_");
-		}
-
-		private static string GetRowCode(IZetaRow r) {
-			
-			if (null != r.RefTo || null!=r.ExRefTo) {
-				return "r_" + r.Code;
-			}
-			if (r.IsMarkSeted("0SA")) {
-				return "s_" + r.Code;
-			}
-			if (!r.IsFormula) {
-				return "p_" + r.Code;
-			}
-			var s = new Session();
-			var q = new Query(r.Code, "Б1", 352, 2013, 1);
-			q = (Query)s.Register(q);
-			s.WaitPreparation();
-			if (null == q) {
-				return null;
-			}
-			return GetRowCode(q);
 		}
 
 		/// <summary>
