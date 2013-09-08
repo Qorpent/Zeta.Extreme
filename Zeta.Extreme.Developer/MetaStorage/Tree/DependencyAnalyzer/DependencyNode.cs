@@ -105,9 +105,9 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		/// </summary>
 		/// <param name="row"></param>
 		/// <returns></returns>
-		public static string GetDotCode(IZetaRow row)
-		{
-			return "r" + row.Code.Replace(".", "_dot_");
+		public static string GetDotCode(IZetaRow row) {
+		    return row.Code;
+			//return "r" + row.Code.Replace(".", "_dot_");
 		}
 		
 		

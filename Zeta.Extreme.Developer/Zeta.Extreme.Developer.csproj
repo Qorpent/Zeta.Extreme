@@ -54,7 +54,7 @@
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyEdge.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyEdgeType.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyGraph.cs" />
-    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyGraphDotRender.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyGraphGenerator.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyNode.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\FallDownDependencyVisitor.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\GoUpDependencyVisitor.cs" />
@@ -102,6 +102,10 @@
     <Compile Include="Config\IDeveloperConfig.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Serialization\Qorpent.Serialization.csproj">
+      <Project>{21971F28-8ED8-4F50-B623-E9DB2658AF54}</Project>
+      <Name>Qorpent.Serialization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.Core\Zeta.Extreme.Core.csproj">
       <Project>{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}</Project>
       <Name>Zeta.Extreme.Core</Name>

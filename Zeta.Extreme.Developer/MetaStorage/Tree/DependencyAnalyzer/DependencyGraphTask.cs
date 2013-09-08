@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Qorpent.Dot;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
@@ -85,11 +86,11 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		/// </summary>
 		/// <param name="uri"></param>
 		/// <returns></returns>
-		public string Render(Uri uri =null) {
+		public Graph Render(Uri uri =null) {
 			if (null == ResultGraph) {
 				Build();
 			}
-			return new DependencyGraphDotRender().Render(ResultGraph,uri);
+			return new DependencyGraphGenerator().Generate(ResultGraph,uri);
 		}
 
 		/// <summary>
