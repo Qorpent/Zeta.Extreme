@@ -7,7 +7,7 @@ using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Developer.Actions {
-	/// <summary>
+    /// <summary>
 	/// Ёкспорт сфорировать файл периодов
 	/// </summary>
 	[Action("zdev.dependencygraph", Arm = "dev", Help = "—формировать граф зависимостей строки", Role = "DEVELOPER")]
@@ -53,6 +53,7 @@ namespace Zeta.Extreme.Developer.Actions {
 				IgnoreMasks = ignores.SmartSplit().ToArray(),
 				TerminalMasks = terminals.SmartSplit().ToArray(),
 				ShowLegend = showlegend,
+                BaseUri = Context.Uri,
 			};
 			return task;
 		}
@@ -61,9 +62,8 @@ namespace Zeta.Extreme.Developer.Actions {
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		protected override object MainProcess()
-		{
-			return task.Render(Context.Uri);
+		protected override object MainProcess() {
+		    return task;
 		}
 	}
 }

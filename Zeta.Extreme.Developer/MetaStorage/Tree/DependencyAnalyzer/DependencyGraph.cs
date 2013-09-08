@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Qorpent.Serialization;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
@@ -15,6 +17,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 			Nodes = new Dictionary<string,DependencyNode>();
 			Edges = new Dictionary<string,DependencyEdge>();
 		}
+        /// <summary>
+        /// Базовый URI
+        /// </summary>
+        public Uri BaseUri { get; set; }
 		/// <summary>
 		/// Узлы
 		/// </summary>

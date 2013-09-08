@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\AnalyzerActionBase.cs" />
+    <Compile Include="Actions\DebugQueryAction.cs" />
     <Compile Include="Actions\DropCacheAction.cs" />
     <Compile Include="Actions\ExportDependencyDot.cs" />
     <Compile Include="Actions\DependencyGraphAction.cs" />
@@ -43,6 +44,7 @@
     <Compile Include="DataMigrations\TransferHelper.cs" />
     <Compile Include="DataMigrations\TransferTask.cs" />
     <Compile Include="DataMigrations\TransferRecord.cs" />
+    <Compile Include="Debugger\QueryGraphBuilder.cs" />
     <Compile Include="DeveloperStartUp.cs" />
     <Compile Include="MetaStorage\Periods\PeriodsExporter.cs" />
     <Compile Include="MetaStorage\Tree\AttributeType.cs" />

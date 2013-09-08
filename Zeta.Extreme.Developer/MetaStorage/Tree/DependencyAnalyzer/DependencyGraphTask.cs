@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Linq;
+using System.Xml.Linq;
 using Qorpent.Dot;
+using Qorpent.Serialization;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 	/// <summary>
 	/// Задача на отрисовку графика по завсимостям
 	/// </summary>
-	public class DependencyGraphTask {
+	public class DependencyGraphTask:IGraphSource {
 		/// <summary>
 		/// 
 		/// </summary>
@@ -21,6 +23,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		/// Код задачи/графа
 		/// </summary>
 		public string Code { get; set; }
+        /// <summary>
+        /// Базовый URL
+        /// </summary>
+        public Uri BaseUri { get; set; }
 		/// <summary>
 		/// Стартовая строка
 		/// </summary>
@@ -84,13 +90,12 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		/// <summary>
 		/// Отрисовывает задачу в виде DOT
 		/// </summary>
-		/// <param name="uri"></param>
 		/// <returns></returns>
-		public Graph Render(Uri uri =null) {
+		public Graph Render() {
 			if (null == ResultGraph) {
 				Build();
 			}
-			return new DependencyGraphGenerator().Generate(ResultGraph,uri);
+			return new DependencyGraphGenerator().Generate(ResultGraph);
 		}
 
 		/// <summary>
@@ -99,10 +104,8 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		public void Build() {
 			if (null == ResultGraph)
 			{
-				ResultGraph = new DependencyGraph();
-				ResultGraph.Clusterize = Clusterize;
-				ResultGraph.Code = Code;
-				if (string.IsNullOrWhiteSpace(ResultGraph.Code)) {
+				ResultGraph = new DependencyGraph {Clusterize = Clusterize, Code = Code, BaseUri = BaseUri};
+			    if (string.IsNullOrWhiteSpace(ResultGraph.Code)) {
 					ResultGraph.Code = DependencyNode.GetDotCode(StartRow) + "_" + Direction;
 				}
 				ResultGraph.ShowLegend = ShowLegend;
@@ -121,5 +124,26 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		/// Показать легенду
 		/// </summary>
 		public bool ShowLegend { get; set; }
+
+	    /// <summary>
+	    /// Вызывает процедуру построения графа
+	    /// </summary>
+	    /// <returns></returns>
+	    public IGraphConvertible BuildGraph(GraphOptions options) {
+	        if (null == ResultGraph) {
+	            Build();
+	        }      
+	        return new DependencyGraphGenerator().Generate(ResultGraph);
+	    }
+
+	    /// <summary>
+	    /// Выполнение пост-обработки SVG с графом
+	    /// </summary>
+	    /// <param name="currentSvg"></param>
+	    /// <param name="options"></param>
+	    /// <returns></returns>
+	    public XElement PostprocessGraphSvg(XElement currentSvg, GraphOptions options) {
+	        return currentSvg;
+	    }
 	}
 }

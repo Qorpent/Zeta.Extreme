@@ -16,11 +16,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
         /// Формирует из графа завимисомтией DOT-graph
         /// </summary>
         /// <param name="s"></param>
-        /// <param name="u"></param>
         /// <returns></returns>
-        public Graph Generate(DependencyGraph s,Uri u) {
+        public Graph Generate(DependencyGraph s) {
             srcgraph = s;
-            uri = u;
+            uri = s.BaseUri;
             hasignore = srcgraph.Edges.Values.Any(_ => _.To == "IGNORE");
             graph = new Graph {
                 Code = s.Code,
@@ -36,6 +35,8 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
             MoveNodes();
             MoveEdges();
             graph.Compactize();
+
+            graph.AutoTune();
             return graph;
         }
 

@@ -98,7 +98,7 @@ namespace Zeta.Extreme {
 			{
 				Col.Code = Convert.ToBase64String(Encoding.UTF8.GetBytes(colcode));
 				Col.IsFormula = true;
-				Col.Formula = rowcode;
+				Col.Formula = colcode;
 				Col.FormulaType = "boo";
 			}
 			Obj.Id = obj;
