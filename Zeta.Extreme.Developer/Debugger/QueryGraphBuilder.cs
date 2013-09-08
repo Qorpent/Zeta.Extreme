@@ -53,6 +53,7 @@ namespace Zeta.Extreme.Developer.Debugger
             session.WaitEvaluation();
             var graph = new Graph();
             graph.DefaultNode = new Node {FontSize = 10};
+            graph.RankDir = RankDirType.RL;
             graph.FontSize = 8;
             var visited = new List<IQuery>();
             graph.AddElements(GetQueryElementsTree(realquery,null,visited));
