@@ -410,7 +410,7 @@ root.myform = root.myform ||  {
     });
 
     api.metadata.celldebug.onSuccess(function(e, result) {
-        var htmlresult = window.zeta.jsformat.jsonObjToHTML(result);
+        var htmlresult = result;// window.zeta.jsformat.jsonObjToHTML(result);
         $(window.zeta).trigger(window.zeta.handlers.on_modal, {
             width: 900,
             title: "Отладка ячейки",

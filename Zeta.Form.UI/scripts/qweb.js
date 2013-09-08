@@ -207,12 +207,14 @@
                     }
                     else if( 200 == r.status) {
 
-                        if (!r.responseText.match(/^\s*<!DOCTYPE/)) {
+                        if (!r.responseText.match(/^\s*</)) {
                             if(ajaxinfo.type=="GET" && r.getResponseHeader("Last-Modified"))   {
                                 sessionStorage.setItem(ajaxinfo.url+"?"+JSON.stringify(ajaxinfo.data), r.responseText);
                             }
                             myoptions.onsuccess(JSON.parse(r.responseText),params);
-                        }
+                        }else{
+							myoptions.onsuccess(r.responseText,params);
+						}
                     }
                     else {
                         self.triggerOnError(r);
