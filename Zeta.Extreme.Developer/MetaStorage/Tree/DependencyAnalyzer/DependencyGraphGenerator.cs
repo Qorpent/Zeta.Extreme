@@ -83,7 +83,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
                 Code = "l_exref",
                 SubgraphCode = sg.Code,
                 Shape = NodeShapeType.lpromoter,
-                Label = "Доб ссылка"
+                Label = "Добавочная ссылка"
             });
             graph.AddNode(new Node
             {
