@@ -1,0 +1,34 @@
+####################################################################################################
+####                                                                                            ####
+####      Экспорт формы из БД Zeta                                                              ####
+####                                                                                            ####
+####      Исходный код корневой строки формы         : DIR_ORG_ROLE                             ####
+####      Заданное пространство имен                 : demo.import.dicts                        ####
+####      Заданное имя класса                        : dir_org_role                             ####
+####      Исполнитель                                : local\comdiv                             ####
+####      Время генерации                            : 2013-09-09 16:40:25                      ####
+####      ID строки в БД                             : 14345                                    ####
+####      Максимальная версия строк в форме          : 2013-02-04 17:13:21                      ####
+####                                                                                            ####
+####################################################################################################
+
+namespace demo.import.dicts
+	class dir_org_role 'Роль организации' formcode=DIR_ORG_ROLE stopinterpolate=all
+		import tree
+		title DIR_ORG_ROLE 'Роль организации' 
+			item fincred 'Фин. кредитор' linkrole=FINDEB 
+			item findeb 'Фин. должник' linkrole=FINCRED 
+			item buyer 'Покупатель' linkrole=PROVIDER 
+			item customer 'Заказчик' linkrole=EXECUTOR 
+			item provider 'Поставщик' linkrole=BUYER 
+			item executor 'Подрядчик' linkrole=CUSTOMER 
+			item debitor 'Дебитор' linkrole=CREDITOR 
+			item creditor 'Кредитор' linkrole=DEBITOR 
+			item investor 'Инвестор' linkrole=ISSUER 
+			item issuer 'Эмитент' linkrole=INVESTOR 
+			item partner 'Участник' linkrole=COMPANY 
+			item company 'Общество' linkrole=PARTNER 
+			item borrower 'Заемщик' linkrole=BANK 
+			item bank 'Банк' linkrole=BORROWER 
+			item producer 'Производитель' 
+			item elzatr 'Элементы затрат' 

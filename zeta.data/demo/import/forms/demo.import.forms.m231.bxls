@@ -1,0 +1,110 @@
+####################################################################################################
+####                                                                                            ####
+####      Экспорт формы из БД Zeta                                                              ####
+####                                                                                            ####
+####      Исходный код корневой строки формы         : m231                                     ####
+####      Заданное пространство имен                 : demo.import.forms                        ####
+####      Заданное имя класса                                                                   ####
+####      Исполнитель                                : local\comdiv                             ####
+####      Время генерации                            : 2013-09-09 16:40:15                      ####
+####      ID строки в БД                             : 17211                                    ####
+####      Максимальная версия строк в форме          : 2013-08-02 14:03:21                      ####
+####                                                                                            ####
+####      Обнаружены зависимости от других форм                                                 ####
+####              frm : m230                                                                    ####
+####                                                                                            ####
+####################################################################################################
+
+namespace demo.import.forms
+	class m231 'Расчеты с дебиторами и кредиторами' formcode=m231 stopinterpolate=all
+		import tree
+		sum m231 'Расчеты с дебиторами и кредиторами' 
+			sum 100 'Покупатели и заказчики' 
+				formula 110 'Предприятия УГМК'  formula=(
+					$m230110?
+				)
+					primary 111 'Основные предприятия УГМК' specialformview=casplit casbill=BA062 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT2000' casplitdiv usedetails 
+					controlpoint 112 'Основные предприятия УГМК [контроль=0]'  : (
+						$m230110? - $m231111?
+					)
+				formula 120 'Иностранные контрагенты'  formula=(
+					$m230120?
+				)
+					primary 121 'Иностранные контрагенты' specialformview=casplit casbill=BA062 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT1600' usedetails 
+					controlpoint 122 'Иностранные контрагенты [контроль=0]'  : (
+						$m230120? - $m231121?
+					)
+				formula 130 'Прочие покупатели и заказчики'  formula=(
+					$m230130?
+				)
+					primary 131 'Другие предприятия группы УГМК' specialformview=casplit casbill=BA062 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT2500' usedetails 
+					primary 132 'Покупатели и заказчики продукции, работ, услуг (не группа УГМК)' specialformview=casplit casbill=BA062 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT3200' usedetails 
+					primary 133 'Покупатели и заказчики продукции, работ, услуг (банки)' specialformview=casplit casbill=BA062 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT1000' usedetails 
+					primary 135 'Индивидуальные предприниматели' specialformview=casplit casbill=BA062 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT3800' usedetails 
+					primary 137 'Поставщики сырья' specialformview=casplit casbill=BA062 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT3100' usedetails 
+					primary 138 'Другие покупатели и заказчики' specialformview=casplit casbill=BA062 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT4000' usedetails 
+					controlpoint 139 'Другие покупатели и заказчики [контроль=0]'  : (
+						$m230130? - $m231131? - $m231132? - $m231133? - $m231135? - $m231137? - $m231138?
+					)
+			sum 200 'Поставщики и подрядчики' 
+				formula 210 'Предприятия УГМК'  formula=(
+					$m230210?
+				)
+					primary 211 'Основные предприятия УГМК' specialformview=casplit casbill=BA060 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT2000' casplitdiv usedetails 
+					controlpoint 212 'Основные предприятия УГМК [контроль=0]'  : (
+						$m230210? - $m231211?
+					)
+				formula 220 'Иностранные контрагенты'  formula=(
+					$m230220?
+				)
+					primary 221 'Иностранные контрагенты' specialformview=casplit casbill=BA060 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT1600' usedetails 
+					controlpoint 222 'Иностранные контрагенты [контроль=0]'  : (
+						$m230220? - $m231221?
+					)
+				formula 230 'Прочие поставщики и подрядчики'  formula=(
+					$m230230?
+				)
+					primary 231 'Прочие предприятия группы УГМК' specialformview=casplit casbill=BA060 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT2500' usedetails 
+					primary 232 'Поставщики сырья (не группа УГМК)' specialformview=casplit casbill=BA060 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT3100' usedetails 
+					primary 233 'Индивидуальные предприниматели' specialformview=casplit casbill=BA060 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT3800' usedetails 
+					primary 238 'Другие поставщики и подрядчики' specialformview=casplit casbill=BA060 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT4000' usedetails 
+					controlpoint 239 'Другие поставщики и подрядчики [контроль=0]'  : (
+						$m230230? - $m231231? - $m231232? - $m231233? - $m231238?
+					)
+			formula 300 'Прочие дебиторы и кредиторы' outer=600  formula=(
+				$m230600?
+			)
+				primary 310 'Счет 71' outer=610 
+				primary 320 'Счет 73' outer=620 
+				sum 330 'Счет 76' outer=630 
+					sum 331 'Прочие расчеты' outer=631 
+						primary 6311 'Основные предприятия УГМК' specialformview=casplit casbill=BA076 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT2000' casplitdiv usedetails 
+						primary 6312 'Прочие предприятия УГМК' specialformview=casplit casbill=BA076 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT2500' usedetails 
+						primary 6313 'Банки' specialformview=casplit casbill=BA076 casform=DKZ specialreportview='report;std;casplit' grpprefix='CA_STRUCT1000' usedetails 
+						primary 6314 'Другие контрагенты' 
+					primary 332 'Дивиденды' outer=632 
+					sum 333 'Налоги' outer=633 
+						formula 6331 'Аренда земли'  : (
+							$m230802?
+						)
+						formula 6332 'Плата за негативное воздействие'  : (
+							$m230803?
+						)
+						formula 6333 'Прочие налоги'  : (
+							$m230804?
+						)
+						primary 6334 'НДС (по авансам и т.д.)' 
+					primary 339 'Прочие' outer=639 
+				sum 640 'НДС (по авансам и т.д.)' 
+					primary 641 'сч. 62.80 "Расчеты по НДС с авансов полученных"' 
+					primary 642 'сч. 60.80 "Расчеты по НДС с выданных авансов"' 
+				primary 650 'Счет 94' 
+				controlpoint 690 'Прочие счета'  : (
+					$m230600? - $m231310? - $m231320? - $m231330? - $m231640? - $m231650?
+				)
+			formula 910 'Справочно: задолженность дивизиона' nosum  : (
+				$m231111.altdiv()? + $m231211.altdiv()? + $m2316311.altdiv()? 	
+			)
+			formula 920 'Справочно: задолженность УГМК без текущего дивизиона' nosum  : (
+				$m231710? - $m231910?
+			)

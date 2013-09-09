@@ -98,6 +98,7 @@ namespace Zeta.Extreme.Developer.Scripting {
         /// <param name="context"></param>
         /// <param name="client"></param>
         protected virtual void InternalRun(IConfig context, MvcClient client) {
+	        Log.Info("start " + GetType().Name);
             var commandName = GetCommandName();
             if (string.IsNullOrWhiteSpace(commandName)) {
                 throw new Exception("no command detected");
@@ -106,6 +107,7 @@ namespace Zeta.Extreme.Developer.Scripting {
             var result = client.GetString(commandName, parameters);
             result.Wait();
             Save(result.Result,GetFileName(commandName,context,result));
+			Log.Info("finish " + GetType().Name);
         }
         /// <summary>
         /// Получить имя файла
@@ -156,6 +158,7 @@ namespace Zeta.Extreme.Developer.Scripting {
             }
             var filename = Path.Combine(Into, localfile);
             File.WriteAllText(filename,content);
+		    Log.Info("file " + filename + " wrote");
             return filename;
         }
         /// <summary>
