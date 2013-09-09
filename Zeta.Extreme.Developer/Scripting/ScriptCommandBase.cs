@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -127,7 +128,10 @@ namespace Zeta.Extreme.Developer.Scripting {
 	    /// <param name="context"></param>
 	    /// <returns></returns>
 	    protected virtual object SetupParameters(string commandName, IConfig context) {
-	        return null;
+		    var result = new Dictionary<string, object>();
+		    result["namespace"] = Namespace;
+		    result["classname"] = ClassName;
+		    return result;
 	    }
 
 	    /// <summary>

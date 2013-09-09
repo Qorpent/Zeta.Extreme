@@ -174,7 +174,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			AddBigComment("Заданное пространство имен", options.Namespace);
 			AddBigComment("Заданное имя класса", options.ClassName);
 			AddBigComment("Исполнитель", Application.Current.Principal.CurrentUser.Identity.Name);
-			AddBigComment("Время генерации", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+			//AddBigComment("Время генерации", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 			AddBigComment("ID строки в БД", exportroot.Id.ToString());
 			AddBigComment("Максимальная версия строк в форме", new[] { exportroot }.Union(exportroot.AllChildren).Max(_ => _.Version).ToString("yyyy-MM-dd HH:mm:ss"));
 
