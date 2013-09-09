@@ -86,6 +86,7 @@
     <Compile Include="Scripting\GenerateDictCommand.cs" />
     <Compile Include="Scripting\GenerateFormActionBase.cs" />
     <Compile Include="Scripting\GenerateFormCommand.cs" />
+    <Compile Include="Scripting\GeneratePeriods.cs" />
     <Compile Include="Scripting\IScriptCommand.cs" />
     <Compile Include="Scripting\Script.cs" />
     <Compile Include="Scripting\ScriptCommandBase.cs" />

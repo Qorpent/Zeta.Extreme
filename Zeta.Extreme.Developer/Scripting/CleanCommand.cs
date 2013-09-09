@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Xml.Linq;
 using Qorpent.Config;
+using Qorpent.Mvc;
 using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Developer.Scripting {
@@ -21,11 +22,13 @@ namespace Zeta.Extreme.Developer.Scripting {
 		/// Имя директории для очистки
 		/// </summary>
 		public string DirectoryName { get; set; }
-		/// <summary>
-		/// Выполнение скрипта
-		/// </summary>
-		/// <param name="context"></param>
-		public override void Run(IConfig context) {
+
+	    /// <summary>
+	    /// Выполнение скрипта
+	    /// </summary>
+	    /// <param name="context"></param>
+	    /// <param name="client"></param>
+	    protected override void InternalRun(IConfig context,MvcClient client) {
 			Log.Trace("start clean "+DirectoryName);
 			if (Directory.Exists(DirectoryName)) {
 				foreach (var f in Directory.GetFiles(DirectoryName)) {

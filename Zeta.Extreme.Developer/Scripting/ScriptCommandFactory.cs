@@ -14,6 +14,7 @@ namespace Zeta.Extreme.Developer.Scripting {
 			{"clean",typeof(CleanCommand)},
 			{"generate-form",typeof(GenerateFormCommand)},
 			{"generate-dict",typeof(GenerateDictCommand)},
+			{"generate-periods",typeof(GeneratePeriods)},
 		};
 		/// <summary>
 		/// Фабричный метод парсинга команд из XML

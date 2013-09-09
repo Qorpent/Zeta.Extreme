@@ -3,21 +3,26 @@ zdev-script demo_import
 	_basens = demo.import
 	_formdir = ${_dir}/import/forms
 	_dictdir = ${_dir}/import/dicts
+	_metadir = ${_dir}/import/meta
 	_formns = ${_basens}.forms
 	_dictns = ${_basens}.dicts
+	_metans = ${_basens}.meta
 
 	# очищаем директории от текущего контента
 	clean ${_formdir}
 	clean ${_dictdir}
+	clean ${_metadir}
 	
 	# работаем с локальным ZDEV
 	set node = ${_localzdev}
 		
+		set namespace=${_metans} into=${_metadir}
+			generate-periods name=periods
+		
 		# скрипты генерации форм
 		set namespace=${_formns} into = ${_formdir}
 			# затаскиваем a111 со всеми зависимостями
-			generate-form a111 withdependency
-				
+			generate-form a111 withdependency		
 				
 		# скрипты генерации словарей
 		set namespace = ${_dictns} into=${_dictdir}
@@ -51,4 +56,3 @@ zdev-script demo_import
 			generate-dict DIR_OFFICE 'dir_office'
 			# Параметры презентаций
 			generate-dict DIR_PARAM 'dir_param_prezent'
-			
