@@ -48,7 +48,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 
 		private void InternalProcess(DependencyGraphTask task, Query query, int level) {
 			var incltype = task.GetIncludeType(query.Row.Native);
-			if (incltype == IncludeType.None) return;
+			if (incltype == IncludeType.None && level!=0) return;
 			var node = task.ResultGraph.RegisterNode(query.Row.Native);
 			if (level == 0) {
 				node.IsTarget = true;
@@ -81,13 +81,14 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 			if (task.EdgeTypes.HasFlag(testtype)) {
 				foreach (Query f in collection) {
 					if (task.GetIncludeType(f.Row.Native) != IncludeType.None) {
-						task.ResultGraph.RegisterEdge(f.Row.Native, query.Row.Native, testtype, false);
+						task.ResultGraph.RegisterEdge(f.Row.Native, query.Row.Native, testtype, false,true);
 
 					}
 					else {
 						if (task.NodeTypes.HasFlag(DependencyNode.GetNodeType(f.Row.Native))) {
-							task.ResultGraph.RegisterEdge(f.Row.Native, query.Row.Native, testtype, true);
+						    task.ResultGraph.RegisterEdge(f.Row.Native, query.Row.Native, testtype, true,true);
 						}
+
 					}
 				}
 				foreach (Query f in collection) {

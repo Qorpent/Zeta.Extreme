@@ -32,7 +32,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		/// <returns></returns>
 		public  void GetPrimaryDependencyGraph(DependencyGraphTask task, IZetaRow row, DependencyGraph index,int level) {
 			var include = task.GetIncludeType(row);
-			if (include == IncludeType.None) return;
+            if (include == IncludeType.None && level != 0) return;
 			var n = index.RegisterNode(row);
 			if (level == 0) {
 				n.IsTarget = true;
@@ -117,7 +117,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 					if (task.GetIncludeType(r) != IncludeType.None) {
 						if (r.Code == row.Code) continue;
 						bool isnew;
-						index.RegisterEdge(row, r, type, false, out isnew);
+						index.RegisterEdge(row, r, type, false,false, out isnew);
 						if (isnew) {
 							GetPrimaryDependencyGraph(task, r, index, level + 1);
 						}

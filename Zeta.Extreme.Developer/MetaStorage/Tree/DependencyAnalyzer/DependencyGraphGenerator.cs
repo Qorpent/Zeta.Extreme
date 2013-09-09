@@ -12,6 +12,8 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
         private DependencyGraph srcgraph;
         private Uri uri;
         private bool hasignore;
+        private const string IGNORENODE = "IGNORE";
+
         /// <summary>
         /// Формирует из графа завимисомтией DOT-graph
         /// </summary>
@@ -20,7 +22,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
         public Graph Generate(DependencyGraph s) {
             srcgraph = s;
             uri = s.BaseUri;
-            hasignore = srcgraph.Edges.Values.Any(_ => _.To == "IGNORE");
+            hasignore = srcgraph.Edges.Values.Any(_ => _.To == IGNORENODE || _.From==IGNORENODE);
             graph = new Graph {
                 Code = s.Code,
                 RankDir = RankDirType.LR,
@@ -30,6 +32,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
                     ColorScheme = "set312",
                     Style = NodeStyleType.Filled,
                     FillColor = "2",
+                },
+                DefaultEdge = new Node
+                {
+                    FontSize = 8,
                 }
             };
             MoveNodes();
@@ -100,10 +106,12 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
         private void PrepareIgnoreNode() {
             if (hasignore) {
                 var n = new Node {
+                    Code=IGNORENODE,
                     Shape = NodeShapeType.Circle,
                     Style = NodeStyleType.Filled,
                     FillColor = ColorAttribute.Single(Color.RGB(0xFF, 0, 0)),
-                    Label = ""
+                    Label = "",
+                    Tooltip = "Игнорируемые узлы "
                 };
                 graph.AddNode(n);
             }
