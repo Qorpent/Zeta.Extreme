@@ -120,7 +120,7 @@ _.widget.register({
 		    {
 		        title: "Экспорт зависимостей формы (DOT)",
 		        onclick: {
-		            modal: { title: "Экспорт дерева", template: 'zdev_export_dep_dot', width: 400 },
+		            modal: { title: "Экспорт дерева", template: 'zdev_export_fdep_dot', width: 400 },
 		        },
 		    },
 		    {
