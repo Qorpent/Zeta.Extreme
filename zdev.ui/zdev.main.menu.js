@@ -118,9 +118,9 @@ _.widget.register({
 		        href: './zdev/exportperiods.string.qweb',
 		    },
 		    {
-		        title: "Экспорт зависимостей формы (DOT)",
+		        title: "График зависимостей формы",
 		        onclick: {
-		            modal: { title: "Экспорт дерева", template: 'zdev_export_fdep_dot', width: 400 },
+		            modal: { title: "График зависимостей формы", template: 'zdev_export_fdep_dot', width: 400 },
 		        },
 		    },
 		    {
