@@ -68,7 +68,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			sb = new StringBuilder();
 			RenderComment(exportroot, options);
 			RenderClassStart(xml);
-			RenderClassContent(xml.Element("class").Elements().ElementAt(1),0);
+			RenderClassContent(xml.Element("class").Elements().SkipWhile(_=>_.Name.LocalName=="import"||_.Name.LocalName=="export").First(),0);
 			return sb.ToString();
 		}
 
@@ -163,7 +163,12 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			sb.AppendLine();
 			sb.AppendFormat("{0}class {1} '{2}' formcode={3} stopinterpolate=all", CLS_TAB, cls.Attr("code"), cls.Attr("name"), cls.Attr("formcode"));
 			sb.AppendLine();
-			sb.AppendFormat("{0}import {1}", CLS_CNT_TAB, cls.Element("import").Attr("code"));
+		    sb.AppendFormat("{0}import {1}", CLS_CNT_TAB, cls.Element("import").Attr("code"));
+		    var export = cls.Element("export");
+            if (null != export) {
+                sb.AppendLine();
+                sb.AppendFormat("{0}export {1}", CLS_CNT_TAB, export.Attr("code"));
+            }
 		}
 
 		private void RenderComment(IZetaRow exportroot, TreeExporterOptions options) {

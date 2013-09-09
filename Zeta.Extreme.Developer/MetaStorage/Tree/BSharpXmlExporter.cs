@@ -26,7 +26,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 				new XAttribute("name",root.Name.Trim().Replace("\r","\\r").Replace("\n","\\n")),
 				new XAttribute("formcode",root.Code));
 			nse.Add(clse);
-			clse.Add(new XElement("import", new XAttribute("code", "tree")));
+			clse.Add(new XElement("import", new XAttribute("code",UseDict? "dict":"tree")));
+            if (UseDict) {
+                clse.Add(new XElement("export",new XAttribute("code",cls.Replace("dir_","").Replace("dict_",""))));
+            }
 			GenerateRow(clse, root,root);
 			return nse;
 		}
@@ -58,7 +61,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 			var e = new XElement(type.ToString().ToLower());
 			
 			e.SetAttributeValue("code",code);
-			e.SetAttributeValue("name",r.Name);
+			e.SetAttributeValue("name",r.Name.Trim().Replace("\r"," ").Replace("\n",""));
 
 			if (!string.IsNullOrWhiteSpace(r.OuterCode) && code!=r.OuterCode) {
 				e.SetAttributeValue("outer",r.OuterCode);
