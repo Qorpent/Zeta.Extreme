@@ -130,6 +130,12 @@ _.widget.register({
 		        },
 		    },
 		    {
+		        title: "Отладка запроса",
+		        onclick: {
+		            modal: { title: "Отладка запроса", template: 'zdev_debug_query', width: 400 },
+		        },
+		    },
+		    {
 		        title: "Создать скрипт переноса формулы в первичную строку",
 		        type: 'primary',
 		        onclick: {
