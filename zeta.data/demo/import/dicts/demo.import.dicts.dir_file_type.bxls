@@ -1,0 +1,28 @@
+####################################################################################################
+####                                                                                            ####
+####      Экспорт формы из БД Zeta                                                              ####
+####                                                                                            ####
+####      Исходный код корневой строки формы         : DIR_FILE_TYPES                           ####
+####      Заданное пространство имен                 : demo.import.dicts                        ####
+####      Заданное имя класса                        : dir_file_type                            ####
+####      Исполнитель                                : local\strekoza                           ####
+####      Время генерации                            : 2013-09-09 15:10:50                      ####
+####      ID строки в БД                             : 13096                                    ####
+####      Максимальная версия строк в форме          : 2013-03-07 15:23:47                      ####
+####                                                                                            ####
+####################################################################################################
+
+namespace demo.import.dicts
+	class dir_file_type 'Типы прикрепленных файлов формы' formcode=DIR_FILE_TYPES stopinterpolate=all
+		import tree
+		title DIR_FILE_TYPES 'Типы прикрепленных файлов формы' 
+			item dir_file_type_balans 'Баланс (balans)' outer=balans 
+			item dir_file_type_changes 'Письмо с перераспределением (changes)' outer=changes 
+			item _corrective 'Письмо с коррективами (corrective)' outer=corrective 
+			item dir_file_type_description 'Разъяснение (description)' outer=description 
+			item dir_file_type_freeact 'Чистые активы (freeact)' outer=freeact 
+			item dir_file_type_m_uploaddata 'Файл подгрузки данных (m_uploaddata)' outer='m_uploaddata' 
+			item dir_file_type_prib 'Отчет о прибылях и убытках (prib)' outer=prib 
+			item dir_file_type_rp 'Анализ реализованной продукции (rp)' outer=rp 
+			item dir_file_type_stfr 'Стандарт фин. отчетности (stfr)' outer=stfr 
+			item dir_file_type_tp 'Анализ товарной продукции (tp)' outer=tp 
