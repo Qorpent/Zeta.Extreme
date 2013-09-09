@@ -195,12 +195,12 @@ namespace Zeta.Extreme.FrontEnd.Helpers
         private void BuildObjTypeCell(IQuery query, XElement row) {
             var statecell = new XElement("TD", " ");
             statecell.SetAttributeValue("HREF", "#");
-            statecell.SetAttributeValue("TITLE", "Перв");
+            statecell.SetAttributeValue("TITLE", "Первичная");
             var color = Color.Green;
             if (query.Obj.IsFormula)
             {
                 color = Color.Blue;
-                statecell.SetAttributeValue("TITLE", "Форм");
+                statecell.SetAttributeValue("TITLE", "Формула");
             }
             statecell.SetAttributeValue("BGCOLOR", color.ToString());
             row.Add(statecell);
@@ -216,6 +216,8 @@ namespace Zeta.Extreme.FrontEnd.Helpers
                 val.Value += "(" + query.Reference.GetCacheKey() + ")";
             }
             row.Add(val);
+            val.SetAttributeValue("HREF", "#");
+            val.SetAttributeValue("TITLE","Валюта и дополнительные опции запроса");
             row.Add(new XElement("TD", " "));
             result.Add(row);
         }
@@ -228,6 +230,8 @@ namespace Zeta.Extreme.FrontEnd.Helpers
             val.Value = query.Time.Year + ", " + p.Name + " (" + query.Time.Period + ")";
             row.Add(val);
             row.Add(new XElement("TD", " "));
+            val.SetAttributeValue("HREF", "#");
+            val.SetAttributeValue("TITLE", "Год и период");
             result.Add(row);
         }
 
@@ -258,14 +262,14 @@ namespace Zeta.Extreme.FrontEnd.Helpers
         private void BuildColTypeCell(IQuery query, XElement row) {
             var statecell = new XElement("TD", " ");
             statecell.SetAttributeValue("HREF", "#");
-            statecell.SetAttributeValue("TITLE", "Перв");
+            statecell.SetAttributeValue("TITLE", "Первичная");
             var color = Color.Green;
 
 
             if (query.Col.IsFormula)
             {
                 color = Color.Blue;
-                statecell.SetAttributeValue("TITLE", "Форм");
+                statecell.SetAttributeValue("TITLE", "Формула");
             }
             statecell.SetAttributeValue("BGCOLOR", color.ToString());
             row.Add(statecell);
@@ -299,18 +303,18 @@ namespace Zeta.Extreme.FrontEnd.Helpers
         private void BuildRowTypeCell(IQuery query, XElement row) {
             var statecell = new XElement("TD", " ");
             statecell.SetAttributeValue("HREF", "#");
-            statecell.SetAttributeValue("TITLE", "Перв");
+            statecell.SetAttributeValue("TITLE", "Первичная");
             var color = Color.Green;
 
             if (query.Row.IsSum)
             {
                 color = Color.Yellow;
-                statecell.SetAttributeValue("TITLE", "Сум");
+                statecell.SetAttributeValue("TITLE", "Сумма");
             }
             else if (query.Row.IsFormula)
             {
                 color = Color.Blue;
-                statecell.SetAttributeValue("TITLE", "Форм");
+                statecell.SetAttributeValue("TITLE", "Формула");
             }
             statecell.SetAttributeValue("BGCOLOR", color.ToString());
             row.Add(statecell);
@@ -350,17 +354,17 @@ namespace Zeta.Extreme.FrontEnd.Helpers
         private static void BuildMainQueryTypeCell(IQuery query, XElement row) {
             var maintype = new XElement("TD", " ");
             maintype.SetAttributeValue("HREF", "#");
-            maintype.SetAttributeValue("TITLE", "Перв");
+            maintype.SetAttributeValue("TITLE", "Первичный");
             row.Add(maintype);
             var color = Color.Green;
             var q = (Query) query;
             if (q.EvaluationType == QueryEvaluationType.Formula) {
                 color = Color.Blue;
-                maintype.SetAttributeValue("TITLE", "Форм");
+                maintype.SetAttributeValue("TITLE", "Формула");
             }
             else if (q.EvaluationType == QueryEvaluationType.Summa) {
                 color = Color.Yellow;
-                maintype.SetAttributeValue("TITLE", "Сум");
+                maintype.SetAttributeValue("TITLE", "Сумма");
             }
             maintype.SetAttributeValue("BGCOLOR", color.ToString());
         }
