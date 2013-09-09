@@ -38,6 +38,9 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
                     FontSize = 8,
                 }
             };
+            if (s.ShowLegend) {
+                BuildLegend();
+            }
             MoveNodes();
             MoveEdges();
             graph.Compactize();
@@ -45,7 +48,80 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
             graph.AutoTune();
             return graph;
         }
-
+        private void BuildLegend() {
+	        var sg = new SubGraph {Code = "cluster_legend"};
+            graph.SubGraphs.Add(sg);
+            graph.AddNode(new Node {
+	            Code = "l_prim", 
+	            SubgraphCode = sg.Code,
+	            Shape = NodeShapeType.Box,
+	            Label = "Первичная"
+	        });
+            graph.AddNode(new Node
+            {
+                Code = "l_form",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Cds,
+                Label = "Формула"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_sum",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Folder,
+                Label = "Сумма"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_ref",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Larrow,
+                Label = "Ссылка"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_exref",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.lpromoter,
+                Label = "Доб ссылка"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_target",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Folder,
+                Label = "Запрошенная\r\nстрока",
+                FillColor = "7",
+                Tooltip = "Узел, от которого начинается развертка"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_nonlevel",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Folder,
+                Label = "Ограничение\r\nуровеня",
+                FillColor = "12",
+                Tooltip = "Узел, который содержит дальнейшую развертку, но при этом ограничен по уровню"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_terminal",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Folder,
+                FillColor = "9",
+                Label = "Терминал",
+                Tooltip = "Узел, указан как терминальный - сам выводится, но дальнейше развертки нет"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_ignore",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Terminator,
+                FillColor = Color.RGB(0xFF,0,0),
+                Label = "Игнор",
+                Tooltip = "Собирает все игнорируемые узлы"
+            });
+	    }
         private void MoveEdges() {
             foreach (var e in srcgraph.Edges.Values) {
                 var de = new Edge {From = e.From, To = e.To, Data = e, Color = GetColor(e), Label = e.Label};
