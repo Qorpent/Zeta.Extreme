@@ -29,6 +29,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		/// <summary>
 		/// Набор по умолчанию
 		/// </summary>
-		Default =Primary|Sum|Formula,
+		Default =Primary|Sum|Formula|Ref|ExRef,
+        /// <summary>
+        /// Расширенная ссылка
+        /// </summary>
+	    ExRef = 1<<5,
 	}
 }

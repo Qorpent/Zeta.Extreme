@@ -110,9 +110,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 				}
 				ResultGraph.ShowLegend = ShowLegend;
 			}
+       
 			if (Direction.HasFlag(DependencyDirection.Down))
 			{
-				new FallDownDependencyVisitor().Process(this);
+				new GoDownDependencyVisitor().Process(this);
 			}
 			if (Direction.HasFlag(DependencyDirection.Up))
 			{
@@ -120,7 +121,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 			}
 			
 		}
-		/// <summary>
+
+	    
+
+	    /// <summary>
 		/// Показать легенду
 		/// </summary>
 		public bool ShowLegend { get; set; }

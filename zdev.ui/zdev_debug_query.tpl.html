@@ -1,0 +1,33 @@
+﻿<div class="export-tree-form">
+    <form action="./zdev/debugquery.dot.qweb"  target="_blank">
+        <fieldset>  
+            <label>Строка</label>
+            <input class="fill-modal" name="rcode" required placeholder="Код существующей строки или формула строки" />
+            <label>Столбец</label>
+            <input class="fill-modal" name="ccode" placeholder="Код существующей колонки или формула строки" />
+            <label>Объект</label>
+            <input class="fill-modal" name="obj" required placeholder="ИД объекта или формула объекта" />
+            <label>Год</label>
+            <input class="fill-modal" name="year" placeholder="Год" />
+            <label>Период</label>
+            <input class="fill-modal" name="period" placeholder="Период" />
+            <label>Валюта</label>
+            <input class="fill-modal" name="cur"   placeholder="Код валюты" />
+            <label>Дополнительные настройки"</label>
+            <label class="checkbox" >
+                Не включать первичные запросы со значением 0
+                <input checked="checked" type="checkbox" name="epz" />
+            </label>
+            <label class="checkbox" >
+                Не включать формульные/суммовые запросы со значением 0
+                <input checked="checked" type="checkbox" name="enpz" />
+            </label>
+            <label class="checkbox" >
+               Включить полный (не компактный режим отображения)
+                <input type="checkbox" name="nocompact" />
+            </label>
+        </fieldset> 
+        <hr />
+        <input type="submit" value="Сформировать"/>
+    </form>
+</div>

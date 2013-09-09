@@ -24,12 +24,17 @@ namespace Zeta.Extreme.Developer.Actions {
         private int ObjId { get; set; }
         [Bind(Name = "nocompact")]
         private bool PreserveCompact { get; set; }
+        [Bind(Name = "cur")]
+        private string Currency { get; set; }
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         protected override object MainProcess() {
             var q = new Query(RowCode, ColCode, ObjId, Year, Period);
+            if (!string.IsNullOrWhiteSpace(Currency)) {
+                q.Currency = Currency;
+            }
             var debugger = new Debugger.QueryGraphBuilder(q) {
                 ExcludePrimaryZeroes = ExcludePrimaryZeroes, 
                 ExcludeNonPrimaryZeroes = ExcludeNonPrimaryZeroes,

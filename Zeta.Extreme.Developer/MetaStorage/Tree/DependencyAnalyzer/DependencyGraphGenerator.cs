@@ -12,6 +12,8 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
         private DependencyGraph srcgraph;
         private Uri uri;
         private bool hasignore;
+        private const string IGNORENODE = "IGNORE";
+
         /// <summary>
         /// Формирует из графа завимисомтией DOT-graph
         /// </summary>
@@ -20,7 +22,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
         public Graph Generate(DependencyGraph s) {
             srcgraph = s;
             uri = s.BaseUri;
-            hasignore = srcgraph.Edges.Values.Any(_ => _.To == "IGNORE");
+            hasignore = srcgraph.Edges.Values.Any(_ => _.To == IGNORENODE || _.From==IGNORENODE);
             graph = new Graph {
                 Code = s.Code,
                 RankDir = RankDirType.LR,
@@ -30,8 +32,15 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
                     ColorScheme = "set312",
                     Style = NodeStyleType.Filled,
                     FillColor = "2",
+                },
+                DefaultEdge = new Node
+                {
+                    FontSize = 8,
                 }
             };
+            if (s.ShowLegend) {
+                BuildLegend();
+            }
             MoveNodes();
             MoveEdges();
             graph.Compactize();
@@ -39,7 +48,80 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
             graph.AutoTune();
             return graph;
         }
-
+        private void BuildLegend() {
+	        var sg = new SubGraph {Code = "cluster_legend"};
+            graph.SubGraphs.Add(sg);
+            graph.AddNode(new Node {
+	            Code = "l_prim", 
+	            SubgraphCode = sg.Code,
+	            Shape = NodeShapeType.Box,
+	            Label = "Первичная"
+	        });
+            graph.AddNode(new Node
+            {
+                Code = "l_form",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Cds,
+                Label = "Формула"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_sum",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Folder,
+                Label = "Сумма"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_ref",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Larrow,
+                Label = "Ссылка"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_exref",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.lpromoter,
+                Label = "Добавочная ссылка"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_target",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Folder,
+                Label = "Запрошенная\r\nстрока",
+                FillColor = "7",
+                Tooltip = "Узел, от которого начинается развертка"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_nonlevel",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Folder,
+                Label = "Ограничение\r\nуровеня",
+                FillColor = "12",
+                Tooltip = "Узел, который содержит дальнейшую развертку, но при этом ограничен по уровню"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_terminal",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Folder,
+                FillColor = "9",
+                Label = "Терминал",
+                Tooltip = "Узел, указан как терминальный - сам выводится, но дальнейше развертки нет"
+            });
+            graph.AddNode(new Node
+            {
+                Code = "l_ignore",
+                SubgraphCode = sg.Code,
+                Shape = NodeShapeType.Terminator,
+                FillColor = Color.RGB(0xFF,0,0),
+                Label = "Игнор",
+                Tooltip = "Собирает все игнорируемые узлы"
+            });
+	    }
         private void MoveEdges() {
             foreach (var e in srcgraph.Edges.Values) {
                 var de = new Edge {From = e.From, To = e.To, Data = e, Color = GetColor(e), Label = e.Label};
@@ -100,10 +182,12 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
         private void PrepareIgnoreNode() {
             if (hasignore) {
                 var n = new Node {
-                    Shape = NodeShapeType.Circle,
+                    Code=IGNORENODE,
+                    Shape = NodeShapeType.Terminator,
                     Style = NodeStyleType.Filled,
                     FillColor = ColorAttribute.Single(Color.RGB(0xFF, 0, 0)),
-                    Label = ""
+                    Label = "",
+                    Tooltip = "Игнорируемые узлы "
                 };
                 graph.AddNode(n);
             }
@@ -128,9 +212,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 
         private NodeShapeType GetShape(DependencyNode n)
         {
-            if (n.Type == DependencyNodeType.Sum) return NodeShapeType.Box3d;
+            if (n.Type == DependencyNodeType.Sum) return NodeShapeType.Folder;
             if (n.Type == DependencyNodeType.Formula) return NodeShapeType.Cds;
-            if (n.Type == DependencyNodeType.Ref) return NodeShapeType.Egg;
+            if (n.Type == DependencyNodeType.Ref) return NodeShapeType.Larrow;
+            if (n.Type == DependencyNodeType.ExRef) return NodeShapeType.lpromoter;
             return NodeShapeType.Box;
         }
 
