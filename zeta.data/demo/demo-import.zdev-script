@@ -21,9 +21,34 @@ zdev-script demo_import
 				
 		# скрипты генерации словарей
 		set namespace = ${_dictns} into=${_dictdir}
-			# единицы измерения
+			# Единицы измерения
 			generate-dict dir120 'dir_measure' value=measure
-			# орг-структура
-			generate-dict DIR_OFFICE 'dir_org'
-			# типы налогов
+			# Группы налогов
+			generate-dict NAL 'dir_nal'
+			# Счет хозяйственной операции
+			generate-dict DIR_CONTO 'dir_conto'
+			# Типы прикрепленных файлов формы
+			generate-dict DIR_FILE_TYPES 'dir_file_type'
+			# Процессы
+			generate-dict DIR_PROCESS 'dir_process'
+			# Справочник особых отчетов
+			generate-dict DIR_REPORTS 'dir_reports'
+			# Теги
+			generate-dict DIR_TAGS 'dir_tags'
+			# Глобальные параметры тем
+			generate-dict DIR_THEMA 'dir_thema'
+			# Подписывающие лица
+			generate-dict DIR_UNDERWRITER 'dir_underwriter'
+			# Стандартные формы ввода
+			generate-dict DIR_FORM 'dir_form'
+			# Групповые метки
+			generate-dict dir110 'dir_groupmarks'
+			# Виды налогов
 			generate-dict NALTYPE 'dir_naltype'
+			# Роль организации
+			generate-dict DIR_ORG_ROLE 'dir_org_role'
+			# Должности
+			generate-dict DIR_OFFICE 'dir_office'
+			# Параметры презентаций
+			generate-dict DIR_PARAM 'dir_param_prezent'
+			
