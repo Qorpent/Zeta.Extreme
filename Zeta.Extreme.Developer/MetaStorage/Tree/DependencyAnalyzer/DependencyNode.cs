@@ -96,6 +96,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 			if (row.IsMarkSeted("CONTROLPOINT")) return DependencyNodeType.ControlPoint;
 			if (row.IsFormula) return DependencyNodeType.Formula;
 			if (null != row.RefTo) return DependencyNodeType.Ref;
+			if (null != row.ExRefTo) return DependencyNodeType.ExRef;
 			if (row.IsMarkSeted("0SA")) return DependencyNodeType.Sum;
 			return DependencyNodeType.Primary;
 		}

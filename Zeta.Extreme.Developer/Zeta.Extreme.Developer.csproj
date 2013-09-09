@@ -59,6 +59,7 @@
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyGraphGenerator.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyNode.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\FallDownDependencyVisitor.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\GoDownDependencyVisitor.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\GoUpDependencyVisitor.cs" />
     <Compile Include="MetaStorage\Tree\OldDependencyGraph.cs" />
     <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyGraphTask.cs" />

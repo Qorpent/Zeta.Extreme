@@ -107,7 +107,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
             if (hasignore) {
                 var n = new Node {
                     Code=IGNORENODE,
-                    Shape = NodeShapeType.Circle,
+                    Shape = NodeShapeType.Terminator,
                     Style = NodeStyleType.Filled,
                     FillColor = ColorAttribute.Single(Color.RGB(0xFF, 0, 0)),
                     Label = "",
@@ -136,9 +136,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 
         private NodeShapeType GetShape(DependencyNode n)
         {
-            if (n.Type == DependencyNodeType.Sum) return NodeShapeType.Box3d;
+            if (n.Type == DependencyNodeType.Sum) return NodeShapeType.Folder;
             if (n.Type == DependencyNodeType.Formula) return NodeShapeType.Cds;
-            if (n.Type == DependencyNodeType.Ref) return NodeShapeType.Egg;
+            if (n.Type == DependencyNodeType.Ref) return NodeShapeType.Larrow;
+            if (n.Type == DependencyNodeType.ExRef) return NodeShapeType.lpromoter;
             return NodeShapeType.Box;
         }
 

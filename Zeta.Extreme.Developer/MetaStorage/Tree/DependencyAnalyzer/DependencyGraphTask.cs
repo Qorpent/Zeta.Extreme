@@ -115,7 +115,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
             }
 			if (Direction.HasFlag(DependencyDirection.Down))
 			{
-				new FallDownDependencyVisitor().Process(this);
+				new GoDownDependencyVisitor().Process(this);
 			}
 			if (Direction.HasFlag(DependencyDirection.Up))
 			{
