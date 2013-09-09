@@ -13,7 +13,8 @@
 
 namespace demo.import.dicts
 	class dir_measure 'Единицы измерения' formcode=dir120 stopinterpolate=all
-		import tree
+		import dict
+		export measure
 		title dir120 'Единицы измерения' 
 			title 100 'Единицы длины' 
 				item 110 'Миллиметр'  : 'мм'

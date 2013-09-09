@@ -13,7 +13,8 @@
 
 namespace demo.import.dicts
 	class dir_office 'Должности' formcode=DIR_OFFICE stopinterpolate=all
-		import tree
+		import dict
+		export office
 		title DIR_OFFICE 'Должности' 
 			item of_1000 'Генеральный директор' outer=1000 
 			item of_2000 'Коммерческий директор' outer=2000 
@@ -21,6 +22,5 @@ namespace demo.import.dicts
 			title of_4000 'Директор по экономике и финансам' outer=4000 
 				item of_4100 'Начальник управления' outer=4100 
 			item of_5000 'Главный бухгалтер' outer=5000 
-			item of_6000 'Директор по  персоналу
-' outer=6000 
+			item of_6000 'Директор по  персоналу' outer=6000 
 			item of_7000 'Директор по общим вопросам' outer=7000 

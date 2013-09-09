@@ -13,7 +13,8 @@
 
 namespace demo.import.dicts
 	class dir_conto 'Счет хозяйственной операции' formcode=DIR_CONTO stopinterpolate=all
-		import tree
+		import dict
+		export conto
 		title DIR_CONTO 'Счет хозяйственной операции' 
 			item ba003 '(003) Давальческое сырье' outer=003 linkconto='BA020_212' 
 			item ba006 '(06) Долгосрочные финансовые вложения' outer=06 

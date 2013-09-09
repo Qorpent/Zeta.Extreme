@@ -13,7 +13,8 @@
 
 namespace demo.import.dicts
 	class dir_thema 'Глобальные параметры тем' formcode=DIR_THEMA stopinterpolate=all
-		import tree
+		import dict
+		export thema
 		title DIR_THEMA 'Глобальные параметры тем' 
 			item balans2011 'Баланс (форма № 1 ФО)' rows=m111 roleprefix=FIN total 
 			item calc_ksgenat 'Калькуляция ксантогената' type=';CE_KSG;' 

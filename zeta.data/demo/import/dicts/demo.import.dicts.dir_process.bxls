@@ -13,12 +13,11 @@
 
 namespace demo.import.dicts
 	class dir_process 'Процессы' formcode=DIR_PROCESS stopinterpolate=all
-		import tree
+		import dict
+		export process
 		title DIR_PROCESS 'Процессы' 
-			title ps_1000 'Процессы управления
-' outer=1000 
-			title ps_1100 'Управление бизнесом
-' outer=1100 
+			title ps_1000 'Процессы управления' outer=1000 
+			title ps_1100 'Управление бизнесом' outer=1100 
 				item ps_1110 'Стратегическое управление' outer=1110 
 				item ps_1120 'Тактическое управление' outer=1120 
 				item ps_1130 'Оперативное управление' outer=1130 

@@ -13,7 +13,8 @@
 
 namespace demo.import.dicts
 	class dir_tags 'Теги' formcode=DIR_TAGS stopinterpolate=all
-		import tree
+		import dict
+		export tags
 		title DIR_TAGS 'Теги' 
 			item tag_active 'active' outer=active tagforrow 
 			item tag_activecol 'Доступные для ввода колонки' outer=activecol tagforrow 

@@ -13,7 +13,8 @@
 
 namespace demo.import.dicts
 	class dir_form 'Стандартные формы ввода' formcode=DIR_FORM stopinterpolate=all
-		import tree
+		import dict
+		export form
 		title DIR_FORM 'Стандартные формы ввода' 
 			item buysir 'Приобретение сырья (внутри УГМК)' 
 			item capital 'Капитал и резервы' 

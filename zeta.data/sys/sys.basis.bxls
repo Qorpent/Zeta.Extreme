@@ -8,10 +8,14 @@ class thema abstract static
 class rowset abstract static
 	import global
 	
-class tree abstract static
+class tree abstract static prototype=form
 	codemode=RootPrefix
 	import global
 	element autothema
+
+class dict abstract static prototype=dict
+	codemode=RootPrefix
+	import global
 
 	
 class colset abstract static

@@ -3,5 +3,3 @@ project demo
 	Include
 		Path /sys/
 		Path /demo/
-	Exclude
-		Path /dicts/

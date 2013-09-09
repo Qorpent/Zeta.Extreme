@@ -13,7 +13,8 @@
 
 namespace demo.import.dicts
 	class dir_org_role 'Роль организации' formcode=DIR_ORG_ROLE stopinterpolate=all
-		import tree
+		import dict
+		export org_role
 		title DIR_ORG_ROLE 'Роль организации' 
 			item fincred 'Фин. кредитор' linkrole=FINDEB 
 			item findeb 'Фин. должник' linkrole=FINCRED 

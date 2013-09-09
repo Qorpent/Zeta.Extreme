@@ -1,11 +1,11 @@
 namespace demo
-	+class zeta.export.forms.m111 'map-biz'
+	+class demo.import.forms.m111 'map-biz'
 		autothema subsystem=^demo.blocks.eco block=fin colset=^demo.demo_colset
 		
 	namespace blocks
 
 		~class eco 'map-own' owner=^demo.org.ub 
-			~block fin curator=maincurator
+			~block fin curator=maincurator m=??measure.110
 			
 		~class proizv 'map-own' owner=^demo.org.proizv 
 		

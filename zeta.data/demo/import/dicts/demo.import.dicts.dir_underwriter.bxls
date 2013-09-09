@@ -13,7 +13,8 @@
 
 namespace demo.import.dicts
 	class dir_underwriter 'Подписывающие лица' formcode=DIR_UNDERWRITER stopinterpolate=all
-		import tree
+		import dict
+		export underwriter
 		title DIR_UNDERWRITER 'Подписывающие лица' 
 			item und_gdir 'Генеральный директор' outer=GDIR extslot=ecodir assert 
 			item und_ruddir 'Директор по горному производству' outer=RUDDIR extslot=ecorud assert 
