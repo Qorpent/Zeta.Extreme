@@ -1,0 +1,22 @@
+namespace demo.colsets
+
+	colset simpleKvart 
+		col Б1 "Факт PERIOD YEAR" year=-1 
+		col Б1 "Утвержд. ТПФП YEAR"
+		col Б1 "Утвержд. ТПФП YEAR" period=301
+		col PLANSNG "План PERIOD YEAR" 
+		col Б1 "Факт PERIOD YEAR"
+		col Б1 "Факт PERIOD YEAR" period=42 forperiods="2"
+		col Б1 "Факт PERIOD YEAR" period=43 forperiods="3"
+		col Б1 "Факт PERIOD YEAR" period=44 forperiods="4"
+		col CONTRKVART2 "Контр. кварт. = 0" forperiods="2" formula=(
+			@Б1?.P2-@Б1.P42?-@Б1.P1?			
+		)
+		col CONTRKVART3 "Контр. кварт. = 0" forperiods="3" formula=(
+			@Б1.P3? - @Б1.P43? - @Б1.P42? - @Б1.P1?			
+		)
+		col OTKLPLANSNG "Откл. от плана PERIOD YEAR" year=-1 
+		col OTKLPLANSNGP "Откл. от плана PERIOD YEAR %" 
+		col CONTROBSNG "Контроль оборотов [=0]" 
+		
+	
