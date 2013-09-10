@@ -1,8 +1,7 @@
 namespace demo.colsets
 
-	colset simpleKvart 
+	colset simple 
 		col Б1 "Факт PERIOD YEAR" year=-1 
-		col Б1 "Утвержд. ТПФП YEAR"
 		col Б1 "Утвержд. ТПФП YEAR" period=301
 		col PLANSNG "План PERIOD YEAR" 
 		col Б1 "Факт PERIOD YEAR"
