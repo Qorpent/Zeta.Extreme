@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Qorpent.Dot;
+using Qorpent.Serialization.Graphs;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
@@ -18,72 +20,85 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 		/// <param name="r"></param>
 		public static string GetDependencyDot(IZetaRow r) {
 			var graph = GetDependencyGraph(r);
-			return ConvertToDot(graph,false);
+			return ConvertToDot(graph,false,r);
 		}
 		
-		private static string ConvertToDot(OldDependencyGraph oldDependencyGraph, bool clustered) {
-			var result = new StringBuilder();
-			result.AppendLine("digraph G {");
-			result.AppendLine("\trankdir=LR");
+		private static string ConvertToDot(OldDependencyGraph oldDependencyGraph, bool clustered, IZetaRow zetaRow) {
+		    var gr = new Graph();
+            gr.RankDir = RankDirType.LR;
+
 			if (clustered) {
 				var groups = oldDependencyGraph.Nodes.GroupBy(_ => _.Substring(2, 4));
-				var i = 0;
+				var i = 1;
 				foreach (var g in groups) {
-					result.AppendLine("subgraph cluster_" + (i++) + "{");
-					result.AppendLine("label=" + g.Key);
-					result.AppendLine("color=blue");
+				    var sg = new SubGraph {Code = (i).ToString(),Label = g.Key};
+				    gr.AddSubGraph(sg);
 					foreach (var n in g) {
-						RenderNode(n,result);
+						RenderNode(n,gr,zetaRow,i);
 					}
 
-					result.AppendLine("}");
+				    i++;
 				}
 			}
 			else {
 				foreach (var n in oldDependencyGraph.Nodes)
 				{
-					RenderNode(n, result);
+					RenderNode(n, gr,zetaRow,0);
 				}
 			}
 			foreach (var e in oldDependencyGraph.Edges) {
 				if (null == e.Item1 || null == e.Item3) continue;
-				if (e.Item2 == "cpt") continue;
-				var color = "black";
-				if (e.Item2 == "cpt") {
-					color = "red";
-				}
-				if (e.Item2 == "frm") {
-					color = "blue";
+                if (e.Item2 == "cpt") continue; 
+                var edge = new Edge {From = e.Item3, To = e.Item1, Color = Color.Black};
+			    if (e.Item2 == "frm") {
+                    edge.Color = Color.Blue;
 				}
 				if (e.Item2 == "ref" ) {
-					color = "brown";
+                    edge.Color = Color.Brown;
 				}
-				
-				result.AppendLine("\t" + e.Item3 + "->" + e.Item1 + " [color=" + color + "]");
+                if (e.Item1 == zetaRow.Code || e.Item3 == zetaRow.Code) {
+                    edge.Penwidth = 3;
+                    edge.ArrowSize = 2;
+                    edge.ArrowHead= ArrowType.Vee;
+                    if (e.Item1 == zetaRow.Code) {
+                        edge.Color = Color.Green;
+                    }
+                }else {
+                    edge.Style = EdgeStyleType.Dashed;
+                }
+			    gr.AddEdge(edge);
 			}
-			result.AppendLine("}");
-			return result.ToString();
+		    return GraphRender.Create(gr, new GraphOptions()).GenerateGraphScript();
 		}
 
-		private static void RenderNode(string n, StringBuilder result) {
+		private static void RenderNode(string n, Graph g, IZetaRow r, int i) {
 			if (null == n) return;
+		    var nod = new Node {Code = n};
+            if (n == r.Code) {
+                nod.Style = NodeStyleType.Filled;
+                nod.FillColor = Color.Green;
+                nod.FontColor = Color.White;
+            }
+            if (0 != i) {
+                nod.SubgraphCode = i.ToString();
+            }
 			if (n.StartsWith("s_") || n.StartsWith("f_") || n.StartsWith("p_") || n.StartsWith("r_")) {
-				var label = n.Substring(2).Replace("_DOT_", ".");
-				var shape = "ellipse";
+
+                nod.Label = n.Substring(2).Replace("_DOT_", ".");
+                nod.Shape = NodeShapeType.Ellipse;
+
 				if (n.StartsWith("s_")) {
-					shape = "box3d";
+					nod.Shape =NodeShapeType.Box3d;
 				}
 				else if (n.StartsWith("f_")) {
-					shape = "cds";
+					nod.Shape = NodeShapeType.Egg;
 				}
 				else if (n.StartsWith("r_")) {
-					shape = "egg";
+                    nod.Shape = NodeShapeType.Egg;
 				}
-				result.AppendLine("\t" + n + " [shape=" + shape + ";label=\"" + label + "\"]");
+				
 			}
-			else {
-				result.AppendLine("\t" + n);
-			}
+		    g.AddNode(nod);
 		}
 
 	
