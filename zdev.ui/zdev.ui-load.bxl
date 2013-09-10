@@ -2,6 +2,7 @@ pkg zeta.dev level=auth
 	uses qorpent.core
 	load zdev.main.css
 	load zdev.main.menu.js
+	load zdev.security.menu.js
 	load zdev_export_tree_form.tpl.html
 	load zdev_export_dep_dot.tpl.html
 	load zdev_export_fdep_dot.tpl.html

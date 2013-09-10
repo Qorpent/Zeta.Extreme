@@ -91,6 +91,10 @@
     <Compile Include="Scripting\Script.cs" />
     <Compile Include="Scripting\ScriptCommandBase.cs" />
     <Compile Include="Scripting\ScriptCommandFactory.cs" />
+    <Compile Include="Security\AdminAnalyzer\AdminAnalyzerAction.cs" />
+    <Compile Include="Security\AdminAnalyzer\AdminAnalyzerHelper.cs" />
+    <Compile Include="Security\AdminAnalyzer\AdminAnalyzerRecord.cs" />
+    <Compile Include="Security\AdminAnalyzer\AdminRecord.cs" />
     <Compile Include="Utils\DocumentationHelper.cs" />
     <Compile Include="Analyzers\IAnalyzer.cs" />
     <Compile Include="Analyzers\ICodeIndex.cs" />

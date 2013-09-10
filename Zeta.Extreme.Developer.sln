@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pkg", "Pkg", "{F755EF91-9827-4A03-8490-2E79BBC404E7}"
 	ProjectSection(SolutionItems) = preProject
 		local-sfo.zetadev.ioc-manifest.bxl = local-sfo.zetadev.ioc-manifest.bxl
+		..\deployconfig\mongodb.test.local-sfo.ioc-manifest.bxl = ..\deployconfig\mongodb.test.local-sfo.ioc-manifest.bxl
 		zdev.ui\paramattributes.sample.xml = zdev.ui\paramattributes.sample.xml
 		testapp.debug = testapp.debug
 		testdeveloper.base = testdeveloper.base
@@ -34,6 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pkg", "Pkg", "{F755EF91-982
 		zdev.ui\zdev-themaattributes-report.xslt = zdev.ui\zdev-themaattributes-report.xslt
 		zdev.ui\zdev.base.css = zdev.ui\zdev.base.css
 		zdev.ui\zdev.main.menu.js = zdev.ui\zdev.main.menu.js
+		zdev.ui\zdev.security.menu.js = zdev.ui\zdev.security.menu.js
 		zdev.ui\zdev.ui-load.bxl = zdev.ui\zdev.ui-load.bxl
 		zdev.ui\zdev_debug_query.tpl.html = zdev.ui\zdev_debug_query.tpl.html
 		zdev.ui\zdev_export_dep_dot.tpl.html = zdev.ui\zdev_export_dep_dot.tpl.html
@@ -72,6 +74,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.FrontEnd", "Zeta.Extreme.FrontEnd\Zeta.Extreme.FrontEnd.csproj", "{75E74DED-91CC-4090-B3B2-2E8AE3C085E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.Form", "Zeta.Extreme.Form\Zeta.Extreme.Form.csproj", "{FBD09F91-B185-4207-B05D-6051505CA868}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.Integration.MongoDB", "..\qorpent.integration\Qorpent.Integration.MongoDB\Qorpent.Integration.MongoDB.csproj", "{31CE132D-BFE7-443E-B68C-8C05F0751BC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -170,6 +174,12 @@ Global
 		{FBD09F91-B185-4207-B05D-6051505CA868}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FBD09F91-B185-4207-B05D-6051505CA868}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
 		{FBD09F91-B185-4207-B05D-6051505CA868}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+		{31CE132D-BFE7-443E-B68C-8C05F0751BC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31CE132D-BFE7-443E-B68C-8C05F0751BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31CE132D-BFE7-443E-B68C-8C05F0751BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31CE132D-BFE7-443E-B68C-8C05F0751BC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31CE132D-BFE7-443E-B68C-8C05F0751BC5}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{31CE132D-BFE7-443E-B68C-8C05F0751BC5}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -182,6 +192,7 @@ Global
 		{426C92DF-3C40-426C-B0BE-40A1DF9044C2} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{21971F28-8ED8-4F50-B623-E9DB2658AF54} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{96885C8F-AD20-41B4-86EE-BC9B3D47D9F9} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
+		{31CE132D-BFE7-443E-B68C-8C05F0751BC5} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{A4442A74-4590-4BA3-B44C-56C98CE4A088} = {13F314AB-36D7-4BDA-B027-6D4D2D9E232A}
 		{A5177DFD-2D36-442F-A9C0-B79CD6DC7054} = {13F314AB-36D7-4BDA-B027-6D4D2D9E232A}
 		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC} = {13F314AB-36D7-4BDA-B027-6D4D2D9E232A}

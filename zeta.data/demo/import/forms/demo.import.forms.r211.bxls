@@ -7,11 +7,10 @@
 ####      Заданное имя класса                                                                   ####
 ####      Исполнитель                                : local\comdiv                             ####
 ####      ID строки в БД                             : 8838                                     ####
-####      Максимальная версия строк в форме          : 2013-09-10 08:33:35                      ####
+####      Максимальная версия строк в форме          : 2013-09-10 11:12:41                      ####
 ####                                                                                            ####
 ####      Обнаружены зависимости от других форм                                                 ####
 ####              frm : f110                                                                    ####
-####              frm : m260                                                                    ####
 ####              frm : z410                                                                    ####
 ####              frm : z420                                                                    ####
 ####                                                                                            ####
@@ -23,7 +22,6 @@ namespace demo.import.forms
 		dependon ^z420
 		dependon ^z410
 		dependon ^f110
-		dependon ^m260
 		sum r211 'Сырье, материалы и др. аналогичные ценности' showcode sourcelink='DS=Pd' useosv 
 			sum 1300 '10.90 "Сырье и покупные отходы"' outer=100 olap=tmc 
 				sum 110 'Сырье минеральное (первичное)' olap=tmc 
@@ -267,14 +265,14 @@ f.If ( colin ( "Rd" ), { $r2111300@Rd? - $r2119712@Rd? - $r211190@Rd? - $z420139
 					sum 1220 'Сырье [стр.100]' olap=tmc 
 						primary 1221 'Готовая продукция в производство [Дт20Кт43]' olap=tmc 
 						primary 1222 'Бракованная продукция в производство [Дт28Кт43]' viewforgroup='CALC_OCM' 
-						formula 1223 'Полуфабрикаты Дт91 Кт21' olap=tmc  : (
+						controlpoint 1223 'Полуфабрикаты Дт91 Кт21' olap=tmc noblocker  : (
 							f.If ( colin ( "Rd" ), { $m260108@Б1? } )
 						)
-						formula 1224 'Справочно: стр.804 формы "Затраты на ПиРП"' nosum olap=tmc  : (
+						controlpoint 1224 'Справочно: стр.804 формы "Затраты на ПиРП"' nosum olap=tmc noblocker  : (
 							f.If ( colin ( "Rd" ), { $m260804@Б1? } )
 						)
 					sum 1230 'Топливо' olap=tmc 
-						primary 1231 'Счет 91' noinput olap=tmc 
+						primary 1231 'Счет 91' nooutput olap=tmc 
 						primary 1232 'Счет 08' noinput olap=tmc 
 						primary 1233 'Готовая продукция в производство [Дт20Кт43]' olap=tmc 
 					sum 1240 'Материалы собственного изготовления' olap=tmc 
