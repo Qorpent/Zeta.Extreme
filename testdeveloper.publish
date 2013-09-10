@@ -6,5 +6,6 @@
 	<ItemGroup>	
 		<Config Include="..\deployconfig\devel.rolemap.bxl"/>
 		<Config Include="..\deployconfig\zetadev133.ioc-manifest.bxl"/>
+		<Config Include="..\deployconfig\mongodb.test.local-sfo.ioc-manifest.bxl"/>
 	</ItemGroup>
 </Project>

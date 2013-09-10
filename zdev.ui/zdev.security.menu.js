@@ -12,7 +12,7 @@ _.widget.register({
 			
                 {
                     title: 'Анализ настройки администраторов предприятий',
-                    href: './zdev_security/admins.xml.qweb',
+                    href: './zdev_security/admins.html.qweb?__xslt=zdev-security-admins',
                 },
 
 
