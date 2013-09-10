@@ -31,6 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pkg", "Pkg", "{F755EF91-982
 		zdev.ui\zdev-report-common.xslt = zdev.ui\zdev-report-common.xslt
 		zdev.ui\zdev-reportattributes-report.css = zdev.ui\zdev-reportattributes-report.css
 		zdev.ui\zdev-reportattributes-report.xslt = zdev.ui\zdev-reportattributes-report.xslt
+		zdev.ui\zdev-security-admins.xslt = zdev.ui\zdev-security-admins.xslt
 		zdev.ui\zdev-themaattributes-report.css = zdev.ui\zdev-themaattributes-report.css
 		zdev.ui\zdev-themaattributes-report.xslt = zdev.ui\zdev-themaattributes-report.xslt
 		zdev.ui\zdev.base.css = zdev.ui\zdev.base.css
