@@ -66,7 +66,7 @@
   </xsl:template>
   <xsl:template match="Admins/item">
     <li>
-      (<xsl:value-of select="@Login"/>) <xsl:value-of select="@Name"/> ( <xsl:value-of select="@ObjectName"/> )
+      (<xsl:value-of select="@Login"/>) <xsl:value-of select="@Name"/> ( <xsl:value-of select="@Occupation"/> )
     </li>
   </xsl:template>
 </xsl:stylesheet>
