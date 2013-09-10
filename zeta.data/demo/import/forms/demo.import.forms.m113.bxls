@@ -18,6 +18,8 @@
 namespace demo.import.forms
 	class m113 'Отчет об изменении капитала' formcode=m113 stopinterpolate=all
 		import tree
+		dependon ^m111
+		dependon ^m112
 		title m113 'Отчет об изменении капитала' 
 			formula 100 'Уставный капитал'  formula=(
 				f.If ( colin ( "On"  ) , { $m1111310@Б1? }, { f.If ( colin ( "Ok"  ) , { $m1111310@Б2? } ) } )

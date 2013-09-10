@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Qorpent.Utils.Extensions;
 using Zeta.Extreme.Model.Extensions;
@@ -16,8 +18,8 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 		/// </summary>
 		/// <returns></returns>
 		public XElement Export(IZetaRow root, string ns = "zeta.export.forms", string cls = null, bool dictmode = false, string valuerediect = null) {
-			this.UseDict = dictmode;
-			this.ValueRedirect = valuerediect;
+			UseDict = dictmode;
+			ValueRedirect = valuerediect;
 			ns = string.IsNullOrWhiteSpace(ns) ? "zeta.export.forms" : ns;
 			cls = string.IsNullOrWhiteSpace(cls) ? root.Code: cls;
 			var nse = new XElement("namespace", new XAttribute("code", ns));
@@ -30,10 +32,48 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
             if (UseDict) {
                 clse.Add(new XElement("export",new XAttribute("code",cls.Replace("dir_","").Replace("dict_",""))));
             }
-			GenerateRow(clse, root,root);
+		    if (!UseDict) {
+		        CollectDependency(clse, root);
+		    }
+		    GenerateRow(clse, root,root);
 			return nse;
 		}
-		/// <summary>
+
+	    private void CollectDependency(XElement clse, IZetaRow root) {
+	        IList<string> codes = new List<string>();
+            Action<string> regcode = c =>
+            {
+                if (string.IsNullOrWhiteSpace(c)) return;
+                var b = c.Substring(0, 4);
+                if (b == root.Code) return;
+                if (!codes.Contains(b))
+                {
+                    codes.Add(b);
+                }
+            };
+	        Action<IZetaRow> regrow = r => {
+	            if (null == r) return;
+	            var c = r.Code;
+	            regcode(c);
+	        };
+            
+            foreach (var r in root.AllChildren) {
+                if(r.IsMarkSeted("CONTROLPOINT"))continue;
+                regrow(r.RefTo);
+                regrow(r.ExRefTo);
+                if (r.IsFormula) {
+                    foreach (Match m in Regex.Matches(r.Formula, @"\$([^\.@\?]+)")) {
+                        var code = m.Groups[1].Value;
+                        regcode(code);
+                    }
+                }
+            }
+            foreach (var d in codes) {
+                clse.Add(new XElement("dependon",new XAttribute("code",d)));
+            }
+	    }
+
+	    /// <summary>
 		/// Перевод значения для словаря
 		/// </summary>
 		protected string ValueRedirect { get; set; }

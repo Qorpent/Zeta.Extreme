@@ -155,6 +155,14 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 					}
 					continue;
 				}
+                if (f.ExRefTo != null)
+                {
+                    if (f.ExRefTo.Code.Substring(0, 4) != exportroot.Code)
+                    {
+                        deplist.Add("ref:" + f.ExRefTo.Code);
+                    }
+                    continue;
+                }
 				if (f.IsFormula) {
 					var type = "frm:";
 					if (f.MarkCache.Contains("CONTROLPOINT")) {

@@ -68,7 +68,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			sb = new StringBuilder();
 			RenderComment(exportroot, options);
 			RenderClassStart(xml);
-			RenderClassContent(xml.Element("class").Elements().SkipWhile(_=>_.Name.LocalName=="import"||_.Name.LocalName=="export").First(),0);
+            RenderClassContent(xml.Element("class").Elements().SkipWhile(_ => _.Name.LocalName == "import" || _.Name.LocalName == "dependon" || _.Name.LocalName == "export").First(), 0);
 			return sb.ToString();
 		}
 
@@ -168,6 +168,11 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
             if (null != export) {
                 sb.AppendLine();
                 sb.AppendFormat("{0}export {1}", CLS_CNT_TAB, export.Attr("code"));
+            }
+		    var depends = cls.Elements("dependon");
+            foreach (var d in depends) {
+                sb.AppendLine();
+                sb.AppendFormat("{0}dependon ^{1}", CLS_CNT_TAB, d.Attr("code"));
             }
 		}
 

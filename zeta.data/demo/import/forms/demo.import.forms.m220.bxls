@@ -17,6 +17,7 @@
 namespace demo.import.forms
 	class m220 'Налоги и платежи через УФК (форма № 16.3)' formcode=m220 stopinterpolate=all
 		import tree
+		dependon ^m112
 		title m220 'Налоги и платежи через УФК (форма № 16.3)' showcode OLAP_COLF=Pd OLAP_COLP=Pd 
 			sum 100 'Налоги, платежи и сборы' 
 				sum 110 'Налог на прибыль' olap=nal 

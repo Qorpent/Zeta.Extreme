@@ -18,6 +18,7 @@
 namespace demo.import.forms
 	class z410 'Калькуляция на прокат цветных металлов - единица 1 кг' formcode=z410 stopinterpolate=all
 		import tree
+		dependon ^z420
 		title z410 'Калькуляция на прокат цветных металлов - единица 1 кг' OPS=z4104000 OPK=FIXKOL OFS=z4104000 OFK=KOL CALC_OP=z4104000 KMULT=1000 
 			title 1000 'Сырье, основные материалы и полуфабрикаты (баланс производства)' 
 				primary 1100 'Остаток на начало в незавершенном производстве' 

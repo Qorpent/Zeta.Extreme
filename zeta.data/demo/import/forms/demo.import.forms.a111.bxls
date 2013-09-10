@@ -29,6 +29,19 @@
 namespace demo.import.forms
 	class a111 'Бухгалтерский баланс (аналитика)' formcode=a111 stopinterpolate=all
 		import tree
+		dependon ^r115
+		dependon ^r130
+		dependon ^s140
+		dependon ^m116
+		dependon ^r216
+		dependon ^r211
+		dependon ^m111
+		dependon ^m225
+		dependon ^m230
+		dependon ^m113
+		dependon ^m112
+		dependon ^r510
+		dependon ^r640
 		title a111 'Бухгалтерский баланс (аналитика)' 
 			formula 1000 'АКТИВ'  : (
 				$a1111100? + $a1111200?

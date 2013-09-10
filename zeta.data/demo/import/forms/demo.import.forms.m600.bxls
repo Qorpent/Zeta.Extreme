@@ -17,6 +17,7 @@
 namespace demo.import.forms
 	class m600 'Расходы на собственные нужды (форма № 6)' formcode=m600 stopinterpolate=all
 		import tree
+		dependon ^m214
 		sum m600 'Расходы на собственные нужды (форма № 6)' outer=600 showcode OLAP_COLF=Б1 OLAP_COLP=PLAN olap=fin 
 			sum 100 'Содержание объектов соцкультбыта' 
 				primary 110 'санаторий-профилакторий, пансионат' 

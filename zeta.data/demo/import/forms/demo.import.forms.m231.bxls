@@ -17,6 +17,7 @@
 namespace demo.import.forms
 	class m231 'Расчеты с дебиторами и кредиторами' formcode=m231 stopinterpolate=all
 		import tree
+		dependon ^m230
 		sum m231 'Расчеты с дебиторами и кредиторами' 
 			sum 100 'Покупатели и заказчики' 
 				formula 110 'Предприятия УГМК'  formula=(

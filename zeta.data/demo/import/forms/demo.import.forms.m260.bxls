@@ -28,6 +28,17 @@
 namespace demo.import.forms
 	class m260 'Затраты на производство и реализацию (форма № 3)' formcode=m260 stopinterpolate=all
 		import tree
+		dependon ^r211
+		dependon ^m220
+		dependon ^m218
+		dependon ^m250
+		dependon ^r590
+		dependon ^m111
+		dependon ^m211
+		dependon ^r216
+		dependon ^m112
+		dependon ^m212
+		dependon ^m600
 		sum m260 'Затраты на производство и реализацию (форма № 3)' showcode export afdep=m112 OLAP_COLF=Б1 OLAP_COLP=Б1 
 			primary 100 'Сырье и основные материалы' 
 			sum 101 'Детализация сырья из формы "Сырье, материалы и др.(не в сумме)' nosum 

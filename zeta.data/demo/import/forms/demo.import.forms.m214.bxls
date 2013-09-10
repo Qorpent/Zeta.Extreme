@@ -22,6 +22,12 @@
 namespace demo.import.forms
 	class m214 'Финансовые результаты (форма № 4)' formcode=m214 stopinterpolate=all
 		import tree
+		dependon ^m112
+		dependon ^m212
+		dependon ^m260
+		dependon ^s140
+		dependon ^r211
+		dependon ^m230
 		title m214 'Финансовые результаты (форма № 4)' showcode export OLAP_COLF=Б1 OLAP_COLP=PLAN 
 			sum 010 'Выручка от продаж' outer=1 
 				primary 01001 'продажа продукции' outer=1.1 

@@ -1,14 +1,17 @@
 namespace demo.blocks
 
 	class subsystem abstract
-		element block
+	class block abstract
+		
 
 	subsystem eco
-		block fin 
-		block dds
+	
+	block fin subsystem=^eco
+	block dds subsystem=^eco
 	
 	subsystem personal
-		block trud
-		block zarp
 	
-	subsystem proizv
+	block trud subsystem=^personal
+	block zarp subsystem=^personal
+	
+	subsystem proizv 

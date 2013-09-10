@@ -18,6 +18,8 @@
 namespace demo.import.forms
 	class r590 'Расшифровка других расходов - УСЛУГИ  (форма № 3 строка 589)' formcode=r590 stopinterpolate=all
 		import tree
+		dependon ^m217
+		dependon ^m218
 		sum r590 'Расшифровка других расходов - УСЛУГИ  (форма № 3 строка 589)' showcode 
 			sum 100 'Услуги производственного характера' 
 				sum 110 'Услуги по содержанию ОС и эксплуатации ОС' 

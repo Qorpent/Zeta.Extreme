@@ -17,6 +17,7 @@
 namespace demo.import.forms
 	class r130 'Расшифровка незавершенного строительство (прил. 3 СФО)' formcode=r130 stopinterpolate=all
 		import tree
+		dependon ^m111
 		sum r130 'Расшифровка незавершенного строительство (прил. 3 СФО)' showcode 
 			sum 100 'Вложения во внеоборотные активы' 
 				primary 110 '08.10 Приобретение земельных участков' 

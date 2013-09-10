@@ -17,6 +17,7 @@
 namespace demo.import.forms
 	class m230 'Дебиторская и кредиторская задолженность' formcode=m230 stopinterpolate=all
 		import tree
+		dependon ^m231
 		sum m230 'Дебиторская и кредиторская задолженность' showcode 
 			sum 100 'Покупатели и заказчики' 
 				primary 110 'Предприятия УГМК' 

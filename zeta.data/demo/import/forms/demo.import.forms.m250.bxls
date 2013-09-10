@@ -25,6 +25,15 @@
 namespace demo.import.forms
 	class m250 'Расходы инвестиционного характера (форма № 9)' formcode=m250 stopinterpolate=all
 		import tree
+		dependon ^m112
+		dependon ^m260
+		dependon ^s140
+		dependon ^r130
+		dependon ^r590
+		dependon ^m217
+		dependon ^m214
+		dependon ^r510
+		dependon ^r211
 		title m250 'Расходы инвестиционного характера (форма № 9)' showcode OLAP_COLF=Б1 OLAP_COLP=Б1 
 			sum 100 'Источники финансирования инвестиций' measure='/dir120711/' olap=inv 
 				formula 110 'Совокупный финансовый результат' measure=тыс.руб. olap=inv  : (

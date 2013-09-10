@@ -16,12 +16,28 @@
 ####              frm : m250                                                                    ####
 ####              frm : m260                                                                    ####
 ####              frm : r130                                                                    ####
+####              ref : m214                                                                    ####
+####              ref : m250                                                                    ####
+####              ref : m260                                                                    ####
+####              ref : r211                                                                    ####
+####              ref : r260                                                                    ####
+####              ref : r590                                                                    ####
 ####                                                                                            ####
 ####################################################################################################
 
 namespace demo.import.forms
 	class m224 'Расчет НДС' formcode=m224 stopinterpolate=all
 		import tree
+		dependon ^m214
+		dependon ^m250
+		dependon ^r211
+		dependon ^r260
+		dependon ^m260
+		dependon ^r590
+		dependon ^r130
+		dependon ^m212
+		dependon ^m225
+		dependon ^m112
 		title m224 'Расчет НДС' showcode sourcelink='NDSLINK=NDS' 
 			sum 100 'РАЗДЕЛ1' 
 				primary 101 'Сумма налога, исчисленная к уплате в бюджет по пункту 5 статьи 173 НК РФ' outer=030 

@@ -1,5 +1,6 @@
 project demo
 	OutputDirectory .demo
+	GenerateGraph
 	Include
 		Path /sys/
 		Path /demo/

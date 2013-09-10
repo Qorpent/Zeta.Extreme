@@ -18,6 +18,8 @@
 namespace demo.import.forms
 	class m116 'Резервы и прочие обязательства' formcode=m116 stopinterpolate=all
 		import tree
+		dependon ^m112
+		dependon ^m111
 		title m116 'Резервы и прочие обязательства' 
 			sum 100 '63 "Резервы по сомнительным долгам"' 
 				formula 110 'Создание резерва за период'  : (
