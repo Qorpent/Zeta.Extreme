@@ -83,7 +83,7 @@ namespace Zeta.Extreme.Developer.Analyzers {
 		public IEnumerable<AttributeDescriptor> GetSubstAttributes(SearchFilter filter = null)
 		{
 			filter = filter ?? new SearchFilter { DocRoot = "substattr" };
-			return CodeIndex.GetAttributes(new[] { "/subst" }, filter);
+            return Index.GetAttributes(new[] { "/subst" }, filter);
 		}
 
 
