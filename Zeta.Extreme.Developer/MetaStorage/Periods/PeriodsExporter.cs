@@ -38,7 +38,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Periods
 namespace {1}
 	class {2}
 ",srcperiods.Select(_=>_.Version).Max().ToString("yyyy-MM-dd HH:mm:ss"), Namespace,ClassName);
-			
+		    sb.Append(@"
+        export period
+        element period
+");
 			foreach (var g in pgroups) {
 				sb.AppendFormat(@"
 		set category='{0}'
