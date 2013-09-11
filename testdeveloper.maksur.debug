@@ -3,7 +3,10 @@
 		<AppDir>../.app/zdev</AppDir>
 	</PropertyGroup>
 	<Import Project="..\Zeta.Extreme\testdeveloper.base" />
-	<ItemGroup>	
+	<ItemGroup>
+		<Config Include="..\deployconfig\devel.maksur.db-connection" />
+		<Config Include="..\deployconfig\devel.rolemap.bxl" />
 		<Config Include="..\Zeta.Extreme\local-maksur.zetadev.ioc-manifest.bxl"/>
+		<Config Include="..\deployconfig\mongodb.test.maksur.ioc-manifest.bxl" />
 	</ItemGroup>
 </Project>
