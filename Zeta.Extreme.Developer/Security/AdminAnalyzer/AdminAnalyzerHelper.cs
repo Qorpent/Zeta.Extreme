@@ -45,7 +45,7 @@ namespace Zeta.Extreme.Developer.Security.AdminAnalyzer {
             var users = new NativeZetaReader().ReadUsers("ObjId = " + o.Id + " and ObjAdmin = 1 and Active = 1").ToArray();
             result.ActiveAdminCount = users.Length;
             foreach (var u in users) {
-                result.Admins.Add(new AdminRecord {Login = u.Login, Name = u.Name, Occupation = u.Occupation});
+                result.Admins.Add(new AdminRecord { Login = u.Login, Name = u.Name, Occupation = u.Occupation, SlotList = u.SlotList});
             }
             GetAttachState(o, result);
         }
