@@ -6,7 +6,6 @@
 ####      Заданное пространство имен                 : demo.import.forms                        ####
 ####      Заданное имя класса                                                                   ####
 ####      Исполнитель                                : local\comdiv                             ####
-####      Время генерации                            : 2013-09-02 17:20:35                      ####
 ####      ID строки в БД                             : 11935                                    ####
 ####      Максимальная версия строк в форме          : 2013-08-30 16:54:12                      ####
 ####                                                                                            ####
@@ -22,6 +21,11 @@
 namespace demo.import.forms
 	class m111 'Бухгалтерский баланс (форма № 1 ФО) 2011' formcode=m111 stopinterpolate=all
 		import tree
+		dependon ^m211
+		dependon ^m250
+		dependon ^m260
+		dependon ^m214
+		dependon ^r130
 		title m111 'Бухгалтерский баланс (форма № 1 ФО) 2011' showcode export deplist=this afdep=this OLAP_COLF=Б2 OLAP_COLP=Б2 
 			sum 110 'АКТИВ' olap=bal 
 				sum 1100 'I. ВНЕОБОРОТНЫЕ АКТИВЫ' olap=bal 

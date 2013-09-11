@@ -88,7 +88,7 @@ namespace Zeta.Extreme {
 		public Query(string rowcode, string colcode, int obj, int year, int period):this() {
 			Row.Code = rowcode;
 			if (!Regex.IsMatch(rowcode, @"^[\w\d]+$")) {
-				Row.Code = Convert.ToBase64String(Encoding.UTF8.GetBytes(rowcode));
+				Row.Code =  Convert.ToBase64String(Encoding.UTF8.GetBytes(rowcode)).Replace("/","__");
 				Row.IsFormula = true;
 				Row.Formula = rowcode;
 				Row.FormulaType = "boo";
@@ -96,15 +96,19 @@ namespace Zeta.Extreme {
 			Col.Code = colcode;
 			if (!Regex.IsMatch(colcode, @"^[\w\d]+$"))
 			{
-				Col.Code = Convert.ToBase64String(Encoding.UTF8.GetBytes(colcode));
+                Col.Code = Convert.ToBase64String(Encoding.UTF8.GetBytes(colcode)).Replace("/", "__");
 				Col.IsFormula = true;
-				Col.Formula = rowcode;
+				Col.Formula = colcode;
 				Col.FormulaType = "boo";
 			}
 			Obj.Id = obj;
 			Time.Year = year;
 			Time.Period = period;
 		}
+		/// <summary>
+		/// Дополнительные присоединенные данные
+		/// </summary>
+		public object Data { get; set; }
 
 		/// <summary>
 		/// 	Дочерние запросы

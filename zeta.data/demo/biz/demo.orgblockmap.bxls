@@ -1,6 +1,6 @@
 namespace demo
-	+class zeta.export.forms.m111 'map-biz'
-		autothema subsystem=^demo.blocks.eco block=fin colset=^demo.demo_colset
+	+class demo.import.forms.m111 'map-biz'
+		autothema block=^demo.blocks.fin
 		
 	namespace blocks
 

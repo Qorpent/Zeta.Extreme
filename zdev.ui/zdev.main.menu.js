@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Виджет формы запроса документации wiki
  */
 _.widget.register({
@@ -132,30 +132,32 @@ _.widget.register({
 		        href: './zdev/exportperiods.string.qweb',
 		    },
 		    {
-		        title: "Экспорт зависимостей формы (DOT)",
+		        title: "График зависимостей формы",
 		        onclick: {
-		            modal: { title: "Экспорт дерева", template: 'zdev_export_dep_dot', width: 400 },
+		            modal: { title: "График зависимостей формы", template: 'zdev_export_fdep_dot', width: 400 },
 		        },
 		    },
 		    {
-		        title: "Экспорт графика пострения формулы (DOT)",
-		        type:'formula',
+		        title: "График зависимостей строки",
 		        onclick: {
-		            modal: { title: "Экспорт графика пострения формулы", template: 'zdev_export_dep_dot', width: 400 },
+		            modal: { title: "График зависимостей строки", template: 'zdev_export_dep_dot', width: 400 },
 		        },
 		    },
 		    {
-		        title: "Экспорт графика использования строки (DOT)",
-		        type: 'primary',
+		        title: "Отладка запроса",
 		        onclick: {
-		            modal: { title: "Экспорт графика использования строки", template: 'zdev_export_dep_dot', width: 400 },
+		            modal: { title: "Отладка запроса", template: 'zdev_debug_query', width: 400 },
 		        },
 		    },
 		    {
 		        title: "Создать скрипт переноса формулы в первичную строку",
 		        type: 'primary',
 		        onclick: {
-		            modal: { title: "Скрипт переноса формулы в первичную строку", template: 'zdev_formula_to_primary', width: 400 },
+		            modal: {
+		                title: "Скрипт переноса формулы в первичную строку",
+		                template: 'zdev_formula_to_primary',
+		                width: 600,
+		            },
 		        },
 		    },
             "div",
@@ -187,3 +189,12 @@ _.widget.register({
 		]
 	}
 });
+_.zdev = _.zdev || {};
+_.zdev.formula_to_primary.onClickMetricCheckbox = function(e) {
+    var form = $(this).closest('form');
+    if (this.checked) {
+        $(form).attr('action', $(form).attr('action').replace('.string.', '.xml.'));
+    } else {
+        $(form).attr('action', $(form).attr('action').replace('.xml.', '.string.'));
+    }
+};

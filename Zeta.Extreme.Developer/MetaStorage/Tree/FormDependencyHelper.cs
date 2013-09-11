@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Qorpent.Utils.Extensions;
+using Qorpent.Dot;
+using Qorpent.Serialization.Graphs;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.Extensions;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.MetaCaches;
-using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 	/// <summary>
@@ -17,267 +15,93 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 	/// </summary>
 	public class FormDependencyHelper {
 		/// <summary>
-		/// Промежуточный индекс узлов
-		/// </summary>
-		public class GraphIndex {
-			/// <summary>
-			/// 
-			/// </summary>
-			public GraphIndex() {
-				Nodes = new List<string>();
-				Edges = new List<Tuple<string, string, string>>();
-			}
-			/// <summary>
-			/// Узлы
-			/// </summary>
-			public IList<string> Nodes { get; private set; }
-			/// <summary>
-			/// Ребра
-			/// </summary>
-			public IList<Tuple<string, string,string>> Edges { get; private set; }
-		}
-
-
-		/// <summary>
 		/// Формирует скрипт для DOT с зависимостями
 		/// </summary>
 		/// <param name="r"></param>
 		public static string GetDependencyDot(IZetaRow r) {
 			var graph = GetDependencyGraph(r);
-			return ConvertToDot(graph);
+			return ConvertToDot(graph,false,r);
 		}
-		/// <summary>
-		/// Формирует скрипт для DOT с зависимостями
-		/// </summary>
-		/// <param name="r"></param>
-		public static string GetFormulaDependencyDot(IZetaRow r)
-		{
-			var graph = GetFormulaDependencyGraph(r);
-			return ConvertToDot(graph);
-		}
+		
+		private static string ConvertToDot(OldDependencyGraph oldDependencyGraph, bool clustered, IZetaRow zetaRow) {
+		    var gr = new Graph();
+            gr.RankDir = RankDirType.LR;
 
-		/// <summary>
-		/// Формирует скрипт для DOT с зависимостями для первички
-		/// </summary>
-		/// <param name="r"></param>
-		public static string GetPrimaryDependencyDot(IZetaRow r)
-		{
-			var graph = GetPrimaryDependencyGraph(r,null);
-			return ConvertToDot(graph);
-		}
-		private static string ConvertToDot(GraphIndex graph) {
-			var result = new StringBuilder();
-			result.AppendLine("digraph G {");
-			result.AppendLine("\trankdir=LR");
-			foreach (var n in graph.Nodes) {
-				if (null == n) continue;
-				if (n.StartsWith("s_") || n.StartsWith("f_") || n.StartsWith("p_")||n.StartsWith("r_")) {
-					var label = n.Substring(2).Replace("_DOT_",".");
-					var shape = "ellipse";
-					if (n.StartsWith("s_")) {
-						shape = "box3d";
+			if (clustered) {
+				var groups = oldDependencyGraph.Nodes.GroupBy(_ => _.Substring(2, 4));
+				var i = 1;
+				foreach (var g in groups) {
+				    var sg = new SubGraph {Code = (i).ToString(),Label = g.Key};
+				    gr.AddSubGraph(sg);
+					foreach (var n in g) {
+						RenderNode(n,gr,zetaRow,i);
 					}
-					else if (n.StartsWith("f_")) {
-						shape = "cds";
-					}
-					else if (n.StartsWith("r_"))
-					{
-						shape = "egg";
-					}
-					result.AppendLine("\t" + n + " [shape=" + shape + ";label=\"" + label + "\"]");
-				}
-				else {
-					result.AppendLine("\t" + n);
+
+				    i++;
 				}
 			}
-			foreach (var e in graph.Edges) {
-				if (null == e.Item1 || null == e.Item3) continue;
-				if (e.Item2 == "cpt") continue;
-				var color = "black";
-				if (e.Item2 == "cpt") {
-					color = "red";
+			else {
+				foreach (var n in oldDependencyGraph.Nodes)
+				{
+					RenderNode(n, gr,zetaRow,0);
 				}
-				if (e.Item2 == "frm") {
-					color = "blue";
+			}
+			foreach (var e in oldDependencyGraph.Edges) {
+				if (null == e.Item1 || null == e.Item3) continue;
+                if (e.Item2 == "cpt") continue; 
+                var edge = new Edge {From = e.Item3, To = e.Item1, Color = Color.Black};
+			    if (e.Item2 == "frm") {
+                    edge.Color = Color.Blue;
 				}
 				if (e.Item2 == "ref" ) {
-					color = "brown";
+                    edge.Color = Color.Brown;
 				}
-				
-				result.AppendLine("\t" + e.Item3 + "->" + e.Item1 + " [color=" + color + "]");
+                if (e.Item1 == zetaRow.Code || e.Item3 == zetaRow.Code) {
+                    edge.Penwidth = 3;
+                    edge.ArrowSize = 2;
+                    edge.ArrowHead= ArrowType.Vee;
+                    if (e.Item1 == zetaRow.Code) {
+                        edge.Color = Color.Green;
+                    }
+                }else {
+                    edge.Style = EdgeStyleType.Dashed;
+                }
+			    gr.AddEdge(edge);
 			}
-			result.AppendLine("}");
-			return result.ToString();
+		    return GraphRender.Create(gr, new GraphOptions()).GenerateGraphScript();
 		}
 
-		class StubPs : IPrimarySource {
-			public void Register(IQuery query) {
-				query.Result = new QueryResult(1);
-			}
+		private static void RenderNode(string n, Graph g, IZetaRow r, int i) {
+			if (null == n) return;
+		    var nod = new Node {Code = n};
+            if (n == r.Code) {
+                nod.Style = NodeStyleType.Filled;
+                nod.FillColor = Color.Green;
+                nod.FontColor = Color.White;
+            }
+            if (0 != i) {
+                nod.SubgraphCode = i.ToString();
+            }
+			if (n.StartsWith("s_") || n.StartsWith("f_") || n.StartsWith("p_") || n.StartsWith("r_")) {
 
-			public void Register(string preparedQuery) {
+                nod.Label = n.Substring(2).Replace("_DOT_", ".");
+                nod.Shape = NodeShapeType.Ellipse;
+
+				if (n.StartsWith("s_")) {
+					nod.Shape =NodeShapeType.Box3d;
+				}
+				else if (n.StartsWith("f_")) {
+					nod.Shape = NodeShapeType.Egg;
+				}
+				else if (n.StartsWith("r_")) {
+                    nod.Shape = NodeShapeType.Egg;
+				}
 				
 			}
+		    g.AddNode(nod);
+		}
 
-			public Task Collect() {
-				return Task.Run(() => { });
-			}
-
-			public void Wait(int timeout = -1) {
 	
-			}
-
-			public IList<string> QueryLog { get; private set; }
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns></returns>
-		public static GraphIndex GetFormulaDependencyGraph(IZetaRow root, int objid=352,string colcode= "Б1", int year=2012,int period=1, bool expandifs= true) {
-			var session = new Session {PrimarySource = new StubPs(),ExpandConditionalFormulas=expandifs};
-			var query = new Query(root.Code, colcode, objid, year, period);
-			query = (Query)session.Register(query);
-			session.WaitPreparation();
-			return GetQueryRowDependencyGraph(query,new GraphIndex());
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns></returns>
-		public static GraphIndex GetPrimaryDependencyGraph(IZetaRow root,GraphIndex index) {
-			index = index ?? new GraphIndex();
-			var code = GetRowCode(root);
-			if (!index.Nodes.Contains(code)) {
-				index.Nodes.Add(code);
-			}
-			var references = RowCache.Bycode.Values.Where(
-				_ => 
-					(null != _.RefTo && _.RefTo.Code == root.Code)
-					||
-					(null!= _.ExRefTo && _.ExRefTo.Code==root.Code)
-					
-					).ToArray();
-			foreach (var r in references) {
-				if (r.IsMarkSeted("CONTROLPOINT")) continue;
-				if (r.Code == root.Code) continue;
-				var e = new Tuple<string, string, string>(GetRowCode(r), "ref", code);
-				if (!index.Edges.Contains(e)) {
-					index.Edges.Add(e);
-					GetPrimaryDependencyGraph(r, index);
-				}
-				
-			}
-			if (!root.IsMarkSeted("0NOSUM")) {
-				
-				var current = root.Parent;
-				while (null != current) {
-					if (current.IsMarkSeted("0SA")) {
-						break;
-					}
-					current = current.Parent;
-				}
-				if (null != current) {
-					if (!current.IsMarkSeted("CONTROLPOINT")) {
-						var e = new Tuple<string, string, string>(GetRowCode(current), "sum", code);
-						if (!index.Edges.Contains(e))
-						{
-							index.Edges.Add(e);
-							GetPrimaryDependencyGraph(current, index);
-						}
-					}
-					
-				}
-			}
-			if (!string.IsNullOrWhiteSpace(root.GroupCache)) {
-				var groups = root.GroupCache.SmartSplit(false, true, ' ', ';', '/');
-				var grsums = RowCache.Bycode.Values.Where(_ => !string.IsNullOrWhiteSpace(_.GroupCache) && _.IsMarkSeted("0SA")).ToArray();
-				foreach (var gs in grsums) {
-					if (gs.IsMarkSeted("CONTROLPOINT")) continue;
-					if (gs.Code == root.Code) continue;
-					var tgroups = gs.GroupCache.SmartSplit(false, true, ' ', ';', '/');
-					if (tgroups.Intersect(groups).Any()) {
-						var e = new Tuple<string, string, string>(GetRowCode(gs), "sum", code);
-						if (!index.Edges.Contains(e))
-						{
-							index.Edges.Add(e);
-							GetPrimaryDependencyGraph(gs, index);
-						}
-						
-					}
-				}
-			}
-			
-			var formulas = RowCache.Formulas.Where(_ => _.Formula.Contains("$"+root.Code)).ToArray();
-			foreach (var f in formulas) {
-				if (f.IsMarkSeted("CONTROLPOINT")) continue;
-				if (Regex.IsMatch(f.Formula, @"\$" + root.Code + @"[\@\.\?]")) {
-					var e = new Tuple<string, string, string>(GetRowCode(f), "frm", code);
-					if (!index.Edges.Contains(e))
-					{
-						index.Edges.Add(e);
-						GetPrimaryDependencyGraph(f, index);
-					}
-					
-				}
-			}
-			return index;
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="q"></param>
-		/// <param name="index"></param>
-		/// <returns></returns>
-		public static GraphIndex GetQueryRowDependencyGraph(Query q, GraphIndex index=null) {
-			index = index ?? new GraphIndex();
-			var code = GetRowCode(q);
-			if (null == code) return index;
-			if (!index.Nodes.Contains(code)) {
-				index.Nodes.Add(code);
-			}
-			if (q.IsPrimary) return index;
-			if (null != q.FormulaDependency) {
-				foreach (Query cq in q.FormulaDependency) {
-					if (cq.Row.Native.IsMarkSeted("CONTROLPOINT")) continue;
-					var tuple = new Tuple<string, string, string>(code, "frm",GetRowCode(cq));
-					if (!index.Edges.Contains(tuple)) {
-						index.Edges.Add(tuple);
-					}
-				}
-			}
-			if (null != q.SummaDependency) {
-				foreach (Query cq in q.SummaDependency.Select(_ => _.Item2))
-				{
-					if (cq.Row.Native.IsMarkSeted("CONTROLPOINT")) continue;
-					var tuple = new Tuple<string, string, string>(code, "sum", GetRowCode(cq));
-					if (!index.Edges.Contains(tuple))
-					{
-						index.Edges.Add(tuple);
-					}
-				}
-			}
-
-			if (null != q.FormulaDependency)
-			{
-				foreach (Query cq in q.FormulaDependency) {
-					if (cq.Row.Native.IsMarkSeted("CONTROLPOINT")) continue;
-					GetQueryRowDependencyGraph(cq, index);
-				}
-			}
-			if (null != q.SummaDependency)
-			{
-				foreach (Query cq in q.SummaDependency.Select(_=>_.Item2))
-				{
-					if (cq.Row.Native.IsMarkSeted("CONTROLPOINT")) continue;
-					GetQueryRowDependencyGraph(cq, index);
-				}
-			}
-
-			return index;
-		}
-
 		private static string GetRowCode(Query q) {
 			var code = q.Row.Code;
 			var prefix = "p";
@@ -293,35 +117,14 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			return code.Replace(".","_DOT_");
 		}
 
-		private static string GetRowCode(IZetaRow r) {
-			
-			if (null != r.RefTo || null!=r.ExRefTo) {
-				return "r_" + r.Code;
-			}
-			if (r.IsMarkSeted("0SA")) {
-				return "s_" + r.Code;
-			}
-			if (!r.IsFormula) {
-				return "p_" + r.Code;
-			}
-			var s = new Session();
-			var q = new Query(r.Code, "Б1", 352, 2013, 1);
-			q = (Query)s.Register(q);
-			s.WaitPreparation();
-			if (null == q) {
-				return null;
-			}
-			return GetRowCode(q);
-		}
-
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="root"></param>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static GraphIndex GetDependencyGraph(IZetaRow root,GraphIndex index = null) {
-			index = index ?? new GraphIndex();
+		public static OldDependencyGraph GetDependencyGraph(IZetaRow root,OldDependencyGraph index = null) {
+			index = index ?? new OldDependencyGraph();
 			if (index.Nodes.Contains(root.Code)) {
 				return index;
 			}
@@ -367,6 +170,14 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 					}
 					continue;
 				}
+                if (f.ExRefTo != null)
+                {
+                    if (f.ExRefTo.Code.Substring(0, 4) != exportroot.Code)
+                    {
+                        deplist.Add("ref:" + f.ExRefTo.Code);
+                    }
+                    continue;
+                }
 				if (f.IsFormula) {
 					var type = "frm:";
 					if (f.MarkCache.Contains("CONTROLPOINT")) {

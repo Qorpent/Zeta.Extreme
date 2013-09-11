@@ -1,0 +1,2 @@
++class demo.import.meta.periods "add_formulas"
+	period -402 'Ближайший квартал' formula = '2=42,3=43,4=44'

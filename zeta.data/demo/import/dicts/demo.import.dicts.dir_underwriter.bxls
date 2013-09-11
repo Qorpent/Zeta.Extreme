@@ -1,0 +1,27 @@
+####################################################################################################
+####                                                                                            ####
+####      Экспорт формы из БД Zeta                                                              ####
+####                                                                                            ####
+####      Исходный код корневой строки формы         : DIR_UNDERWRITER                          ####
+####      Заданное пространство имен                 : demo.import.dicts                        ####
+####      Заданное имя класса                        : dir_underwriter                          ####
+####      Исполнитель                                : local\comdiv                             ####
+####      ID строки в БД                             : 20316                                    ####
+####      Максимальная версия строк в форме          : 2012-05-15 13:06:55                      ####
+####                                                                                            ####
+####################################################################################################
+
+namespace demo.import.dicts
+	class dir_underwriter 'Подписывающие лица' formcode=DIR_UNDERWRITER stopinterpolate=all
+		import dict
+		export underwriter
+		title DIR_UNDERWRITER 'Подписывающие лица' 
+			item und_gdir 'Генеральный директор' outer=GDIR extslot=ecodir assert 
+			item und_ruddir 'Директор по горному производству' outer=RUDDIR extslot=ecorud assert 
+			item und_tehdir 'Технический директор' outer=TEHDIR extslot=ecoteh assert 
+			item und_komdir 'Коммерческий директор' outer=KOMDIR assert 
+			item und_invdir 'Директор по инвестициям' outer=INVDIR extslot=ecoidir assert 
+			item und_socdir 'Директор по социальным вопросам' outer=SOCDIR assert 
+			item und_gbuh 'Главный бухгалтер' outer=GBUH extslot='buh,ecobuh' 
+			item und_plan 'Начальник ПЭО' outer=PLAN extslot=ecoplan 
+			item und_trud 'Начальник отдела труда' outer=TRUD extslot=ecotrud 

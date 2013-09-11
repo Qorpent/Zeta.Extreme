@@ -68,7 +68,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			sb = new StringBuilder();
 			RenderComment(exportroot, options);
 			RenderClassStart(xml);
-			RenderClassContent(xml.Element("class").Elements().ElementAt(1),0);
+            RenderClassContent(xml.Element("class").Elements().SkipWhile(_ => _.Name.LocalName == "import" || _.Name.LocalName == "dependon" || _.Name.LocalName == "export").First(), 0);
 			return sb.ToString();
 		}
 
@@ -163,7 +163,17 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			sb.AppendLine();
 			sb.AppendFormat("{0}class {1} '{2}' formcode={3} stopinterpolate=all", CLS_TAB, cls.Attr("code"), cls.Attr("name"), cls.Attr("formcode"));
 			sb.AppendLine();
-			sb.AppendFormat("{0}import {1}", CLS_CNT_TAB, cls.Element("import").Attr("code"));
+		    sb.AppendFormat("{0}import {1}", CLS_CNT_TAB, cls.Element("import").Attr("code"));
+		    var export = cls.Element("export");
+            if (null != export) {
+                sb.AppendLine();
+                sb.AppendFormat("{0}export {1}", CLS_CNT_TAB, export.Attr("code"));
+            }
+		    var depends = cls.Elements("dependon");
+            foreach (var d in depends) {
+                sb.AppendLine();
+                sb.AppendFormat("{0}dependon ^{1}", CLS_CNT_TAB, d.Attr("code"));
+            }
 		}
 
 		private void RenderComment(IZetaRow exportroot, TreeExporterOptions options) {
@@ -174,7 +184,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree {
 			AddBigComment("Заданное пространство имен", options.Namespace);
 			AddBigComment("Заданное имя класса", options.ClassName);
 			AddBigComment("Исполнитель", Application.Current.Principal.CurrentUser.Identity.Name);
-			AddBigComment("Время генерации", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+			//AddBigComment("Время генерации", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 			AddBigComment("ID строки в БД", exportroot.Id.ToString());
 			AddBigComment("Максимальная версия строк в форме", new[] { exportroot }.Union(exportroot.AllChildren).Max(_ => _.Version).ToString("yyyy-MM-dd HH:mm:ss"));
 

@@ -6,7 +6,6 @@
 ####      Заданное пространство имен                 : demo.import.dicts                        ####
 ####      Заданное имя класса                        : dir_naltype                              ####
 ####      Исполнитель                                : local\comdiv                             ####
-####      Время генерации                            : 2013-09-02 17:20:38                      ####
 ####      ID строки в БД                             : 24374                                    ####
 ####      Максимальная версия строк в форме          : 2012-10-11 16:07:07                      ####
 ####                                                                                            ####
@@ -14,7 +13,8 @@
 
 namespace demo.import.dicts
 	class dir_naltype 'Виды налогов' formcode=NALTYPE stopinterpolate=all
-		import tree
+		import dict
+		export naltype
 		item NALTYPE 'Виды налогов' 
 			item 110 'Налог на прибыль' groups='naltype_prib' 
 			item 120 'Налог на имущество' groups='naltype_im' 

@@ -281,7 +281,7 @@
             if (!!d1.values) {
                 $.each(d1.values, function(i, v) {
                     // Фагим сказал менять запятую между цифрами на пробел
-                    v = v.replace(/(\d),(\d)/, "$1 $2");
+                    v = v.replace(/(\d),(\d)/g, "$1 $2");
                     tr.append($('<td/>').html(v));
                 });
             }

@@ -1,10 +1,11 @@
 namespace demo.org
 
 	class node abstract
-		element person
-		person leader 'Начальник'
-		person maincurator 'Главный куратор системы'
-		
+	class role abstract
+
+	role leader abstract
+	role maincurator abstract
+	
 	node ub 'Управление бюджетирования'
 	node personal 'Служба персонала'
 	node proizv 'Производство'

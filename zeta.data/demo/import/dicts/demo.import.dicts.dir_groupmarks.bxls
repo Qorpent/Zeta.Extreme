@@ -1,0 +1,213 @@
+####################################################################################################
+####                                                                                            ####
+####      Экспорт формы из БД Zeta                                                              ####
+####                                                                                            ####
+####      Исходный код корневой строки формы         : dir110                                   ####
+####      Заданное пространство имен                 : demo.import.dicts                        ####
+####      Заданное имя класса                        : dir_groupmarks                           ####
+####      Исполнитель                                : local\comdiv                             ####
+####      ID строки в БД                             : 12972                                    ####
+####      Максимальная версия строк в форме          : 2013-02-18 17:46:17                      ####
+####                                                                                            ####
+####################################################################################################
+
+namespace demo.import.dicts
+	class dir_groupmarks 'Групповые метки' formcode=dir110 stopinterpolate=all
+		import dict
+		export groupmarks
+		title dir110 'Групповые метки' 
+			title dir_ez 'Элементы затрат' 
+				item dir_ez_100 'Сырье' 
+				item dir_ez_amort 'Амортизация' outer=amort 
+				item dir_ez_arenda 'Аренда' outer=arenda 
+				item dir_ez_mater 'Материалы' outer=mater 
+				item dir_ez_strvz 'Страховые взносы' outer=strvz 
+				item dir_ez_tzr 'Трнспортно-заготовительные расходы' outer=tzr 
+				item dir_ez_uspodr 'Услуги подрядчиков' outer=USpodr 
+				item dir_ez_uszex 'Услуги цехов' outer=USzex 
+				item dir_ez_uszex _энерг 'Электронергия' outer='USzex _энерг' 
+				item dir_ez_zp 'Заработная плата' outer=zp 
+			title katnal 'Налоги (категории)' 
+				item katnal111 'Налог на прибыль' outer=111 groups='naltype_prib NALOG' 
+				item katnal112 'Налог на прибыль (пени)' outer=112 groups='naltype_prib NALOG_PENI' 
+				item katnal113 'Налог на прибыль (штрафы)' outer=113 groups='naltype_prib NALOG_SHTRAF' 
+				item katnal121 'Налог на имущество' outer=121 groups='naltype_im NALOG' 
+				item katnal122 'Налог на имущество (пени)' outer=122 groups='naltype_im NALOG_PENI' 
+				item katnal123 'Налог на имущество (штрафы)' outer=123 groups='naltype_im NALOG_SHTRAF' 
+				item katnal131 'Налог на доходы физических лиц' outer=131 groups='naltype_ndfl NALOG' 
+				item katnal132 'Налог на доходы физических лиц (пени)' outer=132 groups='naltype_ndfl NALOG_PENI' 
+				item katnal133 'Налог на доходы физических лиц (штрафы)' outer=133 groups='naltype_ndfl NALOG_SHTRAF' 
+				item katnal141 'Налог на доходы иностранных юридических лиц' outer=141 groups='naltype_inul NALOG' 
+				item katnal142 'Налог на доходы иностранных юридических лиц (пени)' outer=142 groups='naltype_inul NALOG_PENI' 
+				item katnal143 'Налог на доходы иностранных юридических лиц (штрафы)' outer=143 groups='naltype_inul NALOG_SHTRAF' 
+				item katnal146 'Налог на рекламу' outer=146 groups='naltype_rekl NALOG' 
+				item katnal147 'Налог на рекламу (пени)' outer=147 groups='naltype_rekl NALOG_PENI' 
+				item katnal148 'Налог на рекламу (штрафы)' outer=148 groups='naltype_rekl NALOG_SHTRAF' 
+				item katnal151 'Налог на прибыль с дивидендов' outer=151 groups='naltype_divid NALOG' 
+				item katnal152 'Налог на прибыль с дивидендов (пени)' outer=152 groups='naltype_divid NALOG_PENI' 
+				item katnal153 'Налог на прибыль с дивидендов (штрафы)' outer=153 groups='naltype_divid NALOG_SHTRAF' 
+				item katnal161 'Плата за негативное воздействие на окружающую среду' outer=161 groups='naltype_nvos NALOG' 
+				item katnal162 'Плата за негативное воздействие на окружающую среду (пени)' outer=162 groups='naltype_nvos NALOG_PENI' 
+				item katnal163 'Плата за негативное воздействие на окружающую среду (штрафы)' outer=163 groups='naltype_nvos NALOG_SHTRAF' 
+				item katnal171 'Водный налог' outer=171 groups='naltype_voda NALOG' 
+				item katnal172 'Водный налог (пени)' outer=172 groups='naltype_voda NALOG_PENI' 
+				item katnal173 'Водный налог (штрафы)' outer=173 groups='naltype_voda NALOG_SHTRAF' 
+				item katnal181 'Налог на добычу полезных ископаемых' outer=181 groups='naltype_ndpi NALOG' 
+				item katnal182 'Налог на добычу полезных ископаемых (пени)' outer=182 groups='naltype_ndpi NALOG_PENI' 
+				item katnal183 'Налог на добычу полезных ископаемых (штрафы)' outer=183 groups='naltype_ndpi NALOG_SHTRAF' 
+				item katnal191 'Плата за древесину, отпускаемую на корню' outer=191 groups='naltype_derevo NALOG' 
+				item katnal192 'Плата за древесину, отпускаемую на корню (пени)' outer=192 groups='naltype_derevo NALOG_PENI' 
+				item katnal193 'Плата за древесину, отпускаемую на корню (штрафы)' outer=193 groups='naltype_derevo NALOG_SHTRAF' 
+				item katnal201 'Земельный налог' outer=201 groups='naltype_zemnal NALOG' 
+				item katnal202 'Земельный налог (пени)' outer=202 groups='naltype_zemnal NALOG_PENI' 
+				item katnal203 'Земельный налог (штрафы)' outer=203 groups='naltype_zemnal NALOG_SHTRAF' 
+				item katnal211 'Арендная плата за землю' outer=211 groups='naltype_arendazem NALOG' 
+				item katnal212 'Арендная плата за землю (пени)' outer=212 groups='naltype_arendazem NALOG_PENI' 
+				item katnal213 'Арендная плата за землю (штрафы)' outer=213 groups='naltype_arendazem NALOG_SHTRAF' 
+				item katnal221 'Налог на вмененный доход' outer=221 groups='naltype_vmen NALOG' 
+				item katnal222 'Налог на вмененный доход (пени)' outer=222 groups='naltype_vmen NALOG_PENI' 
+				item katnal223 'Налог на вмененный доход (штрафы)' outer=223 groups='naltype_vmen NALOG_SHTRAF' 
+				item katnal231 'Транспортный налог' outer=231 groups='naltype_trans NALOG' 
+				item katnal232 'Транспортный налог (пени)' outer=232 groups='naltype_trans NALOG_PENI' 
+				item katnal233 'Транспортный налог (штрафы)' outer=233 groups='naltype_trans NALOG_SHTRAF' 
+				item katnal241 'Акцизы' outer=241 groups='naltype_akciz NALOG' 
+				item katnal242 'Акцизы (пени)' outer=242 groups='naltype_akciz NALOG_PENI' 
+				item katnal243 'Акцизы (штрафы)' outer=243 groups='naltype_akciz NALOG_SHTRAF' 
+				item katnal251 'Единый сельскохозяйственный налог' outer=251 groups='naltype_shnal NALOG' 
+				item katnal252 'Единый сельскохозяйственный налог (пени)' outer=252 groups='naltype_shnal NALOG_PENI' 
+				item katnal253 'Единый сельскохозяйственный налог (штрафы)' outer=253 groups='naltype_shnal NALOG_SHTRAF' 
+				item katnal291 'Прочие налоги, платежи и сборы' outer=291 groups='naltype_proch NALOG' 
+				item katnal292 'Прочие налоги, платежи и сборы (пени)' outer=292 groups='naltype_proch NALOG_PENI' 
+				item katnal293 'Прочие налоги, платежи и сборы (штрафы)' outer=293 groups='naltype_proch NALOG_SHTRAF' 
+				item katnal401 'Внебюджетные фонды' outer=401 groups='naltype_vf NALOG' 
+				item katnal402 'Внебюджетные фонды (пени)' outer=402 groups='naltype_vf NALOG_PENI' 
+				item katnal403 'Внебюджетные фонды (штрафы)' outer=403 groups='naltype_vf NALOG_SHTRAF' 
+				item katnal601 'НДС' outer=601 groups='naltype_nds NALOG' 
+				item katnal602 'НДС (пени)' outer=602 groups='naltype_nds NALOG_PENI' 
+				item katnal603 'НДС (штрафы)' outer=603 groups='naltype_nds NALOG_SHTRAF' 
+				item katnal651 'Экспортные пошлины' outer=651 groups='naltype_eksp NALOG' 
+				item katnal652 'Экспортные пошлины (пени)' outer=652 groups='naltype_eksp NALOG_PENI' 
+				item katnal653 'Экспортные пошлины (штрафы)' outer=653 groups='naltype_eksp NALOG_SHTRAF' 
+			item 175 'Активный налог' outer=ACTNAL 
+			item dir130220 '_Серебро' outer=Ag 
+			item dir1302201 '_Серебро_перв' outer='ag_prim' 
+			item dir1302202 '_Серебро_втор' outer='ag_sec' 
+			item dir130210 '_Золото' outer=Au 
+			item dir1302101 '_Золото_перв' outer='au_prim' 
+			item dir1302102 '_Золото_втор' outer='au_sec' 
+			item dir150110 'Продукция - произведенная' outer='CALC_OP' 
+			item dir150140 'Продукция - остатки и списания' outer='CALC_OST' 
+			item dir150130 'Продукция - реализованная' outer='CALC_RP' 
+			item dir150120 'Продукция - товарная' outer='CALC_TP' 
+			item dir140 '_Калькуляционная статья' outer=CALCROW 
+			item dir130110 '_Медь' outer=Cu 
+			item dir1301101 '_Медь_перв' outer='cu_prim' 
+			item dir1301102 '_Медь_втор' outer='cu_sec' 
+			item dir130140 '_Железо' outer=Fe 
+			item dir_naltype_akciz 'Акцизы' outer='naltype_akciz' 
+			item dir_naltype_arendazem 'Аренда земли' outer='naltype_arendazem' 
+			item dir_naltype_derevo 'Плата за древесину' outer='naltype_derevo' 
+			item dir_naltype_divid 'Налог на прибыль с дивидендов' outer='naltype_divid' 
+			item dir_naltype_eksp 'Экспортные пошлины' outer='naltype_eksp' 
+			item dir_naltype_im 'Налог на имущество' outer='naltype_im' 
+			item dir_naltype_inul 'Налог на доходы ИЮЛ' outer='naltype_inul' 
+			item dir_naltype_ndfl 'НДФЛ' outer='naltype_ndfl' 
+			item dir_naltype_ndpi 'НДПИ' outer='naltype_ndpi' 
+			item dir_naltype_nds 'НДС' outer='naltype_nds' 
+			item dir_naltype_nvos 'Плата за НВОС' outer='naltype_nvos' 
+			item dir_naltype_prib 'Налог на прибыль' outer='naltype_prib' 
+			item dir_naltype_proch 'Прочие налоги' outer='naltype_proch' 
+			item dir_naltype_rekl 'Налог на рекламу' outer='naltype_rekl' 
+			item dir_naltype_shnal 'Единый СХН' outer='naltype_shnal' 
+			item dir_naltype_trans 'Транспортный налог' outer='naltype_trans' 
+			item dir_naltype_vf 'Внебюджетные фонды' outer='naltype_vf' 
+			item dir_naltype_vmen 'Налог на вмененный доход' outer='naltype_vmen' 
+			item dir_naltype_voda 'Водный налог' outer='naltype_voda' 
+			item dir_naltype_zemnal 'Земельный налог' outer='naltype_zemnal' 
+			item dir130130 '_Свинец' outer=Pb 
+			item dir130240 '_Палладий' outer=Pd 
+			item dir130230 '_Платина' outer=Pt 
+			item dir130510 '_Сырье первичное' outer='raw_prim' 
+			item dir130520 '_Сырье вторичное' outer='raw_sec' 
+			item dir130105 '_смт' outer=SMT 
+			item dir130107 '_смт_кг' outer='SMT_KG' 
+			item dir1301051 '_смт_перв' outer='smt_prim' 
+			item dir130106 '_тыс_смт' outer='SMT_RUDA' 
+			item dir1301061 '_тыс_смт_перв' outer='smt_ruda_prim' 
+			item dir1301062 '_тыс_смт_втор' outer='smt_ruda_sec' 
+			item dir1301052 '_смт_втор' outer='smt_sec' 
+			item 290 'Ставка 0%' outer='Stavka 0%' 
+			item dir130120 '_Цинк' outer=Zn 
+			item 300 'Амортизация' outer=Ам 
+			item dir130101 '_вмт' outer=ВМТ 
+			item dir130102 '_тыс_вмт' outer='ВМТ_RUDA' 
+			item 360 'Выручка от продаж' outer=ВП 
+			item 370 'Внебюджетные фонды' outer=ВФ 
+			item 380 'Драгметаллы' outer=ДM 
+			item 420 'Курсовые разницы' outer=КУРС 
+			item 430 'Местный бюджет' outer=МБ 
+			item 440 'Местный бюджет головной организации' outer=МБП 
+			item 450 'Местный бюджет филиала' outer=МБФИЛ 
+			item 460 'Местный налог' outer=МН 
+			item 470 'Материальные ресурсы' outer=МР 
+			item 390 'Заработная плата' outer='ОТ_зп_25' 
+			item 400 'Заработная плата (материальное пособие)' outer='ОТ_мп' 
+			item 410 'Заработная плата (целевые выплаты)' outer='ОТ_цв' 
+			item 480 'Прибыль до налогообложения' outer=ПН 
+			item 490 'Прибыль от продаж' outer=ПП 
+			item 700 'Провода всего' outer=ПРОВОД 
+			item 500 'Прочие затраты' outer=Проч 
+			item 510 'Региональный бюджет' outer=РБ 
+			item 520 'Региональный бюджет головной организации' outer=РБП 
+			item 530 'Региональный бюджет филиала' outer=РБФИЛ 
+			item 540 'Региональный налог' outer=РН 
+			item 560 'Добыча руды, вмт' outer=РУДАВМТ 
+			item 570 'Добыча руды, смт' outer=РУДАСМТ 
+			item 580 'Содержание металлов в концентрате' outer=СОДКОНЦ 
+			item 590 'Содержание металлов в руде' outer=СОДРУД 
+			item 600 'Барит в руде (сумма)' outer=СУМБАР 
+			item 610 'Добыча руды, вмт (сумма)' outer=СУМВМТ 
+			item 620 'Железо в руде' outer=СУМЖЕЛ 
+			item 630 'Золото в руде' outer=СУМЗОЛ 
+			item 640 'Медь в руде' outer=СУММЕДЬ 
+			item 650 'Свинец в руде' outer=СУМСВИН 
+			item 660 'Серебро в руде' outer=СУМСЕР 
+			item 670 'Сера в руде' outer=СУМСЕРА 
+			item 680 'Добыча руды, смт (сумма)' outer=СУМСМТ 
+			item 690 'Цинк в руде' outer=СУМЦИНК 
+			item 710 'ТЭП угля' outer=ТЭПУГОЛЬ 
+			item 720 'Жилищная программа (высококвалифицированные работники)' outer=УПВР 
+			item 730 'Жилищная программа (приглашенные специалисты)' outer=УПВС 
+			item 740 'Жилищная программа (дефицитные специальности)' outer=УПДС 
+			item 750 'Жилищная программа (молодые работники)' outer=УПМР 
+			item 760 'Жилищная программа (обязательства прошлых лет)' outer=УППЛ 
+			item 770 'Жилищная программа (целевая подготовка)' outer=УПЦС 
+			item 780 'Услуги вспомогательного производства (счет 25)' outer='Усл_ВП_25' 
+			item 790 'Услуги сторонних организаций (cчет 25)' outer='Усл_СО_25' 
+			item 800 'Федеральный бюджет' outer=ФБ 
+			item 810 'Федеральный налог' outer=ФН 
+			item 820 'Чистая прибыль' outer=ЧП 
+			item 110 'm_amort' outer='m_amort' 
+			item 120 'm_nalog' outer='m_nalog' 
+			item 130 'm_notusl' outer='m_notusl' 
+			item 140 'm_osnsr' outer='m_osnsr' 
+			item 150 'm_sud' outer='m_sud' 
+			item 160 'm_sverxnorm' outer='m_sverxnorm' 
+			item 170 'm_vra' outer='m_vra' 
+			item 180 'NALOGFED' outer=NALOGFED 
+			item 190 'NALOGFMS' outer=NALOGFMS 
+			item 200 'NALOGFSS' outer=NALOGFSS 
+			item 210 'NALOGLOC' outer=NALOGLOC 
+			item 220 'NALOGPF' outer=NALOGPF 
+			item 230 'NALOGREG' outer=NALOGREG 
+			item 240 'NALOGRESTR' outer=NALOGRESTR 
+			item 250 'NALOGSPENY' outer=NALOGSPENY 
+			item 260 'NALOGSTRAF' outer=NALOGSTRAF 
+			item 270 'NALOGSUM' outer=NALOGSUM 
+			item 280 'NALOGTMS' outer=NALOGTMS 
+			item 310 'ВКУ_ВРК' outer='ВКУ_ВРК' 
+			item 320 'ВКУ_ДМС' outer='ВКУ_ДМС' 
+			item 330 'ВКУ_ПД' outer='ВКУ_ПД' 
+			item 340 'ВКУ_ТВ' outer='ВКУ_ТВ' 
+			item 350 'ВКУ_ТЗ' outer='ВКУ_ТЗ' 
+			item 550 'Руда' outer=РУДА 

@@ -16,11 +16,11 @@
   <ItemGroup>
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\GetSubstAttributesAction.cs" />
+    <Compile Include="Actions\DebugQueryAction.cs" />
     <Compile Include="Actions\DropCacheAction.cs" />
     <Compile Include="Actions\ExportDependencyDot.cs" />
-    <Compile Include="Actions\ExportFormulaDependencyDot.cs" />
+    <Compile Include="Actions\DependencyGraphAction.cs" />
     <Compile Include="Actions\ExportPeriods.cs" />
-    <Compile Include="Actions\ExportPrimaryDependencyDot.cs" />
     <Compile Include="Actions\ExportTreeAction.cs" />
     <Compile Include="Actions\FormulaToPrimaryAction.cs" />
     <Compile Include="Actions\GetColAttributesAction.cs" />
@@ -43,7 +43,10 @@
     <Compile Include="CodeMetrics\MetricHub.cs" />
     <Compile Include="CodeMetrics\MetricService.cs" />
     <Compile Include="CodeMetrics\MetricTendency.cs" />
-    <Compile Include="DataMigrations\FormulaToPrimaryHelper.cs" />
+    <Compile Include="DataMigrations\TransferHelper.cs" />
+    <Compile Include="DataMigrations\TransferTask.cs" />
+    <Compile Include="DataMigrations\TransferRecord.cs" />
+    <Compile Include="Debugger\QueryGraphBuilder.cs" />
     <Compile Include="DeveloperStartUp.cs" />
     <Compile Include="MetaStorage\Periods\PeriodsExporter.cs" />
     <Compile Include="MetaStorage\Tree\AttributeType.cs" />
@@ -51,10 +54,23 @@
     <Compile Include="MetaStorage\Tree\BSharpXmlExporter.cs" />
     <Compile Include="MetaStorage\Tree\BxlMetaTreeExporter.cs" />
     <Compile Include="MetaStorage\Tree\DefaultBSMappings.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyDirection.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyEdge.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyEdgeType.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyGraph.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyGraphGenerator.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyNode.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\FallDownDependencyVisitor.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\GoDownDependencyVisitor.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\GoUpDependencyVisitor.cs" />
+    <Compile Include="MetaStorage\Tree\OldDependencyGraph.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyGraphTask.cs" />
+    <Compile Include="MetaStorage\Tree\DependencyAnalyzer\DependencyNodeType.cs" />
     <Compile Include="MetaStorage\Tree\ExportTreeFilter.cs" />
     <Compile Include="MetaStorage\Tree\ExportTreeFormat.cs" />
     <Compile Include="MetaStorage\Tree\FormDependencyHelper.cs" />
     <Compile Include="MetaStorage\Tree\HqlTreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\IncludeType.cs" />
     <Compile Include="MetaStorage\Tree\ITreeExporter.cs" />
     <Compile Include="MetaStorage\Tree\TagMap.cs" />
     <Compile Include="MetaStorage\Tree\TreeExporter.cs" />
@@ -72,10 +88,15 @@
     <Compile Include="Scripting\GenerateDictCommand.cs" />
     <Compile Include="Scripting\GenerateFormActionBase.cs" />
     <Compile Include="Scripting\GenerateFormCommand.cs" />
+    <Compile Include="Scripting\GeneratePeriods.cs" />
     <Compile Include="Scripting\IScriptCommand.cs" />
     <Compile Include="Scripting\Script.cs" />
     <Compile Include="Scripting\ScriptCommandBase.cs" />
     <Compile Include="Scripting\ScriptCommandFactory.cs" />
+    <Compile Include="Security\AdminAnalyzer\AdminAnalyzerAction.cs" />
+    <Compile Include="Security\AdminAnalyzer\AdminAnalyzerHelper.cs" />
+    <Compile Include="Security\AdminAnalyzer\AdminAnalyzerRecord.cs" />
+    <Compile Include="Security\AdminAnalyzer\AdminRecord.cs" />
     <Compile Include="Utils\DocumentationHelper.cs" />
     <Compile Include="Analyzers\IAnalyzer.cs" />
     <Compile Include="Analyzers\ICodeIndex.cs" />
@@ -91,6 +112,10 @@
     <Compile Include="Config\IDeveloperConfig.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\qorpent.sys\Qorpent.Serialization\Qorpent.Serialization.csproj">
+      <Project>{21971F28-8ED8-4F50-B623-E9DB2658AF54}</Project>
+      <Name>Qorpent.Serialization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zeta.Extreme.Core\Zeta.Extreme.Core.csproj">
       <Project>{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}</Project>
       <Name>Zeta.Extreme.Core</Name>

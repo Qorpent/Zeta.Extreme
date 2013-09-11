@@ -57,6 +57,9 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 			if (null == _cell) {
 				return "Данная ячейка сформирована с использованием нестандартного механизма, скорее всего из семейства " + MySession.Template.Thema.GetParameter("extension", "") + ", отладка не доступна";
 			}
+            if (Context.RenderName == "dot") {
+                return new QueryGraphBuilder(_myquery) {ExcludePrimaryZeroes = true, ExcludeNonPrimaryZeroes = true};
+            }
 			return ConvertToStackInfo(_myquery);
 		}
 
