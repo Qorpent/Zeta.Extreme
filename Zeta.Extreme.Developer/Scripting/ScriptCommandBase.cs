@@ -20,10 +20,10 @@ namespace Zeta.Extreme.Developer.Scripting {
 		/// <param name="def"></param>
 		public virtual void Initialize(XElement def) {
 			Definition = def;
-            this.Namespace = def.Attr("namespace");
-            this.AppName = def.Attr("node");
-            this.Into = def.Attr("into");
-            this.ClassName = def.Attr("name");
+            Namespace = def.Attr("namespace");
+            AppName = def.Attr("node");
+            Into = def.Attr("into");
+            ClassName = def.Attr("name");
 		}
 		/// <summary>
 		/// Исходное определение
@@ -33,7 +33,7 @@ namespace Zeta.Extreme.Developer.Scripting {
         /// Получить имя  файла по умолчанию
         /// </summary>
         /// <returns></returns>
-        protected string GetDefaultFileName() {
+        protected virtual string GetDefaultFileName() {
             var ns = Namespace;
             if (string.IsNullOrWhiteSpace(ns)) {
                 ns = "global";

@@ -7,7 +7,7 @@
 ####      Заданное имя класса                                                                   ####
 ####      Исполнитель                                : local\comdiv                             ####
 ####      ID строки в БД                             : 8838                                     ####
-####      Максимальная версия строк в форме          : 2013-09-11 13:39:22                      ####
+####      Максимальная версия строк в форме          : 2013-09-12 09:56:44                      ####
 ####                                                                                            ####
 ####      Обнаружены зависимости от других форм                                                 ####
 ####              frm : f110                                                                    ####
@@ -64,8 +64,8 @@ f.If ( colin ( "Pd" ), { $z4201780@SUMMA? + $z4101820@SUMMA? } )
 						formula 263 'Справочно: расходы прошлых лет' nosum viewforgroup='CALC_OCM' activecol=Pd  : (
 							f.If ( colin ( "Pd" ), { $f11031351@Б1? } )
 						)
-					primary 265 'Лом цветных металлов в производство' measure=26 nosum viewforgroup='CALC_OCM' activecol=Pd 
-					primary 270 'Неликвидная продукция' nosum activecol=Pd 
+					primary 265 'в т. ч. лом цветных металлов в производство' measure=26 nosum viewforgroup='CALC_OCM' 
+					primary 270 'в т.ч Неликвидная продукция' nosum activecol=Pd 
 				primary 230 'Отходы для реализации (ф.4 стр. 2.3 "продажа отходов собственного производства")' olap=tmc 
 				primary 240 'Прочие отходы для реализации' olap=tmc 
 				sum 250 'Отходы возвратные в переработку' viewforgroup='DIV_CAB,CALC_OCM' olap=tmc 
@@ -133,16 +133,14 @@ f.If ( colin ( "Pd" ), { $z4201780@SUMMA? + $z4101820@SUMMA? } )
 					primary 930 'Счет 25' activecol=Rd olap=tmc 
 					primary 935 'Счет 26' activecol=Rd olap=tmc 
 					primary 940 'Счет 43' activecol=Rd viewforgroup='obj_352' olap=tmc 
-					formula 941 'Счет 45 [cтр.230-стр.961]' activecol=Rd olap=tmc  : (
-						f.If ( colin ( "Rd" ), { $r211230@Rd? - $r211961@Rd? } )
-					)
+					primary 941 'Счет 45 [cтр.230-стр.961]' activecol=Rd olap=tmc 
 					primary 945 'Счет 44' activecol=Rd olap=tmc 
 					primary 950 'Счет 29' activecol=Rd olap=tmc 
 					primary 955 'Счет 27' activecol=Rd olap=tmc 
 					primary 959 'в т.ч. транспотрно-заготовительные расходы' nosum olap=tmc 
 				sum 960 'Счет 90' 
 					formula 961 'Продажа отходов собственного производства' activecol=Rd  : (
-						f.If ( colin ( "Rd" ), { $r211230@Rd? } )
+						f.If ( colin ( "Rd" ), { $r211230@Rd? - $r211941@Rd?  } )
 					)
 					sum 962 'Продажа прочей продукции, работ, услуг' 
 						primary 963 'Материалы собственного изготовления' 
@@ -222,23 +220,23 @@ f.If ( colin ( "Pd" ), { $r2111600@Pd? - $m260711@Б1? } )
 					f.If ( colin ( "Rd" ), { $r211300@Rd? - $r2119711@Rd? - $r2111230@Rd? + $r211628@Rd? - $r211982@Rd? - $m260170@Б1? + $m260171@Б1? - $r2119852? - $r2119752?  } )
 				)
 				controlpoint 1065 'ТМЦ в производство  [кол. "Списано" стр.910+1200] - [кол. "Начислено" стр.220+230]  - [ф.3 стр. 100+120+140+150+160+170-171 + ф."Сырье,мат." стр.865]  = 0'  : (
-					f.round ( f.If ( colin( "Rd" ), { $r211910@Rd? - ( $m260100@Б1? + $m260120@Б1? + $m260140@Б1? + $m260150@Б1? + $m260160@Б1? + $m260170@Б1? - $m260171@Б1? + $r211365@Rd? + $r211220@Pd? + $r211230@Pd? - $r2113000@Rd?) } ) )
+					f.round ( f.If ( colin( "Rd" ), { $r211910@Rd? + $r2113000@Rd?  - ( $m260100@Б1? + $m260120@Б1? + $m260140@Б1? + $m260150@Б1? + $m260160@Б1? + $m260170@Б1? - $m260171@Б1? + $r211365@Rd? + $r211220@Pd? + $r211230@Pd? ) } ) )
 				)
 				controlpoint 1070 'Сырье [стр. 100 - 9712 колонка "Списано"] - [стр.1390 ф. "Калькуляция Слитки"]=0' viewforgroup='CALC_OCM'  : (
 					f.If ( grpin ("CALC_OCM"), { 
-f.If ( colin ( "Rd" ), { $r2111300@Rd? - $r2119712@Rd? - $r211190@Rd? - $z4201390@SUMMA? } ) } )
+f.If ( colin ( "Rd" ), { $r2111300@Rd? - $r2119712@Rd? - $r211190@Rd? - $r211191@Rd? - $z4201390@SUMMA? - $z4101460@SUMMA? } ) } )
 				)
 				controlpoint 1080 'Отходы возвратные в производство [строка 221 колонка "Списано"] - [строка 1400 форма "Калькуляция. Слитки"]=0' viewforgroup='CALC_OCM'  : (
-					f.If ( grpin ("CALC_OCM"), { f.If  ( colin ( "Rd" ), { $r211221@Rd? - $r211225@Rd? - $z4201400@SUMMA? } ) } )
+					f.If ( grpin ("CALC_OCM"), { f.If  ( colin ( "Rd" ), { $r211221@Rd? - $r211225@Rd? - $z4201400@SUMMA? - $z4101450@SUMMA? } ) } )
 				)
 				controlpoint 1090 'Отходы возвратные произведенные [стр. 221-225 колонка "Начислено"] - [стр.1800+1780 ф. "Калькуляция. Слитки"] - [стр. 1700 ф."Калькуляция. Прокат ЦМ"] =0' viewforgroup='CALC_OCM'  : (
-					f.If ( grpin ("CALC_OCM"), { f.If ( colin ( "Pd" ), { $r211221@Pd? - $r211225@Pd? - $z4201800@SUMMA? - $z4201780@SUMMA? - $z4101700@SUMMA? } ) } )
+					f.If ( grpin ("CALC_OCM"), { f.If ( colin ( "Pd" ), { $r211221@Pd? - $r211225@Pd? - $z4201800@SUMMA? - $z4201780@SUMMA? - $z4101700@SUMMA? - $z4101820@SUMMA? } ) } )
 				)
 				controlpoint 1110 'Отходы для реализации [строка 230 колонка "Начислено"] - [строка 1820 форма "Калькуляция. Слитки"]=0' viewforgroup='CALC_OCM'  : (
 					f.If ( grpin ("CALC_OCM"), { f.If ( colin ( "Pd" ), { $r211230@Pd? - $z4201820@SUMMA? - $z4101740@SUMMA? } ) } )
 				)
 				controlpoint 1115 'Отходы для реализации [стр. 230 кол."Списано"] - [ф. 4 "Фин.результаты" стр.2.3 ]=0'  : (
-					f.If ( colin ( "Rd" ), { $r211230@Rd? - $m21402003@Б1? } )
+					f.If ( colin ( "Rd" ), { $r211230@Rd? - $m21402003@Б1? + $r2111226@Rd? } )
 				)
 				controlpoint 1120 'Инструмент [строка 710 колонка "Начислено"-"Начислено Вн.об."] - [строка 410 форма "Расш.услуг вспом. произ-ва"]=0' viewforgroup='CALC_OCM'  : (
 					f.If ( grpin ("CALC_OCM"), { f.If ( periodin (1, 2, 3, 4, 251, 252, 301, 401, 303, 306,309 ) and colin ( "Pd" ), { f.round ( $r211710@Pd? - $r260135410@SUMMA? - $r260135410@SUMMACALC? ) } ) } )
@@ -268,9 +266,15 @@ f.If ( colin ( "Rd" ), { $r2111300@Rd? - $r2119712@Rd? - $r211190@Rd? - $z420139
 						controlpoint 1223 'Полуфабрикаты Дт91 Кт21' olap=tmc noblocker  : (
 							f.If ( colin ( "Rd" ), { $m260108@Б1? } )
 						)
-						controlpoint 1224 'Справочно: стр.804 формы "Затраты на ПиРП"' nosum olap=tmc noblocker  : (
+						formula 1224 'Отходы для реализации'  : (
+							f.If ( grpin ("CALC_OCM"), { 
+f.If ( colin ( "Rd" ), { $r211230@Rd? } ) } )
+						)
+						controlpoint 1225 'Справочно: стр.804 формы "Затраты на ПиРП"' nosum olap=tmc noblocker  : (
 							f.If ( colin ( "Rd" ), { $m260804@Б1? } )
 						)
+						primary 1226 'Отходы отгруженные (счет 45)' nosum viewforgroup='CALC_OCM' 
+						primary 1227 'Перевод сырья в товары' 
 					sum 1230 'Топливо' olap=tmc 
 						primary 1231 'Счет 91' nooutput olap=tmc 
 						primary 1232 'Счет 08' noinput olap=tmc 

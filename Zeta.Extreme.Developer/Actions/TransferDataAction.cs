@@ -26,7 +26,7 @@ namespace Zeta.Extreme.Developer.Actions {
 		[Bind]
 		private string period { get; set; }
 		[Bind]
-		private string @object { get; set; }
+		private string obj { get; set; }
 		[Bind(Default = "transfer")]
 		private string usr { get; set; }
         [Bind]
@@ -51,7 +51,7 @@ namespace Zeta.Extreme.Developer.Actions {
 				ColumnCodes = col.SmartSplit().ToArray(),
 				Years = year.SmartSplit().Select(_ => _.ToInt()).ToArray(),
 				Periods = period.SmartSplit().Select(_ => _.ToInt()).ToArray(),
-				ObjectIds = @object.SmartSplit().Select(_ => _.ToInt()).ToArray(),
+				ObjectIds = obj.SmartSplit().Select(_ => _.ToInt()).ToArray(),
 				UserCode = string.IsNullOrWhiteSpace(usr)?"transfer":usr,
                 Execute = execute,
                 ChangedOnly = changedonly,

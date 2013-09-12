@@ -21,7 +21,7 @@
     <Compile Include="Actions\DependencyGraphAction.cs" />
     <Compile Include="Actions\ExportPeriods.cs" />
     <Compile Include="Actions\ExportTreeAction.cs" />
-    <Compile Include="Actions\FormulaToPrimaryAction.cs" />
+    <Compile Include="Actions\TransferDataAction.cs" />
     <Compile Include="Actions\GetColAttributesAction.cs" />
     <Compile Include="Actions\GetFormAttributesAction.cs" />
     <Compile Include="Actions\GetMetricsAction.cs" />
@@ -87,10 +87,12 @@
     <Compile Include="Scripting\GenerateFormActionBase.cs" />
     <Compile Include="Scripting\GenerateFormCommand.cs" />
     <Compile Include="Scripting\GeneratePeriods.cs" />
+    <Compile Include="Scripting\GenerateTransferScript.cs" />
     <Compile Include="Scripting\IScriptCommand.cs" />
     <Compile Include="Scripting\Script.cs" />
     <Compile Include="Scripting\ScriptCommandBase.cs" />
     <Compile Include="Scripting\ScriptCommandFactory.cs" />
+    <Compile Include="Scripting\ScriptConstants.cs" />
     <Compile Include="Security\AdminAnalyzer\AdminAnalyzerAction.cs" />
     <Compile Include="Security\AdminAnalyzer\AdminAnalyzerHelper.cs" />
     <Compile Include="Security\AdminAnalyzer\AdminAnalyzerRecord.cs" />

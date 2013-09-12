@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
-using Qorpent.Dot;
-using Qorpent.Serialization;
-using Qorpent.Serialization.Graphs;
+using Qorpent.Graphs;
+using Qorpent.Graphs.Dot;
+using Qorpent.Graphs.Dot.Types;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 

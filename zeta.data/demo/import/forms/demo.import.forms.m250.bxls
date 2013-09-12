@@ -7,10 +7,9 @@
 ####      Заданное имя класса                                                                   ####
 ####      Исполнитель                                : local\comdiv                             ####
 ####      ID строки в БД                             : 392                                      ####
-####      Максимальная версия строк в форме          : 2013-08-28 10:52:07                      ####
+####      Максимальная версия строк в форме          : 2013-09-12 09:41:10                      ####
 ####                                                                                            ####
 ####      Обнаружены зависимости от других форм                                                 ####
-####              frm : m112                                                                    ####
 ####              frm : m214                                                                    ####
 ####              frm : m217                                                                    ####
 ####              frm : m260                                                                    ####
@@ -25,19 +24,18 @@
 namespace demo.import.forms
 	class m250 'Расходы инвестиционного характера (форма № 9)' formcode=m250 stopinterpolate=all
 		import tree
-		dependon ^m112
+		dependon ^m214
 		dependon ^m260
 		dependon ^s140
 		dependon ^r130
 		dependon ^r590
 		dependon ^m217
-		dependon ^m214
 		dependon ^r510
 		dependon ^r211
 		title m250 'Расходы инвестиционного характера (форма № 9)' showcode OLAP_COLF=Б1 OLAP_COLP=Б1 
 			sum 100 'Источники финансирования инвестиций' measure='/dir120711/' olap=inv 
 				formula 110 'Совокупный финансовый результат' measure=тыс.руб. olap=inv  : (
-					$m1122500?
+					$m214195?
 				)
 				formula 120 'Амортизация' measure='/dir120711/' olap=inv  : (
 					$m260400?

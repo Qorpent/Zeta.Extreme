@@ -42,7 +42,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pkg", "Pkg", "{F755EF91-982
 		zdev.ui\zdev_export_dep_dot.tpl.html = zdev.ui\zdev_export_dep_dot.tpl.html
 		zdev.ui\zdev_export_fdep_dot.tpl.html = zdev.ui\zdev_export_fdep_dot.tpl.html
 		zdev.ui\zdev_export_tree_form.tpl.html = zdev.ui\zdev_export_tree_form.tpl.html
-		zdev.ui\zdev_formula_to_primary.tpl.html = zdev.ui\zdev_formula_to_primary.tpl.html
+		zdev.ui\zdev_transfer_data.tpl.html = zdev.ui\zdev_transfer_data.tpl.html
 		zetadev.ioc-manifest.bxl = zetadev.ioc-manifest.bxl
 	EndProjectSection
 EndProject
@@ -79,6 +79,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.Integration.MongoDB", "..\qorpent.integration\Qorpent.Integration.MongoDB\Qorpent.Integration.MongoDB.csproj", "{31CE132D-BFE7-443E-B68C-8C05F0751BC5}"
 EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "zeta.extreme.doc", "zeta.extreme.doc\zeta.extreme.doc.shfbproj", "{5E8CA5FB-206A-4302-94BA-2ACEAF0A9CC1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{7A196B5B-3CE1-4A07-991D-FDD109797887}"
+	ProjectSection(SolutionItems) = preProject
+		zeta.data\demo\demo-import.zdev-script = zeta.data\demo\demo-import.zdev-script
+		zeta.data\demo\demo.bsproj = zeta.data\demo\demo.bsproj
+		zeta.data\transfer.zdev-script = zeta.data\transfer.zdev-script
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -184,7 +191,6 @@ Global
 		{31CE132D-BFE7-443E-B68C-8C05F0751BC5}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
 		{31CE132D-BFE7-443E-B68C-8C05F0751BC5}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
 		{5E8CA5FB-206A-4302-94BA-2ACEAF0A9CC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E8CA5FB-206A-4302-94BA-2ACEAF0A9CC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E8CA5FB-206A-4302-94BA-2ACEAF0A9CC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E8CA5FB-206A-4302-94BA-2ACEAF0A9CC1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E8CA5FB-206A-4302-94BA-2ACEAF0A9CC1}.SQL2008|Any CPU.ActiveCfg = Release|Any CPU

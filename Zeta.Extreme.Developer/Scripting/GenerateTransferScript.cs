@@ -49,5 +49,13 @@ namespace Zeta.Extreme.Developer.Scripting {
         protected override object SetupParameters(string commandName, Qorpent.Config.IConfig context) {
             return new { from, to, col, year, period, obj, usr };
         }
+
+        /// <summary>
+        /// Получить имя  файла по умолчанию
+        /// </summary>
+        /// <returns></returns>
+        protected override string GetDefaultFileName() {
+            return string.Format("{0}_{1}_{2}_{3}_{4}_{5}.sql", from, to, col, year, period, obj).Replace(",", ".");
+        }
     }
 }
