@@ -19,22 +19,12 @@ namespace demo.import.forms
 				primary 2110 'Выручка' groups='ВП11 ПП11 ПН11 ЧП11 ФР11' measure='/dir120711/' olap=fin sap-region=BUH sap-form=002 sap-use 
 				primary 2120 'Себестоимость продаж' groups='ВП11 ПП11 ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 
 				sum 2100 'Валовая прибыль (убыток)' groups=ВП11 sap-region=BUH sap-form=002 sap-use 
-				primary 2210 'Расходы на продажу' groups='ПП11 ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 
-				primary 2220 'Управленческие расходы' groups='ПП11 ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 
 			sum 2200 'Прибыль (убыток) от продаж' groups=ПП11 olap=fin sap-region=BUH sap-form=002 sap-use 
-				primary 2310 'Доходы от участия в других организациях' groups='ПН11 ЧП11 ФР11' sap-region=BUH sap-form=002 sap-use 
-				primary 2320 'Проценты к получению' groups='ПН11 ЧП11 ФР11' sap-region=BUH sap-form=002 sap-use 
-				primary 2330 'Проценты к уплате' groups='ПН11 ЧП11 ФР11' measure='/dir120711/' minus sap-region=BUH sap-form=002 sap-use 
 				primary 2340 'Прочие доходы' groups='ПН11 ЧП11 ФР11' sap-region=BUH sap-form=002 sap-use 
 				primary 2350 'Прочие расходы' groups='ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 
 				primary m212235 'в т.ч. положительные курсовые разницы' outer=2341 groups=КУРС vgrp=';КУРС;' olap=fin 
 				primary m212236 'в т.ч. отрицательные курсовые разницы' outer=2351 groups=КУРС minus vgrp=';КУРС;' olap=fin 
 			sum 2300 'Прибыль (убыток) до налогообложения' groups=ПН11 olap=finrez sap-region=BUH sap-form=002 sap-use 
-				primary 2410 'Текущий налог на прибыль' groups='ЧП11 ФР11' minus olap=finrez sap-region=BUH sap-form=002 sap-use 
-				primary 2421 'в т.ч. постоянные налоговые обязательства (активы)' olap=finrez sap-region=BUH sap-form=002 sap-use 
-				primary 2430 'Изменение отложенных налоговых обязательств' groups='ЧП11 ФР11' minus olap=fin sap-region=BUH sap-form=002 sap-use 
-				primary 2450 'Изменение отложенных налоговых активов' groups='ЧП11 ФР11' olap=fin sap-region=BUH sap-form=002 sap-use 
-				primary 2460 'Прочее' groups='ЧП11 ФР11' minus olap=fin sap-region=BUH sap-form=002 sap-use 
 			sum 2400 'Чистая прибыль (убыток)' groups=ЧП11 measure='/dir120711/' sap-region=BUH sap-form=002 sap-use olap=fin 
 			title 250 'СПРАВОЧНО:' outer=2500 sap-region=BUH sap-form=002 sap-use 
 				primary 2510 'Результат от переоценки внеоборотных активов, не включаемый в чистую прибыль (убыток) (+/-)' groups=ФР11 sap-region=BUH sap-form=002 sap-use olap=finrez 

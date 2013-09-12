@@ -7,7 +7,7 @@
 ####      Заданное имя класса                                                                   ####
 ####      Исполнитель                                : local\comdiv                             ####
 ####      ID строки в БД                             : 8838                                     ####
-####      Максимальная версия строк в форме          : 2013-09-10 11:12:41                      ####
+####      Максимальная версия строк в форме          : 2013-09-11 13:39:22                      ####
 ####                                                                                            ####
 ####      Обнаружены зависимости от других форм                                                 ####
 ####              frm : f110                                                                    ####
@@ -52,27 +52,27 @@ namespace demo.import.forms
 				primary 210 'Сырье собственного производства' olap=tmc 
 				sum 220 'Отходы возвратные' 
 					primary 221 'Отходы возвратные основн. пр-ва' olap=tmc 
-					primary 225 'в т.ч. ЦТНП' nosum viewforgroup='CALC_OCM' olap=tmc 
-					primary 222 'Отходы возвратные вспом. пр-ва' 
-					sum 260 'в т. ч. Бракованная продукция' outer=226 nosum viewforgroup='CALC_OCM' 
-						formula 261 'Текущий период' viewforgroup='CALC_OCM'  : (
+					primary 225 'в т.ч. ЦТНП' nosum viewforgroup='CALC_OCM' olap=tmc activecol=Pd 
+					primary 222 'Отходы возвратные вспом. пр-ва' activecol='Rd, Pd' 
+					sum 260 'в т. ч. Бракованная продукция' outer=226 nosum viewforgroup='CALC_OCM' activecol=Pd 
+						formula 261 'Текущий период' viewforgroup='CALC_OCM' activecol=Pd  : (
 							f.If ( colin ( "Rd" ), { $z4201470@SUMMA?  }, { 
 f.If ( colin ( "Pd" ), { $z4201780@SUMMA? + $z4101820@SUMMA? } )
 } )
 						)
-						primary 262 'Прошлый период' viewforgroup='CALC_OCM' 
-						formula 263 'Справочно: расходы прошлых лет' nosum viewforgroup='CALC_OCM'  : (
+						primary 262 'Прошлый период' viewforgroup='CALC_OCM' activecol=Pd 
+						formula 263 'Справочно: расходы прошлых лет' nosum viewforgroup='CALC_OCM' activecol=Pd  : (
 							f.If ( colin ( "Pd" ), { $f11031351@Б1? } )
 						)
+					primary 265 'Лом цветных металлов в производство' measure=26 nosum viewforgroup='CALC_OCM' activecol=Pd 
+					primary 270 'Неликвидная продукция' nosum activecol=Pd 
 				primary 230 'Отходы для реализации (ф.4 стр. 2.3 "продажа отходов собственного производства")' olap=tmc 
 				primary 240 'Прочие отходы для реализации' olap=tmc 
-				sum 250 'Отходы возвратные' viewforgroup='DIV_CAB' olap=tmc 
-					primary 251 'Из производства (10.06)' viewforgroup='DIV_CAB' 
-					primary 252 'Перемещение на складе (10.07)' viewforgroup='DIV_CAB' 
-					primary 253 'В переработку сторонней организации (23)' nosum viewforgroup='DIV_CAB' 
-					primary 254 'Для переработки в осн.производстве  (10.06)' viewforgroup='DIV_CAB' 
-				primary 265 'Лом цветных металлов в производство' measure=26 viewforgroup='CALC_OCM' 
-				primary 270 'Неликвидная продукция' 
+				sum 250 'Отходы возвратные в переработку' viewforgroup='DIV_CAB,CALC_OCM' olap=tmc 
+					primary 251 'Из производства (10.06)' viewforgroup='DIV_CAB,CALC_OCM' 
+					primary 252 'Перемещение на складе (10.07)' viewforgroup='DIV_CAB,CALC_OCM' 
+					primary 253 'В переработку сторонней организации (23)' nosum viewforgroup='DIV_CAB,CALC_OCM' 
+					primary 254 'Для переработки в осн.производстве  (10.06)' viewforgroup='DIV_CAB,CALC_OCM' 
 			primary 1100 '10.71 "Сырье и отходы в переработке (металл)"' outer=300 olap=tmc 
 			primary 200 '10.20 "Покупные полуфабрикаты и комплектующие изделия"' outer=400 olap=tmc 
 			sum 500 'Вспомогательные материалы' olap=tmc 
