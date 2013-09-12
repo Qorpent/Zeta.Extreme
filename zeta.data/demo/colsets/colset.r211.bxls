@@ -1,0 +1,27 @@
+namespace demo.colsets
+
+	colset r211
+		col Б1 "Факт PERIOD YEAR" year=-1
+		col Б1 "Утвержд. ТПФП YEAR" period=301
+		col PLANSNG	"План PERIOD YEAR"
+		Факт I пг 2013
+		Факт II кв. 2013
+		col Ok "Ост. на конец периода ENDDATE" year=-1 period=4
+		col On "Ост. На начало периода STARTDATE"
+		col PdOSV "Начислено ОСВ PERIOD YEAR"
+		col Pd	"Начислено PERIOD YEAR"
+		col RdOSV	"Списано ОСВ PERIOD YEAR"
+		col Rd	"Списано PERIOD YEAR"
+		col Ok	"Ост. на конец периода ENDDATE"		
+		col DELTA	"Изм-е PERIOD YEAR"
+		col PdVO	 "в т.ч. Начислено PERIOD YEAR вн. об."
+		col RdVO	 "в т.ч. Списано PERIOD YEAR вн. об."		
+		col ORn	"Резервы Ост. на STARTDATE"		
+		col ORk	"Резервы Ост. на ENDDATE"		
+
+	
+	
+	
+		
+		
+	
