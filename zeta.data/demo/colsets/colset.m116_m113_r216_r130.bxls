@@ -1,12 +1,15 @@
 namespace demo.colsets
 
-	colset r130
+	colset m116
 		col Ok "Ост. на конец периода ENDDATE" year=-1 period=4		
 		col On "Ост. На начало периода STARTDATE"
 		col Pd "Начислено PERIOD YEAR"
 		col Rd	"Списано PERIOD YEAR"
 		col Ok	"Ост. на конец периода ENDDATE"	
 		col DELTA	"Изм-е PERIOD YEAR"
+		
+		
+
 
 	
 	

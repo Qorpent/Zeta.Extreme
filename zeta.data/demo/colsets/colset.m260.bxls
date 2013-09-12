@@ -1,0 +1,18 @@
+namespace demo.colsets
+# включает в себя m217_m214, только здесь на 2 строки больше
+
+	colset m260 
+		col Б1 "Факт PERIOD YEAR" year=-1 
+		col Б1 "Утвержд. ТПФП YEAR" period=301
+		col PLANSNG "План PERIOD YEAR" 
+		col Б1 "Факт PERIOD YEAR"
+		col Б1 "Факт PERIOD YEAR" period=-402 forperiods="2,3,4"
+		col CONTRKVART2 "Контр. кварт. = 0" forperiods="2" formula=(
+			@Б1?-@Б1.P-402?-@Б1.P1?			
+		)
+		col CONTRKVART3 "Контр. кварт. = 0" forperiods="3" formula=(
+			@Б1.P3? - @Б1.P43? - @Б1.P42? - @Б1.P1?			
+		)
+		col OTKLPLANSNG "Откл. от плана PERIOD YEAR" year=-1 
+		col OTKLPLANSNGP "Откл. от плана PERIOD YEAR %" 
+		col CONTROBSNG "Контроль оборотов [=0]" 
