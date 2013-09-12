@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Qorpent.Dot;
+using Qorpent.Graphs.Dot;
+using Qorpent.Graphs.Dot.Types;
 
 namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
     /// <summary>

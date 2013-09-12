@@ -6,5 +6,5 @@ pkg zeta.dev level=auth
 	load zdev_export_tree_form.tpl.html
 	load zdev_export_dep_dot.tpl.html
 	load zdev_export_fdep_dot.tpl.html
-	load zdev_formula_to_primary.tpl.html
+	load zdev_transfer_data.tpl.html
 	load zdev_debug_query.tpl.html

@@ -5,6 +5,9 @@
 namespace demo.import.meta
 	class periods
 
+        export period
+        element period
+
 		set category='m'
 			period 11 'янв.' months=1 start='1899-01-01' finish='1899-01-31'
 			period 12 'фев.' months=1 start='1899-02-01' finish='1899-02-28'
