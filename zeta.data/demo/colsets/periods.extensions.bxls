@@ -1,22 +1,32 @@
+~class demo.import.meta.periods abstract=true prototype=periods
+
 class demo.meta.periods "Нормализованные периоды"
 	import demo.import.meta.periods
 	~period -402 'Ближайший квартал' formula = '2=42,3=43,4=44'
 	set ui=1
 		set uicat="Месяцы"
-			+period 11 
-			+period 12 
-			+period 13 
-			+period 14 
-			+period 15 
-			+period 16 
-			+period 17 
-			+period 18 
-			+period 19 
-			+period 110 
-			+period 111
-			+period 112
+			+period 11 fullname="Январь"
+			+period 12 fullname="Февраль"
+			+period 13 fullname="Март" 
+			+period 14 fullname="Апрель"
+			+period 15 fullname="Май" 
+			+period 16 fullname="Июнь" 
+			+period 17 fullname="Июль" 
+			+period 18 fullname="Август" 
+			+period 19 fullname="Сентябрь" 
+			+period 110 fullname="Октябрь" 
+			+period 111 fullname="Ноябрь"
+			+period 112 fullname="Декабрь"
+		set uicat="С начала года"
+			+period 1 fullname="I кв"
+			+period 2 fullname="II пг"
+			+period 3 fullname="9 мес" 
+			+period 4 fullname="Год"
+			
 			
 class demo.ui.periods
-	include demo.meta.periods body
+	include all periods body
 		where ui=1
-			
+		groupby uicat as=periodgroup with=title
+		select code=true fullname=name 
+		

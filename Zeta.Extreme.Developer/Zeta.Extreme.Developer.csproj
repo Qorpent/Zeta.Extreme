@@ -17,6 +17,7 @@
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\DebugQueryAction.cs" />
     <Compile Include="Actions\DropCacheAction.cs" />
+    <Compile Include="Actions\ExportColumns.cs" />
     <Compile Include="Actions\ExportDependencyDot.cs" />
     <Compile Include="Actions\DependencyGraphAction.cs" />
     <Compile Include="Actions\ExportPeriods.cs" />
@@ -46,7 +47,8 @@
     <Compile Include="DataMigrations\TransferRecord.cs" />
     <Compile Include="Debugger\QueryGraphBuilder.cs" />
     <Compile Include="DeveloperStartUp.cs" />
-    <Compile Include="MetaStorage\Periods\PeriodsExporter.cs" />
+    <Compile Include="MetaStorage\ColumnExporter.cs" />
+    <Compile Include="MetaStorage\PeriodsExporter.cs" />
     <Compile Include="MetaStorage\Tree\AttributeType.cs" />
     <Compile Include="MetaStorage\Tree\BSharpTreeExporter.cs" />
     <Compile Include="MetaStorage\Tree\BSharpXmlExporter.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="Actions\GetElementsMapAction.cs" />
     <Compile Include="Model\ParameterDescriptor.cs" />
     <Compile Include="Scripting\CleanCommand.cs" />
+    <Compile Include="Scripting\GenerateColumns.cs" />
     <Compile Include="Scripting\GenerateDictCommand.cs" />
     <Compile Include="Scripting\GenerateFormActionBase.cs" />
     <Compile Include="Scripting\GenerateFormCommand.cs" />

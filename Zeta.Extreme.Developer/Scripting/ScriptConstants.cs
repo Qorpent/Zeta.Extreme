@@ -4,6 +4,11 @@
     /// </summary>
     public static class ScriptConstants {
         /// <summary>
+        /// Команда экспорта колонок
+        /// </summary>
+        public const string EXPORT_COLUMNS_COMMAND = "zdev/exportcolumns";
+
+        /// <summary>
         /// Комманда экспорта форм
         /// </summary>
         public const string GENERATE_FORM_COMMAND = "zdev/exporttree";

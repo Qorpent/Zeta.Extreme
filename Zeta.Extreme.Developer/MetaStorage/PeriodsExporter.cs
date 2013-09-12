@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.SqlSupport;
 
-namespace Zeta.Extreme.Developer.MetaStorage.Periods
+namespace Zeta.Extreme.Developer.MetaStorage
 {
 	/// <summary>
 	/// Экспортер периодов
@@ -35,7 +34,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Periods
 #################################################################################
 ##     ЭКСПОРТ ПЕРИОДОВ ИЗ БД ECO ПО СОСТОЯНИЮ НА  {0}       
 #################################################################################
-namespace {1}
+namespace {1} prototype='meta'
 	class {2}
 ",srcperiods.Select(_=>_.Version).Max().ToString("yyyy-MM-dd HH:mm:ss"), Namespace,ClassName);
 		    sb.Append(@"

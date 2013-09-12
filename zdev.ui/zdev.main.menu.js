@@ -117,6 +117,10 @@ _.widget.register({
 		        title: "Экспорт периодов",
 		        href: './zdev/exportperiods.string.qweb',
 		    },
+		     {
+		         title: "Экспорт периодов",
+		         href: './zdev/exportcolumns.string.qweb',
+		     },
 		    {
 		        title: "График зависимостей формы",
 		        onclick: {
