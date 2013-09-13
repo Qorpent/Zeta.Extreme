@@ -7,7 +7,7 @@
 ####      Заданное имя класса                                                                   ####
 ####      Исполнитель                                : local\comdiv                             ####
 ####      ID строки в БД                             : 1624                                     ####
-####      Максимальная версия строк в форме          : 2013-09-04 17:01:38                      ####
+####      Максимальная версия строк в форме          : 2013-09-11 13:17:41                      ####
 ####                                                                                            ####
 ####      Обнаружены зависимости от других форм                                                 ####
 ####              frm : m112                                                                    ####
@@ -22,8 +22,8 @@
 namespace demo.import.forms
 	class m214 'Финансовые результаты (форма № 4)' formcode=m214 stopinterpolate=all
 		import tree
-		dependon ^m112
 		dependon ^m212
+		dependon ^m112
 		dependon ^m260
 		dependon ^s140
 		dependon ^r211
@@ -61,17 +61,22 @@ namespace demo.import.forms
 				primary 02012 'комиссионное вознаграждение' outer=2.12 
 				primary 02014 'продажа прочей продукции, работ, услуг' outer=2.13 
 			formula 029 'Валовая прибыль' outer=3  formula=(
-				f.If ( year > 2010, { $m1122100? } , { $m212029? } )
+				f.If ( year > 2010, { $m214010? - $m214020? } , { $m212029? } )
 			)
-				formula 030 'Расходы на продажу' outer=4  : (
+				formula 030 'Расходы на продажу' outer=4  formula=(
 					f.If ( year>2010, { $m1122210? } , { $m212030? } )
 				)
-				formula 040 'Управленческие расходы' outer=5  : (
+					primary m1122210 'Расходы на продажу' outer=2210 groups='ПП11 ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 
+				formula 040 'Управленческие расходы' outer=5  formula=(
 					f.If ( year>2010, { $m1122220? } , { $m212040? } )
 				)
+					primary m1122220 'Управленческие расходы' outer=2220 groups='ПП11 ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 
 			formula 050 'Прибыль (убыток) от продаж' outer=6  formula=(
-				f.If ( year>2010, { $m1122200? } , { $m212050? } )
+				f.If ( year>2010, { $m214029? - $m214040? - $m214030? } , { $m212050? } )
 			)
+				primary m1122310 'Доходы от участия в других организациях' outer=2310 groups='ПН11 ЧП11 ФР11' sap-region=BUH sap-form=002 sap-use 
+				primary m1122320 'Проценты к получению' outer=2320 groups='ПН11 ЧП11 ФР11' sap-region=BUH sap-form=002 sap-use 
+				primary m1122330 'Проценты к уплате' outer=2330 groups='ПН11 ЧП11 ФР11' measure='/dir120711/' minus sap-region=BUH sap-form=002 sap-use 
 				formula 060 'Проценты к получению' outer=7  : (
 					f.If ( year>2010, { $m1122320? } , { $m212060? } )
 				)
@@ -444,8 +449,13 @@ namespace demo.import.forms
 					primary 11.17.6_357 'страхование груза (отгрузка ООО "УГМК-Сталь")' outer=11.17.6 
 					primary 11.17.7_357 'расходы, не давшие производства' outer=11.17.7 
 			formula 140 'Прибыль (убыток) до налогообложения' outer=12  formula=(
-				f.If ( year>2010, { $m1122300? } , { $m212140? } )
+				f.If ( year>2010, { $m214050? + $m214060? - $m214070? + $m214080? + $m214090? - $m214100? } , { $m212140? } )
 			)
+				primary m1122410 'Текущий налог на прибыль' outer=2410 groups='ЧП11 ФР11' minus olap=finrez sap-region=BUH sap-form=002 sap-use 
+				primary m1122421 'в т.ч. постоянные налоговые обязательства (активы)' outer=2421 olap=finrez sap-region=BUH sap-form=002 sap-use 
+				primary m1122430 'Изменение отложенных налоговых обязательств' outer=2430 groups='ЧП11 ФР11' minus olap=fin sap-region=BUH sap-form=002 sap-use 
+				primary m1122450 'Изменение отложенных налоговых активов' outer=2450 groups='ЧП11 ФР11' olap=fin sap-region=BUH sap-form=002 sap-use 
+				primary m1122460 'Прочее' outer=2460 groups='ЧП11 ФР11' minus olap=fin sap-region=BUH sap-form=002 sap-use 
 				formula 141 'Отложенные налоговые активы' outer=12.1  : (
 					f.If ( year>2010, { $m1122450? } , { $m212141? } )
 				)
@@ -462,7 +472,7 @@ namespace demo.import.forms
 					f.If ( year<2011, { $m212160? } )
 				)
 			formula 190 'Чистая прибыль (убыток)' outer=12.6  formula=(
-				f.If ( year>2010, { $m1122400? } , { $m212190? - $m212160? } )
+				f.If ( year>2010, {  $m214140? - $m214150? + $m214141? - $m214142? - $m214180? } , { $m212190? - $m212160? } )
 			)
 				formula 192 'Результат от прочих операций, не включаемый в чистую прибыль (убыток) (+/-)'  : (
 					f.If ( year>2010, { $m1122520? } , { $m112910? } )
@@ -471,9 +481,9 @@ namespace demo.import.forms
 					f.If ( year>2010, { $m1122510? } , { $m212160? } )
 				)
 			formula 195 'Совокупный финансовый результат' outer=12.8  : (
-				f.If ( year>2010, { $m1122500? } , { $m212190? + $m212160? } )
+				f.If ( year>2010, { $m214190? - $m214191? - $m214192? } , { $m212190? + $m212160? } )
 			)
-			controlpoint 200 'ПРОВЕРКА формы "Финансовые результаты"' outer=13 
+			sum 200 'ПРОВЕРКА формы "Финансовые результаты"' outer=13 
 				formula 210 '[выручка от продаж ф. № 2 ФО] - [выручка от продаж ф. № 4]'  : (
 					f.If ( year>2010, { $m1122110? - $m214010? } , { $m212010? - $m214010? } )
 				)
@@ -503,10 +513,10 @@ namespace demo.import.forms
 				)
 			controlpoint m112800 'ПРОВЕРКА формы "Отчет о ПиУ (версии 2011)"' outer=800 sap-region=BUH sap-form=002 sap-use 
 				controlpoint m112810 '[стр. 2500 "Совокупный финансовый результат" ] - [изменение строки 1372 бухгалтерского баланса  "Нераспределенная прибыль текущего периода] = 0' outer=810 nodosum sap-region=BUH sap-form=002 sap-use  : (
-					f.If ( ( ismonth and not periodin( 11 ) ) or ( periodin (42,43,44,444,446) ) , { $m1122500? + $m1124020? - $m1111372@DELTA? } , { f.round ( $m1122500?  + $m1124020? - $m1111372@Б2? ) } )
+					f.If ( ( ismonth and not periodin( 11 ) ) or ( periodin (42,43,44,444,446) ) , { $m214195? + $m1124020? - $m1111372@DELTA? } , { f.round ( $m214195?  + $m1124020? - $m1111372@Б2? ) } )
 				)
 				controlpoint m112815 '[стр. 2500 "Совокупный финансовый результат" ] - [стр. 401.1 Изменение стр. 2500] - [изменение стр. 1370 бухгалтерского баланса "Нераспределеннная прибыль (непокрытый убыток)] = 0' outer=815 olap=finrez  : (
-					f.round ( $m1122500? - $m2124011? - $m1111370@DELTA? + $m1124020? + $m1124020? )
+					f.round ( $m214195? - $m2124011? - $m1111370@DELTA? + $m1124020? + $m1124020? )
 				)
 				controlpoint m112820 '[начисленный налог на прибыль в отчете по налогам за вычетом корректива] - [текущий налог на прибыль] = 0' outer=820 olap=finrez  : (
 					$m220110@Pd? - $m220110@Pd_korr? - $m1122410?

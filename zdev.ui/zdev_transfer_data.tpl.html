@@ -2,42 +2,42 @@
     <form action="./zdev/formulatoprimary.xml.qweb"  target="_blank">
         <fieldset>  
             <label>Код формулы</label>
-            <input class="fill-modal" name="root" required 
+            <input class="fill-modal" name="from" required 
                    placeholder="Укажите код строки, по которой вычисляются значения" 
                    title="Код исходной строки, вычисленное значение по которой должно быть сохранено" 
                 />
             <label>Код первичной строки</label>
-            <input class="fill-modal" name="target" 
+            <input class="fill-modal" name="to" 
                    placeholder="Укажите код целевой строки (если отличается от формулы)"
                    title="Код целевой строки, в которую происходит прокачка, по умолчанию - совпадает с исходной" 
                 />
             <label>Коды колонок через запятую</label>
-            <input class="fill-modal" name="columns" required  
+            <input class="fill-modal" name="col" required  
                    placeholder="Обязательно, система сама не в состоянии вычислить набор колонок"
                    title="Колонки, по которым производится прокачка, обязательно указать вручную,
                  так как система не в состоянии проследить использование формулы в колсетах"
                 />
             <label>Года через запятую</label>
-            <input class="fill-modal" name="years"   
+            <input class="fill-modal" name="year"   
                    placeholder="Если не указано - будет рассчитано автоматически"
                    title="Года, по которым производится прокачка данных, если не указано - система
                     пытается рассчитать набор необходимых для перекачки годов
                 "
                 />
             <label>Периоды через запятую</label>
-            <input class="fill-modal" name="periods"   placeholder="Если не указано - будет рассчитано автоматически"
+            <input class="fill-modal" name="period"   placeholder="Если не указано - будет рассчитано автоматически"
                    title="Периоды, по которым производится прокачка данных, если не указано - система
                     пытается рассчитать набор необходимых для перекачки периодов
                 "
                 />
             <label>ID объектов через запятую</label>
-            <input class="fill-modal" name="objects"   placeholder="Если не указано - будет рассчитано автоматически"
+            <input class="fill-modal" name="obj"   placeholder="Если не указано - будет рассчитано автоматически"
                    title="Объекты, по которым производится прокачка данных, если не указано - система
                     пытается рассчитать набор необходимых для перекачки объектов
                 "
                 />
             <label>Код "пользователя"</label>
-            <input class="fill-modal" name="usercode"   placeholder="transfer"
+            <input class="fill-modal" name="usr"   placeholder="transfer"
                  title="Условный код пользователя сопоставляемый ячейкам, может идентифицировать сеансы переноса
                 "
                 />

@@ -320,8 +320,35 @@ namespace Zeta.Extreme.Developer.DataMigrations {
 				return YearPeriodObjectCount * ColumnCodes.Length;
 			}
 		}
+        /// <summary>
+        /// Признак необходимости выполнения переноса
+        /// </summary>
+        [Serialize]
+        public bool Execute { get; set; }
+        /// <summary>
+        /// Признак необходимости предварительной проверки данных на изменение
+        /// </summary>
+        [Serialize]
+	    public bool ChangedOnly { get; set; }
 
-		private int EvalCount(string q)
+        /// <summary>
+        /// Указание сделать по итогу переноса исходную строку первичной
+        /// </summary>
+        [Serialize]
+        public bool MakeSourcePrimary { get; set; }
+
+        /// <summary>
+        /// Указание на то, что исходную строку следует рассматривать как сумму
+        /// </summary>
+        [Serialize]
+	    public bool TreatSourceAsSum { get; set; }
+        /// <summary>
+        /// Указание на то, что исходную строку следует рассматривать как формулу
+        /// </summary>
+        [Serialize]
+	    public bool TreatSourceAsFormula { get; set; }
+
+	    private int EvalCount(string q)
 		{
 			using (var c = Application.Current.DatabaseConnections.GetConnection("Default"))
 			{

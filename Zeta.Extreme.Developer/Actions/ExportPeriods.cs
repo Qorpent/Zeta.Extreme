@@ -1,6 +1,6 @@
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
-using Zeta.Extreme.Developer.MetaStorage.Periods;
+using Zeta.Extreme.Developer.MetaStorage;
 
 namespace Zeta.Extreme.Developer.Actions {
 	/// <summary>
@@ -19,6 +19,7 @@ namespace Zeta.Extreme.Developer.Actions {
 		/// </summary>
 		[Bind(Default="import")]
 		public string Namespace { get; set; }
+
 		/// <summary>
 		/// 
 		/// </summary>

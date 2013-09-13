@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
-using Qorpent.Dot;
-using Qorpent.Serialization;
-using Qorpent.Serialization.Graphs;
+using Qorpent.Graphs;
+using Qorpent.Graphs.Dot;
+using Qorpent.Graphs.Dot.Types;
 using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 
@@ -47,10 +47,7 @@ namespace Zeta.Extreme.Developer.Debugger
             var session = new Session();
             var realquery = session.Register(_query);
             session.WaitEvaluation();
-            var graph = new Graph();
-            graph.DefaultNode = new Node {FontSize = 10};
-            graph.RankDir = RankDirType.RL;
-            graph.FontSize = 8;
+            var graph = new Graph {DefaultNode = new Node {FontSize = 10}, RankDir = RankDirType.RL, FontSize = 8};
             var visited = new List<IQuery>();
             graph.AddElements(GetQueryElementsTree(realquery,null,visited));
             return graph;

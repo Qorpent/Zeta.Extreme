@@ -130,14 +130,15 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 				return "Строка не является формулой";
 			}
 			IList<Query> rootresults = new List<Query>();
-			foreach (var c in Colset)
-			{
-				var q = new Query(r.Code, c.Code, ObjId, c.Year, c.Period);
-				q = (Query)DataSession.GetUnderlinedSession().Register(q);
-				q.GetResult();
-				rootresults.Add(q);
-			}
-			if (r.IsFormula) {
+		    if (null != Colset) {
+		        foreach (var c in Colset) {
+		            var q = new Query(r.Code, c.Code, ObjId, c.Year, c.Period);
+		            q = (Query) DataSession.GetUnderlinedSession().Register(q);
+		            q.GetResult();
+		            rootresults.Add(q);
+		        }
+		    }
+		    if (r.IsFormula) {
 
 				return GetFormulaDependency(r, child,rootresults);
 			}

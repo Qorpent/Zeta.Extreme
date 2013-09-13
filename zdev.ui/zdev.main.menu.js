@@ -117,6 +117,10 @@ _.widget.register({
 		        title: "Экспорт периодов",
 		        href: './zdev/exportperiods.string.qweb',
 		    },
+		     {
+		         title: "Экспорт периодов",
+		         href: './zdev/exportcolumns.string.qweb',
+		     },
 		    {
 		        title: "График зависимостей формы",
 		        onclick: {
@@ -141,7 +145,7 @@ _.widget.register({
 		        onclick: {
 		            modal: {
 		                title: "Скрипт переноса формулы в первичную строку",
-		                template: 'zdev_formula_to_primary',
+		                template: 'zdev_transfer_data',
 		                width: 600,
 		            },
 		        },

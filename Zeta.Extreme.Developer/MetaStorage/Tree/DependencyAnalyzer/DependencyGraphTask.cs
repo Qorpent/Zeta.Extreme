@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
-using Qorpent.Dot;
-using Qorpent.Serialization;
-using Qorpent.Serialization.Graphs;
+using Qorpent.Graphs;
+using Qorpent.Graphs.Dot;
 using Zeta.Extreme.Model.Inerfaces;
 
 namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
