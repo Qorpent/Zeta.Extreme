@@ -1,0 +1,29 @@
+namespace demo.colsets
+# 
+	colset m111 
+		col Б1 "На STARTDATE" year=-1 period=4
+		col Б2 "На ENDDATE" year=-1 period=4
+		col REVISION "Ревизия на ENDDATE"
+		col REVISION "Ревизия нар. итогом PERIOD YEAR" period=1
+		col Б1 "На ENDDATE"
+		# ??????
+		col Б2 "На ENDDATE" 
+		col DELTA	"DELTA PERIOD YEAR"
+		# ??????
+		col IZM2 "Изменение за PERIOD YEAR" formula=(
+			@Б2.P-201? - @Б1.P-201?
+		)		
+		col Б1 "На нач. PERIOD YEAR" period=-402
+		col Б1 "На кон. PERIOD YEAR" period=-402
+		col DELTA "DELTA PERIOD YEAR" period=-402
+		
+			
+		
+		
+					
+		
+		
+		
+		
+		
+		
