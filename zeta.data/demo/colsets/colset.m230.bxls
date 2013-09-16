@@ -1,0 +1,15 @@
+namespace demo.colsets
+# 
+	colset m230 
+		col DZn "Деб. з-ть нач. PERIOD YEAR"  
+		col DZRn "Резервы нач.  PERIOD YEAR" 
+		col KZn "Кред. з-ть нач. PERIOD YEAR" 
+		col DZk "Деб. з-ть кон. PERIOD YEAR"
+		col DZRk "Резервы кон. PERIOD YEAR" 
+		col KZk "Кред. з-ть кон. PERIOD YEAR"
+		
+		
+					
+		
+		
+		
