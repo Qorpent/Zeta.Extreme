@@ -1,0 +1,21 @@
+namespace demo.colsets
+# 
+
+	colset r640 
+		col On "Ост. на STARTDATE" year=-1 period=3
+		col Ok "Ост. на ENDDATE" year=-1 
+		col On "Ост. ОСВ на STARTDATE"
+		col Pd "Приход PERIOD YEAR"
+		col Rd "Расход PERIOD YEAR"
+		col Ok "Ост. ОСВ на ENDDATE"
+	
+	
+	
+	 
+
+	
+	
+	
+		
+		
+	
