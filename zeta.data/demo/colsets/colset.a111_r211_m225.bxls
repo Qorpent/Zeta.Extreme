@@ -1,4 +1,5 @@
 namespace demo.colsets
+# в m225 нет двух последних колонок 
 
 	colset a111 
 		col Ok "Ост. на конец периода ENDDATE" year=-1 period=4
