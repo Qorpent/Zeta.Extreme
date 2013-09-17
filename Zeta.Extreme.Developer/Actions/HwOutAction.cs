@@ -6,15 +6,13 @@ namespace Zeta.Extreme.Developer.Actions
     /// <summary>
     /// Возвращает строку Hello World
     /// </summary>
-    [Action("zdev.hwout", Help = "Проверка роли у пользователя22")]
+    [Action("zdev.hwout", Help = "Выодит строку HelloWorld и строку")]
     public class HwOutAction : ActionBase
     {
         [Bind(Required = true)]
         private string usr = "";
-        //[Bind(Required = true)]
-        //private string role = "";
-        /// <summary>
-        /// Тарама папаамамапама
+      /// <summary>
+        /// MainProcess
         /// </summary>
         /// <returns></returns>
         protected override object MainProcess()
