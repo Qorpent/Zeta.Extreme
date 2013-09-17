@@ -1,0 +1,14 @@
+namespace demo.colsets
+# 
+
+	colset r510 
+		col "Ед. изм."
+		col On "На начало PERIOD YEAR" # кастом формула 
+		col Pd "Привлечено PERIOD YEAR" # кастом формула 
+		col Rd "Погашено PERIOD YEAR" # кастом формула 
+		col Ok "На конец PERIOD YEAR" # кастом формула 
+	
+	
+	
+	
+	
