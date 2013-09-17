@@ -4,7 +4,7 @@ namespace Zeta.Extreme.Developer.Actions {
 	/// <summary>
 	/// Возвращает атрибуты колонок
 	/// </summary>
-	[Action("zdev.substattributes", Role = "DEVELOPER", Arm = "dev")]
+    [Action("zdev.substattributes", Role = "DEVELOPER", Arm = "dev", Help = "Возвращает строку Hello World")]
 	public class GetSubstAttributesAction : AnalyzerActionBase
 	{
 		/// <summary>
