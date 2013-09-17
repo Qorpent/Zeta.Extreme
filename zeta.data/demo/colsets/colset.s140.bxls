@@ -1,0 +1,27 @@
+namespace demo.colsets
+# 
+
+	colset s140 
+		col On "Ост. STARTDATE"
+		col Pd	"Начислено PERIOD YEAR"
+		col Rd	"Списано PERIOD YEAR"
+		col Ok "Ост. на ENDDATE" 
+		col ORn	"Резервы Ост. на STARTDATE"		
+		col ORk	"Резервы Ост. на ENDDATE"
+		col OSRn "С уч. рез. Ост. на ENDDATE" formula=(
+			@On? - @ORn?
+		)
+		col OSRn "С уч. рез. Ост. на STARTDATE" formula=(
+			@Ok? - @ORk?
+		)
+
+		
+		
+			
+
+	
+	
+	
+		
+		
+	
