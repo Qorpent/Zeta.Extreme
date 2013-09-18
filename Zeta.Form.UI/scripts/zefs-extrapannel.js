@@ -23,28 +23,25 @@
                 break;
         }
     };
-    $(window.zefs).on(window.zefs.handlers.on_objectsload, function() {
-        if (!$.isEmptyObject(window.zefs.myobjs)) {
-            if (zefs.api.getParameters() != null) {
-                var currentObj = zefs.api.getParameters()["obj"] || -1;
-            }
-            $.each(window.zefs.myobjs, function(i, obj) {
-                var name = obj.shortname || obj.name || "";
-                var l = $('<span class="label kuratorobj"/>');
-                l.attr("value", obj.id);
-                if (obj.id == currentObj) {
-                    l.addClass("currentobj");
-                }
-                var r = name.replace(/УГМК-?/, "").match(/"([^"]+)"/);
-                l.text(r != null ? r[1] : name);
-                l.click(function() { ChangeObject(obj.id) });
-                extrapannel.body.append(l);
-            });
-            extrapannel.body.show();
-        }
-    });
 
-    $(zefs).on(zefs.handlers.on_sessionload, function() {
+    var pannelInnit = function() {
+        if (zefs.api.getParameters() != null) {
+            var currentObj = zefs.api.getParameters()["obj"] || -1;
+        }
+        $.each(window.zefs.myform.currentSession.OverrideObjects || window.zefs.myobjs, function(i, obj) {
+            var name = obj.shortname || obj.name || obj.Name || "";
+            var l = $('<span class="label kuratorobj"/>');
+            l.attr("value", obj.id || obj.Id);
+            if (obj.id == currentObj || obj.Id == currentObj) {
+                l.addClass("currentobj");
+            }
+            var r = name.replace(/УГМК-?/, "").match(/"([^"]+)"/);
+            l.text(r != null ? r[1] : name);
+            l.click(function() { ChangeObject(obj.id || obj.Id) });
+            extrapannel.body.append(l);
+        });
+        extrapannel.body.show();
+
         $.each($('.kuratorobj'), function(i, kuratorobj) {
             $.ajax({
                 url:"zefs/getcurratorlockstate.json.qweb",
@@ -53,7 +50,16 @@
                 ChangeState($(kuratorobj), s);
             });
         });
-    })
+    };
+
+    $(window.zefs).on(window.zefs.handlers.on_objectsload, function() {
+        if (!!window.zefs.currentSession) pannelInnit();
+        else {
+            $(window.zefs).on(window.zefs.handlers.on_sessionload, function() {
+                pannelInnit();
+            });
+        }
+    });
 
     $(zefs).on(zefs.handlers.on_getlockload, function() {
         var current = $("span.currentobj");
