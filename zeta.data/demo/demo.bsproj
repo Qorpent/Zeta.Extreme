@@ -1,5 +1,5 @@
 project demo
-	Extension Zeta.Extreme.CompilerExtensions
+	#Extension Zeta.Extreme.CompilerExtensions
 	OutputDirectory .demo
 	GenerateGraph
 	Include
