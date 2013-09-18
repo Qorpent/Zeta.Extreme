@@ -12,10 +12,10 @@
 ####################################################################################################
 
 namespace demo.import.dicts
-	class dir_nal 'Налоги' formcode=NAL stopinterpolate=all
+	class dir_nal 'Налоги' formcode=NAL
 		import dict
 		export nal
-		item NAL 'Налоги' 
+		item NAL 'Налоги' stopinterpolate=all 
 			item groups 'Группы налогов' 
 			item 10101011011000110 'Федеральный налог на прибыль' groups='ACTNAL naltype_prib NALOG' active 
 			item 10101011012000110 'Федеральный налог на прибыль (пени)' groups='ACTNAL naltype_prib NALOG_PENI' active 

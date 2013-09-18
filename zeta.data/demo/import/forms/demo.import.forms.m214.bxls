@@ -20,7 +20,7 @@
 ####################################################################################################
 
 namespace demo.import.forms
-	class m214 'Финансовые результаты (форма № 4)' formcode=m214 stopinterpolate=all
+	class m214 'Финансовые результаты (форма № 4)' formcode=m214
 		import tree
 		dependon ^m212
 		dependon ^m112
@@ -28,7 +28,7 @@ namespace demo.import.forms
 		dependon ^s140
 		dependon ^r211
 		dependon ^m230
-		title m214 'Финансовые результаты (форма № 4)' showcode export OLAP_COLF=Б1 OLAP_COLP=PLAN 
+		title m214 'Финансовые результаты (форма № 4)' stopinterpolate=all showcode export OLAP_COLF=Б1 OLAP_COLP=PLAN 
 			sum 010 'Выручка от продаж' outer=1 
 				primary 01001 'продажа продукции' outer=1.1 
 				primary 01002 'продажа услуг по переработке' outer=1.2 

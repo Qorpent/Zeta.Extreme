@@ -12,9 +12,9 @@
 ####################################################################################################
 
 namespace demo.import.forms
-	class m218 'Расходы на продажу (форма № 8)' formcode=m218 stopinterpolate=all
+	class m218 'Расходы на продажу (форма № 8)' formcode=m218
 		import tree
-		sum m218 'Расходы на продажу (форма № 8)' showcode export 
+		sum m218 'Расходы на продажу (форма № 8)' stopinterpolate=all showcode export 
 			sum 100 'Расходы по транспортировке' 
 				sum 110 'Транспортировка ЖД транспортом' 
 					sum 111 'Услуги РЖД' 

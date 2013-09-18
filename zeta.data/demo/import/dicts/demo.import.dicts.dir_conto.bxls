@@ -12,10 +12,10 @@
 ####################################################################################################
 
 namespace demo.import.dicts
-	class dir_conto 'Счет хозяйственной операции' formcode=DIR_CONTO stopinterpolate=all
+	class dir_conto 'Счет хозяйственной операции' formcode=DIR_CONTO
 		import dict
 		export conto
-		title DIR_CONTO 'Счет хозяйственной операции' 
+		title DIR_CONTO 'Счет хозяйственной операции' stopinterpolate=all 
 			item ba003 '(003) Давальческое сырье' outer=003 linkconto='BA020_212' 
 			item ba006 '(06) Долгосрочные финансовые вложения' outer=06 
 			item ba020 '(20) Основное производство' outer=20 

@@ -27,7 +27,7 @@
 ####################################################################################################
 
 namespace demo.import.forms
-	class a111 'Бухгалтерский баланс (аналитика)' formcode=a111 stopinterpolate=all
+	class a111 'Бухгалтерский баланс (аналитика)' formcode=a111
 		import tree
 		dependon ^r115
 		dependon ^r130
@@ -42,7 +42,7 @@ namespace demo.import.forms
 		dependon ^m112
 		dependon ^r510
 		dependon ^r640
-		title a111 'Бухгалтерский баланс (аналитика)' 
+		title a111 'Бухгалтерский баланс (аналитика)' stopinterpolate=all 
 			formula 1000 'АКТИВ'  : (
 				$a1111100? + $a1111200?
 			)

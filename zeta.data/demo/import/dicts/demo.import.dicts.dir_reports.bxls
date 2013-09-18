@@ -12,10 +12,10 @@
 ####################################################################################################
 
 namespace demo.import.dicts
-	class dir_reports 'Справочник особых отчетов' formcode=DIR_REPORTS stopinterpolate=all
+	class dir_reports 'Справочник особых отчетов' formcode=DIR_REPORTS
 		import dict
 		export reports
-		title DIR_REPORTS 'Справочник особых отчетов' 
+		title DIR_REPORTS 'Справочник особых отчетов' stopinterpolate=all 
 			item _form 'ФОРМА' 
 			item _pres 'Презентация(граф)' 
 			item _pres_table 'Презентация(табл)' 

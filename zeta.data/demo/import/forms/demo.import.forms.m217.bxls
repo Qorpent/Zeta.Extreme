@@ -12,9 +12,9 @@
 ####################################################################################################
 
 namespace demo.import.forms
-	class m217 'Управленческие расходы (форма № 7)' formcode=m217 stopinterpolate=all
+	class m217 'Управленческие расходы (форма № 7)' formcode=m217
 		import tree
-		formula m217 'Управленческие расходы (форма № 7)' showcode  formula=(
+		formula m217 'Управленческие расходы (форма № 7)' stopinterpolate=all showcode  formula=(
 			$m2171000? + $m2172000? + $m2173000? + $m2174000? + $m2174500?
 		)
 			formula 1000 'РАЗДЕЛ А "РАСХОДЫ на УПРАВЛЕНИЕ"'  : (

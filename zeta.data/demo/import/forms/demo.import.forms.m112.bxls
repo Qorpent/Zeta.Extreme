@@ -12,9 +12,9 @@
 ####################################################################################################
 
 namespace demo.import.forms
-	class m112 'Прибыли и убытки (форма № 2 ФО) 2011' formcode=m112 stopinterpolate=all
+	class m112 'Прибыли и убытки (форма № 2 ФО) 2011' formcode=m112
 		import tree
-		title m112 'Прибыли и убытки (форма № 2 ФО) 2011' showcode OLAP_COLF=Б1 OLAP_COLP=Б1 export afdep=m111 sap-region=BUH sap-form=002 sap-use 
+		title m112 'Прибыли и убытки (форма № 2 ФО) 2011' stopinterpolate=all showcode OLAP_COLF=Б1 OLAP_COLP=Б1 export afdep=m111 sap-region=BUH sap-form=002 sap-use 
 			title 210 'Доходы и расходы от обычных видов деятельности' outer=2100 sap-region=BUH sap-form=002 sap-use 
 				primary 2110 'Выручка' groups='ВП11 ПП11 ПН11 ЧП11 ФР11' measure='/dir120711/' olap=fin sap-region=BUH sap-form=002 sap-use 
 				primary 2120 'Себестоимость продаж' groups='ВП11 ПП11 ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 

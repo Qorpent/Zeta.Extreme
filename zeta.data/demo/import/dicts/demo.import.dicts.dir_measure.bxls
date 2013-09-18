@@ -12,10 +12,10 @@
 ####################################################################################################
 
 namespace demo.import.dicts
-	class dir_measure 'Единицы измерения' formcode=dir120 stopinterpolate=all
+	class dir_measure 'Единицы измерения' formcode=dir120
 		import dict
 		export measure
-		title dir120 'Единицы измерения' 
+		title dir120 'Единицы измерения' stopinterpolate=all 
 			title 100 'Единицы длины' 
 				item 110 'Миллиметр'  : 'мм'
 				item 115 'Сантиметр' outer=120  : 'см'

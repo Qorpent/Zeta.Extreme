@@ -12,9 +12,9 @@
 ####################################################################################################
 
 namespace demo.import.forms
-	class m212 'Прибыли и убытки (форма № 2 ФО)' formcode=m212 stopinterpolate=all
+	class m212 'Прибыли и убытки (форма № 2 ФО)' formcode=m212
 		import tree
-		title m212 'Прибыли и убытки (форма № 2 ФО)' showcode 
+		title m212 'Прибыли и убытки (форма № 2 ФО)' stopinterpolate=all showcode 
 			title 000 'Доходы и расходы от обычных видов деятельности' 
 				primary 010 'Выручка от продаж' groups='ВП ПП ПН ЧП' vgrp=';ВП;ПП;ПН;ЧП;' 
 				primary 020 'Себестоимость продаж' groups='ВП ПП ПН ЧП' minus vgrp=';ВП;ПП;ПН;ЧП;' 

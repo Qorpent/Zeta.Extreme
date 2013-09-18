@@ -12,10 +12,10 @@
 ####################################################################################################
 
 namespace demo.import.dicts
-	class dir_naltype 'Виды налогов' formcode=NALTYPE stopinterpolate=all
+	class dir_naltype 'Виды налогов' formcode=NALTYPE
 		import dict
 		export naltype
-		item NALTYPE 'Виды налогов' 
+		item NALTYPE 'Виды налогов' stopinterpolate=all 
 			item 110 'Налог на прибыль' groups='naltype_prib' 
 			item 120 'Налог на имущество' groups='naltype_im' 
 			item 130 'Налог на доходы физических лиц' groups='naltype_ndfl' 

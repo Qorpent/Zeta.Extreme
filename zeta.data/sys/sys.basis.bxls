@@ -8,7 +8,7 @@ class thema abstract static
 class rowset abstract static
 	import global
 	
-class tree abstract static prototype=form
+class tree abstract static prototype=formdef
 	codemode=RootPrefix
 	import global
 	element autothema
