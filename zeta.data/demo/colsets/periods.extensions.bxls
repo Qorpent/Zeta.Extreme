@@ -21,6 +21,11 @@ class demo.meta.periods "Нормализованные периоды"
 			+period 2 fullname="II пг"
 			+period 3 fullname="9 мес" 
 			+period 4 fullname="Год"
+		set uicat="Промежуточные периоды"
+			+period 22 fullname="2 месяца"
+			+period 24 fullname="4 месяца"
+			+period 25 fullname="5 месяцев"
+			+period 27 fullname="7 месяцев"
 			
 			
 class demo.ui.periods
