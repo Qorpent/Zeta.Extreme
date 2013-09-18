@@ -1,6 +1,8 @@
 project demo
+	Extension Zeta.Extreme.CompilerExtensions
 	OutputDirectory .demo
 	GenerateGraph
 	Include
 		Path /sys/
 		Path /demo/
+	

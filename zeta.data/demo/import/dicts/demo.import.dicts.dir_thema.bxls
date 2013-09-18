@@ -12,10 +12,10 @@
 ####################################################################################################
 
 namespace demo.import.dicts
-	class dir_thema 'Глобальные параметры тем' formcode=DIR_THEMA stopinterpolate=all
+	class dir_thema 'Глобальные параметры тем' formcode=DIR_THEMA
 		import dict
 		export thema
-		title DIR_THEMA 'Глобальные параметры тем' 
+		title DIR_THEMA 'Глобальные параметры тем' stopinterpolate=all 
 			item balans2011 'Баланс (форма № 1 ФО)' rows=m111 roleprefix=FIN total 
 			item calc_ksgenat 'Калькуляция ксантогената' type=';CE_KSG;' 
 			item calc_ruda_pered 'Калькуляция добычи и обогащения (по переделам)' type=';CE_SCR;CE_MZR;' 

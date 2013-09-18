@@ -15,10 +15,10 @@
 ####################################################################################################
 
 namespace demo.import.forms
-	class z420 'Калькуляция слитков' formcode=z420 stopinterpolate=all
+	class z420 'Калькуляция слитков' formcode=z420
 		import tree
 		dependon ^z410
-		title z420 'Калькуляция слитков' OPS=z4202800 OPK=FIXKOL OFS=z4202800 OFK=KOL CALC_OP=z4202800 KMULT=1000 
+		title z420 'Калькуляция слитков' stopinterpolate=all OPS=z4202800 OPK=FIXKOL OFS=z4202800 OFK=KOL CALC_OP=z4202800 KMULT=1000 
 			title 1000 'Сырье, полуфабрикаты и основные материалы' 
 				sum 1100 'Остаток в незавершенном производстве' measure='/dir120420/' calcsum 
 					primary 1110 'Сплавы медные' measure='/dir120420/' 

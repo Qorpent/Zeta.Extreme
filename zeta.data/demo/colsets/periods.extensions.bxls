@@ -31,6 +31,6 @@ class demo.meta.periods "Нормализованные периоды"
 class demo.ui.periods
 	include all periods body
 		where ui=1
-		groupby uicat as=periodgroup with=title
+		groupby uicat
 		select code=true fullname=name 
 		

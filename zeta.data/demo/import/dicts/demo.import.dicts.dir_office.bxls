@@ -12,10 +12,10 @@
 ####################################################################################################
 
 namespace demo.import.dicts
-	class dir_office 'Должности' formcode=DIR_OFFICE stopinterpolate=all
+	class dir_office 'Должности' formcode=DIR_OFFICE
 		import dict
 		export office
-		title DIR_OFFICE 'Должности' 
+		title DIR_OFFICE 'Должности' stopinterpolate=all 
 			item of_1000 'Генеральный директор' outer=1000 
 			item of_2000 'Коммерческий директор' outer=2000 
 			item of_3000 'Технический директор' outer=3000 

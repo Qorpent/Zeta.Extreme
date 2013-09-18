@@ -12,10 +12,10 @@
 ####################################################################################################
 
 namespace demo.import.dicts
-	class dir_file_type 'Типы прикрепленных файлов формы' formcode=DIR_FILE_TYPES stopinterpolate=all
+	class dir_file_type 'Типы прикрепленных файлов формы' formcode=DIR_FILE_TYPES
 		import dict
 		export file_type
-		title DIR_FILE_TYPES 'Типы прикрепленных файлов формы' 
+		title DIR_FILE_TYPES 'Типы прикрепленных файлов формы' stopinterpolate=all 
 			item dir_file_type_balans 'Баланс (balans)' outer=balans 
 			item dir_file_type_changes 'Письмо с перераспределением (changes)' outer=changes 
 			item _corrective 'Письмо с коррективами (corrective)' outer=corrective 

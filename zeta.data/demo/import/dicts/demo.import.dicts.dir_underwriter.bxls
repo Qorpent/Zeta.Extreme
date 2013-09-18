@@ -12,10 +12,10 @@
 ####################################################################################################
 
 namespace demo.import.dicts
-	class dir_underwriter 'Подписывающие лица' formcode=DIR_UNDERWRITER stopinterpolate=all
+	class dir_underwriter 'Подписывающие лица' formcode=DIR_UNDERWRITER
 		import dict
 		export underwriter
-		title DIR_UNDERWRITER 'Подписывающие лица' 
+		title DIR_UNDERWRITER 'Подписывающие лица' stopinterpolate=all 
 			item und_gdir 'Генеральный директор' outer=GDIR extslot=ecodir assert 
 			item und_ruddir 'Директор по горному производству' outer=RUDDIR extslot=ecorud assert 
 			item und_tehdir 'Технический директор' outer=TEHDIR extslot=ecoteh assert 

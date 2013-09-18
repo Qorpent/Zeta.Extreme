@@ -12,10 +12,10 @@
 ####################################################################################################
 
 namespace demo.import.dicts
-	class dir_org_role 'Роль организации' formcode=DIR_ORG_ROLE stopinterpolate=all
+	class dir_org_role 'Роль организации' formcode=DIR_ORG_ROLE
 		import dict
 		export org_role
-		title DIR_ORG_ROLE 'Роль организации' 
+		title DIR_ORG_ROLE 'Роль организации' stopinterpolate=all 
 			item fincred 'Фин. кредитор' linkrole=FINDEB 
 			item findeb 'Фин. должник' linkrole=FINCRED 
 			item buyer 'Покупатель' linkrole=PROVIDER 

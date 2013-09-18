@@ -12,9 +12,9 @@
 ####################################################################################################
 
 namespace demo.import.forms
-	class r510 'Расшифровка кредитов и займов' formcode=r510 stopinterpolate=all
+	class r510 'Расшифровка кредитов и займов' formcode=r510
 		import tree
-		title r510 'Расшифровка кредитов и займов' usedetails 
+		title r510 'Расшифровка кредитов и займов' stopinterpolate=all usedetails 
 			sum 100 'Кредиты (займы)' 
 				primary 110 'Тело' 
 				primary 120 'Проценты' 

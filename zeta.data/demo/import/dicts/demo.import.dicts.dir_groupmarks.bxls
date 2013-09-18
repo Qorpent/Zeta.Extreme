@@ -12,10 +12,10 @@
 ####################################################################################################
 
 namespace demo.import.dicts
-	class dir_groupmarks 'Групповые метки' formcode=dir110 stopinterpolate=all
+	class dir_groupmarks 'Групповые метки' formcode=dir110
 		import dict
 		export groupmarks
-		title dir110 'Групповые метки' 
+		title dir110 'Групповые метки' stopinterpolate=all 
 			title dir_ez 'Элементы затрат' 
 				item dir_ez_100 'Сырье' 
 				item dir_ez_amort 'Амортизация' outer=amort 

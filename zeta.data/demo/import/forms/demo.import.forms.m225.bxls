@@ -12,9 +12,9 @@
 ####################################################################################################
 
 namespace demo.import.forms
-	class m225 'НДС по приобретенным ценностям' formcode=m225 stopinterpolate=all
+	class m225 'НДС по приобретенным ценностям' formcode=m225
 		import tree
-		sum m225 'НДС по приобретенным ценностям' showcode useosv 
+		sum m225 'НДС по приобретенным ценностям' stopinterpolate=all showcode useosv 
 			sum 100 'Текущие расходы' olap='_nds19' 
 				primary 110 '19.03 НДС по приобретенным материалам' 
 				primary 120 '19.04 НДС по работам и услугам' 

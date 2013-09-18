@@ -1,60 +1,59 @@
 namespace demo
+
 	+class demo.import.forms.m111 'map-biz-m111'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m111
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.m111
 		
 	+class demo.import.forms.m116 'map-biz-m116'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m116
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.m116
 		
 	+class demo.import.forms.m113 'map-biz-m113'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m116
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.m116
 		
 	+class demo.import.forms.a111 'map-biz-a111'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.a111
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.a111
 		
 	+class demo.import.forms.m260 'map-biz-m260'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m260
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.m260
 		
 	+class demo.import.forms.r211 'map-biz-r211'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.a111
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.a111
 		
 	+class demo.import.forms.r216 'map-biz-r216'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m116
-		
-	+class demo.import.forms.r216 'map-biz-r216'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m116
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.m116
+	
 		
 	+class demo.import.forms.m112 'map-biz-m112'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m112
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.m112
 		
 	+class demo.import.forms.m214 'map-biz-m214'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m217
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.m217
 		
 	+class demo.import.forms.m217 'map-biz-m217'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m217
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.m217
 		
 	+class demo.import.forms.m225 'map-biz-m225'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.a111
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.a111
 		
 	+class demo.import.forms.m230 'map-biz-m230'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m230
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.m230
 		
 	+class demo.import.forms.r115 'map-biz-r115'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m216
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.m116
 		
 	+class demo.import.forms.r510 'map-biz-r510'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.r510
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.r510
 		
 	+class demo.import.forms.r640 'map-biz-r640'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.r640
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.r640
 		
 	+class demo.import.forms.m220 'map-biz-m220'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m220
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.m220
 		
 	+class demo.import.forms.m224 'map-biz-m224'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m224
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.m224
 		
 	+class demo.import.forms.m250 'map-biz-m250'
-		autothema block=^demo.blocks.fin colset=^demo.colsets.m260
+		thema root=${formcode} block=^demo.blocks.fin colset=^demo.colsets.m260
 		
 	
 		
@@ -70,5 +69,13 @@ namespace demo
 		~class proizv 'map-own' owner=^demo.org.proizv 
 		
 		~class personal 'map-own' owner=^demo.org.personal
+		
+		
+		class themaindex "Индекс тем и автотем" prototype=themas
+			export themas
+			include all formdef body
+				where localname=thema
+				groupby block as=block
+				select root=true colset=true
 	
 	

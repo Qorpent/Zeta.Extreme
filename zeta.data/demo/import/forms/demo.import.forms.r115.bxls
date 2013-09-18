@@ -19,14 +19,14 @@
 ####################################################################################################
 
 namespace demo.import.forms
-	class r115 'Расшифровка ОС и НМА' formcode=r115 stopinterpolate=all
+	class r115 'Расшифровка ОС и НМА' formcode=r115
 		import tree
 		dependon ^r130
 		dependon ^m260
 		dependon ^m214
 		dependon ^a111
 		dependon ^m111
-		title r115 'Расшифровка ОС и НМА' 
+		title r115 'Расшифровка ОС и НМА' stopinterpolate=all 
 			sum 100 'Нематериальные активы' 
 				primary 110 'Нематериальные активы' 
 				formula 120 'Незаконченные операции по приобретению нематериальных активов'  : (

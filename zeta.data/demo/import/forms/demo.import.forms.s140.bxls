@@ -12,9 +12,9 @@
 ####################################################################################################
 
 namespace demo.import.forms
-	class s140 'Финансовые вложения' formcode=s140 stopinterpolate=all
+	class s140 'Финансовые вложения' formcode=s140
 		import tree
-		sum s140 'Финансовые вложения' 
+		sum s140 'Финансовые вложения' stopinterpolate=all 
 			sum 1000 'Долгосрочные финансовые вложения' 
 				sum 1100 'Паи и акции' 
 					primary 1110 'Паи' specialformview=casplit casbill='BA006_110' casform=FINACT specialreportview='report;std;casplit' usedetails 
