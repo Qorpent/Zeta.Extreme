@@ -1,7 +1,7 @@
 namespace demo.org
 
-	class node abstract
-	class role abstract
+	class node abstract prototype=node
+	class role abstract prototype=role
 
 	role leader abstract
 	role maincurator abstract

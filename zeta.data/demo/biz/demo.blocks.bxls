@@ -1,7 +1,7 @@
 namespace demo.blocks
 
-	class subsystem abstract
-	class block abstract
+	class subsystem abstract prototype=subsystem
+	class block abstract prototype=block
 		
 
 	subsystem eco

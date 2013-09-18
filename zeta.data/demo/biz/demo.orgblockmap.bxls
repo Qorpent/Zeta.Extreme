@@ -71,11 +71,15 @@ namespace demo
 		~class personal 'map-own' owner=^demo.org.personal
 		
 		
-		class themaindex "Индекс тем и автотем" prototype=themas
-			export themas
+		class themaindex "Индекс тем и автотем" prototype=bizindex
 			include all formdef body
 				where localname=thema
 				groupby block as=block
 				select root=true colset=true
+			include all subsystem
+			include all block
+			include all node
+			include all role
+			
 	
 	
