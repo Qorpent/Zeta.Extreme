@@ -1,0 +1,27 @@
+namespace demo.colsets
+# 
+
+	colset m224 
+		col Б1 "Доходы/расходы PERIOD YEAR" 
+		col NOB "Н/о база 18% PERIOD YEAR"
+		col NNOB "Н/о база 0% PERIOD YEAR"  
+		col NOB08 "Н/о база 8% PERIOD YEAR" 
+		col NOB10 "Н/о база 10% PERIOD YEAR" 
+		col NOB12 "Н/о база 12% PERIOD YEAR" 
+		col NOB20 "Н/о база 20% PERIOD YEAR" 
+		col CONTROLNDS "Контроль н/о базы"		
+		col NDSKORR "Уточн. НДС PERIOD YEAR"
+		col NDS "Сумма НДС PERIOD YEAR"
+		col SNDS1 "Всего с НДС PERIOD YEAR"
+		
+			
+
+	
+	
+	
+		
+		
+		
+								
+		
+	

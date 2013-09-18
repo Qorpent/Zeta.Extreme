@@ -1,6 +1,12 @@
 namespace demo
-	+class demo.import.forms.m111 'map-biz'
-		autothema block=^demo.blocks.fin
+	+class demo.import.forms.m111 'map-biz-m111'
+		autothema block=^demo.blocks.fin colset=^demo.colsets.m111
+		
+	+class demo.import.forms.m116 'map-biz-m116'
+		autothema block=^demo.blocks.fin colset=^demo.colsets.m116
+		
+	+class demo.import.forms.m113 'map-biz-m113'
+		autothema block=^demo.blocks.fin colset=^demo.colsets.m116
 		
 	namespace blocks
 

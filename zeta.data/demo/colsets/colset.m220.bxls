@@ -1,0 +1,24 @@
+namespace demo.colsets
+# 
+
+	colset m220 
+		col On "Ост. на STARTDATE"
+		col Pd	"Начислено PERIOD YEAR"
+		col Pd_korr "в т.ч. перерасчет за прошл. годы"
+		col Rd	"Уплачено PERIOD YEAR"
+		col Ok "Ост. на ENDDATE" 
+		
+		
+		
+					
+
+		
+		
+			
+
+	
+	
+	
+		
+		
+	
