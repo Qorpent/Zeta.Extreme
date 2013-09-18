@@ -8,7 +8,7 @@ namespace demo.colsets
 		col Б1 "Факт PERIOD YEAR"
 		col Б1 "Факт PERIOD YEAR" period=-402 forperiods="2,3,4"
 		col CONTRKVART2 "Контр. кварт. = 0" forperiods="2" formula=(
-			@Б1?-@Б1.P-402?-@Б1.P1?			
+			@Б1.P2?-@Б1.P-402?-@Б1.P1?			
 		)
 		col CONTRKVART3 "Контр. кварт. = 0" forperiods="3" formula=(
 			@Б1.P3? - @Б1.P43? - @Б1.P42? - @Б1.P1?			
