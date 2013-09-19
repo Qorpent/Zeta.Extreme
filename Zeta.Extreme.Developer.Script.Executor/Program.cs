@@ -25,7 +25,7 @@ namespace Zeta.Extreme.Developer.Script.Executor
 			var dict =cah.ParseDictionary(args);
 			var projname = dict["arg1"];
 			
-			var cls = SetupScriptDefinition(projname);
+			var cls = SetupScriptDefinition(projname,dict);
 			var script = SetupScript(cls);
 
 			var cr = SetupCredentials(dict, cah);
@@ -40,11 +40,15 @@ namespace Zeta.Extreme.Developer.Script.Executor
 			return script;
 		}
 
-		private static IBSharpClass SetupScriptDefinition(string projname) {
+		private static IBSharpClass SetupScriptDefinition(string projname, IEnumerable<KeyValuePair<string, string>> dict) {
 			var sources = Directory.GetFiles(Environment.CurrentDirectory, "*.zdev-script", SearchOption.AllDirectories);
 			var bxlparser = new BxlParser();
 			var compiler = new BSharpCompiler();
-			compiler.Initialize(new BSharpConfig {SingleSource = true, UseInterpolation = true});
+		    var config = new BSharpConfig {SingleSource = true, UseInterpolation = true};
+            foreach (var a in dict) {
+                config.Conditions[a.Key] = a.Value;
+            }
+			compiler.Initialize(config);
 			var context = compiler.Compile(sources.Select(_ => bxlparser.Parse(null, _)));
 			var cls = context.Get(projname);
 			if (null == cls) {
