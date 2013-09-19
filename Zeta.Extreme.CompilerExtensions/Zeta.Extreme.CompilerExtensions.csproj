@@ -13,6 +13,7 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildZetaBizIndexTask.cs" />
     <Compile Include="SetupZetaExtremeTasks.cs" />
   </ItemGroup>
   <ItemGroup>

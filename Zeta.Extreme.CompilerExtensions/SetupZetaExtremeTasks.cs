@@ -7,12 +7,13 @@ namespace Zeta.Extreme.CompilerExtensions
     /// </summary>
     public class SetupZetaExtremeTasks : BSharpBuilderExtensionBase
     {
-        protected override void PrepareTasks()
-        {
-            Tasks.Add(new BuildThemaIndexTask());
-            Tasks.Add(new PushThemasIntoBlocksTask());
+        /// <summary>
+        /// Перекрыть при изменении в составе задач
+        /// </summary>
+        protected override void PrepareTasks() {
+            var task = new BuildZetaBizIndexTask();
+            task.SetProject(Project);
+            Tasks.Add(task);
         }
     }
-
-
 }
