@@ -21,6 +21,11 @@ namespace Zeta.Extreme.Developer.Security.AdminAnalyzer {
         /// </summary>
         [Serialize]
         public string Occupation { get; set; }
+        /// <summary>
+        /// Tags
+        /// </summary>
+        [Serialize]
+        public string SlotList { get; set; }
 
     }
 }
