@@ -11,7 +11,6 @@ class rowset abstract static
 class tree abstract static prototype=formdef
 	codemode=RootPrefix
 	import global
-	element autothema
 
 class dict abstract static prototype=dict
 	codemode=RootPrefix

@@ -14,6 +14,8 @@ namespace Zeta.Extreme.CompilerExtensions
 
             Tasks.Add(new CallZetaExtremeScriptTask());
             Tasks.Add(new BuildZetaBizIndexTask());
+            Tasks.Add(new SetupTreeCodesTask());
+            Tasks.Add(new AccomodateFormulaRows());
         }
     }
 }

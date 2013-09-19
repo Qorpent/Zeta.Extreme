@@ -11,10 +11,14 @@ namespace Zeta.Extreme.CompilerExtensions {
     /// </summary>
     public class CallZetaExtremeScriptTask : BSharpBuilderTaskBase {
         /// <summary>
+        /// Индекс
+        /// </summary>
+        public const int INDEX = TaskConstants.LoadAllSourcesTaskIndex - TaskConstants.INDEX_STEP;
+        /// <summary>
         /// Создает стандартную задачу выполнения скрипта Zeta.Extreme
         /// </summary>
         public CallZetaExtremeScriptTask() {
-            Index = TaskConstants.LoadAllSourcesTaskIndex - TaskConstants.INDEX_STEP;
+            Index = INDEX;
             Phase = BSharpBuilderPhase.PreProcess;
         }
         /// <summary>

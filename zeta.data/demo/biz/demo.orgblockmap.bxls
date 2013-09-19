@@ -47,7 +47,6 @@ namespace demo
 	namespace blocks
 
 		~class eco owner=^demo.org.ub 
-			~block fin curator=maincurator
 			
 		~class proizv owner=^demo.org.proizv 
 		

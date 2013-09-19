@@ -4,14 +4,14 @@ namespace demo.blocks
 	class block abstract prototype=block
 		
 
-	subsystem eco
+	subsystem eco bizcode='EC'
 	
-	block fin subsystem=^eco
-	block dds subsystem=^eco
+	block fin subsystem=^eco bizcode='FN'
+	block dds subsystem=^eco bizcode='DS'
 	
-	subsystem personal
+	subsystem personal bizcode='PS'
 	
-	block trud subsystem=^personal
-	block zarp subsystem=^personal
+	block trud subsystem=^personal bizcode='TR'
+	block zarp subsystem=^personal bizcode='ZP'
 	
-	subsystem proizv 
+	subsystem proizv bizcode='PR'
