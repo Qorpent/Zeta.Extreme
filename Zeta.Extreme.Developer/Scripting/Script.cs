@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,9 +51,9 @@ namespace Zeta.Extreme.Developer.Scripting
 		/// Выполняет скрипт от имени пользователя
 		/// </summary>
 		/// <param name="credentials"></param>
-		public void Run(ICredentials credentials = null) {
+		public void Run(Func<ICredentials> credentials = null) {
 			var context = new ConfigBase();
-			context["credentials"] = credentials;
+			context[ScriptCommandBase.CredentialFuncAttribute] = credentials;
 			foreach (var c in Commands) {
 				c.Run(context);
 			}

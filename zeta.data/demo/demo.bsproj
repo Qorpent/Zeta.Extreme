@@ -1,12 +1,13 @@
 project demo
 	Extension Zeta.Extreme.CompilerExtensions
+	
 	OutputDirectory .demo
-	GenerateGraph
+	
+	GenerateGraph if=usegraph
+	
+	Zeta.Script demo_import if=useimport
+	
 	Include
 		Path /sys/
 		Path /demo/
 	
-	ZetaExtreme.BizIndex 
-		namespace="demo" 
-		classname="bizindex"
-		themaindex="demo.blocks.themaindex"

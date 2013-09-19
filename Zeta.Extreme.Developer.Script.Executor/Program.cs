@@ -28,8 +28,8 @@ namespace Zeta.Extreme.Developer.Script.Executor
 			var cls = SetupScriptDefinition(projname,dict);
 			var script = SetupScript(cls);
 
-			var cr = SetupCredentials(dict, cah);
-			script.Run(cr);
+			
+			script.Run(()=>SetupCredentials(dict, cah));
 			return 0;
 		}
 
@@ -46,6 +46,7 @@ namespace Zeta.Extreme.Developer.Script.Executor
 			var compiler = new BSharpCompiler();
 		    var config = new BSharpConfig {SingleSource = true, UseInterpolation = true};
             foreach (var a in dict) {
+                if(null==config.Conditions)config.Conditions = new Dictionary<string, string>();
                 config.Conditions[a.Key] = a.Value;
             }
 			compiler.Initialize(config);
@@ -57,28 +58,27 @@ namespace Zeta.Extreme.Developer.Script.Executor
 			return cls;
 		}
 
+	    private static ICredentials _logoncredentials;
 		private static ICredentials SetupCredentials(IDictionary<string, string> dict, ConsoleArgumentHelper cah) {
-			string user = "";
-			string pass = "";
-			if (!dict.ContainsKey("user")) {
-				Console.WriteLine();
-				Console.Write("Logon: ");
-				user = Console.ReadLine();
-			}
-			else {
-				user = dict["user"];
-			}
-			if (!dict.ContainsKey("password")) {
-				pass = cah.ReadLineSafety("Password: ");
-			}
-			else {
-				pass = dict["password"];
-			}
-			ICredentials cr = null;
-			if (!string.IsNullOrWhiteSpace(user) && !string.IsNullOrWhiteSpace(pass)) {
-				cr = new NetworkCredential(user, pass);
-			}
-			return cr;
+		    if (null == _logoncredentials) {
+		        string user;
+		        string pass;
+		        if (!dict.ContainsKey("user")) {
+		            Console.WriteLine();
+		            Console.Write("Logon: ");
+		            user = Console.ReadLine();
+		        }
+		        else {
+		            user = dict["user"];
+		        }
+		        pass = !dict.ContainsKey("password") ? cah.ReadLineSafety("Password: ") : dict["password"];
+		        ICredentials cr = null;
+		        if (!string.IsNullOrWhiteSpace(user) && !string.IsNullOrWhiteSpace(pass)) {
+		            cr = new NetworkCredential(user, pass);
+		        }
+		        _logoncredentials = cr;
+		    }
+		    return _logoncredentials;
 		}
 	}
 }

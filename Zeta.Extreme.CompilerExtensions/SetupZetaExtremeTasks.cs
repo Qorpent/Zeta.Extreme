@@ -11,9 +11,9 @@ namespace Zeta.Extreme.CompilerExtensions
         /// Перекрыть при изменении в составе задач
         /// </summary>
         protected override void PrepareTasks() {
-            var task = new BuildZetaBizIndexTask();
-            task.SetProject(Project);
-            Tasks.Add(task);
+
+            Tasks.Add(new CallZetaExtremeScriptTask());
+            Tasks.Add(new BuildZetaBizIndexTask());
         }
     }
 }

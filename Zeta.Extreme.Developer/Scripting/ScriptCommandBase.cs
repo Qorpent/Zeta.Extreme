@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Qorpent.Applications;
 using Qorpent.Config;
 using Qorpent.Log;
 using Qorpent.Mvc;
+using Qorpent.Security;
 using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Developer.Scripting {
@@ -14,7 +17,12 @@ namespace Zeta.Extreme.Developer.Scripting {
 	/// 
 	/// </summary>
 	public abstract class ScriptCommandBase : IScriptCommand {
-		/// <summary>
+        /// <summary>
+        /// Имя атрибута конфига для передачи делегата для Logon
+        /// </summary>
+	    public const string CredentialFuncAttribute = "credentials_func";
+
+	    /// <summary>
 		/// Инициализатор
 		/// </summary>
 		/// <param name="def"></param>
@@ -140,8 +148,8 @@ namespace Zeta.Extreme.Developer.Scripting {
         /// <param name="context"></param>
         /// <returns></returns>
 	    protected virtual MvcClient SetupMvcClient(IConfig context) {
-	        var credentials = context.Get<ICredentials>("credentials");
-	        var client = new MvcClient(AppName, credentials);
+	        var credentialsFunc = context.Get<Func<ICredentials>>(CredentialFuncAttribute);
+	        var client = new MvcClient(AppName, credentialsFunc);
 	        return client;
 	    }
 

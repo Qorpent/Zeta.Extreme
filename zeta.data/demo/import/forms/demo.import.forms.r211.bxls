@@ -7,7 +7,7 @@
 ####      Заданное имя класса                                                                   ####
 ####      Исполнитель                                : local\comdiv                             ####
 ####      ID строки в БД                             : 8838                                     ####
-####      Максимальная версия строк в форме          : 2013-09-18 11:45:07                      ####
+####      Максимальная версия строк в форме          : 2013-09-19 10:54:06                      ####
 ####                                                                                            ####
 ####      Обнаружены зависимости от других форм                                                 ####
 ####              frm : f110                                                                    ####
@@ -284,8 +284,8 @@ f.If ( colin ( "Rd" ), { $r211230@Rd? } ) } )
 						primary 1242 'Готовая продукция в производство [Дт20Кт43]' noinput olap=tmc 
 						primary 1243 'Вспомогательные материалы' noinput olap=tmc 
 					sum 3210 'Вспомогательные материалы [стр.140]' outer=1210 olap=tmc 
-						primary 1213 'Отходы собственного производства' noinput olap=tmc 
+						primary 1213 'Отходы собственного производства' olap=tmc 
 						primary 1214 'Счет 26' noinput olap=tmc 
 						primary 1215 'Материалы собственного изготовления' noinput olap=tmc 
 						primary 3211 'Счет 08' outer=1211 activecol=Rd olap=tmc 
-						primary 3212 'Счет 91' outer=1212 noinput activecol=Rd olap=tmc 
+						primary 3212 'Счет 91' outer=1212 activecol=Rd olap=tmc 
