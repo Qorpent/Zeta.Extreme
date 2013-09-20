@@ -180,7 +180,7 @@ _.widget.register({
 	}
 });
 _.zdev = _.zdev || {};
-_.zdev.formula_to_primary.onClickMetricCheckbox = function(e) {
+_.zdev.zdev_transfer_data.onClickMetricCheckbox = function (e) {
     var form = $(this).closest('form');
     if (this.checked) {
         $(form).attr('action', $(form).attr('action').replace('.string.', '.xml.'));

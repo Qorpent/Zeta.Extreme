@@ -182,16 +182,16 @@ namespace demo.import.forms
 						formula 1536 'Прочие расходы по транспортировке'  : (
 							$m218114? + $m218116?
 						)
-						formula z310231 'Услуги РЖД' outer=1531  : (
+						formula z310231 'Услуги РЖД' notlocalizedcode=true outer=1531  : (
 							$m218111?
 						)
-						formula z310232 'Услуга по перевозке по подъездным путям' outer=1532  : (
+						formula z310232 'Услуга по перевозке по подъездным путям' notlocalizedcode=true outer=1532  : (
 							$m218112?
 						)
-						formula z310233 'Аренда вагонов, полувагонов, цистерн' outer=1535  : (
+						formula z310233 'Аренда вагонов, полувагонов, цистерн' notlocalizedcode=true outer=1535  : (
 							$m218133? + $m218115?
 						)
-						formula z310235 'Транспортировка серной кислоты' outer=1534  : (
+						formula z310235 'Транспортировка серной кислоты' notlocalizedcode=true outer=1534  : (
 							$m218131? + $m218132? + $m218134? + $m218136?
 						)
 					formula 1515 'Транспортировка автомобильным транспортом'  : (

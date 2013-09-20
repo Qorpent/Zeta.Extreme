@@ -16,4 +16,4 @@ namespace demo.import.dicts
 		import dict
 		export param_prezent
 		title DIR_PARAM 'Параметры презентаций' stopinterpolate=all 
-			item pp_line_con 'Соединение разорванных линий графика' outer='pr_connectnull' 
+			item pp_line_con 'Соединение разорванных линий графика' notlocalizedcode=true outer='pr_connectnull' 

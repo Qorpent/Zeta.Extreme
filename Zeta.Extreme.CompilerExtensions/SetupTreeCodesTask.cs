@@ -1,4 +1,6 @@
 ﻿using System.Xml.Linq;
+using Qorpent;
+using Qorpent.BSharp;
 using Qorpent.BSharp.Builder;
 using Qorpent.Integration.BSharp.Builder.Tasks;
 using Qorpent.Utils.Extensions;
@@ -39,17 +41,27 @@ namespace Zeta.Extreme.CompilerExtensions {
         }
 
         private void ExecuteRow(XElement src, XElement current, string rootcode, string bizcode) {
+            
             var code = current.Attr("code");
             var dbcode = rootcode+code;
-            if (code == rootcode) {
+            if (code == rootcode || NotLocalized(current))
+            {
                 dbcode = code;
+            }
+            if (NotLocalized(current)) {
+                _context.RegisterError(new BSharpError{Level=ErrorLevel.Warning,Message = "Нелокализованный код "+dbcode+" в форме "+rootcode,Xml=current});
             }
             current.SetAttributeValue("dbcode",dbcode);
             var rowbizcode = bizcode + "_" + code;
+  
             current.SetAttributeValue("bizcode", rowbizcode);
             foreach (var c in current.Elements()) {
                 ExecuteRow(src,c,rootcode,bizcode);
             }
+        }
+
+        private static bool NotLocalized(XElement current) {
+            return null != current.Attribute("notlocalizedcode");
         }
     }
 }

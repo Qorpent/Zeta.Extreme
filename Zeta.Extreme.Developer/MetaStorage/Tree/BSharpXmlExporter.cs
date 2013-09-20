@@ -98,8 +98,12 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 				type = RowType.Item;
 			}
 			var code = DetermineCode(r, root);
+            
 			var e = new XElement(type.ToString().ToLower());
-			
+            if (r != root && r.Code.ToLower() == code)
+            {
+                e.SetAttributeValue("notlocalizedcode",true);
+            }
 			e.SetAttributeValue("code",code);
 			e.SetAttributeValue("name",r.Name.Trim().Replace("\r"," ").Replace("\n",""));
 

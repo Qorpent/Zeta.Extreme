@@ -7,10 +7,12 @@ using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Developer.MetaStorage
 {
+
+
     /// <summary>
     /// Экспортер колонок
     /// </summary>
-    public class ColumnExporter
+    public class ColumnExporter:IDataToBSharpExporter
     {
         private StringBuilder buffer;
 
@@ -105,5 +107,23 @@ namespace Zeta.Extreme.Developer.MetaStorage
             buffer.AppendLine("#### Последняя версия: " + columns.Max(_ => _.Version).ToString("yyyy-MM-dd HH:mm:ss"));
             buffer.AppendLine("######################################################################################");
         }
+
+        /// <summary>
+        /// Выполняет экспорт указанного объекта БД в BSharp
+        /// </summary>
+        /// <returns></returns>
+        public string Generate() {
+            return GenerateBSharp(Namespace, ClassName);
+        }
+
+        /// <summary>
+        /// Имя класса
+        /// </summary>
+        public string ClassName { get; set; }
+
+        /// <summary>
+        /// Пространство имен
+        /// </summary>
+        public string Namespace { get; set; }
     }
 }

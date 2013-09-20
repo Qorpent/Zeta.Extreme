@@ -60,7 +60,7 @@ namespace demo.import.forms
 					primary 411 'Пенсионный фонд' 
 					primary 413 'Фонд медицинского страхования' 
 					primary 415 'ЕСН до 2010 г.' 
-					primary m23412 'Фонд социального страхования' outer=412 
+					primary m23412 'Фонд социального страхования' notlocalizedcode=true outer=412 
 				primary 414 'Штрафы, пени' outer=440 
 				primary 420 'ФСС по обяз.страхованию от несчастных случаев на производстве' 
 				primary 430 'Дорожный фонд' 
@@ -150,7 +150,7 @@ f.If ( colin("DZk") , { $m230920@DZk? - $m230920@DZRk? - $m1111123@Б2? } ) } )
 f.If ( colin("DZk") , { $m230930@DZk? - $m230930@DZRk? - $m1111133@Б2? } ) } )
 
 					)
-			title m231700 'СПРАВОЧНО' outer=700 nosum 
+			title m231700 'СПРАВОЧНО' notlocalizedcode=true outer=700 nosum 
 				formula 750 'Покупатели (не группа УГМК)'  : (
 					$m230120? + $m230130?
 				)
@@ -175,19 +175,19 @@ f.If ( colin("DZk") , { $m230930@DZk? - $m230930@DZRk? - $m1111133@Б2? } ) } )
 				formula 795 'Задолженность УГМК без текущего дивизиона' noinput  : (
 					$m231710? - $m231910?
 				)
-				formula m231710 'Группа УГМК' outer=710  : (
+				formula m231710 'Группа УГМК' notlocalizedcode=true outer=710  : (
 					f.If( colin("DZn"),{ $m230110@DZn? - $m230110@DZRn? + $m230210@DZn? - $m230210@DZRn? + $m2316311@DZn? - $m2316311@DZRn? },
 { f.If(colin("DZk"),{ $m230110@DZk? - $m230110@DZRk? + $m230210@DZk? - $m230210@DZRk? + $m2316311@DZk? - $m2316311@DZRk? },
 { f.If(colin("KZn"),{ $m230110@KZn? + $m230210@KZn? + $m2316311@KZn? },
 { f.If(colin("KZk"),{ $m230110@KZk? + $m230210@KZk? + $m2316311@KZk? } ) } ) } ) } )
 				)
-				formula m231720 'Иностранные контрагенты' outer=720  : (
+				formula m231720 'Иностранные контрагенты' notlocalizedcode=true outer=720  : (
 					$m230120? + $m230220?
 				)
-				formula m231730 'Прочие контрагенты' outer=730  : (
+				formula m231730 'Прочие контрагенты' notlocalizedcode=true outer=730  : (
 					$m230130? + $m230230?
 				)
-				formula m231740 'Прочие расчеты (без группы УГМК)' outer=740  : (
+				formula m231740 'Прочие расчеты (без группы УГМК)' notlocalizedcode=true outer=740  : (
 					f.If( colin("DZn"),{ $m230500@DZn? - $m230500@DZRn? + $m230600@DZn? - $m230600@DZRn? - $m2316311@DZn? + $m2316311@DZRn? + $m230700@DZn? - $m230700@DZRn? },
 { f.If(colin("DZk"),{ $m230500@DZk? - $m230500@DZRk? + $m230600@DZk? - $m230600@DZRk? - $m2316311@DZk? + $m2316311@DZRk? + $m230700@DZk? - $m230700@DZRk? },
 { f.If(colin("KZn"),{ $m230500@KZn? + $m230600@KZn? - $m2316311@KZn? + $m230700@KZn? },

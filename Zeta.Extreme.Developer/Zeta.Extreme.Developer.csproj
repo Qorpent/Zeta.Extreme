@@ -17,11 +17,12 @@
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\DebugQueryAction.cs" />
     <Compile Include="Actions\DropCacheAction.cs" />
-    <Compile Include="Actions\ExportColumns.cs" />
+    <Compile Include="Actions\ExportData\ExportActionBase.cs" />
+    <Compile Include="Actions\ExportData\ExportColumns.cs" />
     <Compile Include="Actions\ExportDependencyDot.cs" />
     <Compile Include="Actions\DependencyGraphAction.cs" />
-    <Compile Include="Actions\ExportPeriods.cs" />
-    <Compile Include="Actions\ExportTreeAction.cs" />
+    <Compile Include="Actions\ExportData\ExportPeriods.cs" />
+    <Compile Include="Actions\ExportData\ExportTreeAction.cs" />
     <Compile Include="Actions\TransferDataAction.cs" />
     <Compile Include="Actions\GetColAttributesAction.cs" />
     <Compile Include="Actions\GetFormAttributesAction.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Debugger\QueryGraphBuilder.cs" />
     <Compile Include="DeveloperStartUp.cs" />
     <Compile Include="MetaStorage\ColumnExporter.cs" />
+    <Compile Include="MetaStorage\IDataToBSharpExporter.cs" />
     <Compile Include="MetaStorage\PeriodsExporter.cs" />
     <Compile Include="MetaStorage\Tree\AttributeType.cs" />
     <Compile Include="MetaStorage\Tree\BSharpTreeExporter.cs" />

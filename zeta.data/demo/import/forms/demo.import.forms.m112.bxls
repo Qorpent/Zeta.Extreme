@@ -22,8 +22,8 @@ namespace demo.import.forms
 			sum 2200 'Прибыль (убыток) от продаж' groups=ПП11 olap=fin sap-region=BUH sap-form=002 sap-use 
 				primary 2340 'Прочие доходы' groups='ПН11 ЧП11 ФР11' sap-region=BUH sap-form=002 sap-use 
 				primary 2350 'Прочие расходы' groups='ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 
-				primary m212235 'в т.ч. положительные курсовые разницы' outer=2341 groups=КУРС vgrp=';КУРС;' olap=fin 
-				primary m212236 'в т.ч. отрицательные курсовые разницы' outer=2351 groups=КУРС minus vgrp=';КУРС;' olap=fin 
+				primary m212235 'в т.ч. положительные курсовые разницы' notlocalizedcode=true outer=2341 groups=КУРС vgrp=';КУРС;' olap=fin 
+				primary m212236 'в т.ч. отрицательные курсовые разницы' notlocalizedcode=true outer=2351 groups=КУРС minus vgrp=';КУРС;' olap=fin 
 			sum 2300 'Прибыль (убыток) до налогообложения' groups=ПН11 olap=finrez sap-region=BUH sap-form=002 sap-use 
 			sum 2400 'Чистая прибыль (убыток)' groups=ЧП11 measure='/dir120711/' sap-region=BUH sap-form=002 sap-use olap=fin 
 			title 250 'СПРАВОЧНО:' outer=2500 sap-region=BUH sap-form=002 sap-use 
@@ -34,14 +34,14 @@ namespace demo.import.forms
 				primary 2910 'Разводненная прибыль (убыток) на акцию' sap-region=BUH sap-form=002 sap-use 
 			title 900 'Коррективы по переходу на новый отчет о прибылях и убытках' nooutput noinput sap-region=BUH sap-form=002 sap-use 
 				primary 910 'Перевод прочих платежей из прибыли в результат от прочих операций, не включаемый в чистую прибыль' sap-region=BUH sap-form=002 sap-use 
-			sum m2124011 'Изменение стр.2500 "Совокупный финансовый результат" при отражении в форме "Баланс (форма № 1 ФО)"' outer=401.1 nosum olap=finrez 
+			sum m2124011 'Изменение стр.2500 "Совокупный финансовый результат" при отражении в форме "Баланс (форма № 1 ФО)"' notlocalizedcode=true outer=401.1 nosum olap=finrez 
 				primary 4021 'Изменение в уставном капитале' outer=401.11 
-				primary m2124012 'Изменение в резервном капитале' outer=401.2 olap=finrez 
-				primary m2124013 'Выплата дивидендов' outer=401.3 olap=finrez 
-				primary m2124014 'Изменение в добавочном капитале' outer=401.4 olap=finrez 
-				primary m2124015 'Пополнение оборотных средств (строка 134 форма №4 ФО)' outer=401.5 obsolete=2012 
-				primary m2124016 'Отложенные налоговые активы' outer=401.6 olap=finrez 
-				primary m2124017 'Изменение налога на прибыль прошлых лет' outer=401.7 olap=finrez 
-				primary m2124018 'Прочие изменения' outer=401.8 olap=finrez 
-				primary m2124019 'Переоценка ОС' outer=401.9 olap=finrez 
+				primary m2124012 'Изменение в резервном капитале' notlocalizedcode=true outer=401.2 olap=finrez 
+				primary m2124013 'Выплата дивидендов' notlocalizedcode=true outer=401.3 olap=finrez 
+				primary m2124014 'Изменение в добавочном капитале' notlocalizedcode=true outer=401.4 olap=finrez 
+				primary m2124015 'Пополнение оборотных средств (строка 134 форма №4 ФО)' notlocalizedcode=true outer=401.5 obsolete=2012 
+				primary m2124016 'Отложенные налоговые активы' notlocalizedcode=true outer=401.6 olap=finrez 
+				primary m2124017 'Изменение налога на прибыль прошлых лет' notlocalizedcode=true outer=401.7 olap=finrez 
+				primary m2124018 'Прочие изменения' notlocalizedcode=true outer=401.8 olap=finrez 
+				primary m2124019 'Переоценка ОС' notlocalizedcode=true outer=401.9 olap=finrez 
 				primary 4020 'Реорганизация юридического лица' outer=401.10 olap=finrez 

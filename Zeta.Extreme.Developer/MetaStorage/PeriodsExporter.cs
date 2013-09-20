@@ -5,11 +5,10 @@ using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Developer.MetaStorage
 {
-	/// <summary>
+    /// <summary>
 	/// Экспортер периодов
 	/// </summary>
-	public class PeriodsExporter
-	{
+	public class PeriodsExporter : IDataToBSharpExporter {
 		/// <summary>
 		/// 
 		/// </summary>
@@ -23,7 +22,7 @@ namespace Zeta.Extreme.Developer.MetaStorage
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public string GeneratePeriods() {
+		public string Generate() {
 			var sb = new StringBuilder();
 			var srcperiods = new NativeZetaReader().ReadPeriods().ToArray();
 			var primary = srcperiods.Where(_ =>! _.IsFormula).ToArray();
