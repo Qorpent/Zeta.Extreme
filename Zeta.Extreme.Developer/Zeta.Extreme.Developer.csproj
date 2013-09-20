@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\AnalyzerActionBase.cs" />
+    <Compile Include="Actions\GetSubstAttributesAction.cs" />
     <Compile Include="Actions\DebugQueryAction.cs" />
     <Compile Include="Actions\DropCacheAction.cs" />
     <Compile Include="Actions\ExportData\ExportActionBase.cs" />
@@ -31,6 +32,7 @@
     <Compile Include="Actions\GetParamsAction.cs" />
     <Compile Include="Actions\GetReportAttributesAction.cs" />
     <Compile Include="Actions\GetThemaAttributesAction.cs" />
+    <Compile Include="Actions\HWOutAction.cs" />
     <Compile Include="Analyzers\Analyzer.cs" />
     <Compile Include="CodeMetrics\Implementations\CommonFileDataMetricsProvider.cs" />
     <Compile Include="CodeMetrics\Implementations\MetricProviderBase.cs" />

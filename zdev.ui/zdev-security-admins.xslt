@@ -9,10 +9,16 @@
         <title>Отчет о соответствии настроек администраторов</title>
         <style>
           table {
-            border-collapse:collapse;
+          border-collapse:collapse;
           }
           table td, table th {
-            border : solid 1px gray;
+          border : solid 1px gray;
+          }
+          tr.v-true {
+          background-color: #ffcc00;
+          }
+          tr.SlotList-true {
+          font-weight: bold;
           }
         </style>
       </head>
@@ -34,39 +40,149 @@
   </xsl:template>
 
   <xsl:template match="item">
-    <tr class="fa-{@FileAttached} cnt-{@ActiveAdminCount} v-{@IsValid}">
-      <td>
-        <xsl:value-of select="position()"/>
-      </td>
-      <td>
-        <ul>
-          <xsl:if test="@IsValid = 'true'">
-            <li>ОК</li>
-          </xsl:if>
-          <xsl:if test="@FileAttached = 'false'">
-            <li>Нет файла</li>
-          </xsl:if>
-          <xsl:if test="@ActiveAdminCount = 0">
-            <li>Админ не назначен</li>
-          </xsl:if>
-          <xsl:if test="@ActiveAdminCount &gt; 1">
-            <li>Несколько администраторов</li>
-          </xsl:if>
-        </ul>
-      </td>
-      <td>
-        <xsl:value-of select="@ObjectName"/>
-      </td>
-      <td>
-        <ul>
-         <xsl:apply-templates select="Admins/item"/>
-        </ul>
-      </td>
-    </tr>
-  </xsl:template>
+    <xsl:choose>
+      <xsl:when test="@IsValid = 'true'">
+        <xsl:choose>
+          <xsl:when test="Admins/item/@SlotList!=''">
+            <tr class="v-{@IsValid} SlotList-true">
+              <td>
+                <xsl:value-of select="position()"/>
+              </td>
+              <td>
+                <ul>
+                  <xsl:if test="@IsValid = 'true'">
+                    <li>ОК</li>
+                  </xsl:if>
+                  <xsl:if test="@FileAttached = 'false'">
+                    <li>Нет файла</li>
+                  </xsl:if>
+                  <xsl:if test="@ActiveAdminCount = 0">
+                    <li>Админ не назначен</li>
+                  </xsl:if>
+                  <xsl:if test="@ActiveAdminCount &gt; 1">
+                    <li>Несколько администраторов</li>
+                  </xsl:if>
+                </ul>
+              </td>
+              <td>
+                <xsl:value-of select="@ObjectName"/>
+              </td>
+              <td>
+                <ul>
+                  <xsl:apply-templates select="Admins/item"/>
+                </ul>
+              </td>
+            </tr>
+          </xsl:when>
+          <xsl:otherwise>
+            <tr class="fa-{@FileAttached} cnt-{@ActiveAdminCount} v-{@IsValid}">
+              <td>
+                <xsl:value-of select="position()"/>
+              </td>
+              <td>
+                <ul>
+                  <xsl:if test="@IsValid = 'true'">
+                    <li>ОК</li>
+                  </xsl:if>
+                  <xsl:if test="@FileAttached = 'false'">
+                    <li>Нет файла</li>
+                  </xsl:if>
+                  <xsl:if test="@ActiveAdminCount = 0">
+                    <li>Админ не назначен</li>
+                  </xsl:if>
+                  <xsl:if test="@ActiveAdminCount &gt; 1">
+                    <li>Несколько администраторов</li>
+                  </xsl:if>
+                </ul>
+              </td>
+              <td>
+                <xsl:value-of select="@ObjectName"/>
+              </td>
+              <td>
+                <ul>
+                  <xsl:apply-templates select="Admins/item"/>
+                </ul>
+              </td>
+            </tr>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="Admins/item/@SlotList!=''">
+        <tr class="fa-{@FileAttached} cnt-{@ActiveAdminCount} v-{@IsValid} SlotList-true">
+          <td>
+            <xsl:value-of select="position()"/>
+          </td>
+          <td>
+            <ul>
+              <xsl:if test="@IsValid = 'true'">
+                <li>ОК</li>
+              </xsl:if>
+              <xsl:if test="@FileAttached = 'false'">
+                <li>Нет файла</li>
+              </xsl:if>
+              <xsl:if test="@ActiveAdminCount = 0">
+                <li>Админ не назначен</li>
+              </xsl:if>
+              <xsl:if test="@ActiveAdminCount &gt; 1">
+                <li>Несколько администраторов</li>
+              </xsl:if>
+            </ul>
+          </td>
+          <td>
+            <xsl:value-of select="@ObjectName"/>
+          </td>
+          <td>
+            <ul>
+              <xsl:apply-templates select="Admins/item"/>
+            </ul>
+          </td>
+        </tr>
+          </xsl:when>
+          <xsl:otherwise>
+     <!---->
+            <tr class="fa-{@FileAttached} cnt-{@ActiveAdminCount} v-{@IsValid}">
+              <td>
+                <xsl:value-of select="position()"/>
+              </td>
+              <td>
+                <ul>
+                  <xsl:if test="@IsValid = 'true'">
+                    <li>ОК</li>
+                  </xsl:if>
+                  <xsl:if test="@FileAttached = 'false'">
+                    <li>Нет файла</li>
+                  </xsl:if>
+                  <xsl:if test="@ActiveAdminCount = 0">
+                    <li>Админ не назначен</li>
+                  </xsl:if>
+                  <xsl:if test="@ActiveAdminCount &gt; 1">
+                    <li>Несколько администраторов</li>
+                  </xsl:if>
+                </ul>
+              </td>
+              <td>
+                <xsl:value-of select="@ObjectName"/>
+              </td>
+              <td>
+                <ul>
+                  <xsl:apply-templates select="Admins/item"/>
+                </ul>
+              </td>
+            </tr>
+          </xsl:otherwise>
+        </xsl:choose>
+       
+      </xsl:otherwise>
+    </xsl:choose>
+     </xsl:template>
   <xsl:template match="Admins/item">
     <li>
-      (<xsl:value-of select="@Login"/>) <xsl:value-of select="@Name"/> ( <xsl:value-of select="@Occupation"/> )
+      (<xsl:value-of select="@Login"/>) <xsl:value-of select="@Name"/> ( <xsl:value-of select="@Occupation"/> ) 
+      <xsl:if test="@SlotList!=''">
+        (<xsl:value-of select="@SlotList"/>)
+      </xsl:if>
     </li>
   </xsl:template>
 </xsl:stylesheet>
