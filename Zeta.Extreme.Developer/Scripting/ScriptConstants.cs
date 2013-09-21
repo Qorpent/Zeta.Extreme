@@ -26,6 +26,10 @@
         /// </summary>
         public const string EXPORT_BIZPROCESSES_COMMAND = "zdev/exportbizprocesses";
         /// <summary>
+        /// Команда экспорта типов лобъектов
+        /// </summary>
+        public const string EXPORT_OBJTYPES_COMMAND = "zdev/exportobjtypes";
+        /// <summary>
         /// Команда переноса данных
         /// </summary>
         public const string TRANSFER_DATA_COMMAND = "zdev/transferdata";

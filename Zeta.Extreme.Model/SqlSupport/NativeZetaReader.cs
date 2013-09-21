@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using Zeta.Extreme.Model.Deprecated;
 
 namespace Zeta.Extreme.Model.SqlSupport {
 	public partial class NativeZetaReader {
@@ -103,6 +104,12 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		private const string Historyquerybase = @"
 			select  Id,Time,CellId,BizKey,Value,Deleted,Usr from zeta.normalhist
 		";
+        private const string ObjClassQueryBase = @"
+			select  Id,Code,Name, Comment, Version,   Tag from zeta.normalobjclass
+		";
+        private const string ObjTypeQueryBase = @"
+			select  Id,Code,Name,Comment, Version,ClassId,Tag from zeta.normalobjtype
+		";
 
 		private const string Cellquerybase = @"
 			select Id, Version, Year, Period, RowId, ColId, ObjId, DetailId, DecimalValue, StringValue, Usr, Currency, ContragentId from zeta.normalcell
@@ -114,6 +121,30 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				"select value from usm.periodcourse where  year = {0}  and period = {1} and intype ='{2}' and outtype ='{3}'";
 
 		private const string GlobalRefreshDate = "select comdiv.get_global_refresh_time()";
+
+        /// <summary>
+        /// 	Сериализует классы объектов
+        /// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+        /// </summary>
+        /// <param name="condition"> </param>
+        /// <returns> </returns>
+#pragma warning disable 612,618
+        public IEnumerable<ObjectClass> ReadObjClasses(string condition = "")
+#pragma warning restore 612,618
+        {
+            return Read(condition, ObjClassQueryBase, ReaderToObjectClass);
+        }
+
+        /// <summary>
+        /// 	Сериализует классы объектов
+        /// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+        /// </summary>
+        /// <param name="condition"> </param>
+        /// <returns> </returns>
+        public IEnumerable<ObjectType> ReadObjTypes(string condition = "")
+        {
+            return Read(condition, ObjTypeQueryBase, ReaderToObjectType);
+        }
 
 		/// <summary>
 		/// 	Сериализует учетные записи пользователей

@@ -419,5 +419,34 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				return def;
 			}
 		}
+
+#pragma warning disable 612,618
+	    private ObjectClass ReaderToObjectClass(IDataRecord r) {
+#pragma warning restore 612,618
+            var _ = new ObjectClass
+            {
+                Id = r.GetInt32(0),
+                Code = r.GetString(1),
+                Name = r.GetString(2),
+                Comment =r.GetString(3),
+                Version = r.GetDateTime(4),
+                Tag = r.GetString(5),
+            };
+            return _;
+	    }
+
+	    private ObjectType ReaderToObjectType(IDataRecord r) {
+            var _ = new ObjectType
+            {
+                Id = r.GetInt32(0),
+                Code = r.GetString(1),
+                Name = r.GetString(2),
+                Comment = r.GetString(3),
+                Version = r.GetDateTime(4),
+                ClassId =r.GetInt32(5),
+                Tag = r.GetString(6),
+            };
+            return _;
+	    }
 	}
 }

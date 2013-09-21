@@ -20,6 +20,7 @@ zdev-script demo_import
 			generate-periods name=periods
 			generate-columns name=columns
 			generate-bizprocesses name=bizprocesses
+			generate-objtypes name=objtypes
 		
 		# скрипты генерации форм
 		set namespace=${_formns} into = ${_formdir}

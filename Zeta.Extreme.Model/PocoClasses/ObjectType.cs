@@ -56,5 +56,41 @@ namespace Zeta.Extreme.Model {
 			}
 			return tag ?? "";
 		}
-	}
+
+        private int? _classId;
+        /// <summary>
+        ///     ID (FK) of <see cref="Zeta.Extreme.Model.Obj.ObjType" /> that current is
+        ///     attached to
+        /// </summary>
+        /// <remarks>
+        ///     Intended to use with ORM/SQL scenario
+        /// </remarks>
+        /// <exception cref="Exception">
+        ///     cannot setup <see cref="Zeta.Extreme.Model.Obj.ObjTypeId" /> when ObjType
+        ///     is attached
+        /// </exception>
+#pragma warning disable 612,618
+        public int? ClassId
+        {
+            get
+            {
+
+                if (null != Class)
+
+                {
+                    return Class.Id;
+                }
+                return _classId;
+            }
+            set
+            {
+                if (null != Class)
+                {
+                    throw new Exception("cannot setup ClassId when Class is attached");
+                }
+                _classId = value;
+            }
+        }
+#pragma warning restore 612,618
+    }
 }

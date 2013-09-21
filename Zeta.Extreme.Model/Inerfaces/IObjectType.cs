@@ -36,5 +36,19 @@ namespace Zeta.Extreme.Model.Inerfaces {
 		///     Reference to container obj class
 		/// </summary>
 		[Obsolete("ZC-416 must be replaced")] IZetaObjectClass Class { get; set; }
+
+	    /// <summary>
+	    ///     ID (FK) of <see cref="Zeta.Extreme.Model.Obj.ObjType" /> that current is
+	    ///     attached to
+	    /// </summary>
+	    /// <remarks>
+	    ///     Intended to use with ORM/SQL scenario
+	    /// </remarks>
+	    /// <exception cref="Exception">
+	    ///     cannot setup <see cref="Zeta.Extreme.Model.Obj.ObjTypeId" /> when ObjType
+	    ///     is attached
+	    /// </exception>
+#pragma warning disable 612,618
+	    int? ClassId { get; set; }
 	}
 }

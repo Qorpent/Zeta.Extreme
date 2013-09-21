@@ -7,934 +7,457 @@ namespace demo.import.meta
 		export bizprocess
 		element bizprocess
 		bizprocess balans2011 'Баланс (форма № 1 ФО)' role=FIN rootrows=m111
-			
-
 		bizprocess balans_an 'Баланс (аналитический) BUDGET' role='BUDGET (FIN)' rootrows=a111
-			
-
 		bizprocess balans2011_corp 'Баланс (форма № 1 ФО)' role=FIN rootrows=m111
-			
-
 		bizprocess balans2011_corp_bank 'Баланс (форма № 1 ФО)' role=FIN rootrows=m111
-			
-
 		bizprocess balans 'Баланс (форма № 1 ФО в ред. 2010)' role=FIN rootrows=m211
 			status=history
-
 		bizprocess balans_admin 'Баланс (форма № 1 ФО в ред. 2010) BUDGET' role='BUDGET (FIN)' rootrows=m211
 			status=history
-
 		bizprocess balans_corp 'Баланс (форма № 1 ФО в ред. 2010)' role=FIN rootrows=m211
 			status=history
-
 		bizprocess bankbalans 'Баланс (банк)' role='DESIGNER (FIN)' rootrows=m411
 			status=history
-
 		bizprocess finanalysis 'Финансовый анализ' role='BUDGET (FIN)' rootrows=a100
 			analytic=1
 			status=design
-
 		bizprocess bio_measures 'Природоохранные мероприятия' process=PS_3800 role='DESIGNER,TESTER (BIO)' rootrows=m310
 			status=design
-
 		bizprocess bio_impact 'Воздействие на природную среду' process=PS_3800 role='DESIGNER,TESTER (BIO)' rootrows=m315
 			status=design
-
 		bizprocess bio_nalog_calc 'Расчет платы за загрязнение природной среды' process=PS_3800 role='DESIGNER,TESTER (BIO)' rootrows=m320
 			status=design
-
 		bizprocess bio_nalog_pay 'Перечисление платы за загрязнение природной среды' process=PS_3800 role=BIO rootrows=m321
 			status=test
-
 		bizprocess balans_rnma 'Нематериальные активы' inprocess=balans2011 role=FIN rootrows=r110
 			relation=balans_os_nma
 			status=test
-
 		bizprocess pril_nma 'Приложение 1. Расшифровка НМА' process=PS_7110 role=FIN rootrows=r110
 			report=1
-			
-
 		bizprocess pril_nma_bank 'Приложение 1. Расшифровка НМА' process=PS_7120 role=FIN rootrows=r110
 			report=1
-			
-
 		bizprocess balans_ros 'Основные средства' inprocess=balans2011 role=FIN rootrows=r120
 			relation=balans_os_nma
 			status=test
-
 		bizprocess pril_os 'Приложение 1.1. Расшифровка ОС' process=PS_7110 role=FIN rootrows=r120
 			report=1
-			
-
 		bizprocess pril_os_bank 'Приложение 1.1. Расшифровка ОС' process=PS_7120 role=FIN rootrows=r120
 			report=1
-			
-
 		bizprocess balans_os_nma 'Внеоборотные активы ADMIN' role='ADMIN (FIN)' rootrows=r115
 			status=test
-
 		bizprocess balans_rns 'Расшифровка незавершенного строительства (Прил. № 3 СФО)' inprocess=balans2011 role=FIN rootrows=r130
 			primary=1
-			
-
 		bizprocess balans_rns_copy 'Расшифровка незавершенного строительства (Прил. № 3 СФО)' role=FIN rootrows=r130
-			
-
 		bizprocess pril_rns 'Приложение 3. Расшифровка незавершенного строительства' process=PS_7110 rootrows=r130
 			report=1
-			
-
 		bizprocess balans_rsim 'Сырье, материалы и др.ценности' inprocess=balans2011 role=FIN rootrows=r211
 			primary=1
 			status=test
-
 		bizprocess balans_rbp 'Расходы будущих периодов' inprocess=balans2011 role=FIN rootrows=r216
 			primary=1
-			
-
 		bizprocess pril_rbp 'Приложение 10. Расшифровка расходов будущих периодов' process=PS_7110 role=FIN rootrows=r216
 			report=1
-			
-
 		bizprocess balans_rdbp 'Доходы будущих периодов' inprocess=balans2011 role=FIN rootrows=r640
 			primary=1
 			status=test
-
 		bizprocess pril_dbp 'Приложение 17. Расшифровка доходов будущих периодов' process=PS_7110 role=FIN rootrows=r640
 			report=1
-			
-
 		bizprocess controlpointall 'Все контрольные точки' inprocess='balans, balans2011, nalog, prib, prib2011, f8, f7, zatr_pr, zatr, osnpok, finres, ras_dk, balans_rns, rashsn, inv, zatr_am, trud_fzp_nespis, trud_cent_vipl, trud_obosn, trud_zatr_lehr_new, trud_soc_vipl, trud_zatr_pers, balans_rdbp, balans_rsim, balans_ro' role=CONTROL rootrows='m111800, m112800, m220800, m2301000, m2301000, s1404000, r510900, m214200, m260900, r590900, m217900, m218900, m250800, m6001200, r1101000, r1202000, r130900, r2112000, r2162000, r6402000, f110600'
 			status=control
-
 		bizprocess prib2011 'Прибыли и убытки (форма № 2 ФО)' role=FIN rootrows=m112
-			
-
 		bizprocess prib_factor 'Факторный анализ прибыли до налогообложения' role='PROTOKOL (FIN)' rootrows=r2300
 			status=history
-
 		bizprocess prib_fa 'ФА прибыли до налогообложения BUDGET' role='BUDGET (FIN)' rootrows=r2310
 			status=test
-
 		bizprocess prib2011_corp 'Прибыли и убытки (форма АХД)' role=FIN rootrows=m112
-			
-
 		bizprocess prib_budget 'Прибыли и убытки (форма № 2 ФО в ред. 2010) BUDGET' role='BUDGET (FIN)' rootrows=m212
 			status=history
-
 		bizprocess prib 'Прибыли и убытки (форма № 2 ФО в ред. 2010)' role=FIN rootrows=m212
 			status=history
-
 		bizprocess prib_cons 'Прибыли и убытки' inprocess=finres_cons role=FIN rootrows=m112
-			
-
 		bizprocess prib_corp 'Прибыли и убытки (форма АХД в ред. 2010)' role=FIN rootrows=m212
 			status=history
-
 		bizprocess prib_fact2011 'Прибыли и убытки (форма № 2 ФО)' role=DR rootrows=m112
-			
-
 		bizprocess prib_fact2011_bank 'Прибыли и убытки (форма № 2 ФО)' role=DR rootrows=m112
-			
-
 		bizprocess prib_fact 'Прибыли и убытки (форма № 2 ФО в ред. 2010)' role=DR rootrows=m212
-			
-
 		bizprocess bankprib 'Отчет о прибылях и убытках (банк)' role='DESIGNER (FIN)' rootrows=m412
 			primary=1
 			status=history
-
 		bizprocess free_active2011 'Расчет чистых активов' role=FIN rootrows=m115
-			
-
 		bizprocess free_active 'Расчет чистых активов (в ред. 2010)' inprocess=balans2011 role=FIN rootrows=m215
 			status=history
-
 		bizprocess osnpok 'Основные показатели (форма № 2)' inprocess='rashsn, inv, trud, zatr, nalog, prib2011, finplan' role=DR rootrows=m200
 			analytic=1
-			
-
 		bizprocess osnpok_kr 'Основные показатели (кратко) ADMIN' role='ADMIN (DR)' rootrows=m201
-			
-
 		bizprocess osnpok_valuta 'Основные показатели (форма № 2)' role='DESIGNER,TESTER (DR)' rootrows=m200
 			status=design
-
 		bizprocess doppok_valuta 'Дополнительные показатели' role='DESIGNER,TESTER (DR)' rootrows=a200
 			status=design
-
 		bizprocess osnpok_corp 'Основные показатели (форма № 2)' role=DR rootrows=m200
-			
-
 		bizprocess osnpok_bank 'Основные показатели (форма № 2)' role=DR rootrows=m200
-			
-
 		bizprocess osnpok_hold 'Основные показатели (форма № 2) c утверждениями' role=DR rootrows=m200
-			
-
 		bizprocess osnpok_dir 'Основные показатели' role=DR rootrows=m202
-			
-
 		bizprocess osnpok_trud 'Основные показатели по персоналу (из формы № 2)' role=ZP
-			
-
 		bizprocess osnpok_90 'Основные показатели 1990-2010' role=DR rootrows=h200
-			
-
 		bizprocess finres 'Финансовые результаты (форма №4)' inprocess='rashsn, prib2011, balans_rsim' role=FIN rootrows=m214
-			
-
 		bizprocess ras91 'Расшифровка 91 счета ADMIN' role='ADMIN (FIN)' rootrows=c091
 			status=test
-
 		bizprocess finres_dir 'Финансовые результаты' role=DR rootrows=m214
-			
-
 		bizprocess finres_corp 'Финансовые результаты (форма №4)' role=FIN rootrows=m214
-			
-
 		bizprocess finres_cons 'Финансовые результаты (форма №4)' role=FIN rootrows=m214
-			
-
 		bizprocess finres_zatr 'Себестоимость продаж по элементам' role='ADMIN (FIN)' rootrows=p214
-			
-
 		bizprocess finres_group 'Группировка прочих доходов и расходов в форме 4' role='DESIGNER,TESTER (DR)' rootrows=g214
 			status=design
-
 		bizprocess finres_hold 'Финансовые результаты (форма №4) c утвержениями' role=FIN rootrows=m214
-			
-
 		bizprocess pril_18 'Приложение 18. Финансовые результаты' process=PS_7110 role=DR rootrows=m214
 			report=1
-			
-
 		bizprocess pril_18_bank 'Приложение 18. Финансовые результаты' process=PS_7120 role=DR rootrows=m214
 			report=1
-			
-
 		bizprocess f7 'Управленческие расходы (форма №7)' inprocess='prib2011, balans2011' role=DR rootrows=m217
 			primary=1
-			
-
 		bizprocess f7_dir 'Управленческие расходы' role=DR rootrows=m217
-			
-
 		bizprocess f7_cons 'Управленческие расходы (форма №7) ADMIN' role='ADMIN (DR)' rootrows=m217
-			
-
 		bizprocess pril_183 'Приложение 18.3. Управленческие расходы' process=PS_7110 role=DR rootrows=m217
 			report=1
-			
-
 		bizprocess f7_corp 'Управленческие расходы (форма №7)' role=DR rootrows=m217
-			
-
 		bizprocess f7_hold 'Управленческие расходы (форма № 7) с утверждениями' role=DR rootrows=m217
-			
-
 		bizprocess f8 'Расходы на продажу (форма №8)' inprocess=prib2011 role=DR rootrows=m218
 			primary=1
-			
-
 		bizprocess f8_dir 'Расходы на продажу' role=DR rootrows=m218
-			
-
 		bizprocess f8_cons 'Коммерческие расходы (форма № 8) ADMIN' role='ADMIN (DR)' rootrows=m218
-			
-
 		bizprocess pril_184 'Приложение 18.4. Коммерческие расходы' process=PS_7110 role=DR rootrows=m218
 			report=1
-			
-
 		bizprocess f8_corp 'Расходы на продажу (форма №8)' role=DR rootrows=m218
-			
-
 		bizprocess f8_hold 'Расходы на продажу (форма № 8) с утверждениями' role=DR rootrows=m218
-			
-
 		bizprocess inv 'Расходы инвестиционного характера (форма № 9)' inprocess='balans_rns, finact' role=INVDR rootrows=m250
 			analytic=1
-			
-
 		bizprocess inv_dir 'Расходы инвестиционного характера' role=DR rootrows=m250
-			
-
 		bizprocess inv_copy 'Расходы инвестиционного характера (форма № 9)' role=INVDR rootrows=m250
-			
-
 		bizprocess inv_corp 'Расходы инвестиционного характера (форма № 9)' role=INVDR rootrows=m250
-			
-
 		bizprocess inv_hold 'Расходы инвестиционного характера (форма № 9) c утвержениями' role=INVDR rootrows=m250
-			
-
 		bizprocess zatr 'Затраты на производство и реализацию (форма № 3)' inprocess='nalog, balans2011, zatr_am, balans_rbp, balans_rsim' role=DR rootrows=m260
 			complex=1
-			
-
 		bizprocess zatr_korr 'Уточнение затрат на производство и реализацию' role=FIN
-
 		bizprocess zatr_800 'Затраты на производство и реализацию (расшифровка 800)' role='ADMIN (DR)' rootrows=m260800
-			
-
 		bizprocess zatr_dir 'Затраты на производство и реализацию' role=DR rootrows=m260
-			
-
 		bizprocess pril_182 'Приложение 18.2. Себестоимость продаж' process=PS_7110 role=DR rootrows=m260
 			report=1
-			
-
 		bizprocess zatr_corp 'Затраты на производство и реализацию (форма № 3)' role=DR rootrows=m260
-			
-
 		bizprocess zatr_bank 'Затраты на производство и реализацию (форма № 3)' role=DR rootrows=m260
-			
-
 		bizprocess zatr_sir 'Расшифровка затрат на сырье (Прил. № 3.1)' role='DESIGNER,TESTER (DR)' rootrows=r260100
 			status=design
-
 		bizprocess zatr_pr 'Расшифровка прочих расходов (Прил. № 3.4)' inprocess='f7, zatr' role=DR rootrows=r590
 			relation=код_формы(code)
-			
-
 		bizprocess zatr_pr_korr 'Уточнение отдельных расходов в Прил. № 3.4' role=DR
-			
-
 		bizprocess zatr_pr_dir 'Расшифровка прочих расходов' role=DR rootrows=r590
-			
-
 		bizprocess zatr_pr_corp 'Расшифровка прочих расходов (Прил. № 3.4)' role=DR rootrows=r590
-			
-
 		bizprocess zatr_pr_hold 'Расшифровка прочих расходов (Прил. № 3.4) с расшифровками' role=DR rootrows=r590
-			
-
 		bizprocess zatr_am 'Амортизация (прил. 3.5)' role=DR rootrows=k260400
-			
-
 		bizprocess zatr_korr_pr 'Уточнение отдельных статей затрат по форме № 3' role='DESIGNER,TESTER (DR)' rootrows=k999
 			status=design
-
 		bizprocess rashsn 'Расходы на собственные нужды (форма № 6)' inprocess=prib2011 role=SOC rootrows=m600
-			
-
 		bizprocess rashsn_dir 'Расходы на собственные нужды' role=DR rootrows=m600
-			
-
 		bizprocess rashsn_corp 'Расходы на собственные нужды (форма № 6)' role=SOC rootrows=m600
-			
-
 		bizprocess rashsn_hold 'Расходы на собственные нужды (форма № 6) с утв. УГМК' role=SOC rootrows=m600
-			
-
 		bizprocess rashsn_no_ras 'Расходы на собственные нужды (форма № 6) c расшифровками' role=FIN rootrows=m600
-			
-
 		bizprocess rashsn_p19 'Приложение 19. Расходы организации на собственные нужды' process=PS_7110 role=DR rootrows=m600
 			report=1
-			
-
 		bizprocess opr 'Общепроизводственные расходы' role='DESIGNER,TESTER (DR)' rootrows=m216
 			status=design
-
 		bizprocess opr_div 'ОПР (по переделам) ADMIN' role='ADMIN (DR)' rootrows=m216
 			status=design
-
 		bizprocess vncorp_usl 'Внутрикорпоративные услуги' role='DESIGNER,TESTER (COST)' rootrows=z310
 			status=design
-
 		bizprocess dds 'Движение денежных средств (косв. метод)' role=FIN rootrows=m213
-			
-
 		bizprocess ras_dk 'Дебиторы и кредиторы' inprocess=balans2011 role=DZK rootrows=m230
 			primary=1
-			
-
 		bizprocess ras_dk_dir 'Дебиторы и кредиторы' role=DZK rootrows=m230
-			
-
 		bizprocess ras_dz 'Приложение 11. Дебиторская задолженность' role=DZK rootrows=m232
 			report=1
-			
-
 		bizprocess ras_dz_bank 'Приложение 11. Дебиторская задолженность' process=PS_7120 role=DZK rootrows=m232
 			report=1
-			
-
 		bizprocess ras_kz 'Приложение 15. Кредиторская задолженность' process=PS_7110 role=DZK rootrows=m232
 			report=1
-			
-
 		bizprocess ras_kz_bank 'Приложение 15. Кредиторская задолженность' process=PS_7120 role=DZK rootrows=m232
 			report=1
-			
-
 		bizprocess zatr_en 'Расшифровка затрат на топливо и энергию (Прил. № 3.3)' role=ENERGO rootrows='m260170, m260180'
 			status=test
-
 		bizprocess zatr_el 'Расчет расходов на электроэнергию' role='DESIGNER,TESTER (ENERGO)' rootrows=r260180
 			status=design
-
 		bizprocess zatr_topl 'Расчет расходов на топливо' role=ENERGO rootrows=r175
 			status=test
-
 		bizprocess finplan 'Финансовый план' inprocess='krzaim_lite, ras_dk, finact, nalog_nds, finres, balans2011, nalog, prib2011, zatr' role=FIN rootrows=f110
 			analytic=1
-			
-
 		bizprocess kovenant_amort 'Амортизация по приложению № 5 стр. 740' role='BUDGET (DR)' rootrows=b102
 			primary=1
-			
-
 		bizprocess nalog 'Налоги, платежи и сборы' inprocess='ras_dk, prib2011' role=NAL rootrows=m220
 			primary=1
-			
-
 		bizprocess nalog_nds_korr 'Уточнение НДС' role=NAL
-
 		bizprocess nalog_korr 'Уточнение налогов по уровням бюджетов ADMIN' role='ADMIN (NAL)' rootrows='m220110, m220120, m220130, m220180, m220160, m220210, m220230, m220290, m220390'
-			
-
 		bizprocess nalog_budget 'Налоги по уровням бюджетов' role=NAL rootrows=m228
 			report=1
-			
-
 		bizprocess nalog_budget_sfo 'Приложение 16.5. Налоги по уровням бюджетов' process=PS_7110 role=NAL rootrows=m228
 			report=1
-			
-
 		bizprocess nalog_161 'Приложение 16.1. Отчет о налогах и платежах' process=PS_7110 role=NAL rootrows=m220
 			report=1
-			
-
 		bizprocess nalog_162 'Приложение 16.2. Отчет о налогах и платежах без УФК' process=PS_7110 role=NAL rootrows=m221
 			report=1
-			
-
 		bizprocess nalog_163 'Приложение 16.3. Отчет о налогах и платежах через УФК' process=PS_7110 role=NAL rootrows=m220
 			report=1
-			
-
 		bizprocess nalog_soc_part 'Налоги по соцпартнерству (ADMIN)' role='ADMIN (NAL)' rootrows=m229
-			
-
 		bizprocess nalog_nds19 'НДС по приобретенным ценнностям (Прил. № 23)' role=NAL rootrows=m225
 			primary=1
 			status=test
-
 		bizprocess pril_nds 'Приложение 23. НДС по приобретенным ценностям' process=PS_7110 role=FIN rootrows=m225
 			report=1
-			
-
 		bizprocess spravgroup 'Справочники' role=ADMIN
-			
-
 		bizprocess sppru 'Продукция (работы, услуги)' role=ADMIN rootrows=m150
 			status=system
-
 		bizprocess spnorm 'Нормируемые показатели' role=ADMIN rootrows=m130
 			status=system
-
 		bizprocess spsz 'Статьи затрат' role=ADMIN rootrows=sz
 			status=system
-
 		bizprocess spconto 'Бухгалтерские счета' role=ADMIN rootrows=DIR_CONTO
 			status=system
-
 		bizprocess spform 'Формы ввода' role=ADMIN rootrows=DIR_FORM
 			status=system
-
 		bizprocess sporgrole 'Роли организации' role=ADMIN rootrows=DIR_ORG_ROLE
 			status=system
-
 		bizprocess spfiletype 'Типы прикрепленных файлов' role=ADMIN rootrows=DIR_FILE_TYPES
 			status=system
-
 		bizprocess spgrp 'Группы' role=ADMIN rootrows=DIR110
 			status=system
-
 		bizprocess sptags 'Теги' role=ADMIN rootrows=DIR_TAGS
 			status=system
-
 		bizprocess spediz 'Единицы измерения' role=ADMIN rootrows=dir120
 			status=system
-
 		bizprocess spcalc 'Статьи калькуляции' role=ADMIN rootrows=z100
 			status=system
-
 		bizprocess spnal 'Налоги по КБК' role=ADMIN rootrows=NAL
 			status=system
-
 		bizprocess spnaltype 'Виды налогов' role=ADMIN rootrows=NALTYPE
 			status=system
-
 		bizprocess spkatnal 'Категории налогов' role=ADMIN rootrows=KATNAL
 			status=system
-
 		bizprocess sprep 'Презентации' role=ADMIN rootrows=REPORTS
 			status=system
-
 		bizprocess sppkzss 'Показатели калькуляций' role=ADMIN rootrows=z001
 			status=system
-
 		bizprocess themabiztran 'Глобальные параметры тем' role=ADMIN rootrows=DIR_THEMA
 			status=system
-
 		bizprocess spoffice 'Справочник должностей' role=ADMIN rootrows=DIR_OFFICE
 			status=system
-
 		bizprocess spprocess 'Справочник процессов' role=ADMIN rootrows=DIR_PROCESS
 			status=system
-
 		bizprocess spparam 'Параметры презентаций' role=ADMIN rootrows=DIR_PARAM
 			status=system
-
 		bizprocess spparambudget 'Основные параметры бюджета' role=ADMIN rootrows=m203
 			status=system
-
 		bizprocess spprot 'Параметры протокола' role=ADMIN rootrows=s100
 			status=system
-
 		bizprocess rasbal 'Расшифровки бухгалтерского баланса' role='SFOGROUP (FIN)'
-			
-
 		bizprocess draftdirector 'Подготовка к Дирекции' role=DIRECTOR
-			
-
 		bizprocess director 'Дирекция' role=DIRECTOR
-			
-
 		bizprocess holdundreport 'Отчеты с визами холдинга' role=BUDGET
-			
-
 		bizprocess present 'Презентации' role=PRESENT
-			
-
 		bizprocess newolap 'Новые OLAP-отчеты' role=BUDGET
 			report=1
-			
-
 		bizprocess consolap 'Консолидация' role=BUDGET
-			
-
 		bizprocess sfr 'Стандарт финансовой отчетности' role=SFOGROUP
-			
-
 		bizprocess corpreportgroup 'Корпоративная отчетность' role='CORPGROUP (DR)'
-			
-
 		bizprocess controlgroup 'Контроллинг' role=BUDGET
-			
-
 		bizprocess bankreportgroup 'Отчетность для банков' role=BUDGET
-			
-
 		bizprocess fasreportgroup 'Отчетность для ФАС' role='FAS (DR)'
-			
-
 		bizprocess consreportgroup 'Консолидированная отчетность' role=CONSGROUP
-			
-
 		bizprocess momeygroup 'Казначейство' role='SFOGROUP (FIN)'
-			
-
 		bizprocess kovenant 'Ковенанты' role='BUDGET (DR)'
-			
-
 		bizprocess calcgroup 'Калькуляции' role=COSTGROUP
-			
-
 		bizprocess resource_balans 'Сырье' role=MTCGROUP
-			
-
 		bizprocess resource_prod 'Производство' role=COSTGROUP
-			
-
 		bizprocess resource_uslugi 'Услуги' role=COSTGROUP
-			
-
 		bizprocess resource_sale 'Продажи' role=SALEGROUP
-			
-
 		bizprocess resource_sale_old 'Продажи (устар.) ADMIN' role=ADMIN
-			
-
 		bizprocess nalog_group 'Налоги' role=NALGROUP
-			
-
 		bizprocess nalog_office 'Налоги по подразделениям' role=NALGROUP
-			
-
 		bizprocess invest_group 'Инвестиции (ADMIN)' role=ADMIN
-			
-
 		bizprocess rudagroup 'Горное производство' role=RUDAGROUP
-			
-
 		bizprocess olapreport 'OLAP-отчеты' role=BUDGET
 			report=1
-			
-
 		bizprocess balans2011_hold 'Баланс (форма № 1 ФО) с утверждениями' role=FIN rootrows=m111
-			
-
 		bizprocess biogroup 'Экология' role=BIOGROUP
-			
-
 		bizprocess balans_rns_korr 'Уточнение незавершенного строительства' role=FIN rootrows='r130130, r130160, r130170, r130220, r130230, r130940, r130950, r130960, r130970'
-
 		bizprocess balans_capital 'Капитал и использование прибыли ADMIN' role='ADMIN (FIN)' rootrows=m113
-			
-
 		bizprocess balans_reserv 'Резервы и прочие обязательства ADMIN' role='ADMIN (FIN)' rootrows=m116
 			primary=1
-			
-
 		bizprocess calc_osnpok 'Себестоимость основных видов продукции ADMIN' role='ADMIN (COST)' rootrows=z111
 			status=test
-
 		bizprocess calc_ruda 'Калькуляция добычи и обогащения' role=COST rootrows=z112
 			primary=1
 			status=test
-
 		bizprocess calc_ruda_sale 'Реализация концентрата' role=COST rootrows=z112800
 			primary=1
 			status=test
-
 		bizprocess olap_calc_ruda 'Калькуляция добычи и обогащения (OLAP)' role=COST
 			report=1
-			
-
 		bizprocess calc_zink 'Калькуляция цинка' role=COST rootrows=z250
 			primary=1
-			
-
 		bizprocess calc_pb 'Калькуляция свинца' role=COST rootrows=z260
 			primary=1
-			
-
 		bizprocess calc_sernkisl 'Калькуляция серной кислоты' role=COST rootrows=z210
 			primary=1
-			
-
 		bizprocess calc_chernmed 'Калькуляция черновой меди' role=COST rootrows=z130
 			primary=1
-			
-
 		bizprocess calc_ocm 'Калькуляция проката цветных металлов' role=COST rootrows=z410
 			primary=1
-			
-
 		bizprocess calc_slitki 'Калькуляция слитков' role=COST rootrows=z420
 			primary=1
-			
-
 		bizprocess ras_dk_korr 'Дебиторы и кредиторы (ревизия за 2012 год)' role=DZK rootrows=m230
 			status=test
-
 		bizprocess energogroup 'Энергетика' role='ENERGOGROUP (ENERGO)'
-			
-
 		bizprocess ter_olap 'Отчет по ТЭР (OLAP)' role=ENERGO
-			
-
 		bizprocess topl_olap 'Отчет по дизтопливу (OLAP)' role=ENERGO
-			
-
 		bizprocess finact_test 'Финвложения (тест) ADMIN' role='ADMIN (FA)' rootrows=s140
-
 		bizprocess budgetdds 'Бюджет ДДС' role=FIN rootrows=f120
-			
-
 		bizprocess budgetdds_hold 'Бюджет ДДС с утверждениями' role=FIN rootrows=f120
-			
-
 		bizprocess finplan_hold 'Финансовый план с утверждениями' role=FIN rootrows=f110
-			
-
 		bizprocess fp_olap 'Финансовый план (OLAP)' role='BUDGET (FIN)'
 			report=1
-			
-
 		bizprocess zatr_uslper 'Расшифровка услуг вспомогательного производства (Прил. № 3.2)' role='DESIGNER,TESTER (DR)' rootrows=r260135
 			status=design
-
 		bizprocess kovenant_amort_olap 'Амортизация по приложению № 5 стр. 740 (OLAP)' role='BUDGET (DR)'
-			
-
 		bizprocess kovenant_normativ 'Нормативные ковенанты по группе' role='BUDGET (DR)' rootrows=b101
-			
-
 		bizprocess kovenant_vtb 'Ковенанты ВТБ' role='BUDGET (DR)' rootrows=b110
-			
-
 		bizprocess kovenant_vtb_2012 'Ковенанты ВТБ (ред. 2012)' role='BUDGET (DR)' rootrows=b111
-			
-
 		bizprocess kovenant_gpb 'Ковенанты Газпромбанка' role='BUDGET (DR)' rootrows=b120
-			
-
 		bizprocess kovenant_sb 'Ковенанты Сбербанка' role='BUDGET (DR)' rootrows=b130
-			
-
 		bizprocess kovenant_sb_2012 'Ковенанты Сбербанка (ред. 2012)' role='BUDGET (DR)' rootrows=b131
-			
-
 		bizprocess nalog_nds 'Расчет НДС (форма № 16.4)' inprocess='zatr, inv, balans_rsim' role=NAL rootrows=m224
 			status=test
-
 		bizprocess nalog_nds_sfo 'Приложение 16.4. Расчет НДС' role=NAL rootrows=m224
 			primary=1
-			
-
 		bizprocess material_balans 'Движение материальных ценностей (old)' role=ADMIN
-			
-
 		bizprocess testgroup 'Тестирование отдельных параметров' role=ADMIN
-			
-
 		bizprocess testerrors 'Тестирование ошибок в формулах' role=ADMIN rootrows=TEST_ERRORS
 			status=system
-
 		bizprocess templates 'Шаблоны параметров' role=ADMIN
-			
-
 		bizprocess PS_7110 'Налоговый учет'
 			bizg=1
-
 		bizprocess osgroup 'Основные средства' role=OSGROUP
-			
-
 		bizprocess krzaim_lite_new 'Заемные средства (extreme) ADMIN' role='ADMIN (BANK)' rootrows=r510
 			status=test
-
 		bizprocess pril_os_prd 'Основные средства' role=OS rootrows=r120
-			
-
 		bizprocess anpok_os 'Характеристики основных средств' role=OS rootrows=a120
-			
-
 		bizprocess balans_rns_str 'Расшифровка незавершенного строительства (строители)' role=FIN rootrows=r131
-			
-
 		bizprocess finres_mes 'Финансовые результаты (форма №4) мес.' role='ADMIN (FIN)' rootrows=m214
-			
-
 		bizprocess ras_dk_ca 'Дебиторы и кредиторы по контрагентам' role=DZK rootrows=m231
 			primary=1
-			
-
 		bizprocess finact 'Финансовые вложения' inprocess=balans2011 role=FA rootrows=s140
 			primary=1
 			status=test
-
 		bizprocess finact_copy 'Расшифровка финансовых вложений (Прил. № 4 СФО)' role=FA rootrows=s140
 			status=test
-
 		bizprocess budgetdds_hold_str 'Бюджет ДДС (для строителей) с утверждениями' role=FIN rootrows=f120
-			
-
 		bizprocess finplan_hold_str 'Финансовый план (для строителей) с утверждениями' role=FIN rootrows=f110
-			
-
 		bizprocess auto_olap_uslchop 'Услуги ЧОП (OLAP)' role=BUDGET
 			report=1
-			
-
 		bizprocess auto_olap_proizv 'Объемы производства (OLAP)' role=BUDGET
 			report=1
-			
-
 		bizprocess auto_olap_ssosnprod 'Себестоимость единицы (OLAP)' role=BUDGET
 			report=1
-			
-
 		bizprocess auto_olap_fin 'Финансовые показатели (OLAP)' role=BUDGET
 			report=1
-
 		bizprocess auto_olap_bal 'Бухгалтерский баланс (OLAP)' role=BUDGET
 			report=1
-			
-
 		bizprocess auto_conto_olap_sir 'Сырье и материалы (OLAP)' role=BUDGET
 			report=1
-
 		bizprocess auto_conto_olap_finrez 'Финансовые результаты (OLAP)' role=BUDGET
 			report=1
-			
-
 		bizprocess auto_olap_fin_anal 'Финансовый анализ (OLAP)' role=BUDGET
 			report=1
-			
-
 		bizprocess auto_olap_tep 'Технико-экономические показатели (OLAP)' role=BUDGET
 			report=1
-			
-
 		bizprocess auto_olap_os 'Основные средства (OLAP)' role='BUDGET (OS)'
 			report=1
-			
-
 		bizprocess auto_olap_test 'Смешанный отчет-тест (OLAP)' role=BUDGET
 			report=1
-			
-
 		bizprocess obproizf 'Объемы производства (форма № 1)' role=OBPROIZ rootrows=m140
-			
-
 		bizprocess obproizf_new 'Объемы производства (форма № 1) new' role=OBPROIZ rootrows=m150
-			
-
 		bizprocess uslugi_chop 'Услуги ЧОП' role=DR rootrows=m161
-			
-
 		bizprocess trudgroup 'Отчеты по труду' role=ZPGROUP
-			
-
 		bizprocess trud 'Отчет по труду' role=ZP rootrows=t110
-			
-
 		bizprocess pers 'Информация о персонале' role='DESIGNER,TESTER (KADR)' rootrows=t112
 			status=design
-
 		bizprocess trudindex 'Динамика инфляции и зарплаты' role=ZP rootrows=t115
-			
-
 		bizprocess trud_olap_countizp 'Численность и заработная плата' role=ZP
-			
-
 		bizprocess trud_olap_countizp_rash 'Численность и заработная плата (с расшифровками)' role=ZP
-			
-
 		bizprocess trud_olap_fact 'Отчет по труду' role=ZP
-			
-
 		bizprocess trud_olap_plan2011 'План по труду' role=ZP
-			
-
 		bizprocess trud_olap_plan 'План по труду 2010' role=ZP
-			
-
 		bizprocess zp_zatr 'Расходы по персоналу' role='DESIGNER,TESTER (ZP)' rootrows=m265
 			status=design
-
 		bizprocess zp_zatr_conto 'Расходы по персоналу (по счетам) ADMIN' role='ADMIN (ZP)' rootrows=m265
 			status=design
-
 		bizprocess zp_zatr_conto1 'Страховые взносы (по счетам) ADMIN' role='ADMIN (ZP)' rootrows=m265
 			status=design
-
 		bizprocess trud_obosn 'Расчет-обоснование плана по труду (форма № 1-Т)' role=ZP rootrows=t210
 			status=test
-
 		bizprocess trud_cent_vipl 'Смета централизованных выплат (форма № 2-Т)' role=ZP rootrows=t220
 			status=test
-
 		bizprocess trud_soc_vipl 'Смета социальных выплат (форма № 3-Т)' role=ZP rootrows=t230
 			status=test
-
 		bizprocess trud_fzp_nespis 'ФЗП работников несписочного состава (форма № 4-Т)' role=ZP rootrows=t240
 			status=test
-
 		bizprocess trud_zatr_pers 'Затраты на персонал (форма № 5-Т)' role=ZP rootrows=t250
 			status=test
-
 		bizprocess trud_zatr_lehr_new 'Затраты на обучение персонала' role=EDU rootrows=t265
 			status=test
-
 		bizprocess lehr_olap 'Затраты на обучение персонала OLAP' role=EDU
-			
-
 		bizprocess auto_olap_lehr 'Затраты на обучение персонала OLAP (все)' role=EDU
 			report=1
-			
-
 		bizprocess zhilpr 'Реализация жилищной программы (Приложение № 11)' role=KADR rootrows=t211
-			
-
 		bizprocess olap_trudfhd 'Показатели ФХД (труд)' role=ZP
 			report=1
-			
-
 		bizprocess trud_olap_count_pers 'Снижение численности персонала' role=ZP
-			
-
 		bizprocess sptm 'Технологические материалы' role=ADMIN rootrows=m170
 			status=system
-
 		bizprocess tmgroup 'Технологические материалы' role=TMGROUP
-			
-
 		bizprocess auto_olap_osnpok 'Основные показатели (OLAP)' role=BUDGET
-			
-
 		bizprocess auto_conto_olap_inv 'Инвестиции (OLAP)' role=BUDGET
-			
-
 		bizprocess auto_conto_olap_zatr 'Затраты на ПиРП (OLAP)' role=BUDGET
-			
-
 		bizprocess auto_conto_olap_zatr_usl 'Услуги сторонних организаций(OLAP)' role=BUDGET
-			
-
 		bizprocess auto_conto_olap_rash_sn 'Расходы на сосбственные нужды' role=BUDGET
-			
-
 		bizprocess auto_conto_olap_tmc 'Сырье и материалы (OLAP)' role=BUDGET
-			
-
 		bizprocess auto_conto_olap_nezstr 'Незавершенное строительств (OLAP)' process=/ role=BUDGET
-			
-
 		bizprocess auto_conto_olap_nds19 'НДС по приобретенным ценностям (OLAP)' role=BUDGET
-			
-
 		bizprocess rawinput_rawtype2_pd 'Поступление сырья на передел ЧМ' role='BUDGET (MTR)' rootrows=m150
 			status=test
-
 		bizprocess rawinput_rawtype2_rd 'Загрузка сырья в передел ЧМ' role='BUDGET (MTR)' rootrows=m150
 			status=test
-
 		bizprocess biztran_uni 'Универсальный biztran-отчет' role='BUDGET (MTR)' rootrows=m150
 			status=test
-
 		bizprocess pf 'Полуфабрикаты' role='DESIGNER,TESTER (COST)' rootrows=m150
 			status=design
-
 		bizprocess sklad 'Склад продукции' role='DESIGNER,TESTER (SALE)' rootrows=m150
 			status=design
-
 		bizprocess buy_sir 'Сырье и полуфабрикаты (внутри УГМК)' role=DR rootrows=m150
 			status=test
-
 		bizprocess uslugi 'Приобретение работ и услуг (внутри УГМК)' role=DR rootrows=m150
 			status=test
-
 		bizprocess sir1091fix 'Движение собственного сырья' role=MTR rootrows=m150
 			status=test
-
 		bizprocess sir1092fix 'Обеспечение сырьем' role=MTR rootrows=m150
 			status=test
-
 		bizprocess sir1091fa 'Факторный анализ собственного сырья' role=MTR rootrows=m150
 			status=test
-
 		bizprocess sir003fix 'Движение давальческого сырья' role=MTR rootrows=m150
 			status=test
-
 		bizprocess raw_move_svod 'Сводный отчет по сырью (натура)' role=MTR rootrows=m150
 			status=test
-
 		bizprocess sale_fix 'Продажи' role=SALE rootrows=m150
 			status=test
-
 		bizprocess sale_fix_new 'Продажи extreme ADMIN' role='ADMIN (SALE)' rootrows=m150
 			status=test
-
 		bizprocess sale_cost_fix 'Удельная себестоимость продаж' role=SALE rootrows=m150
 			status=test
-
 		bizprocess sale_svod 'Свод по продажам BUDGET' role='BUDGET (SALE)' rootrows=m150
 			status=test
-

@@ -17,6 +17,7 @@ namespace Zeta.Extreme.Developer.Scripting {
 			{"generate-periods",typeof(GeneratePeriods)},
 			{"generate-bizprocesses",typeof(GenerateBizProcesses)},
 			{"generate-columns",typeof(GenerateColumns)},
+			{"generate-objtypes",typeof(GenerateObjTypes)},
 			{"generate-transfer",typeof(GenerateTransferScript)},
 		};
 		/// <summary>
