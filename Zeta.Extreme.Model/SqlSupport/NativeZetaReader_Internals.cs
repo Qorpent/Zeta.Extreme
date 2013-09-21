@@ -143,6 +143,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				IsFinal =  r.GetBoolean(7),
 				RootRows =  r.GetString(8),
 				Process =  r.GetString(9),
+                Version = r.GetDateTime(10),
 			};
 
 
@@ -256,6 +257,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					StartDate = r.GetDateTime(7),
 					EndDate = r.GetDateTime(8),
 					Category = r.GetString(9),
+                    Version = r.GetDateTime(10),
 				};
 			return x;
 		}

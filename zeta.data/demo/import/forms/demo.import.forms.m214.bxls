@@ -63,20 +63,15 @@ namespace demo.import.forms
 			formula 029 'Валовая прибыль' outer=3  formula=(
 				f.If ( year > 2010, { $m214010? - $m214020? } , { $m212029? } )
 			)
-				formula 030 'Расходы на продажу' outer=4  formula=(
+				formula 030 'Расходы на продажу' outer=4  : (
 					f.If ( year>2010, { $m1122210? } , { $m212030? } )
 				)
-					primary m1122210 'Расходы на продажу' notlocalizedcode=true outer=2210 groups='ПП11 ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 
-				formula 040 'Управленческие расходы' outer=5  formula=(
+				formula 040 'Управленческие расходы' outer=5  : (
 					f.If ( year>2010, { $m1122220? } , { $m212040? } )
 				)
-					primary m1122220 'Управленческие расходы' notlocalizedcode=true outer=2220 groups='ПП11 ПН11 ЧП11 ФР11' minus sap-region=BUH sap-form=002 sap-use 
 			formula 050 'Прибыль (убыток) от продаж' outer=6  formula=(
 				f.If ( year>2010, { $m214029? - $m214040? - $m214030? } , { $m212050? } )
 			)
-				primary m1122310 'Доходы от участия в других организациях' notlocalizedcode=true outer=2310 groups='ПН11 ЧП11 ФР11' sap-region=BUH sap-form=002 sap-use 
-				primary m1122320 'Проценты к получению' notlocalizedcode=true outer=2320 groups='ПН11 ЧП11 ФР11' sap-region=BUH sap-form=002 sap-use 
-				primary m1122330 'Проценты к уплате' notlocalizedcode=true outer=2330 groups='ПН11 ЧП11 ФР11' measure='/dir120711/' minus sap-region=BUH sap-form=002 sap-use 
 				formula 060 'Проценты к получению' outer=7  : (
 					f.If ( year>2010, { $m1122320? } , { $m212060? } )
 				)
@@ -451,11 +446,6 @@ namespace demo.import.forms
 			formula 140 'Прибыль (убыток) до налогообложения' outer=12  formula=(
 				f.If ( year>2010, { $m214050? + $m214060? - $m214070? + $m214080? + $m214090? - $m214100? } , { $m212140? } )
 			)
-				primary m1122410 'Текущий налог на прибыль' notlocalizedcode=true outer=2410 groups='ЧП11 ФР11' minus olap=finrez sap-region=BUH sap-form=002 sap-use 
-				primary m1122421 'в т.ч. постоянные налоговые обязательства (активы)' notlocalizedcode=true outer=2421 olap=finrez sap-region=BUH sap-form=002 sap-use 
-				primary m1122430 'Изменение отложенных налоговых обязательств' notlocalizedcode=true outer=2430 groups='ЧП11 ФР11' minus olap=fin sap-region=BUH sap-form=002 sap-use 
-				primary m1122450 'Изменение отложенных налоговых активов' notlocalizedcode=true outer=2450 groups='ЧП11 ФР11' olap=fin sap-region=BUH sap-form=002 sap-use 
-				primary m1122460 'Прочее' notlocalizedcode=true outer=2460 groups='ЧП11 ФР11' minus olap=fin sap-region=BUH sap-form=002 sap-use 
 				formula 141 'Отложенные налоговые активы' outer=12.1  : (
 					f.If ( year>2010, { $m1122450? } , { $m212141? } )
 				)

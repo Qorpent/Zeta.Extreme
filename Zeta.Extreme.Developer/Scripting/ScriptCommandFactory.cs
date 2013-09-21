@@ -15,6 +15,7 @@ namespace Zeta.Extreme.Developer.Scripting {
 			{"generate-form",typeof(GenerateFormCommand)},
 			{"generate-dict",typeof(GenerateDictCommand)},
 			{"generate-periods",typeof(GeneratePeriods)},
+			{"generate-bizprocesses",typeof(GenerateBizProcesses)},
 			{"generate-columns",typeof(GenerateColumns)},
 			{"generate-transfer",typeof(GenerateTransferScript)},
 		};

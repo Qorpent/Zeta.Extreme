@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text;
+using Qorpent.BSharp;
 using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.SqlSupport;
 
@@ -9,51 +12,50 @@ namespace Zeta.Extreme.Developer.MetaStorage
 	/// Экспортер периодов
 	/// </summary>
 	public class PeriodsExporter : IDataToBSharpExporter {
-		/// <summary>
+        private const string ElementName = "period";
+
+        /// <summary>
 		/// 
 		/// </summary>
 		public PeriodsExporter() {
 			Namespace = "import";
 			ClassName = "periods";
 		}
-
-
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
 		public string Generate() {
-			var sb = new StringBuilder();
+		    var builder = new BSharpCodeBuilder();
 			var srcperiods = new NativeZetaReader().ReadPeriods().ToArray();
 			var primary = srcperiods.Where(_ =>! _.IsFormula).ToArray();
 			var formulas = srcperiods.Where(_ => _.IsFormula).ToArray();
 			var pgroups = primary.GroupBy(_ => _.Category);
+
+            builder.WriteCommentBlock("ЭКСПОРТ ПЕРИОДОВ ИЗ БД ECO",
+                new Dictionary<string,object> {
+                    {"Время последего обновления",srcperiods.Select(_=>_.Version).Max().ToString("yyyy-MM-dd HH:mm:ss")},
+                });
+            builder.StartNamespace(Namespace);
+            builder.StartClass(ClassName,new{prototype="meta"});
+            builder.WriteElement(BSharpSyntax.ClassExportDefinition,ElementName);
+            builder.WriteElement(BSharpSyntax.ClassElementDefinition,ElementName);
+
 		
-			sb.AppendFormat(@"
-#################################################################################
-##     ЭКСПОРТ ПЕРИОДОВ ИЗ БД ECO ПО СОСТОЯНИЮ НА  {0}       
-#################################################################################
-namespace {1} prototype='meta'
-	class {2}
-",srcperiods.Select(_=>_.Version).Max().ToString("yyyy-MM-dd HH:mm:ss"), Namespace,ClassName);
-		    sb.Append(@"
-        export period
-        element period
-");
 			foreach (var g in pgroups) {
-				sb.AppendFormat(@"
-		set category='{0}'
-",  g.Key);
+                builder.StartElement(BSharpSyntax.GroupedBlock,inlineattributes:new{category=g.Key});
 				foreach (var gp in g.OrderBy(_=>_.BizId)) {
-					Output(gp,sb);
+					Output(gp,builder);
 				}
+                builder.EndElement();
 			}
-			sb.AppendLine("\t\tset isformula=true");
+            builder.StartElement(BSharpSyntax.GroupedBlock, inlineattributes: new { isfromula = true });
 			foreach (var p in formulas.OrderBy(_=>_.BizId))
 			{
-				Output(p, sb);
+				Output(p, builder);
 			}
-			return sb.ToString();
+            builder.EndElement();
+		    return builder.ToString();
 		}
 		/// <summary>
 		/// Имя класса
@@ -64,18 +66,21 @@ namespace {1} prototype='meta'
 		/// </summary>
 		public string Namespace { get; set; }
 
-		private void Output(Period period,StringBuilder sb) {
-			sb.AppendFormat("\t\t\tperiod {0} '{1}'{2}{3}{4}{5}\r\n",
-			                period.BizId, 
-							period.Name, 
-							string.IsNullOrWhiteSpace(period.ShortName)?"":" short='"+ period.ShortName+"'",
-							
-							0==period.MonthCount?"":" months="+ period.MonthCount,
-							period.StartDate.Year==1900?"": " start='"+ period.StartDate.ToString("yyyy-MM-dd")+"'",
-							period.EndDate.Year == 1900 ? "" : " finish='" + period.EndDate.ToString("yyyy-MM-dd") + "'");
-			if (!string.IsNullOrWhiteSpace(period.Formula) && period.IsFormula) {
-				sb.AppendLine("\t\t\t\tformula = '" + period.Formula + "'");
-			}
+		private void Output(Period period,BSharpCodeBuilder sb) {
+            sb.StartElement(ElementName,
+                period.BizId.ToString(CultureInfo.InvariantCulture),
+                period.Name,
+                inlineattributes:
+                new {
+                    @short=period.ShortName,
+                    months=period.MonthCount,
+                    start = period.StartDate,
+                    finish=period.EndDate,
+                });
+            if (period.IsFormula && !string.IsNullOrWhiteSpace(period.Formula)) {
+                sb.WriteAttributesLined(new{formula=period.Formula});
+            } 
+            sb.EndElement();
 		}
 	}
 }

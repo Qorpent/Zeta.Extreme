@@ -19,6 +19,7 @@ zdev-script demo_import
 		set namespace=${_metans} into=${_metadir}
 			generate-periods name=periods
 			generate-columns name=columns
+			generate-bizprocesses name=bizprocesses
 		
 		# скрипты генерации форм
 		set namespace=${_formns} into = ${_formdir}

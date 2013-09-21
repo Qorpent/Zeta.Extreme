@@ -29,7 +29,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		";
 		private const string Peiodquerybase = @"
 				select 
-					Id,Name,Idx,MonthCount,IsFormula,Formula,Tag, Start,Finish ,Category
+					Id,Name,Idx,MonthCount,IsFormula,Formula,Tag, Start,Finish ,Category,Version
 				from zeta.normalperiod
 		";
 
@@ -69,7 +69,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		private const string Bizprocessquerybase = @"
 				select 
 					Id, Code, Name,Comment,Tag,
-					InProcess, Role, IsFinal, RootRows, Process
+					InProcess, Role, IsFinal, RootRows, Process,Version
 				from zeta.normalbizprocess
 		";
 

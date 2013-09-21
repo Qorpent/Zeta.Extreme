@@ -136,6 +136,10 @@ _.widget.register({
 		         href: './zdev/exportcolumns.string.qweb',
 		     },
 		    {
+		         title: "Экспорт бизпроцессов",
+		         href: './zdev/exportbizprocesses.string.qweb',
+		     },
+		    {
 		        title: "График зависимостей формы",
 		        onclick: {
 		            modal: { title: "График зависимостей формы", template: 'zdev_export_fdep_dot', width: 400 },

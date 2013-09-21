@@ -61,5 +61,15 @@ namespace demo
 			include all node
 			include all role
 			
+		class bizprocessbyform "Временная группировка бизнес-процессов по формам" 
+			include demo.import.meta.bizprocesses body
+				where rootrows=TRUE
+				groupby rootrows
+				orderby rootrows
+		class bizprocessbyprocess "Временная группировка бизнес-процессов по процессам" 
+			include demo.import.meta.bizprocesses body
+				where process=TRUE
+				groupby process
+				orderby process	
 	
 	

@@ -22,6 +22,10 @@
         /// </summary>
         public const string EXPORT_PERIODS_COMMAND = "zdev/exportperiods";
         /// <summary>
+        /// Команда экспорта бизпроцессов
+        /// </summary>
+        public const string EXPORT_BIZPROCESSES_COMMAND = "zdev/exportbizprocesses";
+        /// <summary>
         /// Команда переноса данных
         /// </summary>
         public const string TRANSFER_DATA_COMMAND = "zdev/transferdata";
