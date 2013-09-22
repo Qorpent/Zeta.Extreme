@@ -138,6 +138,14 @@ _.widget.register({
 		    {
 		         title: "Экспорт бизпроцессов",
 		         href: './zdev/exportbizprocesses.string.qweb',
+		    },
+		     {
+		         title: "Экспорт типов объектов",
+		         href: './zdev/exportobjtypes.string.qweb',
+		     },
+		     {
+		         title: "Экспорт дивизионов",
+		         href: './zdev/exportobjdivs.string.qweb',
 		     },
 		    {
 		        title: "График зависимостей формы",

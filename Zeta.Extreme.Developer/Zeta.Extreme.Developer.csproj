@@ -16,6 +16,7 @@
   <ItemGroup>
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\ExportData\ExportBizProcesses.cs" />
+    <Compile Include="Actions\ExportData\ExportObjDivsAction.cs" />
     <Compile Include="Actions\ExportData\ExportObjTypesAction.cs" />
     <Compile Include="Actions\GetSubstAttributesAction.cs" />
     <Compile Include="Actions\DebugQueryAction.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="MetaStorage\BizProcessExporter.cs" />
     <Compile Include="MetaStorage\ColumnExporter.cs" />
     <Compile Include="MetaStorage\IDataToBSharpExporter.cs" />
+    <Compile Include="MetaStorage\ObjDivExporter.cs" />
     <Compile Include="MetaStorage\ObjTypeExporter.cs" />
     <Compile Include="MetaStorage\PeriodsExporter.cs" />
     <Compile Include="MetaStorage\Tree\AttributeType.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="Scripting\GenerateDictCommand.cs" />
     <Compile Include="Scripting\GenerateFormActionBase.cs" />
     <Compile Include="Scripting\GenerateFormCommand.cs" />
+    <Compile Include="Scripting\GenerateObjDivs.cs" />
     <Compile Include="Scripting\GenerateObjTypes.cs" />
     <Compile Include="Scripting\GeneratePeriods.cs" />
     <Compile Include="Scripting\GenerateTransferScript.cs" />
