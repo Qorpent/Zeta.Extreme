@@ -16,20 +16,20 @@ namespace demo.import.dicts
 		import dict
 		export form
 		title DIR_FORM 'Стандартные формы ввода' stopinterpolate=all 
-			item buysir 'Приобретение сырья (внутри УГМК)' notlocalizedcode=true 
-			item capital 'Капитал и резервы' notlocalizedcode=true 
-			item dkz 'Расчеты с дебиторами и кредиторами' notlocalizedcode=true 
-			item finact 'Финансовые вложения' notlocalizedcode=true 
-			item pf21 'Полуфабрикаты' notlocalizedcode=true 
-			item prod20 'Производство' notlocalizedcode=true 
-			item prod20nat 'Производство (техотчет)' notlocalizedcode=true 
-			item sale90 'Продажи' notlocalizedcode=true 
-			item sir003 'Давальческое сырье' notlocalizedcode=true 
-			item sir1091 'Собственное сырье' notlocalizedcode=true 
-			item sir1092 'Обеспечение сырьем' notlocalizedcode=true 
-			item sklad43 'Склад продукции и товаров' notlocalizedcode=true 
-			item tovar 'Товары' notlocalizedcode=true 
-			item uslugi60 'Работы и услуги' notlocalizedcode=true 
-			item uslugichop 'Услуги ЧОП' notlocalizedcode=true 
-			item vozvrat 'Возвратные отходы' notlocalizedcode=true 
-			item zaim 'Заемные средства' notlocalizedcode=true 
+			item buysir 'Приобретение сырья (внутри УГМК)' 
+			item capital 'Капитал и резервы' 
+			item dkz 'Расчеты с дебиторами и кредиторами' 
+			item finact 'Финансовые вложения' 
+			item pf21 'Полуфабрикаты' 
+			item prod20 'Производство' 
+			item prod20nat 'Производство (техотчет)' 
+			item sale90 'Продажи' 
+			item sir003 'Давальческое сырье' 
+			item sir1091 'Собственное сырье' 
+			item sir1092 'Обеспечение сырьем' 
+			item sklad43 'Склад продукции и товаров' 
+			item tovar 'Товары' 
+			item uslugi60 'Работы и услуги' 
+			item uslugichop 'Услуги ЧОП' 
+			item vozvrat 'Возвратные отходы' 
+			item zaim 'Заемные средства' 

@@ -16,19 +16,19 @@ namespace demo.import.dicts
 		import dict
 		export org_role
 		title DIR_ORG_ROLE 'Роль организации' stopinterpolate=all 
-			item fincred 'Фин. кредитор' notlocalizedcode=true linkrole=FINDEB 
-			item findeb 'Фин. должник' notlocalizedcode=true linkrole=FINCRED 
-			item buyer 'Покупатель' notlocalizedcode=true linkrole=PROVIDER 
-			item customer 'Заказчик' notlocalizedcode=true linkrole=EXECUTOR 
-			item provider 'Поставщик' notlocalizedcode=true linkrole=BUYER 
-			item executor 'Подрядчик' notlocalizedcode=true linkrole=CUSTOMER 
-			item debitor 'Дебитор' notlocalizedcode=true linkrole=CREDITOR 
-			item creditor 'Кредитор' notlocalizedcode=true linkrole=DEBITOR 
-			item investor 'Инвестор' notlocalizedcode=true linkrole=ISSUER 
-			item issuer 'Эмитент' notlocalizedcode=true linkrole=INVESTOR 
-			item partner 'Участник' notlocalizedcode=true linkrole=COMPANY 
-			item company 'Общество' notlocalizedcode=true linkrole=PARTNER 
-			item borrower 'Заемщик' notlocalizedcode=true linkrole=BANK 
-			item bank 'Банк' notlocalizedcode=true linkrole=BORROWER 
-			item producer 'Производитель' notlocalizedcode=true 
-			item elzatr 'Элементы затрат' notlocalizedcode=true 
+			item fincred 'Фин. кредитор' linkrole=FINDEB 
+			item findeb 'Фин. должник' linkrole=FINCRED 
+			item buyer 'Покупатель' linkrole=PROVIDER 
+			item customer 'Заказчик' linkrole=EXECUTOR 
+			item provider 'Поставщик' linkrole=BUYER 
+			item executor 'Подрядчик' linkrole=CUSTOMER 
+			item debitor 'Дебитор' linkrole=CREDITOR 
+			item creditor 'Кредитор' linkrole=DEBITOR 
+			item investor 'Инвестор' linkrole=ISSUER 
+			item issuer 'Эмитент' linkrole=INVESTOR 
+			item partner 'Участник' linkrole=COMPANY 
+			item company 'Общество' linkrole=PARTNER 
+			item borrower 'Заемщик' linkrole=BANK 
+			item bank 'Банк' linkrole=BORROWER 
+			item producer 'Производитель' 
+			item elzatr 'Элементы затрат' 

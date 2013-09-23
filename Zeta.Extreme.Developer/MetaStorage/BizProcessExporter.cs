@@ -18,7 +18,11 @@ namespace Zeta.Extreme.Developer.MetaStorage {
         public string Generate() {
 
             var builder = new BSharpCodeBuilder();
-            var processes = new NativeZetaReader().ReadBizProcesses();
+            var query = "";
+            if (PrimaryOnly) {
+                query = " Tag like '%primary%'";
+            }
+            var processes = new NativeZetaReader().ReadBizProcesses(query);
             var bizProcesses = processes as BizProcess[] ?? processes.ToArray();
             builder.WriteCommentBlock("ЭКСПОРТ BIZPROCESS БД ECO",
                                       new Dictionary<string, object> {
@@ -63,5 +67,10 @@ namespace Zeta.Extreme.Developer.MetaStorage {
         /// Пространство имен
         /// </summary>
         public string Namespace { get; set; }
+
+        /// <summary>
+        /// Выгон только первичных процессов
+        /// </summary>
+        public bool PrimaryOnly { get; set; }
     }
 }

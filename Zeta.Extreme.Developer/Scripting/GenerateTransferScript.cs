@@ -1,4 +1,5 @@
-﻿using Qorpent.Applications;
+﻿using System.Collections.Generic;
+using Qorpent.Applications;
 using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Developer.Scripting {
@@ -46,8 +47,8 @@ namespace Zeta.Extreme.Developer.Scripting {
         /// <param name="commandName"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        protected override object SetupParameters(string commandName, Qorpent.Config.IConfig context) {
-            return new { from, to, col, year, period, obj, usr };
+        protected override  IDictionary<string, object> SetupParameters(string commandName, Qorpent.Config.IConfig context) {
+            return new { @from, to, col, year, period, obj, usr }.ToDict();
         }
 
         /// <summary>

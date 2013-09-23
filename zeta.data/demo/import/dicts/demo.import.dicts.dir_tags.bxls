@@ -16,89 +16,89 @@ namespace demo.import.dicts
 		import dict
 		export tags
 		title DIR_TAGS 'Теги' stopinterpolate=all 
-			item tag_active 'active' notlocalizedcode=true outer=active tagforrow 
-			item tag_activecol 'Доступные для ввода колонки' notlocalizedcode=true outer=activecol tagforrow 
-			item tag_aliased 'aliased' notlocalizedcode=true outer=aliased tagforrow tagforobj 
-			item tag_assert 'Подпись для утверждения' notlocalizedcode=true outer=assert tagforrow 
-			item tag_assets 'assets' notlocalizedcode=true outer=assets tagforcol 
-			item tag_bt 'bt' notlocalizedcode=true outer=bt tagforrow 
-			item tag_calc_repot 'calc_repot' notlocalizedcode=true outer='calc_repot' tagforcol 
-			item tag_calc 'calc' notlocalizedcode=true outer=calc tagforcol 
-			item tag_carole 'carole' notlocalizedcode=true outer=carole tagforrow 
-			item tag_carow 'carow' notlocalizedcode=true outer=carow tagforobj 
-			item tag_casbill 'casbill' notlocalizedcode=true outer=casbill tagforrow 
-			item tag_casform 'casform' notlocalizedcode=true outer=casform tagforrow 
-			item tag_castruc 'castruc' notlocalizedcode=true outer=castruc tagforrow 
-			item tag_correctiv 'correctiv' notlocalizedcode=true outer=correctiv tagforcol 
-			item tag_extslot 'Дополнительный слот подписи' notlocalizedcode=true outer=extslot tagforrow 
-			item tag_form 'form' notlocalizedcode=true outer=form tagforrow 
-			item tag_formfilter 'Режим фильтрации по DIR_REPORTS_FORM' notlocalizedcode=true outer=formfilter tagforrow 
-			item tag_forperiods 'forperiods' notlocalizedcode=true outer=forperiods tagforrow 
-			item tag_fromyear 'fromyear' notlocalizedcode=true outer=fromyear tagforrow 
-			item tag_grpprefix 'grpprefix' notlocalizedcode=true outer=grpprefix tagforrow 
-			item tag_isform 'isform' notlocalizedcode=true outer=isform tagforrow 
-			item tag_isplan 'isplan' notlocalizedcode=true outer=isplan tagforrow 
-			item tag_linkcol 'Тип колонки источника' notlocalizedcode=true outer=linkcol tagforcol 
-			item tag_linkconto 'linkconto' notlocalizedcode=true outer=linkconto tagforrow 
-			item tag_linkconto1 'linkconto1' notlocalizedcode=true outer=linkconto1 
-			item tag_linkrole 'linkrole' notlocalizedcode=true outer=linkrole tagforrow 
-			item tag_loan 'loan' notlocalizedcode=true outer=loan tagforcol 
-			item tag_matrix 'matrix' notlocalizedcode=true outer=matrix tagforrow 
-			item tag_numberformat 'numberformat' notlocalizedcode=true outer=numberformat tagforrow 
-			item tag_objset 'Набор объектов' notlocalizedcode=true outer=objset 
-			item tag_obsolete 'obsolete' notlocalizedcode=true outer=obsolete tagforrow 
-			item tag_olap_bal 'Бухгалтерский баланс' notlocalizedcode=true outer='olap_bal' 
-			item tag_olap_calcruda 'Калькуляция добычи и обогащения' notlocalizedcode=true outer='olap_calcruda' 
-			item tag_olap_colf 'Колонка факт OLAP' notlocalizedcode=true outer='olap_colf' tagforrow 
-			item tag_olap_colp 'Колонка план OLAP' notlocalizedcode=true outer='olap_colp' tagforrow 
-			item tag_olap_fin_anal 'Финансовый анализ' notlocalizedcode=true outer='olap_fin_anal' 
-			item tag_olap_fin 'Финансовые показатели OLAP (список)' notlocalizedcode=true outer='olap_fin' tagforrow 
-			item tag_olap_finrez 'Финансовые результаты' notlocalizedcode=true outer='olap_finrez' 
-			item tag_olap_fp 'Финансовый план' notlocalizedcode=true outer='olap_fp' 
-			item tag_olap_inv 'Расходы инвестиционного характера' notlocalizedcode=true outer='olap_inv' 
-			item tag_olap_nal 'Налоги, платежи и сборы' notlocalizedcode=true outer='olap_nal' 
-			item tag_olap_nds19 'НДС по приобретенным ценностям' notlocalizedcode=true outer='olap_nds19' 
-			item tag_olap_nezstr 'Незавершенное строительство' notlocalizedcode=true outer='olap_nezstr' 
-			item tag_olap_os 'Основные средства по номенклатуре' notlocalizedcode=true outer='olap_os' 
-			item tag_olap_proizv 'Объемы производства' notlocalizedcode=true outer='olap_proizv' 
-			item tag_olap_ssosnprod 'Себестоимость единицы' notlocalizedcode=true outer='olap_ssosnprod' 
-			item tag_olap_tep 'Технико-экономические покатели OLAP (список)' notlocalizedcode=true outer='olap_tep' tagforrow 
-			item tag_olap_tmc 'Сырье, материалы и др.ценности"' notlocalizedcode=true outer='olap_tmc' 
-			item tag_olap_uslchop 'Услуги ЧОП' notlocalizedcode=true outer='olap_uslchop' 
-			item tag_olap_zatr 'Затраты на производство и реал.прод.' notlocalizedcode=true outer='olap_zatr' 
-			item tag_olap_zatr_usl 'Услуги сторонних организаций' notlocalizedcode=true outer='olap_zatr_usl' 
-			item tag_osn_prod 'osn_prod' notlocalizedcode=true outer='osn_prod' tagforrow 
-			item tag_osv_kps 'OSV_kps' notlocalizedcode=true outer='OSV_kps' tagforcol 
-			item tag_osv 'OSV' notlocalizedcode=true outer=OSV tagforcol 
-			item tag_osvp_kps 'OSVP_kps' notlocalizedcode=true outer='OSVP_kps' tagforcol 
-			item tag_peredel 'peredel' notlocalizedcode=true outer=peredel tagforobj 
-			item tag_peredellevel 'peredellevel' notlocalizedcode=true outer=peredellevel tagforobj 
-			item tag_period 'period' notlocalizedcode=true outer=period tagforrow 
-			item tag_plan 'plan' notlocalizedcode=true outer=plan tagforcol 
-			item tag_pr_block 'Презентация (блок)' notlocalizedcode=true outer='pr_block' tagforrow 
-			item tag_pr_dtype 'Презентация (тип диаграммы)' notlocalizedcode=true outer='pr_dtype' tagforrow 
-			item tag_pr_slide 'Презентация (слайд)' notlocalizedcode=true outer='pr_slide' tagforrow 
-			item tag_pr_typecol 'Презентация (тип колонок)' notlocalizedcode=true outer='pr_typecol' tagforrow 
-			item tag_prb 'prb' notlocalizedcode=true outer=prb tagforrow 
-			item tag_prefix 'prefix' notlocalizedcode=true outer=prefix tagforrow 
-			item tag_prot 'Протокол' notlocalizedcode=true outer=prot tagforrow 
-			item tag_protocol 'protocol' notlocalizedcode=true outer=protocol tagforrow 
-			item tag_prtr 'prtr' notlocalizedcode=true outer=prtr tagforrow 
-			item tag_refrename 'Изменить имя строки по имени ссылки' notlocalizedcode=true outer=refrename tagforrow 
-			item tag_regional 'regional' notlocalizedcode=true outer=regional tagforrow 
-			item tag_sale 'sale' notlocalizedcode=true outer=sale tagforcol 
-			item tag_sourcecol 'Колонка-источник для редиректа' notlocalizedcode=true outer=sourcecol tagforrow 
-			item tag_specialformview 'specialformview' notlocalizedcode=true outer=specialformview tagforrow 
-			item tag_specialreportview 'specialreportview' notlocalizedcode=true outer=specialreportview tagforrow 
-			item tag_tagforcol 'tagforcol' notlocalizedcode=true outer=tagforcol tagforrow 
-			item tag_tagfordetail 'tagfordetail' notlocalizedcode=true outer=tagfordetail tagforrow 
-			item tag_tagforobj 'tagforobj' notlocalizedcode=true outer=tagforobj tagforrow 
-			item tag_tagforrow 'tagforrow' notlocalizedcode=true outer=tagforrow tagforrow 
-			item tag_tax 'tax' notlocalizedcode=true outer=tax tagforcol 
-			item tag_tax_tdc 'tax_tdc' notlocalizedcode=true outer='tax_tdc' tagforcol 
-			item tag_typeraw 'typeraw' notlocalizedcode=true outer=typeraw tagforrow 
-			item tag_ver 'Версия' notlocalizedcode=true outer=ver tagforrow 
-			item tag_vgrp 'vgrp' notlocalizedcode=true outer=vgrp tagforrow 
-			item tag_viewforgroup 'Видимость строки для группы' notlocalizedcode=true outer=viewforgroup 
-			item tag_visible 'visible' notlocalizedcode=true outer=visible tagfordetail 
-			item tag_volume 'volume' notlocalizedcode=true outer=volume tagforcol 
+			item tag_active 'active' outer=active tagforrow 
+			item tag_activecol 'Доступные для ввода колонки' outer=activecol tagforrow 
+			item tag_aliased 'aliased' outer=aliased tagforrow tagforobj 
+			item tag_assert 'Подпись для утверждения' outer=assert tagforrow 
+			item tag_assets 'assets' outer=assets tagforcol 
+			item tag_bt 'bt' outer=bt tagforrow 
+			item tag_calc_repot 'calc_repot' outer='calc_repot' tagforcol 
+			item tag_calc 'calc' outer=calc tagforcol 
+			item tag_carole 'carole' outer=carole tagforrow 
+			item tag_carow 'carow' outer=carow tagforobj 
+			item tag_casbill 'casbill' outer=casbill tagforrow 
+			item tag_casform 'casform' outer=casform tagforrow 
+			item tag_castruc 'castruc' outer=castruc tagforrow 
+			item tag_correctiv 'correctiv' outer=correctiv tagforcol 
+			item tag_extslot 'Дополнительный слот подписи' outer=extslot tagforrow 
+			item tag_form 'form' outer=form tagforrow 
+			item tag_formfilter 'Режим фильтрации по DIR_REPORTS_FORM' outer=formfilter tagforrow 
+			item tag_forperiods 'forperiods' outer=forperiods tagforrow 
+			item tag_fromyear 'fromyear' outer=fromyear tagforrow 
+			item tag_grpprefix 'grpprefix' outer=grpprefix tagforrow 
+			item tag_isform 'isform' outer=isform tagforrow 
+			item tag_isplan 'isplan' outer=isplan tagforrow 
+			item tag_linkcol 'Тип колонки источника' outer=linkcol tagforcol 
+			item tag_linkconto 'linkconto' outer=linkconto tagforrow 
+			item tag_linkconto1 'linkconto1' outer=linkconto1 
+			item tag_linkrole 'linkrole' outer=linkrole tagforrow 
+			item tag_loan 'loan' outer=loan tagforcol 
+			item tag_matrix 'matrix' outer=matrix tagforrow 
+			item tag_numberformat 'numberformat' outer=numberformat tagforrow 
+			item tag_objset 'Набор объектов' outer=objset 
+			item tag_obsolete 'obsolete' outer=obsolete tagforrow 
+			item tag_olap_bal 'Бухгалтерский баланс' outer='olap_bal' 
+			item tag_olap_calcruda 'Калькуляция добычи и обогащения' outer='olap_calcruda' 
+			item tag_olap_colf 'Колонка факт OLAP' outer='olap_colf' tagforrow 
+			item tag_olap_colp 'Колонка план OLAP' outer='olap_colp' tagforrow 
+			item tag_olap_fin_anal 'Финансовый анализ' outer='olap_fin_anal' 
+			item tag_olap_fin 'Финансовые показатели OLAP (список)' outer='olap_fin' tagforrow 
+			item tag_olap_finrez 'Финансовые результаты' outer='olap_finrez' 
+			item tag_olap_fp 'Финансовый план' outer='olap_fp' 
+			item tag_olap_inv 'Расходы инвестиционного характера' outer='olap_inv' 
+			item tag_olap_nal 'Налоги, платежи и сборы' outer='olap_nal' 
+			item tag_olap_nds19 'НДС по приобретенным ценностям' outer='olap_nds19' 
+			item tag_olap_nezstr 'Незавершенное строительство' outer='olap_nezstr' 
+			item tag_olap_os 'Основные средства по номенклатуре' outer='olap_os' 
+			item tag_olap_proizv 'Объемы производства' outer='olap_proizv' 
+			item tag_olap_ssosnprod 'Себестоимость единицы' outer='olap_ssosnprod' 
+			item tag_olap_tep 'Технико-экономические покатели OLAP (список)' outer='olap_tep' tagforrow 
+			item tag_olap_tmc 'Сырье, материалы и др.ценности"' outer='olap_tmc' 
+			item tag_olap_uslchop 'Услуги ЧОП' outer='olap_uslchop' 
+			item tag_olap_zatr 'Затраты на производство и реал.прод.' outer='olap_zatr' 
+			item tag_olap_zatr_usl 'Услуги сторонних организаций' outer='olap_zatr_usl' 
+			item tag_osn_prod 'osn_prod' outer='osn_prod' tagforrow 
+			item tag_osv_kps 'OSV_kps' outer='OSV_kps' tagforcol 
+			item tag_osv 'OSV' outer=OSV tagforcol 
+			item tag_osvp_kps 'OSVP_kps' outer='OSVP_kps' tagforcol 
+			item tag_peredel 'peredel' outer=peredel tagforobj 
+			item tag_peredellevel 'peredellevel' outer=peredellevel tagforobj 
+			item tag_period 'period' outer=period tagforrow 
+			item tag_plan 'plan' outer=plan tagforcol 
+			item tag_pr_block 'Презентация (блок)' outer='pr_block' tagforrow 
+			item tag_pr_dtype 'Презентация (тип диаграммы)' outer='pr_dtype' tagforrow 
+			item tag_pr_slide 'Презентация (слайд)' outer='pr_slide' tagforrow 
+			item tag_pr_typecol 'Презентация (тип колонок)' outer='pr_typecol' tagforrow 
+			item tag_prb 'prb' outer=prb tagforrow 
+			item tag_prefix 'prefix' outer=prefix tagforrow 
+			item tag_prot 'Протокол' outer=prot tagforrow 
+			item tag_protocol 'protocol' outer=protocol tagforrow 
+			item tag_prtr 'prtr' outer=prtr tagforrow 
+			item tag_refrename 'Изменить имя строки по имени ссылки' outer=refrename tagforrow 
+			item tag_regional 'regional' outer=regional tagforrow 
+			item tag_sale 'sale' outer=sale tagforcol 
+			item tag_sourcecol 'Колонка-источник для редиректа' outer=sourcecol tagforrow 
+			item tag_specialformview 'specialformview' outer=specialformview tagforrow 
+			item tag_specialreportview 'specialreportview' outer=specialreportview tagforrow 
+			item tag_tagforcol 'tagforcol' outer=tagforcol tagforrow 
+			item tag_tagfordetail 'tagfordetail' outer=tagfordetail tagforrow 
+			item tag_tagforobj 'tagforobj' outer=tagforobj tagforrow 
+			item tag_tagforrow 'tagforrow' outer=tagforrow tagforrow 
+			item tag_tax 'tax' outer=tax tagforcol 
+			item tag_tax_tdc 'tax_tdc' outer='tax_tdc' tagforcol 
+			item tag_typeraw 'typeraw' outer=typeraw tagforrow 
+			item tag_ver 'Версия' outer=ver tagforrow 
+			item tag_vgrp 'vgrp' outer=vgrp tagforrow 
+			item tag_viewforgroup 'Видимость строки для группы' outer=viewforgroup 
+			item tag_visible 'visible' outer=visible tagfordetail 
+			item tag_volume 'volume' outer=volume tagforcol 

@@ -19,7 +19,7 @@ zdev-script demo_import
 		set namespace=${_metans} into=${_metadir}
 			generate-periods name=periods
 			generate-columns name=columns
-			generate-bizprocesses name=bizprocesses
+			generate-bizprocesses  name=bizprocesses primary-only
 			generate-objtypes name=objtypes
 			generate-objdivs name=objdivs
 		

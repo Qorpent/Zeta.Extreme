@@ -16,40 +16,40 @@ namespace demo.import.dicts
 		import dict
 		export process
 		title DIR_PROCESS 'Процессы' stopinterpolate=all 
-			title ps_1000 'Процессы управления' notlocalizedcode=true outer=1000 
-			title ps_1100 'Управление бизнесом' notlocalizedcode=true outer=1100 
-				item ps_1110 'Стратегическое управление' notlocalizedcode=true outer=1110 
-				item ps_1120 'Тактическое управление' notlocalizedcode=true outer=1120 
-				item ps_1130 'Оперативное управление' notlocalizedcode=true outer=1130 
-			title ps_1200 'Управление финансами' notlocalizedcode=true outer=1200 
-				item ps_1210 'Бюджетирование' notlocalizedcode=true outer=1210 
-				item ps_1220 'Казначейство' notlocalizedcode=true outer=1220 
-				item ps_1230 'Калькулирование' notlocalizedcode=true outer=1230 
-				item ps_1240 'Расчеты с контрагентами' notlocalizedcode=true outer=1240 
-				item ps_1250 'Кредитование в банках' notlocalizedcode=true outer=1250 
-			title ps_1300 'Управление инвестициями' notlocalizedcode=true outer=1300 
-				item ps_1310 'Вложение в активы' notlocalizedcode=true outer=1310 
-			item ps_1400 'Управление персоналом' notlocalizedcode=true outer=1400 
-			title ps_2000 'Основные процессы' notlocalizedcode=true outer=2000 
-			title ps_2100 'Закупки' notlocalizedcode=true outer=2100 
-				item ps_2110 'Закупки сырья' notlocalizedcode=true outer=2110 
-				item ps_2120 'Закупки ТМЦ' notlocalizedcode=true outer=2120 
-				item ps_2130 'Запасы сырья и ТМЦ' notlocalizedcode=true outer=2130 
-			title ps_2200 'Горно-добывающие производство' notlocalizedcode=true outer=2200 
-				item ps_2210 'Добыча' notlocalizedcode=true outer=2210 
-				item ps_2220 'Обогащение' notlocalizedcode=true outer=2220 
-			item ps_2300 'Металлургическое производство производство' notlocalizedcode=true outer=2300 
-			item ps_2700 'Строительство' notlocalizedcode=true outer=2700 
-			item ps_2800 'Продажи' notlocalizedcode=true outer=2800 
-			title ps_3000 'Вспомогательные процессы' notlocalizedcode=true outer=3000 
-				item ps_3100 'Энергетика' notlocalizedcode=true outer=3100 
-				item ps_3500 'ЖДтранспорт' notlocalizedcode=true outer=3500 
-				item ps_3600 'Автотранспорт' notlocalizedcode=true outer=3600 
-				item ps_3800 'Экология' notlocalizedcode=true outer=3800 
-			title ps_4000 'Сервисные процессы' notlocalizedcode=true outer=4000 
-				item ps_4100 'Учет' notlocalizedcode=true outer=4100 
-				item ps_4110 'Бухгалтерский учет' notlocalizedcode=true outer=4110 
-			title ps_7000 'Деятельность по отчетности' notlocalizedcode=true outer=7000 
-				title ps_7100 'Корпоративная отчетность' notlocalizedcode=true outer=7100 
-					item ps_7110 'Стандарт финансовой отчетности' notlocalizedcode=true outer=7110 
-					item ps_7120 'Отчетность в банки' notlocalizedcode=true outer=7120 
+			title ps_1000 'Процессы управления' outer=1000 
+			title ps_1100 'Управление бизнесом' outer=1100 
+				item ps_1110 'Стратегическое управление' outer=1110 
+				item ps_1120 'Тактическое управление' outer=1120 
+				item ps_1130 'Оперативное управление' outer=1130 
+			title ps_1200 'Управление финансами' outer=1200 
+				item ps_1210 'Бюджетирование' outer=1210 
+				item ps_1220 'Казначейство' outer=1220 
+				item ps_1230 'Калькулирование' outer=1230 
+				item ps_1240 'Расчеты с контрагентами' outer=1240 
+				item ps_1250 'Кредитование в банках' outer=1250 
+			title ps_1300 'Управление инвестициями' outer=1300 
+				item ps_1310 'Вложение в активы' outer=1310 
+			item ps_1400 'Управление персоналом' outer=1400 
+			title ps_2000 'Основные процессы' outer=2000 
+			title ps_2100 'Закупки' outer=2100 
+				item ps_2110 'Закупки сырья' outer=2110 
+				item ps_2120 'Закупки ТМЦ' outer=2120 
+				item ps_2130 'Запасы сырья и ТМЦ' outer=2130 
+			title ps_2200 'Горно-добывающие производство' outer=2200 
+				item ps_2210 'Добыча' outer=2210 
+				item ps_2220 'Обогащение' outer=2220 
+			item ps_2300 'Металлургическое производство производство' outer=2300 
+			item ps_2700 'Строительство' outer=2700 
+			item ps_2800 'Продажи' outer=2800 
+			title ps_3000 'Вспомогательные процессы' outer=3000 
+				item ps_3100 'Энергетика' outer=3100 
+				item ps_3500 'ЖДтранспорт' outer=3500 
+				item ps_3600 'Автотранспорт' outer=3600 
+				item ps_3800 'Экология' outer=3800 
+			title ps_4000 'Сервисные процессы' outer=4000 
+				item ps_4100 'Учет' outer=4100 
+				item ps_4110 'Бухгалтерский учет' outer=4110 
+			title ps_7000 'Деятельность по отчетности' outer=7000 
+				title ps_7100 'Корпоративная отчетность' outer=7100 
+					item ps_7110 'Стандарт финансовой отчетности' outer=7110 
+					item ps_7120 'Отчетность в банки' outer=7120 

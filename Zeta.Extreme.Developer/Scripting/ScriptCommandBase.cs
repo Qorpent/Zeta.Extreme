@@ -135,7 +135,7 @@ namespace Zeta.Extreme.Developer.Scripting {
 	    /// <param name="commandName"></param>
 	    /// <param name="context"></param>
 	    /// <returns></returns>
-	    protected virtual object SetupParameters(string commandName, IConfig context) {
+	    protected virtual  IDictionary<string, object> SetupParameters(string commandName, IConfig context) {
 		    var result = new Dictionary<string, object>();
 		    result["namespace"] = Namespace;
 		    result["classname"] = ClassName;
