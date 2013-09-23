@@ -1,0 +1,24 @@
+namespace demo.colsets
+# 
+
+	colset z410 
+		col "Ед. изм."
+		col COLEDFACTCALC "Норматив PERIOD YEAR" 
+		col CENACACL "Цена PERIOD YEAR, руб./ед." 
+		col SUMMAEDFACTCALC "Сумма на ед. PERIOD YEAR, руб."
+		col KOL "Кол-во PERIOD YEAR"
+		col SUMMA "Сумма PERIOD YEAR, т.р."
+		
+		
+				
+	
+	
+	
+	 
+
+	
+	
+	
+		
+		
+	

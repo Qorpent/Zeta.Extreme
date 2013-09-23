@@ -6,8 +6,8 @@ namespace demo.blocks
 
 	subsystem eco bizcode='EC'
 	
-	block fin subsystem=^eco bizcode='FN'
-	block dds subsystem=^eco bizcode='DS'
+	class fin subsystem=^eco bizcode='FN'
+	class dds subsystem=^eco bizcode='DS'	
 	
 	subsystem personal bizcode='PS'
 	
@@ -15,3 +15,5 @@ namespace demo.blocks
 	block zarp subsystem=^personal bizcode='ZP'
 	
 	subsystem proizv bizcode='PR'
+
+	
