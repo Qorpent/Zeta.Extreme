@@ -100,7 +100,7 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
 			var code = DetermineCode(r, root);
             
 			var e = new XElement(type.ToString().ToLower());
-            if (r != root && r.Code.ToLower() == code)
+            if (r != root && r.Code.ToLower() == code && !UseDict)
             {
                 e.SetAttributeValue("notlocalizedcode",true);
             }
