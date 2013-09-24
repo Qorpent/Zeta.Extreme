@@ -14,6 +14,8 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\AnalyzeColumnsUsageAction.cs" />
+    <Compile Include="Actions\AnalyzePeriodsUsageAction.cs" />
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\ExportData\ExportBizProcesses.cs" />
     <Compile Include="Actions\ExportData\ExportObjDivsAction.cs" />
@@ -37,6 +39,7 @@
     <Compile Include="Actions\GetThemaAttributesAction.cs" />
     <Compile Include="Actions\HWOutAction.cs" />
     <Compile Include="Analyzers\Analyzer.cs" />
+    <Compile Include="Analyzers\UsageStat\ColumnUsageAnalyzer.cs" />
     <Compile Include="Analyzers\UsageStat\PeriodUsageAnalyzer.cs" />
     <Compile Include="Analyzers\UsageStat\UsageStatistics.cs" />
     <Compile Include="CodeMetrics\Implementations\CommonFileDataMetricsProvider.cs" />

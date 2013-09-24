@@ -42,7 +42,24 @@ _.widget.register({
 					{
 						title : 'Атрибуты колсетов (полный в HTML)',
 						href : './zdev/colattributes.html.qweb?__xslt=zdev-colattributes-report',
-					}
+					},
+				    "div",
+				     {
+				         title: "Экспорт периодов",
+				         href: './zdev/exportperiods.string.qweb',
+				     },
+		              {
+		                  title: "Периоды, проблемные в использовании",
+		                  href: './zdev/analyzeperiodsusage.xml.qweb?ProblemsOnly=true',
+		              },
+		             {
+		                 title: "Экспорт колонок",
+		                 href: './zdev/exportcolumns.string.qweb',
+		             },
+		            {
+		                title: "Колонки, проблемные в использовании",
+		                href: './zdev/analyzecolumnsusage.xml.qweb?ProblemsOnly=true',
+		            },
 					
 				]
 			},
@@ -72,7 +89,27 @@ _.widget.register({
 					{
 					    title: 'Атрибуты форм (полный в HTML)',
 					    href: './zdev/formattributes.html.qweb?__xslt=zdev-formattributes-report',
-					}
+					},
+		          "div",
+		            {
+		                title: "Экспорт дерева",
+		                onclick: {
+		                    modal: { title: "Экспорт дерева", template:'zdev_export_tree_form' , width:400 },
+		                },
+		        
+		            },
+		            {
+		                title: "График зависимостей формы",
+		                onclick: {
+		                    modal: { title: "График зависимостей формы", template: 'zdev_export_fdep_dot', width: 400 },
+		                },
+		            },
+		    {
+		        title: "График зависимостей строки",
+		        onclick: {
+		            modal: { title: "График зависимостей строки", template: 'zdev_export_dep_dot', width: 400 },
+		        },
+		    },
 
 		        ]
 		    },
@@ -87,7 +124,11 @@ _.widget.register({
 					{
 					    title: 'Атрибуты тема (полный в HTML)',
 					    href: './zdev/themaattributes.html.qweb?__xslt=zdev-themaattributes-report',
-					}
+					},
+		             {
+		                 title: "Экспорт бизпроцессов",
+		                 href: './zdev/exportbizprocesses.string.qweb',
+		             },
 
 		        ]
 		    },
@@ -119,46 +160,24 @@ _.widget.register({
 
 		        ]
 		    },
-		    "div",
-		    {
-		        title: "Экспорт дерева",
-		        onclick: {
-		            modal: { title: "Экспорт дерева", template:'zdev_export_tree_form' , width:400 },
-		        },
-		        
-		    },
-		    {
-		        title: "Экспорт периодов",
-		        href: './zdev/exportperiods.string.qweb',
-		    },
-		     {
-		         title: "Экспорт периодов",
-		         href: './zdev/exportcolumns.string.qweb',
-		     },
-		    {
-		         title: "Экспорт бизпроцессов",
-		         href: './zdev/exportbizprocesses.string.qweb',
-		    },
-		     {
-		         title: "Экспорт типов объектов",
-		         href: './zdev/exportobjtypes.string.qweb',
-		     },
+		{
+		    title: 'Объекты',
+		    items: [
+		         {
+		             title: "Экспорт типов объектов",
+		             href: './zdev/exportobjtypes.string.qweb',
+		         },
 		     {
 		         title: "Экспорт дивизионов",
 		         href: './zdev/exportobjdivs.string.qweb',
 		     },
-		    {
-		        title: "График зависимостей формы",
-		        onclick: {
-		            modal: { title: "График зависимостей формы", template: 'zdev_export_fdep_dot', width: 400 },
-		        },
-		    },
-		    {
-		        title: "График зависимостей строки",
-		        onclick: {
-		            modal: { title: "График зависимостей строки", template: 'zdev_export_dep_dot', width: 400 },
-		        },
-		    },
+		    ]
+		},
+		  "div",
+		   
+		   
+		    
+		    
 		    {
 		        title: "Отладка запроса",
 		        onclick: {

@@ -8,7 +8,8 @@ singleton DeveloperConfig : IDeveloperConfig
 
 	ThemaSourceFolders
 
-		add "G:\\repos\\Themas\\SYS"
-		add "G:\\repos\\Themas\\USR"
-	DocFolder="G:\\repos\\zdoc"
+		add "D:\\mnt\\cbtest\\sys\\data"
+		add "D:\\mnt\\cbtest\\usr\\eco\\data"
+	DocFolder="D:\\mnt\\cbtest\\zdev\\doc"
 
+ 
