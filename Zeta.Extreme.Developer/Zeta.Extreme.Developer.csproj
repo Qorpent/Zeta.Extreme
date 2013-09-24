@@ -82,6 +82,7 @@
     <Compile Include="MetaStorage\Tree\HqlTreeExporter.cs" />
     <Compile Include="MetaStorage\Tree\IncludeType.cs" />
     <Compile Include="MetaStorage\Tree\ITreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\PrimaryCompatibility.cs" />
     <Compile Include="MetaStorage\Tree\TagMap.cs" />
     <Compile Include="MetaStorage\Tree\TreeExporter.cs" />
     <Compile Include="MetaStorage\Tree\TreeExporterCodeMode.cs" />

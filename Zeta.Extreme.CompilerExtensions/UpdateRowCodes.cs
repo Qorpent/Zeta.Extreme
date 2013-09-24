@@ -11,7 +11,7 @@ namespace Zeta.Extreme.CompilerExtensions {
     /// <summary>
     /// Приводит формулы к полному коду строки
     /// </summary>
-    public class AccomodateFormulaRows :FormTaskBase
+    public class UpdateRowCodes :FormTaskBase
     {
         /// <summary>
         /// Индекс
@@ -20,7 +20,7 @@ namespace Zeta.Extreme.CompilerExtensions {
         /// <summary>
         /// Формирует задачу посткомиляции для построения ZETA INDEX
         /// </summary>
-        public AccomodateFormulaRows()
+        public UpdateRowCodes()
         {
             Phase = BSharpBuilderPhase.Build;
             Index = INDEX;
@@ -49,7 +49,7 @@ namespace Zeta.Extreme.CompilerExtensions {
         /// </summary>
         /// <param name="compiled"></param>
         protected override void Execute(XElement compiled) {
-            var formulas = compiled.Descendants("formula").ToArray();
+           
            var localidx = new Dictionary<string, string>();
             foreach (var r in compiled.Descendants()) {
                 if (null != r.Attribute("dbcode")) {
@@ -57,6 +57,45 @@ namespace Zeta.Extreme.CompilerExtensions {
                     localidx[r.GetCode()] = bizcode;                    
                 }
             }
+            ProcessFormulas(compiled, localidx);
+            ProcessReferences(compiled, localidx);
+            ProcessExternalReferences(compiled, localidx);
+        }
+
+        private void ProcessExternalReferences(XElement compiled, Dictionary<string, string> localidx) {
+            var exrefs = compiled.Descendants().Where(_ => null != _.Attribute("exref")).ToArray();
+            foreach (var @ref in exrefs) {
+                var refcode = @ref.Attr("exref");
+
+                if (localidx.ContainsKey(refcode)) {
+                    refcode = localidx[refcode];
+                }
+                else if (_globalIndex.ContainsKey(refcode)) {
+                    refcode = _globalIndex[refcode];
+                }
+
+                @ref.SetAttributeValue("exref", refcode);
+            }
+        }
+
+        private void ProcessReferences(XElement compiled, Dictionary<string, string> localidx) {
+            var refs = compiled.Descendants("ref").ToArray();
+            foreach (var @ref in refs) {
+                var refcode = @ref.Attr("ref");
+
+                if (localidx.ContainsKey(refcode)) {
+                    refcode = localidx[refcode];
+                }
+                else if (_globalIndex.ContainsKey(refcode)) {
+                    refcode = _globalIndex[refcode];
+                }
+
+                @ref.SetAttributeValue("ref", refcode);
+            }
+        }
+
+        private void ProcessFormulas(XElement compiled, Dictionary<string, string> localidx) {
+            var formulas = compiled.Descendants("formula").ToArray();
             foreach (var f in formulas) {
                 if (null != f.Attribute("noinput")) {
                     continue;
@@ -75,7 +114,10 @@ namespace Zeta.Extreme.CompilerExtensions {
                                  m => {
                                      var code = m.Groups[1].Value;
                                      if (code.StartsWith("__")) return "$"+code;
-                                     return "$" + AccomodateCode(src, m.Groups[1].Value, nameidx);
+                                     var refcode =AccomodateCode(src, m.Groups[1].Value, nameidx);
+                                     var refcodeattr = src.Attr("refs");
+                                     src.SetAttributeValue("refs",refcodeattr+";"+refcode);
+                                     return "$" + refcode;
                                  });
         }
 

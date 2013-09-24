@@ -33,6 +33,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree
         /// </summary>
         CrossSubsystem = 1<<5,
         /// <summary>
+        /// Статус первичности не проверен и проигнорирован
+        /// </summary>
+        Ignored = 1<<6,
+        /// <summary>
         /// Форма, которая может использоваться как первичная
         /// </summary>
         Primary = FullPrimary | SelfPrimary | BlockPrimary,
