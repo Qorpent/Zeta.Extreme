@@ -8,7 +8,7 @@ namespace demo
 			~class demo.import.forms.m116
 				oldthemacode=balans_reserv
 				needprimary=true
-				oldrole=ADMIN (FIN)
+				oldrole="ADMIN (FIN)"
 			~class demo.import.forms.m113
 			~class demo.import.forms.r216
 				oldthemacode=balans_rbp
