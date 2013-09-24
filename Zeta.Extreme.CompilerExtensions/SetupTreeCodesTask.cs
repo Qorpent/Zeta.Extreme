@@ -48,7 +48,9 @@ namespace Zeta.Extreme.CompilerExtensions {
                 dbcode = code;
             }
             if (NotLocalized(current)) {
-                _context.RegisterError(new BSharpError{Level=ErrorLevel.Warning,Message = "Нелокализованный код "+dbcode+" в форме "+rootcode,Xml=current});
+                var x = new XElement(current);
+                x.RemoveNodes();
+                _context.RegisterError(new BSharpError{Level=ErrorLevel.Warning,Message = "Нелокализованный код "+dbcode+" в форме "+rootcode,Xml=x});
             }
             current.SetAttributeValue("dbcode",dbcode);
             var rowbizcode = bizcode + "_" + code;

@@ -205,12 +205,3 @@ _.widget.register({
 		]
 	}
 });
-_.zdev = _.zdev || {};
-_.zdev.zdev_transfer_data.onClickMetricCheckbox = function (e) {
-    var form = $(this).closest('form');
-    if (this.checked) {
-        $(form).attr('action', $(form).attr('action').replace('.string.', '.xml.'));
-    } else {
-        $(form).attr('action', $(form).attr('action').replace('.xml.', '.string.'));
-    }
-};

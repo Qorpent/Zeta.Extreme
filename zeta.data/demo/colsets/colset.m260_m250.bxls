@@ -1,5 +1,6 @@
 namespace demo.colsets
 # включает в себя m217_m214, только здесь на 2 строки больше
+# включает m218 только нет col CONTRKVART3
 
 	colset m260 
 		col Б1 "Факт PERIOD YEAR" year=-1 

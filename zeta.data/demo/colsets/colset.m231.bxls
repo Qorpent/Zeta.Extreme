@@ -1,0 +1,17 @@
+namespace demo.colsets
+
+
+	colset m231
+		col REVISIONDZ "Ревизия ДЗ на ENDDATE" 
+		col REVISIONDZ "Ревизия ДЗ нар. итогом PERIOD YEAR" period=1
+		col REVISIONKZ "Ревизия КЗ на ENDDATE" 
+		col REVISIONKZ "Ревизия КЗ нар. итогом PERIOD YEAR" period=1
+		col DZn "Деб. з-ть нач. PERIOD YEAR" 
+		col DZRn "Резервы нач. PERIOD YEAR" 
+		col KZn "Кред. з-ть нач. PERIOD YEAR" 
+		col DZk "Деб. з-ть кон. PERIOD YEAR" 
+		col DZRk "Резервы кон. PERIOD YEAR" 
+		col KZk "Кред. з-ть кон. PERIOD YEAR" 
+		
+
+					

@@ -13,9 +13,10 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccomodateFormulaRows.cs" />
+    <Compile Include="UpdateRowCodes.cs" />
     <Compile Include="BuildZetaBizIndexTask.cs" />
     <Compile Include="CallZetaExtremeScriptTask.cs" />
+    <Compile Include="EvaluateFormPrimaryStatus.cs" />
     <Compile Include="FormTaskBase.cs" />
     <Compile Include="SetupTreeCodesTask.cs" />
     <Compile Include="SetupZetaExtremeTasks.cs" />
@@ -32,6 +33,10 @@
     <ProjectReference Include="..\..\qorpent.sys\Qorpent.Utils\Qorpent.Utils.csproj">
       <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
       <Name>Qorpent.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeta.Extreme.Developer\Zeta.Extreme.Developer.csproj">
+      <Project>{A6ADC6DF-7306-42D5-A674-3D847390CA29}</Project>
+      <Name>Zeta.Extreme.Developer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

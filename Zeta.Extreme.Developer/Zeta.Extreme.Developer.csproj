@@ -37,6 +37,8 @@
     <Compile Include="Actions\GetThemaAttributesAction.cs" />
     <Compile Include="Actions\HWOutAction.cs" />
     <Compile Include="Analyzers\Analyzer.cs" />
+    <Compile Include="Analyzers\UsageStat\PeriodUsageAnalyzer.cs" />
+    <Compile Include="Analyzers\UsageStat\UsageStatistics.cs" />
     <Compile Include="CodeMetrics\Implementations\CommonFileDataMetricsProvider.cs" />
     <Compile Include="CodeMetrics\Implementations\MetricProviderBase.cs" />
     <Compile Include="CodeMetrics\MetricImportance.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="MetaStorage\Tree\HqlTreeExporter.cs" />
     <Compile Include="MetaStorage\Tree\IncludeType.cs" />
     <Compile Include="MetaStorage\Tree\ITreeExporter.cs" />
+    <Compile Include="MetaStorage\Tree\PrimaryCompatibility.cs" />
     <Compile Include="MetaStorage\Tree\TagMap.cs" />
     <Compile Include="MetaStorage\Tree\TreeExporter.cs" />
     <Compile Include="MetaStorage\Tree\TreeExporterCodeMode.cs" />

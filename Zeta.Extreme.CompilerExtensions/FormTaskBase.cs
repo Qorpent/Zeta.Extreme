@@ -25,14 +25,25 @@ namespace Zeta.Extreme.CompilerExtensions {
         /// </summary>
         /// <param name="context"></param>
         public override void Execute(IBSharpContext context) {
+            SelectedForms = null;
             Project.Log.Info("form task "+this.GetType().Name+" started");
             _context = context;
-            var forms = _context.ResolveAll("formdef",null);
-            InitializeForms(forms);
-            var parallel = forms.AsParallel().WithDegreeOfParallelism(4);
-            parallel.DoForEach(_ => Execute(_.Compiled));
+            AllForms = _context.ResolveAll("formdef");
+            InitializeForms(AllForms);
+            var selection = SelectedForms ?? AllForms;
+            var parallel = selection.AsParallel().WithDegreeOfParallelism(4);
+            parallel.ForAll(_=>Execute(_.Compiled));
             
         }
+     /// <summary>
+            /// Отобранные для работы формы
+            /// </summary>
+            protected IList<IBSharpClass> SelectedForms;
+        /// <summary>
+        /// Реестр всех форм
+        /// </summary>
+        protected IEnumerable<IBSharpClass> AllForms;
+
         /// <summary>
         /// Метод, позволяющий подготовить задачу для выполнения в целом по формам
         /// </summary>
