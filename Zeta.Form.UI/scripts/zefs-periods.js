@@ -55,7 +55,7 @@
             var li = $('<li class="dropdown-submenu"/>');
             var ul = $('<ul class="dropdown-menu"/>').attr("type", group.type);
             li.append($('<a/>').text(GetPeriodGroupName(group.type)), ul);
-            $.each(group.periods, function(i,period) {
+            $.each(group.periods, function(i, period) {
                 var a = $('<a/>').attr("periodcode", period.id);
                 a.click(function(e) {
                     period.type != "Year" ? ChangePeriod(e) : ChangeYear(e);

@@ -423,15 +423,13 @@ $.extend(api,(function(){
                 // Ждем задачу ZC-404, которая изменит структуру результата команды
                 wrap : function(obj) {
                     var years = {
-                        100 : {
                             type : "Year",
                             periods : {}
-                        }
-                    }
+                        };
                     $.each([2013,2012,2011,2010], function(i,y) {
-                        years[100].periods[i] = { id: y, name: y, type: "Year"}
+                        years.periods[i] = { id: y, name: y, type: "Year"}
                     });
-                    $.extend(obj, years);
+                    obj.push(years);
                     return obj;
                 }
             }),
