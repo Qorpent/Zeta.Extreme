@@ -37,6 +37,8 @@
     <Compile Include="Actions\GetThemaAttributesAction.cs" />
     <Compile Include="Actions\HWOutAction.cs" />
     <Compile Include="Analyzers\Analyzer.cs" />
+    <Compile Include="Analyzers\UsageStat\PeriodUsageAnalyzer.cs" />
+    <Compile Include="Analyzers\UsageStat\UsageStatistics.cs" />
     <Compile Include="CodeMetrics\Implementations\CommonFileDataMetricsProvider.cs" />
     <Compile Include="CodeMetrics\Implementations\MetricProviderBase.cs" />
     <Compile Include="CodeMetrics\MetricImportance.cs" />

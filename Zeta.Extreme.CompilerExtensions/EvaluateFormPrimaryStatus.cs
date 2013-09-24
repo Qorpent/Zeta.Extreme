@@ -75,8 +75,9 @@ namespace Zeta.Extreme.CompilerExtensions {
         }
 
         private PrimaryCompatibility EvaluateCompatibility(XElement compiled) {
-            var bizcode = compiled.Attr("bizcode").Substring(0, 4);
+            var bizcode = compiled.Attr("bizcode").Substring(0, 8);
             var subsystem = bizcode.Substring(0, 2);
+            var block = bizcode.Substring(2,2);
             var formulas = compiled.Descendants("formula").ToArray();
             var refs = compiled.Descendants("ref").ToArray();
             var exrefs = compiled.Descendants().Where(_ => null != _.Attribute("exref")).ToArray();
@@ -88,49 +89,44 @@ namespace Zeta.Extreme.CompilerExtensions {
             foreach (var f in formulas) {
                 var references = f.Attr("refs").SmartSplit();
                 foreach (var reference in references) {
-                    var refbizcode = reference.Substring(0, 4);
-                    if (bizcode != refbizcode) {
-                        var refss = refbizcode.Substring(0, 2);
-                        if (refss != subsystem) {
-                            return PrimaryCompatibility.CrossSubsystem;
-                        }
-                        current =PrimaryCompatibility.CrossBlock;
-                    }
+                    var refbizcode = reference.Substring(0, 8);
+                    current = EvalNewPrimary(bizcode, refbizcode, subsystem, block, current);
                 }
             }
 
             foreach (var @ref in refs)
             {
-                var refbizcode = @ref.Attr("ref").Substring(0, 4);
-                if (bizcode != refbizcode)
-                {
-                    var refss = refbizcode.Substring(0, 2);
-                    if (refss != subsystem)
-                    {
-                        {
-                            return PrimaryCompatibility.CrossSubsystem;
-                        }
-                    }
-                    current = PrimaryCompatibility.CrossBlock;
-                }
+                var refbizcode = @ref.Attr("ref").Substring(0, 8);
+                current = EvalNewPrimary(bizcode, refbizcode, subsystem, block, current);
             }
             foreach (var @ref in exrefs)
             {
-                var refbizcode = @ref.Attr("exref").Substring(0, 4);
-                if (bizcode != refbizcode)
-                {
-                    var refss = refbizcode.Substring(0, 2);
-                    if (refss != subsystem)
-                    {
-                        {
-                            return PrimaryCompatibility.CrossSubsystem;
-                        }
-                    }
-                    current = PrimaryCompatibility.CrossBlock;
-                }
+                var refbizcode = @ref.Attr("exref").Substring(0, 8);
+                current = EvalNewPrimary(bizcode,refbizcode, subsystem, block, current);
             }
 
             return current;
+        }
+
+        private static PrimaryCompatibility EvalNewPrimary(string bizcode,string refbizcode, string subsystem, string block,
+                                                           PrimaryCompatibility current) {
+            if (bizcode == refbizcode) return current;
+            //это ситуация неразрешенной ссылки на строку,обрабатывается в другом месте
+            if (refbizcode == "NOTRESOL") return current;
+            var result = PrimaryCompatibility.BlockPrimary;
+            var refss = refbizcode.Substring(0, 2);
+            var refb = refbizcode.Substring(2,2);
+            if (refss != subsystem) {
+                {
+                    {
+                        result = PrimaryCompatibility.CrossSubsystem;
+                    }
+                }
+            }
+            else if (refb != block) {
+                result = PrimaryCompatibility.CrossBlock;
+            }
+            return result>=current ? result : current;
         }
     }
 }

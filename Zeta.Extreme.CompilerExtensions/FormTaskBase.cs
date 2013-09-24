@@ -32,7 +32,7 @@ namespace Zeta.Extreme.CompilerExtensions {
             InitializeForms(AllForms);
             var selection = SelectedForms ?? AllForms;
             var parallel = selection.AsParallel().WithDegreeOfParallelism(4);
-            parallel.DoForEach(_ => Execute(_.Compiled));
+            parallel.ForAll(_=>Execute(_.Compiled));
             
         }
      /// <summary>

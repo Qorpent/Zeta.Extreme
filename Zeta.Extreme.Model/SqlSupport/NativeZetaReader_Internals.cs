@@ -31,7 +31,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 	public partial class NativeZetaReader {
 		private IEnumerable<T> Read<T>(string condition, string commandbase, Func<IDataRecord, T> serializer) {
 			var cmdtext = commandbase + (string.IsNullOrWhiteSpace(condition) ? "" : " where " + condition);
-			using (var c = getConnection()) {
+			using (var c = GetConnection()) {
 				c.Open();
 				var cmd = c.CreateCommand();
 				cmd.CommandText = cmdtext;
@@ -86,7 +86,11 @@ namespace Zeta.Extreme.Model.SqlSupport {
 			return x;
 		}
 
-		private IDbConnection getConnection() {
+		/// <summary>
+		/// Получить соединение с Zeta
+		/// </summary>
+		/// <returns></returns>
+		public IDbConnection GetConnection() {
 			if (!string.IsNullOrWhiteSpace(ConnectionString)) {
 				return new SqlConnection(ConnectionString);
 			}
@@ -406,7 +410,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
 			var commandText = string.Format(commandbase,(object[])parameters);
 			try
 			{
-				using (var c = getConnection())
+				using (var c = GetConnection())
 				{
 					c.Open();
 					var cmd = c.CreateCommand();
