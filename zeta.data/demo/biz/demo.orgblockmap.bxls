@@ -106,6 +106,14 @@ namespace demo
 				needprimary=true
 				oldrole=DZK
 				
+		~class demo.import.forms.m600
+		~class demo.import.forms.f110
+		~class demo.import.forms.r590
+		~class demo.import.forms.m211
+		~class demo.import.forms.m112
+		~class demo.import.forms.r131
+		~class demo.import.forms.r260
+				
 				
 
 
