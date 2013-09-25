@@ -83,16 +83,32 @@
             datatype = datatype || this.datatype;
             return siteroot + this.url.replace('{DATATYPE}',datatype);
         },
+
+        prepareResult: function(result) {
+            if (Object.prototype.toString.call(result).indexOf("Array") != -1) {
+                var r = {};
+                $.each(result, function(i, e) {
+                    r[i] = e;
+                });
+                result = r;
+            }
+            return result;
+        },
+
         triggerOnSuccess : function(result){
+            result = this.prepareResult(result);
             $(this).trigger(this.successEventName,result);
         },
         triggerOnError : function(result){
+            result = this.prepareResult(result);
             $(this).trigger(this.errorEventName,result);
         },
         triggerOnProgress : function(result){
+            result = this.prepareResult(result);
             $(this).trigger(this.progressEventName,result);
         },
         triggerOnComplete : function(result){
+            result = this.prepareResult(result);
             $(this).trigger(this.completeEventName,result);
         },
         onStart: function(func) {

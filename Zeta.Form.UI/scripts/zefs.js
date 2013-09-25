@@ -414,7 +414,15 @@ root.myform = root.myform ||  {
         $(window.zeta).trigger(window.zeta.handlers.on_modal, {
             width: 1024,
             title: "Отладка ячейки",
-            content: $(htmlresult)
+            content: $(htmlresult),
+            id: "celldebug-modal",
+            customButton: {
+                class: "btn-warning",
+                text: "Печать",
+                click: function() {
+                    $("#celldebug-modal>.modal-body").printelement();
+                }
+            }
         });
     });
 
