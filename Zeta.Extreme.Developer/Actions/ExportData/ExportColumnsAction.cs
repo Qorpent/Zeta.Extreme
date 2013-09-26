@@ -6,6 +6,6 @@ namespace Zeta.Extreme.Developer.Actions {
     /// Ёкспорт сфорировать файл периодов
     /// </summary>
     [Action("zdev.exportcolumns", Arm = "dev", Help = "—формировать эксортный файл колонок", Role = "DEVELOPER")]
-    public class ExportColumns : ExportActionBase<ColumnExporter> {
+    public class ExportColumnsAction : ExportActionBase<ColumnExporter> {
     }
 }

@@ -129,6 +129,11 @@ _.widget.register({
 		                 title: "Экспорт бизпроцессов",
 		                 href: './zdev/exportbizprocesses.string.qweb',
 		             },
+		            
+                     {
+                         title: "Экспорт структуры тем",
+                         href: './zdev/exportthemastructure.string.qweb',
+                     },
 
 		        ]
 		    },

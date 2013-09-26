@@ -3,11 +3,8 @@ using Zeta.Extreme.Developer.Config
 
 
 singleton DeveloperConfig : IDeveloperConfig
-	ThemaComiledFolder="C:\\rep\\.app\\ecot\\tmp\\compiled_themas"
-
-
+	ThemaComiledFolder="D:\\mnt\\s133\\tmp\\ecot\\compiled_themas"
 	ThemaSourceFolders
-
 		add "D:\\mnt\\cbtest\\sys\\data"
 		add "D:\\mnt\\cbtest\\usr\\eco\\data"
 	DocFolder="D:\\mnt\\cbtest\\zdev\\doc"
