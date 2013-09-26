@@ -73,6 +73,7 @@ namespace demo
 			
 		~class demo.import.forms.r510
 			colset=^demo.colsets.r510
+				needprimary=true
 			
 		~class demo.import.forms.r640
 			colset=^demo.colsets.r640
@@ -112,6 +113,7 @@ namespace demo
 		~class demo.import.forms.m211
 		~class demo.import.forms.m212
 		~class demo.import.forms.r131
+			needprimary=true
 		~class demo.import.forms.r260
 				
 				
