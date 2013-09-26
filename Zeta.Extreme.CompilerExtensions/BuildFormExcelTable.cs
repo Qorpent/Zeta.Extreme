@@ -36,10 +36,10 @@ namespace Zeta.Extreme.CompilerExtensions {
         /// </summary>
         /// <param name="forms"></param>
         protected override void InitializeForms(IEnumerable<IBSharpClass> forms) {
-            _xls = XmlHtmlExtensions.CreateNewHtml();
-            _xls.HtmlAddDefaultStyles();
-            _xls.HtmlSetDocumentTitle(TITLE);
-            _xls.HtmlAddHead1(TITLE);
+            _xls = XmlHtmlExtensions.CreateNewHtml()
+                .HtmlAddDefaultStyles()
+                .HtmlSetDocumentTitle(TITLE)
+                .HtmlAddHead1(TITLE);
             _table = _xls.HtmlAddTable(
                 cls : "forminfo",
                 head : new {

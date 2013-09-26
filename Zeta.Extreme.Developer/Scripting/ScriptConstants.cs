@@ -35,6 +35,10 @@
         /// </summary>
         public const string EXPORT_OBJTYPES_COMMAND = "zdev/exportobjtypes";
         /// <summary>
+        /// Команда экспорта структуры тем
+        /// </summary>
+        public const string EXPORT_THEMASTRUCTURE_COMMAND = "zdev/exportthemastructure";
+        /// <summary>
         /// Команда переноса данных
         /// </summary>
         public const string TRANSFER_DATA_COMMAND = "zdev/transferdata";

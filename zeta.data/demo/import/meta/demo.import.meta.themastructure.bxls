@@ -1,0 +1,463 @@
+########################################################################################################################
+####                                             Экспорт структуры форм                                             ####
+####                    hash                           : tg4v0ZYIjH7D6jXaNRVkdw==                                   ####
+########################################################################################################################
+namespace demo.import.meta
+	class themastructure
+		element subsystem
+		element block
+		element root
+		element thema
+		subsystem analysisg 'Отчеты'
+			block analysisg.FIN oldcode=FIN doubled=true
+				root analysisg.FIN.m211 oldcode=FIN doubled=true
+					thema balans_corp 'Баланс (форма № 1 ФО в ред. 2010)'
+				root analysisg.FIN.m111 oldcode=FIN doubled=true
+					thema balans2011_corp 'Баланс (форма № 1 ФО)'
+					thema balans2011_corp_bank 'Баланс (форма № 1 ФО)'
+					thema balans2011_dir 'Баланс (форма № 1 ФО)'
+					thema balans2011_hold 'Баланс (форма № 1 ФО) с утверждениями'
+				root analysisg.FIN.m214 oldcode=FIN doubled=true
+					thema finres_corp 'Финансовые результаты (форма №4)'
+					thema finres_div 'Финансовые результаты (форма №4)'
+					thema finres_hold 'Финансовые результаты (форма №4) c утвержениями'
+				root analysisg.FIN.m204 oldcode=FIN
+					thema macroparam 'Макропоказатели BUDGET'
+				root analysisg.FIN.m203 oldcode=FIN
+					thema osnparambudget 'Основные параметры бюджета'
+				root analysisg.FIN.m212 oldcode=FIN doubled=true
+					thema prib_corp 'Прибыли и убытки (форма АХД в ред. 2010)'
+				root analysisg.FIN.r2310 oldcode=FIN
+					thema prib_fa 'ФА прибыли до налогообложения BUDGET'
+				root analysisg.FIN.r2300 oldcode=FIN
+					thema prib_factor 'Факторный анализ прибыли до налогообложения'
+				root analysisg.FIN.m112 oldcode=FIN doubled=true
+					thema prib2011_corp 'Прибыли и убытки (форма АХД)'
+					thema prib2011_div 'Прибыли и убытки (форма № 2 ФО)'
+			block analysisg.KAZN oldcode=KAZN doubled=true
+				root analysisg.KAZN.f120 oldcode=KAZN doubled=true
+					thema budgetdds_hold 'Бюджет ДДС с утверждениями'
+					thema budgetdds_hold_str 'Бюджет ДДС (для строителей) с утверждениями'
+				root analysisg.KAZN.f110 oldcode=KAZN doubled=true
+					thema finplan_dir 'Финансовый план'
+					thema finplan_hold 'Финансовый план с утверждениями'
+					thema finplan_hold_str 'Финансовый план (для строителей) с утверждениями'
+			block analysisg.DR oldcode=DR doubled=true
+				root analysisg.DR.m217 oldcode=DR doubled=true
+					thema f7_corp 'Управленческие расходы (форма №7)'
+					thema f7_dir 'Управленческие расходы'
+					thema f7_hold 'Управленческие расходы (форма № 7) с утверждениями'
+				root analysisg.DR.m218 oldcode=DR doubled=true
+					thema f8_corp 'Расходы на продажу (форма №8)'
+					thema f8_dir 'Расходы на продажу'
+					thema f8_hold 'Расходы на продажу (форма № 8) с утверждениями'
+				root analysisg.DR.m214 oldcode=DR doubled=true
+					thema finres_dir 'Финансовые результаты'
+				root analysisg.DR.m250 oldcode=DR doubled=true
+					thema inv_dir 'Расходы инвестиционного характера'
+				root analysisg.DR.m200 oldcode=DR doubled=true
+					thema osnpok_bank 'Основные показатели (форма № 2)'
+					thema osnpok_corp 'Основные показатели (форма № 2)'
+					thema osnpok_div 'Основные показатели (форма № 2)'
+					thema osnpok_hold 'Основные показатели (форма № 2) c утверждениями'
+					thema osnpokst_dir 'Основные показатели ФХД'
+				root analysisg.DR.m202 oldcode=DR
+					thema osnpok_dir 'Основные показатели (для протокола)'
+					thema osnpok_dir_div 'Основные показатели (для протокола)'
+				root analysisg.DR.m600 oldcode=DR doubled=true
+					thema rashsn_dir 'Расходы на собственные нужды'
+				root analysisg.DR.m260 oldcode=DR doubled=true
+					thema zatr_bank 'Затраты на производство и реализацию (форма № 3)'
+					thema zatr_corp 'Затраты на производство и реализацию (форма № 3)'
+					thema zatr_dir 'Затраты на производство и реализацию'
+					thema zatr_hold 'Затраты на производство и реализацию (форма № 3) c утвержениями'
+				root analysisg.DR.r590 oldcode=DR doubled=true
+					thema zatr_pr_corp 'Расшифровка прочих расходов (Прил. № 3.4)'
+					thema zatr_pr_dir 'Расшифровка прочих расходов'
+					thema zatr_pr_hold 'Расшифровка прочих расходов (Прил. № 3.4) с расшифровками'
+			block analysisg.INVDR oldcode=INVDR doubled=true
+				root analysisg.INVDR.m250 oldcode=INVDR doubled=true
+					thema inv_corp 'Расходы инвестиционного характера (форма № 9)'
+					thema inv_div 'Расходы инвестиционного характера (форма № 9)'
+					thema inv_hold 'Расходы инвестиционного характера (форма № 9) c утвержениями'
+			block analysisg.OBPROIZ oldcode=OBPROIZ doubled=true
+				root analysisg.OBPROIZ.m140 oldcode=OBPROIZ doubled=true
+					thema obproizf_bank 'Объемы производства'
+					thema obproizf_bank_old 'Объемы производства (устар.)'
+					thema obproizf_copr 'Объемы производства (форма № 1)'
+					thema obproizf_copr_old 'Объемы производства (форма № 1) (устар.)'
+					thema obproizf_dir 'Объемы производства'
+					thema obproizf_fas 'Объемы производства (ФАС)'
+					thema obproizf_fas_old 'Объемы производства (ФАС) (устар.)'
+			block analysisg.DZK oldcode=DZK doubled=true
+				root analysisg.DZK.m230 oldcode=DZK doubled=true
+					thema ras_dk_dir 'Дебиторы и кредиторы'
+			block analysisg.SOC oldcode=SOC doubled=true
+				root analysisg.SOC.m600 oldcode=SOC doubled=true
+					thema rashsn_corp 'Расходы на собственные нужды (форма № 6)'
+			block analysisg.NOROLE oldcode=NOROLE doubled=true
+				root analysisg.NOROLE.NOROOT oldcode=NOROLE doubled=true
+					thema valutaset 'Курсы валют'
+		subsystem proiz_grp 'Производство'
+			block proiz_grp.OS oldcode=OS
+				root proiz_grp.OS.a120 oldcode=OS
+					thema anpok_os 'Характеристики основных средств'
+			block proiz_grp.BIO oldcode=BIO
+				root proiz_grp.BIO.m315 oldcode=BIO
+					thema bio_impact 'Воздействие на природную среду'
+				root proiz_grp.BIO.m310 oldcode=BIO
+					thema bio_measures 'Природоохранные мероприятия'
+				root proiz_grp.BIO.m320 oldcode=BIO
+					thema bio_nalog_calc 'Расчет платы за загрязнение природной среды'
+				root proiz_grp.BIO.m321 oldcode=BIO
+					thema bio_nalog_pay 'Перечисление платы за загрязнение природной среды'
+			block proiz_grp.COST oldcode=COST doubled=true
+				root proiz_grp.COST.m170 oldcode=COST
+					thema calc_tm 'Технологические материалы ADMIN'
+			block proiz_grp.OBPROIZ oldcode=OBPROIZ doubled=true
+				root proiz_grp.OBPROIZ.m150 oldcode=OBPROIZ doubled=true
+					thema obproiz_ce 'Объемы производства (по калькуляционным единицам)'
+					thema obproiz_ce_svg 'Объемы производства (по кальк. ед.)'
+					thema obproizf_new 'Объемы производства (форма № 1) new'
+				root proiz_grp.OBPROIZ.m140 oldcode=OBPROIZ doubled=true
+					thema obproizf 'Объемы производства (форма № 1)'
+					thema obproizf_old 'Объемы производства (форма № 1) (устар.)'
+				root proiz_grp.OBPROIZ.NOROOT oldcode=OBPROIZ doubled=true
+					thema obproizf_dm 'Уточнение объемов драгметаллов'
+					thema obproizf_dm_old 'Уточнение объемов драгметаллов (устар.)'
+					thema obproizf_svod 'Объемы производства (свод)'
+				root proiz_grp.OBPROIZ.m130 oldcode=OBPROIZ
+					thema tep 'Технико-экономические показатели'
+					thema tep_korr 'Технико-экономические показатели ADMIN'
+					thema tep_old 'Технико-экономические показатели (устар.)'
+			block proiz_grp.RUDA oldcode=RUDA
+				root proiz_grp.RUDA.m140 oldcode=RUDA doubled=true
+					thema obproizf_ruda 'Объемы производства (руда)'
+			block proiz_grp.NOROLE oldcode=NOROLE doubled=true
+				root proiz_grp.NOROLE.m150 oldcode=NOROLE doubled=true
+					thema tep_pl 'Технико-экономические показатели (по переделам)'
+					thema tep_prd 'Технико-экономические показатели (в целом) ADMIN'
+			block proiz_grp.ENERGO oldcode=ENERGO
+				root proiz_grp.ENERGO.r260180 oldcode=ENERGO
+					thema zatr_el 'Расчет расходов на электроэнергию'
+				root proiz_grp.ENERGO.NOROOT oldcode=ENERGO doubled=true
+					thema zatr_en 'Расшифровка затрат на топливо и энергию (Прил. № 3.3)'
+				root proiz_grp.ENERGO.r175 oldcode=ENERGO
+					thema zatr_topl 'Расчет расходов на топливо'
+		subsystem fin_grp 'Финансы'
+			block fin_grp.FIN oldcode=FIN doubled=true
+				root fin_grp.FIN.m211 oldcode=FIN doubled=true
+					thema balans 'Баланс (форма № 1 ФО в ред. 2010)'
+					thema balans_admin 'Баланс (форма № 1 ФО в ред. 2010) BUDGET'
+					thema balans_safe 'Баланс (независимые данные)'
+				root fin_grp.FIN.a111 oldcode=FIN
+					thema balans_an 'Баланс (аналитический) BUDGET'
+				root fin_grp.FIN.m113 oldcode=FIN
+					thema balans_capital 'Капитал и использование прибыли ADMIN'
+				root fin_grp.FIN.r115 oldcode=FIN
+					thema balans_os_nma 'Внеоборотные активы ADMIN'
+				root fin_grp.FIN.r216 oldcode=FIN
+					thema balans_rbp 'Расходы будущих периодов'
+					thema balans_rbp_kvart 'Расшифровка расходов будущих периодов (кварт. ADMIN)'
+				root fin_grp.FIN.r640 oldcode=FIN
+					thema balans_rdbp 'Доходы будущих периодов'
+				root fin_grp.FIN.m116 oldcode=FIN
+					thema balans_reserv 'Резервы и прочие обязательства ADMIN'
+				root fin_grp.FIN.r110 oldcode=FIN
+					thema balans_rnma 'Нематериальные активы'
+				root fin_grp.FIN.r130 oldcode=FIN doubled=true
+					thema balans_rns 'Расшифровка незавершенного строительства (Прил. № 3 СФО)'
+				root fin_grp.FIN.NOROOT oldcode=FIN doubled=true
+					thema balans_rns_korr 'Уточнение незавершенного строительства'
+					thema nal_rate 'Нормативы распределения налогов'
+				root fin_grp.FIN.r131 oldcode=FIN
+					thema balans_rns_str 'Расшифровка незавершенного строительства (строители)'
+				root fin_grp.FIN.r120 oldcode=FIN
+					thema balans_ros 'Основные средства'
+				root fin_grp.FIN.r211 oldcode=FIN
+					thema balans_rsim 'Сырье, материалы и др.ценности'
+					thema balans_rsim_rd 'Списание сырья и материалов ADMIN'
+				root fin_grp.FIN.m111 oldcode=FIN doubled=true
+					thema balans2011 'Баланс (форма № 1 ФО)'
+				root fin_grp.FIN.m411 oldcode=FIN
+					thema bankbalans 'Баланс (банк)'
+				root fin_grp.FIN.m412 oldcode=FIN
+					thema bankprib 'Отчет о прибылях и убытках (банк)'
+				root fin_grp.FIN.m213 oldcode=FIN
+					thema dds 'Движение денежных средств (косв. метод)'
+				root fin_grp.FIN.a100 oldcode=FIN
+					thema finanalysis 'Финансовый анализ'
+				root fin_grp.FIN.m214 oldcode=FIN doubled=true
+					thema finres 'Финансовые результаты (форма №4) ADMIN'
+					thema finres_cons 'Финансовые результаты (форма №4)'
+					thema finres_mes 'Финансовые результаты (форма №4)'
+				root fin_grp.FIN.a214 oldcode=FIN
+					thema finres_an 'Финансовые результаты (анализ) ADMIN'
+				root fin_grp.FIN.m112 oldcode=FIN doubled=true
+					thema finres_mes_report 'Прибыли и убытки (форма № 2 ФО)'
+					thema prib_cons 'Прибыли и убытки'
+					thema prib2011 'Прибыли и убытки (форма № 2 ФО) ADMIN'
+				root fin_grp.FIN.p214 oldcode=FIN
+					thema finres_zatr 'Себестоимость продаж по элементам'
+				root fin_grp.FIN.m215 oldcode=FIN
+					thema free_active 'Расчет чистых активов (в ред. 2010)'
+				root fin_grp.FIN.m115 oldcode=FIN
+					thema free_active2011 'Расчет чистых активов'
+				root fin_grp.FIN.r511 oldcode=FIN
+					thema osnpok_kz 'Основные показатели по кредитам и займам'
+				root fin_grp.FIN.m212 oldcode=FIN doubled=true
+					thema prib 'Прибыли и убытки (форма № 2 ФО в ред. 2010)'
+					thema prib_budget 'Прибыли и убытки (форма № 2 ФО в ред. 2010) BUDGET'
+				root fin_grp.FIN.c091 oldcode=FIN
+					thema ras91 'Расшифровка 91 счета ADMIN'
+				root fin_grp.FIN.m311 oldcode=FIN
+					thema sbalans 'Баланс (страховщик)'
+			block fin_grp.KAZN oldcode=KAZN doubled=true
+				root fin_grp.KAZN.f120 oldcode=KAZN doubled=true
+					thema budgetdds 'Бюджет ДДС'
+				root fin_grp.KAZN.f110 oldcode=KAZN doubled=true
+					thema finplan 'Финансовый план'
+			block fin_grp.DR oldcode=DR doubled=true
+				root fin_grp.DR.m217 oldcode=DR doubled=true
+					thema f7_cons 'Управленческие расходы (форма №7) ADMIN'
+				root fin_grp.DR.m218 oldcode=DR doubled=true
+					thema f8_cons 'Коммерческие расходы (форма № 8) ADMIN'
+			block fin_grp.FA oldcode=FA doubled=true
+				root fin_grp.FA.s140 oldcode=FA doubled=true
+					thema finact 'Финансовые вложения'
+					thema finact_new 'Расшифровка финансовых вложений (extreme) ADMIN'
+			block fin_grp.BANK oldcode=BANK
+				root fin_grp.BANK.m2110 oldcode=BANK
+					thema krzaim 'Заемные средства (устар.)'
+				root fin_grp.BANK.m442 oldcode=BANK
+					thema krzaim_control 'Контроль заемных средств'
+				root fin_grp.BANK.r510 oldcode=BANK
+					thema krzaim_lite 'Заемные средства'
+					thema krzaim_lite_new 'Заемные средства (extreme) ADMIN'
+			block fin_grp.NAL oldcode=NAL
+				root fin_grp.NAL.m220 oldcode=NAL
+					thema nalog 'Налоги, платежи и сборы'
+				root fin_grp.NAL.NOROOT oldcode=NAL doubled=true
+					thema nalog_korr 'Уточнение налогов по уровням бюджетов ADMIN'
+					thema nalog_nd 'Налоги по подразделениям'
+				root fin_grp.NAL.m224 oldcode=NAL
+					thema nalog_nds 'Расчет НДС (форма № 16.4)'
+				root fin_grp.NAL.m226 oldcode=NAL
+					thema nalog_nds_old 'Расчет НДС, устар. строки (ADMIN)'
+				root fin_grp.NAL.m225 oldcode=NAL
+					thema nalog_nds19 'НДС по приобретенным ценнностям (Прил. № 23)'
+			block fin_grp.DZK oldcode=DZK doubled=true
+				root fin_grp.DZK.m230 oldcode=DZK doubled=true
+					thema ras_dk 'Дебиторы и кредиторы'
+					thema ras_dk_korr 'Дебиторы и кредиторы (ревизия за 2012 год)'
+				root fin_grp.DZK.m231 oldcode=DZK
+					thema ras_dk_ca 'Дебиторы и кредиторы по контрагентам'
+					thema ras_dk_ca_new 'Дебиторы и кредиторы по контрагентам (extreme) ADMIN'
+				root fin_grp.DZK.m232 oldcode=DZK
+					thema ras_dk_ca_report 'Отчет о дебиторке и кредиторке (ADMIN)'
+		subsystem eco_grp 'Экономика'
+			block eco_grp.FIN oldcode=FIN doubled=true
+				root eco_grp.FIN.r130 oldcode=FIN doubled=true
+					thema balans_rns_copy 'Расшифровка незавершенного строительства (Прил. № 3 СФО)'
+			block eco_grp.DR oldcode=DR doubled=true
+				root eco_grp.DR.m150 oldcode=DR doubled=true
+					thema buy_sir 'Сырье и полуфабрикаты (внутри УГМК)'
+					thema uslugi 'Приобретение работ и услуг (внутри УГМК)'
+				root eco_grp.DR.m217 oldcode=DR doubled=true
+					thema f7 'Управленческие расходы (форма №7)'
+				root eco_grp.DR.m218 oldcode=DR doubled=true
+					thema f8 'Расходы на продажу (форма №8)'
+				root eco_grp.DR.g214 oldcode=DR
+					thema finres_group 'Группировка прочих доходов и расходов в форме 4'
+				root eco_grp.DR.m216 oldcode=DR
+					thema opr 'Общепроизводственные расходы'
+					thema opr_div 'Общепроизводственные расходы (по переделам)'
+				root eco_grp.DR.m200 oldcode=DR doubled=true
+					thema osnpok 'Основные показатели (форма № 2)'
+				root eco_grp.DR.h200 oldcode=DR
+					thema osnpok_90 'Основные показатели 1990-2010'
+				root eco_grp.DR.m201 oldcode=DR
+					thema osnpok_kr 'Основные показатели (кратко) ADMIN'
+				root eco_grp.DR.m161 oldcode=DR
+					thema uslugi_chop 'Услуги ЧОП'
+				root eco_grp.DR.m260 oldcode=DR doubled=true
+					thema zatr 'Затраты на производство и реализацию (форма № 3)'
+				root eco_grp.DR.m260800 oldcode=DR
+					thema zatr_800 'Затраты на производство и реализацию (расшифровка 800)'
+				root eco_grp.DR.k260400 oldcode=DR
+					thema zatr_am 'Амортизация (прил. 3.5)'
+				root eco_grp.DR.a260 oldcode=DR
+					thema zatr_an 'Затраты на производство и реализацию (аналит.) ADMIN'
+				root eco_grp.DR.m270 oldcode=DR
+					thema zatr_dds 'Затраты для ДДС ADMIN'
+				root eco_grp.DR.k999 oldcode=DR
+					thema zatr_korr_pr 'Уточнение отдельных статей затрат по форме № 3'
+				root eco_grp.DR.r590 oldcode=DR doubled=true
+					thema zatr_pr 'Расшифровка прочих расходов (Прил. № 3.4)'
+				root eco_grp.DR.r260100 oldcode=DR
+					thema zatr_sir 'Расшифровка затрат на сырье (Прил. № 3.1)'
+				root eco_grp.DR.r260135 oldcode=DR
+					thema zatr_uslper 'Расшифровка услуг вспомогательного производства (Прил. № 3.2)'
+			block eco_grp.NOROLE oldcode=NOROLE doubled=true
+				root eco_grp.NOROLE.NOROOT oldcode=NOROLE doubled=true
+					thema controlpointall 'Все контрольные точки'
+			block eco_grp.FA oldcode=FA doubled=true
+				root eco_grp.FA.s140 oldcode=FA doubled=true
+					thema finact_copy 'Расшифровка финансовых вложений (Прил. № 4 СФО)'
+			block eco_grp.INVDR oldcode=INVDR doubled=true
+				root eco_grp.INVDR.m250 oldcode=INVDR doubled=true
+					thema inv 'Расходы инвестиционного характера (форма № 9)'
+					thema inv_copy 'Расходы инвестиционного характера (форма № 9)'
+			block eco_grp.SOC oldcode=SOC doubled=true
+				root eco_grp.SOC.m600 oldcode=SOC doubled=true
+					thema rashsn 'Расходы на собственные нужды (форма № 6)'
+		subsystem cost_grp 'Контроллинг'
+			block cost_grp.MTR oldcode=MTR
+				root cost_grp.MTR.m150 oldcode=MTR doubled=true
+					thema biztran_uni 'Универсальный biztran-отчет'
+					thema raw_move_dav 'Движение давальческого сырья'
+					thema raw_move_sobst 'Движение собственного сырья'
+					thema sir003fix 'Движение давальческого сырья'
+					thema sir1091fix 'Движение собственного сырья'
+					thema sir1092fix 'Обеспечение сырьем'
+				root cost_grp.MTR.m206 oldcode=MTR
+					thema osnpoksir 'Основные показатели поставок сырья'
+			block cost_grp.COST oldcode=COST doubled=true
+				root cost_grp.COST.c220 oldcode=COST
+					thema bm_chm 'Баланс производства (натура) - черновая медь'
+					thema bm_ocm 'Баланс производства (натура) - прокат'
+					thema bm_pb 'Баланс производства (натура) - свинец'
+					thema bm_sk 'Баланс производства (натура) - серная кислота ADMIN'
+					thema bm_slit 'Баланс производства (натура) - слитки'
+					thema bm_zn 'Баланс производства (натура) - цинк'
+				root cost_grp.COST.c210 oldcode=COST
+					thema bms_cu 'Баланс производства - медь'
+					thema bms_pb 'Баланс производства - свинец'
+					thema bms_sk 'Баланс производства - серная кислота ADMIN'
+					thema bms_zn 'Баланс производства - цинк'
+				root cost_grp.COST.z100 oldcode=COST
+					thema calc_cabel_vid 'Калькуляция кабеля (по видам) ADMIN'
+					thema calc_chernmed_new 'Калькуляция черновой меди new ADMIN'
+					thema calc_ksgenat 'Калькуляция ксантогената'
+					thema calc_mk_vid 'Калькуляция медной катанки'
+					thema calc_ocm_vid 'Калькуляция проката(по видам) ADMIN'
+					thema calc_ruda_dob 'Калькуляция добычи руды'
+					thema calc_ruda_dob_admin 'Калькуляция добычи руды ADMIN'
+					thema calc_sernkisl_new 'Калькуляция серной кислоты new ADMIN'
+					thema calc_slit_vid 'Калькуляция слитков (по видам) ADMIN'
+				root cost_grp.COST.z130 oldcode=COST
+					thema calc_chernmed 'Калькуляция черновой меди'
+				root cost_grp.COST.z510 oldcode=COST
+					thema calc_energo 'Калькуляция энергоресурсов'
+				root cost_grp.COST.z410 oldcode=COST
+					thema calc_ocm 'Калькуляция проката цветных металлов'
+				root cost_grp.COST.z111 oldcode=COST
+					thema calc_osnpok 'Себестоимость основных видов продукции'
+				root cost_grp.COST.z260 oldcode=COST
+					thema calc_pb 'Калькуляция свинца'
+				root cost_grp.COST.z112 oldcode=COST
+					thema calc_ruda 'Себестоимость добычи и обогащения'
+					thema calc_ruda_pered 'Себестоимость добычи и обогащения (по калькуляционным единицам)'
+				root cost_grp.COST.z112800 oldcode=COST
+					thema calc_ruda_sale 'Реализация концентрата ADMIN'
+				root cost_grp.COST.z210 oldcode=COST
+					thema calc_sernkisl 'Калькуляция серной кислоты'
+				root cost_grp.COST.z420 oldcode=COST
+					thema calc_slitki 'Калькуляция слитков'
+				root cost_grp.COST.z250 oldcode=COST
+					thema calc_zink 'Калькуляция цинка'
+				root cost_grp.COST.m150 oldcode=COST doubled=true
+					thema pf 'Полуфабрикаты'
+				root cost_grp.COST.z310 oldcode=COST
+					thema vncorp_usl 'Внутрикорпоративные услуги'
+				root cost_grp.COST.c230 oldcode=COST
+					thema vozvrat 'Возвратные отходы'
+			block cost_grp.NOROLE oldcode=NOROLE doubled=true
+				root cost_grp.NOROLE.NOROOT oldcode=NOROLE doubled=true
+					thema calced_matrix 'Матрица расчета калькуляций'
+				root cost_grp.NOROLE.m150 oldcode=NOROLE doubled=true
+					thema raw_provide 'Движение сырья'
+					thema raw_report_svod 'Сводый отчет по движению сырья'
+					thema rawinput_rawtype 'Загрузка сырья в передел черновой меди'
+			block cost_grp.DR oldcode=DR doubled=true
+				root cost_grp.DR.b102 oldcode=DR
+					thema kovenant_amort 'Амортизация по приложению № 5 стр. 740'
+				root cost_grp.DR.b120 oldcode=DR
+					thema kovenant_gpb 'Ковенанты Газпромбанка'
+				root cost_grp.DR.b101 oldcode=DR
+					thema kovenant_normativ 'Нормативные ковенанты по группе'
+				root cost_grp.DR.b130 oldcode=DR
+					thema kovenant_sb 'Ковенанты Сбербанка'
+				root cost_grp.DR.b131 oldcode=DR
+					thema kovenant_sb_2012 'Ковенанты Сбербанка (ред. 2012)'
+				root cost_grp.DR.b110 oldcode=DR
+					thema kovenant_vtb 'Ковенанты ВТБ'
+				root cost_grp.DR.b111 oldcode=DR
+					thema kovenant_vtb_2012 'Ковенанты ВТБ (ред. 2012)'
+			block cost_grp.SALE oldcode=SALE
+				root cost_grp.SALE.m205 oldcode=SALE
+					thema osnpoksale 'Основные показатели продаж'
+				root cost_grp.SALE.m150 oldcode=SALE doubled=true
+					thema sale 'Продажи (устар.)'
+					thema sale_arp 'Анализ реализованной продукции'
+					thema sale_cost 'Удельная себестоимость продаж (устар.)'
+					thema sale_cost_fix 'Удельная себестоимость продаж'
+					thema sale_faprib 'Факторный анализ прибыли от продаж'
+					thema sale_fapribv 'Факторный анализ валовой прибыли'
+					thema sale_farev 'Факторный анализ выручки'
+					thema sale_fass 'Факторный анализ себестоимости'
+					thema sale_fix 'Продажи'
+					thema sale_fix2 'Продажи 2 ADMIN'
+					thema sale_svod 'Свод по продажам'
+					thema sklad 'Склад продукции'
+		subsystem soc_grp
+			block soc_grp.SOC oldcode=SOC doubled=true
+				root soc_grp.SOC.400000000000 oldcode=SOC
+					thema blag 'Затраты на благотворительность'
+				root soc_grp.SOC.500000000000 oldcode=SOC
+					thema f6 'Расходы собственные нужды (форма №6)'
+				root soc_grp.SOC.200000000000 oldcode=SOC
+					thema med 'Расходы на медицинское обслуживание'
+				root soc_grp.SOC.101000000000 oldcode=SOC
+					thema smeta 'Cодержаниe объектов социальной сферы'
+			block soc_grp.NOROLE oldcode=NOROLE doubled=true
+				root soc_grp.NOROLE.КОП_1 oldcode=NOROLE
+					thema pit 'Основная форма по питанию'
+				root soc_grp.NOROLE.ПНП oldcode=NOROLE
+					thema pnp 'Приоритетные национальные проекты'
+		subsystem trud_grp 'Персонал'
+			block trud_grp.KADR oldcode=KADR
+				root trud_grp.KADR.t112 oldcode=KADR
+					thema pers 'Информация о персонале'
+				root trud_grp.KADR.t211 oldcode=KADR
+					thema zhilpr 'Реализация жилищной программы (Приложение № 11)'
+			block trud_grp.ZP oldcode=ZP
+				root trud_grp.ZP.t110 oldcode=ZP
+					thema trud 'Отчет по труду'
+					thema trud_old 'Отчет по труду (устар.)'
+					thema trud_old_old 'Отчет по труду (устаревший) ADMIN'
+					thema trud_t120 'Отчет по труду (устаревший) ADMIN'
+				root trud_grp.ZP.t220 oldcode=ZP
+					thema trud_cent_vipl 'Смета централизованных выплат (форма № 2-Т)'
+				root trud_grp.ZP.t240 oldcode=ZP
+					thema trud_fzp_nespis 'ФЗП работников несписочного состава (форма № 4-Т)'
+				root trud_grp.ZP.t210 oldcode=ZP
+					thema trud_obosn 'Расчет-обоснование плана по труду (форма № 1-Т)'
+				root trud_grp.ZP.t230 oldcode=ZP
+					thema trud_soc_vipl 'Смета социальных выплат (форма № 3-Т)'
+				root trud_grp.ZP.t250 oldcode=ZP
+					thema trud_zatr_pers 'Затраты на персонал (форма № 5-Т)'
+				root trud_grp.ZP.t115 oldcode=ZP
+					thema trudindex 'Динамика инфляции и зарплаты'
+					thema trudindex_old 'Динамика инфляции и зарплаты (устар.)'
+				root trud_grp.ZP.m265 oldcode=ZP
+					thema zp_zatr 'Расходы по персоналу'
+					thema zp_zatr_conto 'Расходы по персоналу (по счетам) ADMIN'
+					thema zp_zatr_conto1 'Страховые взносы (по счетам) ADMIN'
+			block trud_grp.EDU oldcode=EDU
+				root trud_grp.EDU.t265 oldcode=EDU
+					thema trud_zatr_lehr_new 'Затраты на обучение персонала'
+		subsystem sys 'Система'
+			block sys.NOROLE oldcode=NOROLE doubled=true
+				root sys.NOROLE.TEST_ERRORS oldcode=NOROLE
+					thema testerrors 'Тестирование ошибок в формулах'

@@ -22,6 +22,7 @@ zdev-script demo_import
 			generate-bizprocesses  name=bizprocesses primary-only
 			generate-objtypes name=objtypes
 			generate-objdivs name=objdivs
+			generate-themastructure name=themastructure
 		
 		# скрипты генерации форм
 		set namespace=${_formns} into = ${_formdir}
