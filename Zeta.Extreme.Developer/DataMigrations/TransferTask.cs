@@ -74,6 +74,9 @@ namespace Zeta.Extreme.Developer.DataMigrations {
 			get {
 				if (null == _target) {
 					_target = MetaCache.Default.Get<IZetaRow>(TargetCode);
+                    if (null == _target) {
+                        _target = Source;
+                    }
 				}
 				return _target;
 			}
@@ -381,6 +384,11 @@ namespace Zeta.Extreme.Developer.DataMigrations {
 				using (var reader = com.ExecuteReader()) {
 					while (reader.Read()) {
 						foreach (var col in Columns) {
+						    var obj = _getobj((int) reader[2]);
+                            if (null == obj) {
+                                continue;
+                                //throw new Exception("null obj for id "+reader[2]);
+                            }
 							result.Add(
 								new TransferRecord {
 									SourceYear = (int) reader[0],
@@ -392,9 +400,9 @@ namespace Zeta.Extreme.Developer.DataMigrations {
 									SourceColumn = col.Code,
 									TargetColumnId = col.Id,
 									SourceRow = SourceCode,
-									TargetRowId = Source.Id,
+									TargetRowId = Target.Id,
 									UserCode = UserCode,
-									TargetCurrency = EvalCurrency(Source, col, _getobj((int)reader[2]))
+									TargetCurrency = EvalCurrency(Source, col,obj),
 								});
 
 						}

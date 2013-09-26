@@ -33,9 +33,17 @@ namespace Zeta.Extreme.CompilerExtensions {
             var selection = SelectedForms ?? AllForms;
             var parallel = selection.AsParallel().WithDegreeOfParallelism(4);
             parallel.ForAll(_=>Execute(_.Compiled));
+            AfterFormProcessed(selection);
+        }
+        /// <summary>
+        /// Выполняется по итогам выполнения операций
+        /// </summary>
+        /// <param name="selection"></param>
+        protected virtual void AfterFormProcessed(IEnumerable<IBSharpClass> selection) {
             
         }
-     /// <summary>
+
+        /// <summary>
             /// Отобранные для работы формы
             /// </summary>
             protected IList<IBSharpClass> SelectedForms;
