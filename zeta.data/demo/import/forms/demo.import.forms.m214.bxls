@@ -6,7 +6,7 @@
 ####      Заданное пространство имен                 : demo.import.forms                        ####
 ####      Заданное имя класса                                                                   ####
 ####      ID строки в БД                             : 1624                                     ####
-####      Максимальная версия строк в форме          : 2013-09-27 14:17:58                      ####
+####      Максимальная версия строк в форме          : 2013-09-27 15:22:00                      ####
 ####                                                                                            ####
 ####      Обнаружены зависимости от других форм                                                 ####
 ####              frm : m112                                                                    ####
@@ -459,11 +459,13 @@ namespace demo.import.forms
 				primary m212210 'Штрафы, пени и неустойки, призанные или по которым плучены решения суда (арбитражного суда) об их взыскании (+/-)' notlocalizedcode=true outer=210 
 				primary m212230 'Возмещение убытков, причиненных неисполнением или ненадлежащим исполнением обязательств' notlocalizedcode=true outer=230 
 				sum m212240 'Результат по курсовым разницам (+/-)' notlocalizedcode=true outer=240 
-					primary m212241 'курсовые разницы по дебиторской задолженности' notlocalizedcode=true outer=241 groups=КУРС minus vgrp=';КУРС;' 
-					primary m212242 'курсовые разницы по кредиторской задолженности' notlocalizedcode=true outer=242 groups=КУРС minus vgrp=';КУРС;' 
-					primary m212243 'курсовые разницы по финансовым вложениям' notlocalizedcode=true outer=243 groups=КУРС minus vgrp=';КУРС;' 
-					primary m212244 'курсовые разницы по кредитам и займам' notlocalizedcode=true outer=244 groups=КУРС minus vgrp=';КУРС;' 
-					sum m212245 'прочие курсовые разницы' notlocalizedcode=true outer=245 groups=КУРС vgrp=';КУРС;' 
+					primary m212241 'курсовые разницы по дебиторской задолженности' notlocalizedcode=true outer=241 minus vgrp=';КУРС;' 
+					primary m212242 'курсовые разницы по кредиторской задолженности' notlocalizedcode=true outer=242 minus vgrp=';КУРС;' 
+					primary m212243 'курсовые разницы по финансовым вложениям' notlocalizedcode=true outer=243 minus vgrp=';КУРС;' 
+					primary m212244 'курсовые разницы по кредитам и займам' notlocalizedcode=true outer=244 minus vgrp=';КУРС;' 
+					formula m212245 'прочие курсовые разницы' notlocalizedcode=true outer=245 vgrp=';КУРС;'  : (
+						f.If ( year > 2013 or ( year == 2013 and not periodin (11,12,13,14,15,16,1,2,22,24,25) ), { $m21409007? - $m21410008? } , { $m212235? - $m212236? } ) - ( $m212241? + $m212242? + $m212243? + $m212244? )
+					)
 				title m112280 'Резерв по сомнительным долгам' notlocalizedcode=true outer=280 sap-region=BUH sap-form=002 sap-use 
 					formula m112281 'Сальдо на начало периода' notlocalizedcode=true outer=281 sap-region=BUH sap-form=002 sap-use  : (
 						$m230800@DZRn? + $m230900@DZRn?

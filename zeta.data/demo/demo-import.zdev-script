@@ -22,6 +22,7 @@ zdev-script demo_import
 			generate-bizprocesses  name=bizprocesses primary-only
 			generate-objtypes name=objtypes
 			generate-objdivs name=objdivs
+			generate-objects name=objects onlyownonroot = true
 			generate-geo name=geo
 			generate-themastructure name=themastructure
 		

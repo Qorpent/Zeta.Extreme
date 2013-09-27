@@ -14,6 +14,11 @@
 	    /// </summary>
 	    public const string ExportObjdivsCommand = "zdev.exportobjdivs";
 
+        /// <summary>
+        /// Команда экспорта объектов
+        /// </summary>
+        public const string ExportObjectsCommand = "zdev.exportobjects";
+
 	    /// <summary>
 	    /// Команда экспорта колонок
 	    /// </summary>

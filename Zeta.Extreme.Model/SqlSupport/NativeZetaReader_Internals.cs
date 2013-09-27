@@ -175,13 +175,32 @@ namespace Zeta.Extreme.Model.SqlSupport {
 
 
         /// <summary>
-        /// 	Сериализует строку из БД в объект строки
+        /// 	Сериализует зону из БД в объект строки
         /// </summary>
         /// <param name="r"> </param>
         /// <returns> </returns>
         public static Zone ReaderToZone(IDataRecord r)
         {
             var x = new Zone
+            {
+                Id = r.GetInt32(0),
+                Code = r.GetString(1),
+                Name = r.GetString(2),
+                Comment = r.GetString(3),
+                Tag = r.GetString(4),
+                Version = r.GetDateTime(5),
+            };
+            return x;
+        }
+
+        /// <summary>
+        /// 	Сериализует отрасль (департамент) из БД в объект строки
+        /// </summary>
+        /// <param name="r"> </param>
+        /// <returns> </returns>
+        public static Department ReaderToDepartment(IDataRecord r)
+        {
+            var x = new Department
             {
                 Id = r.GetInt32(0),
                 Code = r.GetString(1),
@@ -514,5 +533,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
             };
             return _;
 	    }
+
+	    
 	}
 }

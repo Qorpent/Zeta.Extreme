@@ -20,6 +20,7 @@
     <Compile Include="Actions\ExportData\ExportBizProcesses.cs" />
     <Compile Include="Actions\ExportData\ExportGeoAction.cs" />
     <Compile Include="Actions\ExportData\ExportObjDivsAction.cs" />
+    <Compile Include="Actions\ExportData\ExportObjectsAction.cs" />
     <Compile Include="Actions\ExportData\ExportObjTypesAction.cs" />
     <Compile Include="Actions\ExportData\ExportThemaStructureAction.cs" />
     <Compile Include="Actions\GetSubstAttributesAction.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="MetaStorage\GeoExporter.cs" />
     <Compile Include="MetaStorage\IDataToBSharpExporter.cs" />
     <Compile Include="MetaStorage\ObjDivExporter.cs" />
+    <Compile Include="MetaStorage\ObjectExporter.cs" />
     <Compile Include="MetaStorage\ObjTypeExporter.cs" />
     <Compile Include="MetaStorage\PeriodsExporter.cs" />
     <Compile Include="MetaStorage\ThemaStructureExporter.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="Scripting\GenerateFormCommand.cs" />
     <Compile Include="Scripting\GenerateGeo.cs" />
     <Compile Include="Scripting\GenerateObjDivs.cs" />
+    <Compile Include="Scripting\GenerateObjects.cs" />
     <Compile Include="Scripting\GenerateObjTypes.cs" />
     <Compile Include="Scripting\GeneratePeriods.cs" />
     <Compile Include="Scripting\GenerateThemaStructure.cs" />

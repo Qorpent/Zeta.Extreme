@@ -37,6 +37,10 @@ namespace Zeta.Extreme.Model.SqlSupport {
 				select Id,Code,Name,Comment,Tag,Version
 				from zeta.normalzone
 		";
+        private const string Departmentquerybase = @"
+				select Id,Code,Name,Comment,Tag,Version
+				from zeta.normalobjrole
+		";
         private const string Regionquerybase = @"
 				select Id,Code,Name,Comment,Tag,Version,ZoneId
 				from zeta.normalregion
@@ -179,6 +183,19 @@ namespace Zeta.Extreme.Model.SqlSupport {
 #pragma warning restore 612,618
         {
             return Read(condition, Zonequerybase, ReaderToZone);
+        }
+
+        /// <summary>
+        /// 	Сериализует Zone
+        /// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+        /// </summary>
+        /// <param name="condition"> </param>
+        /// <returns> </returns>
+#pragma warning disable 612,618
+        public IEnumerable<Department> ReadDepartments(string condition = "")
+#pragma warning restore 612,618
+        {
+            return Read(condition, Departmentquerybase, ReaderToDepartment);
         }
 
         /// <summary>

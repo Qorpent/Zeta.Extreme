@@ -20,6 +20,7 @@ namespace Zeta.Extreme.Developer.Scripting {
 			{"generate-objtypes",typeof(GenerateObjTypes)},
 			{"generate-objdivs",typeof(GenerateObjDivs)},
 			{"generate-geo",typeof(GenerateGeo)},
+			{"generate-objects",typeof(GenerateObjects)},
 			{"generate-themastructure",typeof(GenerateThemaStructure)},
 			{"generate-transfer",typeof(GenerateTransferScript)},
 		};
