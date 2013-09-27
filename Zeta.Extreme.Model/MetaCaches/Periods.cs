@@ -168,6 +168,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 		}
 
 		private static IDictionary<int, string> PrepareFormulaDictionary(string formula) {
+
 			IDictionary<int, string> dict = null;
 			if (cache.ContainsKey(formula)) {
 				dict = cache[formula];

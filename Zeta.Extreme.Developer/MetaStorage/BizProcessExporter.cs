@@ -23,7 +23,7 @@ namespace Zeta.Extreme.Developer.MetaStorage {
                 query = " Tag like '%primary%'";
             }
             var processes = new NativeZetaReader().ReadBizProcesses(query);
-            var bizProcesses = processes as BizProcess[] ?? processes.ToArray();
+            var bizProcesses = processes as Extreme.Model.BizProcess[] ?? processes.ToArray();
             builder.WriteCommentBlock("ЭКСПОРТ BIZPROCESS БД ECO",
                                       new Dictionary<string, object> {
                                           {"Время последего обновления",bizProcesses.Select(_=>_.Version).Max().ToString("yyyy-MM-dd HH:mm:ss")},

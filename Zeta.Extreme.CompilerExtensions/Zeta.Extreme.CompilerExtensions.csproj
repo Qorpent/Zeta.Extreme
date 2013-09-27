@@ -35,10 +35,6 @@
       <Project>{880F65EA-1A22-4672-A137-FFC912902112}</Project>
       <Name>Qorpent.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Zeta.Extreme.Developer\Zeta.Extreme.Developer.csproj">
-      <Project>{A6ADC6DF-7306-42D5-A674-3D847390CA29}</Project>
-      <Name>Zeta.Extreme.Developer</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Xml" />
