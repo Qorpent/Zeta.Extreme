@@ -5,7 +5,7 @@ namespace Zeta.Extreme.Developer.Actions {
     /// <summary>
     /// Ёкспорт сфорировать файл периодов
     /// </summary>
-    [Action("zdev.exportthemastructure", Arm = "dev", Help = "—формировать эксортный файл структуры тем", Role = "DEVELOPER")]
+    [Action(DeveloperConstants.ExportThemastructureCommand, Arm = "dev", Help = "—формировать эксортный файл структуры тем", Role = "DEVELOPER")]
     public class ExportThemaStructureAction : ExportActionBase<ThemaStructureExporter>
     {
     }

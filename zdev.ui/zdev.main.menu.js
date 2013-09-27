@@ -176,6 +176,10 @@ _.widget.register({
 		         title: "Экспорт дивизионов",
 		         href: './zdev/exportobjdivs.string.qweb',
 		     },
+		        {
+		            title: "Экспорт географии",
+		            href: './zdev/exportgeo.string.qweb',
+		        },
 		    ]
 		},
 		  "div",

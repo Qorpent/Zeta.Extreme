@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Qorpent.Applications;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Developer.Analyzers;
 
 namespace Zeta.Extreme.Developer.Scripting {
     /// <summary>
@@ -22,7 +23,7 @@ namespace Zeta.Extreme.Developer.Scripting {
         /// <returns></returns>
         protected override string GetCommandName()
         {
-            return ScriptConstants.TRANSFER_DATA_COMMAND;
+            return DeveloperConstants.TransferDataCommand;
         }
 
         /// <summary>

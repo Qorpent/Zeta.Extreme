@@ -33,6 +33,18 @@ namespace Zeta.Extreme.Model.SqlSupport {
 					Id,Name,Idx,MonthCount,IsFormula,Formula,Tag, Start,Finish ,Category,Version
 				from zeta.normalperiod
 		";
+        private const string Zonequerybase = @"
+				select Id,Code,Name,Comment,Tag,Version
+				from zeta.normalzone
+		";
+        private const string Regionquerybase = @"
+				select Id,Code,Name,Comment,Tag,Version,ZoneId
+				from zeta.normalregion
+		";
+        private const string Pointquerybase = @"
+				select Id,Code,Name,Comment,Tag,Version,RegionId
+				from zeta.normalpoint
+		";
 
 		private const string Objquerybase = @"
 				select 
@@ -155,6 +167,44 @@ namespace Zeta.Extreme.Model.SqlSupport {
 		public IEnumerable<User> ReadUsers(string condition = "") {
 			return Read(condition, Usrquerybase, ReaderToUsr);
 		}
+
+        /// <summary>
+        /// 	Сериализует Zone
+        /// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+        /// </summary>
+        /// <param name="condition"> </param>
+        /// <returns> </returns>
+#pragma warning disable 612,618
+        public IEnumerable<Zone> ReadZones(string condition = "")
+#pragma warning restore 612,618
+        {
+            return Read(condition, Zonequerybase, ReaderToZone);
+        }
+
+        /// <summary>
+        /// 	Сериализует Region
+        /// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+        /// </summary>
+        /// <param name="condition"> </param>
+        /// <returns> </returns>
+#pragma warning disable 612,618
+        public IEnumerable<Region> ReadRegions(string condition = "")
+#pragma warning restore 612,618
+        {
+            return Read(condition, Regionquerybase, ReaderToRegion);
+        }
+        /// <summary>
+        /// 	Сериализует Region
+        /// 	Внимание! ТОЧКА ДЛЯ SQL-атаки, API для экспорта не предназначено!
+        /// </summary>
+        /// <param name="condition"> </param>
+        /// <returns> </returns>
+#pragma warning disable 612,618
+        public IEnumerable<Point> ReadPoints(string condition = "")
+#pragma warning restore 612,618
+        {
+            return Read(condition, Pointquerybase, ReaderToPoint);
+        }
 
 		/// <summary>
 		/// 	Сериализует периоды

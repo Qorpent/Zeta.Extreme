@@ -127,6 +127,9 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			var result = new PeriodDefinition(year, period.BizId);
 			if (period.IsFormula) {
 				result.Periods = new[] {otherperiodId};
+                if (null == period.Formula) {
+                    throw new Exception("null period formula "+period.BizId);
+                }
 				EvaluateFormula(result, period.Formula);
 			}
 			return result;

@@ -4,6 +4,7 @@ using System.Net;
 using Qorpent.Config;
 using Qorpent.Mvc;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Developer.Analyzers;
 
 namespace Zeta.Extreme.Developer.Scripting {
     /// <summary>
@@ -54,7 +55,7 @@ namespace Zeta.Extreme.Developer.Scripting {
 				@namespace = Namespace,
 				classname=ClassName,
 			value=ValueRedirectAttribute};
-			var getcontent = client.GetString(ScriptConstants.GENERATE_FORM_COMMAND, parameters);
+			var getcontent = client.GetString(DeveloperConstants.GenerateFormCommand, parameters);
 			getcontent.Wait();
 			Log.Debug("data retrieved");
 			var n = ClassName;
@@ -71,7 +72,7 @@ namespace Zeta.Extreme.Developer.Scripting {
 		/// <param name="client"></param>
 		/// <returns></returns>
 		protected string[] GetFormList(MvcClient client) {
-			var txml = client.GetXml(ScriptConstants.FORM_DEPENDENCY_COMMAND, 
+			var txml = client.GetXml(DeveloperConstants.FormDependencyCommand, 
 			                         new {root = FormCode, listonly = true});
 			txml.Wait();
 			return txml.Result.Descendants("item").Select(_ => _.Value).ToArray();

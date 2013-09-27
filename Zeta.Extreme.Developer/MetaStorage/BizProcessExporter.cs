@@ -2,7 +2,6 @@
 using System.Linq;
 using Qorpent.BSharp;
 using Qorpent.Utils.Extensions;
-using Zeta.Extreme.Model;
 using Zeta.Extreme.Model.SqlSupport;
 
 namespace Zeta.Extreme.Developer.MetaStorage {

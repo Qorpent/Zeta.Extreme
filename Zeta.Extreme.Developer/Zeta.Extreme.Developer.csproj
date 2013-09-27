@@ -18,6 +18,7 @@
     <Compile Include="Actions\AnalyzePeriodsUsageAction.cs" />
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\ExportData\ExportBizProcesses.cs" />
+    <Compile Include="Actions\ExportData\ExportGeoAction.cs" />
     <Compile Include="Actions\ExportData\ExportObjDivsAction.cs" />
     <Compile Include="Actions\ExportData\ExportObjTypesAction.cs" />
     <Compile Include="Actions\ExportData\ExportThemaStructureAction.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="DeveloperStartUp.cs" />
     <Compile Include="MetaStorage\BizProcessExporter.cs" />
     <Compile Include="MetaStorage\ColumnExporter.cs" />
+    <Compile Include="MetaStorage\GeoExporter.cs" />
     <Compile Include="MetaStorage\IDataToBSharpExporter.cs" />
     <Compile Include="MetaStorage\ObjDivExporter.cs" />
     <Compile Include="MetaStorage\ObjTypeExporter.cs" />
@@ -97,7 +99,7 @@
     <Compile Include="Model\CodeElementCategory.cs" />
     <Compile Include="Model\ElementCodeTypeMap.cs" />
     <Compile Include="Analyzers\Visitors\ElementCodeTypeResolverVisitor.cs" />
-    <Compile Include="Analyzers\DeveloperConstants.cs" />
+    <Compile Include="DeveloperConstants.cs" />
     <Compile Include="Model\CodeElementType.cs" />
     <Compile Include="Model\ElementDescriptor.cs" />
     <Compile Include="Actions\GetElementsMapAction.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="Scripting\GenerateDictCommand.cs" />
     <Compile Include="Scripting\GenerateFormActionBase.cs" />
     <Compile Include="Scripting\GenerateFormCommand.cs" />
+    <Compile Include="Scripting\GenerateGeo.cs" />
     <Compile Include="Scripting\GenerateObjDivs.cs" />
     <Compile Include="Scripting\GenerateObjTypes.cs" />
     <Compile Include="Scripting\GeneratePeriods.cs" />

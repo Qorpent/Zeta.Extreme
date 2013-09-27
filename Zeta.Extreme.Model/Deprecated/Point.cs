@@ -47,5 +47,26 @@ namespace Zeta.Extreme.Model.Deprecated {
 		///     Nested detail objects of point
 		/// </summary>
 		public virtual IList<IZetaDetailObject> DetailObjects { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int? RegionId
+        {
+            get
+            {
+                if (null != Region) return Region.Id;
+                return _regionId;
+            }
+            set
+            {
+                if (null != Region)
+                {
+                    throw new Exception("cannot set ZoneId if Zone set");
+                }
+                _regionId = value;
+            }
+        }
+        private int? _regionId;
 	}
 }
