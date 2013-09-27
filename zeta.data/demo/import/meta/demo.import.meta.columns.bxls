@@ -1,6 +1,6 @@
 ######################################################################################
 #### Экспорт колонок из БД
-#### Последняя версия: 2013-08-17 14:18:56
+#### Последняя версия: 2013-09-27 11:01:07
 ######################################################################################
 namespace demo.import.meta
 	class columns prototype='meta'
@@ -179,10 +179,10 @@ namespace demo.import.meta
 			column REVISIONON 'Ревизия ост. на начало'
 			column REVISIONPD 'Ревизия начислений'
 			column REVISIONRD 'Ревизия списаний'
-			column SLKOL 'Кол-во' currency=NAT
+			column SLKOL 'Кол-во' currency=NAT thema=sale
 			column SLKR 'Ком. р-ды'
 			column SLKRAUTO 'Ком. р-ды (прокачка)'
-			column SLKRED 'Коммерческие расходы на единицу' nocalcsum
+			column SLKRED 'Коммерческие расходы на единицу' nocalcsum thema=sale
 			column SLKRFIX 'Ком. р-ды (пост.)'
 			column SLKRNORM 'Ком. р-ды (норм.)' nocalcsum
 			column SLPRIB 'Прибыль' nocalcsum
@@ -193,25 +193,25 @@ namespace demo.import.meta
 			column SLPRIBVED 'Валовая прибыль на ед.'
 			column SLPROC 'Проценты'
 			column SLPROCAUTO 'Проценты (прокачка)'
-			column SLPROCED 'Проценты на единицу' nocalcsum
+			column SLPROCED 'Проценты на единицу' nocalcsum thema=sale
 			column SLPROCFIX 'Проценты (пост.)'
 			column SLPROCNORM 'Проценты (норм.)' nocalcsum
 			column SLPSS 'Полная с-сть' nocalcsum
 			column SLPSSED 'Полная с-сть ед.' nocalcsum
-			column SLREV 'Выручка на объем'
+			column SLREV 'Выручка на объем' thema=sale
 			column SLREVAUTO 'Выручка (прокачка)'
-			column SLREVED 'Цена продаж' nocalcsum
+			column SLREVED 'Цена продаж' nocalcsum thema=sale
 			column SLREVFIX 'Выручка (пост.)'
 			column SLREVNORM 'Цена (норм.)' nocalcsum
 			column SLSS 'Цеховая с-сть'
 			column SLSSAUTO 'Цех. с-сть (прокачка)'
-			column SLSSED 'Себестоимость единицы продаж' nocalcsum
+			column SLSSED 'Себестоимость единицы продаж' nocalcsum thema=sale
 			column SLSSFIX 'Цех. с-сть (пост.)'
 			column SLSSNORM 'Цех. с-ть (норм.)' nocalcsum
-			column SLSSSUM 'Себест-ть на объем'
+			column SLSSSUM 'Себест-ть на объем' thema=sale
 			column SLUR 'Упр. р-ды'
 			column SLURAUTO 'Упр. р-ды (прокачка)'
-			column SLURED 'Управленческие расходы на единицу' nocalcsum
+			column SLURED 'Управленческие расходы на единицу' nocalcsum thema=sale
 			column SLURFIX 'Упр. р-ды (пост.)'
 			column SLURNORM 'Упр. р-ды (норм.)' nocalcsum
 			column SSCENA 'Цена'
@@ -284,16 +284,16 @@ namespace demo.import.meta
 				f.If ( periodin (251,301), { @Б2.Y-1.P401? }, { 
 f.If ( periodin (303,306,309), { @Б2.Y-1.P4? }, { @Б1? } ) } )
 			)
-			column BMCENASNG 'Цена с н.г.' formula = (
+			column BMCENASNG 'Цена с н.г.' thema=bm formula = (
 				@BMSUMMASNG? * 1000 / @BMKOLSNG?
 			)
-			column BMKOLSNG 'Кол-во с н.г.' formula = (
+			column BMKOLSNG 'Кол-во с н.г.' thema=bm formula = (
 				f.If ( contoin ( 'BA020_101,BA020_102') , { @BMKOL.P-503? } , { f.If ( contoin ('BA020_401,BA020_402') , { @BMKOL.P-205? }, { @BMKOL.P-501? } ) } )
 			)
-			column BMSUMMACALC 'Сумма (расчетно)' dosum formula = (
+			column BMSUMMACALC 'Сумма (расчетно)' dosum thema=bm formula = (
 				@BMKOL? * @BMCENA? / 1000
 			)
-			column BMSUMMASNG 'Сумма с н.г.' formula = (
+			column BMSUMMASNG 'Сумма с н.г.' thema=bm formula = (
 				f.If ( contoin ( 'BA020_101,BA020_102') , { @BMSUMMA.P-503? } , { f.If ( contoin ('BA020_401,BA020_402') , { @BMSUMMA.P-205? }, { @BMSUMMA.P-501? } ) } )
 			)
 			column CENABASE 'Цена базовая' formula = (
@@ -389,7 +389,7 @@ q.remapcolumns( ("In", ("m230", "m112", "m212", "m214", "m217", "m218", "m250", 
 				f.If ( pathin ( "m1302200", "m1301230" ), { @Б1.P3? / 9 }, {  
 f.If ( pathin ( "m220" ), { @Pd.P3? } , { @Б1.P3? } ) } )
 			)
-			column FAPD 'Откл-е приход всего' dosum formula = (
+			column FAPD 'Откл-е приход всего' dosum report=fa formula = (
 				@PDSUMMA? - @PDSUMMA.P-303?
 			)
 			column FAPDCENA 'Откл-е приход за счет цены' dosum formula = (
@@ -531,10 +531,10 @@ f.If ( treetagin("/useosv:1/")  , { @On? + @PdOSV? - @RdOSV? } , { @On? + @Pd? -
 			column OKSUMMAPLAN 'Сумма план на конец' formula = (
 				@ONSUMMAPLAN? + @PDSUMMAPLAN? - @RDSUMMAPLAN?
 			)
-			column OLAPF 'OLAP факт' formula = (
+			column OLAPF 'OLAP факт' thema=olap formula = (
 				@__OLAP_COLF?
 			)
-			column OLAPP 'OLAP план' formula = (
+			column OLAPP 'OLAP план' thema=olap formula = (
 				@__OLAP_COLP?
 			)
 			column ONCENACALC 'Цена на начало (рачсет)' formula = (
@@ -947,16 +947,16 @@ f.If ( pathin ( "m220" ), { ( ( @Pd.P306? - @Pd.P303? )  / 3) * f.monthInKvart(q
 				f.If ( periodin (251,301) , { @SUMMAEDPLANCALC? / $m204137@PLAN.toobj(357)? }, { 
 f.If ( periodin (401) , { @SUMMAEDFACTCALC? / $m204137@PLAN.toobj(357)? }, { @SUMMAEDFACTCALC? / $m204137@Б1.toobj(357)? } ) } )
 			)
-			column SUMMAEDFACTCALC 'Сумма на ед. факт (расчетно)' aggregateobj dosum formula = (
+			column SUMMAEDFACTCALC 'Сумма на ед. факт (расчетно)' aggregateobj dosum thema=calc formula = (
 				@SUMMA? / f.choose( $__OFS@__OFK?, $__OFS@__OFK.torootobj()? ) * ___KMULT
 			)
-			column SUMMAEDLINK 'Сумма на единицу (по ссылке)' dosum formula = (
+			column SUMMAEDLINK 'Сумма на единицу (по ссылке)' dosum thema=calc formula = (
 				@SUMMA? / $__OBLINK@SUMMA? * ___KMULT
 			)
-			column SUMMAEDLINKD 'Сумма на единицу в долларах' dosum formula = (
+			column SUMMAEDLINKD 'Сумма на единицу в долларах' dosum thema=calc formula = (
 				f.If ( isplanperiod, { @SUMMAEDLINK? / $m204137@PLAN.toobj(357)? }, { @SUMMAEDLINK? / $m204137@Б1.toobj(357)? } )
 			)
-			column SUMMAEDPLANCALC 'Сумма на ед. план (расчетно)' aggregateobj dosum formula = (
+			column SUMMAEDPLANCALC 'Сумма на ед. план (расчетно)' aggregateobj dosum thema=calc formula = (
 				@SUMMA? / f.choose( $__OPS@__OPK?, $__OPS@__OPK.torootobj()? )* ___KMULT
 			)
 			column SUMMAEDPLANCALCDIV4 'Среднекв. план ' formula = (
@@ -970,7 +970,7 @@ f.If ( periodin ( 401 ), { @Б1.P3? + @Б1.P444?}, { @Б1? } )
 			column SUMMAOZHIDGOD 'Сумма ожид. год' formula = (
 				@SUMMA.P3? + @SUMMA.P444?
 			)
-			column SUMMAPLANCALC 'Сумма план (расчетно)' dosum formula = (
+			column SUMMAPLANCALC 'Сумма план (расчетно)' dosum thema=calc formula = (
 				@KOLED? * @CENA? * $__OPS@__OPK.torootobj()? / 1000 + @FIXKOL? * @CENA? / 1000 + @FIXCOST?
 			)
 			column TESTSQL 'Проверяем SQL' formulatype=zeta.calculate_sql_column formula = (
