@@ -10,7 +10,8 @@ namespace Zeta.Extreme.Developer.MetaStorage {
     /// </summary>
     public class ObjDivExporter : IDataToBSharpExporter
     {
-        private const string ElementName = "objdiv";
+        private const string ObjDivElementName = "objdiv";
+        private const string DepartmentElementName = "objdep";
 
         /// <summary>
         /// 
@@ -28,22 +29,32 @@ namespace Zeta.Extreme.Developer.MetaStorage {
         {
             var builder = new BSharpCodeBuilder();
             var divisions = new NativeZetaReader().ReadDivisions().ToArray();
-
-
+            var departments = new NativeZetaReader().ReadDepartments().ToArray();
+            var ver = divisions.Select(_ => _.Version).Max();
+            var ver2 = departments.Select(_ => _.Version).Max();
+            if (ver2 > ver) {
+                ver = ver2;
+            }
             builder.WriteCommentBlock("ЭКСПОРТ ДИВИЗИОНОВ ИЗ БД ECO",
                                       new Dictionary<string, object> {
-                                          {"Время последего обновления",divisions.Select(_=>_.Version).Max().ToString("yyyy-MM-dd HH:mm:ss")},
+                                          {"Время последего обновления",ver.ToString("yyyy-MM-dd HH:mm:ss")},
                                       });
             builder.StartNamespace(Namespace);
             builder.StartClass(ClassName, new { prototype = "meta" });
-            builder.WriteElement(BSharpSyntax.ClassExportDefinition, ElementName);
-            builder.WriteElement(BSharpSyntax.ClassElementDefinition, ElementName);
+            builder.WriteElement(BSharpSyntax.ClassExportDefinition, ObjDivElementName);
+            builder.WriteElement(BSharpSyntax.ClassElementDefinition, ObjDivElementName);
 
 
             foreach (var g in divisions)
             {
                 
                 Output(g, builder);
+
+            }
+            foreach (var d in departments)
+            {
+
+                Output(d, builder);
 
             }
           
@@ -58,17 +69,30 @@ namespace Zeta.Extreme.Developer.MetaStorage {
         /// </summary>
         public string Namespace { get; set; }
 
-        private void Output(Division period, BSharpCodeBuilder sb)
+        private void Output(Division div, BSharpCodeBuilder sb)
         {
-            sb.WriteElement(ElementName,
-                            period.Code,
-                            period.Name,
+            sb.WriteElement(ObjDivElementName,
+                            div.Code,
+                            div.Name,
                             inlineattributes:
                                 new
                                 {
-                                    comment = period.Comment,
+                                    comment = div.Comment,
                                 });
            
+
+        }
+        private void Output(Department dep, BSharpCodeBuilder sb)
+        {
+            sb.WriteElement(DepartmentElementName,
+                            dep.Code,
+                            dep.Name,
+                            inlineattributes:
+                                new
+                                {
+                                    comment = dep.Comment,
+                                });
+
 
         }
     }

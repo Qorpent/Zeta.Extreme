@@ -6,7 +6,7 @@
 ####      Заданное пространство имен                 : demo.import.forms                        ####
 ####      Заданное имя класса                                                                   ####
 ####      ID строки в БД                             : 1624                                     ####
-####      Максимальная версия строк в форме          : 2013-09-26 13:43:07                      ####
+####      Максимальная версия строк в форме          : 2013-09-27 15:22:00                      ####
 ####                                                                                            ####
 ####      Обнаружены зависимости от других форм                                                 ####
 ####              frm : m112                                                                    ####
@@ -27,8 +27,8 @@ namespace demo.import.forms
 		dependon ^m260
 		dependon ^s140
 		dependon ^r211
-		dependon ^m600
 		dependon ^m230
+		dependon ^m600
 		title m214 'Финансовые результаты (форма № 4)' stopinterpolate=all showcode export OLAP_COLF=Б1 OLAP_COLP=PLAN 
 			sum 010 'Выручка от продаж' outer=1 
 				primary 01001 'продажа продукции' outer=1.1 
@@ -203,7 +203,8 @@ namespace demo.import.forms
 				primary 10007 'ликвидация ОС и НМА' outer=11.7 
 				primary 10008 'курсовая разница' outer=11.8 
 				primary 10009 'расходы прошлых лет, выявленные в отчетном периоде' outer=11.9 
-				primary 1001804 'Налоги, уплаченные за счет прибыли' outer=11.184 
+				title 1001804 'Налоги, уплаченные за счет прибыли' outer=11.184 
+					primary 11_1093 'налоги и сборы' outer=11 groups='m_nalog' vgrp=';m_nalog;' 
 				primary 10010 'истечение срока исковой давности (списание дебиторской задолженности)' outer=11.10 
 				primary 10011 'недостача, выявленная в результате инвентаризации' outer=11.11 
 				primary 10012 'штрафы, пени, неустойки за нарушение хозяйственных договоров' outer=11.12 
@@ -344,7 +345,6 @@ namespace demo.import.forms
 					primary 1_1102 'изменение условий по инвестиционным договорам' outer=1 
 					primary 10_1093 'расходы по имуществу в аренде' outer=10 
 					primary 10_1094 'отчисления в ФСС от несч.случаев (сч.91.2)' outer=10 groups='m_nalog' vgrp=';m_nalog;' 
-					primary 11_1093 'налоги и сборы' outer=11 groups='m_nalog' vgrp=';m_nalog;' 
 					primary 11_1094 'отчисления на страховые взносы (сч.91.2)' outer=11 groups='m_nalog' vgrp=';m_nalog;' 
 					primary 11_444 'Списание поддонов со склада' outer=11 
 					primary 11_529 'продажа земельных участков' outer=11 
@@ -454,35 +454,18 @@ namespace demo.import.forms
 			formula 195 'Совокупный финансовый результат' outer=12.9  : (
 				f.If ( year>2010, { $m214190? + $m214191? + $m214192? } , { $m212190? + $m212160? } )
 			)
-			controlpoint m112800 'ПРОВЕРКА формы "Финансовые результаты"' notlocalizedcode=true outer=800 sap-region=BUH sap-form=002 sap-use 
-				controlpoint m112810 '[стр. 2500 "Совокупный финансовый результат" ] - [изменение строки 1372 бухгалтерского баланса  "Нераспределенная прибыль текущего периода] = 0' notlocalizedcode=true outer=810 nodosum sap-region=BUH sap-form=002 sap-use  : (
-					f.If ( ( ismonth and not periodin( 11 ) ) or ( periodin (42,43,44,444,446) ) , { $m214195? + $m1124020? - $m1111372@DELTA? } , { f.round ( $m214195?  + $m1124020? - $m1111372@Б2? ) } )
-				)
-				controlpoint m112815 '[стр. 2500 "Совокупный финансовый результат" ] - [стр. 401.1 Изменение стр. 2500] - [изменение стр. 1370 бухгалтерского баланса "Нераспределеннная прибыль (непокрытый убыток)] = 0' notlocalizedcode=true outer=815 olap=finrez  : (
-					f.round ( $m214195? - $m2124011? - $m1111370@DELTA? + $m1124020? + $m1124020? )
-				)
-				controlpoint m112820 '[начисленный налог на прибыль в отчете по налогам за вычетом корректива] - [текущий налог на прибыль] = 0' notlocalizedcode=true outer=820 olap=finrez  : (
-					$m220110@Pd? - $m220110@Pd_korr? - $m1122410?
-				)
-				controlpoint m112825 'Изменение отложенных налоговых обязательств [ф.ББ стр.1420"Изменение" - ф.ОПиУ стр.2430] = 0' notlocalizedcode=true outer=825 olap=finrez  : (
-					f.round (- $m1111420@DELTA? + $m1122430@Б1? )
-				)
-				controlpoint m112826 'Изменение отложенных налоговых активов [ф. ББ стр.1180"Изменение" - ф.ОПиУ стр.2450] = 0' notlocalizedcode=true outer=826 olap=finrez  : (
-					f.round (- $m1111160@DELTA? + $m1122450@Б1? )
-				)
-				formula 440 '[расходы на собственные нужды расш. ф. № 2 ФО] - [расходы на собственные нужды ф. № 4]' olap=finrez  : (
-					$m600999? + $m6001010? - $m6001015? - $m21410015?
-				)
 			title m212205 'Расшифровка отдельных статей' notlocalizedcode=true 
 				primary m212203 'Реализация на экспорт' notlocalizedcode=true outer=203 
 				primary m212210 'Штрафы, пени и неустойки, призанные или по которым плучены решения суда (арбитражного суда) об их взыскании (+/-)' notlocalizedcode=true outer=210 
 				primary m212230 'Возмещение убытков, причиненных неисполнением или ненадлежащим исполнением обязательств' notlocalizedcode=true outer=230 
 				sum m212240 'Результат по курсовым разницам (+/-)' notlocalizedcode=true outer=240 
-					primary m212241 'курсовые разницы по дебиторской задолженности' notlocalizedcode=true outer=241 groups=КУРС minus vgrp=';КУРС;' 
-					primary m212242 'курсовые разницы по кредиторской задолженности' notlocalizedcode=true outer=242 groups=КУРС minus vgrp=';КУРС;' 
-					primary m212243 'курсовые разницы по финансовым вложениям' notlocalizedcode=true outer=243 groups=КУРС minus vgrp=';КУРС;' 
-					primary m212244 'курсовые разницы по кредитам и займам' notlocalizedcode=true outer=244 groups=КУРС minus vgrp=';КУРС;' 
-					sum m212245 'прочие курсовые разницы' notlocalizedcode=true outer=245 groups=КУРС vgrp=';КУРС;' 
+					primary m212241 'курсовые разницы по дебиторской задолженности' notlocalizedcode=true outer=241 minus vgrp=';КУРС;' 
+					primary m212242 'курсовые разницы по кредиторской задолженности' notlocalizedcode=true outer=242 minus vgrp=';КУРС;' 
+					primary m212243 'курсовые разницы по финансовым вложениям' notlocalizedcode=true outer=243 minus vgrp=';КУРС;' 
+					primary m212244 'курсовые разницы по кредитам и займам' notlocalizedcode=true outer=244 minus vgrp=';КУРС;' 
+					formula m212245 'прочие курсовые разницы' notlocalizedcode=true outer=245 vgrp=';КУРС;'  : (
+						f.If ( year > 2013 or ( year == 2013 and not periodin (11,12,13,14,15,16,1,2,22,24,25) ), { $m21409007? - $m21410008? } , { $m212235? - $m212236? } ) - ( $m212241? + $m212242? + $m212243? + $m212244? )
+					)
 				title m112280 'Резерв по сомнительным долгам' notlocalizedcode=true outer=280 sap-region=BUH sap-form=002 sap-use 
 					formula m112281 'Сальдо на начало периода' notlocalizedcode=true outer=281 sap-region=BUH sap-form=002 sap-use  : (
 						$m230800@DZRn? + $m230900@DZRn?
@@ -497,4 +480,34 @@ namespace demo.import.forms
 					)
 				formula m112290 'Чистая прибыль без учета КР' notlocalizedcode=true outer=290  : (
 					$m1122400? - $m212240?
+				)
+			sum m2124011 'Изменение стр.2500 "Совокупный финансовый результат" при отражении в форме "Баланс (форма № 1 ФО)"' notlocalizedcode=true outer=401.1 nosum olap=finrez 
+				primary m1124021 'Изменение в уставном капитале' notlocalizedcode=true outer=401.11 
+				primary m2124012 'Изменение в резервном капитале' notlocalizedcode=true outer=401.2 olap=finrez 
+				primary m2124013 'Выплата дивидендов' notlocalizedcode=true outer=401.3 olap=finrez 
+				primary m2124014 'Изменение в добавочном капитале' notlocalizedcode=true outer=401.4 olap=finrez 
+				primary m2124015 'Пополнение оборотных средств (строка 134 форма №4 ФО)' notlocalizedcode=true outer=401.5 obsolete=2012 
+				primary m2124016 'Отложенные налоговые активы' notlocalizedcode=true outer=401.6 olap=finrez 
+				primary m2124017 'Изменение налога на прибыль прошлых лет' notlocalizedcode=true outer=401.7 olap=finrez 
+				primary m2124018 'Прочие изменения' notlocalizedcode=true outer=401.8 olap=finrez 
+				primary m2124019 'Переоценка ОС' notlocalizedcode=true outer=401.9 olap=finrez 
+				primary m1124020 'Реорганизация юридического лица' notlocalizedcode=true outer=401.10 olap=finrez 
+			controlpoint m112800 'ПРОВЕРКА формы "Финансовые результаты"' notlocalizedcode=true outer=800 sap-region=BUH sap-form=002 sap-use 
+				controlpoint m112810 '[стр. 2500 "Совокупный финансовый результат" ] - [изменение строки 1372 бухгалтерского баланса  "Нераспределенная прибыль текущего периода] = 0' notlocalizedcode=true outer=810 nodosum sap-region=BUH sap-form=002 sap-use  : (
+					f.If ( ( ismonth and not periodin( 11 ) ) or ( periodin (42,43,44,444,446) ) , { $m214195? + $m1124020? - $m1111372@DELTA? } , { f.round ( $m214195?  + $m1124020? - $m1111372@Б2? ) } )
+				)
+				controlpoint m112815 '[стр. 2500 "Совокупный финансовый результат" ] - [стр. 401.1 Изменение стр. 2500] - [изменение стр. 1370 бухгалтерского баланса "Нераспределеннная прибыль (непокрытый убыток)] = 0' notlocalizedcode=true outer=815 olap=finrez  : (
+					f.round ( $m214195? - $m2124011? - $m1111370@DELTA? + $m1124020? )
+				)
+				controlpoint m112820 '[начисленный налог на прибыль в отчете по налогам за вычетом корректива] - [текущий налог на прибыль] = 0' notlocalizedcode=true outer=820 olap=finrez  : (
+					$m220110@Pd? - $m220110@Pd_korr? - $m214150?
+				)
+				controlpoint m112825 'Изменение отложенных налоговых обязательств [ф.ББ стр.1420"Изменение" - ф.ОПиУ стр.2430] = 0' notlocalizedcode=true outer=825 olap=finrez  : (
+					f.round (- $m1111420@DELTA? + $m214142@Б1? )
+				)
+				controlpoint m112826 'Изменение отложенных налоговых активов [ф. ББ стр.1180"Изменение" - ф.ОПиУ стр.2450] = 0' notlocalizedcode=true outer=826 olap=finrez  : (
+					f.checklimit( 1, - $m1111160@DELTA? + $m214141@Б1? )
+				)
+				formula 440 '[расходы на собственные нужды расш. ф. № 6 ] - [расходы на собственные нужды ф. № 4]' olap=finrez  : (
+					f.If ( periodin ( 1,2,3,4) or isplanperiod, { $m600999? + $m6001010? - $m6001015? - $m21410015? }  )
 				)

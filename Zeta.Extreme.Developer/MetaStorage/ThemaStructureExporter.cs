@@ -35,10 +35,10 @@ namespace Zeta.Extreme.Developer.MetaStorage {
             builder.WriteCommentBlock("Экспорт структуры форм",new{hash});
             builder.StartNamespace(Namespace);
             builder.StartClass(ClassName);
-            builder.WriteElement(SUBSYSTEM_ELEMENT_NAME);
-            builder.WriteElement(BLOCK_ELEMENT_NAME);
-            builder.WriteElement(ROOT_ELEMENT_NAME);
-            builder.WriteElement(THEMA_ELEMENT_NAME);
+            builder.WriteClassElement(SUBSYSTEM_ELEMENT_NAME);
+            builder.WriteClassElement(BLOCK_ELEMENT_NAME);
+            builder.WriteClassElement(ROOT_ELEMENT_NAME);
+            builder.WriteClassElement(THEMA_ELEMENT_NAME);
             foreach (var s in xml.Elements(SUBSYSTEM_ELEMENT_NAME)) {
                 if (!s.HasElements) continue;
                 builder.StartElement(SUBSYSTEM_ELEMENT_NAME,s.GetCode(),s.GetName());

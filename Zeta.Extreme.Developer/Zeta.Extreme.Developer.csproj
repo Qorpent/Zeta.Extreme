@@ -18,7 +18,9 @@
     <Compile Include="Actions\AnalyzePeriodsUsageAction.cs" />
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\ExportData\ExportBizProcesses.cs" />
+    <Compile Include="Actions\ExportData\ExportGeoAction.cs" />
     <Compile Include="Actions\ExportData\ExportObjDivsAction.cs" />
+    <Compile Include="Actions\ExportData\ExportObjectsAction.cs" />
     <Compile Include="Actions\ExportData\ExportObjTypesAction.cs" />
     <Compile Include="Actions\ExportData\ExportThemaStructureAction.cs" />
     <Compile Include="Actions\GetSubstAttributesAction.cs" />
@@ -61,8 +63,10 @@
     <Compile Include="DeveloperStartUp.cs" />
     <Compile Include="MetaStorage\BizProcessExporter.cs" />
     <Compile Include="MetaStorage\ColumnExporter.cs" />
+    <Compile Include="MetaStorage\GeoExporter.cs" />
     <Compile Include="MetaStorage\IDataToBSharpExporter.cs" />
     <Compile Include="MetaStorage\ObjDivExporter.cs" />
+    <Compile Include="MetaStorage\ObjectExporter.cs" />
     <Compile Include="MetaStorage\ObjTypeExporter.cs" />
     <Compile Include="MetaStorage\PeriodsExporter.cs" />
     <Compile Include="MetaStorage\ThemaStructureExporter.cs" />
@@ -97,7 +101,7 @@
     <Compile Include="Model\CodeElementCategory.cs" />
     <Compile Include="Model\ElementCodeTypeMap.cs" />
     <Compile Include="Analyzers\Visitors\ElementCodeTypeResolverVisitor.cs" />
-    <Compile Include="Analyzers\DeveloperConstants.cs" />
+    <Compile Include="DeveloperConstants.cs" />
     <Compile Include="Model\CodeElementType.cs" />
     <Compile Include="Model\ElementDescriptor.cs" />
     <Compile Include="Actions\GetElementsMapAction.cs" />
@@ -108,7 +112,9 @@
     <Compile Include="Scripting\GenerateDictCommand.cs" />
     <Compile Include="Scripting\GenerateFormActionBase.cs" />
     <Compile Include="Scripting\GenerateFormCommand.cs" />
+    <Compile Include="Scripting\GenerateGeo.cs" />
     <Compile Include="Scripting\GenerateObjDivs.cs" />
+    <Compile Include="Scripting\GenerateObjects.cs" />
     <Compile Include="Scripting\GenerateObjTypes.cs" />
     <Compile Include="Scripting\GeneratePeriods.cs" />
     <Compile Include="Scripting\GenerateThemaStructure.cs" />
@@ -140,10 +146,6 @@
     <ProjectReference Include="..\..\qorpent.sys\Qorpent.Serialization\Qorpent.Serialization.csproj">
       <Project>{21971F28-8ED8-4F50-B623-E9DB2658AF54}</Project>
       <Name>Qorpent.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Zeta.Extreme.Core\Zeta.Extreme.Core.csproj">
-      <Project>{A5177DFD-2D36-442F-A9C0-B79CD6DC7054}</Project>
-      <Name>Zeta.Extreme.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

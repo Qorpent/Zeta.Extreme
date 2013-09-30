@@ -1,4 +1,6 @@
-﻿namespace Zeta.Extreme.Developer.Scripting {
+﻿using Zeta.Extreme.Developer.Analyzers;
+
+namespace Zeta.Extreme.Developer.Scripting {
     /// <summary>
     /// 
     /// </summary>
@@ -10,7 +12,7 @@
         /// <returns></returns>
         protected override string GetCommandName()
         {
-            return ScriptConstants.EXPORT_OBJTYPES_COMMAND;
+            return DeveloperConstants.ExportObjtypesCommand;
         }
 
     }

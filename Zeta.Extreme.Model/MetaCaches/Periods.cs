@@ -127,6 +127,9 @@ namespace Zeta.Extreme.Model.MetaCaches {
 			var result = new PeriodDefinition(year, period.BizId);
 			if (period.IsFormula) {
 				result.Periods = new[] {otherperiodId};
+                if (null == period.Formula) {
+                    throw new Exception("null period formula "+period.BizId);
+                }
 				EvaluateFormula(result, period.Formula);
 			}
 			return result;
@@ -168,6 +171,7 @@ namespace Zeta.Extreme.Model.MetaCaches {
 		}
 
 		private static IDictionary<int, string> PrepareFormulaDictionary(string formula) {
+
 			IDictionary<int, string> dict = null;
 			if (cache.ContainsKey(formula)) {
 				dict = cache[formula];

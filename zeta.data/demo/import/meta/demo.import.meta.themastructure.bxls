@@ -1,6 +1,6 @@
 ########################################################################################################################
 ####                                             Экспорт структуры форм                                             ####
-####                    hash                           : tg4v0ZYIjH7D6jXaNRVkdw==                                   ####
+####                    hash                           : NmpuON1Ycz84kFjfNIjUIg==                                   ####
 ########################################################################################################################
 namespace demo.import.meta
 	class themastructure
@@ -193,10 +193,8 @@ namespace demo.import.meta
 					thema finres_mes 'Финансовые результаты (форма №4)'
 				root fin_grp.FIN.a214 oldcode=FIN
 					thema finres_an 'Финансовые результаты (анализ) ADMIN'
-				root fin_grp.FIN.m112 oldcode=FIN doubled=true
+				root fin_grp.FIN.o112 oldcode=FIN
 					thema finres_mes_report 'Прибыли и убытки (форма № 2 ФО)'
-					thema prib_cons 'Прибыли и убытки'
-					thema prib2011 'Прибыли и убытки (форма № 2 ФО) ADMIN'
 				root fin_grp.FIN.p214 oldcode=FIN
 					thema finres_zatr 'Себестоимость продаж по элементам'
 				root fin_grp.FIN.m215 oldcode=FIN
@@ -208,6 +206,9 @@ namespace demo.import.meta
 				root fin_grp.FIN.m212 oldcode=FIN doubled=true
 					thema prib 'Прибыли и убытки (форма № 2 ФО в ред. 2010)'
 					thema prib_budget 'Прибыли и убытки (форма № 2 ФО в ред. 2010) BUDGET'
+				root fin_grp.FIN.m112 oldcode=FIN doubled=true
+					thema prib_cons 'Прибыли и убытки'
+					thema prib2011 'Прибыли и убытки (форма № 2 ФО) ADMIN'
 				root fin_grp.FIN.c091 oldcode=FIN
 					thema ras91 'Расшифровка 91 счета ADMIN'
 				root fin_grp.FIN.m311 oldcode=FIN

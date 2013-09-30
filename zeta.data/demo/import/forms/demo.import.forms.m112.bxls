@@ -51,17 +51,6 @@ namespace demo.import.forms
 			primary m212250 'Списание кредиторской задолженности' notlocalizedcode=true outer=250 
 			primary m212260 'Списание дебиторской задолженности' notlocalizedcode=true outer=260 
 			primary m212270 'Расходы на собственные нужды' notlocalizedcode=true outer=270 
-			sum m2124011 'Изменение стр.2500 "Совокупный финансовый результат" при отражении в форме "Баланс (форма № 1 ФО)"' notlocalizedcode=true outer=401.1 nosum olap=finrez 
-				primary 4021 'Изменение в уставном капитале' outer=401.11 
-				primary m2124012 'Изменение в резервном капитале' notlocalizedcode=true outer=401.2 olap=finrez 
-				primary m2124013 'Выплата дивидендов' notlocalizedcode=true outer=401.3 olap=finrez 
-				primary m2124014 'Изменение в добавочном капитале' notlocalizedcode=true outer=401.4 olap=finrez 
-				primary m2124015 'Пополнение оборотных средств (строка 134 форма №4 ФО)' notlocalizedcode=true outer=401.5 obsolete=2012 
-				primary m2124016 'Отложенные налоговые активы' notlocalizedcode=true outer=401.6 olap=finrez 
-				primary m2124017 'Изменение налога на прибыль прошлых лет' notlocalizedcode=true outer=401.7 olap=finrez 
-				primary m2124018 'Прочие изменения' notlocalizedcode=true outer=401.8 olap=finrez 
-				primary m2124019 'Переоценка ОС' notlocalizedcode=true outer=401.9 olap=finrez 
-				primary 4020 'Реорганизация юридического лица' outer=401.10 olap=finrez 
 			sum m214200 'ПРОВЕРКА формы "Финансовые результаты"' notlocalizedcode=true outer=13 
 				formula m214210 '[выручка от продаж ф. № 2 ФО] - [выручка от продаж ф. № 4]' notlocalizedcode=true outer=210  : (
 					f.If ( year>2010, { $m1122110? - $m214010? } , { $m212010? - $m214010? } )

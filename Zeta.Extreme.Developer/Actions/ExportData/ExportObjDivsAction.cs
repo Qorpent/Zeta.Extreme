@@ -5,6 +5,6 @@ namespace Zeta.Extreme.Developer.Actions {
     /// <summary>
     /// Ёкспорт сфорировать файл периодов
     /// </summary>
-    [Action("zdev.exportobjdivs", Arm = "dev", Help = "—формировать эксортный файл дивизионов", Role = "DEVELOPER")]
+    [Action(DeveloperConstants.ExportObjdivsCommand, Arm = "dev", Help = "—формировать эксортный файл дивизионов", Role = "DEVELOPER")]
     public class ExportObjDivsAction : ExportActionBase<ObjDivExporter> { }
 }

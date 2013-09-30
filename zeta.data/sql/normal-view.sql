@@ -41,6 +41,37 @@ GO
 DROP VIEW [zeta].[normalbizprocess]
 GO
 /****** Object:  View [zeta].[normalbizprocess]    Script Date: 21.09.2013 23:35:28 ******/
+DROP VIEW [zeta].[normalzone]
+GO
+/****** Object:  View [zeta].[normalbizprocess]    Script Date: 21.09.2013 23:35:28 ******/
+DROP VIEW [zeta].[normalregion]
+GO
+DROP VIEW [zeta].[normalpoint]
+GO
+
+DROP VIEW [zeta].[normalobjrole]
+GO
+
+CREATE view [zeta].[normalzone] as
+select Id,Code,Name,isnull(Comment,'') as Comment,isnull(Tag,'') as Tag,Version
+from zetai.Zone
+go
+CREATE view [zeta].[normalregion] as
+select Id,Code,Name,isnull(Comment,'') as Comment,isnull(Tag,'') as Tag,Version,Zone as ZoneId
+from zetai.Region
+go
+CREATE view [zeta].[normalpoint] as
+select Id,Code,Name,isnull(Comment,'') as Comment,isnull(Tag,'') as Tag,Version,Region as RegionId
+from zetai.Point
+go
+CREATE view [zeta].[normalobjrole] as
+select Id,Code,Name,isnull(Comment,'') as Comment,isnull(Tag,'') as Tag,Version
+from zetai.objrole
+go
+
+
+
+/****** Object:  View [zeta].[normalbizprocess]    Script Date: 21.09.2013 23:35:28 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -170,7 +201,7 @@ select
 	isnull(IsFormula,0) as IsFormula, isnull(formula,'') as Formula, isnull(FormulaType,'') as FormulaType,	-- 14 -16
 	isnull(tag,'') as Tag, isnull(GroupCache,'') as GroupCache, --17 -18
 	isnull(valuta,'') as Valuta,					--19			
-	isnull(Role,'') as [Role],Active, Start, Finish,isnull(isinner,0) as IsInner --20 -24
+	isnull(Role,'') as [Role],Active, isnull(Start,'1900-01-01') as Start, isnull(Finish,'3000-01-01') as Finish ,isnull(isinner,0) as IsInner --20 -24
 from usm.Org
 
 GO

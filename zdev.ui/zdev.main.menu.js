@@ -168,6 +168,10 @@ _.widget.register({
 		{
 		    title: 'Объекты',
 		    items: [
+		        {
+		            title: "Экспорт  объектов",
+		            href: './zdev/exportobjects.string.qweb',
+		        },
 		         {
 		             title: "Экспорт типов объектов",
 		             href: './zdev/exportobjtypes.string.qweb',
@@ -176,6 +180,10 @@ _.widget.register({
 		         title: "Экспорт дивизионов",
 		         href: './zdev/exportobjdivs.string.qweb',
 		     },
+		        {
+		            title: "Экспорт географии",
+		            href: './zdev/exportgeo.string.qweb',
+		        },
 		    ]
 		},
 		  "div",

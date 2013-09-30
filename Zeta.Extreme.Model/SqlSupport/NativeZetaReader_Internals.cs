@@ -173,6 +173,87 @@ namespace Zeta.Extreme.Model.SqlSupport {
 			return x;
 		}
 
+
+        /// <summary>
+        /// 	Сериализует зону из БД в объект строки
+        /// </summary>
+        /// <param name="r"> </param>
+        /// <returns> </returns>
+        public static Zone ReaderToZone(IDataRecord r)
+        {
+            var x = new Zone
+            {
+                Id = r.GetInt32(0),
+                Code = r.GetString(1),
+                Name = r.GetString(2),
+                Comment = r.GetString(3),
+                Tag = r.GetString(4),
+                Version = r.GetDateTime(5),
+            };
+            return x;
+        }
+
+        /// <summary>
+        /// 	Сериализует отрасль (департамент) из БД в объект строки
+        /// </summary>
+        /// <param name="r"> </param>
+        /// <returns> </returns>
+        public static Department ReaderToDepartment(IDataRecord r)
+        {
+            var x = new Department
+            {
+                Id = r.GetInt32(0),
+                Code = r.GetString(1),
+                Name = r.GetString(2),
+                Comment = r.GetString(3),
+                Tag = r.GetString(4),
+                Version = r.GetDateTime(5),
+            };
+            return x;
+        }
+
+        /// <summary>
+        /// 	Сериализует строку из БД в объект строки
+        /// </summary>
+        /// <param name="r"> </param>
+        /// <returns> </returns>
+        public static Region ReaderToRegion(IDataRecord r)
+        {
+            var x = new Region
+            {
+                Id = r.GetInt32(0),
+                Code = r.GetString(1),
+                Name = r.GetString(2),
+                Comment = r.GetString(3),
+                Tag = r.GetString(4),
+                Version = r.GetDateTime(5),
+                ZoneId = r.GetInt32(6),
+            };
+            
+            return x;
+        }
+
+        /// <summary>
+        /// 	Сериализует строку из БД в объект строки
+        /// </summary>
+        /// <param name="r"> </param>
+        /// <returns> </returns>
+        public static Point ReaderToPoint(IDataRecord r)
+        {
+            var x = new Point
+            {
+                Id = r.GetInt32(0),
+                Code = r.GetString(1),
+                Name = r.GetString(2),
+                Comment = r.GetString(3),
+                Tag = r.GetString(4),
+                Version = r.GetDateTime(5),
+                RegionId = r.GetInt32(6),
+            };
+
+            return x;
+        }
+
 		/// <summary>
 		/// 	Сериализует строку из БД в объект строки
 		/// </summary>
@@ -452,5 +533,7 @@ namespace Zeta.Extreme.Model.SqlSupport {
             };
             return _;
 	    }
+
+	    
 	}
 }

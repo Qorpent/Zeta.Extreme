@@ -158,6 +158,16 @@ namespace Zeta.Extreme.Model {
 		/// </remarks>
 		public int? DivisionId { get; set; }
 
+        /// <summary>
+        ///     ID (FK) of
+        ///     <see cref="Zeta.Extreme.Model.Inerfaces.IZetaMainObject.Division" /> that
+        ///     current is attached to
+        /// </summary>
+        /// <remarks>
+        ///     Intended to use with ORM/SQL scenario
+        /// </remarks>
+        public int? DepartmenId { get; set; }
+
 		
 		/// <summary>
 		///     <see cref="Zeta.Extreme.Model.Obj.Currency" /> of entity

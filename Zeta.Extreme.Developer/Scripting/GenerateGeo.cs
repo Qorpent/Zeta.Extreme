@@ -4,7 +4,7 @@ namespace Zeta.Extreme.Developer.Scripting {
     /// <summary>
     /// 
     /// </summary>
-    public class GenerateColumns : ScriptCommandBase
+    public class GenerateGeo : ScriptCommandBase
     {
         /// <summary>
         /// Просто вызывает стандартный экспорт периодов
@@ -12,7 +12,7 @@ namespace Zeta.Extreme.Developer.Scripting {
         /// <returns></returns>
         protected override string GetCommandName()
         {
-            return DeveloperConstants.ExportColumnsCommand;
+            return DeveloperConstants.ExportGeoCommand;
         }
 
     }

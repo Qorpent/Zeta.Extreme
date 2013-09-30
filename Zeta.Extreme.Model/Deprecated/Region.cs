@@ -61,6 +61,24 @@ namespace Zeta.Extreme.Model.Deprecated {
 			set { _mainobjects = value; }
 		}
 
-		private IList<IZetaMainObject> _mainobjects;
+        /// <summary>
+        /// 
+        /// </summary>
+        public int? ZoneId {
+            get {
+                if (null != Zone) return Zone.Id;
+                return _zoneId;
+            }
+            set {
+                if (null != Zone) {
+                    throw new Exception("cannot set ZoneId if Zone set");
+                }
+                _zoneId = value;
+            }
+        }
+        private int? _zoneId;
+
+	    private IList<IZetaMainObject> _mainobjects;
+	    
 	}
 }
