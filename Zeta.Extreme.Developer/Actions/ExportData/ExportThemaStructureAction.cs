@@ -1,4 +1,5 @@
 using Qorpent.Mvc;
+using Qorpent.Mvc.Binding;
 using Zeta.Extreme.Developer.MetaStorage;
 
 namespace Zeta.Extreme.Developer.Actions {
@@ -8,5 +9,33 @@ namespace Zeta.Extreme.Developer.Actions {
     [Action(DeveloperConstants.ExportThemastructureCommand, Arm = "dev", Help = "Сформировать эксортный файл структуры тем", Role = "DEVELOPER")]
     public class ExportThemaStructureAction : ExportActionBase<ThemaStructureExporter>
     {
+        [Bind]
+        bool BlockOnly { get; set; }
+        [Bind]
+        string SubsystemAliases { get; set; }
+        /// <summary>
+        /// Параметр исключения части рутов
+        /// </summary>
+        [Bind]
+        string ExcludeRoots { get; set; }
+
+        /// <summary>
+        /// Опция отключения фильтра по статусам темы
+        /// </summary>
+        [Bind]
+        bool DisableStatusFilter { get; set; }
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        protected override ThemaStructureExporter InitializeExporter()
+        {
+            var result = base.InitializeExporter();
+            result.BlocksOnly = BlockOnly;
+            result.SubsystemAliases = SubsystemAliases;
+            result.ExcludeRoots = ExcludeRoots;
+            result.DisableStatusFilter = DisableStatusFilter;
+            return result;
+        }
     }
 }

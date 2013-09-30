@@ -24,7 +24,9 @@ zdev-script demo_import
 			generate-objdivs name=objdivs
 			generate-objects name=objects onlyownonroot = true
 			generate-geo name=geo
-			generate-themastructure name=themastructure
+			set subsystemaliases="analysisg=fin_grp;eco_grp=fin_grp" excluderoots="m150,m140,m130"
+				generate-themastructure name=themastructure 
+				generate-themastructure name=autoblocks blockonly=true
 		
 		# скрипты генерации форм
 		set namespace=${_formns} into = ${_formdir}

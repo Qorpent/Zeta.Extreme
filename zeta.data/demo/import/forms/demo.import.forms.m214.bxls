@@ -6,14 +6,13 @@
 ####      Заданное пространство имен                 : demo.import.forms                        ####
 ####      Заданное имя класса                                                                   ####
 ####      ID строки в БД                             : 1624                                     ####
-####      Максимальная версия строк в форме          : 2013-09-27 15:22:00                      ####
+####      Максимальная версия строк в форме          : 2013-09-30 10:29:54                      ####
 ####                                                                                            ####
 ####      Обнаружены зависимости от других форм                                                 ####
 ####              frm : m112                                                                    ####
 ####              frm : m212                                                                    ####
 ####              frm : m230                                                                    ####
 ####              frm : m260                                                                    ####
-####              frm : m600                                                                    ####
 ####              frm : r211                                                                    ####
 ####              frm : s140                                                                    ####
 ####                                                                                            ####
@@ -28,7 +27,6 @@ namespace demo.import.forms
 		dependon ^s140
 		dependon ^r211
 		dependon ^m230
-		dependon ^m600
 		title m214 'Финансовые результаты (форма № 4)' stopinterpolate=all showcode export OLAP_COLF=Б1 OLAP_COLP=PLAN 
 			sum 010 'Выручка от продаж' outer=1 
 				primary 01001 'продажа продукции' outer=1.1 
@@ -69,9 +67,9 @@ namespace demo.import.forms
 			formula 050 'Прибыль (убыток) от продаж' outer=6  formula=(
 				f.If ( year>2010, { $m214029? - $m214040? - $m214030? } , { $m212050? } )
 			)
-				primary 060 'Проценты к получению' outer=9 
-				primary 070 'Проценты к уплате' outer=8 
 				primary 080 'Доходы от участия в других организациях' outer=7 
+				primary 060 'Проценты к получению' outer=8 
+				primary 070 'Проценты к уплате' outer=9 
 			sum 090 'Прочие доходы' outer=10 
 				primary 09001 'операции с ценными бумагами' outer=10.1 
 				primary 09002 'операции с валютой' outer=10.2 
@@ -479,7 +477,7 @@ namespace demo.import.forms
 						$m230800@DZRk? + $m230900@DZRk?
 					)
 				formula m112290 'Чистая прибыль без учета КР' notlocalizedcode=true outer=290  : (
-					$m1122400? - $m212240?
+					$m214190? - $m212240?
 				)
 			sum m2124011 'Изменение стр.2500 "Совокупный финансовый результат" при отражении в форме "Баланс (форма № 1 ФО)"' notlocalizedcode=true outer=401.1 nosum olap=finrez 
 				primary m1124021 'Изменение в уставном капитале' notlocalizedcode=true outer=401.11 
@@ -500,7 +498,7 @@ namespace demo.import.forms
 					f.round ( $m214195? - $m2124011? - $m1111370@DELTA? + $m1124020? )
 				)
 				controlpoint m112820 '[начисленный налог на прибыль в отчете по налогам за вычетом корректива] - [текущий налог на прибыль] = 0' notlocalizedcode=true outer=820 olap=finrez  : (
-					$m220110@Pd? - $m220110@Pd_korr? - $m214150?
+					f.If ( groupin ( "PR_KVART" ), { f.If ( periodin ( 1,2,3,4) or isplanperiod, { $m220110@Pd? - $m220110@Pd_korr? - $m214150? } ) }, { $m220110@Pd? - $m220110@Pd_korr? - $m214150? } )
 				)
 				controlpoint m112825 'Изменение отложенных налоговых обязательств [ф.ББ стр.1420"Изменение" - ф.ОПиУ стр.2430] = 0' notlocalizedcode=true outer=825 olap=finrez  : (
 					f.round (- $m1111420@DELTA? + $m214142@Б1? )
@@ -508,6 +506,6 @@ namespace demo.import.forms
 				controlpoint m112826 'Изменение отложенных налоговых активов [ф. ББ стр.1180"Изменение" - ф.ОПиУ стр.2450] = 0' notlocalizedcode=true outer=826 olap=finrez  : (
 					f.checklimit( 1, - $m1111160@DELTA? + $m214141@Б1? )
 				)
-				formula 440 '[расходы на собственные нужды расш. ф. № 6 ] - [расходы на собственные нужды ф. № 4]' olap=finrez  : (
-					f.If ( periodin ( 1,2,3,4) or isplanperiod, { $m600999? + $m6001010? - $m6001015? - $m21410015? }  )
+				controlpoint 440 '[расходы на собственные нужды расш. ф. № 6 ] - [расходы на собственные нужды ф. № 4]' olap=finrez  : (
+					f.If ( groupin ( "PR_KVART" ), { f.If ( periodin ( 1,2,3,4) or isplanperiod, { $m600999? + $m6001010? - $m6001015? - $m21410015? } ) }, { $m600999? + $m6001010? - $m6001015? - $m21410015? } )
 				)

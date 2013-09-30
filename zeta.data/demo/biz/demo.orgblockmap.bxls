@@ -152,4 +152,10 @@ namespace demo
 				where role=TRUE
 				groupby role
 				orderby role	
+				
+namespace demo.import.meta
+	~class autoblocks
+		+subsystem fin_grp bizcode="FI"
+		+block FIN name="Финансы" bizcode="FN"
+		+block KAZN name="Казначейство" bizcode="KZ"
 	

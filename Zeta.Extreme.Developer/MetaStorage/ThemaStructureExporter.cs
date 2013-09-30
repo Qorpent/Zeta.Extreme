@@ -32,7 +32,7 @@ namespace Zeta.Extreme.Developer.MetaStorage {
         private string RenderXml(XElement xml) {
             var builder = new BSharpCodeBuilder();
             var hash = Convert.ToBase64String(hasher.ComputeHash(Encoding.UTF8.GetBytes(hashsrc)));
-            builder.WriteCommentBlock("Экспорт структуры форм",new{hash});
+            builder.WriteCommentBlock("Экспорт структуры форм",new{hash, BlocksOnly});
             builder.StartNamespace(Namespace);
             builder.StartClass(ClassName);
             builder.WriteClassElement(SUBSYSTEM_ELEMENT_NAME);
@@ -44,13 +44,17 @@ namespace Zeta.Extreme.Developer.MetaStorage {
                 builder.StartElement(SUBSYSTEM_ELEMENT_NAME,s.GetCode(),s.GetName());
                 foreach (var b in s.Elements(BLOCK_ELEMENT_NAME )) {
                     builder.StartElement(BLOCK_ELEMENT_NAME,b.GetCode(),inlineattributes: new{oldcode=b.Attr("oldcode"),doubled=b.Attr("doubled")});
-                    foreach (var r in b.Elements(ROOT_ELEMENT_NAME)) {
-                        builder.StartElement(ROOT_ELEMENT_NAME, r.GetCode(), inlineattributes: new {oldcode=b.Attr("oldcode"), doubled = r.Attr("doubled") });
-                        foreach (var t in r.Elements(THEMA_ELEMENT_NAME)) {
-                            builder.WriteElement(THEMA_ELEMENT_NAME, t.GetCode(), t.GetName(),
-                                                 inlineattributes: new {hasform = r.Attr("hasform")});
+                    if (!BlocksOnly) {
+                        foreach (var r in b.Elements(ROOT_ELEMENT_NAME)) {
+                            builder.StartElement(ROOT_ELEMENT_NAME, r.GetCode(),
+                                                 inlineattributes:
+                                                     new {oldcode = r.Attr("oldcode"), doubled = r.Attr("doubled")});
+                            foreach (var t in r.Elements(THEMA_ELEMENT_NAME)) {
+                                builder.WriteElement(THEMA_ELEMENT_NAME, t.GetCode(), t.GetName(),
+                                                     inlineattributes: new {hasform = r.Attr("hasform")});
+                            }
+                            builder.EndElement();
                         }
-                        builder.EndElement();
                     }
                     builder.EndElement();
                 }
@@ -73,8 +77,20 @@ namespace Zeta.Extreme.Developer.MetaStorage {
                     hashsrc += Convert.ToBase64String(hasher.ComputeHash(Encoding.UTF8.GetBytes(txt)));
                 }
             }
+            resultXml = AccomodateDoublers(resultXml);
             return resultXml;
         }
+
+        private XElement AccomodateDoublers(XElement resultXml) {
+            foreach (var e in resultXml.Descendants()) {
+                if (null == e.Attribute("doubled") && e.Attribute("oldcode") != null) {
+                    e.SetAttributeValue("code",e.Attr("oldcode"));
+                    e.SetAttributeValue("oldcode",null);
+                }
+            }
+            return resultXml;
+        }
+
         string GetParam(XElement th, string name, string def = null) {
             var el = th.Elements("param").Where(_ => _.Attr("id") == name).FirstOrDefault();
             string result = "";
@@ -93,6 +109,7 @@ namespace Zeta.Extreme.Developer.MetaStorage {
         }
         private bool ProcessThema(XElement th, XElement res) {
             var code = th.Attr("code");
+
             if (code.Contains("lib")) {
                 return false;
             }
@@ -102,7 +119,7 @@ namespace Zeta.Extreme.Developer.MetaStorage {
             }
             else {
                 var form = th.Elements("form").Where(_ => _.Attr("code") == "A").FirstOrDefault();
-                
+                if (!CheckThemaAttributes(th)) return false;
                 bool hasform = false;
                 if (null != form)
                 {
@@ -120,6 +137,10 @@ namespace Zeta.Extreme.Developer.MetaStorage {
                 var roleprefix = GetParam(th, "roleprefix", "NOROLE");
                 var block = EmitBlock(res, grpelement, roleprefix);
                 var rootrow = GetParam(th, "rootrow", "NOROOT");
+                var excludeRoots = ExcludeRoots.SmartSplit();
+                
+                if (excludeRoots.Contains(rootrow)) return false;
+
                 var root = EmitRoot(res, block, rootrow);
                
                 var name = th.Attr("name");
@@ -127,6 +148,17 @@ namespace Zeta.Extreme.Developer.MetaStorage {
             }
 
 
+            return true;
+        }
+
+        private bool CheckThemaAttributes(XElement th) {
+            if (!DisableStatusFilter) {
+                if (GetParam(th, "thematype") != "in") return false;
+                var status = GetParam(th, "status");
+                if (!("" == status || "test" == status)) return false;
+
+                if (GetParam(th, ".role") == "ADMIN") return false;
+            }
             return true;
         }
 
@@ -172,6 +204,16 @@ namespace Zeta.Extreme.Developer.MetaStorage {
         }
 
         private XElement EmitSubsystem(XElement res, string code, string name = null) {
+            var aliases = SubsystemAliases.SmartSplit();
+            foreach (var alias in aliases) {
+                var from = alias.Split('=')[0];
+                var to = alias.Split('=')[1];
+                if (code == from) {
+                    code = to;
+                    name = "";
+                    break;
+                }
+            }
             var existed = res.Elements(SUBSYSTEM_ELEMENT_NAME).FirstOrDefault(_ => _.Attr("code")==code);
             if (null == existed) {
                 existed =res.AddElement(SUBSYSTEM_ELEMENT_NAME, attributes: new {code, name});
@@ -192,5 +234,27 @@ namespace Zeta.Extreme.Developer.MetaStorage {
         /// Пространство имен
         /// </summary>
         public string Namespace { get; set; }
+
+        /// <summary>
+        /// Вывод до уровня блоков
+        /// </summary>
+        public bool BlocksOnly { get; set; }
+
+        /// <summary>
+        /// Псевдонимы подсистем
+        /// </summary>
+        public string SubsystemAliases { get; set; }
+
+        /// <summary>
+        /// Параметр исключения части рутов
+        /// </summary>
+        public string ExcludeRoots { get; set; }
+
+        /// <summary>
+        /// Опция отключения фильтра по статусам темы
+        /// </summary>
+        public bool DisableStatusFilter { get; set; }
+
+       
     }
 }
