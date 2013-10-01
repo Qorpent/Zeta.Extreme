@@ -158,4 +158,32 @@ namespace demo.import.meta
 		+subsystem fin_grp bizcode="FI"
 		+block FIN name="Финансы" bizcode="FN"
 		+block KAZN name="Казначейство" bizcode="KZ"
+		#block fin_grp.DR oldcode=DR doubled=true
+		+block FA name="Финансовый анализ" bizcode="FA"
+		+block INVDR name="Инвестиции" bizcode="IN"
+		+block BANK name="" bizcode="BN"
+		+block NAL name="Налоги" bizcode="NL"
+		+block DZK name="" bizcode="DZ"
+		+block SOC name="" bizcode="SO"
+		
+		+subsystem proiz_grp bizcode="PR"
+		+block BIO name="" bizcode=""
+		+block OBPROIZ name="" bizcode=""
+		+block NOROLE name="" bizcode=""
+		+block ENERGO name="" bizcode=""
+		
+		+subsystem cost_grp bizcode="CL"
+		+block COST name="" bizcode=""
+		#block cost_grp.DR oldcode=DR doubled=true
+		+block SALE name="" bizcode=""
+		+block MTR name="" bizcode=""
+		
+		+subsystem trud_grp bizcode="TR"		
+		+block ZP name="Зарплата" bizcode="ZP"
+		+block EDU name="" bizcode=""
+		+block KADR name="Кадры" bizcode="KR"
+		
+			
+		
+			
 	
