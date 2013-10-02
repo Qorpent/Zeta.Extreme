@@ -1,0 +1,28 @@
+﻿<div class="export-tree-form">
+    <form action="./zdev/exportthemastructure.string.qweb" target="_blank">
+        <fieldset>
+            <legend>Параметры вызова</legend>
+            <label class="checkbox">
+                Развернуть только до второго уровня (до блоков)
+                <input type="checkbox" name="BlockOnly" />
+            </label>
+            
+            <label>Сопоставление псевдонимов подсистем</label>
+            <input class="fill-modal" name="SubsystemAliases" value="analysisg=fin_grp;eco_grp=fin_grp"  />
+            <label>Параметр исключения части рутов</label>
+            <input class="fill-modal" name="ExcludeRoots" value="m150,m140,m130" />
+            
+            <label class="checkbox">
+                Опция отключения фильтра по статусам темы
+                <input type="checkbox" name="DisableStatusFilter" />
+            </label>
+            
+            <label>Имя класса</label>
+            <input class="fill-modal" name="ClassName" />
+            <label>Пространство имен</label>
+            <input class="fill-modal" name="Namespace" />            
+        </fieldset> 
+        <hr />
+        <input type="submit" value="Выполнить"/>
+    </form>
+</div>

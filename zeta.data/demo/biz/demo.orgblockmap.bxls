@@ -173,10 +173,10 @@ namespace demo.import.meta
 		+block ENERGO name="Энергетика" bizcode="EN"
 		
 		+subsystem cost_grp bizcode="CL"
-		+block COST name="" bizcode=""
+		+block COST name="Себестоимость" bizcode="CS"
 		#block cost_grp.DR oldcode=DR doubled=true
 		+block SALE name="Продажи" bizcode="SL"
-		+block MTR name="" bizcode=""
+		+block MTR name="Материально-технические ресурсы" bizcode="MR"
 		
 		+subsystem trud_grp bizcode="TR"		
 		+block ZP name="Зарплата" bizcode="ZP"

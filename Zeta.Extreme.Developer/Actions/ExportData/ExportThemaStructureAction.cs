@@ -4,12 +4,12 @@ using Zeta.Extreme.Developer.MetaStorage;
 
 namespace Zeta.Extreme.Developer.Actions {
     /// <summary>
-    /// Ёкспорт сфорировать файл периодов
+    /// Ёкспорт сформировать файл периодов
     /// </summary>
-    [Action(DeveloperConstants.ExportThemastructureCommand, Arm = "dev", Help = "—формировать эксортный файл структуры тем", Role = "DEVELOPER")]
+    [Action(DeveloperConstants.ExportThemastructureCommand, Arm = "dev", Help = "—формировать экспортный файл структуры тем", Role = "DEVELOPER")]
     public class ExportThemaStructureAction : ExportActionBase<ThemaStructureExporter>
     {
-        [Bind]
+        [Bind(Help="–азвернуть только до второго уровн€ (до блоков)")]
         bool BlockOnly { get; set; }
         [Bind]
         string SubsystemAliases { get; set; }
