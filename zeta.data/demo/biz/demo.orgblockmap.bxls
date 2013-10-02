@@ -169,7 +169,7 @@ namespace demo.import.meta
 		+subsystem proiz_grp bizcode="PR"
 		+block BIO name="Экология" bizcode="EC"
 		+block OBPROIZ name="Объемы производства" bizcode="OP"
-		+block NOROLE name="???" bizcode=""
+		+block NOROLE name="Ноуроле?" bizcode="NR"
 		+block ENERGO name="Энергетика" bizcode="EN"
 		
 		+subsystem cost_grp bizcode="CL"
