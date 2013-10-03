@@ -134,6 +134,12 @@ _.widget.register({
                          title: "Экспорт структуры тем",
                          href: './zdev/exportthemastructure.string.qweb',
                      },
+             {
+                 title: "Структура тем",
+                 onclick: {
+                     modal: { title: "Структура тем", template: 'zdev_export_thema_structure', width: 400 },
+                 },
+             },
 
 		        ]
 		    },
