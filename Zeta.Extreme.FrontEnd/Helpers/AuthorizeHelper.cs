@@ -28,7 +28,13 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
 					return false;
 				}
 			}
-			if (!Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, form.Role)) {
+			if (!
+                (
+                    Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, form.Role)
+                    ||
+                    Application.Current.Roles.IsInRole(Application.Current.Principal.CurrentUser, form.UnderwriteRole)    
+                
+                )) {
 				return false;
 			}
 

@@ -1102,10 +1102,10 @@ namespace Zeta.Extreme.FrontEnd {
 				state = "0ISOPEN";
 			}
 
-			var cansave = state == "0ISOPEN";
+			
 			var message = Template.CanSetState(Object, null, "0ISBLOCK");
 			var principal = Usr.toPrincipal();
-			
+            var cansave = state == "0ISOPEN" && roles.IsInRole(principal,Template.Role);
 			var haslockrole = roles.IsInRole(principal, Template.UnderwriteRole);
 			var hasholdlockrole = roles.IsInRole(principal, "HOLDUNDERWRITER",true);
 			var hasnocontrolpoointsrole = roles.IsInRole(principal,"SYS_NOCONTROLPOINTS",true);
