@@ -86,6 +86,7 @@ $.extend(root.render, {
                         td.addClass("editable");
                         if (!!col.validate) {
                             td.attr("pattern", col.validate);
+                            td.attr("validaterule", col.validateReadable);
                         }
                     }
                     if (col.exref && row.exref) td.removeClass("editable");

@@ -265,8 +265,22 @@ root.myform = root.myform ||  {
         var obj = window.zefs.getChanges();
         if ($.isEmptyObject(obj)) return;
         root.myform.datatosave = obj;
-        $(root).trigger(root.handlers.on_savestart);
-        api.data.saveready.execute();
+        if (obj.hasinvaliddata) {
+            var content = $('<div/>');
+            content.append($('<p/>').text("Введены данные, не соответствующие требуемому формату (отмечены красным жирным)."));
+            $.each(obj, function(i, o) {
+                if (o.invalid) {
+                    content.append($('<p/>').html(o.id + ' : <span style="color: red; font-weight: bold;">' + o.validaterule + '</span>'));
+                }
+            });
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "Не удалось сохранить форму",
+                content: content
+            });
+        } else {
+            $(root).trigger(root.handlers.on_savestart);
+            api.data.saveready.execute();
+        }
     };
 
     var ForceSave = function() {

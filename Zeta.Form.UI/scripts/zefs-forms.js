@@ -254,10 +254,17 @@
         if ($input.length != 0){
             // преобразование запятой в точку
             var $val = $input.val().replace(",",".");
-            $input.remove();
+
+            // валидизация введенных в ячейку данных 
+            if (!$input.attr("pattern") || $input.get(0).checkValidity()) {
+                // реальное значение (без форматов и т.д.) для сохранения в базу
+                $cell.data("value", $val);
+                $cell.removeClass("invalid");
+            } else {
+                $cell.addClass("invalid");
+            }
             $cell.text($val);
-            // реальное значение (без форматов и т.д.) для сохранения в базу
-            $cell.data("value", $val);
+            $input.remove();
         }
         if (!!e && e == "esc") {
             $cell.text($cell.data("previous"));
@@ -483,10 +490,18 @@
         this.uninputCell();
         var obj = {};
         var div = $('<div/>');
+        var invaliddata = $('table.data td.changed.invalid');
+        if (invaliddata.length > 0) {
+            obj.hasinvaliddata = true;
+        }
         $.each($('table.data td.changed'), function(i,cell) {
             cell = $(cell);
             div.number(cell.text(), 0, '', '');
             obj[i] = {id:cell.attr("id"), value:cell.data("value") || div.text(), ri:cell.attr("ri")};
+            if (cell.hasClass("invalid")) {
+                obj[i].invalid = true;
+                obj[i].validaterule = cell.attr("validaterule") || "";
+            }
         });
         return obj;
     };
