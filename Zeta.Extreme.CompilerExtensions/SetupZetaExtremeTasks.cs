@@ -11,7 +11,10 @@ namespace Zeta.Extreme.CompilerExtensions
         /// Перекрыть при изменении в составе задач
         /// </summary>
         protected override void PrepareTasks() {
-
+            var sbe = new SetupBlockExtensions(Project);
+            if (sbe.Active) {
+                Project.CompilerExtensions.Add(sbe);
+            }
             Tasks.Add(new CallZetaExtremeScriptTask());
             Tasks.Add(new BuildZetaBizIndexTask());
             Tasks.Add(new SetupTreeCodesTask());
