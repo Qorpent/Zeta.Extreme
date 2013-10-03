@@ -1,0 +1,166 @@
+########################################################################################################################
+####                                             Экспорт структуры форм                                             ####
+####                    hash                           : 8l4W3O5QNs5Clyyh5XckaA==                                   ####
+####                    BlocksOnly                     : False                                                      ####
+########################################################################################################################
+namespace demo.import.meta
+	class themastructure
+		element subsystem
+		element block
+		element root
+		element thema
+		subsystem fin_grp 'Финансы'
+			block FIN
+				root r216
+					thema balans_rbp 'Расходы будущих периодов'
+				root r640
+					thema balans_rdbp 'Доходы будущих периодов'
+				root r110
+					thema balans_rnma 'Нематериальные активы'
+				root r130
+					thema balans_rns 'Расшифровка незавершенного строительства (Прил. № 3 СФО)'
+					thema balans_rns_copy 'Расшифровка незавершенного строительства (Прил. № 3 СФО)'
+				root fin_grp.FIN.NOROOT oldcode=NOROOT doubled=true
+					thema balans_rns_korr 'Уточнение незавершенного строительства'
+				root r131
+					thema balans_rns_str 'Расшифровка незавершенного строительства (строители)'
+				root r120
+					thema balans_ros 'Основные средства'
+				root r211
+					thema balans_rsim 'Сырье, материалы и др.ценности'
+				root m111
+					thema balans2011 'Баланс (форма № 1 ФО)'
+				root m214
+					thema finres_cons 'Финансовые результаты (форма №4)'
+					thema finres_mes 'Финансовые результаты (форма №4)'
+				root m115
+					thema free_active2011 'Расчет чистых активов'
+				root m204
+					thema macroparam 'Макропоказатели BUDGET'
+				root m203
+					thema osnparambudget 'Основные параметры бюджета'
+				root r511
+					thema osnpok_kz 'Основные показатели по кредитам и займам'
+				root m112
+					thema prib_cons 'Прибыли и убытки'
+				root r2310
+					thema prib_fa 'ФА прибыли до налогообложения BUDGET'
+			block KAZN
+				root f120
+					thema budgetdds 'Бюджет ДДС'
+				root f110
+					thema finplan 'Финансовый план'
+			block fin_grp.DR oldcode=DR doubled=true
+				root m217
+					thema f7 'Управленческие расходы (форма №7)'
+				root m218
+					thema f8 'Расходы на продажу (форма №8)'
+				root m216
+					thema opr_div 'Общепроизводственные расходы (по переделам)'
+				root m200
+					thema osnpok 'Основные показатели (форма № 2)'
+				root m161
+					thema uslugi_chop 'Услуги ЧОП'
+				root m260
+					thema zatr 'Затраты на производство и реализацию (форма № 3)'
+				root k260400
+					thema zatr_am 'Амортизация (прил. 3.5)'
+				root r590
+					thema zatr_pr 'Расшифровка прочих расходов (Прил. № 3.4)'
+			block FA
+				root s140
+					thema finact 'Финансовые вложения'
+					thema finact_copy 'Расшифровка финансовых вложений (Прил. № 4 СФО)'
+			block INVDR
+				root m250
+					thema inv 'Расходы инвестиционного характера (форма № 9)'
+			block BANK
+				root r510
+					thema krzaim_lite 'Заемные средства'
+			block NAL
+				root m220
+					thema nalog 'Налоги, платежи и сборы'
+				root fin_grp.NAL.NOROOT oldcode=NOROOT doubled=true
+					thema nalog_nd 'Налоги по подразделениям'
+				root m224
+					thema nalog_nds 'Расчет НДС (форма № 16.4)'
+				root m225
+					thema nalog_nds19 'НДС по приобретенным ценнностям (Прил. № 23)'
+			block DZK
+				root m230
+					thema ras_dk 'Дебиторы и кредиторы'
+					thema ras_dk_korr 'Дебиторы и кредиторы (ревизия за 2012 год)'
+				root m231
+					thema ras_dk_ca 'Дебиторы и кредиторы по контрагентам'
+			block SOC
+				root m600
+					thema rashsn 'Расходы на собственные нужды (форма № 6)'
+		subsystem proiz_grp 'Производство'
+			block BIO
+				root m321
+					thema bio_nalog_pay 'Перечисление платы за загрязнение природной среды'
+			block OBPROIZ
+				root proiz_grp.OBPROIZ.NOROOT oldcode=NOROOT doubled=true
+					thema obproizf_dm 'Уточнение объемов драгметаллов'
+			block NOROLE
+			block ENERGO
+				root proiz_grp.ENERGO.NOROOT oldcode=NOROOT doubled=true
+					thema zatr_en 'Расшифровка затрат на топливо и энергию (Прил. № 3.3)'
+				root r175
+					thema zatr_topl 'Расчет расходов на топливо'
+		subsystem cost_grp 'Контроллинг'
+			block COST
+				root z130
+					thema calc_chernmed 'Калькуляция черновой меди'
+				root z510
+					thema calc_energo 'Калькуляция энергоресурсов'
+				root z100
+					thema calc_ksgenat 'Калькуляция ксантогената'
+					thema calc_mk_vid 'Калькуляция медной катанки'
+					thema calc_ruda_dob 'Калькуляция добычи руды'
+				root z410
+					thema calc_ocm 'Калькуляция проката цветных металлов'
+				root z111
+					thema calc_osnpok 'Себестоимость основных видов продукции'
+				root z260
+					thema calc_pb 'Калькуляция свинца'
+				root z112
+					thema calc_ruda 'Себестоимость добычи и обогащения'
+					thema calc_ruda_pered 'Себестоимость добычи и обогащения (по калькуляционным единицам)'
+				root z210
+					thema calc_sernkisl 'Калькуляция серной кислоты'
+				root z420
+					thema calc_slitki 'Калькуляция слитков'
+				root z250
+					thema calc_zink 'Калькуляция цинка'
+			block cost_grp.DR oldcode=DR doubled=true
+				root b102
+					thema kovenant_amort 'Амортизация по приложению № 5 стр. 740'
+				root b101
+					thema kovenant_normativ 'Нормативные ковенанты по группе'
+			block SALE
+				root m205
+					thema osnpoksale 'Основные показатели продаж'
+			block MTR
+		subsystem trud_grp 'Персонал'
+			block ZP
+				root t110
+					thema trud 'Отчет по труду'
+				root t220
+					thema trud_cent_vipl 'Смета централизованных выплат (форма № 2-Т)'
+				root t240
+					thema trud_fzp_nespis 'ФЗП работников несписочного состава (форма № 4-Т)'
+				root t210
+					thema trud_obosn 'Расчет-обоснование плана по труду (форма № 1-Т)'
+				root t230
+					thema trud_soc_vipl 'Смета социальных выплат (форма № 3-Т)'
+				root t250
+					thema trud_zatr_pers 'Затраты на персонал (форма № 5-Т)'
+				root t115
+					thema trudindex 'Динамика инфляции и зарплаты'
+			block EDU
+				root t265
+					thema trud_zatr_lehr_new 'Затраты на обучение персонала'
+			block KADR
+				root t211
+					thema zhilpr 'Реализация жилищной программы (Приложение № 11)'

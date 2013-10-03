@@ -3,7 +3,7 @@ using Zeta.Extreme.Developer.Config
 
 
 singleton DeveloperConfig : IDeveloperConfig
-	ThemaComiledFolder="C:\\webfarm\\ecot\\tmp\\compiled_themas"
+	ThemaComiledFolder="C:\\Themas\\Compiled"
 	ThemaSourceFolders
 		add "C:\\Themas\\SYS"
 		add "C:\\Themas\\USR"

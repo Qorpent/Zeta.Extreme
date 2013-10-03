@@ -129,6 +129,17 @@ _.widget.register({
 		                 title: "Экспорт бизпроцессов",
 		                 href: './zdev/exportbizprocesses.string.qweb',
 		             },
+		            
+                     {
+                         title: "Экспорт структуры тем",
+                         href: './zdev/exportthemastructure.string.qweb',
+                     },
+             {
+                 title: "Структура тем",
+                 onclick: {
+                     modal: { title: "Структура тем", template: 'zdev_export_thema_structure', width: 400 },
+                 },
+             },
 
 		        ]
 		    },
@@ -163,6 +174,10 @@ _.widget.register({
 		{
 		    title: 'Объекты',
 		    items: [
+		        {
+		            title: "Экспорт  объектов",
+		            href: './zdev/exportobjects.string.qweb',
+		        },
 		         {
 		             title: "Экспорт типов объектов",
 		             href: './zdev/exportobjtypes.string.qweb',
@@ -171,6 +186,10 @@ _.widget.register({
 		         title: "Экспорт дивизионов",
 		         href: './zdev/exportobjdivs.string.qweb',
 		     },
+		        {
+		            title: "Экспорт географии",
+		            href: './zdev/exportgeo.string.qweb',
+		        },
 		    ]
 		},
 		  "div",

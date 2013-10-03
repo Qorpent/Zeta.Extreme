@@ -17,6 +17,7 @@ namespace Zeta.Extreme.CompilerExtensions
             Tasks.Add(new SetupTreeCodesTask());
             Tasks.Add(new UpdateRowCodes());
             Tasks.Add(new EvaluateFormPrimaryStatus());
+            Tasks.Add(new BuildFormExcelTable());
         }
     }
 }

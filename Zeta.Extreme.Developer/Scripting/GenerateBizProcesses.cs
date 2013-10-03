@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Qorpent.Utils.Extensions;
+using Zeta.Extreme.Developer.Analyzers;
 
 namespace Zeta.Extreme.Developer.Scripting {
     /// <summary>
@@ -13,7 +14,7 @@ namespace Zeta.Extreme.Developer.Scripting {
         /// <returns></returns>
         protected override string GetCommandName()
         {
-            return ScriptConstants.EXPORT_BIZPROCESSES_COMMAND;
+            return DeveloperConstants.ExportBizprocessesCommand;
         }
         /// <summary>
         /// Пробрасывает параметр primary-only

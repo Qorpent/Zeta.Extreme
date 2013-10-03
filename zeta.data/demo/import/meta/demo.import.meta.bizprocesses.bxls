@@ -1,6 +1,6 @@
 ########################################################################################################################
 ####                                           ЭКСПОРТ BIZPROCESS БД ECO                                            ####
-####                    Время последего обновления     : 2013-08-19 15:26:22                                        ####
+####                    Время последего обновления     : 2013-09-25 10:10:05                                        ####
 ########################################################################################################################
 namespace demo.import.meta
 	class bizprocesses prototype=meta
@@ -53,6 +53,11 @@ namespace demo.import.meta
 		bizprocess calc_slitki 'Калькуляция слитков' role=COST rootrows=z420
 			primary=1
 		bizprocess nalog_nds_sfo 'Приложение 16.4. Расчет НДС' role=NAL rootrows=m224
+			primary=1
+		bizprocess krzaim_lite_new 'Заемные средства (extreme) ADMIN' role='ADMIN (BANK)' rootrows=r510
+			primary=1
+			status=test
+		bizprocess balans_rns_str 'Расшифровка незавершенного строительства (строители)' role=FIN rootrows=r131
 			primary=1
 		bizprocess ras_dk_ca 'Дебиторы и кредиторы по контрагентам' role=DZK rootrows=m231
 			primary=1

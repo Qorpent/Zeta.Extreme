@@ -1,0 +1,35 @@
+########################################################################################################################
+####                                             Экспорт структуры форм                                             ####
+####                    hash                           : 8l4W3O5QNs5Clyyh5XckaA==                                   ####
+####                    BlocksOnly                     : True                                                       ####
+########################################################################################################################
+namespace demo.import.meta
+	class autoblocks
+		element subsystem
+		element block
+		element root
+		element thema
+		subsystem fin_grp 'Финансы'
+			block FIN
+			block KAZN
+			block fin_grp.DR oldcode=DR doubled=true
+			block FA
+			block INVDR
+			block BANK
+			block NAL
+			block DZK
+			block SOC
+		subsystem proiz_grp 'Производство'
+			block BIO
+			block OBPROIZ
+			block NOROLE
+			block ENERGO
+		subsystem cost_grp 'Контроллинг'
+			block COST
+			block cost_grp.DR oldcode=DR doubled=true
+			block SALE
+			block MTR
+		subsystem trud_grp 'Персонал'
+			block ZP
+			block EDU
+			block KADR

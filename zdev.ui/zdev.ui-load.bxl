@@ -8,3 +8,4 @@ pkg zeta.dev level=auth
 	load zdev_export_fdep_dot.tpl.html
 	load zdev_transfer_data.tpl.html
 	load zdev_debug_query.tpl.html
+	load zdev_export_thema_structure.tpl.html

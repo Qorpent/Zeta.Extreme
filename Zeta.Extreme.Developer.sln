@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pkg", "Pkg", "{F755EF91-982
 		zdev.ui\zdev_debug_query.tpl.html = zdev.ui\zdev_debug_query.tpl.html
 		zdev.ui\zdev_export_dep_dot.tpl.html = zdev.ui\zdev_export_dep_dot.tpl.html
 		zdev.ui\zdev_export_fdep_dot.tpl.html = zdev.ui\zdev_export_fdep_dot.tpl.html
+		zdev.ui\zdev_export_thema_structure.tpl.html = zdev.ui\zdev_export_thema_structure.tpl.html
 		zdev.ui\zdev_export_tree_form.tpl.html = zdev.ui\zdev_export_tree_form.tpl.html
 		zdev.ui\zdev_transfer_data.tpl.html = zdev.ui\zdev_transfer_data.tpl.html
 		zetadev.ioc-manifest.bxl = zetadev.ioc-manifest.bxl

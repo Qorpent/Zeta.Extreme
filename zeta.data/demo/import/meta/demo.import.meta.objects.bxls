@@ -1,0 +1,281 @@
+########################################################################################################################
+####                                            Экспорт старших объектов                                            ####
+####                    version                        : 01.10.2013 18:16:39                                        ####
+########################################################################################################################
+namespace demo.import.meta
+	class objects
+		export obj
+		element obj
+		obj 352 'ОАО "Уралэлектромедь"' dbcode=obj1521 tag='/carow:CA_STRUCT2000/' type=OWNORG div=MET point=65420000000
+			obj 1874 'ОАО"УЭМ" - МЦ ППМ' dbcode=obj1521_2 tag='/peredel:NF_MET/ /peredellevel:30/ /carow:CA_STRUCT2100/' type=PL_MC div=USL point=34357
+				obj 3273 'Медь черновая УЭМ' dbcode=obj1521_CE_CHM type=CE_CHM
+			obj 1877 'ОАО"УЭМ" - МЭП' dbcode=obj1521_1 tag='/peredel:NF_RAF/ /peredellevel:40/ /carow:CA_STRUCT2100/' type=PL_MR div=USL point=65420000000
+			obj 2152 'ОАО"УЭМ" - ПСЦМ' dbcode=obj1521_3 tag='/peredel:NF_MET/ /peredellevel:30/ /carow:CA_STRUCT2100/' type=PL_MC div=USL point=34370
+			obj 2153 'ОАО"УЭМ" - Сафмедь' dbcode=obj1521_4 tag='/peredel:NF_RD/ /peredellevel:10/ /carow:CA_STRUCT2100/' type=PL_KR div=USL point=34364
+				obj 3606 'Сульфидно-медная руда Сафмеди' dbcode=obj1521_4_CE_SCR type=CE_SCR
+				obj 3607 'Сульфидно-медная бедная руда Сафмеди' dbcode=obj1521_4_CE_SCRB type=CE_SCRB
+				obj 3608 'Золото-серебрянная руда Сафмеди' dbcode=obj1521_4_CE_AUAG type=CE_AUAG
+			obj 2169 'ОАО "УЭМ" - Степное МР' dbcode=obj1521_5 tag='/peredel:NF_RD/ /peredellevel:10/ /carow:CA_STRUCT2100/' type=PL_KR div=USL point=38517
+				obj 3136 'Руда сульфидная медная (Степн.м/рожд)' dbcode=obj1521_5_CE_SCR type=CE_SCR
+			obj 2175 'ОАО "УЭМ" - ОФ ППМ' dbcode=obj1521_6 tag='/peredel:NF_OF/ /peredellevel:20/ /carow:CA_STRUCT2100/' type=PL_OF div=USL point=34357
+			obj 3627 'Сателит прокачки для ОАО "Уралэлектромедь"' dbcode=6606003385_660601001 type=SOURCESATELLITE
+		obj 353 'ОАО "Святогор"' dbcode=obj1523 tag='/carow:CA_STRUCT2000/' type=OWNORG div=MET point=34343
+			obj 1872 'Святогор - МП' dbcode=obj1523_1 tag='/peredel:NF_MET/ /peredellevel:30/ /carow:CA_STRUCT2100/' type=PL_MC div=USL point=34343
+				obj 3271 'Медь черновая Святогор' dbcode=obj1523_1_CE_CHM type=CE_CHM
+			obj 1875 'Святогор - ОФ' dbcode=obj1523_2 tag='/peredel:NF_OBF/ /peredellevel:20/ /carow:CA_STRUCT2100/' type=PL_OF div=USL point=34343
+			obj 2154 'Святогор - Волковский рудник' dbcode=obj1523_3 tag='/peredel:NF_RD/ /peredellevel:10/ /carow:CA_STRUCT2100/' type=PL_KR div=USL point=34343
+				obj 3111 'Руда сульфидная медная ВР' dbcode=obj1523_3_CE_SCR tag='/conto:BA020_311/' type=CE_SCR
+			obj 2160 'Святогор - Северный МЦР' dbcode=obj1523_4 tag='/peredel:NF_RD/ /peredellevel:10/ /carow:CA_STRUCT2100/' type=PL_KR div=USL point=34343
+				obj 3114 'Руда медно-цинковая СМЦР' dbcode=obj1523_4_CE_MZR tag='/conto:BA020_311/' type=CE_MZR
+				obj 3597 'Руда сульфидная медная СМЦР' dbcode=obj1523_4_CE_SCR tag='/conto:BA020_311/' type=CE_SCR
+			obj 3609 'Святогор - Шемурский рудник' dbcode=obj1523_5 type=PL_KR
+			obj 3610 'Святогор - Ново-Шемурский рудник' dbcode=obj1523_6 type=PL_KR
+		obj 354 'ОАО "Металлургический завод им. А.К.Серова"' dbcode=obj1524 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STAL point=34315
+		obj 357 'ООО "УГМК-Холдинг"' dbcode=obj1536 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGMK point=65420000000
+		obj 362 'ОАО "Шадринский автоагрегатный завод"' dbcode=obj1766 tag='/carow:CA_STRUCT2000/' type=OWNORG div=OBR point=35253
+		obj 402 'ОАО "Сухоложский завод Вторцветмет"' dbcode=obj1956 tag='/carow:CA_STRUCT2000/' type=OWNORG div=MET point=34373
+			obj 3052 'Переработка клинкера на ОАО "Сухоложский завод Вторцветмет"' dbcode=obj1956_CE_KL_PER type=CE_KL_PER
+			obj 3053 'Переработка немагнитного промпродукта на ОАО "Сухоложский завод Вторцветмет"' dbcode=obj1956_CE_MPP_PER type=CE_MPP_PER
+		obj 415 'ОАО "Ревдинский завод ОЦМ"' dbcode=obj1971 tag='/carow:CA_STRUCT2000/' type=OWNORG div=OCM point=34397
+			obj 3100 'РзОЦМ - производство слитков' dbcode=obj1971_1 tag='/peredel:NF_PRT/ /peredellevel/' type=PL_SCM div=USL point=34397
+			obj 3285 'РзОЦМ - производство проката' dbcode=obj1971_2 type=PL_OCM div=USL point=34397
+				obj 3286 'Прокат медный РзОЦМ' dbcode=obj1971_CE_CU type=CE_RL_CU
+				obj 3287 'Прокат латунный РзОЦМ' dbcode=obj1971_CE_LT type=CE_RL_LT
+				obj 3288 'Прокат бронзовый РзОЦМ' dbcode=obj1971_CE_BR type=CE_RL_BR
+				obj 3289 'Прокат медно-никелевый РзОЦМ' dbcode=obj1971_CE_CN type=CE_RL_CN
+				obj 3290 'Прокат никелевый РзОЦМ' dbcode=obj1971_CE_NI type=CE_RL_NI
+		obj 441 'ЗАО "СП-Катур-Инвест"' dbcode=obj6606011717 tag='/carow:CA_STRUCT2000/' type=OWNORG div=MET point=65420000000
+			obj 3592 'Производство медной катанки' dbcode=obj6606_1 type=PL_MK div=USL point=65420000000
+				obj 3589 'Медная катанка' dbcode=obj6606_CE_CU_KAT type=CE_MK
+				obj 3590 'Медная проволока' dbcode=obj6606_CE_CU_PROV type=CE_MK
+				obj 3591 'Эмальпровод' dbcode=obj6606_CE_CB_EP type=CE_CB
+		obj 442 'ОАО "Богословское рудоуправление"' dbcode=obj2011 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STAL point=34314
+		obj 444 'ОАО "Ревдинский кирпичный завод"' dbcode=obj2013 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STR point=34397
+		obj 445 'ОАО "УГМК"' dbcode=obj2014 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGMK point=65420000000
+		obj 449 'ОАО "Среднеуральский медеплавильный завод"' dbcode=obj2049 tag='/carow:CA_STRUCT2000/' type=OWNORG div=MET point=34397
+			obj 1871 'СУМЗ - МП' dbcode=obj2049_1 tag='/peredel:NF_MET/ /peredellevel:30/ /carow:CA_STRUCT2100/' type=PEREDEL div=MET point=34397
+				obj 2173 'Медь черновая СУМЗ' dbcode=obj2049_CE_CHM type=CE_CHM point=34397
+			obj 1876 'СУМЗ - ОФ' dbcode=obj2049_2 tag='/peredel:NF_OBF/ /peredellevel:20/ /carow:CA_STRUCT2100/' type=PEREDEL div=MET point=34397
+				obj 3119 'Концентрат медный' dbcode=obj2049_CE_MK type=CE_MK point=34397
+			obj 3128 'СУМЗ - цех ксантогената' dbcode=obj2049_4 type=PEREDEL div=MET point=34397
+				obj 3129 'Ксантогенат СУМЗ' dbcode=obj2049_CE_KSG type=CE_KSG point=34397
+			obj 3741 'СУМЗ - сернокисл. цех' dbcode=obj2049_3 type=PEREDEL
+				obj 3740 'Серная кислота СУМЗа' dbcode=obj2049_1_CE_SK type=CE_SK
+		obj 467 'ОАО "Гайский ГОК"' dbcode=obj5604000700 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=53413000000
+			obj 1304 'м/р Каменское' dbcode=obj5604_PL_KR_5 comment="""Месторождение «Каменское» – в связи с отработкой каьера планируется выполнение работ по рекультивации месторождения (карьер, отвал, дороги). Необходимо разрешение на строительство и проведение ГГЭ.
+Изменен срок окончания работ из-за приостановки строительства в 2008 году и отсутствия финансирования в 2009 году, стоимость проекта изменена и определена ориентировочно с учетом выполнения рекультивации месторождения.""" type=PL_KR point=ГВЧ
+				obj 3652 'Золотосодерж.руда Каменск.м/р.' dbcode=obj5604_CE_AUS_1 type=CE_AUS
+			obj 1308 'Южно-Кировское месторождение' dbcode=obj5604_PL_KR_4 comment="""Месторождение «Южно-Кировское» – планируется корректировка проектной   документации, срок выдачи в 4 кв.2011г. и проведение Государственной экспертизы во 1 кв.2012г. Проектная организация – ОАО «Уралмеханобр». Планируется выполнить РД.
+Произведен выкуп земельного участка.
+Согласно имеющегося ТЭО (том 1, п.8.5) чистый доход за расчётный период 179,5 млн.руб., срок  окупаемости – 7 лет, в ценах 3 кв.2007г. 
+Обоснование инвестиций: наличие лицензии ОРБ 01219 БР от 21.05.01г. 
+Стоимость работ определена ориентировочно, срок окончания работ изменен, т.к. необходимо выполнить корректировку ПД с приведением к требованиям Постановления Правительства РФ № 87.
+Планируется выполнение вскрышных работ в объеме 1800 м.куб., а также строительство автодороги, насосной станции, очистных сооружений.""" type=PL_KR point=ГВЧ
+				obj 3651 'Золотосодер.руда Юж-Кир.м/р.' dbcode=obj5604_CE_AUS type=CE_AUS
+			obj 3573 'Гайское месторождение' dbcode=obj5604_PL_PD_1 type=PL_RD
+				obj 3611 'Руда медноколчеданная Гайск.м/р.' dbcode=obj5604_CE_MKR type=CE_MKR
+			obj 3574 'Летнее месторождение' dbcode=obj5604_PL_PD_2 type=PL_RD
+				obj 3612 'Руда медноклчеданная Летн.м/р' dbcode=obj5604_1_CE_MKR type=CE_MKR
+			obj 3575 'Осеннее месторождение' dbcode=obj5604_PL_KR_1 type=PL_KR
+				obj 3613 'Руда медноколчеданная Осен.м/р' dbcode=obj5604_2_CE_MKR type=CE_MKR
+			obj 3576 'Левоб. месторождение' dbcode=obj5604_PL_KR_2 type=PL_KR
+				obj 3614 'Руда медноколчеданная Левоб.м/р' dbcode=obj5604_3_CE_MKR type=CE_MKR
+			obj 3580 'Отвал' dbcode=obj5604_PL_KR_3 type=PL_KR
+		obj 468 'ОАО "Кировский завод ОЦМ"' dbcode=obj2150 tag='/carow:CA_STRUCT2000/' type=OWNORG div=OCM point=8332
+			obj 1889 'Кировский завод ОЦМ - производство проката' dbcode=obj2150_1 tag=/peredel/ type=PL_OCM div=USL point=8332
+				obj 3274 'Прокат медный КзОЦМ' dbcode=obj2150_CE_CU type=CE_RL_CU
+				obj 3275 'Прокат латунный КзОЦМ' dbcode=obj2150_CE_LT type=CE_RL_LT
+				obj 3276 'Прокат бронзовый КзОЦМ' dbcode=obj2150_CE_BR type=CE_RL_BR
+				obj 3277 'Прокат медно-никелевый КзОЦМ' dbcode=obj2150_CE_CN type=CE_RL_CN
+				obj 3278 'Прокат никелевый КзОЦМ' dbcode=obj2150_CE_NI type=CE_RL_NI
+				obj 3742 'Прокат (свод) КзОЦМ' dbcode=obj2150_CE_RL type=CE_RL
+			obj 3097 'КзОЦМ - производство слитков' dbcode=obj2150_2 tag='/peredel:NF_PRT/ /peredellevel/' type=PL_SCM div=USL point=8332
+				obj 3584 'Слитки медные' dbcode=obj2150_CE_BL_CU type=CE_BL_CU
+				obj 3585 'Слитки латунные' dbcode=obj2150_CE_BL_LT type=CE_BL_LT
+				obj 3586 'Слитки бронзовые' dbcode=obj2150_CE_BL_BR type=CE_BL_BR
+				obj 3587 'Слитки медно-никелевые' dbcode=obj2150_CE_BL_CN type=CE_BL_CN
+				obj 3588 'Слитки никелевые' dbcode=obj2150_CE_BL_NI type=CE_BL_NI
+		obj 469 'ЗАО "Урупский ГОК"' dbcode=obj2151 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=87876.1
+			obj 3617 'Урупский рудник' dbcode=obj2151_1 type=PL_RD
+				obj 3618 'Руда сульфидная медная УрГОК' dbcode=obj2151_1_CE_SCR type=CE_SCR
+		obj 471 'ООО "Оренбургский радиатор"' dbcode=obj2153 tag='/carow:CA_STRUCT2000/' type=OWNORG div=OBR point=3532
+		obj 472 'ОАО "Учалинский ГОК"' dbcode=obj2154 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=34791
+			obj 3535 'Учалинский подземный р-к' dbcode=obj2154_PL_RD_1 type=PL_RD
+				obj 3640 'Медно-цинковая руда Учал.м/р. (подз.)' dbcode=obj2154_CE_MZR_2 type=CE_MZR
+			obj 3536 'Узельгинский р-к' dbcode=obj2154_PL_RD_2 type=PL_RD
+				obj 3643 'Медно-цинковая руда Узельг. м/р.' dbcode=obj2154_CE_MZR_4 type=CE_MZR
+				obj 3644 'Руда сульфидная медная Узельг.м/р.' dbcode=obj2154_CE_SCR_3 type=CE_SCR
+			obj 3537 'Учалинский к-р' dbcode=obj2154_PL_KR_1 type=PL_KR
+				obj 3638 'Медно-цинковая руда Учал.м/р. (откр.)' dbcode=obj2154_CE_MZR_1 type=CE_MZR
+				obj 3639 'Руда сульфидная медная Учал.м/р. (откр.)' dbcode=obj2154_CE_SCR_1 type=CE_SCR
+			obj 3538 'Султановский к-р' dbcode=obj2154_PL_KR_2 type=PL_KR
+				obj 3641 'Медно-цинковая руда Султ. м/р.' dbcode=obj2154_CE_MZR_3 type=CE_MZR
+				obj 3642 'Руда сульфидная медная Султ.м/р.' dbcode=obj2154_CE_SCR_2 type=CE_SCR
+			obj 3560 'Талганский р-к' dbcode=obj2154_PL_RD_3 type=PL_RD
+				obj 3645 'Медно-цинковая руда Талг.м/р.' dbcode=obj2154_CE_MZR_5 type=CE_MZR
+			obj 3561 'Молодежный р-к' dbcode=obj2154_PL_RD_4 type=PL_RD
+				obj 3646 'Медно-цинковая руда Молод.м/р.' dbcode=obj2154_CE_MZR_6 type=CE_MZR
+			obj 3562 'Озерный р-к' dbcode=obj2154_PL_RD_5 type=PL_RD
+				obj 3647 'Руда сульфидная медная Озерн.м/р.' dbcode=obj2154_CE_SCR_4 type=CE_SCR
+		obj 473 'ООО "Медногорский медно-серный комбинат"' dbcode=obj0267005602 tag='/carow:CA_STRUCT2000/' type=OWNORG div=MET point=35379
+			obj 1873 'ММСК - МП' dbcode=obj0267005602_1 tag='/peredel:NF_MET/ /peredellevel:30/ /carow:CA_STRUCT2100/' type=PEREDEL div=MET point=35379
+				obj 3272 'Медь черновая ММСК' dbcode=obj0267005602_CE_CHM type=CE_CHM
+		obj 497 'ЗАО "Кольчугцветмет"' dbcode=obj2527 tag='/carow:CA_STRUCT2000/' type=OWNORG div=OCM point=49245
+			obj 3098 'Кольчугцветмет - производство слитков' dbcode=obj2527_1 tag='/peredel:NF_PRT/ /peredellevel/' type=PL_SCM div=USL point=49245
+			obj 3279 'Кольчугцветмет - производство проката' dbcode=obj2527_2 type=PL_OCM div=USL point=49245
+				obj 3280 'Прокат медный КЦМ' dbcode=obj2527_CE_CU type=CE_MK
+				obj 3281 'Прокат латунный КЦМ' dbcode=obj2527_CE_LT type=CE_RL_LT
+				obj 3282 'Прокат бронзовый КЦМ' dbcode=obj2527_CE_BR type=CE_RL_BR
+				obj 3283 'Прокат медно-никелевый КЦМ' dbcode=obj2527_CE_CN type=CE_RL_CN
+				obj 3284 'Прокат никелевый' dbcode=obj2527_CE_NI type=CE_RL_NI
+		obj 508 'ОАО "Башкирский медно-серный комбинат"' dbcode=obj2610 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=34775
+		obj 509 'Сибайский филиал ОАО "Учалинский ГОК"' dbcode=obj2611 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=34791
+			obj 3577 'Камаганское месторождение' dbcode=obj2611_PL_RD_1 type=PL_RD
+				obj 3648 'Руда медная Камаг.м/р.' dbcode=obj2611_CE_MR type=CE_MR
+			obj 3578 'Участок "Новый сибай"' dbcode=obj2611_PL_RD_2 type=PL_RD
+			obj 3579 'Участок "Нижняя залежь"' dbcode=obj2611_PL_RD_3 type=PL_RD
+		obj 520 'ОАО "Уралмеханобр"' dbcode=obj2778 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 524 'ООО "Екатеринбург-СИТИ"' dbcode=obj2782 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STR point=65420000000
+		obj 527 'ООО "УГМК-Агро"' dbcode=obj2785 tag='/carow:CA_STRUCT2000/' type=OWNORG div=AGRO point=65420000000
+		obj 529 'ЗАО "Уралмедьстрой"' dbcode=obj2787 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STR point=65401000000
+		obj 532 'ООО КБ "КОЛЬЦО УРАЛА"' dbcode=obj2790 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 535 'ОАО "Хайбуллинская горная компания"' dbcode=obj2845 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=34758.2
+		obj 536 'ОАО "Электроцинк"' dbcode=obj2846 tag='/carow:CA_STRUCT2000/' type=OWNORG div=MET point=8672
+			obj 1887 'ОАО"ЭЦ" - цинковое производство' dbcode=obj2846_1 tag='/peredel:NF_MET/ /peredellevel:30/ /carow:CA_STRUCT2100/' type=PEREDEL div=MET point=8672
+				obj 2166 'Цинк чушковый Электроцинк' dbcode=obj2846_CE_ZN type=CE_ZN point=8672
+			obj 1888 'ОАО"ЭЦ" - свинцовое производство' dbcode=obj2846_2 tag='/peredel:NF_MET/ /peredellevel:30/ /carow:CA_STRUCT2100/' type=PEREDEL div=MET point=8672
+				obj 2176 'Свинец чушковый Электроцинк' dbcode=obj2846_CE_PB type=CE_PB point=8672
+		obj 537 'ЗАО "Бурибаевский ГОК"' dbcode=obj0248002003 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=80255824000
+			obj 3604 'Октябрьский рудник Бурибайского ГОКа' dbcode=obj0248002003_1 type=PL_RD
+				obj 3605 'Руда сульфидно-медная Октябрьского р-ка' dbcode=obj0248002003_1_CE_SCR type=CE_SCR
+		obj 538 'ЗАО "Салаирский химический комбинат"' dbcode=obj2848 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=38463
+			obj 3107 'ЗАО "СХК" - Карьер "Каменушинский"' dbcode=obj2848_1 type=PL_KR div=USL
+				obj 3109 'Руда сульфидная медная Каменуш.м/р.' dbcode=obj2848_CE_SCR type=CE_SCR
+			obj 3108 'ЗАО "СХК" - Карьер "Ново-Салаирский"' dbcode=obj2848_2 type=PL_KR div=USL
+				obj 3110 'Руда кварц-баритовая' dbcode=obj2848_CE_KBR type=CE_KBR
+		obj 539 'ОАО "Сибирь-полиметаллы"' dbcode=obj2849 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=38557.1
+			obj 2170 'ОАО "СПМ" - Зареченский рудник' dbcode=obj2849_1 tag='/peredel:NF_RD/ /peredellevel:10/ /carow:CA_STRUCT2100/' type=PL_RD div=USL point=38517
+				obj 3131 'Руда сульфидная медная (Зареч.м/рожд.)' dbcode=obj2849_1_CE_SCR type=CE_SCR
+			obj 2171 'ОАО "СПМ" - Рубцовский рудник' dbcode=obj2849_2 tag='/peredel:NF_RD/ /peredellevel:10/ /carow:CA_STRUCT2100/' type=PL_RD div=USL point=38557.1
+				obj 3132 'Руда сульфидная медная (Рубц.м/рожд.))' dbcode=obj2849_2_CE_SCR type=CE_SCR
+				obj 3133 'Руда сульфидная медная (окисл., Рубц.м/рожд.)' dbcode=obj2849_1_CE_SCRO type=CE_SCRO
+			obj 3134 'ОАО "СПМ"-Степной рудник (услуга)' dbcode=obj2849_3 type=PL_KR
+		obj 549 'ЗАО "УГМК-Межрегионцветмет"' dbcode=obj3105 type=OWNORG div=USL point=65401000000
+		obj 693 'ЗАО "Сибкабель"' dbcode=obj3706 tag='/carow:CA_STRUCT2000/' type=OWNORG div=CAB point=3822
+		obj 708 'ЗАО "Шемур"' dbcode=obj3721 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=34386
+			obj 2155 'ЗАО "Шемур" - Шемурское месторождение' dbcode=obj3721_1 tag='/peredel:NF_RD/ /peredellevel:10/ /carow:CA_STRUCT2100/' type=PL_KR div=USL
+				obj 3115 'Руда сульфидная медная (услуга) ШР' dbcode=obj1523_5_CE_SCR tag='/conto:BA020_312/' type=CE_SCR
+				obj 3603 'Сульфидно-медная руда Шемурская' dbcode=obj3721_1_CE_SCR type=CE_SCR
+			obj 2157 'ЗАО "Шемур"-Ново-шемурское месторождение' dbcode=obj3721_2 tag='/peredel:NF_RD/ /peredellevel:10/ /carow:CA_STRUCT2100/' type=PL_KR div=USL
+				obj 3116 'Руда медно-цинковая (услуга) НШР' dbcode=obj1523_6_CE_MZR tag='/conto:BA020_312/' type=CE_MZR
+				obj 3117 'Руда сульфидная медная (услуга) НШР' dbcode=obj1523_6_CE_SCR tag='/conto:BA020_312/' type=CE_SCR
+				obj 3601 'Сульфидно-медная руда Ново-Шемурская' dbcode=obj3721_2_CE_SCR type=CE_SCR
+				obj 3602 'Медно-цинковая руда Ново-Шемурская' dbcode=obj3721_2_CE_MZR type=CE_MZR
+		obj 787 'ОАО "Метмаш"' dbcode=obj3818 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STAL point=34315
+		obj 969 'ЗАО "Агрофирма Патруши"' dbcode=obj4056 tag='/carow:CA_STRUCT2000/' type=OWNORG div=AGRO point=34374.1
+		obj 970 'ООО "Улыбка лета"' dbcode=obj4057 tag='/carow:CA_STRUCT2000/' type=OWNORG div=AGRO point=65401000000
+		obj 971 'ЗАО "Тепличное"' dbcode=obj4058 tag='/carow:CA_STRUCT2000/' type=OWNORG div=AGRO point=65401000000
+		obj 1013 'ООО "УГМК-Страхование"' dbcode=obj4219 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 1022 'ООО СМК "УГМК-Медицина"' dbcode=obj4233 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 1038 'ООО "Орика УГМК"' dbcode=obj5138 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=495
+		obj 1042 'ООО "Уралмеханобр-УГМК"' dbcode=obj5002 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 1045 'ОАО "Завод керамических изделий"' dbcode=obj6664006956 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STR point=65401000000
+		obj 1046 'ООО "УГМК-ОЦМ"' dbcode=obj5005 tag='/carow:CA_STRUCT2000/' type=OWNORG div=OCM point=65420000000
+		obj 1047 'ООО "УГМК-Сталь"' dbcode=obj5006 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STAL point=65420000000
+			obj 3564 'ООО "УГМК-Сталь" - ТММЗ' dbcode=obj5006_1 tag='/peredellevel:30/ /carow:CA_STRUCT2100/' type=PEREDEL div=USL point=3452
+		obj 1050 'ЗАО "Уралкабель"' dbcode=obj5008 tag='/carow:CA_STRUCT2000/' type=OWNORG div=CAB point=65401000000
+		obj 1051 'ООО "Уралмедьстрой-1"' dbcode=obj5009 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STR point=65420000000
+		obj 1052 'ООО ИСК "Верх-Исетская"' dbcode=obj5010 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 1053 'ООО "ТД "Урал-щебень"' dbcode=obj5011 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65420000000
+		obj 1054 'ООО "УГМК-Телеком"' dbcode=obj5012 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65420000000
+		obj 1055 'ЗАО "Ведение реестров компаний"' dbcode=obj5013 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 1057 'ЗАО "Энергопромышленная компания"' dbcode=obj5014 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 1058 'ООО "Сафьяновская медь - Медин"' dbcode=obj5015 tag='/carow:CA_STRUCT2000/' type=OWNORG div=USL point=34364
+		obj 1059 'НО НПФ "УГМК-Перспектива"' dbcode=obj5016 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 1060 'ООО "УЦ-Трейд"' dbcode=obj5017 type=OWNORG div=USL point=0VIRTMO
+		obj 1062 'ООО "Башкирская медь"' dbcode=obj0267011229 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=34775
+			obj 3571 'Карьер "Юбилейный"' dbcode=obj02670_PL_KR_1 type=PL_KR
+				obj 3635 'Медноколчеданная руда Юбил.м/р.' dbcode=obj02670_CE_MKR type=CE_MKR
+				obj 3636 'Медноколчеданная руда (ковеллиновая) Юбил. м/р' dbcode=obj02670_CE_MKRCOV type=CE_MKRCOV
+			obj 3572 'Карьер "Дергамышский"' dbcode=obj02670_PL_KR_2 type=PL_KR
+				obj 3637 'Медно-кобальтовая руда Дерг.м/р.' dbcode=obj02670_CE_MKOBR type=CE_MKOBR
+		obj 1063 'ООО "Оренбургская горно-металлургическая компания"' dbcode=obj5020 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=3532
+		obj 1064 'ОАО "НИКИ"' dbcode=obj5021 tag='/carow:CA_STRUCT2000/' type=OWNORG div=CAB point=3822
+		obj 1065 'ООО "УГМК-Цемент"' dbcode=obj5022 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=8672
+		obj 1066 'FBC Майданпек' dbcode=obj5023 tag='/carow:CA_STRUCT2000/' type=OWNORG div=OCM point=038_01
+			obj 3291 'Майданпек - производство проката' dbcode=obj5023_2 type=PL_OCM div=USL point=038_01
+				obj 3292 'Прокат медный Майданпек' dbcode=obj5023_CE_CU type=CE_RL_CU
+				obj 3293 'Прокат латунный Майданпек' dbcode=obj5023_CE_LT type=CE_RL_LT
+		obj 1067 'ОАО "УК "Кузбассразрезуголь"' dbcode=obj4205049090 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGOL point=3842
+		obj 1068 'ООО "Разрез Южный"' dbcode=obj5025 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGOL point=3843.1
+		obj 1069 'ООО "Промугольсервис"' dbcode=obj5026 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGOL point=3843
+		obj 1070 'ЗАО "Телекомпания АТН"' dbcode=obj5101 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 1071 'ЗАО ТРВК "10 канал-Губерния"' dbcode=obj5102 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 1072 'ООО "Кузбасссвязьуголь"' dbcode=obj5201 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=3842
+		obj 1073 'ОАО "Колтек"' dbcode=obj5202 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=49245
+		obj 1076 'ООО "Метресурс"' dbcode=obj5126 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STAL point=80401000000
+		obj 1077 'ООО "Ресурс"' dbcode=obj5127 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STAL point=3452
+		obj 1078 'ООО "Метресурс-С"' dbcode=obj5128 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STAL point=65420000000
+		obj 1079 'ООО "Метресурс-К"' dbcode=obj5129 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STAL point=3522
+		obj 1080 'ООО "Метресурс-П"' dbcode=obj5130 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STAL point=34271
+		obj 1081 'ООО "Симбирские металлы"' dbcode=obj5131 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STAL point=8422
+		obj 1083 'ЗАО ИТО "Агрос"' dbcode=obj5132 type=OWNORG point=65401000000
+		obj 1084 'ООО "Медьпромагро"' dbcode=obj5133 type=OWNORG div=AGRO point=35362.1
+		obj 1085 'ООО "Агрофирма Байрамгул"' dbcode=obj5134 tag='/carow:CA_STRUCT2000/' type=OWNORG div=AGRO point=34791.1
+		obj 1086 'ОАО "Макушинский элеватор"' dbcode=obj5236 tag='/carow:CA_STRUCT2000/' type=OWNORG div=AGRO point=35236
+		obj 1087 'ЗАО Агрофирма "Шутихинская"' dbcode=obj5137 tag='/carow:CA_STRUCT2000/' type=OWNORG div=AGRO point=35251.1
+		obj 1092 'ООО "Управляющая портовая компания"' dbcode=obj6001 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGOL point=495
+		obj 1093 'ОАО "Восточный порт"' dbcode=obj6002 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGOL point=495
+		obj 1094 'ОАО "Ростерминалуголь"' dbcode=obj6003 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGOL point=495
+		obj 1095 'Coal Terminal AS' dbcode=obj6004 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGOL point=495
+		obj 1096 'ООО "Бизнес Сервис"' dbcode=obj6101 type=OWNORG point=65420000000
+		obj 1097 'ОАО "Екатеринбургский мукомольный завод"' dbcode=obj6201 tag='/carow:CA_STRUCT2000/' type=OWNORG div=AGRO point=65401000000
+		obj 1098 'ООО "ГК Уральское золото"' dbcode=obj6301 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65420000000
+		obj 1099 'ОАО "Малышевское рудоуправление"' dbcode=obj6302 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=34365
+			obj 3620 'Отвал МРУ' dbcode=obj6302_1 type=PL_KR
+				obj 3621 'Кварц-полевошпатовая руда МРУ' dbcode=obj6302_CE_KPS type=CE_KPS
+		obj 1100 'ООО "Компания ЕК"' dbcode=obj6401 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 1101 'ЗАО "Клаас-строй"' dbcode=obj6402 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STR point=65401000000
+		obj 1102 'ООО "Програнд"' dbcode=obj6403 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STR point=3842
+		obj 1103 'ООО "ЕМЦ УГМК-Здоровье"' dbcode=obj6404 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 1105 'ОАО "Кировградская металлургическая компания"' dbcode=obj6303 type=OWNORG div=USL point=34357
+		obj 1106 'ОАО "Сафьяновская медь"' dbcode=obj6304 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=34364
+			obj 3615 'Сафьяновский карьер' dbcode=obj6304_1 type=PL_KR
+				obj 3616 'Руда сульфидная медная Сафмеди' dbcode=obj6304_1_CE_SCR type=CE_SCR
+				obj 3799 'Руда золото-серебрянная Сафмеди' dbcode=obj6304_1_CE_AUAG type=CE_AUAG
+			obj 3801 'Сафьновский карьер (свод)' dbcode=obj6304_1S type=PLS_KR
+				obj 3800 'Руда Сафмеди (свод)' dbcode=obj6304_1_CE_RUDA type=CE_RUDA
+		obj 1108 'ОАО "Челябинский цинковый завод"' dbcode=CHCZ comment='ОАО "Челябинский цинковый завод"' tag='/carow:CA_STRUCT2000/ /aliased/' type=OWNORG div=ZINK point=351
+			obj 2073 'ОАО "ЧЦЗ" - металлургичский передел' dbcode=1108_1 tag='/peredel:NF_MET/ /peredellevel:30/ /carow:CA_STRUCT2100/' type=PEREDEL div=ZINK point=351
+		obj 1109 'НЕПРОМСТРОИТЕЛЬСТВО' dbcode=НЕПРОМСТРОИТЕЛЬСТВО type=OWNORG
+		obj 1110 'ООО "Султановский рудник"' dbcode=ОООСР tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=35148
+		obj 1113 'ТОО "Nova Цинк"' dbcode=ТООNЦ comment='ТОО "Nova Цинк"' tag='/carow:CA_STRUCT2000/' type=OWNORG div=ZINK point=495
+			obj 2184 'ТОО "Nova Цинк" Акжальское месторождение' dbcode=TOONЦ_1 type=PL_KR
+		obj 1114 '"The Brock Metal company"' dbcode=TBMC comment='"The Brock Metal company"' tag='/carow:CA_STRUCT2000/' type=OWNORG div=ZINK point=495
+		obj 1115 'ООО "Управляющая портовая компания" (устар.)' dbcode=ОООУПК type=OWNORG div=USL point=495
+		obj 1116 'ООО "Сибкабель"' dbcode=ОООС type=OWNORG div=TD point=495
+		obj 1117 'ЗАО "Торговый дом УГМК"' dbcode=ЗАОТДУГМК tag='/carow:CA_STRUCT2000/' type=OWNORG div=TD point=495
+		obj 1162 'АО "Aircraft Industries"' dbcode=АОAI tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=ГВЧ
+		obj 1164 'ЗАО "Драгма"' dbcode=obj6305 tag='/carow:CA_STRUCT2000/' type=OWNORG div=TD point=65401000000
+		obj 1165 'ЗАО "УГМК-Вторцветмет"' dbcode=obj6306 tag='/carow:CA_STRUCT2000/' type=OWNORG div=TD point=65420000000
+		obj 1166 'ОАО "Сибайский ГОК"' dbcode=obj6311 tag='/carow:CA_STRUCT2000/' type=OWNORG div=GMK point=34775
+			obj 2158 'ОАО "Сибайский ГОК"-Нижняя Залежь' dbcode=obj6311_1 tag='/peredel:NF_RD/ /peredellevel:10/ /carow:CA_STRUCT2100/' type=PL_RD div=GMK point=34775
+				obj 3649 'Руда медная Нижн.зал.' dbcode=obj6311_CE_MR_1 type=CE_MR
+			obj 2159 'ОАО "Сибайский ГОК"-Новый Сибай окисл.' dbcode=obj6311_2 tag='/peredel:NF_RD/ /peredellevel:10/ /carow:CA_STRUCT2100/' type=PL_RD div=GMK point=34775
+				obj 3650 'Руда медная Нов.Сиб.' dbcode=obj6311_CE_MR_2 type=CE_MR
+		obj 1167 'ОАО "Гадельша"' dbcode=obj6312 type=OWNORG div=USL point=34775
+		obj 1168 'ЗАО "УГМК-Спортстрой"' dbcode=obj1119 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STR point=65420000000
+		obj 1170 'Отработка Узельгинского рудника' dbcode=1_472 comment='Пустой - удалить!' type=OWNORG point=ГВЧ
+		obj 1188 'Микрорайон "Северо-Восточный"' dbcode=PRFB_3192_472 type=OWNORG point=ГВЧ
+		obj 1229 'Представительство УГМК, г.Москва' dbcode=PRFB_314_357 type=OWNORG point=ГВЧ
+		obj 1429 'ОАО "Учалинский ГОК" (юр.лицо)' dbcode=УС type=OWNORG div=GMK point=34791
+		obj 1777 'ООО "Союз-Радиатор"' dbcode=obj21531 type=OWNORG div=OBR point=3532
+		obj 1786 'ОАО "Электрокабель "Кольчугинский завод"' dbcode=EKKZ tag='/carow:CA_STRUCT2000/' type=OWNORG div=CAB point=49245
+		obj 1835 'ООО "Хотел Девелопмент Компани"' dbcode=obj50101 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=65401000000
+		obj 1836 'ООО "Холдинг Кабельный Альянс"' dbcode=obj3707 tag='/carow:CA_STRUCT2000/' type=OWNORG div=CAB point=65401000000
+		obj 2151 'ООО "УГМК-Транс"' dbcode=obj6010 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGOL point=495
+		obj 2976 'ООО "ТРАНСГРУП АС"' dbcode=obj6020 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGOL point=495
+		obj 3529 'ООО "Горнорудная компания Урала"' dbcode=obj5027 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGOL point=3842
+		obj 3596 'ОАО "Екатеринбургский мукомольный завод-Инвест"' dbcode=obj62011 tag='/carow:CA_STRUCT2000/' type=OWNORG div=STR point=65401000000
+		obj 3804 'Ломозаготовители' dbcode=obj5100 type=OWNORG div=STAL point=65420000000
+		obj 3840 'ООО "СМУ "Уралэлектромедь"' dbcode=obj6405 type=OWNORG div=STR point=65420000000

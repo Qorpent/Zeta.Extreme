@@ -7,17 +7,17 @@ namespace demo
 		set colset = ^demo.colsets.m116
 			~class demo.import.forms.m116
 				oldthemacode=balans_reserv
-				needprimary=true
+				usingtype=primary
 				oldrole="ADMIN (FIN)"
 			~class demo.import.forms.m113
 			~class demo.import.forms.r216
 				oldthemacode=balans_rbp
-				needprimary=true
+				usingtype=primary
 				oldrole=FIN
 			~class demo.import.forms.r115
 			~class demo.import.forms.r130
 				oldthemacode=balans_rns
-				needprimary=true
+				usingtype=primary
 				oldrole=FIN
 			
 			
@@ -25,12 +25,12 @@ namespace demo
 			~class demo.import.forms.a111
 			~class demo.import.forms.r211
 				oldthemacode=balans_rsim
-				needprimary=true
+				usingtype=primary
 				oldrole=FIN
 				status=test
 			~class demo.import.forms.m225
 				oldthemacode=nalog_nds19
-				needprimary=true
+				usingtype=primary
 				oldrole=NAL
 				status=test
 			
@@ -39,7 +39,7 @@ namespace demo
 			~class demo.import.forms.m214
 			~class demo.import.forms.m217
 				oldthemacode=f7
-				needprimary=true
+				usingtype=primary
 				oldrole=DR
 			
 		set colset=^demo.colsets.m260
@@ -47,17 +47,17 @@ namespace demo
 			~class demo.import.forms.m250
 			~class demo.import.forms.m218
 				oldthemacode=f8
-				needprimary=true
+				usingtype=primary
 				oldrole=DR
 				
 		set colset=^demo.colsets.z410
 			~class demo.import.forms.z410
 				oldthemacode=calc_ocm
-				needprimary=true
+				usingtype=primary
 				oldrole=COST
 			~class demo.import.forms.z420
 				oldthemacode=calc_slitki
-				needprimary=true
+				usingtype=primary
 				oldrole=COST
 			
 	
@@ -68,43 +68,43 @@ namespace demo
 		~class demo.import.forms.m230
 			colset=^demo.colsets.m230
 				oldthemacode=ras_dk
-				needprimary=true
+				usingtype=primary
 				oldrole=DZK
 			
 		~class demo.import.forms.r510
 			colset=^demo.colsets.r510
-				needprimary=true
+				usingtype=primary
 			
 		~class demo.import.forms.r640
 			colset=^demo.colsets.r640
 				oldthemacode=balans_rdbp
-				needprimary=true
+				usingtype=primary
 				oldrole=FIN
 				status=test
 			
 		~class demo.import.forms.m220
 			colset=^demo.colsets.m220
 				oldthemacode=nalog
-				needprimary=true
+				usingtype=primary
 				oldrole=NAL
 			
 		~class demo.import.forms.m224
 			colset=^demo.colsets.m224
 				oldthemacode=nalog_nds_sfo
-				needprimary=true
+				usingtype=primary
 				oldrole=NAL
 		
 		~class demo.import.forms.s140
 			colset=^demo.colsets.s140
 				oldthemacode=finact
-				needprimary=true
+				usingtype=primary
 				oldrole=NAL
 				status=test
 				
 		~class demo.import.forms.m231
 			colset=^demo.colsets.m231
 				oldthemacode=ras_dk_ca
-				needprimary=true
+				usingtype=primary
 				oldrole=DZK
 				
 		~class demo.import.forms.m600
@@ -113,7 +113,7 @@ namespace demo
 		~class demo.import.forms.m211
 		~class demo.import.forms.m212
 		~class demo.import.forms.r131
-			needprimary=true
+			usingtype=primary
 		~class demo.import.forms.r260
 				
 				
@@ -152,4 +152,38 @@ namespace demo
 				where role=TRUE
 				groupby role
 				orderby role	
+				
+namespace demo.import.meta
+	~class autoblocks
+		+subsystem fin_grp bizcode="FI"
+		+block FIN name="Финансы" bizcode="FN"
+		+block KAZN name="Казначейство" bizcode="KZ"
+		#block fin_grp.DR oldcode=DR doubled=true
+		+block FA name="Финансовый анализ" bizcode="FA"
+		+block INVDR name="Инвестиции" bizcode="IN"
+		+block BANK name="Банки" bizcode="BN"
+		+block NAL name="Налоги" bizcode="NL"
+		+block DZK name="Дебиторы кредиторы" bizcode="DZ"
+		+block SOC name="Расходы на собственные нужды" bizcode="SN"
+		
+		+subsystem proiz_grp bizcode="PR"
+		+block BIO name="Экология" bizcode="EC"
+		+block OBPROIZ name="Объемы производства" bizcode="OP"
+		+block NOROLE name="Ноуроле?" bizcode="NR"
+		+block ENERGO name="Энергетика" bizcode="EN"
+		
+		+subsystem cost_grp bizcode="CL"
+		+block COST name="Себестоимость" bizcode="CS"
+		#block cost_grp.DR oldcode=DR doubled=true
+		+block SALE name="Продажи" bizcode="SL"
+		+block MTR name="Материально-технические ресурсы" bizcode="MR"
+		
+		+subsystem trud_grp bizcode="TR"		
+		+block ZP name="Зарплата" bizcode="ZP"
+		+block EDU name="Образование" bizcode="ED"
+		+block KADR name="Кадры" bizcode="KR"
+		
+			
+		
+			
 	

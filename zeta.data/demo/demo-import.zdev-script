@@ -22,6 +22,11 @@ zdev-script demo_import
 			generate-bizprocesses  name=bizprocesses primary-only
 			generate-objtypes name=objtypes
 			generate-objdivs name=objdivs
+			generate-objects name=objects onlyownonroot = true
+			generate-geo name=geo
+			set subsystemaliases="analysisg=fin_grp;eco_grp=fin_grp" excluderoots="m150,m140,m130"
+				generate-themastructure name=themastructure 
+				generate-themastructure name=autoblocks blockonly=true
 		
 		# скрипты генерации форм
 		set namespace=${_formns} into = ${_formdir}
