@@ -64,6 +64,11 @@ table.data td.data.active:after {
     border: 1px solid #fff;
 }
 
+table.data td.data.editable.invalid {
+    font-weight: bold;
+    color: red;
+}
+
 .data.errordata {
     font-weight: bold;
     color: red;
