@@ -11,5 +11,6 @@
 		<Config Include="zetadev.ioc-manifest.bxl"/>
 		<Package Include="qi-mongo" />
 		<Ui Include=".\zdev.ui"/>
+		<Script Include="..\deployconfig\*.js"/>
 	</ItemGroup>
 </Project>
