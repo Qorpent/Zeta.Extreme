@@ -1,7 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml.Linq;
+using Qorpent.Bxl;
 using Qorpent.Charts;
 using Qorpent.Charts.FusionCharts;
+using Qorpent.IO;
+using Qorpent.IoC;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
 using Zeta.Extreme.Model;
@@ -27,7 +32,6 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
         ///     Объект
         /// </summary>
         [Bind(Required = true)] public int Object { get; set; }
-
         /// <summary>
         /// 
         /// </summary>
@@ -43,17 +47,55 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
         /// <param name="obj"></param>
         /// <returns></returns>
         private object GenerateChart(int year, int period, int obj) {
-            var result = new Chart { Caption = "Monthly Revenue" };
+            var result = new Chart {
+                Caption = "Котировки цинка на LME",
+                SubCaption = "$ за тонну ZN"
+            };
 
-            foreach (var q in GetDataCase2()) {
-                var qr = q.GetResult();
-          
-                result.AddSet(Periods.Get(q.Time.Period).Name, qr.NumericResult);
+            var dataset1 = new ChartDataset();
+
+            foreach (var q in GetDataCase2()) {         
+                var set = new ChartSet();
+                set.Set(FusionChartApi.Set_Label, Periods.Get(q.Time.Period).Name);
+                set.Set(FusionChartApi.Set_Value, q.GetResult().NumericResult);
+                dataset1.Add(set);
             }
 
-            result.Config = new ChartConfig {Type = FusionChartType.Line.ToString()};
+
+            var dataset2 = new ChartDataset();
+
+            foreach (var q in GetDataCase2Line2()) {
+                var set = new ChartSet();
+                set.Set(FusionChartApi.Set_Label, Periods.Get(q.Time.Period).Name);
+                result.Categories.Add(new ChartCategory().SetLabelValue(Periods.Get(q.Time.Period).Name));
+                set.Set(FusionChartApi.Set_Value, q.GetResult().NumericResult);
+                dataset2.Add(set);
+            }
+
+            result.Datasets.Add(dataset1);
+            result.Datasets.Add(dataset2);
+
+            result.CaptionPadding = 10;
+            result.Config = new ChartConfig {
+                Type = FusionChartType.MSLine.ToString()
+            };
+
+
+
             return result;
 
+        }
+        private IEnumerable<IQuery> GetDataCase2Line2() {
+            var rowcode = "m203118";
+            var colcode = "PLANGOD";
+            var periods = new[] { 11, 12, 13, 14, 15, 16 };
+
+            var s = new Session();
+            return periods.Select(p => s.Register(new Query {
+                Row = { Code = rowcode },
+                Col = { Code = colcode },
+                Time = { Year = 2013, Period = p }
+            }));
         }
         /// <summary>
         ///     Собирает данные для «Котировки цинка на LME»

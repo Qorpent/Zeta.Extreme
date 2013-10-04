@@ -1,6 +1,11 @@
 ref Zeta.Extreme.Developer
+ref Qorpent.IO
+
+using Qorpent.IO
 using Zeta.Extreme.Developer.Config
 
+singleton FileStorageFs : IFileStorage
+	WorkingDirectory "D:\\Work\\.app\\zdev\\.prss"
 
 singleton DeveloperConfig : IDeveloperConfig
 	ThemaComiledFolder="C:\\Themas\\COMPILED"
