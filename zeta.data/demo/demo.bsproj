@@ -7,6 +7,8 @@ project demo
 	
 	Zeta.Script demo_import if=useimport
 	
+	Zeta.BlockSetup from=demo.import.meta.themastructure into=formdef
+	
 	Include
 		Path /sys/
 		Path /demo/

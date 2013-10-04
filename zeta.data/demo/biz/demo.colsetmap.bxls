@@ -1,0 +1,65 @@
+namespace demo
+	~class demo.import.forms.m111
+		colset=^demo.colsets.m111
+	
+	set colset = ^demo.colsets.m116
+		~class demo.import.forms.m116
+		~class demo.import.forms.m113
+		~class demo.import.forms.r216
+		~class demo.import.forms.r115
+		~class demo.import.forms.r130
+			
+	set colset = ^demo.colsets.a111
+		~class demo.import.forms.a111
+		~class demo.import.forms.r211
+		~class demo.import.forms.m225
+			
+	set colset = ^demo.colsets.m217
+		~class demo.import.forms.m214
+		~class demo.import.forms.m217
+			
+	set colset=^demo.colsets.m260
+		~class demo.import.forms.m260
+		~class demo.import.forms.m250
+		~class demo.import.forms.m218
+			
+	set colset=^demo.colsets.z410
+		~class demo.import.forms.z410
+		~class demo.import.forms.z420
+			
+	~class demo.import.forms.m112
+		colset=^demo.colsets.m112
+		
+		
+	~class demo.import.forms.m230
+		colset=^demo.colsets.m230
+		
+	~class demo.import.forms.r510
+		colset=^demo.colsets.r510
+		
+	~class demo.import.forms.r640
+		colset=^demo.colsets.r640
+			
+	~class demo.import.forms.m220
+		colset=^demo.colsets.m220
+			
+	~class demo.import.forms.m224
+		colset=^demo.colsets.m224
+			
+	~class demo.import.forms.s140
+		colset=^demo.colsets.s140
+			
+	~class demo.import.forms.m231
+		colset=^demo.colsets.m231
+			
+	~class demo.import.forms.m600
+	~class demo.import.forms.f110
+	~class demo.import.forms.r590
+	~class demo.import.forms.m211
+	~class demo.import.forms.m212
+	~class demo.import.forms.r131
+	~class demo.import.forms.r260
+				
+		
+	
+	
