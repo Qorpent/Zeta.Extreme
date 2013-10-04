@@ -1,6 +1,6 @@
 ########################################################################################################################
 ####                                            Экспорт старших объектов                                            ####
-####                    version                        : 24.09.2013 11:14:30                                        ####
+####                    version                        : 01.10.2013 18:16:39                                        ####
 ########################################################################################################################
 namespace demo.import.meta
 	class objects
@@ -37,8 +37,8 @@ namespace demo.import.meta
 			obj 3052 'Переработка клинкера на ОАО "Сухоложский завод Вторцветмет"' dbcode=obj1956_CE_KL_PER type=CE_KL_PER
 			obj 3053 'Переработка немагнитного промпродукта на ОАО "Сухоложский завод Вторцветмет"' dbcode=obj1956_CE_MPP_PER type=CE_MPP_PER
 		obj 415 'ОАО "Ревдинский завод ОЦМ"' dbcode=obj1971 tag='/carow:CA_STRUCT2000/' type=OWNORG div=OCM point=34397
-			obj 3100 'Ревдинский завод ОЦМ - сырье (МЦ)' dbcode=obj1971_1 tag='/peredel:NF_PRT/ /peredellevel/' type=PEREDEL div=USL point=34397
-			obj 3285 'РзОЦМ - производство проката' dbcode=obj1971_2 type=PEREDEL div=USL point=34397
+			obj 3100 'РзОЦМ - производство слитков' dbcode=obj1971_1 tag='/peredel:NF_PRT/ /peredellevel/' type=PL_SCM div=USL point=34397
+			obj 3285 'РзОЦМ - производство проката' dbcode=obj1971_2 type=PL_OCM div=USL point=34397
 				obj 3286 'Прокат медный РзОЦМ' dbcode=obj1971_CE_CU type=CE_RL_CU
 				obj 3287 'Прокат латунный РзОЦМ' dbcode=obj1971_CE_LT type=CE_RL_LT
 				obj 3288 'Прокат бронзовый РзОЦМ' dbcode=obj1971_CE_BR type=CE_RL_BR
@@ -82,14 +82,14 @@ namespace demo.import.meta
 				obj 3614 'Руда медноколчеданная Левоб.м/р' dbcode=obj5604_3_CE_MKR type=CE_MKR
 			obj 3580 'Отвал' dbcode=obj5604_PL_KR_3 type=PL_KR
 		obj 468 'ОАО "Кировский завод ОЦМ"' dbcode=obj2150 tag='/carow:CA_STRUCT2000/' type=OWNORG div=OCM point=8332
-			obj 1889 'Кировский завод ОЦМ - производство проката' dbcode=obj2150_1 tag=/peredel/ type=PEREDEL div=USL point=8332
+			obj 1889 'Кировский завод ОЦМ - производство проката' dbcode=obj2150_1 tag=/peredel/ type=PL_OCM div=USL point=8332
 				obj 3274 'Прокат медный КзОЦМ' dbcode=obj2150_CE_CU type=CE_RL_CU
 				obj 3275 'Прокат латунный КзОЦМ' dbcode=obj2150_CE_LT type=CE_RL_LT
 				obj 3276 'Прокат бронзовый КзОЦМ' dbcode=obj2150_CE_BR type=CE_RL_BR
 				obj 3277 'Прокат медно-никелевый КзОЦМ' dbcode=obj2150_CE_CN type=CE_RL_CN
 				obj 3278 'Прокат никелевый КзОЦМ' dbcode=obj2150_CE_NI type=CE_RL_NI
 				obj 3742 'Прокат (свод) КзОЦМ' dbcode=obj2150_CE_RL type=CE_RL
-			obj 3097 'КЗОЦМ - сырье (МЦ)' dbcode=obj2150_2 tag='/peredel:NF_PRT/ /peredellevel/' type=PEREDEL div=USL point=8332
+			obj 3097 'КзОЦМ - производство слитков' dbcode=obj2150_2 tag='/peredel:NF_PRT/ /peredellevel/' type=PL_SCM div=USL point=8332
 				obj 3584 'Слитки медные' dbcode=obj2150_CE_BL_CU type=CE_BL_CU
 				obj 3585 'Слитки латунные' dbcode=obj2150_CE_BL_LT type=CE_BL_LT
 				obj 3586 'Слитки бронзовые' dbcode=obj2150_CE_BL_BR type=CE_BL_BR
@@ -121,8 +121,8 @@ namespace demo.import.meta
 			obj 1873 'ММСК - МП' dbcode=obj0267005602_1 tag='/peredel:NF_MET/ /peredellevel:30/ /carow:CA_STRUCT2100/' type=PEREDEL div=MET point=35379
 				obj 3272 'Медь черновая ММСК' dbcode=obj0267005602_CE_CHM type=CE_CHM
 		obj 497 'ЗАО "Кольчугцветмет"' dbcode=obj2527 tag='/carow:CA_STRUCT2000/' type=OWNORG div=OCM point=49245
-			obj 3098 'Кольчугцветмет - сырье (МЦ)' dbcode=obj2527_1 tag='/peredel:NF_PRT/ /peredellevel/' type=PEREDEL div=USL point=49245
-			obj 3279 'Кольчугцветмет - производство проката' dbcode=obj2527_2 type=PEREDEL div=USL point=49245
+			obj 3098 'Кольчугцветмет - производство слитков' dbcode=obj2527_1 tag='/peredel:NF_PRT/ /peredellevel/' type=PL_SCM div=USL point=49245
+			obj 3279 'Кольчугцветмет - производство проката' dbcode=obj2527_2 type=PL_OCM div=USL point=49245
 				obj 3280 'Прокат медный КЦМ' dbcode=obj2527_CE_CU type=CE_MK
 				obj 3281 'Прокат латунный КЦМ' dbcode=obj2527_CE_LT type=CE_RL_LT
 				obj 3282 'Прокат бронзовый КЦМ' dbcode=obj2527_CE_BR type=CE_RL_BR
@@ -203,6 +203,9 @@ namespace demo.import.meta
 		obj 1064 'ОАО "НИКИ"' dbcode=obj5021 tag='/carow:CA_STRUCT2000/' type=OWNORG div=CAB point=3822
 		obj 1065 'ООО "УГМК-Цемент"' dbcode=obj5022 tag='/carow:CA_STRUCT2000/' type=OWNORG div=PR point=8672
 		obj 1066 'FBC Майданпек' dbcode=obj5023 tag='/carow:CA_STRUCT2000/' type=OWNORG div=OCM point=038_01
+			obj 3291 'Майданпек - производство проката' dbcode=obj5023_2 type=PL_OCM div=USL point=038_01
+				obj 3292 'Прокат медный Майданпек' dbcode=obj5023_CE_CU type=CE_RL_CU
+				obj 3293 'Прокат латунный Майданпек' dbcode=obj5023_CE_LT type=CE_RL_LT
 		obj 1067 'ОАО "УК "Кузбассразрезуголь"' dbcode=obj4205049090 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGOL point=3842
 		obj 1068 'ООО "Разрез Южный"' dbcode=obj5025 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGOL point=3843.1
 		obj 1069 'ООО "Промугольсервис"' dbcode=obj5026 tag='/carow:CA_STRUCT2000/' type=OWNORG div=UGOL point=3843

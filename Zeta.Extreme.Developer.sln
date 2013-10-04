@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pkg", "Pkg", "{F755EF91-982
 		zdev.ui\zdev_debug_query.tpl.html = zdev.ui\zdev_debug_query.tpl.html
 		zdev.ui\zdev_export_dep_dot.tpl.html = zdev.ui\zdev_export_dep_dot.tpl.html
 		zdev.ui\zdev_export_fdep_dot.tpl.html = zdev.ui\zdev_export_fdep_dot.tpl.html
+		zdev.ui\zdev_export_thema_structure.tpl.html = zdev.ui\zdev_export_thema_structure.tpl.html
 		zdev.ui\zdev_export_tree_form.tpl.html = zdev.ui\zdev_export_tree_form.tpl.html
 		zdev.ui\zdev_transfer_data.tpl.html = zdev.ui\zdev_transfer_data.tpl.html
 		zetadev.ioc-manifest.bxl = zetadev.ioc-manifest.bxl
@@ -92,6 +93,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeta.Extreme.CompilerExtensions.Tests", "Zeta.Extreme.CompilerExtensions.Tests\Zeta.Extreme.CompilerExtensions.Tests.csproj", "{730E2B91-3405-4297-A5D2-2001938EE7E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.Integration.NetworkCredentialsEditor", "..\qorpent.integration\Qorpent.Integration.NetworkCredentialsEditor\Qorpent.Integration.NetworkCredentialsEditor.csproj", "{504C0589-4616-43B7-B13C-7AEBA0B70DFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpent.Integration.BSharp.Builder", "..\qorpent.integration\Qorpent.Integration.BSharp.Builder\Qorpent.Integration.BSharp.Builder.csproj", "{9F8A9B7F-0CAD-47A3-A3C7-F7AC3158864A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -219,6 +222,12 @@ Global
 		{504C0589-4616-43B7-B13C-7AEBA0B70DFF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{504C0589-4616-43B7-B13C-7AEBA0B70DFF}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
 		{504C0589-4616-43B7-B13C-7AEBA0B70DFF}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
+		{9F8A9B7F-0CAD-47A3-A3C7-F7AC3158864A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F8A9B7F-0CAD-47A3-A3C7-F7AC3158864A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F8A9B7F-0CAD-47A3-A3C7-F7AC3158864A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F8A9B7F-0CAD-47A3-A3C7-F7AC3158864A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F8A9B7F-0CAD-47A3-A3C7-F7AC3158864A}.SQL2008|Any CPU.ActiveCfg = SQL2008|Any CPU
+		{9F8A9B7F-0CAD-47A3-A3C7-F7AC3158864A}.SQL2008|Any CPU.Build.0 = SQL2008|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -233,6 +242,7 @@ Global
 		{96885C8F-AD20-41B4-86EE-BC9B3D47D9F9} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{31CE132D-BFE7-443E-B68C-8C05F0751BC5} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{504C0589-4616-43B7-B13C-7AEBA0B70DFF} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
+		{9F8A9B7F-0CAD-47A3-A3C7-F7AC3158864A} = {1136EDFF-ECB1-478B-8C5E-CD318D580DC6}
 		{A4442A74-4590-4BA3-B44C-56C98CE4A088} = {13F314AB-36D7-4BDA-B027-6D4D2D9E232A}
 		{A5177DFD-2D36-442F-A9C0-B79CD6DC7054} = {13F314AB-36D7-4BDA-B027-6D4D2D9E232A}
 		{44653DE7-DEE5-4960-A906-E0D6B1F83FCC} = {13F314AB-36D7-4BDA-B027-6D4D2D9E232A}

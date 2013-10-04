@@ -106,7 +106,9 @@ $.extend(api,(function(){
                             if (!!o.validate) {
                                 switch (o.validate) {
                                     case "validate-int-cell-number" :
-                                        o.validate = "-?[0-9]+"; break;
+                                        o.validate = "-?[0-9]+";
+                                        o.validateReadable = "целочисленные";
+                                        break;
                                     default :
                                         break;
                                 }

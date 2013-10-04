@@ -1,186 +1,39 @@
-namespace demo
-
-	set block = ^demo.blocks.fin
-		~class demo.import.forms.m111
-			colset=^demo.colsets.m111
-		
-		set colset = ^demo.colsets.m116
-			~class demo.import.forms.m116
-				oldthemacode=balans_reserv
-				usingtype=primary
-				oldrole="ADMIN (FIN)"
-			~class demo.import.forms.m113
-			~class demo.import.forms.r216
-				oldthemacode=balans_rbp
-				usingtype=primary
-				oldrole=FIN
-			~class demo.import.forms.r115
-			~class demo.import.forms.r130
-				oldthemacode=balans_rns
-				usingtype=primary
-				oldrole=FIN
+namespace demo.biz	
+	class themaindex "Индекс тем и автотем" prototype=bizindex
+		include demo.import.meta.themastructure body
+		include all formdef nochild
+			where block=true
 			
 			
-		set colset = ^demo.colsets.a111
-			~class demo.import.forms.a111
-			~class demo.import.forms.r211
-				oldthemacode=balans_rsim
-				usingtype=primary
-				oldrole=FIN
-				status=test
-			~class demo.import.forms.m225
-				oldthemacode=nalog_nds19
-				usingtype=primary
-				oldrole=NAL
-				status=test
-			
-			
-		set colset = ^demo.colsets.m217
-			~class demo.import.forms.m214
-			~class demo.import.forms.m217
-				oldthemacode=f7
-				usingtype=primary
-				oldrole=DR
-			
-		set colset=^demo.colsets.m260
-			~class demo.import.forms.m260
-			~class demo.import.forms.m250
-			~class demo.import.forms.m218
-				oldthemacode=f8
-				usingtype=primary
-				oldrole=DR
-				
-		set colset=^demo.colsets.z410
-			~class demo.import.forms.z410
-				oldthemacode=calc_ocm
-				usingtype=primary
-				oldrole=COST
-			~class demo.import.forms.z420
-				oldthemacode=calc_slitki
-				usingtype=primary
-				oldrole=COST
-			
-	
-		~class demo.import.forms.m112
-			colset=^demo.colsets.m112
-			
-			
-		~class demo.import.forms.m230
-			colset=^demo.colsets.m230
-				oldthemacode=ras_dk
-				usingtype=primary
-				oldrole=DZK
-			
-		~class demo.import.forms.r510
-			colset=^demo.colsets.r510
-				usingtype=primary
-			
-		~class demo.import.forms.r640
-			colset=^demo.colsets.r640
-				oldthemacode=balans_rdbp
-				usingtype=primary
-				oldrole=FIN
-				status=test
-			
-		~class demo.import.forms.m220
-			colset=^demo.colsets.m220
-				oldthemacode=nalog
-				usingtype=primary
-				oldrole=NAL
-			
-		~class demo.import.forms.m224
-			colset=^demo.colsets.m224
-				oldthemacode=nalog_nds_sfo
-				usingtype=primary
-				oldrole=NAL
-		
-		~class demo.import.forms.s140
-			colset=^demo.colsets.s140
-				oldthemacode=finact
-				usingtype=primary
-				oldrole=NAL
-				status=test
-				
-		~class demo.import.forms.m231
-			colset=^demo.colsets.m231
-				oldthemacode=ras_dk_ca
-				usingtype=primary
-				oldrole=DZK
-				
-		~class demo.import.forms.m600
-		~class demo.import.forms.f110
-		~class demo.import.forms.r590
-		~class demo.import.forms.m211
-		~class demo.import.forms.m212
-		~class demo.import.forms.r131
-			usingtype=primary
-		~class demo.import.forms.r260
-				
-				
-
-
-		
-	namespace blocks
-
-		~class eco owner=^demo.org.ub 
-			
-		~class proizv owner=^demo.org.proizv 
-		
-		~class personal owner=^demo.org.personal
-		
-	namespace biz	
-		class themaindex "Индекс тем и автотем" prototype=bizindex
-			include all formdef nochild
-				where block=true
-			include all subsystem
-			include all block
-			include all node
-			include all role
-			
-		class bizprocessbyform "Временная группировка бизнес-процессов по формам" 
-			include demo.import.meta.bizprocesses body
-				where rootrows=TRUE
-				groupby rootrows
-				orderby rootrows
-		class bizprocessbyprocess "Временная группировка бизнес-процессов по процессам" 
-			include demo.import.meta.bizprocesses body
-				where process=TRUE
-				groupby process
-				orderby process	
-		class bizprocessbyrole "Временная группировка бизнес-процессов по процессам" 
-			include demo.import.meta.bizprocesses body
-				where role=TRUE
-				groupby role
-				orderby role	
 				
 namespace demo.import.meta
-	~class autoblocks
+	~class themastructure
 		+subsystem fin_grp bizcode="FI"
 		+block FIN name="Финансы" bizcode="FN"
 		+block KAZN name="Казначейство" bizcode="KZ"
 		#block fin_grp.DR oldcode=DR doubled=true
 		+block FA name="Финансовый анализ" bizcode="FA"
 		+block INVDR name="Инвестиции" bizcode="IN"
-		+block BANK name="" bizcode="BN"
+		+block BANK name="Банки" bizcode="BN"
 		+block NAL name="Налоги" bizcode="NL"
-		+block DZK name="" bizcode="DZ"
-		+block SOC name="" bizcode="SO"
+		+block DZK name="Дебиторы кредиторы" bizcode="DZ"
+		+block SOC name="Расходы на собственные нужды" bizcode="SN"
 		
 		+subsystem proiz_grp bizcode="PR"
-		+block BIO name="" bizcode=""
-		+block OBPROIZ name="" bizcode=""
-		+block NOROLE name="" bizcode=""
-		+block ENERGO name="" bizcode=""
+		+block BIO name="Экология" bizcode="EC"
+		+block OBPROIZ name="Объемы производства" bizcode="OP"
+		+block NOROLE name="Ноуроле?" bizcode="NR"
+		+block ENERGO name="Энергетика" bizcode="EN"
 		
 		+subsystem cost_grp bizcode="CL"
-		+block COST name="" bizcode=""
+		+block COST name="Себестоимость" bizcode="CS"
 		#block cost_grp.DR oldcode=DR doubled=true
-		+block SALE name="" bizcode=""
-		+block MTR name="" bizcode=""
+		+block SALE name="Продажи" bizcode="SL"
+		+block MTR name="Материально-технические ресурсы" bizcode="MR"
 		
 		+subsystem trud_grp bizcode="TR"		
 		+block ZP name="Зарплата" bizcode="ZP"
-		+block EDU name="" bizcode=""
+		+block EDU name="Образование" bizcode="ED"
 		+block KADR name="Кадры" bizcode="KR"
 		
 			

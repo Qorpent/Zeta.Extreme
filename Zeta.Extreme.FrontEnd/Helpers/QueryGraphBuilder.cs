@@ -38,6 +38,10 @@ namespace Zeta.Extreme.FrontEnd.Helpers
         /// Флаг исключения нулевых не первичных запросов
         /// </summary>
         public bool PreserveCompact { get; set; }
+        /// <summary>
+        /// Флаг игнорирования дебаг-подсказок уровня строки
+        /// </summary>
+        public bool IgnoreRowLevelHints { get; set; }
 
         /// <summary>
         /// Вызывает процедуру построения графа
@@ -79,9 +83,18 @@ namespace Zeta.Extreme.FrontEnd.Helpers
             };
             yield return result;
             if (!q.IsPrimary) {
+                if(null!=master && CheckTerminal(q))yield break;
                 foreach (var e in GenerateEdges(q,master)) yield return e;
                 foreach (var e in GenerateChildNodes(visited, q,master)) yield return e;
             }
+        }
+
+        private bool CheckTerminal(Query query) {
+            var debugtag = query.Row.TagGet("debug");
+            if (debugtag == "1") {
+                return true;
+            }
+            return false;
         }
 
         private IEnumerable<GraphElementBase> GenerateChildNodes(List<IQuery> visited, Query q, IQuery master) {

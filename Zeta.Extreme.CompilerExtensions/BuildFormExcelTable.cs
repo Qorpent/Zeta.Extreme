@@ -39,7 +39,8 @@ namespace Zeta.Extreme.CompilerExtensions {
             _xls = XmlHtmlExtensions.CreateNewHtml()
                 .HtmlAddDefaultStyles()
                 .HtmlSetDocumentTitle(TITLE)
-                .HtmlAddHead1(TITLE);
+                .HtmlAddHead1(TITLE)
+                .HtmlFindRoot();
             _table = _xls.HtmlAddTable(
                 cls : "forminfo",
                 head : new {
@@ -50,9 +51,7 @@ namespace Zeta.Extreme.CompilerExtensions {
                     subsystem = "Подсистема",
                     mstatus = "Вмененный статус",
                     rstatus = "Реальный статус",
-                    oldgroup = "Группа (устар)",
-                    oldroleth = "Префикс роли (по th)",
-                    oldrole = "Префикс роли (по biz)",
+
                     
                 }
              );
@@ -68,15 +67,12 @@ namespace Zeta.Extreme.CompilerExtensions {
             _table.HtmlAddTableRow(cells:
             new object[] {
                 _number++,
-                compiled.Attr("oldthemacode"),
+                compiled.Attr("defaultformthema"),
                 compiled.Attr("formcode"),
                 bizcode.Substring(2,2),
                 bizcode.Substring(0,2),
                 compiled.Attr("usingtype"),
-                compiled.Attr("primarycompatibility"),
-                compiled.Attr("oldgroup"),
-                compiled.Attr("oldroleth"),
-                compiled.Attr("oldrole"),           
+                compiled.Attr("primarycompatibility"),       
             });
         }
 

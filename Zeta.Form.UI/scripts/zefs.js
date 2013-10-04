@@ -265,8 +265,22 @@ root.myform = root.myform ||  {
         var obj = window.zefs.getChanges();
         if ($.isEmptyObject(obj)) return;
         root.myform.datatosave = obj;
-        $(root).trigger(root.handlers.on_savestart);
-        api.data.saveready.execute();
+        if (obj.hasinvaliddata) {
+            var content = $('<div/>');
+            content.append($('<p/>').text("Введены данные, не соответствующие требуемому формату (отмечены красным жирным)."));
+            $.each(obj, function(i, o) {
+                if (o.invalid) {
+                    content.append($('<p/>').html(o.id + ' : <span style="color: red; font-weight: bold;">' + o.validaterule + '</span>'));
+                }
+            });
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+                title: "Не удалось сохранить форму",
+                content: content
+            });
+        } else {
+            $(root).trigger(root.handlers.on_savestart);
+            api.data.saveready.execute();
+        }
     };
 
     var ForceSave = function() {
@@ -567,6 +581,18 @@ root.myform = root.myform ||  {
 //          var idx = !$.isEmptyObject(result.data) ? result.ei+1 : result.si;
             window.setTimeout(function(){api.data.start.execute({session: root.myform.sessionId,startidx: idx})},500);
         }
+    });
+
+    api.data.start.onError(function(e, error) {
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            title: "Во время загрузки данных произошла ошибка",
+            text: "Попробуйте открыть форму заново или обратитесь за помощью в службу поддержки\r\n" + JSON.parse(error.responseText).text,
+            width: 700
+        });
+        HideFormPreloader();
+        // Это штука для перерисовки шапки
+        $(window).trigger("resize");
+        $(root).trigger(root.handlers.on_dataload);
     });
 
     api.data.reset.onSuccess(function() {
