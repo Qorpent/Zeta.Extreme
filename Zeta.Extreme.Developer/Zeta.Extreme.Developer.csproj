@@ -17,6 +17,7 @@
     <Compile Include="Actions\AnalyzeColumnsUsageAction.cs" />
     <Compile Include="Actions\AnalyzePeriodsUsageAction.cs" />
     <Compile Include="Actions\AnalyzerActionBase.cs" />
+    <Compile Include="Actions\Charts\ChartAction.cs" />
     <Compile Include="Actions\ExportData\ExportBizProcesses.cs" />
     <Compile Include="Actions\ExportData\ExportGeoAction.cs" />
     <Compile Include="Actions\ExportData\ExportObjDivsAction.cs" />
