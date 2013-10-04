@@ -583,6 +583,18 @@ root.myform = root.myform ||  {
         }
     });
 
+    api.data.start.onError(function(e, error) {
+        $(window.zeta).trigger(window.zeta.handlers.on_modal, {
+            title: "Во время загрузки данных произошла ошибка",
+            text: "Попробуйте открыть форму заново или обратитесь за помощью в службу поддержки\r\n" + JSON.parse(error.responseText).text,
+            width: 700
+        });
+        HideFormPreloader();
+        // Это штука для перерисовки шапки
+        $(window).trigger("resize");
+        $(root).trigger(root.handlers.on_dataload);
+    });
+
     api.data.reset.onSuccess(function() {
         root.myform.currentSession.data = [];
         $('td.data').addClass("notloaded");
