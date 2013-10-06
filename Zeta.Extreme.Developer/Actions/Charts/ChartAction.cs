@@ -74,6 +74,12 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
 
             result.Datasets.Add(dataset1);
             result.Datasets.Add(dataset2);
+            result.AsFusion().AddTrendLine(result, new ChartLine {
+                StartValue = 1750.0,
+                Color = "FF0000",
+                Dashed = true,
+                DisplayValue = "ТПФП"
+            });
 
             result.CaptionPadding = 10;
             result.Config = new ChartConfig {
