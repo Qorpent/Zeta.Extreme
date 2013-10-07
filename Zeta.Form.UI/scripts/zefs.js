@@ -693,14 +693,14 @@ root.myform = root.myform ||  {
     });
 
     api.metadata.getnews.onSuccess(function(e, result) {
-        var content = $('.zefsnews');
+        var content = $('#zefsnews');
         if (!$.isEmptyObject(result)) {
             var exist = false;
             if (content.length > 0) {
                 content.empty();
                 exist = true;
             } else {
-                content = $('<div class="zefsnews"/>');
+                content = $('<div/>');
             }
             $.each(result, function(i, m) {
                 var n = $('<div class="news-header"/>');
@@ -719,7 +719,7 @@ root.myform = root.myform ||  {
             var allowclose = zeta.user.getIsAdmin() || false;
             if (!exist) {
                 $(window.zeta).trigger(window.zeta.handlers.on_modal, {
-                    title: "Непрочитанные новости",
+                    title: "Непрочитанные новости", id: "zefsnews",
                     content: content, width: 820, height: 500, closebutton: allowclose, backdrop: true
                 });
             }
@@ -728,10 +728,6 @@ root.myform = root.myform ||  {
                 $(content).modal("hide");
             }
         }
-    });
-
-    api.metadata.archivenews.onSuccess(function(e, result) {
-        api.metadata.getnews.execute();
     });
 
     api.metadata.archivenews.onComplete(function(e, result) {
