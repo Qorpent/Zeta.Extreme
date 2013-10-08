@@ -36,7 +36,7 @@ namespace Zeta.Extreme.Developer.MetaStorage
                     {"Время последего обновления",srcperiods.Select(_=>_.Version).Max().ToString("yyyy-MM-dd HH:mm:ss")},
                 });
             builder.StartNamespace(Namespace);
-            builder.StartClass(ClassName,new{prototype="meta"});
+            builder.StartClass(ClassName,new{prototype="meta-periods"});
             builder.WriteElement(BSharpSyntax.ClassExportDefinition,ElementName);
             builder.WriteElement(BSharpSyntax.ClassElementDefinition,ElementName);
 
