@@ -426,7 +426,9 @@ namespace Zeta.Extreme {
 		/// </summary>
 		protected IQuery _query;
 
-		/// <summary>
+	    private object _context;
+
+	    /// <summary>
 		/// Нормализует измерение
 		/// </summary>
 		/// <param name="query"></param>
@@ -467,5 +469,21 @@ namespace Zeta.Extreme {
             var length = endindex - startindex;
             return Tag.Substring(startindex, length).Trim();
         }
+
+	    /// <summary>
+	    /// Общий метод установления некоего контекстного объекта, использование зависит от реализации
+	    /// </summary>
+	    /// <param name="context"></param>
+	    public void SetContext(object context) {
+	        _context = context;
+	    }
+
+	    /// <summary>
+	    /// Возвращает контекстный объект
+	    /// </summary>
+	    /// <returns></returns>
+	    public object GetContext() {
+	        return _context;
+	    }
 	}
 }
