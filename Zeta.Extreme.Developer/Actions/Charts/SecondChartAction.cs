@@ -36,7 +36,7 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
             }
             
             result.AsFusion().AddTrendLine(result, new ChartLine {
-                StartValue = 1750.0,
+                StartValue = 8384.0,
                 Color = "FF0000",
                 Dashed = true,
                 DisplayValue = "ТПФП"
