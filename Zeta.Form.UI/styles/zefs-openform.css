@@ -1,0 +1,49 @@
+.zefsnewform.widget {
+    margin-top: 4px;
+}
+
+.zefsnewform .dropdown-menu {
+    padding: 10px 20px;
+}
+
+.zefsnewform input {
+    padding: 2px 6px;
+    margin-top: 0;
+    margin-right: 3px;
+}
+
+.zefsnewform ul>div {
+    font-size: 9pt;
+    color: #666;
+}
+
+.zefsnewform form>button {
+    margin-left: 3px;
+}
+
+.zefsnewform label {
+    float: right;
+    font-size: 9pt;
+    color: #666;
+}
+
+.zefsnewform label>input{
+    margin-right: 0;
+    margin-left: 3px;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice.obj {
+    background-color: #b94a48;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice.form {
+    background-color: #3a87ad;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice.year {
+    background-color: #f89406;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice.period {
+    background-color: #468847;
+}

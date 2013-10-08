@@ -152,7 +152,8 @@
                    self.triggerOnError(result);
                    return;
                 }
-                result = self.wrap(result);
+
+                result = typeof result == "object" ? self.wrap(result) : result;
                 self.triggerOnSuccess(result);
             });
 		},
@@ -222,8 +223,7 @@
                         myoptions.onsuccess(JSON.parse(sessionStorage.getItem(ajaxinfo.url+"?"+JSON.stringify(ajaxinfo.data))),params);
                     }
                     else if( 200 == r.status) {
-
-                        if (!r.responseText.match(/^\s*</)) {
+                        if (!r.responseText.match(/^\s*</) && (r.responseText.indexOf("{") != -1 || r.responseText.indexOf("[") != -1)) {
                             if(ajaxinfo.type=="GET" && r.getResponseHeader("Last-Modified"))   {
                                 sessionStorage.setItem(ajaxinfo.url+"?"+JSON.stringify(ajaxinfo.data), r.responseText);
                             }

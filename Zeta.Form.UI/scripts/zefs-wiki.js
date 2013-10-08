@@ -292,7 +292,7 @@
             article.append(formstitle);
             $.each(result.forms, function(i, f) {
                 if (zefs.myform.currentSession.FormInfo.Code.search(f.code) != -1) return;
-                var a = $('<button class="btn-link"/>').text(f.name);
+                var a = $('<h5 class="btn-link"/>').text(f.name);
                 if (f.allow) {
                     a.click(function() { OpenForm({form: f.code}, true) });
                 }
