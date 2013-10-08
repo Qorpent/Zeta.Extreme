@@ -1,6 +1,8 @@
 class project abstract
 	GenerateSrcPkg = true
+	GenerateLibPkg = true
 	SrcPkgName = '${code}.bssrc'
+	LibPkgName = '${code}.bslib'
 	Layout TreeNamespace+IncludeWork
 	LogLevel Info
 	InputExtension bxls
