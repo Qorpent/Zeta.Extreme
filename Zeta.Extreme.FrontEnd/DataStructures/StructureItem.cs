@@ -123,5 +123,10 @@ namespace Zeta.Extreme.FrontEnd {
 		/// </summary>
 		[SerializeNotNullOnly]
 		public bool isformula;
+        /// <summary>
+        /// Класс поведения первичных строк для суммовых объектов см #UR-804
+        /// </summary>
+        [SerializeNotNullOnly]
+	    public int sumobjtype;
 	}
 }
