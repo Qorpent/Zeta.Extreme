@@ -1,6 +1,6 @@
 ########################################################################################################################
 ####                                             Экспорт структуры форм                                             ####
-####                    hash                           : 8l4W3O5QNs5Clyyh5XckaA==                                   ####
+####                    hash                           : c58vN2ZB/ozDLbeJguoR8Q==                                   ####
 ####                    BlocksOnly                     : True                                                       ####
 ########################################################################################################################
 namespace demo.import.meta
@@ -17,6 +17,7 @@ namespace demo.import.meta
 			block INVDR
 			block BANK
 			block NAL
+			block KPI
 			block DZK
 			block SOC
 		subsystem proiz_grp 'Производство'
