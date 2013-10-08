@@ -125,6 +125,7 @@ namespace Zeta.Extreme.FrontEnd {
 					Object.Name,
 					Currency=currency,
 					CurrencyRate = rate,
+                    SumObjType = Object.TagGet("sum_obj").ToInt() //#UR-804 поддержка суммовых объектов
 				};
 
 			if (null != Template.Thema) {
@@ -620,7 +621,7 @@ namespace Zeta.Extreme.FrontEnd {
 						 activecols = r.ResolveTag("activecol").SmartSplit().ToArray(),
 						 comment = r.Comment,
 						 isformula = r.IsFormula || (null!=r.RefTo) || (null!=r.ExRefTo),
-						 
+                         sumobjtype = r.TagGet("sum_obj").ToInt(),
 					 })
 					.Union(
 						(from ci in cols
