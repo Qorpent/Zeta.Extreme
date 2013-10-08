@@ -28,8 +28,11 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
             var dataset1 = ChartFrontEndBuilder.BuildDataset(year, "m203103", "PLANGOD", new[] { 11, 12, 13, 14, 15, 16 });
             var dataset2 = ChartFrontEndBuilder.BuildDataset(year, "m203118", "PLANGOD", new[] { 11, 12, 13, 14, 15, 16 });
 
-            dataset1.Set(FusionChartApi.Dataset_SeriesName, "Одна фигня");
-            dataset2.Set(FusionChartApi.Dataset_SeriesName, "Другая фигня");
+            dataset1.SeriesName = "Одна фигня";
+            dataset2.SeriesName = "Другая фигня";
+
+            dataset1.Color = "006699";
+            dataset2.Color = "424242";
 
             result.Datasets.Add(dataset1);
             result.Datasets.Add(dataset2);
@@ -38,7 +41,7 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
                 result.Categories.Add(cat);
             }
 
-            result.Set(FusionChartApi.Chart_LegendPosition, "RIGHT");
+            result.Set(FusionChartApi.Chart_LegendPosition, "BOTTOM");
 
             result.AsFusion().AddTrendLine(result, new ChartLine {
                 StartValue = 1750.0,

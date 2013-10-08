@@ -37,7 +37,7 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
         /// <param name="colCode"></param>
         /// <param name="periods"></param>
         /// <returns></returns>
-        public static IChartDataset BuildDataset(int year, string rowCode, string colCode, IEnumerable<int> periods) {
+        public static ChartDataset BuildDataset(int year, string rowCode, string colCode, IEnumerable<int> periods) {
             var dataset = new ChartDataset();
             foreach (var q in GetData(year, rowCode, colCode, periods)) {
                 var set = new ChartSet();
