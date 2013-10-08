@@ -3,7 +3,7 @@
 ####                    version                        : 08.10.2013 9:55:29                                         ####
 ########################################################################################################################
 namespace demo.import.meta
-	class objects
+	class objects prototype=meta-obj
 		export obj
 		element obj
 		obj 352 'ОАО "Уралэлектромедь"' dbcode=obj1521 tag='/carow:CA_STRUCT2000/' type=OWNORG div=MET point=65420000000
