@@ -67,7 +67,11 @@ namespace Zeta.Extreme.FrontEnd.Actions.States {
 				mysession.Start();
 				mysession.WaitData();
 			}
-			return mysession.SetState(state,Comment);
+			var result= mysession.SetState(state,Comment);
+            if (!result.Allow) {
+                Context.StatusCode = 500;
+            }
+		    return result;
 		}
 	}
 

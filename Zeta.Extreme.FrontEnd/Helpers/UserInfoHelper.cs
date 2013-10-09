@@ -56,7 +56,7 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public IList<SimpleUserInfo> GetUsersInfoByName(string name) {
+        public IEnumerable<SimpleUserInfo> GetUsersInfoByName(string name) {
             if (name.Contains("'")) {
                 throw new Exception("sql injection with usrinfo " + name);
             }
@@ -175,6 +175,23 @@ namespace Zeta.Extreme.FrontEnd.Helpers {
                 SysRoles = (fullData) ? userInfo.SysRoles : null,
                 Roles = string.Join(",", userInfo.SysRoles)
             };
+        }
+        /// <summary>
+        /// Возвращает перечисление пользователей по указанным логинам с ролями
+        /// </summary>
+        /// <param name="logins"></param>
+        /// <returns></returns>
+	    public IEnumerable<SimpleUserInfo> GetUsersInfoWithRoles(string[] logins) {
+            return logins.Select(login => GetUserInfoWithRoles(login));
+        }
+
+	    /// <summary>
+        /// Возвращает перечисление пользователей по указанным логинам без ролей
+        /// </summary>
+        /// <param name="logins"></param>
+        /// <returns></returns>
+        public IEnumerable<SimpleUserInfo> GetUsersInfo(string[] logins) {
+            return logins.Select(login => GetUserInfo(login));
         }
 	}
 }

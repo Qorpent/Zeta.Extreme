@@ -1,9 +1,9 @@
 ########################################################################################################################
 ####                                            Экспорт старших объектов                                            ####
-####                    version                        : 01.10.2013 18:16:39                                        ####
+####                    version                        : 08.10.2013 9:55:29                                         ####
 ########################################################################################################################
 namespace demo.import.meta
-	class objects
+	class objects prototype=meta-obj
 		export obj
 		element obj
 		obj 352 'ОАО "Уралэлектромедь"' dbcode=obj1521 tag='/carow:CA_STRUCT2000/' type=OWNORG div=MET point=65420000000
@@ -82,7 +82,7 @@ namespace demo.import.meta
 				obj 3614 'Руда медноколчеданная Левоб.м/р' dbcode=obj5604_3_CE_MKR type=CE_MKR
 			obj 3580 'Отвал' dbcode=obj5604_PL_KR_3 type=PL_KR
 		obj 468 'ОАО "Кировский завод ОЦМ"' dbcode=obj2150 tag='/carow:CA_STRUCT2000/' type=OWNORG div=OCM point=8332
-			obj 1889 'Кировский завод ОЦМ - производство проката' dbcode=obj2150_1 tag=/peredel/ type=PL_OCM div=USL point=8332
+			obj 1889 'КзОЦМ - производство проката' dbcode=obj2150_1 tag=/peredel/ type=PL_OCM div=USL point=8332
 				obj 3274 'Прокат медный КзОЦМ' dbcode=obj2150_CE_CU type=CE_RL_CU
 				obj 3275 'Прокат латунный КзОЦМ' dbcode=obj2150_CE_LT type=CE_RL_LT
 				obj 3276 'Прокат бронзовый КзОЦМ' dbcode=obj2150_CE_BR type=CE_RL_BR
@@ -121,7 +121,7 @@ namespace demo.import.meta
 			obj 1873 'ММСК - МП' dbcode=obj0267005602_1 tag='/peredel:NF_MET/ /peredellevel:30/ /carow:CA_STRUCT2100/' type=PEREDEL div=MET point=35379
 				obj 3272 'Медь черновая ММСК' dbcode=obj0267005602_CE_CHM type=CE_CHM
 		obj 497 'ЗАО "Кольчугцветмет"' dbcode=obj2527 tag='/carow:CA_STRUCT2000/' type=OWNORG div=OCM point=49245
-			obj 3098 'Кольчугцветмет - производство слитков' dbcode=obj2527_1 tag='/peredel:NF_PRT/ /peredellevel/' type=PL_SCM div=USL point=49245
+			obj 3098 'КЦМ - производство слитков' dbcode=obj2527_1 tag='/peredel:NF_PRT/ /peredellevel/' type=PL_SCM div=USL point=49245
 			obj 3279 'Кольчугцветмет - производство проката' dbcode=obj2527_2 type=PL_OCM div=USL point=49245
 				obj 3280 'Прокат медный КЦМ' dbcode=obj2527_CE_CU type=CE_MK
 				obj 3281 'Прокат латунный КЦМ' dbcode=obj2527_CE_LT type=CE_RL_LT

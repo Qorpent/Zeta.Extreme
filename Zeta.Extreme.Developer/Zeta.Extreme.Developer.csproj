@@ -18,6 +18,11 @@
     <Compile Include="Actions\AnalyzePeriodsUsageAction.cs" />
     <Compile Include="Actions\AnalyzerActionBase.cs" />
     <Compile Include="Actions\Charts\ChartAction.cs" />
+    <Compile Include="Actions\Charts\ChartActionBase.cs" />
+    <Compile Include="Actions\Charts\ChartFrontEndBuilder.cs" />
+    <Compile Include="Actions\Charts\FourthChartAction.cs" />
+    <Compile Include="Actions\Charts\SecondChartAction.cs" />
+    <Compile Include="Actions\Charts\ThirdChartAction.cs" />
     <Compile Include="Actions\ExportData\ExportBizProcesses.cs" />
     <Compile Include="Actions\ExportData\ExportGeoAction.cs" />
     <Compile Include="Actions\ExportData\ExportObjDivsAction.cs" />
