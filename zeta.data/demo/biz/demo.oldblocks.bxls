@@ -151,15 +151,6 @@ class demo_oldblock
 		block RAIL, 'Транспортировка ЖД транспортом', type=serv, orgnode=Rail_Fac
 		
 		block AUTO,  'Транспортировка автотранспортом', type=serv, orgnode=Auto_Fac
-
-
-		
-				
-			
-
-			
-					
-					
 					
 	subsystem FINDIR, 'Директор по экономике и финансам'
 		block FINMANAG, 'Управление финансами', type=man
@@ -170,18 +161,11 @@ class demo_oldblock
 			
 		block PRICE, 'Ценообразование', type=man, orgnode=CORPREPORT_Dept
 		block COST_elem, 'Затраты', type=man, stage = 1, orgnode=Cost_Dept
-			in PURCHASE
-			in PERS_econ
-			in OS
-			in USLUGI
 			thema m260
 		block COST_strus, 'Затраты', type=man, stage = 2, orgnode=Cost_Dept
 			thema m216
 			thema m217
 			thema m218
-			sdocument 'ПБУ 10/99'
-			budget
-			account ACCOUNT_PROIZ
 		block SEGMENT, 'Сегмент', type=man, stage = 3, orgnode=Cost_Dept
 			thema z250
 			thema z250
@@ -189,30 +173,19 @@ class demo_oldblock
 			thema z130
 			thema z410
 			thema z420	
-			document 'ПБУ 12/2010'
-			budget
-			account
 			
 		block CORP_rep, 'Корпоративная отчетность', type=man,	orgnode=CORPREPORT_Dept
 		
 		block CASH, 'Казначейство', type=man, orgnode Fin_Dept
-			in SALE
-			in COST
-			in TAX_D
-			in SOCIAL
-			in ACCOUNT
 			thema f110	
 			thema f120
-			document 'ПБУ 23/11'
 			
 		block CASH_DKZ, 'Деб. и кред. задолженность', type=man, orgnode=DKZ_Bureau
 			thema m230
 			thema m231, transaction=DKZ
-			document 'ПБУ 3/2006, '
 			
 		block CASH_ZAIM, 'Заемные обязательства', type=man, orgnode=ZAIM_Bureau
 			thema m2110, transaction=ZAIM
-			document 'ПБУ 15/08'
 			
 				
 	subsystem PERSDIR, 'Директор по персоналу', roleprefix=ZP
@@ -221,12 +194,10 @@ class demo_oldblock
 			thema t110
 			thema t210
 			thema t240
-			account ACCOUNT_PERS
 		block PERS_motiv, 'Мотивация персонала', type=man, orgnode=ZP_Dept
 			thema t220
 			thema t230
 			thema t250
-			account ACCOUNT_PERS, ACCOUNT_PROIZ
 		
 		block PERS_kadr, 'Движение персонала', type=man, orgnode=KADR_Dept
 			thema t110
@@ -234,7 +205,6 @@ class demo_oldblock
 		
 		block PERS_train, 'Обучение персонала', type=man, orgnode=Train_Fac
 			thema t260
-			account ACCOUNT_PROD
 
 	subsystem GADIR, 'Директор по общим вопросам',roleprefix=SOC
 		block GAMANAG, 'Социальные проекты', type=man
