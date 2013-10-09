@@ -1,0 +1,49 @@
+
+class themastructureold
+	orgnode GDIR, 'Генеральный директор', roleprefix='DR,FIN,FA'
+	orgnode GLBUH, 'Главный бухгалтер'
+		orgnode BA_Dept, 'Отдел(бюро) бухгалтерского учета',roleprefix='FIN'
+			orgnode BA_FAIA_Bureau, 'Бюро учета основных фондов и НМА',roleprefix='FIN'
+					orgnode BA__, 'Бюро учета капитального строительства',roleprefix='FIN'
+			orgnode BA_raw_Bureau, 'Бюро учета сырья',roleprefix='MTR'
+			orgnode BA_Purchase_Bureau, 'Бюро учета ТМЦ',roleprefix='MTR'
+			orgnode BA_Proiz_Bureau, 'Бюро учета производства',roleprefix='MTR,FIN,COST'
+			orgnode BA_Pers_Bureau, 'Бюро расчетов с персоналом и внебюджетными фондами',roleprefix='FIN,FA'
+			orgnode BA_Fao_Bureau, 'Бюро учета финансово-расчетных операций',roleprefix='FIN,FA'
+		orgnode TAX_Dept, 'Отдел(бюро) налогового учета', roleprefix=NAL
+			orgnode TAX_NDS_Bureau, 'Бюро учета НДС',roleprefix='FIN,FA'
+			orgnode TAX_Prib_Bureau, 'Бюро расчетов по налогу на прибыль',roleprefix='FIN,FA'
+		orgnode MA_Dept, 'Отдел(бюро) учета методологии и аудита'
+	orgnode TEXDIR, 'Технический директор'
+		orgnode Tech_Dept, 'Технический отдел'
+		orgnode PProd_Dept, 'Производственный отдел', roleprefix='OBPROIZ'
+		orgnode Proiz_Fac, 'Основное производство', roleprefix='OBPROIZ'
+		orgnode Ener_Dept, 'Служба главного энергетика', roleprefix='DR'
+		orgnode Mech_Dept, 'Служба главного механика', roleprefix='DR'
+		orgnode Control_Dept, 'Служба контроля продукции', roleprefix='DR'
+		orgnode Ecology_Dept, 'Служба по экологическим вопросам', roleprefix='BIO'
+	orgnode KCDIR, 'Директор по капитальному строительству'
+		orgnode KC_Dept, 'Отдел капитального строительства'
+	orgnode COMDIR, 'Коммерческий директор', roleprefix='MTR,SALE'
+		orgnode Raw_Dept, 'Отдел сырья', roleprefix='MTR'
+		orgnode Supply_Dept, 'Управление(отдел)снабжения', roleprefix='MTR'
+		orgnode Sale_Dept, 'Отдел продаж(сбыта)', roleprefix='SALE'
+		orgnode Rail_Fac, 'Железнодорожный цех'
+		orgnode Auto_Fac, 'Автотранспортный цех'
+	orgnode FINDIR, 'Директор по экономике и финансам'
+		orgnode Budget_Dept, 'Управление бюджетирования'
+			orgnode CORPREPORT_Dept, 'Отдел прогнозирования и методологии', roleprefix='COST,DR'
+			orgnode Cost_Dept, 'Отдел бюджетного регулирования и контроля', roleprefix='COST,DR'	
+			orgnode CORPREPORT_Dept, 'Отдел корпоративной отчетности', roleprefix='COST,DR'
+		orgnode Fin_Dept, 'Финансовый отдел', roleprefix='FIN,DZK,BANK'
+			orgnode DKZ_Bureau, 'Бюро финансовых операций', roleprefix=DZK
+			orgnode ZAIM_Bureau, 'Бюро заемных обязательств', roleprefix=BANK
+	orgnode PERSDIR, 'Директор по персоналу', roleprefix=ZP
+		orgnode ZP_Dept, 'Управление экономики труда', roleprefix=ZP
+		orgnode KADR_Dept, 'Отдел кадров'	, roleprefix=ZP
+		orgnode Train_Fac, 'Управление подготовки персонала', roleprefix=ZP
+	orgnode GADIR, 'Директор по общим вопросам',roleprefix=SOC
+		orgnode Social_Dept, 'Управление экономики социальной сферы',roleprefix=SOC
+	    	
+
+	
