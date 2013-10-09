@@ -86,6 +86,14 @@
     window.zefs.api.lock.setstateold.onComplete(function() {
         progress.hide();
     });
+    window.zefs.api.lock.set.onError(function(e, result) {
+        progress.hide();
+
+    });
+    window.zefs.api.lock.setstateold.onError(function(e, result) {
+        progress.hide();
+        
+    });
     window.zefs.api.lock.history.onSuccess(function(e, result) {
         if(!$.isEmptyObject(result)) {
             window.zefs.lockhistory = result;
@@ -96,37 +104,38 @@
             if (!$.isEmptyObject(hist)){
                 body.empty();
                 //.sort(function(a,b) { return a.Date < b.Date })
-                $.each(hist, function(i,h) {
-                    if (i == 10) {
-                        body.append($('<tr colspan="3"/>')
-                            .css("text-align", "center")
-                            .text("Еще " + ($.map(hist, function(n, i) { return i; }).length - i + 1)));
-                        return;
-                    }
-                    else if (i > 10) return;
-                    var lockstate = $('<span/>');
-                    if (h.State == "0ISOPEN") lockstate.text("Разблок.").addClass("state-open");
-                    else if (h.State == "0ISBLOCK") lockstate.text("Заблок.").addClass("state-block");
-                    else if (h.State == "0ISCHECKED") lockstate.text("Пров.").addClass("state-check");
-                    var u = $('<span class="label label-inverse"/>').text(h.User);
-                    var tr = $('<tr/>').append(
-                        $('<td/>').text(h.Date.format("dd.mm.yyyy HH:MM:ss")),
-                        $('<td/>').html(lockstate),
-                        $('<td/>').append(u)
-                    );
-                    var c = $('<td/>');
-                    if (!!h.Comment) {
-                        c.append('<i class="icon icon-comment"/>');
-                        c.click(function() {
-                            $(window.zeta).trigger(window.zeta.handlers.on_modal,
-                                { title: "Комментарий", text: h.Comment, width: 450 });
-                        });
-                    }
-                    tr.append(c);
-                    body.append(tr);
-
-                    u.zetauser();
-                    lockstate = null;
+                zeta.zetauser.getDetails($.unique($.map(hist, function(h) { return h.User })).join(","), function(users) {
+                    $.each(zefs.lockhistory, function(i, h) {
+                        if (i == 10) {
+                            body.append($('<tr colspan="3"/>')
+                                .css("text-align", "center")
+                                .text("Еще " + ($.map(hist, function(n, i) { return i; }).length - i + 1)));
+                            return;
+                        }
+                        else if (i > 10) return;
+                        var lockstate = $('<span/>');
+                        if (h.State == "0ISOPEN") lockstate.text("Разблок.").addClass("state-open");
+                        else if (h.State == "0ISBLOCK") lockstate.text("Заблок.").addClass("state-block");
+                        else if (h.State == "0ISCHECKED") lockstate.text("Пров.").addClass("state-check");
+                        var u = $('<span class="label label-inverse"/>').text(users[h.User].ShortName);
+                        var tr = $('<tr/>').append(
+                            $('<td/>').text(h.Date.format("dd.mm.yyyy HH:MM:ss")),
+                            $('<td/>').html(lockstate),
+                            $('<td/>').append(u)
+                        );
+                        u.click(function() { zeta.zetauser.renderDetails(users[h.User]) });
+                        var c = $('<td/>');
+                        if (!!h.Comment) {
+                            c.append('<i class="icon icon-comment"/>');
+                            c.click(function() {
+                                $(window.zeta).trigger(window.zeta.handlers.on_modal,
+                                    { title: "Комментарий", text: h.Comment, width: 450 });
+                            });
+                        }
+                        tr.append(c);
+                        body.append(tr);
+                        lockstate = null;
+                    });
                 });
             }
         }

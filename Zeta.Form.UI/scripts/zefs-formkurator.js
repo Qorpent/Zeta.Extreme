@@ -8,12 +8,14 @@
     $(root).on(root.handlers.on_sessionload, function() {
         var s = root.myform.currentSession;
         if (!!s.FormInfo.HoldResponsibility) {
-            var u = $('<span class="label label-success" style="display: none;"/>').text(s.FormInfo.HoldResponsibility);
+            var u = $('<span class="label label-success" style="display: none;"/>');
             k.html('Куратор формы <i class="icon icon-white"/>');
             k.click(function() {
                 u.trigger('click');
             });
-            u.zetauser();
+            zeta.zetauser.getDetails(s.FormInfo.HoldResponsibility, function(result) { 
+                u.click(function() { zeta.zetauser.renderDetails(result) });
+            });
             k.show();
         }
     });

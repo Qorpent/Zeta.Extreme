@@ -196,53 +196,55 @@
                 $(e.target).addClass("active");
                 $(".adminchat.chat-list-row").show();
             }));
-            $.each(cl, function(i,message) {
-                var tr = $('<div class="adminchat chat-list-row"/>').addClass(message.Type);
-                var u = $('<span class="label label-inverse"/>');
-                var arch = $('<i class="icon icon-ok pull-right"/>');
-                var f = $(filters.find('button.' + message.Type));
-                if (f.length == 0) {
-                    filters.append($('<button class="btn-link"/>').text(message.ReadableType).click(function(e) {
-                        filters.children().removeClass("active");
-                        $(e.target).addClass("active");
-                        $(".adminchat.chat-list-row").hide();
-                        $(".adminchat.chat-list-row." + message.Type).show();
-                    }).addClass(message.Type));
-                }
-                arch.click(function() {
-                    zefs.myform.chatarchive(message.Id);
-                });
-                var form = $.map(zefs.forms, function(i) { if (i.Code == message.FormCode.replace(/[A|B]\.in/,'')) return i });
-                var obj = $.map(zefs.objects, function(o) { if (o.id == message.ObjId) return o });
-                var formname = $('<span class="adminchat chat-list-cell formname"/>');
-                if (form.length > 0) {
-                    formname.text($(form).get(0).Name + " " + $(obj).get(0).name + " за " + zefs.getperiodbyid(message.Period) + ", " + message.Year + " год");
-                    formname.hover(function() { $(this).toggleClass("hovering") });
-                    formname.click(function(e) {
-                        var m = $(this).parents('.chat-list-row').data();
-                        e.preventDefault();
-                        zefs.myform.openform({form: m.FormCode, period: m.Period, obj: m.ObjId, year: m.Year}, true);
+            zeta.zetauser.getDetails($.map(cl, function(m) { return m.User }).join(","), function(users) {
+                $.each(cl, function(i, message) {
+                    var tr = $('<div class="adminchat chat-list-row"/>').addClass(message.Type);
+                    var u = $('<span class="label label-inverse"/>');
+                    u.click(function() { zeta.zetauser.renderDetails(users[message.User]) });
+                    var arch = $('<i class="icon icon-ok pull-right"/>');
+                    var f = $(filters.find('button.' + message.Type));
+                    if (f.length == 0) {
+                        filters.append($('<button class="btn-link"/>').text(message.ReadableType).click(function(e) {
+                            filters.children().removeClass("active");
+                            $(e.target).addClass("active");
+                            $(".adminchat.chat-list-row").hide();
+                            $(".adminchat.chat-list-row." + message.Type).show();
+                        }).addClass(message.Type));
+                    }
+                    arch.click(function() {
+                        zefs.myform.chatarchive(message.Id);
                     });
-                }
-                body.append(tr.append(
-                    arch,
-                    $('<div class="adminchat chat-list-cell username"/>').append(
-                        u.text(message.User),
-                        $('<div class="adminchat chat-list-cell date"/>').text(message.Date.format("dd.mm.yyyy HH:MM")),
-                        formname
-                    ),
-                    $('<div class="adminchat chat-list-cell message"/>').text(message.Text)
-                ));
-                // помечаем прочитанным
-                if (!!message.Userdata) {
-                    if (message.Userdata.archive) tr.addClass("archived");
-                }
-                if (message.isnew) {
-                    tr.addClass("notreaded");
-                }
-                tr.data(message);
-                u.zetauser();
-                tr = u = null;
+                    var form = $.map(zefs.forms, function(i) { if (i.Code == message.FormCode.replace(/[A|B]\.in/,'')) return i });
+                    var obj = $.map(zefs.objects, function(o) { if (o.id == message.ObjId) return o });
+                    var formname = $('<span class="adminchat chat-list-cell formname"/>');
+                    if (form.length > 0) {
+                        formname.text($(form).get(0).Name + " " + $(obj).get(0).name + " за " + zefs.getperiodbyid(message.Period) + ", " + message.Year + " год");
+                        formname.hover(function() { $(this).toggleClass("hovering") });
+                        formname.click(function(e) {
+                            var m = $(this).parents('.chat-list-row').data();
+                            e.preventDefault();
+                            zefs.myform.openform({form: m.FormCode, period: m.Period, obj: m.ObjId, year: m.Year}, true);
+                        });
+                    }
+                    body.append(tr.append(
+                        arch,
+                        $('<div class="adminchat chat-list-cell username"/>').append(
+                            u.text(users[message.User].ShortName), 
+                            $('<div class="adminchat chat-list-cell date"/>').text(message.Date.format("dd.mm.yyyy HH:MM")),
+                            formname
+                        ),
+                        $('<div class="adminchat chat-list-cell message"/>').text(message.Text)
+                    ));
+                    // помечаем прочитанным
+                    if (!!message.Userdata) {
+                        if (message.Userdata.archive) tr.addClass("archived");
+                    }
+                    if (message.isnew) {
+                        tr.addClass("notreaded");
+                    }
+                    tr.data(message);
+                    tr = u = null;
+                });
             });
         }
         UpdateButtonStatus();

@@ -442,6 +442,11 @@ root.myform = root.myform ||  {
 
     api.metadata.getformusers.onSuccess(function(e, result) {
         root.myform.users = result;
+        var users = {};
+        $.each(result, function(i, u) {
+            users[u.Login] = zeta.api.metadata.userinfo.wrap(u);
+        });
+        window.zeta.userinfostorage.AddOrUpdate(users);
         $(root).trigger(root.handlers.on_formusersload);
     });
 
@@ -693,6 +698,7 @@ root.myform = root.myform ||  {
     });
 
     api.metadata.getnews.onSuccess(function(e, result) {
+        if (typeof result == "string") return;
         var content = $('#zefsnews');
         if (!$.isEmptyObject(result)) {
             var exist = false;
