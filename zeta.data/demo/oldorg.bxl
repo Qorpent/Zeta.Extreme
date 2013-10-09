@@ -1,307 +1,307 @@
-#render orgstruct.xslt
-orgnode GDIR, 'Генеральный директор', roleprefix='DR,FIN,FA'
-	process STRATMANAG, 'Стратегическое управление', type=man
-		thema osnpok
-		thema balans2011
-		thema finplan
-	process INV, 'Инвестиции', type=man   
-		thema inv
-		thema finact, transaction=FINACT
-
-orgnode GLBUH, 'Главный бухгалтер'
-	orgnode BA_Dept, 'Отдел(бюро) бухгалтерского учета',roleprefix='FIN'
-		process ACCOUNT, 'Бухгалтерский учет', type=man
+class oldorg
+	orgnode GDIR, 'Генеральный директор', roleprefix='DR,FIN,FA'
+		process STRATMANAG, 'Стратегическое управление', type=man
+			thema osnpok
 			thema balans2011
-			thema prib_cons
-	    	thema free_active2011
-			document 'ПБУ 1/2008, ПБУ 4/99,  ПБУ 7/98,  ПБУ 22/2010'
-		orgnode BA_FAIA_Bureau, 'Бюро учета основных фондов и НМА',roleprefix='FIN'
-			process ACCOUNT_FAIA, 'Учет основных фондов и НМА', type=man	
- 	    		thema balans_rnma
- 	    		thema balans_ros
-				document 'ПБУ 6/01, ПБУ 14/07'
-				orgnode BA__, 'Бюро учета капитального строительства',roleprefix='FIN'
-			process ACCOUNT_OFNMA, 'Учет объектов КС', type=man	
- 	    		thema balans_rns
-				document 'ПБУ 2/2008'
-		orgnode BA_raw_Bureau, 'Бюро учета сырья',roleprefix='MTR'
-			process ACCOUNT_RAW, 'Учет сырья', type=man	
- 	    		thema raw_move_sobst, transaction=SIR003
- 	    		thema raw_move_dav, transaction=SIR1091
-				document 'ПБУ 6/01'
-		orgnode BA_Purchase_Bureau, 'Бюро учета ТМЦ',roleprefix='MTR'
-			process ACCOUNT_TMC, 'Учет ТМЦ', type=man 
-				thema balans_rsim
-				document 'ПБУ 6/01'
-   		orgnode BA_Proiz_Bureau, 'Бюро учета производства',roleprefix='MTR,FIN,COST'
-			process ACCOUNT_PROIZ, 'Учет затрат организации', type=man
-				thema obproizf, stage = 1 
-				thema prod, stage = 2 
-				thema pf, stage = 3 
-				thema vozvrat, stage = 4 
-				thema pril_rbp, stage = 5 
-				thema calc_zink, stage = 5 
-				thema calc_pb, stage = 5 
-				thema calc_sernkisl, stage = 5 
-				thema calc_chernmed, stage = 5 
-				thema calc_ocm, stage = 5 
-				thema calc_slitki, stage = 5 
-				thema sklad, transaction=SKLAD43, stage = 6
-				document 'ПБУ 10/99'
-		orgnode BA_Pers_Bureau, 'Бюро расчетов с персоналом и внебюджетными фондами',roleprefix='FIN,FA'
-			process ACCOUNT_PERS, 'Расчеты с персоналом', type=man
-				thema zp_zatr
-				document 'ПБУ 10/99'
-		orgnode BA_Fao_Bureau, 'Бюро учета финансово-расчетных операций',roleprefix='FIN,FA'
-			process ACCOUNT_FAO, 'Доходы и расходы организации', type=man
-				thema finact, transaction=FINACT
-				thema balans_rdbp
-				document 'ПБУ 19/02, ПБУ 9/99, ПБУ 10/99'	
-	orgnode TAX_Dept, 'Отдел(бюро) налогового учета', roleprefix=NAL
-		process TAX, 'Налоговый учет', type=man
-			in CASH  
-			thema nalog
-			document	
-		orgnode TAX_NDS_Bureau, 'Бюро учета НДС',roleprefix='FIN,FA'
-			process TAX_D, 'НДС', type=man
-				in SALE_real
-				thema nalog_nds
-				thema nalog_nds19, export
-				document 'Налоговый кодекс'	
-		orgnode TAX_Prib_Bureau, 'Бюро расчетов по налогу на прибыль',roleprefix='FIN,FA'
-			process ACCOUNT_PERS, 'Расчеты c персоналом', type=man
-				thema m265
-				document 'ПБУ 18/02 '
-	orgnode MA_Dept, 'Отдел(бюро) учета методологии и аудита'
-		process METOD_BA, 'Методология и аудит', type=man
+			thema finplan
+		process INV, 'Инвестиции', type=man   
+			thema inv
+			thema finact, transaction=FINACT
 
-orgnode TEXDIR, 'Технический директор'
-	orgnode Tech_Dept, 'Технический отдел'
-		process TECH, 'Технологии', type=osn
-	orgnode PProd_Dept, 'Производственный отдел', roleprefix='OBPROIZ'
-		process PPROD, 'Управление производством', type=osn	
-	orgnode Proiz_Fac, 'Основное производство', roleprefix='OBPROIZ'
-		process PROIZ, 'Производство', type=osn
-		process PROIZ_pod, 'Подготовка производства', stage = 1
-			in PURCHASE
-			in ENER
-			thema mat
-			thema ener
-		process PROIZ_pros, 'Технологический процесс', stage = 2
-			in RAW 
-			thema prod
-			thema vozvrat
-		process PROIZ_control, 'Приемка продукции', stage = 3
-			in PROD
-			thema m140
-			thema pf
-		process PROIZ_brak, 'Управление браком', stage = 4
-			
-	orgnode Ener_Dept, 'Служба главного энергетика', roleprefix='DR'
-		process ENER, 'Энергетика', type=serv   
-			thema
-			budget 
-		process ENER_sale, 'Покупка энергоресурсов', stage = 1 
-			thema r260180
-			thema r260175	
-			account CASH_DKZ
-			document
-		process ENER_proiz, 'Производство энергoресурсов', stage = 2 
-			thema r260135
-			document
-			budget  
-			account ACCOUNT_PROIZ
-		process ENER_potr,  'Потребление энергoресурсов', stage = 3 
-			thema m130
-			document СТ 009
-			budget  нормы ТЭР
-			account ACCOUNT_PROIZ	
-		process ENER_obor,  'Энергооборудование', stage = 4 
-			thema m250
-			document
-			budget  
-			account ACCOUNT_FAIA, process CASH_DKZ
-	orgnode Mech_Dept, 'Служба главного механика', roleprefix='DR'
-		process MECH, 'Механика', type=serv   
-			thema m250
-			thema
-		process MECH_sale, 'Покупка', stage = 1 
-			thema 
-			account CASH_DKZ
-			document
-		process MECH_proiz, 'Эксплуатация оборудования', stage = 2 
-			thema ГСМ
-			document
-			budget  
-			account ACCOUNT_PROIZ
-		process MECH_potr,  'Ремонт оборудования', stage = 3 
-			thema m250
-			document СТ 009
-			budget  нормы ТЭР
-			account ACCOUNT_PROIZ	
-		process MECH_obor,  'Оборудование', stage = 4 
-			thema m250
-			document
-			budget  
-			account ACCOUNT_FAIA, CASH_DKZ
-	orgnode Control_Dept, 'Служба контроля продукции', roleprefix='DR'
-		process Control, 'Статус продукции', type=serv   
-			thema
-	orgnode Ecology_Dept, 'Служба по экологическим вопросам', roleprefix='BIO'
-		process ECOL, 'Экология', type=serv   
-			thema m310
-			thema m315
-			thema m320
-			thema m321
-			document СТ 25
+	orgnode GLBUH, 'Главный бухгалтер'
+		orgnode BA_Dept, 'Отдел(бюро) бухгалтерского учета',roleprefix='FIN'
+			process ACCOUNT, 'Бухгалтерский учет', type=man
+				thema balans2011
+				thema prib_cons
+				thema free_active2011
+				document 'ПБУ 1/2008, ПБУ 4/99,  ПБУ 7/98,  ПБУ 22/2010'
+			orgnode BA_FAIA_Bureau, 'Бюро учета основных фондов и НМА',roleprefix='FIN'
+				process ACCOUNT_FAIA, 'Учет основных фондов и НМА', type=man	
+					thema balans_rnma
+					thema balans_ros
+					document 'ПБУ 6/01, ПБУ 14/07'
+					orgnode BA__, 'Бюро учета капитального строительства',roleprefix='FIN'
+				process ACCOUNT_OFNMA, 'Учет объектов КС', type=man	
+					thema balans_rns
+					document 'ПБУ 2/2008'
+			orgnode BA_raw_Bureau, 'Бюро учета сырья',roleprefix='MTR'
+				process ACCOUNT_RAW, 'Учет сырья', type=man	
+					thema raw_move_sobst, transaction=SIR003
+					thema raw_move_dav, transaction=SIR1091
+					document 'ПБУ 6/01'
+			orgnode BA_Purchase_Bureau, 'Бюро учета ТМЦ',roleprefix='MTR'
+				process ACCOUNT_TMC, 'Учет ТМЦ', type=man 
+					thema balans_rsim
+					document 'ПБУ 6/01'
+			orgnode BA_Proiz_Bureau, 'Бюро учета производства',roleprefix='MTR,FIN,COST'
+				process ACCOUNT_PROIZ, 'Учет затрат организации', type=man
+					thema obproizf, stage = 1 
+					thema prod, stage = 2 
+					thema pf, stage = 3 
+					thema vozvrat, stage = 4 
+					thema pril_rbp, stage = 5 
+					thema calc_zink, stage = 5 
+					thema calc_pb, stage = 5 
+					thema calc_sernkisl, stage = 5 
+					thema calc_chernmed, stage = 5 
+					thema calc_ocm, stage = 5 
+					thema calc_slitki, stage = 5 
+					thema sklad, transaction=SKLAD43, stage = 6
+					document 'ПБУ 10/99'
+			orgnode BA_Pers_Bureau, 'Бюро расчетов с персоналом и внебюджетными фондами',roleprefix='FIN,FA'
+				process ACCOUNT_PERS, 'Расчеты с персоналом', type=man
+					thema zp_zatr
+					document 'ПБУ 10/99'
+			orgnode BA_Fao_Bureau, 'Бюро учета финансово-расчетных операций',roleprefix='FIN,FA'
+				process ACCOUNT_FAO, 'Доходы и расходы организации', type=man
+					thema finact, transaction=FINACT
+					thema balans_rdbp
+					document 'ПБУ 19/02, ПБУ 9/99, ПБУ 10/99'	
+		orgnode TAX_Dept, 'Отдел(бюро) налогового учета', roleprefix=NAL
+			process TAX, 'Налоговый учет', type=man
+				in CASH  
+				thema nalog
+				document	
+			orgnode TAX_NDS_Bureau, 'Бюро учета НДС',roleprefix='FIN,FA'
+				process TAX_D, 'НДС', type=man
+					in SALE_real
+					thema nalog_nds
+					thema nalog_nds19, export
+					document 'Налоговый кодекс'	
+			orgnode TAX_Prib_Bureau, 'Бюро расчетов по налогу на прибыль',roleprefix='FIN,FA'
+				process ACCOUNT_PERS, 'Расчеты c персоналом', type=man
+					thema m265
+					document 'ПБУ 18/02 '
+		orgnode MA_Dept, 'Отдел(бюро) учета методологии и аудита'
+			process METOD_BA, 'Методология и аудит', type=man
 
-orgnode KCDIR, 'Директор по капитальному строительству'
-	process INV, 'Капитальное строительство', type=man   
-		thema m250
-	orgnode KC_Dept, 'Отдел капитального строительства'
-		process KC, 'Капитальное строительство', type=man    
-			thema r130
-				account ACCOUNT_OFNMA
-				document CN	
-			thema Строительство
-				account ACCOUNT_OFNMA
-				document CN			
-orgnode COMDIR, 'Коммерческий директор', roleprefix='MTR,SALE'
-	orgnode Raw_Dept, 'Отдел сырья', roleprefix='MTR'
-		process RAW, 'Закупка сырья', type=osn
-		process RAW_dog, 'Заключение договоров', stage = 1 
-		process RAW_f, 'Обеспечение производства сырьем', stage = 2
-		   	thema raw_move_sobst, transaction=SIR003
- 	    	thema raw_move_dav, transaction=SIR1091
-			document
-			budget
-			account ACCOUNT_RAW
-		process RAW_OA, 'Расчеты с поставщиками и подрядчиками', stage = 3
-			in PRAW_f
-			thema m230
-			thema m231, transaction=DKZ
-			account CASH_DKZ 
-	orgnode Supply_Dept, 'Управление(отдел)снабжения', roleprefix='MTR'
-		process PURCHASE, 'Закупка ТМЦ', type=osn	
-		process PURCHASE_dog, 'Заключение договоров', stage = 1 
-		process PURCHASE_f, 'Обеспечение', stage = 2
-			thema r211
-			document   
-			budget
-			account	ACCOUNT_PURCHASE
-		process RAW_OA, 'Расчеты с поставщиками и подрядчиками', stage = 3
-			in PURCHASE_f
-			thema m230
-			thema m231, transaction=DKZ
-			account CASH_DKZ 
-	orgnode Sale_Dept, 'Отдел продаж(сбыта)', roleprefix='SALE'
-		process SALE, 'Продажи', type=osn
-		process SALE, 'Заключение договоров', stage = 1 
-		process SALE, 'Складирование и хранение продукции', stage = 2 
-			thema sklad, transaction=SKLAD43
-			thema m218
-			document
-			budget
-			account ACCOUNT_PROIZ
-		process SALE_real, 'Реализация', stage = 3
-			thema sale, transaction=SALE90
-			thema m214
-			process 
-			document
-			budget
-			account ACCOUNT_FAO
-		process SALE, 'Расчеты с поставщиками и подрядчиками', stage = 4
-			in SALE_real
-			thema m230
-			thema m231, transaction=DKZ
-			account CASH_DKZ
-	orgnode Rail_Fac, 'Железнодорожный цех'
-		process RAIL, 'Транспортировка ЖД транспортом', type=serv
-	orgnode Auto_Fac, 'Автотранспортный цех'
-		process AUTO,  'Транспортировка автотранспортом', type=serv
-
-orgnode FINDIR, 'Директор по экономике и финансам'
-	process FINMANAG, 'Управление финансами', type=man
-	orgnode Budget_Dept, 'Управление бюджетирования'
-		process BUDGET, 'Бюджетирование', type=man
-			thema m200
-			thema m214
-		orgnode CORPREPORT_Dept, 'Отдел прогнозирования и методологии', roleprefix='COST,DR'
-			process PRICE, 'Ценообразование', type=man
-		orgnode Cost_Dept, 'Отдел бюджетного регулирования и контроля', roleprefix='COST,DR'	
-			process COST_elem, 'Затраты', type=man, stage = 1
+	orgnode TEXDIR, 'Технический директор'
+		orgnode Tech_Dept, 'Технический отдел'
+			process TECH, 'Технологии', type=osn
+		orgnode PProd_Dept, 'Производственный отдел', roleprefix='OBPROIZ'
+			process PPROD, 'Управление производством', type=osn	
+		orgnode Proiz_Fac, 'Основное производство', roleprefix='OBPROIZ'
+			process PROIZ, 'Производство', type=osn
+			process PROIZ_pod, 'Подготовка производства', stage = 1
 				in PURCHASE
-				in PERS_econ
-				in OS
-				in USLUGI
-				thema m260
-			process COST_strus, 'Затраты', type=man, stage = 2
-				thema m216
-				thema m217
-				thema m218
-				sdocument 'ПБУ 10/99'
-				budget
+				in ENER
+				thema mat
+				thema ener
+			process PROIZ_pros, 'Технологический процесс', stage = 2
+				in RAW 
+				thema prod
+				thema vozvrat
+			process PROIZ_control, 'Приемка продукции', stage = 3
+				in PROD
+				thema m140
+				thema pf
+			process PROIZ_brak, 'Управление браком', stage = 4
+				
+		orgnode Ener_Dept, 'Служба главного энергетика', roleprefix='DR'
+			process ENER, 'Энергетика', type=serv   
+				thema
+				budget 
+			process ENER_sale, 'Покупка энергоресурсов', stage = 1 
+				thema r260180
+				thema r260175	
+				account CASH_DKZ
+				document
+			process ENER_proiz, 'Производство энергoресурсов', stage = 2 
+				thema r260135
+				document
+				budget  
 				account ACCOUNT_PROIZ
-			process SEGMENT, 'Сегмент', type=man, stage = 3
-				thema z250
-				thema z250
-				thema z210
-				thema z130
-				thema z410
-				thema z420	
-				document 'ПБУ 12/2010'
+			process ENER_potr,  'Потребление энергoресурсов', stage = 3 
+				thema m130
+				document СТ 009
+				budget  нормы ТЭР
+				account ACCOUNT_PROIZ	
+			process ENER_obor,  'Энергооборудование', stage = 4 
+				thema m250
+				document
+				budget  
+				account ACCOUNT_FAIA, process CASH_DKZ
+		orgnode Mech_Dept, 'Служба главного механика', roleprefix='DR'
+			process MECH, 'Механика', type=serv   
+				thema m250
+				thema
+			process MECH_sale, 'Покупка', stage = 1 
+				thema 
+				account CASH_DKZ
+				document
+			process MECH_proiz, 'Эксплуатация оборудования', stage = 2 
+				thema ГСМ
+				document
+				budget  
+				account ACCOUNT_PROIZ
+			process MECH_potr,  'Ремонт оборудования', stage = 3 
+				thema m250
+				document СТ 009
+				budget  нормы ТЭР
+				account ACCOUNT_PROIZ	
+			process MECH_obor,  'Оборудование', stage = 4 
+				thema m250
+				document
+				budget  
+				account ACCOUNT_FAIA, CASH_DKZ
+		orgnode Control_Dept, 'Служба контроля продукции', roleprefix='DR'
+			process Control, 'Статус продукции', type=serv   
+				thema
+		orgnode Ecology_Dept, 'Служба по экологическим вопросам', roleprefix='BIO'
+			process ECOL, 'Экология', type=serv   
+				thema m310
+				thema m315
+				thema m320
+				thema m321
+				document СТ 25
+
+	orgnode KCDIR, 'Директор по капитальному строительству'
+		process INV, 'Капитальное строительство', type=man   
+			thema m250
+		orgnode KC_Dept, 'Отдел капитального строительства'
+			process KC, 'Капитальное строительство', type=man    
+				thema r130
+					account ACCOUNT_OFNMA
+					document CN	
+				thema Строительство
+					account ACCOUNT_OFNMA
+					document CN			
+	orgnode COMDIR, 'Коммерческий директор', roleprefix='MTR,SALE'
+		orgnode Raw_Dept, 'Отдел сырья', roleprefix='MTR'
+			process RAW, 'Закупка сырья', type=osn
+			process RAW_dog, 'Заключение договоров', stage = 1 
+			process RAW_f, 'Обеспечение производства сырьем', stage = 2
+				thema raw_move_sobst, transaction=SIR003
+				thema raw_move_dav, transaction=SIR1091
+				document
 				budget
-				account
-		orgnode CORPREPORT_Dept, 'Отдел корпоративной отчетности', roleprefix='COST,DR'
-			process CORP_rep, 'Корпоративная отчетность', type=man	
-	orgnode Fin_Dept, 'Финансовый отдел', roleprefix='FIN,DZK,BANK'
-		process CASH, 'Казначейство', type=man
-			in SALE
-			in COST
-			in TAX_D
-			in SOCIAL
-			in ACCOUNT
-			thema f110	
-			thema f120
-			document 'ПБУ 23/11'
-		orgnode DKZ_Bureau, 'Бюро финансовых операций', roleprefix=DZK
-			process CASH_DKZ, 'Деб. и кред. задолженность', type=man
+				account ACCOUNT_RAW
+			process RAW_OA, 'Расчеты с поставщиками и подрядчиками', stage = 3
+				in PRAW_f
 				thema m230
 				thema m231, transaction=DKZ
-				document 'ПБУ 3/2006, '
-		orgnode ZAIM_Bureau, 'Бюро заемных обязательств', roleprefix=BANK
-			process CASH_ZAIM, 'Заемные обязательства', type=man
-				thema m2110, transaction=ZAIM
-				document 'ПБУ 15/08'
-		
-	    	
-orgnode PERSDIR, 'Директор по персоналу', roleprefix=ZP
-	process PERSMANAG, 'Управление персоналом', type=man
-	orgnode ZP_Dept, 'Управление экономики труда', roleprefix=ZP
-		process PERS_econ, 'Экономика труда', type=man
-			thema t110
-			thema t210
-			thema t240
-			account ACCOUNT_PERS
-		process PERS_motiv, 'Мотивация персонала', type=man
-			thema t220
-			thema t230
-			thema t250
-			account ACCOUNT_PERS, ACCOUNT_PROIZ
-	orgnode KADR_Dept, 'Отдел кадров'	, roleprefix=ZP
-		process PERS_kadr, 'Движение персонала', type=man
-			thema t110
-			thema t211
-	orgnode Train_Fac, 'Управление подготовки персонала', roleprefix=ZP
-		process PERS_train, 'Обучение персонала', type=man
-			thema t260
-			account ACCOUNT_PROD
+				account CASH_DKZ 
+		orgnode Supply_Dept, 'Управление(отдел)снабжения', roleprefix='MTR'
+			process PURCHASE, 'Закупка ТМЦ', type=osn	
+			process PURCHASE_dog, 'Заключение договоров', stage = 1 
+			process PURCHASE_f, 'Обеспечение', stage = 2
+				thema r211
+				document   
+				budget
+				account	ACCOUNT_PURCHASE
+			process RAW_OA, 'Расчеты с поставщиками и подрядчиками', stage = 3
+				in PURCHASE_f
+				thema m230
+				thema m231, transaction=DKZ
+				account CASH_DKZ 
+		orgnode Sale_Dept, 'Отдел продаж(сбыта)', roleprefix='SALE'
+			process SALE, 'Продажи', type=osn
+			process SALE, 'Заключение договоров', stage = 1 
+			process SALE, 'Складирование и хранение продукции', stage = 2 
+				thema sklad, transaction=SKLAD43
+				thema m218
+				document
+				budget
+				account ACCOUNT_PROIZ
+			process SALE_real, 'Реализация', stage = 3
+				thema sale, transaction=SALE90
+				thema m214
+				process 
+				document
+				budget
+				account ACCOUNT_FAO
+			process SALE, 'Расчеты с поставщиками и подрядчиками', stage = 4
+				in SALE_real
+				thema m230
+				thema m231, transaction=DKZ
+				account CASH_DKZ
+		orgnode Rail_Fac, 'Железнодорожный цех'
+			process RAIL, 'Транспортировка ЖД транспортом', type=serv
+		orgnode Auto_Fac, 'Автотранспортный цех'
+			process AUTO,  'Транспортировка автотранспортом', type=serv
 
-orgnode GADIR, 'Директор по общим вопросам',roleprefix=SOC
-	process GAMANAG, 'Социальные проекты', type=man
-	orgnode Social_Dept, 'Управление экономики социальной сферы',roleprefix=SOC
-		process SOCIAL, 'Социальные проекты', type=man
-			thema m600	
-		process SOCIAL_, 'Социальные объекты', stage = 1
-			thema 	
-	    	
+	orgnode FINDIR, 'Директор по экономике и финансам'
+		process FINMANAG, 'Управление финансами', type=man
+		orgnode Budget_Dept, 'Управление бюджетирования'
+			process BUDGET, 'Бюджетирование', type=man
+				thema m200
+				thema m214
+			orgnode CORPREPORT_Dept, 'Отдел прогнозирования и методологии', roleprefix='COST,DR'
+				process PRICE, 'Ценообразование', type=man
+			orgnode Cost_Dept, 'Отдел бюджетного регулирования и контроля', roleprefix='COST,DR'	
+				process COST_elem, 'Затраты', type=man, stage = 1
+					in PURCHASE
+					in PERS_econ
+					in OS
+					in USLUGI
+					thema m260
+				process COST_strus, 'Затраты', type=man, stage = 2
+					thema m216
+					thema m217
+					thema m218
+					sdocument 'ПБУ 10/99'
+					budget
+					account ACCOUNT_PROIZ
+				process SEGMENT, 'Сегмент', type=man, stage = 3
+					thema z250
+					thema z250
+					thema z210
+					thema z130
+					thema z410
+					thema z420	
+					document 'ПБУ 12/2010'
+					budget
+					account
+			orgnode CORPREPORT_Dept, 'Отдел корпоративной отчетности', roleprefix='COST,DR'
+				process CORP_rep, 'Корпоративная отчетность', type=man	
+		orgnode Fin_Dept, 'Финансовый отдел', roleprefix='FIN,DZK,BANK'
+			process CASH, 'Казначейство', type=man
+				in SALE
+				in COST
+				in TAX_D
+				in SOCIAL
+				in ACCOUNT
+				thema f110	
+				thema f120
+				document 'ПБУ 23/11'
+			orgnode DKZ_Bureau, 'Бюро финансовых операций', roleprefix=DZK
+				process CASH_DKZ, 'Деб. и кред. задолженность', type=man
+					thema m230
+					thema m231, transaction=DKZ
+					document 'ПБУ 3/2006, '
+			orgnode ZAIM_Bureau, 'Бюро заемных обязательств', roleprefix=BANK
+				process CASH_ZAIM, 'Заемные обязательства', type=man
+					thema m2110, transaction=ZAIM
+					document 'ПБУ 15/08'
+			
+				
+	orgnode PERSDIR, 'Директор по персоналу', roleprefix=ZP
+		process PERSMANAG, 'Управление персоналом', type=man
+		orgnode ZP_Dept, 'Управление экономики труда', roleprefix=ZP
+			process PERS_econ, 'Экономика труда', type=man
+				thema t110
+				thema t210
+				thema t240
+				account ACCOUNT_PERS
+			process PERS_motiv, 'Мотивация персонала', type=man
+				thema t220
+				thema t230
+				thema t250
+				account ACCOUNT_PERS, ACCOUNT_PROIZ
+		orgnode KADR_Dept, 'Отдел кадров'	, roleprefix=ZP
+			process PERS_kadr, 'Движение персонала', type=man
+				thema t110
+				thema t211
+		orgnode Train_Fac, 'Управление подготовки персонала', roleprefix=ZP
+			process PERS_train, 'Обучение персонала', type=man
+				thema t260
+				account ACCOUNT_PROD
+
+	orgnode GADIR, 'Директор по общим вопросам',roleprefix=SOC
+		process GAMANAG, 'Социальные проекты', type=man
+		orgnode Social_Dept, 'Управление экономики социальной сферы',roleprefix=SOC
+			process SOCIAL, 'Социальные проекты', type=man
+				thema m600	
+			process SOCIAL_, 'Социальные объекты', stage = 1
+				thema 	
+				
