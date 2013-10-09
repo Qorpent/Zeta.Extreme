@@ -142,80 +142,79 @@ subsystem TEXDIR, 'Технический директор'
 		budget  
 		account ACCOUNT_FAIA, CASH_DKZ
 	
-		process Control, 'Статус продукции', type=serv,   orgnode=Control_Dept
+	block Control, 'Статус продукции', type=serv,   orgnode=Control_Dept
 			thema
 	
-		process ECOL, 'Экология', type=serv,   orgnode=Ecology_Dept 
-			thema m310
-			thema m315
-			thema m320
-			thema m321
-			document СТ 25
+	block ECOL, 'Экология', type=serv,   orgnode=Ecology_Dept 
+		thema m310
+		thema m315
+		thema m320
+		thema m321
+		document СТ 25
 
 subsystem KCDIR, 'Директор по капитальному строительству'
-	process INV, 'Капитальное строительство', type=man   
+	block INV, 'Капитальное строительство', type=man   
 		thema m250
-	orgnode KC_Dept, 'Отдел капитального строительства'
-		process KC, 'Капитальное строительство', type=man    
-			thema r130
-				account ACCOUNT_OFNMA
-				document CN	
-			thema Строительство
-				account ACCOUNT_OFNMA
-				document CN			
-orgnode COMDIR, 'Коммерческий директор', roleprefix='MTR,SALE'
-	orgnode Raw_Dept, 'Отдел сырья', roleprefix='MTR'
-		process RAW, 'Закупка сырья', type=osn
-		process RAW_dog, 'Заключение договоров', stage = 1 
-		process RAW_f, 'Обеспечение производства сырьем', stage = 2
-		   	thema raw_move_sobst, transaction=SIR003
- 	    	thema raw_move_dav, transaction=SIR1091
-			document
-			budget
-			account ACCOUNT_RAW
-		process RAW_OA, 'Расчеты с поставщиками и подрядчиками', stage = 3
-			in PRAW_f
-			thema m230
-			thema m231, transaction=DKZ
-			account CASH_DKZ 
-	orgnode Supply_Dept, 'Управление(отдел)снабжения', roleprefix='MTR'
-		process PURCHASE, 'Закупка ТМЦ', type=osn	
-		process PURCHASE_dog, 'Заключение договоров', stage = 1 
-		process PURCHASE_f, 'Обеспечение', stage = 2
-			thema r211
-			document   
-			budget
-			account	ACCOUNT_PURCHASE
-		process RAW_OA, 'Расчеты с поставщиками и подрядчиками', stage = 3
-			in PURCHASE_f
-			thema m230
-			thema m231, transaction=DKZ
-			account CASH_DKZ 
-	orgnode Sale_Dept, 'Отдел продаж(сбыта)', roleprefix='SALE'
-		process SALE, 'Продажи', type=osn
-		process SALE, 'Заключение договоров', stage = 1 
-		process SALE, 'Складирование и хранение продукции', stage = 2 
-			thema sklad, transaction=SKLAD43
-			thema m218
-			document
-			budget
-			account ACCOUNT_PROIZ
-		process SALE_real, 'Реализация', stage = 3
-			thema sale, transaction=SALE90
-			thema m214
-			process 
-			document
-			budget
-			account ACCOUNT_FAO
-		process SALE, 'Расчеты с поставщиками и подрядчиками', stage = 4
-			in SALE_real
-			thema m230
-			thema m231, transaction=DKZ
-			account CASH_DKZ
-	orgnode Rail_Fac, 'Железнодорожный цех'
-		process RAIL, 'Транспортировка ЖД транспортом', type=serv
-	orgnode Auto_Fac, 'Автотранспортный цех'
-		process AUTO,  'Транспортировка автотранспортом', type=serv
+	
+	block KC, 'Капитальное строительство', type=man,  orgnode=KC_Dept 
+		thema r130
+			account ACCOUNT_OFNMA
+			document CN	
+		thema Строительство
+			account ACCOUNT_OFNMA
+			document CN	
+			
+subsystem COMDIR, 'Коммерческий директор', roleprefix='MTR,SALE'
+	block RAW, 'Закупка сырья', type=osn, orgnode=Raw_Dept
+	block RAW_dog, 'Заключение договоров', stage = 1, orgnode=Raw_Dept 
+	block RAW_f, 'Обеспечение производства сырьем', stage = 2, orgnode=Raw_Dept
+		thema raw_move_sobst, transaction=SIR003
+ 	    thema raw_move_dav, transaction=SIR1091
+		document
+		budget
+		account ACCOUNT_RAW
+	block RAW_OA, 'Расчеты с поставщиками и подрядчиками', stage = 3, orgnode=Raw_Dept
+		in PRAW_f
+		thema m230
+		thema m231, transaction=DKZ
+		account CASH_DKZ 
+
+	block PURCHASE, 'Закупка ТМЦ', type=osn, orgnode=Supply_Dept 	
+	block PURCHASE_dog, 'Заключение договоров', stage = 1, orgnode=Supply_Dept  
+	block PURCHASE_f, 'Обеспечение', stage = 2, orgnode=Supply_Dept 
+		thema r211
+		document   
+		budget
+		account	ACCOUNT_PURCHASE
+	block RAW_OA, 'Расчеты с поставщиками и подрядчиками', stage = 3, orgnode=Supply_Dept 
+		in PURCHASE_f
+		thema m230
+		thema m231, transaction=DKZ
+		account CASH_DKZ 
+	block SALE, 'Продажи', type=osn, orgnode=Sale_Dept
+	block SALE, 'Заключение договоров', stage = 1, orgnode=Sale_Dept 
+	block SALE, 'Складирование и хранение продукции', stage = 2, orgnode=Sale_Dept 
+		thema sklad, transaction=SKLAD43
+		thema m218
+		document
+		budget
+		account ACCOUNT_PROIZ
+	block SALE_real, 'Реализация', stage = 3, orgnode=Sale_Dept
+		thema sale, transaction=SALE90
+		thema m214
+		process 
+		document
+		budget
+		account ACCOUNT_FAO
+	block SALE, 'Расчеты с поставщиками и подрядчиками', stage = 4, orgnode=Sale_Dept
+		in SALE_real
+		thema m230
+		thema m231, transaction=DKZ
+		account CASH_DKZ
+	
+	block RAIL, 'Транспортировка ЖД транспортом', type=serv, orgnode=Rail_Fac
+	
+	block AUTO,  'Транспортировка автотранспортом', type=serv, orgnode=Auto_Fac
 
 
 	
