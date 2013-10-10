@@ -102,7 +102,8 @@
         if (hist) {
             if (!$.isEmptyObject(hist)){
                 //.sort(function(a,b) { return a.Date < b.Date })
-                zeta.zetauser.getDetails($.unique($.map(hist, function(h) { return h.User })).join(","), function(users) {
+                var logins = $.unique($.map(hist, function(h) { return h.User })).join(",");
+                zeta.zetauser.getDetails(logins, function(users) {
                     var body = $(h.find('tbody'));
                     body.empty();
                     $.each(zefs.lockhistory, function(i, h) {
@@ -117,13 +118,13 @@
                         if (h.State == "0ISOPEN") lockstate.text("Разблок.").addClass("state-open");
                         else if (h.State == "0ISBLOCK") lockstate.text("Заблок.").addClass("state-block");
                         else if (h.State == "0ISCHECKED") lockstate.text("Пров.").addClass("state-check");
-                        var u = $('<span class="label label-inverse"/>').text(users[h.User.toLowerCase()].ShortName);
+                        var u = $('<span class="label label-inverse"/>').text(users.Get(h.User).ShortName);
                         var tr = $('<tr/>').append(
                             $('<td/>').text(h.Date.format("dd.mm.yyyy HH:MM:ss")),
                             $('<td/>').html(lockstate),
                             $('<td/>').append(u)
                         );
-                        u.click(function() { zeta.zetauser.renderDetails(users[h.User.toLowerCase()]) });
+                        u.click(function() { zeta.zetauser.renderDetails(users.Get(h.User)) });
                         var c = $('<td/>');
                         if (!!h.Comment) {
                             c.append('<i class="icon icon-comment"/>');
