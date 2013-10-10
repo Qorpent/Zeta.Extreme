@@ -145,6 +145,7 @@ var ZetaUser = (function() {
         },
 
         getDetails: function(login, callback) {
+            login = login.toLowerCase();
             var storage = this.getStorage().Get();
             if (!storage) return;
             var result = {};
@@ -180,12 +181,17 @@ var ZetaUser = (function() {
             $.each(logins.split(","), $.proxy(function(i, l) {
                 result[l] = this.getStorage().Get()[l];
             }, this));
+            result.Get = $.proxy(function(login) {
+                return this[login.toLowerCase()];
+            }, result);
             callback(result);
         },
 
         returnLogin: function(login, callback) {
             if (null == callback) return;
-            callback(this.getStorage().Get()[login]);
+            var result = this.getStorage().Get()[login];
+            result.Get = $.proxy(function() { return this }, result);
+            callback(result);
         },
 
         loadDetails: function(login, callback) {
@@ -215,6 +221,7 @@ var ZetaUser = (function() {
         },
 
         isLoginExist: function(login) {
+            login = login.toLowerCase();
             var storage = this.getStorage().Get();
             return null != storage[login];
         },

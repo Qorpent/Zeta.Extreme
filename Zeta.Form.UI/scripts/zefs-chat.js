@@ -196,11 +196,12 @@
                 $(e.target).addClass("active");
                 $(".adminchat.chat-list-row").show();
             }));
-            zeta.zetauser.getDetails($.map(cl, function(m) { return m.User }).join(","), function(users) {
+            var logins = $.map(cl, function(m) { return m.User }).join(",");
+            zeta.zetauser.getDetails(logins, function(users) {
                 $.each(cl, function(i, message) {
                     var tr = $('<div class="adminchat chat-list-row"/>').addClass(message.Type);
                     var u = $('<span class="label label-inverse"/>');
-                    u.click(function() { zeta.zetauser.renderDetails(users[message.User]) });
+                    u.click(function() { zeta.zetauser.renderDetails(users.Get(message.User)) });
                     var arch = $('<i class="icon icon-ok pull-right"/>');
                     var f = $(filters.find('button.' + message.Type));
                     if (f.length == 0) {
@@ -229,7 +230,7 @@
                     body.append(tr.append(
                         arch,
                         $('<div class="adminchat chat-list-cell username"/>').append(
-                            u.text(users[message.User].ShortName), 
+                            u.text(users.Get(message.User).ShortName), 
                             $('<div class="adminchat chat-list-cell date"/>').text(message.Date.format("dd.mm.yyyy HH:MM")),
                             formname
                         ),
@@ -248,7 +249,6 @@
             });
         }
         UpdateButtonStatus();
-        body = cl = null;
     });
     menu.append(chatform, chatlist);
     b.tooltip({placement: 'bottom'});

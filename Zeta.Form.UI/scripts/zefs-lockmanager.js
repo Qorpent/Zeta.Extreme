@@ -98,18 +98,18 @@
         if(!$.isEmptyObject(result)) {
             window.zefs.lockhistory = result;
         }
-        var body = $(h.find('tbody'));
-        var hist = window.zefs.lockhistory;
+        var hist = zefs.lockhistory;
         if (hist) {
             if (!$.isEmptyObject(hist)){
-                body.empty();
                 //.sort(function(a,b) { return a.Date < b.Date })
                 zeta.zetauser.getDetails($.unique($.map(hist, function(h) { return h.User })).join(","), function(users) {
+                    var body = $(h.find('tbody'));
+                    body.empty();
                     $.each(zefs.lockhistory, function(i, h) {
                         if (i == 10) {
                             body.append($('<tr colspan="3"/>')
                                 .css("text-align", "center")
-                                .text("Еще " + ($.map(hist, function(n, i) { return i; }).length - i + 1)));
+                                .text("Еще " + ($.map(zefs.lockhistory, function(n, i) { return i; }).length - i + 1)));
                             return;
                         }
                         else if (i > 10) return;
@@ -117,13 +117,13 @@
                         if (h.State == "0ISOPEN") lockstate.text("Разблок.").addClass("state-open");
                         else if (h.State == "0ISBLOCK") lockstate.text("Заблок.").addClass("state-block");
                         else if (h.State == "0ISCHECKED") lockstate.text("Пров.").addClass("state-check");
-                        var u = $('<span class="label label-inverse"/>').text(users[h.User].ShortName);
+                        var u = $('<span class="label label-inverse"/>').text(users[h.User.toLowerCase()].ShortName);
                         var tr = $('<tr/>').append(
                             $('<td/>').text(h.Date.format("dd.mm.yyyy HH:MM:ss")),
                             $('<td/>').html(lockstate),
                             $('<td/>').append(u)
                         );
-                        u.click(function() { zeta.zetauser.renderDetails(users[h.User]) });
+                        u.click(function() { zeta.zetauser.renderDetails(users[h.User.toLowerCase()]) });
                         var c = $('<td/>');
                         if (!!h.Comment) {
                             c.append('<i class="icon icon-comment"/>');
@@ -139,7 +139,6 @@
                 });
             }
         }
-        body = hist = null;
     });
     b.tooltip({placement: 'bottom'});
     zefsblockmanager.body = $('<div/>').append(list, list2);
