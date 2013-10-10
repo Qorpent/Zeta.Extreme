@@ -121,7 +121,8 @@ namespace Zeta.Extreme.Form.Meta{
         /// <returns></returns>
         public static bool Authorize(this IZetaMainObject obj, IPrincipal user){
             lock (sync){
-				if (null == obj) return true;
+				
+                if (null == obj) return true;
                 if (TagHelper.Value(obj.Tag, "public").ToBool()) return true;
                 if (Application.Current.Roles.IsAdmin(user)){
                     return true;
@@ -129,10 +130,20 @@ namespace Zeta.Extreme.Form.Meta{
                 if (HasAll(user)){
                     return true;
                 }
-                if (obj == null){
-                    return false;
-                }
+                if (Application.Current.Roles.IsInRole(MiniholdingHelper.AllMiniholdingRole))
+                {
+                    var holdid = obj.GetManageCompanyId();
+                    if (0 != holdid) {
 
+                        var usr =
+                            new NativeZetaReader().ReadUsers("Login = '" + user.Identity.Name + "'").FirstOrDefault();
+                        if (null != usr) {
+                            if (usr.Object.Id == holdid) {
+                                return true;
+                            }
+                        }
+                    }
+                }
                 foreach (var org in GetObjectsForUser(user)){
                     if (org.Id == obj.Id){
                         return true;
