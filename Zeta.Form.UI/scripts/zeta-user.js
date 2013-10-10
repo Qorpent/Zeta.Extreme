@@ -182,7 +182,8 @@ var ZetaUser = (function() {
                 result[l] = this.getStorage().Get()[l];
             }, this));
             result.Get = $.proxy(function(login) {
-                return this[login.toLowerCase()];
+                var result = this[login.toLowerCase()];
+                return result;
             }, result);
             callback(result);
         },
@@ -190,12 +191,13 @@ var ZetaUser = (function() {
         returnLogin: function(login, callback) {
             if (null == callback) return;
             var result = this.getStorage().Get()[login];
-            result.Get = $.proxy(function() { return this }, result);
+            result.Get = $.proxy(function() {
+                return this;
+            }, result);
             callback(result);
         },
 
         loadDetails: function(login, callback) {
-            login = login.replace('/', '\\');
             var ajax = {
                 url: siteroot + window.zeta.api.metadata.userinfo.getUrl(), type: "POST", dataType: "json"
             };

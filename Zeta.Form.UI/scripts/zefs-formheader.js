@@ -12,7 +12,7 @@
         var zetaheader = $('#consolePageHeader');
         var lock =  window.zefs.myform.lock;
         if (lock != null) {
-            zetaheader.className = "console-pageheader";
+            zetaheader.get(0).className = "console-pageheader";
             if (lock.state == "0ISOPEN") zetaheader.addClass("isopen");
             else if (lock.state == "0ISBLOCK") zetaheader.addClass("isblock");
             else if (lock.state == "0ISCHECKED") zetaheader.addClass("ischecked");
@@ -23,7 +23,7 @@
             if (period == null) {
                 period = zefs.api.getParameters()["period"];
             }
-            formperiod.text(zefs.getperiodbyid(period));
+            formperiod.text(zefs.getperiodbyid(period).name);
         }
     });
     $(window.zefs).on(window.zefs.handlers.on_sessionload, function() {

@@ -143,29 +143,31 @@
         progress.hide(); refresh.show();
         var body = $(chatlist.find('.userchat.chat-list-body'));
         if (cl != null && !$.isEmptyObject(cl)) {
-            body.empty();
-            b.addClass("btn-success");
-            b.find("i").addClass("icon-white");
-            $.each(cl, function(i,message) {
-                var tr = $('<div class="userchat chat-list-row"/>');
-                var u = $('<span class="label label-inverse"/>');
-                var ch = $('<span class="label" style="margin-left: 4px;"/>').text(message.ReadableType);
-                if (message.Type != "admin") {
-                    ch.addClass("label-info");
-                } else {
-                    ch.addClass("label-important");
-                }
-                body.append(tr.append(
-                    $('<div class="userchat chat-list-cell username"/>').append(u.text(message.User), ch),
-                    $('<div class="userchat chat-list-cell date"/>').text(message.Date.format("dd.mm.yyyy HH:MM")),
-                    $('<div class="userchat chat-list-cell message"/>').text(message.Text)
-                ));
-                u.zetauser();
-                tr = u = null;
+            var logins = $.map(cl, function(m) { return m.User }).join(",");
+            zeta.zetauser.getDetails(logins, function(users) {
+                body.empty();
+                b.addClass("btn-success");
+                b.find("i").addClass("icon-white");
+                $.each(cl, function(i, message) {
+                    var tr = $('<div class="userchat chat-list-row"/>');
+                    var u = $('<span class="label label-inverse"/>').text(users.Get(message.User));
+                    var ch = $('<span class="label" style="margin-left: 4px;"/>').text(message.ReadableType);
+                    if (message.Type != "admin") {
+                        ch.addClass("label-info");
+                    } else {
+                        ch.addClass("label-important");
+                    }
+                    body.append(tr.append(
+                        $('<div class="userchat chat-list-cell username"/>').append(u.text(users.Get(message.User)), ch),
+                        $('<div class="userchat chat-list-cell date"/>').text(message.Date.format("dd.mm.yyyy HH:MM")),
+                        $('<div class="userchat chat-list-cell message"/>').text(message.Text)
+                    ));
+                    u.click(function() { zeta.zetauser.renderDetails(users.Get(message.User)) });
+                    tr = null;
+                });
             });
         }
         UpdateButtonStatus();
-        body = cl = null;
     });
     // Наполняем АДМИНСКУЮ ленту сообщений
     $(zefs).on(zefs.handlers.on_adminchatlistload, function(e, cl) {
@@ -219,7 +221,7 @@
                     var obj = $.map(zefs.objects, function(o) { if (o.id == message.ObjId) return o });
                     var formname = $('<span class="adminchat chat-list-cell formname"/>');
                     if (form.length > 0) {
-                        formname.text($(form).get(0).Name + " " + $(obj).get(0).name + " за " + zefs.getperiodbyid(message.Period) + ", " + message.Year + " год");
+                        formname.text($(form).get(0).Name + " " + $(obj).get(0).name + " за " + zefs.getperiodbyid(message.Period).name + ", " + message.Year + " год");
                         formname.hover(function() { $(this).toggleClass("hovering") });
                         formname.click(function(e) {
                             var m = $(this).parents('.chat-list-row').data();

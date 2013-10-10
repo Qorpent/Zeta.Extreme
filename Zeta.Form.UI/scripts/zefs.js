@@ -311,17 +311,17 @@ root.myform = root.myform ||  {
     };
 
     var GetPeriodName = function(id) {
-        var name = "";
+        var result;
         $.each(root.periods, function(i, periodtype) {
-            $.each(periodtype.periods, function(i,p) {
+            if (!!result) return;
+            result = $($.map(periodtype.periods, function(p) { if (p.id == id) return p })).get(0);
+            /*$.each(periodtype.periods, function(i, p) {
                 if (p.id == id) {
-                    name = p.name;
-                    return false;
+                    return p;
                 }
-            });
-            if (name != "") return false;
+            });*/
         });
-        return name;
+        return result || { name: "неизвестный период", type: "Undefined", id: 0 };
     };
 
     var OpenReport = function() {
@@ -444,7 +444,7 @@ root.myform = root.myform ||  {
         root.myform.users = result;
         var users = {};
         $.each(result, function(i, u) {
-            users[u.Login] = zeta.api.metadata.userinfo.wrap(u);
+            users[u.Login.toLowerCase()] = zeta.api.metadata.userinfo.wrap(u);
         });
         window.zeta.userinfostorage.AddOrUpdate(users);
         $(root).trigger(root.handlers.on_formusersload);
@@ -459,7 +459,7 @@ root.myform = root.myform ||  {
                 $('<tr/>').append($('<td/>').text("Объект"), $('<td/>').text("(" + result.cell.objid + ") " + result.cell.objname)),
                 $('<tr/>').append($('<td/>').text("Колонка"), $('<td/>').text("(" + result.cell.colcode + ") " + result.cell.colname)),
                 $('<tr/>').append($('<td/>').text("Строка"), $('<td/>').text("(" + result.cell.rowcode + ") " + result.cell.rowname)),
-                $('<tr/>').append($('<td/>').text("Период"), $('<td/>').text("(" + result.cell.period + ") " + window.zefs.getperiodbyid(result.cell.period)))
+                $('<tr/>').append($('<td/>').text("Период"), $('<td/>').text("(" + result.cell.period + ") " + window.zefs.getperiodbyid(result.cell.period).name))
             ).hide();
             if (!!result.cell.currency) {
                 cellinfo.append($('<tr/>').append($('<td/>').text("Валюта"), $('<td/>').text(result.cell.currency)));

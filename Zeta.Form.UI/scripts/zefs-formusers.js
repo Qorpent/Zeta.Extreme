@@ -9,7 +9,8 @@
             b.show();
             // внимание! тут используется метод returnLogins() потому что эти пользователи гарантированно есть в сторадже
             // мы их туда пихаем в Zefs.js 
-            zeta.zetauser.returnLogins($.map(zefs.myform.users, function(u) { return u.Login.toLowerCase() }).join(","), function(users) {
+            var logins = $.unique($.map(zefs.myform.users, function(u) { return u.Login.toLowerCase() })).join(",");
+            zeta.zetauser.returnLogins(logins, function(users) {
                 var header = $('<tr/>').append(
                     $('<th/>').text("Пользователь"),
                     $('<th/>').text("Должность"),
@@ -44,9 +45,9 @@
                             zeta.api.security.impersonateall({Target: e.Login});
                         });
                     }
-                    u.text(users[e.Login.toLowerCase()].ShortName);
+                    u.text(users.Get(e.Login).ShortName);
                     u.click(function() {
-                        zeta.zetauser.showDetails(users[e.Login.toLowerCase()]);
+                        zeta.zetauser.showDetails(users.Get(e.Login));
                     });
                     body.append(tr);
                 });

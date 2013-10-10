@@ -8,6 +8,8 @@
     } });
     zefsform.body = $('<table class="data isblocked"/>');
     $(window.zefs).on(window.zefs.handlers.on_getlockload, function() {
+        zefsform.body.get(0).className = "data zefsform";
+        
         if (zefs.myform.lock.cansave || zefs.myform.lock.cansaveoverblock) {
             zefsform.body.removeClass("isblocked");
         } else {
