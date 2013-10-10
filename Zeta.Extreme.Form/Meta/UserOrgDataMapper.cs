@@ -320,6 +320,20 @@ namespace Zeta.Extreme.Form.Meta{
 			            }
 		            }
 	            }
+
+                if (Application.Current.Roles.IsInRole(MiniholdingHelper.AllMiniholdingRole)) {
+                    var usr = new NativeZetaReader().ReadUsers("Login = '" + name + "'").FirstOrDefault();
+                    if (null != usr) {
+                        if (usr.Object != null && usr.Object.Division.IsMiniholding()) {
+                            foreach (var o in usr.Object.Division.MainObjects) {
+                                if (!objects.Contains(o)) {
+                                    objects.Add(o);
+                                }
+                            }
+                        }
+                    }
+                }
+
                 return objects.Where(x => x.Comment != "sys").ToArray();
             }
         }
