@@ -1,7 +1,7 @@
 class demo_oldblock
 	subsystem GDIR, 'Генеральный директор', roleprefix='DR,FIN,FA'
 		block STRATMANAG, 'Стратегическое управление', type=man
-			thema osnpok, rootrow=m200
+			thema osnpok, rootrow=m200 # помечено in, но по факту нет
 			thema balans2011, rootrow=m111
 			thema finplan, rootrow=f110
 		block INV, 'Инвестиции', type=man   
@@ -31,7 +31,6 @@ class demo_oldblock
 			thema prod, stage = 2 #???
 			thema pf, stage = 3, rootrow=m150
 			thema vozvrat, stage = 4, rootrow=c230 
-			thema pril_rbp, stage = 5, rootrow=r216 
 			thema calc_zink, stage = 5, rootrow=z250 
 			thema calc_pb, stage = 5, rootrow=z260 
 			thema calc_sernkisl, stage = 5, rootrow=z210 
@@ -73,7 +72,7 @@ class demo_oldblock
 			thema prod #???
 			thema vozvrat, rootrow=c230
 		block PROIZ_control, 'Приемка продукции', stage = 3, orgnode=Proiz_Fac
-			thema obproizf_ruda, rootrow=m140
+			
 			thema pf, rootrow=m150
 		block PROIZ_brak, 'Управление браком', stage = 4, orgnode=Proiz_Fac
 				
@@ -185,7 +184,6 @@ class demo_oldblock
 			thema ras_dk_ca, transaction=DKZ, rootrow=m231
 			
 		block CASH_ZAIM, 'Заемные обязательства', type=man, orgnode=ZAIM_Bureau
-			thema krzaim, transaction=ZAIM, rootrow=m2110 # отчет и устар написано
 			
 				
 	subsystem PERSDIR, 'Директор по персоналу', roleprefix=ZP
