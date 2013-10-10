@@ -15,6 +15,7 @@
     <EmbeddedResource Include=".\**\*.*resource" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreTests\DatabaseAwaredTestBase.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\CanCalculateWithTargetedObjects.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\NoCalcSumSupport.cs" />
     <Compile Include="DatabaseIgnorancePureZeta\SumObjSupport.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="FormulaStorageTests\DllCacheTests.cs" />
     <Compile Include="MockFormulaTest.cs" />
     <Compile Include="NativeMaping\CanReadFormState.cs" />
+    <Compile Include="NativeMaping\MiniHoldingHelperTests.cs" />
     <Compile Include="NativeMaping\ZC438NativeCellReading.cs" />
     <Compile Include="NativeMaping\ZC439NativeCellHistoryReading.cs" />
     <Compile Include="PrimaryTests\AF575TypeToSqlTest.cs" />
@@ -71,6 +73,12 @@
     <Compile Include="FeatureAndBugFix\Zc486PlayBackHang.cs" />
     <Compile Include="FeatureAndBugFix\Zc491CanUseTagAndThemaResolutionInFormulas.cs" />
     <Compile Include="FeatureAndBugFix\Zc491RealData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Zeta.Extreme.Form\Zeta.Extreme.Form.csproj">
+      <Project>{FBD09F91-B185-4207-B05D-6051505CA868}</Project>
+      <Name>Zeta.Extreme.Form</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\qorpent.kernel\build.targets" />
 </Project>

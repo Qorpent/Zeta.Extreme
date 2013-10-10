@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Qorpent.Charts;
 using Qorpent.Charts.FusionCharts;
 using Zeta.Extreme.Model.MetaCaches;
@@ -39,11 +36,9 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
         /// <returns></returns>
         public static ChartDataset BuildDataset(int year, string rowCode, string colCode, IEnumerable<int> periods) {
             var dataset = new ChartDataset();
+
             foreach (var q in GetData(year, rowCode, colCode, periods)) {
-                var set = new ChartSet();
-                set.Set(FusionChartApi.Set_Label, Periods.Get(q.Time.Period).Name);
-                set.Set(FusionChartApi.Set_Value, q.GetResult().NumericResult);
-                dataset.Add(set);
+                dataset.AddSet(Periods.Get(q.Time.Period).Name, q.GetResult().NumericResult);
             }
 
             return dataset;

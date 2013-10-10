@@ -15,6 +15,10 @@ _.widget.register({
                     href: './zdev_security/admins.html.qweb?__xslt=zdev-security-admins',
                 },
 
+                {
+                    title: 'Анализ проблем настройки префиксов',
+                    href: './zdev_security/prefixproblems.html.qweb?__xslt=zdev-security-prefixproblems',
+                },
 
 		
 		]

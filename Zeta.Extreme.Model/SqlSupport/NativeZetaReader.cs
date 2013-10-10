@@ -18,11 +18,18 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Zeta.Extreme.Model.Deprecated;
 
 namespace Zeta.Extreme.Model.SqlSupport {
 	public partial class NativeZetaReader {
+        /// <summary>
+        /// Хук для возможности перехвата поведения считывания из БД, 
+        ///статиком является для совместимости
+        /// </summary>
+        public static Func<string, IEnumerable> DebugHook { get; set; }
+
 		private const string Divquerybase = @"
 				select 
 					Id, Code, Name, Comment, Version, Tag,Idx

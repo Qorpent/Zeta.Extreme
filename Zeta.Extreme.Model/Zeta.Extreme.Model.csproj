@@ -56,6 +56,7 @@
     <Compile Include="Extensions\WithMarksExtension.cs" />
     <Compile Include="Inerfaces\Partial\IWithMarkCache.cs" />
     <Compile Include="Inerfaces\IZetaObjectGroup.cs" />
+    <Compile Include="MiniholdingHelper.cs" />
     <Compile Include="PocoClasses\BizProcess.cs" />
     <Compile Include="PocoClasses\BizTran.cs" />
     <Compile Include="PocoClasses\BizTranFilter.cs" />
