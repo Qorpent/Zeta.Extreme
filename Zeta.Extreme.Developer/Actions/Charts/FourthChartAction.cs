@@ -1,6 +1,7 @@
 ﻿using Qorpent.Charts;
 using Qorpent.Charts.FusionCharts;
 using Qorpent.Mvc;
+using Qorpent.Mvc.Binding;
 
 namespace Zeta.Extreme.Developer.Actions.Charts {
     /// <summary>
@@ -11,38 +12,39 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
         /// <summary>
         /// 
         /// </summary>
+        [Bind]
+        public string CustomType { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="year"></param>
         /// <param name="period"></param>
         /// <param name="obj"></param>
         /// <returns></returns>
         protected override object GenerateChart(int year, int period, int obj) {
-            var result = new Chart {
-                Caption = "Котировки серебра на ЦБ РФ",
-                SubCaption = "$ за грамм AG",
-                CaptionPadding = 10,
-                Config = new ChartConfig {
-                    Type = FusionChartType.MSLine.ToString()
-                }
-            };
+            var chart = new Chart();
 
-            var dataset1 = ChartFrontEndBuilder.BuildDataset(year, "m203123", "PLANGOD", new[] { 11, 12, 13, 14, 15, 16, 1 });
-            var dataset2 = ChartFrontEndBuilder.BuildDataset(year, "m203128", "PLANGOD", new[] { 11, 12, 13, 14, 15, 16, 1 });
+            chart.SetConfig(new ChartConfig { Type = CustomType ?? FusionChartType.MSLine.ToString() })
+                 .SetAttribute(FusionChartApi.Chart_Caption, "Котировки серебра на ЦБ РФ")
+                 .SetAttribute(FusionChartApi.Chart_SubCaption, "$ за грамм AG")
+                 .SetAttribute(FusionChartApi.Chart_CaptionPadding, 10);
 
-            result.Datasets.Add(dataset1);
-            result.Datasets.Add(dataset2);
 
-            foreach (var cat in ChartFrontEndBuilder.BuildCategories(new[] { 11, 12, 13, 14, 15, 16, 1 })) {
-                result.Categories.Add(cat);
-            }
-
-            result.AsFusion().AddTrendLine(result, new ChartLine {
-                StartValue = 7.0,
+            chart.AddElement(
+                ChartFrontEndBuilder.BuildDataset(year, "m203123", "PLANGOD", new[] { 11, 12, 13, 14, 15, 16, 1 })
+            ).AddElement(
+                ChartFrontEndBuilder.BuildDataset(year, "m203128", "PLANGOD", new[] { 11, 12, 13, 14, 15, 16, 1 })
+            ).AddElement(new ChartLine {
+                StartValue = 20.0,
                 Color = "FF0000",
                 Dashed = true,
                 DisplayValue = "ТПФП"
-            });
+            }).AddElements(
+                ChartFrontEndBuilder.BuildCategories(new[] { 11, 12, 13, 14, 15, 16, 1 })
+            );
 
-            return result;
+
+            return chart;
         }
     }
 }
