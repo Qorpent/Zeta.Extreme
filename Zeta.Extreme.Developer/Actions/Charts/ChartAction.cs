@@ -29,9 +29,13 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
             var dataset2 = ChartFrontEndBuilder.BuildDataset(year, "m203118", "PLANGOD", new[] { 11, 12, 13, 14, 15, 16 });
 
             dataset1.SeriesName = "Одна фигня";
-            dataset2.SeriesName = "Другая фигня";
-
+            dataset1.AnchorSides = 3;
+            dataset1.AnchorRadius = 5;
             dataset1.Color = "006699";
+
+            dataset2.SeriesName = "Другая фигня";
+            dataset2.AnchorSides = 4;
+            dataset2.AnchorRadius = 5;
             dataset2.Color = "424242";
 
             result.Datasets.Add(dataset1);
