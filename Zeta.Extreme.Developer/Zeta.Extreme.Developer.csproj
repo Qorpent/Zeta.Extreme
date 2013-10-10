@@ -134,6 +134,7 @@
     <Compile Include="Security\AdminAnalyzer\AdminAnalyzerHelper.cs" />
     <Compile Include="Security\AdminAnalyzer\AdminAnalyzerRecord.cs" />
     <Compile Include="Security\AdminAnalyzer\AdminRecord.cs" />
+    <Compile Include="Security\PrefixProblemAnalyzer\PrefixRecordParameters.cs" />
     <Compile Include="Security\PrefixProblemAnalyzer\PrefixRoleAnalyzerAction.cs" />
     <Compile Include="Security\PrefixProblemAnalyzer\PrefixObjectStats.cs" />
     <Compile Include="Security\PrefixProblemAnalyzer\PrefixRecord.cs" />

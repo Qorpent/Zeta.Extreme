@@ -18,6 +18,16 @@ namespace Zeta.Extreme.Developer.Security.PrefixProblemAnalyzer {
         public RoleType Type { get; set; }
 
         /// <summary>
+        /// Признак плановой роли
+        /// </summary>
+        public bool IsPlan { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        
+        public string BasePrefix { get { return IsPlan ? Prefix.Substring(0, Prefix.Length - 1) : Prefix; } }
+
+        /// <summary>
         /// Выполняет сбор описания комплексных ролей из строки
         /// </summary>
         /// <param name="rolelist"></param>
@@ -37,7 +47,8 @@ namespace Zeta.Extreme.Developer.Security.PrefixProblemAnalyzer {
                 if (tail == "OPERATOR" || tail == "UNDERWRITER" || tail == "ANALYTIC") {
                     var prefix = pair[0];
                     if (plan) {
-                        prefix += "P";
+                        prefix = "--"+prefix;
+
                     }
                     if (_map.ContainsKey(prefix)) {
                         _map[prefix] = _map[prefix] | tail.To<RoleType>();
@@ -47,7 +58,15 @@ namespace Zeta.Extreme.Developer.Security.PrefixProblemAnalyzer {
                     }
                 }
             }
-            return _map.Select(_ => new RoleRecord {Prefix = _.Key, Type = _.Value});
+            return _map.Select(_ => {
+                var result = new RoleRecord {Prefix = _.Key, Type = _.Value};
+                if (result.Prefix.StartsWith("--")) {
+                    result.Prefix = result.Prefix.Substring(2)+"P";
+                    result.IsPlan = true;
+                }
+                return result;
+
+            });
         }
     }
 }
