@@ -557,10 +557,76 @@
     };
 })(jQuery);
 
-/*
-$(function () {
-    $.each($("table"), function(i, table) {
-        $(table).zefs();
-    });
+(function(form) {
+$.extend(form, {
+    init: function() {
+        form.params = form.params || {};
+        $.extend(form.params, this.defaults, this.getFormParameters());
+    },
+
+    structure : {},
+
+    defaults: {
+        form: "",
+        obj: "",
+        period: "",
+        year: ""
+    },
+
+    isParamsValid: function(p) {
+        p = p || this.params;
+        if (!p.form || p.form == "") return false;
+        else if (!p.obj || p.obj.toString() == "") return false;
+        else if (!p.period || p.period.toString() == "") return false;
+        else if (!p.year || p.year.toString() == "") return false;
+        return true;
+    },
+
+    getFormParameters : function() {
+        // Парсим параметры из хэша
+        var h = location.hash;
+        var p = {};
+        var result = {};
+        if (h == "") return null;
+        if (!h.match(/^#form/)) return null;
+        $.each(h.substring(1).split("|"), function(i,e) {
+            p[e.split("=")[0]] = e.split("=")[1];
+        });
+        result["form"] = p["form"];
+        result["obj"] = p["obj"];
+        result["period"] = p["period"];
+        result["year"] = p["year"];
+        if (!!p.subobj) result["subobj"] = p["subobj"];
+        return result;
+    },
+
+    open : function(params, blank) {
+        params = $.extend(this.defaults, form.getFormParameters(), params);
+        var hash = "";
+
+        // контролим код формы. Выставляем А|B в зависимости от периода
+        params.form = params.form.replace(/[A|B]\.in/, "");
+        if (params.period) {
+            var period = zefs.getperiodbyid(params.period);
+            if (!!period) {
+                params.form += period.type.match(/^Plan/) ? "B.in" : "A.in";
+            }
+        }
+        $.each(params, function(k, v) { hash += k + "=" + (v || "") + "|" });
+        hash = hash.substring(0, hash.length - 1);
+        if (this.isParamsValid(params)) {
+            if (blank) window.open("#" + hash, "_blank");
+            else {
+                location.hash = hash;
+                location.reload();
+            }
+        } else {
+            location.hash = hash;
+        }
+    }
 });
-*/
+})(window.form = window.form || {});
+
+$(document).ready(function() {
+    form.init();
+});

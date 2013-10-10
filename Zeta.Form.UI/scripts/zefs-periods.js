@@ -36,17 +36,17 @@
     };
 
     var GetPeriodGroupName = function(code) {
-         switch (code) {
-             case "Month" : return "Месяцы";
-             case "FromYearStartMain" : return "С начала года";
-             case "FromYearStartExt" : return "Промежуточные периодв";
-             case "Plan" : return "Плановые периоды";
-             case "MonthPlan" : return "Плановые (месячные) периоды";
-             case "Corrective" : return "Коррективы плана";
-             case "Awaited" : return "Ожидаемые периоды";
-             case "Year" : return "Года";
-             default : return "Неизвесная группа периодов";
-         }
+        switch (code) {
+            case "Month" : return "Месяцы";
+            case "FromYearStartMain" : return "С начала года";
+            case "FromYearStartExt" : return "Промежуточные периодв";
+            case "Plan" : return "Плановые периоды";
+            case "MonthPlan" : return "Плановые (месячные) периоды";
+            case "Corrective" : return "Коррективы плана";
+            case "Awaited" : return "Ожидаемые периоды";
+            case "Year" : return "Года";
+            default : return "Неизвесная группа периодов";
+        }
     };
 
     $(zefs).on(zefs.handlers.on_periodsload, function() {

@@ -424,11 +424,28 @@ $.extend(api,(function(){
             getperiods : $.extend(new Command({domain: "zeta", name: "getperiods",cachekey:"zeta__getperiods"}), {
                 // Ждем задачу ZC-404, которая изменит структуру результата команды
                 wrap : function(obj) {
+                    $.each(obj, function(i, g) {
+                        var plan = false;
+                        switch (g.type) {
+                            case "Month" : g.readableType = "месяц"; break;
+                            case "FromYearStartMain" : g.readableType = "нач. года"; break;
+                            case "FromYearStartExt" : g.readableType = "промежуточный"; break;
+                            case "Plan" : g.readableType = "план"; plan = true; break;
+                            case "MonthPlan" : g.readableType = "месячный план"; plan = true; break;
+                            case "Corrective" : g.readableType = "корректив"; break;
+                            case "Awaited" : g.readableType = "ожид."; break; 
+                            case "Year" : g.readableType = "Года"; break;
+                            default : g.readableType = "Неизвесная группа периодов"; break;
+                        }
+                        $.each(g.periods, function(i, p) {
+                            p.plan = plan;
+                        });
+                    });
                     var years = {
-                            type : "Year",
-                            periods : {}
-                        };
-                    $.each([2013,2012,2011,2010], function(i,y) {
+                        type : "Year",
+                        periods : {}
+                    };
+                    $.each([2014,2013,2012,2011], function(i, y) {
                         years.periods[i] = { id: y, name: y, type: "Year"}
                     });
                     obj.push(years);

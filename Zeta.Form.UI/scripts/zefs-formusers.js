@@ -7,23 +7,23 @@
     $(window.zefs).on(window.zefs.handlers.on_formusersload, function() {
         if (!!zefs.myform.users) {
             b.show();
-            var header = $('<tr/>').append(
-                $('<th/>').text("Пользователь"),
-                $('<th/>').text("Должность"),
-                $('<th/>').text("Телефон")
-            );
-            if (zeta.user.getRealIsAdmin()) {
-                header.append($('<th/>').text(""));
-            }
-            var content = $('<table class="table-bordered table formuserstable" />').append(
-                $('<thead/>').append(header)
-            );
-            var body = $('<tbody/>');
-            content.append(body);
-
             // внимание! тут используется метод returnLogins() потому что эти пользователи гарантированно есть в сторадже
             // мы их туда пихаем в Zefs.js 
-            zeta.zetauser.returnLogins($.map(zefs.myform.users, function(u) { return u.Login.toLowerCase() }).join(","), function(users) {
+            var logins = $.unique($.map(zefs.myform.users, function(u) { return u.Login.toLowerCase() })).join(",");
+            zeta.zetauser.returnLogins(logins, function(users) {
+                var header = $('<tr/>').append(
+                    $('<th/>').text("Пользователь"),
+                    $('<th/>').text("Должность"),
+                    $('<th/>').text("Телефон")
+                );
+                if (zeta.user.getRealIsAdmin()) {
+                    header.append($('<th/>').text(""));
+                }
+                var content = $('<table class="table-bordered table formuserstable" />').append(
+                    $('<thead/>').append(header)
+                );
+                var body = $('<tbody/>');
+                content.append(body);
                 $.each(zefs.myform.users, function(i, e) {
                     var u = $('<span class="label label-info"/>').text(e.Login);
                     var tr = $('<tr/>').append(
@@ -45,9 +45,9 @@
                             zeta.api.security.impersonateall({Target: e.Login});
                         });
                     }
-                    u.text(users[e.Login].ShortName);
+                    u.text(users.Get(e.Login).ShortName);
                     u.click(function() {
-                        zeta.zetauser.showDetails(users[e.Login]);
+                        zeta.zetauser.showDetails(users.Get(e.Login));
                     });
                     body.append(tr);
                 });
