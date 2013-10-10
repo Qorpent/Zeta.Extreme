@@ -55,5 +55,5 @@ zdev-script transfer_data
 			generate-transfer from=m1122430 to=m214142 col="Б1" , year="2011"
 			generate-transfer from=m1122450 to=m214141 col="Б1" , year="2011"
 			generate-transfer from=m1122460 to=m214180 col="Б1" , year="2011"
-			generate-transfer from=m1122510 to=m214191 col="Б1" , year="2011"
-			generate-transfer from=m1122520 to=m214192 col="Б1" , year="2011"
+		generate-transfer from=m1122510 to=m214191 col="Б1" , year="2011"
+		generate-transfer from=m1122520 to=m214192 col="Б1" , year="2011"

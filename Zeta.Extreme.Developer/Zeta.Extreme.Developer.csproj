@@ -134,6 +134,12 @@
     <Compile Include="Security\AdminAnalyzer\AdminAnalyzerHelper.cs" />
     <Compile Include="Security\AdminAnalyzer\AdminAnalyzerRecord.cs" />
     <Compile Include="Security\AdminAnalyzer\AdminRecord.cs" />
+    <Compile Include="Security\PrefixProblemAnalyzer\PrefixRoleAnalyzerAction.cs" />
+    <Compile Include="Security\PrefixProblemAnalyzer\PrefixObjectStats.cs" />
+    <Compile Include="Security\PrefixProblemAnalyzer\PrefixRecord.cs" />
+    <Compile Include="Security\PrefixProblemAnalyzer\PrefixRecordIndex.cs" />
+    <Compile Include="Security\PrefixProblemAnalyzer\RoleRecord.cs" />
+    <Compile Include="Security\PrefixProblemAnalyzer\RoleType.cs" />
     <Compile Include="Utils\DocumentationHelper.cs" />
     <Compile Include="Analyzers\IAnalyzer.cs" />
     <Compile Include="Analyzers\ICodeIndex.cs" />
