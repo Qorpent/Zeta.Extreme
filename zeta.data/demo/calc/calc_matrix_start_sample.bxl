@@ -1,0 +1,22 @@
+class calculation_matrix
+	el = z10020
+	maz = z10030
+	type peredel_prokat autogen=true
+		sum
+			type pl_cu
+			type pl_zn
+			type pl_zn
+		disp
+			row ${el}
+			row ${maz}
+			
+	type peredel_prokat autogen=true #dsdsds
+		sum
+			type pl_cu
+			type pl_zn
+			type pl_zn
+		disp
+			row z10030
+			row z10040
+		
+		

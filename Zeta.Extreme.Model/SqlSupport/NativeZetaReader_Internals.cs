@@ -30,7 +30,18 @@ namespace Zeta.Extreme.Model.SqlSupport {
 	/// </summary>
 	public partial class NativeZetaReader {
 		private IEnumerable<T> Read<T>(string condition, string commandbase, Func<IDataRecord, T> serializer) {
+
 			var cmdtext = commandbase + (string.IsNullOrWhiteSpace(condition) ? "" : " where " + condition);
+
+            if (null != DebugHook) {
+                bool empty = true;
+                foreach (var item in DebugHook(cmdtext)) {
+                    empty = false;
+                    yield return (T) item;
+                }
+                if(!empty)yield break;
+            }
+
 			using (var c = GetConnection()) {
 				c.Open();
 				var cmd = c.CreateCommand();

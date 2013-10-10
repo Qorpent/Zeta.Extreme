@@ -20,33 +20,41 @@
             );
             var body = $('<tbody/>');
             content.append(body);
-            $.each(zefs.myform.users, function(i, e) {
-                var u = $('<span class="label label-info"/>').text(e.Login);
-                var tr = $('<tr/>').append(
-                    $('<td class="username"/>').append(u),
-                    $('<td class="dolzh"/>').text(e.Dolzh),
-                    $('<td class="contacts"/>').text(e.Contact)
-                );
-                if (!!zefs.myform.currentSession) {
-                    if (e.Login == zefs.myform.currentSession.FormInfo.ObjectResponsibility) {
-                        tr.addClass("responsible");
-                        u.removeClass("label-info");
-                        u.addClass("label-important");
+
+            // внимание! тут используется метод returnLogins() потому что эти пользователи гарантированно есть в сторадже
+            // мы их туда пихаем в Zefs.js 
+            zeta.zetauser.returnLogins($.map(zefs.myform.users, function(u) { return u.Login.toLowerCase() }).join(","), function(users) {
+                $.each(zefs.myform.users, function(i, e) {
+                    var u = $('<span class="label label-info"/>').text(e.Login);
+                    var tr = $('<tr/>').append(
+                        $('<td class="username"/>').append(u),
+                        $('<td class="dolzh"/>').text(e.Dolzh),
+                        $('<td class="contacts"/>').text(e.Contact)
+                    );
+                    if (!!zefs.myform.currentSession) {
+                        if (e.Login == zefs.myform.currentSession.FormInfo.ObjectResponsibility) {
+                            tr.addClass("responsible");
+                            u.removeClass("label-info");
+                            u.addClass("label-important");
+                        }
                     }
-                }
-                if (zeta.user.getRealIsAdmin()) {
-                    var l = $('<button class="btn btn-mini"/>').text("Войти от");
-                    tr.append($('<td/>').append(l));
-                    l.click(function() {
-                        zeta.api.security.impersonateall({Target: e.Login});
+                    if (zeta.user.getRealIsAdmin()) {
+                        var l = $('<button class="btn btn-mini"/>').text("Войти от");
+                        tr.append($('<td/>').append(l));
+                        l.click(function() {
+                            zeta.api.security.impersonateall({Target: e.Login});
+                        });
+                    }
+                    u.text(users[e.Login].ShortName);
+                    u.click(function() {
+                        zeta.zetauser.showDetails(users[e.Login]);
                     });
-                }
-                u.zetauser();
-                body.append(tr);
-            });
-            b.click(function() {
-                var params = { title: "Cписок пользователей данной формы", content: content, width: 800 };
-                $(window.zeta).trigger(window.zeta.handlers.on_modal, params);
+                    body.append(tr);
+                });
+                b.click(function() {
+                    var params = { title: "Cписок пользователей данной формы", content: content, width: 800 };
+                    $(window.zeta).trigger(window.zeta.handlers.on_modal, params);
+                });
             });
         }
     });

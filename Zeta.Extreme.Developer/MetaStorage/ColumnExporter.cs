@@ -49,7 +49,7 @@ namespace Zeta.Extreme.Developer.MetaStorage
         }
 
         private void WriteColumn(Column column) {
-            buffer.AppendFormat("\t\t\tcolumn {0} '{1}'",column.Code,column.Name);
+            buffer.AppendFormat("\t\tcolumn {0} '{1}'",column.Code,column.Name);
             if (!string.IsNullOrWhiteSpace(column.Measure)) {
                 buffer.Append(" measure=" + column.Measure);
             }
@@ -86,17 +86,17 @@ namespace Zeta.Extreme.Developer.MetaStorage
                     }
                 }
                 buffer.AppendLine(" formula = (");
-                buffer.Append("\t\t\t\t");
+                buffer.Append("\t\t\t");
                 buffer.Append(column.Formula);
                 buffer.AppendLine();
-                buffer.Append("\t\t\t)");
+                buffer.Append("\t\t)");
             }
             buffer.AppendLine();
         }
 
         private void WriteClassHeader(string ns, string cls, string dicname) {
             buffer.AppendLine("namespace " + ns );
-            buffer.AppendLine("\tclass "+ cls+" prototype='meta'");
+            buffer.AppendLine("\tclass "+ cls+" prototype='meta-columns'");
             buffer.AppendLine("\t\texport " + dicname);
             buffer.AppendLine("\t\telement column");
         }

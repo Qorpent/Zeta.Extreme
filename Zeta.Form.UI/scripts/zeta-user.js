@@ -1,4 +1,4 @@
-$.extend(window.zeta.handlers, {
+/*$.extend(window.zeta.handlers, {
     on_zetagetuserdetails : "getuserdetails"
 });
 
@@ -85,3 +85,172 @@ $.extend(window.zeta.handlers, {
 
     };
 })(jQuery);
+
+*/
+
+var ZetaUser = (function() {
+    var instance;
+    var zu = function(options) {
+    };
+
+    $.extend(zu.prototype, {
+        defaultDetails: {
+            Name: "",
+            Login: "",
+            Dolzh: "",
+            Contact: "",
+            Email: "",
+            ObjName: "",
+            ShortName: ""
+        },
+
+        getStorage: function() {
+            return window.zeta.userinfostorage;
+        },
+
+        showDetails: function(input) {
+            var details;
+            if (typeof input == "string") {
+                details = this.getDetails(input, $.proxy(function(result) {
+                    this.renderDetails(result);
+                }, this));
+            }
+            else if (typeof input == "object") {
+                this.renderDetails(input);
+            }
+        },
+
+        renderDetails: function(details) {
+            var result = $('<table class="table table-bordered zetauserinfo"/>');
+            result.append(
+                $('<tr/>').append($('<td/>').text("Имя"), $('<td/>').text(details.Name)),
+                $('<tr/>').append($('<td/>').text("Логин"), $('<td/>').text(details.Login)),
+                $('<tr/>').append($('<td/>').text("Должность"), $('<td/>').text(details.Dolzh)),
+                $('<tr/>').append($('<td/>').text("Контакты"), $('<td/>').text(details.Contact)),
+                $('<tr/>').append($('<td/>').text("Email"), $('<td/>').text(details.Email)),
+                $('<tr/>').append($('<td/>').text("Предприятие"), $('<td/>').text(details.ObjName))
+            );
+            var params = { title: "Информация о пользователе", content: result, width: 450 };
+            var login = details.Login;
+            if (zeta.user.getRealIsAdmin()) {
+                params["customButton"] = {
+                    class : "btn-warning",
+                    text : "Вход от имени",
+                    click : function() {
+                        if (!!login && login != "") zeta.api.security.impersonateall({Target: details.login});
+                    }
+                }
+            }
+            $(window.zeta).trigger(window.zeta.handlers.on_modal, params);
+        },
+
+        getDetails: function(login, callback) {
+            var storage = this.getStorage().Get();
+            if (!storage) return;
+            var result = {};
+            if (typeof login == "object") {
+                // принимаем только массивы
+                if (!!login.length) return;
+                login = login.join(",");
+            }
+            // если логин не один
+            if (login.indexOf(",") != -1) {
+                logins = this.filterUniqueNotExistedLogins(login);
+                if (logins == "") {
+                    this.returnLogins(login, callback);
+                } else {
+                    this.loadDetails(logins, $.proxy(function() {
+                        this.returnLogins(login, callback);
+                    }, this));
+                }
+            } else {
+                if (!!storage[login]) {
+                    this.returnLogin(login, callback);
+                } else {
+                    this.loadDetails(login, $.proxy(function() {
+                        this.returnLogin(login, callback);
+                    }, this));
+                }
+            }            
+        },
+
+        returnLogins: function(logins, callback) {
+            if (null == callback) return;
+            var result = {};
+            $.each(logins.split(","), $.proxy(function(i, l) {
+                result[l] = this.getStorage().Get()[l];
+            }, this));
+            callback(result);
+        },
+
+        returnLogin: function(login, callback) {
+            if (null == callback) return;
+            callback(this.getStorage().Get()[login]);
+        },
+
+        loadDetails: function(login, callback) {
+            login = login.replace('/', '\\');
+            var ajax = {
+                url: siteroot + window.zeta.api.metadata.userinfo.getUrl(), type: "POST", dataType: "json"
+            };
+            if (typeof login == "object") {
+                ajax.data = { login : login.join(",") };
+            }
+            else if (typeof login == "string") {
+                if (login.indexOf(",") != -1) {
+                    login = this.filterUniqueNotExistedLogins(login);
+                }
+                ajax.data = { login : login };
+            }
+            $.ajax(ajax).success($.proxy(function(result, e) {
+                var details = this.detailsSuccess(result);
+                if (!!callback) callback(details);
+            }, this));
+        },
+
+        filterUniqueNotExistedLogins: function(logins) {
+            return $.grep($.unique(logins.split(",")), $.proxy(function(l, i) {
+                return !this.isLoginExist(l);
+            }, this)).join(",");
+        },
+
+        isLoginExist: function(login) {
+            var storage = this.getStorage().Get();
+            return null != storage[login];
+        },
+
+        processDetails: function(details) {
+            details = window.zeta.api.metadata.userinfo.wrap(details);
+            if (!!this.getStorage().Get()) {
+                var result = {};
+                result[details.Login.toLowerCase()] = details;
+                this.getStorage().AddOrUpdate(result);
+            }
+            return details;
+        },
+
+        detailsSuccess: function(details) { 
+            if (!!details[0]) {
+                var result = {};
+                $.each(details, $.proxy(function(i, d) {
+                    result[i] = this.processDetails(d);
+                }, this));
+                return result;
+            } else {
+                return this.processDetails(details);
+            }
+        }
+    });
+
+    return {
+        getInstance: function(options) {
+            if (!instance) {
+                instance = new zu(options);
+            }
+            return instance;
+        }
+    }
+})();
+
+window.zeta = window.zeta || {};
+zeta.zetauser = ZetaUser.getInstance();

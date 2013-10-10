@@ -20,19 +20,14 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Qorpent.Data;
-using Qorpent.Data.Connections;
-using Qorpent.IoC;
 using Zeta.Extreme.Model.Inerfaces;
-using Zeta.Extreme.Model.MetaCaches;
 using Zeta.Extreme.Model.Querying;
 
 namespace Zeta.Extreme.Core.Tests.CoreTests {
-	public class SessionTestBase {
+    public class SessionTestBase : DatabaseAwaredTestBase {
 		private static Task loadrowcahe;
-		private static bool wascallnhibernate;
 
-		[SetUp]
+        [SetUp]
 		public virtual void setup() {
 			session = new Session(true);
 			_serial = session.AsSerial();
@@ -58,24 +53,7 @@ namespace Zeta.Extreme.Core.Tests.CoreTests {
 			return q;
 		}
 
-		[TestFixtureSetUp]
-		public virtual void FixtureSetup() {
-			if (!wascallnhibernate) {
-				Qorpent.Applications.Application.Current.Container.Register(new BasicComponentDefinition { Lifestyle = Lifestyle.Singleton, ImplementationType = typeof(DatabaseConnectionProvider), ServiceType = typeof(IDatabaseConnectionProvider) });
-				Qorpent.Applications.Application.Current.DatabaseConnections.Register(new ConnectionDescriptor{PresereveCleanup=true, ConnectionString = "Data Source=192.168.26.137;Initial Catalog=eco;Persist Security Info=True;User ID=sfo_home;Password=rhfcysq$0;Application Name=zeta-test3",Name = "Default"},false);
-				Periods.Get(12);
-				RowCache.start();
-				ColumnCache.Start();
-				ObjCache.Start();
-				FormulaStorage.Default.AutoBatchCompile = false;
-				FormulaStorage.Default.LoadDefaultFormulas(null);
-				FormulaStorage.Default.AutoBatchCompile = true;
-				ColumnCache.Start();
-				wascallnhibernate = true;
-			}
-		}
-
-		protected ISerialSession _serial;
+        protected ISerialSession _serial;
 		protected Session session;
 	}
 }

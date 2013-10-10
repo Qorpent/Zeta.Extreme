@@ -3,7 +3,7 @@
 ####                    Время последего обновления     : 2013-08-09 18:06:27                                        ####
 ########################################################################################################################
 namespace demo.import.meta
-	class periods prototype=meta
+	class periods prototype=meta-periods
 		export period
 		element period
 		set  category=m

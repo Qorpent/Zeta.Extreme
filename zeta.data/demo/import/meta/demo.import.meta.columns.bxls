@@ -3,621 +3,621 @@
 #### Последняя версия: 2013-10-08 18:06:19
 ######################################################################################
 namespace demo.import.meta
-	class columns prototype='meta'
+	class columns prototype='meta-columns'
 		export columns
 		element column
-			column 0COMMENT 'Комментарий'
-			column 0CONSTNUM 'Число'
-			column 0CONSTSTR 'Строка'
-			column 0KF 'факт'
-			column 0KP 'план'
-			column 0KW 'ожидаемое'
-			column 0NAT 'Натуральная величина'
-			column 1ED 'Нат. факт.'
-			column 2ED 'Нат. план.'
-			column 2KFDMSC 'ДМС (СК) факт'
-			column 2KFDMSP 'ДМС (П) факт'
-			column 2KFFSS 'ФСС факт'
-			column 2KFSEB 'Себ. факт'
-			column 2KPDMSC 'ДМС (СК) план'
-			column 2KPDMSP 'ДМС (П) план'
-			column 2KPFSS 'ФСС план'
-			column 2KPSEB 'Себ. план'
-			column 3DMSC 'ДМС (СК) ожид.'
-			column 3DMSP 'ДМС (П) ожид.'
-			column 3ED 'Нат. ожид.'
-			column 3FSS 'ФСС ожид.'
-			column 3PRIB 'Приб. ожид.'
-			column 3SEB 'Себ. ожид.'
-			column 5DOPP 'Доля оплаты за 1 путевку'
-			column 5KOZD 'Количество оздоровленных'
-			column 5SPUT 'Стоимость путевки'
-			column 5SRP 'Средства работника план'
-			column ASTk 'ОС нач. аморт-я на кон'
-			column ASTn 'ОС нач. аморт-я на нач'
-			column ASTv 'ОС нач. ам. входящее сальдо'
-			column AVGCENA 'Цена средняя'
-			column BMCENA 'Цена'
-			column BMKOL 'Кол-во'
-			column BMSUMMA 'Сумма'
-			column BSTk 'ОС бал. ст-ть на кон'
-			column BSTn 'ОС бал. ст-ть на нач'
-			column BSTv 'ОС входящее сальдо'
-			column BUH_D08K10 'Д08 К10'
-			column BUH_D08K69 'Д08 К69' debet=conto08
-			column BUH_D08K70 'Д08 К70' debet=conto08
-			column BUH_D20K10 'Д20 К10'
-			column BUH_D20K69 'Д20 К69' debet=conto20
-			column BUH_D20K70 'Д20 К70' debet=conto20
-			column BUH_D23K10 'Д23 К10'
-			column BUH_D23K69 'Д23 К69' debet=conto23
-			column BUH_D23K70 'Д23 К70' debet=conto23
-			column BUH_D24K10 'Д24 К10'
-			column BUH_D25K10 'Д25 К10'
-			column BUH_D25K69 'Д25 К69' debet=conto25
-			column BUH_D25K70 'Д25 К70' debet=conto25
-			column BUH_D26K10 'Д26 К10'
-			column BUH_D26K69 'Д26 К69' debet=conto26
-			column BUH_D26K70 'Д26 К70' debet=conto26
-			column BUH_D27K10 'Д27 К10'
-			column BUH_D29K10 'Д27 К10'
-			column BUH_D29K69 'Д29 К69' debet=conto29
-			column BUH_D29K70 'Д29 К70' debet=conto29
-			column BUH_D44K10 'Д44 К10'
-			column BUH_D44K69 'Д44 К69' debet=conto44
-			column BUH_D44K70 'Д44 К70' debet=conto44
-			column BUH_D45K10 'Д45 К10'
-			column BUH_D79K10 'Д79 К10'
-			column BUH_D90K10 'Д90 К10'
-			column BUH_D91K10 'Д91 К10'
-			column BUH_D91K69 'Д91 К69' debet=conto91
-			column BUH_D91K70 'Д91 К70' debet=conto91
-			column BUH_D94K10 'Д94 К10'
-			column BUH_D97K69 'Д97 К69' debet=conto97
-			column BUH_D97K70 'Д97 К70' debet=conto97
-			column CENA 'Цена' nocalcsum
-			column CONTO69 'Соцстрах'
-			column CONTO70 'Заработная плата'
-			column CONTO91 'Прочие расходы'
-			column CORRECTION 'Уточнение за прошлые годы'
-			column CP 'Контрольные точки'
-			column DELTA 'Дельта'
-			column DELTAKV 'Квартальная дельта'
-			column DOGCENA 'Договорная цена' nocalcsum
-			column DOGIZV 'Договорные извлечения' nocalcsum
-			column DZ 'Дебиторская задолженность'
-			column DZk 'ДЗ кон'
-			column DZn 'ДЗ нач'
-			column DZRk 'Деб. з-ть на конец (резервы)'
-			column DZRn 'Деб. з-ть на начало (резервы)'
-			column DZRv 'ДЗ резервы входящее сальдо'
-			column DZv 'ДЗ входящее сальдо'
-			column Fact 'Факт'
-			column FactPredGod 'Факт аналогичного периода прошлого года'
-			column FIXCOST 'Постоянные затраты' dosum calc=FP
-			column FIXKOL 'Постоянное количество' currency=NAT nocalcsum calc=FP
-			column FIXZATR 'Фиксированные расходы'
-			column FNM 'Факт с н.м.' volume=pr
-			column FS 'Факт сутки' volume=pr
-			column JOB 'Трудовые показатели'
-			column JOBP 'Плановые трудовые показатели'
-			column KOL 'Количество' currency=NAT dosum nocalcsum
-			column KOLCALC 'Количество (расчетно)' currency=NAT nocalcsum
-			column KOLED 'Количество на единицу' currency=NAT nocalcsum calc=FP
-			column KOR1 'Корректив 1 квартала'
-			column KOR2 'Корректив 2 квартала'
-			column KOR3 'Корректив 3 квартала'
-			column KOR4 'Корректив 4 квартала'
-			column KRZ 'Кредиторская задолженность'
-			column KZk 'КЗ кон'
-			column KZn 'КЗ нач'
-			column KZv 'КЗ входящее сальдо'
-			column NALKOR 'Налог - корректив'
-			column NALNACH 'Налог - начислено'
-			column NALOST 'Налог - остаток на конец'
-			column NALRATE 'Ставка по налогу' nocalcsum
-			column NALSALDO 'Входящее по налогу'
-			column NALUPL 'Налог - уплачено'
-			column NDS 'Сумма НДС'
-			column NDSKORR 'Сумма НДС по доп. декл.'
-			column NDSLINK 'Сумма НДС' doexref linkcol=NDSLINK
-			column NKG 'Нат кг' measure=кг
-			column NM 'Нат м' measure=м
-			column NNOB 'Необлагаемая база'
-			column NOB08 'Н/о база 8%'
-			column NOB10 'Н/о база 10%'
-			column NOB12 'Н/о база 12%'
-			column NOB18 'Н/о база 18%'
-			column NOB20 'Н/о база 20%'
-			column NOBKORR 'Налогоооблагаемая база по доп. декларациям' nocalcsumhard
-			column NORM 'Норматив' currency=NAT nocalcsum
-			column NORMCENA 'Нормативная цена' nocalcsum
-			column NORMKOL 'Нормативное кол-во' currency=NAT nocalcsum
-			column NORMOST 'Нормативный остаток'
-			column NSH 'Нат шт' measure=шт
-			column On '1. Остаток на начало периода' dosum
-			column ON8 'Остаток на 8-00'
-			column ONCENA 'Цена на начало'
-			column ONKOL 'Кол-во на начало' currency=NAT
-			column ONPDKOL 'Кол-во на нач. + приход'
-			column ONPDSUMMA 'Сумма на нач. + приход'
-			column ONSUMMA 'Сумма на начало'
-			column ORk 'Резервы на конец периода' dosum
-			column ORn 'Резервы на начало периода' dosum
-			column Ov 'Входящий остаток'
-			column Pd '2. Начислено (приход)'
-			column Pd_korr 'Начислено (корректив)'
-			column PDCENA 'Цена приход'
-			column PDKOL 'Кол-во приход' currency=NAT
-			column PdOSV 'Приход ОСВ'
-			column PdOVO 'Приход (без вн. оборота)'
-			column PDSUMMA 'Сумма приход' dosum
-			column PDSUMMAAUTO 'Сумма прихода (прокачка)'
-			column PdVO 'Приход (вн. оборот)'
-			column PLAN 'План' doexref linkcol=DS
-			column PLANC 'План (корректив)'
-			column PNM 'План с н.м.' volume=pr
-			column PREDV 'Ожидаемое'
-			column PRIM 'Примечание'
-			column PS 'План сутки' volume=pr
-			column RATEFB 'Норматив ФБ' nocalcsumhard
-			column RATEFF 'Норматив ФВФ' nocalcsumhard
-			column RATEMB 'Норматив МБ' nocalcsumhard
-			column RATERB 'Норматив РБ' nocalcsumhard
-			column RATERF 'Норматив РВФ' nocalcsumhard
-			column Rd '3. Уплачено (расход)'
-			column RDCENA 'Цена расход'
-			column RDKOL 'Кол-во расход' currency=NAT
-			column RdOSV 'Расход ОСВ'
-			column RdOVO 'Расход (без вн. оборота)'
-			column RDSUMMA 'Сумма расход' dosum
-			column RDSUMMAAUTO 'Сумма расхода (прокачка)'
-			column RdVO 'Расход (вн. оборот)'
-			column REVISION 'Измненение прошлых периодов'
-			column REVISIONDZ 'Ревизия дебит. з-ти'
-			column REVISIONKZ 'Ревизия кред. з-ти'
-			column REVISIONON 'Ревизия ост. на начало'
-			column REVISIONPD 'Ревизия начислений'
-			column REVISIONRD 'Ревизия списаний'
-			column SLKOL 'Кол-во' currency=NAT thema=sale
-			column SLKR 'Ком. р-ды'
-			column SLKRAUTO 'Ком. р-ды (прокачка)'
-			column SLKRED 'Коммерческие расходы на единицу' nocalcsum thema=sale
-			column SLKRFIX 'Ком. р-ды (пост.)'
-			column SLKRNORM 'Ком. р-ды (норм.)' nocalcsum
-			column SLPRIB 'Прибыль' nocalcsum
-			column SLPRIBED 'Прибыль на ед.' nocalcsum
-			column SLPRIBP 'Прибыль с уч. проц.' nocalcsum
-			column SLPRIBPED 'Прибыль с уч. проц. на ед.' nocalcsum
-			column SLPRIBV 'Валовая прибыль'
-			column SLPRIBVED 'Валовая прибыль на ед.'
-			column SLPROC 'Проценты'
-			column SLPROCAUTO 'Проценты (прокачка)'
-			column SLPROCED 'Проценты на единицу' nocalcsum thema=sale
-			column SLPROCFIX 'Проценты (пост.)'
-			column SLPROCNORM 'Проценты (норм.)' nocalcsum
-			column SLPSS 'Полная с-сть' nocalcsum
-			column SLPSSED 'Полная с-сть ед.' nocalcsum
-			column SLREV 'Выручка на объем' thema=sale
-			column SLREVAUTO 'Выручка (прокачка)'
-			column SLREVED 'Цена продаж' nocalcsum thema=sale
-			column SLREVFIX 'Выручка (пост.)'
-			column SLREVNORM 'Цена (норм.)' nocalcsum
-			column SLSS 'Цеховая с-сть'
-			column SLSSAUTO 'Цех. с-сть (прокачка)'
-			column SLSSED 'Себестоимость единицы продаж' nocalcsum thema=sale
-			column SLSSFIX 'Цех. с-сть (пост.)'
-			column SLSSNORM 'Цех. с-ть (норм.)' nocalcsum
-			column SLSSSUM 'Себест-ть на объем' thema=sale
-			column SLUR 'Упр. р-ды'
-			column SLURAUTO 'Упр. р-ды (прокачка)'
-			column SLURED 'Управленческие расходы на единицу' nocalcsum thema=sale
-			column SLURFIX 'Упр. р-ды (пост.)'
-			column SLURNORM 'Упр. р-ды (норм.)' nocalcsum
-			column SSCENA 'Цена'
-			column SSKOL 'Кол-во'
-			column SSKOLED 'Норматив'
-			column SSSUMMA 'Сумма'
-			column SSSUMMAED 'Сумма на ед.'
-			column STUB 'STUB'
-			column SUMMA 'Сумма' dosum
-			column SUMMAED 'Сумма на единицу' calc_ed
-			column SUMMAGROUP 'Групповая сумма' dosum
-			column SUMMATEMP 'Сумма (для промежуточных расчетов)'
-			column TMP 'Tmp'
-			column TPFP 'ТПФП'
-			column vCZK 'CZK'
-			column vEUR '€'
-			column vGBP '?'
-			column vKZT 'KZT'
-			column vRSD 'RSD'
-			column vUSD '$'
-			column ZOn 'Займы, остаток на начало (основная сумма)'
-			column ZPd 'Займы, привлечено'
-			column ZPOn 'Займы, остаток на начало (%)'
-			column ZPPd 'Займы, начислено (%)'
-			column ZPRd 'Займы, уплачено (%)'
-			column ZRd 'Займы, погашено'
-			column Б1 'Б1' doexref linkcol=DS
-			column Б1ВО 'Б1 вн. об.'
-			column Б1КОНС 'Консолидированные результаты'
-			column Б2 'Б2'
-			column Б2ВО 'Б2 вн. об.'
-			column Б3 'Б3'
-			column Б3ВО 'Б3 вн. об.'
-			column Б4 'Б4'
-			column Б4ВО 'Б4 вн. об.'
-			column 0CONSTNUMС 'Число конст.' formula = (
-				@0CONSTSTR**?
-			)
-			column 0CONSTSTRR 'Строка подс.' formula = (
-				@0CONSTSTR~?
-			)
-			column 0CONSTSTRRС 'Строка подс. конст.' formula = (
-				@0CONSTSTR**~?
-			)
-			column 1DIVKFPN 'Откл. натура' formula = (
-				@0KF? - @0KP?
-			)
-			column 4F 'ПНП (факт)' formula = (
-				@0KF? + @2KFSEB? + @2KFDMSP? + @2KFDMSC? + @2KFFSS?
-			)
-			column 4NAZP 'Нацпроект' formula = (
-				@0KF? + @2KFSEB? + @2KFDMSP? + @2KFDMSC? + @2KFFSS?
-			)
-			column 4O 'ПНП (ожид)' formula = (
-				@3PRIB? + @3SEB? + @3DMSP? + @3DMSC? + @3FSS?
-			)
-			column 4P 'ПНП (план)' formula = (
-				@0KP? + @2KPSEB? + @2KPDMSP? + @2KPDMSC? + @2KPFSS?
-			)
-			column 5SRF 'Средства работника факт' formula = (
-				( @5SPUT? * @5KOZD? ) * @5DOPP?
-			)
-			column AVGCENACALC 'Цена средняя' formula = (
-				( @ONSUMMA? + @ONSUMMACALC? + @PDSUMMA? + @PDSUMMACALC? ) / ( @ONKOL? + @PDKOL? ) * 1000
-			)
-			column BALk 'Баланс на конец' formula = (
-				f.If ( periodin (251,301,303,306,309), { @PLAN? }, { @Б2? } )
-			)
-			column BALn 'Баланс на начало' formula = (
-				f.If ( periodin (251,301), { @Б2.Y-1.P401? }, { 
+		column 0COMMENT 'Комментарий'
+		column 0CONSTNUM 'Число'
+		column 0CONSTSTR 'Строка'
+		column 0KF 'факт'
+		column 0KP 'план'
+		column 0KW 'ожидаемое'
+		column 0NAT 'Натуральная величина'
+		column 1ED 'Нат. факт.'
+		column 2ED 'Нат. план.'
+		column 2KFDMSC 'ДМС (СК) факт'
+		column 2KFDMSP 'ДМС (П) факт'
+		column 2KFFSS 'ФСС факт'
+		column 2KFSEB 'Себ. факт'
+		column 2KPDMSC 'ДМС (СК) план'
+		column 2KPDMSP 'ДМС (П) план'
+		column 2KPFSS 'ФСС план'
+		column 2KPSEB 'Себ. план'
+		column 3DMSC 'ДМС (СК) ожид.'
+		column 3DMSP 'ДМС (П) ожид.'
+		column 3ED 'Нат. ожид.'
+		column 3FSS 'ФСС ожид.'
+		column 3PRIB 'Приб. ожид.'
+		column 3SEB 'Себ. ожид.'
+		column 5DOPP 'Доля оплаты за 1 путевку'
+		column 5KOZD 'Количество оздоровленных'
+		column 5SPUT 'Стоимость путевки'
+		column 5SRP 'Средства работника план'
+		column ASTk 'ОС нач. аморт-я на кон'
+		column ASTn 'ОС нач. аморт-я на нач'
+		column ASTv 'ОС нач. ам. входящее сальдо'
+		column AVGCENA 'Цена средняя'
+		column BMCENA 'Цена'
+		column BMKOL 'Кол-во'
+		column BMSUMMA 'Сумма'
+		column BSTk 'ОС бал. ст-ть на кон'
+		column BSTn 'ОС бал. ст-ть на нач'
+		column BSTv 'ОС входящее сальдо'
+		column BUH_D08K10 'Д08 К10'
+		column BUH_D08K69 'Д08 К69' debet=conto08
+		column BUH_D08K70 'Д08 К70' debet=conto08
+		column BUH_D20K10 'Д20 К10'
+		column BUH_D20K69 'Д20 К69' debet=conto20
+		column BUH_D20K70 'Д20 К70' debet=conto20
+		column BUH_D23K10 'Д23 К10'
+		column BUH_D23K69 'Д23 К69' debet=conto23
+		column BUH_D23K70 'Д23 К70' debet=conto23
+		column BUH_D24K10 'Д24 К10'
+		column BUH_D25K10 'Д25 К10'
+		column BUH_D25K69 'Д25 К69' debet=conto25
+		column BUH_D25K70 'Д25 К70' debet=conto25
+		column BUH_D26K10 'Д26 К10'
+		column BUH_D26K69 'Д26 К69' debet=conto26
+		column BUH_D26K70 'Д26 К70' debet=conto26
+		column BUH_D27K10 'Д27 К10'
+		column BUH_D29K10 'Д27 К10'
+		column BUH_D29K69 'Д29 К69' debet=conto29
+		column BUH_D29K70 'Д29 К70' debet=conto29
+		column BUH_D44K10 'Д44 К10'
+		column BUH_D44K69 'Д44 К69' debet=conto44
+		column BUH_D44K70 'Д44 К70' debet=conto44
+		column BUH_D45K10 'Д45 К10'
+		column BUH_D79K10 'Д79 К10'
+		column BUH_D90K10 'Д90 К10'
+		column BUH_D91K10 'Д91 К10'
+		column BUH_D91K69 'Д91 К69' debet=conto91
+		column BUH_D91K70 'Д91 К70' debet=conto91
+		column BUH_D94K10 'Д94 К10'
+		column BUH_D97K69 'Д97 К69' debet=conto97
+		column BUH_D97K70 'Д97 К70' debet=conto97
+		column CENA 'Цена' nocalcsum
+		column CONTO69 'Соцстрах'
+		column CONTO70 'Заработная плата'
+		column CONTO91 'Прочие расходы'
+		column CORRECTION 'Уточнение за прошлые годы'
+		column CP 'Контрольные точки'
+		column DELTA 'Дельта'
+		column DELTAKV 'Квартальная дельта'
+		column DOGCENA 'Договорная цена' nocalcsum
+		column DOGIZV 'Договорные извлечения' nocalcsum
+		column DZ 'Дебиторская задолженность'
+		column DZk 'ДЗ кон'
+		column DZn 'ДЗ нач'
+		column DZRk 'Деб. з-ть на конец (резервы)'
+		column DZRn 'Деб. з-ть на начало (резервы)'
+		column DZRv 'ДЗ резервы входящее сальдо'
+		column DZv 'ДЗ входящее сальдо'
+		column Fact 'Факт'
+		column FactPredGod 'Факт аналогичного периода прошлого года'
+		column FIXCOST 'Постоянные затраты' dosum calc=FP
+		column FIXKOL 'Постоянное количество' currency=NAT nocalcsum calc=FP
+		column FIXZATR 'Фиксированные расходы'
+		column FNM 'Факт с н.м.' volume=pr
+		column FS 'Факт сутки' volume=pr
+		column JOB 'Трудовые показатели'
+		column JOBP 'Плановые трудовые показатели'
+		column KOL 'Количество' currency=NAT dosum nocalcsum
+		column KOLCALC 'Количество (расчетно)' currency=NAT nocalcsum
+		column KOLED 'Количество на единицу' currency=NAT nocalcsum calc=FP
+		column KOR1 'Корректив 1 квартала'
+		column KOR2 'Корректив 2 квартала'
+		column KOR3 'Корректив 3 квартала'
+		column KOR4 'Корректив 4 квартала'
+		column KRZ 'Кредиторская задолженность'
+		column KZk 'КЗ кон'
+		column KZn 'КЗ нач'
+		column KZv 'КЗ входящее сальдо'
+		column NALKOR 'Налог - корректив'
+		column NALNACH 'Налог - начислено'
+		column NALOST 'Налог - остаток на конец'
+		column NALRATE 'Ставка по налогу' nocalcsum
+		column NALSALDO 'Входящее по налогу'
+		column NALUPL 'Налог - уплачено'
+		column NDS 'Сумма НДС'
+		column NDSKORR 'Сумма НДС по доп. декл.'
+		column NDSLINK 'Сумма НДС' doexref linkcol=NDSLINK
+		column NKG 'Нат кг' measure=кг
+		column NM 'Нат м' measure=м
+		column NNOB 'Необлагаемая база'
+		column NOB08 'Н/о база 8%'
+		column NOB10 'Н/о база 10%'
+		column NOB12 'Н/о база 12%'
+		column NOB18 'Н/о база 18%'
+		column NOB20 'Н/о база 20%'
+		column NOBKORR 'Налогоооблагаемая база по доп. декларациям' nocalcsumhard
+		column NORM 'Норматив' currency=NAT nocalcsum
+		column NORMCENA 'Нормативная цена' nocalcsum
+		column NORMKOL 'Нормативное кол-во' currency=NAT nocalcsum
+		column NORMOST 'Нормативный остаток'
+		column NSH 'Нат шт' measure=шт
+		column On '1. Остаток на начало периода' dosum
+		column ON8 'Остаток на 8-00'
+		column ONCENA 'Цена на начало'
+		column ONKOL 'Кол-во на начало' currency=NAT
+		column ONPDKOL 'Кол-во на нач. + приход'
+		column ONPDSUMMA 'Сумма на нач. + приход'
+		column ONSUMMA 'Сумма на начало'
+		column ORk 'Резервы на конец периода' dosum
+		column ORn 'Резервы на начало периода' dosum
+		column Ov 'Входящий остаток'
+		column Pd '2. Начислено (приход)'
+		column Pd_korr 'Начислено (корректив)'
+		column PDCENA 'Цена приход'
+		column PDKOL 'Кол-во приход' currency=NAT
+		column PdOSV 'Приход ОСВ'
+		column PdOVO 'Приход (без вн. оборота)'
+		column PDSUMMA 'Сумма приход' dosum
+		column PDSUMMAAUTO 'Сумма прихода (прокачка)'
+		column PdVO 'Приход (вн. оборот)'
+		column PLAN 'План' doexref linkcol=DS
+		column PLANC 'План (корректив)'
+		column PNM 'План с н.м.' volume=pr
+		column PREDV 'Ожидаемое'
+		column PRIM 'Примечание'
+		column PS 'План сутки' volume=pr
+		column RATEFB 'Норматив ФБ' nocalcsumhard
+		column RATEFF 'Норматив ФВФ' nocalcsumhard
+		column RATEMB 'Норматив МБ' nocalcsumhard
+		column RATERB 'Норматив РБ' nocalcsumhard
+		column RATERF 'Норматив РВФ' nocalcsumhard
+		column Rd '3. Уплачено (расход)'
+		column RDCENA 'Цена расход'
+		column RDKOL 'Кол-во расход' currency=NAT
+		column RdOSV 'Расход ОСВ'
+		column RdOVO 'Расход (без вн. оборота)'
+		column RDSUMMA 'Сумма расход' dosum
+		column RDSUMMAAUTO 'Сумма расхода (прокачка)'
+		column RdVO 'Расход (вн. оборот)'
+		column REVISION 'Измненение прошлых периодов'
+		column REVISIONDZ 'Ревизия дебит. з-ти'
+		column REVISIONKZ 'Ревизия кред. з-ти'
+		column REVISIONON 'Ревизия ост. на начало'
+		column REVISIONPD 'Ревизия начислений'
+		column REVISIONRD 'Ревизия списаний'
+		column SLKOL 'Кол-во' currency=NAT thema=sale
+		column SLKR 'Ком. р-ды'
+		column SLKRAUTO 'Ком. р-ды (прокачка)'
+		column SLKRED 'Коммерческие расходы на единицу' nocalcsum thema=sale
+		column SLKRFIX 'Ком. р-ды (пост.)'
+		column SLKRNORM 'Ком. р-ды (норм.)' nocalcsum
+		column SLPRIB 'Прибыль' nocalcsum
+		column SLPRIBED 'Прибыль на ед.' nocalcsum
+		column SLPRIBP 'Прибыль с уч. проц.' nocalcsum
+		column SLPRIBPED 'Прибыль с уч. проц. на ед.' nocalcsum
+		column SLPRIBV 'Валовая прибыль'
+		column SLPRIBVED 'Валовая прибыль на ед.'
+		column SLPROC 'Проценты'
+		column SLPROCAUTO 'Проценты (прокачка)'
+		column SLPROCED 'Проценты на единицу' nocalcsum thema=sale
+		column SLPROCFIX 'Проценты (пост.)'
+		column SLPROCNORM 'Проценты (норм.)' nocalcsum
+		column SLPSS 'Полная с-сть' nocalcsum
+		column SLPSSED 'Полная с-сть ед.' nocalcsum
+		column SLREV 'Выручка на объем' thema=sale
+		column SLREVAUTO 'Выручка (прокачка)'
+		column SLREVED 'Цена продаж' nocalcsum thema=sale
+		column SLREVFIX 'Выручка (пост.)'
+		column SLREVNORM 'Цена (норм.)' nocalcsum
+		column SLSS 'Цеховая с-сть'
+		column SLSSAUTO 'Цех. с-сть (прокачка)'
+		column SLSSED 'Себестоимость единицы продаж' nocalcsum thema=sale
+		column SLSSFIX 'Цех. с-сть (пост.)'
+		column SLSSNORM 'Цех. с-ть (норм.)' nocalcsum
+		column SLSSSUM 'Себест-ть на объем' thema=sale
+		column SLUR 'Упр. р-ды'
+		column SLURAUTO 'Упр. р-ды (прокачка)'
+		column SLURED 'Управленческие расходы на единицу' nocalcsum thema=sale
+		column SLURFIX 'Упр. р-ды (пост.)'
+		column SLURNORM 'Упр. р-ды (норм.)' nocalcsum
+		column SSCENA 'Цена'
+		column SSKOL 'Кол-во'
+		column SSKOLED 'Норматив'
+		column SSSUMMA 'Сумма'
+		column SSSUMMAED 'Сумма на ед.'
+		column STUB 'STUB'
+		column SUMMA 'Сумма' dosum
+		column SUMMAED 'Сумма на единицу' calc_ed
+		column SUMMAGROUP 'Групповая сумма' dosum
+		column SUMMATEMP 'Сумма (для промежуточных расчетов)'
+		column TMP 'Tmp'
+		column TPFP 'ТПФП'
+		column vCZK 'CZK'
+		column vEUR '€'
+		column vGBP '?'
+		column vKZT 'KZT'
+		column vRSD 'RSD'
+		column vUSD '$'
+		column ZOn 'Займы, остаток на начало (основная сумма)'
+		column ZPd 'Займы, привлечено'
+		column ZPOn 'Займы, остаток на начало (%)'
+		column ZPPd 'Займы, начислено (%)'
+		column ZPRd 'Займы, уплачено (%)'
+		column ZRd 'Займы, погашено'
+		column Б1 'Б1' doexref linkcol=DS
+		column Б1ВО 'Б1 вн. об.'
+		column Б1КОНС 'Консолидированные результаты'
+		column Б2 'Б2'
+		column Б2ВО 'Б2 вн. об.'
+		column Б3 'Б3'
+		column Б3ВО 'Б3 вн. об.'
+		column Б4 'Б4'
+		column Б4ВО 'Б4 вн. об.'
+		column 0CONSTNUMС 'Число конст.' formula = (
+			@0CONSTSTR**?
+		)
+		column 0CONSTSTRR 'Строка подс.' formula = (
+			@0CONSTSTR~?
+		)
+		column 0CONSTSTRRС 'Строка подс. конст.' formula = (
+			@0CONSTSTR**~?
+		)
+		column 1DIVKFPN 'Откл. натура' formula = (
+			@0KF? - @0KP?
+		)
+		column 4F 'ПНП (факт)' formula = (
+			@0KF? + @2KFSEB? + @2KFDMSP? + @2KFDMSC? + @2KFFSS?
+		)
+		column 4NAZP 'Нацпроект' formula = (
+			@0KF? + @2KFSEB? + @2KFDMSP? + @2KFDMSC? + @2KFFSS?
+		)
+		column 4O 'ПНП (ожид)' formula = (
+			@3PRIB? + @3SEB? + @3DMSP? + @3DMSC? + @3FSS?
+		)
+		column 4P 'ПНП (план)' formula = (
+			@0KP? + @2KPSEB? + @2KPDMSP? + @2KPDMSC? + @2KPFSS?
+		)
+		column 5SRF 'Средства работника факт' formula = (
+			( @5SPUT? * @5KOZD? ) * @5DOPP?
+		)
+		column AVGCENACALC 'Цена средняя' formula = (
+			( @ONSUMMA? + @ONSUMMACALC? + @PDSUMMA? + @PDSUMMACALC? ) / ( @ONKOL? + @PDKOL? ) * 1000
+		)
+		column BALk 'Баланс на конец' formula = (
+			f.If ( periodin (251,301,303,306,309), { @PLAN? }, { @Б2? } )
+		)
+		column BALn 'Баланс на начало' formula = (
+			f.If ( periodin (251,301), { @Б2.Y-1.P401? }, { 
 f.If ( periodin (303,306,309), { @Б2.Y-1.P4? }, { @Б1? } ) } )
-			)
-			column BMCENASNG 'Цена с н.г.' thema=bm formula = (
-				@BMSUMMASNG? * 1000 / @BMKOLSNG?
-			)
-			column BMKOLSNG 'Кол-во с н.г.' thema=bm formula = (
-				f.If ( contoin ( 'BA020_101,BA020_102') , { @BMKOL.P-503? } , { f.If ( contoin ('BA020_401,BA020_402') , { @BMKOL.P-205? }, { @BMKOL.P-501? } ) } )
-			)
-			column BMSUMMACALC 'Сумма (расчетно)' dosum thema=bm formula = (
-				@BMKOL? * @BMCENA? / 1000
-			)
-			column BMSUMMASNG 'Сумма с н.г.' thema=bm formula = (
-				f.If ( contoin ( 'BA020_101,BA020_102') , { @BMSUMMA.P-503? } , { f.If ( contoin ('BA020_401,BA020_402') , { @BMSUMMA.P-205? }, { @BMSUMMA.P-501? } ) } )
-			)
-			column CENABASE 'Цена базовая' formula = (
-				f.If ( treeallin ( "Au" ), { 1500.0 }, {
+		)
+		column BMCENASNG 'Цена с н.г.' thema=bm formula = (
+			@BMSUMMASNG? * 1000 / @BMKOLSNG?
+		)
+		column BMKOLSNG 'Кол-во с н.г.' thema=bm formula = (
+			f.If ( contoin ( 'BA020_101,BA020_102') , { @BMKOL.P-503? } , { f.If ( contoin ('BA020_401,BA020_402') , { @BMKOL.P-205? }, { @BMKOL.P-501? } ) } )
+		)
+		column BMSUMMACALC 'Сумма (расчетно)' dosum thema=bm formula = (
+			@BMKOL? * @BMCENA? / 1000
+		)
+		column BMSUMMASNG 'Сумма с н.г.' thema=bm formula = (
+			f.If ( contoin ( 'BA020_101,BA020_102') , { @BMSUMMA.P-503? } , { f.If ( contoin ('BA020_401,BA020_402') , { @BMSUMMA.P-205? }, { @BMSUMMA.P-501? } ) } )
+		)
+		column CENABASE 'Цена базовая' formula = (
+			f.If ( treeallin ( "Au" ), { 1500.0 }, {
 f.If ( treeallin ( "Ag" ), { 30.0 } ) } )
-			)
-			column CENACALC 'Цена расчетная' nocalcsumhard formula = (
-				@SUMMA? * 1000.0000 / @KOL?
-			)
-			column CENACALCPLAN 'Цена расчетна плановая' nocalcsum formula = (
-				@SUMMAPLANCALC? / @KOLCALCPLAN? * 1000
-			)
-			column CENALINK 'Цена (ссылка)' nocalcsumhard formula = (
-				@SUMMALINK? * 1000.0 / @KOL?
-			)
-			column CONTROBSNG 'Контроль оборотов с н.г.' formula = (
-				f.If ( not pathin ( "m112281", "m112285", "m112800" ), { f.If ( pathin ( "m214" ), { @Б1.P-201? - @Б1? - @Б1.P-202? } , { @Б1.P-201? - @Б1.P-501? } ) } )
-			)
-			column CONTROLDKZ 'Контроль ДК и КЗ' formula = (
-				@DZk.P-201? - @DZk? + @KZk.P-201? - @KZk? + @DZk.P-202? - @DZn? + @KZk.P-202? - @KZn?
-			)
-			column CONTROLNDS 'Контроль н/о базы НДС' dosum formula = (
-				f.If ( treetagin('/nds_nob:*/'), {  @Б1? - $__nds_nob@Б1? - @NNOB? - @NOB18? - @NOB12? - @NOB10? - @NOB08? - @NOB20? }, { @Б1? - @NNOB? - @NOB18? - @NOB12? - @NOB10? - @NOB08? - @NOB20? } )
-			)
-			column CONTROLOKDEB 'На конец (дебет)' noextreme=1 formula = (
-				q.remapcolumns(  ("In", ("m230"), "DZn" ),   "NORESULT" )?
-			)
-			column CONTROLOKDEB1 'На конец (дебет)' formula = (
-				f.If ( pathin ( "m230" ), { @DZk? } )
-			)
-			column CONTROLOKKRED 'На конец' noextreme=1 formula = (
-				q.remapcolumns( ( "In" , ("m220", "r130") , "Ok" ) , ("In", ("m230"), "KZk" ),  ("In", ("m111", "m211"), "Б2" ), ("In", ("m211090"), "ZOk" ),  "NORESULT" )?
-			)
-			column CONTROLOKKRED1 'На конец' formula = (
-				f.If ( pathin ( "m220", "r130","r640","r510","r211" ), { @Ok? }, {
+		)
+		column CENACALC 'Цена расчетная' nocalcsumhard formula = (
+			@SUMMA? * 1000.0000 / @KOL?
+		)
+		column CENACALCPLAN 'Цена расчетна плановая' nocalcsum formula = (
+			@SUMMAPLANCALC? / @KOLCALCPLAN? * 1000
+		)
+		column CENALINK 'Цена (ссылка)' nocalcsumhard formula = (
+			@SUMMALINK? * 1000.0 / @KOL?
+		)
+		column CONTROBSNG 'Контроль оборотов с н.г.' formula = (
+			f.If ( not pathin ( "m112281", "m112285", "m112800" ), { f.If ( pathin ( "m214" ), { @Б1.P-201? - @Б1? - @Б1.P-202? } , { @Б1.P-201? - @Б1.P-501? } ) } )
+		)
+		column CONTROLDKZ 'Контроль ДК и КЗ' formula = (
+			@DZk.P-201? - @DZk? + @KZk.P-201? - @KZk? + @DZk.P-202? - @DZn? + @KZk.P-202? - @KZn?
+		)
+		column CONTROLNDS 'Контроль н/о базы НДС' dosum formula = (
+			f.If ( treetagin('/nds_nob:*/'), {  @Б1? - $__nds_nob@Б1? - @NNOB? - @NOB18? - @NOB12? - @NOB10? - @NOB08? - @NOB20? }, { @Б1? - @NNOB? - @NOB18? - @NOB12? - @NOB10? - @NOB08? - @NOB20? } )
+		)
+		column CONTROLOKDEB 'На конец (дебет)' noextreme=1 formula = (
+			q.remapcolumns(  ("In", ("m230"), "DZn" ),   "NORESULT" )?
+		)
+		column CONTROLOKDEB1 'На конец (дебет)' formula = (
+			f.If ( pathin ( "m230" ), { @DZk? } )
+		)
+		column CONTROLOKKRED 'На конец' noextreme=1 formula = (
+			q.remapcolumns( ( "In" , ("m220", "r130") , "Ok" ) , ("In", ("m230"), "KZk" ),  ("In", ("m111", "m211"), "Б2" ), ("In", ("m211090"), "ZOk" ),  "NORESULT" )?
+		)
+		column CONTROLOKKRED1 'На конец' formula = (
+			f.If ( pathin ( "m220", "r130","r640","r510","r211" ), { @Ok? }, {
 f.If ( pathin ( "m230" ), { @KZk? }, {
 f.If ( pathin ( "r110","r120" ) and ( periodin (1,2,3,4) or isplanperiod ) , { @OSTk? }, {
 f.If ( pathin ( "m111", "m211" ), { @Б2? } ) } ) } ) } )
-			)
-			column CONTROLONDEB 'На начало (дебет)' noextreme=1 formula = (
-				q.remapcolumns(  ("In", ("m230"), "DZk" ),   "NORESULT" )?
-			)
-			column CONTROLONDEB1 'На начало (дебет)' formula = (
-				f.If ( pathin ( "m230" ), { @DZn? } )
-			)
-			column CONTROLONKRED 'На начало' noextreme=1 formula = (
-				q.remapcolumns( ( "In" , ("m220", "r130","r510") , "On" ) , ("In", ("m230"), "KZn" ), ("In", ("m111", "m211"), "Б1" ),  "NORESULT" )?
-			)
-			column CONTROLONKRED1 'На начало' formula = (
-				f.If ( pathin ( "m220", "r130","r640", "r510","r211" ), { @On? }, {
+		)
+		column CONTROLONDEB 'На начало (дебет)' noextreme=1 formula = (
+			q.remapcolumns(  ("In", ("m230"), "DZk" ),   "NORESULT" )?
+		)
+		column CONTROLONDEB1 'На начало (дебет)' formula = (
+			f.If ( pathin ( "m230" ), { @DZn? } )
+		)
+		column CONTROLONKRED 'На начало' noextreme=1 formula = (
+			q.remapcolumns( ( "In" , ("m220", "r130","r510") , "On" ) , ("In", ("m230"), "KZn" ), ("In", ("m111", "m211"), "Б1" ),  "NORESULT" )?
+		)
+		column CONTROLONKRED1 'На начало' formula = (
+			f.If ( pathin ( "m220", "r130","r640", "r510","r211" ), { @On? }, {
 f.If ( pathin ( "m230" ), { @KZn? }, {
 f.If ( pathin ( "r110","r120" ) and ( periodin (1,2,3,4) or isplanperiod ) , { @OSTn? }, {
 f.If ( pathin ( "m111", "m211" ), { @Б1? } ) } ) } ) } )
-			)
-			column CONTROLOZHID 'Контроль ожид.' formula = (
-				f.If ( pathin ( "t110300", "t110350" ), { ( @Б1.P2? + @Б1.P446? ) / 2 - @Б1.P402?  }, { 
+		)
+		column CONTROLOZHID 'Контроль ожид.' formula = (
+			f.If ( pathin ( "t110300", "t110350" ), { ( @Б1.P2? + @Б1.P446? ) / 2 - @Б1.P402?  }, { 
 f.If ( not pathin ("t110400", "t110550", "t110430"), { @Б1.P2? + @Б1.P446? - @Б1.P402? } ) } )
-			)
-			column CONTROLPD 'Приход (оборот)' noextreme=1 formula = (
-				f.If ( not periodin (251, 252, 253, 254, 301, 303, 306, 309) , { q.remapcolumns( ( "In" , ("m220", "r130") , "Pd" ) , ("In", ("m230", "m112", "m212", "m214", "m217", "m218", "m250", "m260", "m600"), "Б1" ), "NORESULT" )? } , 
+		)
+		column CONTROLPD 'Приход (оборот)' noextreme=1 formula = (
+			f.If ( not periodin (251, 252, 253, 254, 301, 303, 306, 309) , { q.remapcolumns( ( "In" , ("m220", "r130") , "Pd" ) , ("In", ("m230", "m112", "m212", "m214", "m217", "m218", "m250", "m260", "m600"), "Б1" ), "NORESULT" )? } , 
 {
 q.remapcolumns( ("In", ("m230", "m112", "m212", "m214", "m217", "m218", "m250", "m260", "m600"), "PLAN" ), "NORESULT" )?
 } )
-			)
-			column CONTROLPD1 'Приход (оборот)' formula = (
-				f.If ( pathin ( "m220", "r130" ), { @Pd? }, { f.If ( pathin ( "m214", "r590", "m217", "f110" ), { f.If ( periodin (1,2,3,4) or isplanperiod, { @Б1? }  ) } , { @Б1? } ) } )
-			)
-			column CONTROLRD 'Расход' noextreme=1 formula = (
-				q.remapcolumns( ( "In" , ("m220", "r130") , "Rd" ) ,  "NORESULT" )?
-			)
-			column CONTROLRD1 'Расход' formula = (
-				f.If ( pathin ( "m220", "r130","r211" ), { @Rd? } )
-			)
-			column ENKOL 'Энергия количество' formula = (
-				f.If ( pathin ( "r175" ), { @RDKOL?  }, { @KOL? } )
-			)
-			column ENOTKLP 'Откл-е затрат на энергоресурсы' formula = (
-				@ENSUMMA? - @ENSUMMA.P-303?
-			)
-			column ENOTKLP_CENA 'Откл-е за счет цен' formula = (
-				@ENKOL? * ( @ENSUMMA? / @ENKOL? - @ENSUMMA.P-303? / @ENKOL.P-303? )
-			)
-			column ENOTKLP_KOL 'Откл-е за счет кол-ва' formula = (
-				( @ENKOL? - @ENKOL.P-303? ) * @ENSUMMA.P-303? / @ENKOL.P-303?
-			)
-			column ENSUMMA 'Энергия план' formula = (
-				f.If ( pathin ( "r175" ), { @RDSUMMA?  }, { @Б1? } )
-			)
-			column FACT2KV 'Факт 2 квартала' formula = (
-				f.If ( periodin ( 406 ), { @Б1.P406? - @Б1.P1? + @0KF.P406? - @0KF.P1? }, { @Б1.P2? - @Б1.P1? + @0KF.P2? - @0KF.P1? } )
-			)
-			column FACT9M 'Факт 9 мес' formula = (
-				f.If ( pathin ( "m1302200", "m1301230" ), { @Б1.P3? / 9 }, {  
+		)
+		column CONTROLPD1 'Приход (оборот)' formula = (
+			f.If ( pathin ( "m220", "r130" ), { @Pd? }, { f.If ( pathin ( "m214", "r590", "m217", "f110" ), { f.If ( periodin (1,2,3,4) or isplanperiod, { @Б1? }  ) } , { @Б1? } ) } )
+		)
+		column CONTROLRD 'Расход' noextreme=1 formula = (
+			q.remapcolumns( ( "In" , ("m220", "r130") , "Rd" ) ,  "NORESULT" )?
+		)
+		column CONTROLRD1 'Расход' formula = (
+			f.If ( pathin ( "m220", "r130","r211" ), { @Rd? } )
+		)
+		column ENKOL 'Энергия количество' formula = (
+			f.If ( pathin ( "r175" ), { @RDKOL?  }, { @KOL? } )
+		)
+		column ENOTKLP 'Откл-е затрат на энергоресурсы' formula = (
+			@ENSUMMA? - @ENSUMMA.P-303?
+		)
+		column ENOTKLP_CENA 'Откл-е за счет цен' formula = (
+			@ENKOL? * ( @ENSUMMA? / @ENKOL? - @ENSUMMA.P-303? / @ENKOL.P-303? )
+		)
+		column ENOTKLP_KOL 'Откл-е за счет кол-ва' formula = (
+			( @ENKOL? - @ENKOL.P-303? ) * @ENSUMMA.P-303? / @ENKOL.P-303?
+		)
+		column ENSUMMA 'Энергия план' formula = (
+			f.If ( pathin ( "r175" ), { @RDSUMMA?  }, { @Б1? } )
+		)
+		column FACT2KV 'Факт 2 квартала' formula = (
+			f.If ( periodin ( 406 ), { @Б1.P406? - @Б1.P1? + @0KF.P406? - @0KF.P1? }, { @Б1.P2? - @Б1.P1? + @0KF.P2? - @0KF.P1? } )
+		)
+		column FACT9M 'Факт 9 мес' formula = (
+			f.If ( pathin ( "m1302200", "m1301230" ), { @Б1.P3? / 9 }, {  
 f.If ( pathin ( "m220" ), { @Pd.P3? } , { @Б1.P3? } ) } )
-			)
-			column FAPD 'Откл-е приход всего' dosum report=fa formula = (
-				@PDSUMMA? - @PDSUMMA.P-303?
-			)
-			column FAPDCENA 'Откл-е приход за счет цены' dosum formula = (
-				@FAPD? - @FAPDKOL?
-			)
-			column FAPDKOL 'Откл-е приход за счет кол-ва' dosum formula = (
-				( @PDKOL? - @PDKOL.P-303? ) * @PDCENA.P-303? / 1000
-			)
-			column FARD 'Откл-е расход всего' dosum formula = (
-				@RDSUMMA? - @RDSUMMA.P-303?
-			)
-			column FARDCENA 'Откл-е расход за счет цен' dosum formula = (
-				@FARD? - @FARDKOL?
-			)
-			column FARDKOL 'Откл-е расход за счет кол-ва' dosum formula = (
-				( @RDKOL? - @RDKOL.P-303? ) * @RDCENA.P-303? / 1000
-			)
-			column INM 'Рост с н.м., %' volume=pr formula = (
-				@FNM? / @PNM? * 100
-			)
-			column IS 'Рост сутки, %' volume=pr formula = (
-				@FS? / @PS? * 100
-			)
-			column JOBR 'Темп роста трудовых показателей' measure=% formula = (
-				@JOB? / @JOBP? * 100
-			)
-			column KOLCALCPLAN 'Кол-во всего план' currency=NAT dosum nocalcsum formula = (
-				@KOLED? * $__OPS@__OPK.torootobj()? + @FIXKOL?
-			)
-			column KOLDIV4 'Кол-во ср. кв.' currency=NAT dosum formula = (
-				f.If ( treetagin( "/UDPOK:1/" ) , { @KOL? } , { @KOL?/4 } )
-			)
-			column KOLEDCALC 'Количество на единицу расчетно' currency=NAT nocalcsum formula = (
-				@KOL? / @OBCALC?
-			)
-			column KOLEDFACTCALC 'Кол-во на ед.' currency=NAT aggregateobj dosum formula = (
-				@KOL? / f.choose( $__OFS@__OFK?, $__OFS@__OFK.torootobj()?)
-			)
-			column KOLEDPLANCALC 'Кол-во на ед.' currency=NAT aggregateobj nocalcsum formula = (
-				@KOL? / f.choose( $__OPS@__OPK?, $__OPS@__OPK.torootobj()? )
-			)
-			column KOLTER 'Кол-вол ТЭР' currency=NAT formula = (
-				f.If ( treetagin( "/KOLDIV1000:1/" ) , { @KOL? / 1000 } , { @KOL? } )
-			)
-			column KORR 'Годовые коррективы' formula = (
-				f.If ( periodin ( 11,12,13,22,1,403 ), { @PLANC.P31? }, {
+		)
+		column FAPD 'Откл-е приход всего' dosum report=fa formula = (
+			@PDSUMMA? - @PDSUMMA.P-303?
+		)
+		column FAPDCENA 'Откл-е приход за счет цены' dosum formula = (
+			@FAPD? - @FAPDKOL?
+		)
+		column FAPDKOL 'Откл-е приход за счет кол-ва' dosum formula = (
+			( @PDKOL? - @PDKOL.P-303? ) * @PDCENA.P-303? / 1000
+		)
+		column FARD 'Откл-е расход всего' dosum formula = (
+			@RDSUMMA? - @RDSUMMA.P-303?
+		)
+		column FARDCENA 'Откл-е расход за счет цен' dosum formula = (
+			@FARD? - @FARDKOL?
+		)
+		column FARDKOL 'Откл-е расход за счет кол-ва' dosum formula = (
+			( @RDKOL? - @RDKOL.P-303? ) * @RDCENA.P-303? / 1000
+		)
+		column INM 'Рост с н.м., %' volume=pr formula = (
+			@FNM? / @PNM? * 100
+		)
+		column IS 'Рост сутки, %' volume=pr formula = (
+			@FS? / @PS? * 100
+		)
+		column JOBR 'Темп роста трудовых показателей' measure=% formula = (
+			@JOB? / @JOBP? * 100
+		)
+		column KOLCALCPLAN 'Кол-во всего план' currency=NAT dosum nocalcsum formula = (
+			@KOLED? * $__OPS@__OPK.torootobj()? + @FIXKOL?
+		)
+		column KOLDIV4 'Кол-во ср. кв.' currency=NAT dosum formula = (
+			f.If ( treetagin( "/UDPOK:1/" ) , { @KOL? } , { @KOL?/4 } )
+		)
+		column KOLEDCALC 'Количество на единицу расчетно' currency=NAT nocalcsum formula = (
+			@KOL? / @OBCALC?
+		)
+		column KOLEDFACTCALC 'Кол-во на ед.' currency=NAT aggregateobj dosum formula = (
+			@KOL? / f.choose( $__OFS@__OFK?, $__OFS@__OFK.torootobj()?)
+		)
+		column KOLEDPLANCALC 'Кол-во на ед.' currency=NAT aggregateobj nocalcsum formula = (
+			@KOL? / f.choose( $__OPS@__OPK?, $__OPS@__OPK.torootobj()? )
+		)
+		column KOLTER 'Кол-вол ТЭР' currency=NAT formula = (
+			f.If ( treetagin( "/KOLDIV1000:1/" ) , { @KOL? / 1000 } , { @KOL? } )
+		)
+		column KORR 'Годовые коррективы' formula = (
+			f.If ( periodin ( 11,12,13,22,1,403 ), { @PLANC.P31? }, {
 f.If ( periodin ( 14,15,16,24,25,2,406 ), { @PLANC.P31? + @PLANC.P32? }, {
 f.If ( periodin ( 17,18,19,27,28,3,409 ), { @PLANC.P31? + @PLANC.P32? + @PLANC.P33? }, {
 f.If ( periodin ( 110,111,112,210,211,4,401 ), { @PLANC.P31? + @PLANC.P32? + @PLANC.P33? + @PLANC.P34? } ) } ) } ) } )	
-			)
-			column KORRGOD 'Годовые коррективы' formula = (
-				@PLANC(31,32,33,34)?
-			)
-			column LINKCENA 'Цена (ссылка)' formula = (
-				@LINKSUMMA? / @LINKKOL? * 1000
-			)
-			column LINKKOL 'Кол-во (ссылка)' formula = (
-				@KOL?
-			)
-			column LINKSUMMA 'Сумма (ссылка)' formula = (
-				f.If ( pathin ( "m260" ) , { @Б1? + @PLAN? } , { @SUMMA? } )
-			)
-			column NDSRATE 'Ставка НДС' nocalcsumhard formula = (
-				f.If ( rowallin ( "NDS0" ) , { 0.0 } , { 
+		)
+		column KORRGOD 'Годовые коррективы' formula = (
+			@PLANC(31,32,33,34)?
+		)
+		column LINKCENA 'Цена (ссылка)' formula = (
+			@LINKSUMMA? / @LINKKOL? * 1000
+		)
+		column LINKKOL 'Кол-во (ссылка)' formula = (
+			@KOL?
+		)
+		column LINKSUMMA 'Сумма (ссылка)' formula = (
+			f.If ( pathin ( "m260" ) , { @Б1? + @PLAN? } , { @SUMMA? } )
+		)
+		column NDSRATE 'Ставка НДС' nocalcsumhard formula = (
+			f.If ( rowallin ( "NDS0" ) , { 0.0 } , { 
 f.If ( rowallin ("NDS8") , { 8.0 } , { 
 f.If ( rowallin ("NDS10") , { 10.0 } , { 
 f.If ( rowallin ("NDS10V") , { 9.09 } , { 
 f.If ( rowallin ("NDS18V") , { 15.25 } , { 
 18.0 } )  } ) } ) } ) } )
-			)
-			column NDSSUM 'Сумма по налогу' dosum formula = (
-				@NOB? * @NDSRATE? / 100.0
-			)
-			column NDSSUMKORR 'Сумма НДС по доп. декл.' dosum formula = (
-				f.round ( @NOBKORR? * @NDSRATE? / 100.0 )
-			)
-			column NDSVSEGO 'Сумма НДС всего' dosum formula = (
-				@NDSSUM? + @NDSSUMKORR?
-			)
-			column NKM 'Нат км' measure=км formula = (
-				@NM? / 1000
-			)
-			column NOB 'Налогооблагаемая база' nocalcsumhard formula = (
-				@Б1? - @NNOB?
-			)
-			column NOBVSEGO 'Н/о база всего' nocalcsumhard formula = (
-				@NOB? + @NOBKORR?
-			)
-			column NTN 'Нат тн' measure=тн formula = (
-				@NKG? / 1000
-			)
-			column OBCALC 'Объем производства (расчетно)' formula = (
-				f.If ( treeallin( "CALC_OST" ), { @KOL? }, {  f.If ( treeallin( "CALC_TP" ), { $__CALC_TP@KOL? }, {  f.If ( treeallin( "CALC_RP" ), { $__CALC_RP@KOL? }, { $__CALC_OP@KOL? } ) } ) } )
-			)
-			column OBCALCPLAN 'Плановый объем производства (расчетно)' formula = (
-				f.If ( treeallin( "CALC_OST" ), { @__OPK? }, {  f.If ( treeallin( "CALC_TP" ), { $__CALC_TP@__OPK? }, {  f.If ( treeallin( "CALC_RP" ), { $__CALC_RP@__OPK? }, { $__CALC_OP@__OPK? } ) } ) } )
-			)
-			column OBOST 'Обороты плюс остатки на конец' formula = (
-				@Б1? + @Б2?
-			)
-			column Ok '4. Остаток на конец периода' dosum formula = (
-				f.If ( not treetagin("/oknull:1/"), { 
+		)
+		column NDSSUM 'Сумма по налогу' dosum formula = (
+			@NOB? * @NDSRATE? / 100.0
+		)
+		column NDSSUMKORR 'Сумма НДС по доп. декл.' dosum formula = (
+			f.round ( @NOBKORR? * @NDSRATE? / 100.0 )
+		)
+		column NDSVSEGO 'Сумма НДС всего' dosum formula = (
+			@NDSSUM? + @NDSSUMKORR?
+		)
+		column NKM 'Нат км' measure=км formula = (
+			@NM? / 1000
+		)
+		column NOB 'Налогооблагаемая база' nocalcsumhard formula = (
+			@Б1? - @NNOB?
+		)
+		column NOBVSEGO 'Н/о база всего' nocalcsumhard formula = (
+			@NOB? + @NOBKORR?
+		)
+		column NTN 'Нат тн' measure=тн formula = (
+			@NKG? / 1000
+		)
+		column OBCALC 'Объем производства (расчетно)' formula = (
+			f.If ( treeallin( "CALC_OST" ), { @KOL? }, {  f.If ( treeallin( "CALC_TP" ), { $__CALC_TP@KOL? }, {  f.If ( treeallin( "CALC_RP" ), { $__CALC_RP@KOL? }, { $__CALC_OP@KOL? } ) } ) } )
+		)
+		column OBCALCPLAN 'Плановый объем производства (расчетно)' formula = (
+			f.If ( treeallin( "CALC_OST" ), { @__OPK? }, {  f.If ( treeallin( "CALC_TP" ), { $__CALC_TP@__OPK? }, {  f.If ( treeallin( "CALC_RP" ), { $__CALC_RP@__OPK? }, { $__CALC_OP@__OPK? } ) } ) } )
+		)
+		column OBOST 'Обороты плюс остатки на конец' formula = (
+			@Б1? + @Б2?
+		)
+		column Ok '4. Остаток на конец периода' dosum formula = (
+			f.If ( not treetagin("/oknull:1/"), { 
 f.If ( treetagin("/useosv:1/")  , { @On? + @PdOSV? - @RdOSV? } , { @On? + @Pd? - @Rd? } ) 
 } )
-			)
-			column OKCENA 'Цена на конец' formula = (
-				@AVGCENA?
-			)
-			column OKCENACALC 'Цена на конец (расчет)' formula = (
-				@OKSUMMA? / @OKKOL? * 1000
-			)
-			column OKCENAPLAN 'Цена на конец план' formula = (
-				@OKSUMMAPLAN? / @OKKOLPLAN? * 1000
-			)
-			column Okd 'На конец (дебет)' dosum formula = (
-				f.If (  @Ok? < 0 , { @Ok? } )
+		)
+		column OKCENA 'Цена на конец' formula = (
+			@AVGCENA?
+		)
+		column OKCENACALC 'Цена на конец (расчет)' formula = (
+			@OKSUMMA? / @OKKOL? * 1000
+		)
+		column OKCENAPLAN 'Цена на конец план' formula = (
+			@OKSUMMAPLAN? / @OKKOLPLAN? * 1000
+		)
+		column Okd 'На конец (дебет)' dosum formula = (
+			f.If (  @Ok? < 0 , { @Ok? } )
 
-			)
-			column Okk 'На конец (кредит)' dosum formula = (
-				f.If (  @Ok? > 0 , { @Ok? } )
+		)
+		column Okk 'На конец (кредит)' dosum formula = (
+			f.If (  @Ok? > 0 , { @Ok? } )
 
-			)
-			column OKKOL 'Кол-во на конец' currency=NAT formula = (
-				@ONKOL? + @PDKOL? - @RDKOL?
-			)
-			column OKKOLPLAN 'Кол-вол план расход' formula = (
-				@ONKOLPLAN? + @PDKOLPLAN? - @RDKOLPLAN?
-			)
-			column Oks 'Остаток на конец (расчетно)' dosum formula = (
-				f.If ( year > 2011 , { @On.P11?  + @Pd.P-501? - @Rd.P-501? } , { @On? + @Pd? - @Rd? } ) 
+		)
+		column OKKOL 'Кол-во на конец' currency=NAT formula = (
+			@ONKOL? + @PDKOL? - @RDKOL?
+		)
+		column OKKOLPLAN 'Кол-вол план расход' formula = (
+			@ONKOLPLAN? + @PDKOLPLAN? - @RDKOLPLAN?
+		)
+		column Oks 'Остаток на конец (расчетно)' dosum formula = (
+			f.If ( year > 2011 , { @On.P11?  + @Pd.P-501? - @Rd.P-501? } , { @On? + @Pd? - @Rd? } ) 
 
-			)
-			column OKSUMMA 'Сумма на конец' formula = (
-				@ONSUMMA? + @PDSUMMA? - @RDSUMMA?
-			)
-			column OKSUMMACALC 'Сумма на конец (расчет)' formula = (
-				@OKKOL? * @OKCENA? / 1000
-			)
-			column OKSUMMAPLAN 'Сумма план на конец' formula = (
-				@ONSUMMAPLAN? + @PDSUMMAPLAN? - @RDSUMMAPLAN?
-			)
-			column OLAPF 'OLAP факт' thema=olap formula = (
-				@__OLAP_COLF?
-			)
-			column OLAPP 'OLAP план' thema=olap formula = (
-				@__OLAP_COLP?
-			)
-			column ONCENACALC 'Цена на начало (рачсет)' formula = (
-				@ONSUMMA? / @ONKOL? * 1000
-			)
-			column ONCENAPLAN 'Цена на начало план' formula = (
-				@ONSUMMAPLAN? / @ONKOLPLAN? * 1000
-			)
-			column Ond 'На начало (дебет)' dosum formula = (
-				@On.sign( -1 )?
-			)
-			column Onk 'На начало (кредит)' dosum formula = (
-				@On.sign( 1 )?
-			)
-			column ONKOLPLAN 'Кол-вол план на начало' formula = (
-				f.If ( periodin( 11,12,13,22,1 ), { @ONKOL.P303?  } , {  f.If ( periodin( 14,15,16,24,25,2 ), { @ONKOL.P306? } , {  f.If ( periodin( 17,18,19,27,28,3 ), { @ONKOL.P309?  } , {  f.If ( periodin( 110,111,112,210,4 ), { @ONKOL.P251?  } ) } ) } ) } )
-			)
-			column Ons 'Остаток на начало (расчетно)' dosum formula = (
-				f.If ( year > 2010 , { @On.P11? } , { @On? } )
-			)
-			column ONSUMMACALC 'Сумма на начало (расчет)' formula = (
-				@ONKOL? * @ONCENA? / 1000
-			)
-			column ONSUMMAPLAN 'Сумма план на начало' formula = (
-				f.If ( periodin( 11,12,13,22,1 ), { @ONSUMMACALC.P303? } , { f.If ( periodin( 14,15,16,24,25,2 ), { @ONSUMMACALC.P306? } , { f.If ( periodin( 17,18,19,27,28,3 ), { @ONSUMMACALC.P309? } , { f.If ( periodin( 110,111,112,210,4 ), { @ONSUMMACALC.P251? } ) } ) } ) } )
-			)
-			column OSTk 'ОС ост. ст-ть на на кон' dosum formula = (
-				@BSTk? - @ASTk?
-			)
-			column OSTn 'ОС ост. ст-ть на нач' dosum formula = (
-				@BSTn? - @ASTn?
-			)
-			column OTKLPLAN 'Отклонение от плана' formula = (
-				f.If ( periodin ( 1,2,3,4,403,406,409 ), { @Б1? - @Б1.P-303? }, {
+		)
+		column OKSUMMA 'Сумма на конец' formula = (
+			@ONSUMMA? + @PDSUMMA? - @RDSUMMA?
+		)
+		column OKSUMMACALC 'Сумма на конец (расчет)' formula = (
+			@OKKOL? * @OKCENA? / 1000
+		)
+		column OKSUMMAPLAN 'Сумма план на конец' formula = (
+			@ONSUMMAPLAN? + @PDSUMMAPLAN? - @RDSUMMAPLAN?
+		)
+		column OLAPF 'OLAP факт' thema=olap formula = (
+			@__OLAP_COLF?
+		)
+		column OLAPP 'OLAP план' thema=olap formula = (
+			@__OLAP_COLP?
+		)
+		column ONCENACALC 'Цена на начало (рачсет)' formula = (
+			@ONSUMMA? / @ONKOL? * 1000
+		)
+		column ONCENAPLAN 'Цена на начало план' formula = (
+			@ONSUMMAPLAN? / @ONKOLPLAN? * 1000
+		)
+		column Ond 'На начало (дебет)' dosum formula = (
+			@On.sign( -1 )?
+		)
+		column Onk 'На начало (кредит)' dosum formula = (
+			@On.sign( 1 )?
+		)
+		column ONKOLPLAN 'Кол-вол план на начало' formula = (
+			f.If ( periodin( 11,12,13,22,1 ), { @ONKOL.P303?  } , {  f.If ( periodin( 14,15,16,24,25,2 ), { @ONKOL.P306? } , {  f.If ( periodin( 17,18,19,27,28,3 ), { @ONKOL.P309?  } , {  f.If ( periodin( 110,111,112,210,4 ), { @ONKOL.P251?  } ) } ) } ) } )
+		)
+		column Ons 'Остаток на начало (расчетно)' dosum formula = (
+			f.If ( year > 2010 , { @On.P11? } , { @On? } )
+		)
+		column ONSUMMACALC 'Сумма на начало (расчет)' formula = (
+			@ONKOL? * @ONCENA? / 1000
+		)
+		column ONSUMMAPLAN 'Сумма план на начало' formula = (
+			f.If ( periodin( 11,12,13,22,1 ), { @ONSUMMACALC.P303? } , { f.If ( periodin( 14,15,16,24,25,2 ), { @ONSUMMACALC.P306? } , { f.If ( periodin( 17,18,19,27,28,3 ), { @ONSUMMACALC.P309? } , { f.If ( periodin( 110,111,112,210,4 ), { @ONSUMMACALC.P251? } ) } ) } ) } )
+		)
+		column OSTk 'ОС ост. ст-ть на на кон' dosum formula = (
+			@BSTk? - @ASTk?
+		)
+		column OSTn 'ОС ост. ст-ть на нач' dosum formula = (
+			@BSTn? - @ASTn?
+		)
+		column OTKLPLAN 'Отклонение от плана' formula = (
+			f.If ( periodin ( 1,2,3,4,403,406,409 ), { @Б1? - @Б1.P-303? }, {
 f.If ( periodin ( 401 ), { @OZHIDPREDGOD? - @Б1.P301? }, {
 f.If ( periodin ( 251,301 ), { @Б1? - @OZHIDPREDGOD.Y-1? } ) } ) } )
-			)
-			column OTKLPLANCALC 'Откл-е от плана для кальк-й' formula = (
-				f.If ( periodin ( 1,2,3,4,403,406,409 ), { @SUMMA? - @SUMMA.P-303? }, {
+		)
+		column OTKLPLANCALC 'Откл-е от плана для кальк-й' formula = (
+			f.If ( periodin ( 1,2,3,4,403,406,409 ), { @SUMMA? - @SUMMA.P-303? }, {
 f.If ( periodin ( 401 ), { @SUMMA? - @SUMMAPLANCALC.P301? }, {
 f.If ( periodin ( 251,301 ), { @SUMMAPLANCALC? - @SUMMA.Y-1.P401? } ) } ) } )
-			)
-			column OTKLPLANSNG 'Откл-е от плана с н.г.' formula = (
-				f.If ( periodin(1,11,12,13,403), { @Б1? - @PLANSNG1? }, {
+		)
+		column OTKLPLANSNG 'Откл-е от плана с н.г.' formula = (
+			f.If ( periodin(1,11,12,13,403), { @Б1? - @PLANSNG1? }, {
 f.If ( periodin(2,14,15,16,406), { @Б1? - @PLANSNG2? }, {
 f.If ( periodin(3,17,18,19,409), { @Б1? - @PLANSNG3? }, {
 f.If ( periodin(4,110,111,112,401), { @Б1? - @PLANSNG4? } ) } ) } ) } )
-			)
-			column OTKLPLANSNGP 'Откл-е от плана с н.г., %' formula = (
-				f.If ( periodin(1,11,12,13,403), { ( @Б1? - @PLANSNG1? ) / @PLANSNG1? * 100 }, {
+		)
+		column OTKLPLANSNGP 'Откл-е от плана с н.г., %' formula = (
+			f.If ( periodin(1,11,12,13,403), { ( @Б1? - @PLANSNG1? ) / @PLANSNG1? * 100 }, {
 f.If ( periodin(2,14,15,16,406), { ( @Б1? - @PLANSNG2? ) / @PLANSNG2? * 100 }, {
 f.If ( periodin(3,17,18,19,409), { ( @Б1? - @PLANSNG3? ) / @PLANSNG3? * 100 }, {
 f.If ( periodin(4,110,111,112,401), { ( @Б1? - @PLANSNG4? ) / @PLANSNG4? * 100 } ) } ) } ) } )
-			)
-			column OZHID2KV 'Ожидаемое 2 квартал' dosum formula = (
-				f.If ( tag ( 'fstr', '1' ), { @OZHID2KV? }, { 
+		)
+		column OZHID2KV 'Ожидаемое 2 квартал' dosum formula = (
+			f.If ( tag ( 'fstr', '1' ), { @OZHID2KV? }, { 
  @JOB.P406? - @JOB.P1? + @Pd.P406? - @Pd.P1? + @Б1.P406? - @Б1.P1? } )
-			)
-			column OZHID4KV 'Ожид. 4 кв.' formula = (
-				@OZHIDPREDGOD? - @FACT9M?
-			)
-			column OZHIDCALC 'Ожидаемое расчетно' formula = (
-				f.If ( pathin ( "t110300","t110350" ), { ( @Б1.P-202? * 5 + @PLANMONTH.P-205? ) / 6 }, { 
+		)
+		column OZHID4KV 'Ожид. 4 кв.' formula = (
+			@OZHIDPREDGOD? - @FACT9M?
+		)
+		column OZHIDCALC 'Ожидаемое расчетно' formula = (
+			f.If ( pathin ( "t110300","t110350" ), { ( @Б1.P-202? * 5 + @PLANMONTH.P-205? ) / 6 }, { 
 f.If ( pathin ("t110600","t110710"), { @PLANMONTH.P-205? }, {
 @Б1.P-202? + @PLANMONTH.P-205? } ) } )
-			)
-			column OZHIDCALCKV 'Ожидаемое расчетно кв.' formula = (
-				@Б1.P-209? + @PLANKV.P-206?
-			)
-			column OZHIDCENALINK 'Ожид. цена' formula = (
-				( @Б1.P3? + @Б1.P444? ) / ( @KOL.P3? + @KOL.P444? ) * 1000
-			)
-			column OZHIDGOD 'Ожидаемое за год' formula = (
-				f.If ( pathin("t110300","t110430","m200230"), { ( @FACT9M? * 3 + ( @Б1.P301? + @PLANC.P(31,32,33,34)? ) * 4 - @Б1.P309? * 3 ) / 4 } , {   f.If ( pathin("t110400"), { $t110100? / $t110300? * 1000 / 12 }, {   f.If ( pathin("m200250"), { $m200220? / $m200230? * 1000 / 12 }, {   f.If ( pathin("t110431"), { 0 }, {  f.If ( pathin("t110600","t110610","t110611","t110620","t110710","m200240"), { @Б1.P301? + @PLANC.P(31,32,33,34)? },  { @FACT9M? + @Б1.P301? + @PLANC.P(31,32,33,34)? - @Б1.P309? } ) } ) } ) } ) } )
-			)
-			column OZHIDKOL 'Ожид. кол-во' formula = (
-				@KOL.P3? + @KOL.P444?
-			)
-			column OZHIDKOLDIV4 'Среднекв. ожид. кол-во' formula = (
-				f.If ( treetagin( "/UDPOK:1/" ) , { @OZHIDKOL? } , { @OZHIDKOL?/4 } )
-			)
-			column OZHIDPREDGOD 'Ожид. за пред. год' dosum formula = (
-				f.If ( pathin ( "m203101", "m203104", "m203105", "r511", "m130" ), { @Б1.P401? }, { 
+		)
+		column OZHIDCALCKV 'Ожидаемое расчетно кв.' formula = (
+			@Б1.P-209? + @PLANKV.P-206?
+		)
+		column OZHIDCENALINK 'Ожид. цена' formula = (
+			( @Б1.P3? + @Б1.P444? ) / ( @KOL.P3? + @KOL.P444? ) * 1000
+		)
+		column OZHIDGOD 'Ожидаемое за год' formula = (
+			f.If ( pathin("t110300","t110430","m200230"), { ( @FACT9M? * 3 + ( @Б1.P301? + @PLANC.P(31,32,33,34)? ) * 4 - @Б1.P309? * 3 ) / 4 } , {   f.If ( pathin("t110400"), { $t110100? / $t110300? * 1000 / 12 }, {   f.If ( pathin("m200250"), { $m200220? / $m200230? * 1000 / 12 }, {   f.If ( pathin("t110431"), { 0 }, {  f.If ( pathin("t110600","t110610","t110611","t110620","t110710","m200240"), { @Б1.P301? + @PLANC.P(31,32,33,34)? },  { @FACT9M? + @Б1.P301? + @PLANC.P(31,32,33,34)? - @Б1.P309? } ) } ) } ) } ) } )
+		)
+		column OZHIDKOL 'Ожид. кол-во' formula = (
+			@KOL.P3? + @KOL.P444?
+		)
+		column OZHIDKOLDIV4 'Среднекв. ожид. кол-во' formula = (
+			f.If ( treetagin( "/UDPOK:1/" ) , { @OZHIDKOL? } , { @OZHIDKOL?/4 } )
+		)
+		column OZHIDPREDGOD 'Ожид. за пред. год' dosum formula = (
+			f.If ( pathin ( "m203101", "m203104", "m203105", "r511", "m130" ), { @Б1.P401? }, { 
 f.If ( pathin ( "m205", "m206" ), { @Б1.P401? }, { 
 f.If ( pathin ( "t110300","t110350","t110710","m200230","m161400","m161410", "m2057000" ), { ( @FACT9M? * 3 + @Б1.P444? ) / 4 } , { 
 f.If ( pathin ( "t110550","m200240" ), { @Б1.P444? }, { 
@@ -628,405 +628,405 @@ f.If ( pathin ( "m220" ), { @Pd.P3? + @Pd.P444? }, {
 f.If ( pathin ( "z112" ), { @SUMMA.P3? + @SUMMA.P444? }, { 
 f.If ( pathin ( "m200300" ), { @Б1.P3? + @Б1.P444? }, { @FACT9M? + @Б1.P444? } )
 } ) } ) } ) } ) } ) } ) } ) } ) } )
-			)
-			column OZHIDPREDGODDIV12 'Среднемес. ожид.' formula = (
-				f.If ( treetagin( "/UDPOK:1/" ) , { @OZHIDPREDGOD? } , { @OZHIDPREDGOD?/12 } )
-			)
-			column OZHIDPREDGODDIV4 'Среднекв. ожид.' formula = (
-				f.If ( treetagin( "/UDPOK:1/" ) , { @OZHIDPREDGOD? } , { @OZHIDPREDGOD?/4 } )
-			)
-			column PDCENACALC 'Цена приход (расчет)' formula = (
-				@PDSUMMA? / @PDKOL? * 1000
-			)
-			column PDCENAOTKLP 'Откл-е цены от плана' formula = (
-				f.If ( periodin (1,2,3,4), { @PDCENA? - @PDCENA.P-303? }, { @PDCENA? - @PDCENA.P-206?  } )
-			)
-			column PDCENAPLAN 'Цена приход план' formula = (
-				@PDSUMMAPLAN? / @PDKOLPLAN? * 1000
-			)
-			column PDKOLOTKLP 'Откл-е кол-ва от плана' formula = (
-				f.If ( periodin (1,2,3,4), { @PDKOL? - @PDKOL.P-303? }, { @PDKOL? - @PDKOL.P-206? / 3 } )
-			)
-			column PDKOLPLAN 'Кол-вол план приход' formula = (
-				f.If ( periodin( 11,12,13 ), { @PDKOL.P303? / 3 } , { f.If ( periodin( 22,1 ), { @PDKOL.P303? / 3 * f.monthInKvart( q.Column.Period ) } , { f.If ( periodin( 14,15,16 ), { ( @PDKOL.P306? - @PDKOL.P303? ) / 3 } , { f.If ( periodin( 24,25,2 ), { ( @PDKOL.P306? - @PDKOL.P303? ) / 3 * f.monthInKvart( q.Column.Period ) + @PDKOL.P303? } , { f.If ( periodin( 17,18,19 ), { ( @PDKOL.P309? - @PDKOL.P306? ) / 3 } , { f.If ( periodin( 27,28,3 ), { ( @PDKOL.P309? - @PDKOL.P306? ) / 3 * f.monthInKvart( q.Column.Period ) + @PDKOL.P306? } , { f.If ( periodin( 110,111,112 ), { ( @PDKOL.P251? - @PDKOL.P309? ) / 3 }, { f.If ( periodin( 110,111,112 ), { ( @PDKOL.P251? - @PDKOL.P309? ) / 3 * f.monthInKvart( q.Column.Period ) + @PDKOL.P309? } ) } ) } ) } ) } ) } ) } ) } )
-			)
-			column PDSUMMACALC 'Сумма приход (расчет)' formula = (
-				@PDKOL? * @PDCENA? / 1000
-			)
-			column PDSUMMAOTKLP 'Откл-е суммы от плана' dosum formula = (
-				f.If ( periodin (1,2,3,4,403,406,409,401), { @PDSUMMA? - @PDSUMMA.P-303? }, { @PDSUMMA? - @PDSUMMA.P-206? / 3 } )
-			)
-			column PDSUMMAOTKLP_CENA 'Откл-е за счет цен' dosum formula = (
-				@PDKOL? * ( @PDSUMMA? / @PDKOL? - @PDSUMMA.P-303? / @PDKOL.P-303? )
-			)
-			column PDSUMMAOTKLP_KOL 'Откл-е за счет кол-ва' dosum formula = (
-				f.If ( periodin (1,2,3,4,403,406,409,401), { @PDSUMMA.P-303? / @PDKOL.P-303? * ( @PDKOL? - @PDKOL.P-303? ) }, { @PDSUMMA.P-303? / @PDKOL.P-303? * ( @PDKOL? - @PDKOL.P-303? / 3 ) } )
-			)
-			column PDSUMMAPLAN 'Сумма план приход' formula = (
-				f.If ( periodin( 11,12,13 ), { @PDSUMMACALC.P303? / 3 } , { f.If ( periodin( 22,1 ), { @PDSUMMACALC.P303? / 3 * f.monthInKvart( q.Column.Period ) } , { f.If ( periodin( 14,15,16 ), { ( @PDSUMMACALC.P306? - @PDSUMMACALC.P303? ) / 3 } , { f.If ( periodin( 24,25,2 ), { ( @PDSUMMACALC.P306? - @PDSUMMACALC.P303? ) / 3 * f.monthInKvart( q.Column.Period ) + @PDSUMMACALC.P303? } , { f.If ( periodin( 17,18,19 ), { ( @PDSUMMACALC.P309? - @PDSUMMACALC.P306? ) / 3 } , { f.If ( periodin( 27,28,3 ), { ( @PDSUMMACALC.P309? - @PDSUMMACALC.P306? ) / 3 * f.monthInKvart( q.Column.Period ) + @PDSUMMACALC.P306? } , { f.If ( periodin( 110,111,112 ), { ( @PDSUMMACALC.P251? - @PDSUMMACALC.P309? ) / 3 }, { f.If ( periodin( 110,111,112 ), { ( @PDSUMMACALC.P251? - @PDSUMMACALC.P309? ) / 3 * f.monthInKvart( q.Column.Period ) + @PDSUMMACALC.P309? } ) } ) } ) } ) } ) } ) } ) } )
-			)
-			column PLAN1KV 'План 1 кв.' formula = (
-				f.If ( pathin("t110300","t110350","t110430"), { @Б1.P303? } , {  
+		)
+		column OZHIDPREDGODDIV12 'Среднемес. ожид.' formula = (
+			f.If ( treetagin( "/UDPOK:1/" ) , { @OZHIDPREDGOD? } , { @OZHIDPREDGOD?/12 } )
+		)
+		column OZHIDPREDGODDIV4 'Среднекв. ожид.' formula = (
+			f.If ( treetagin( "/UDPOK:1/" ) , { @OZHIDPREDGOD? } , { @OZHIDPREDGOD?/4 } )
+		)
+		column PDCENACALC 'Цена приход (расчет)' formula = (
+			@PDSUMMA? / @PDKOL? * 1000
+		)
+		column PDCENAOTKLP 'Откл-е цены от плана' formula = (
+			f.If ( periodin (1,2,3,4), { @PDCENA? - @PDCENA.P-303? }, { @PDCENA? - @PDCENA.P-206?  } )
+		)
+		column PDCENAPLAN 'Цена приход план' formula = (
+			@PDSUMMAPLAN? / @PDKOLPLAN? * 1000
+		)
+		column PDKOLOTKLP 'Откл-е кол-ва от плана' formula = (
+			f.If ( periodin (1,2,3,4), { @PDKOL? - @PDKOL.P-303? }, { @PDKOL? - @PDKOL.P-206? / 3 } )
+		)
+		column PDKOLPLAN 'Кол-вол план приход' formula = (
+			f.If ( periodin( 11,12,13 ), { @PDKOL.P303? / 3 } , { f.If ( periodin( 22,1 ), { @PDKOL.P303? / 3 * f.monthInKvart( q.Column.Period ) } , { f.If ( periodin( 14,15,16 ), { ( @PDKOL.P306? - @PDKOL.P303? ) / 3 } , { f.If ( periodin( 24,25,2 ), { ( @PDKOL.P306? - @PDKOL.P303? ) / 3 * f.monthInKvart( q.Column.Period ) + @PDKOL.P303? } , { f.If ( periodin( 17,18,19 ), { ( @PDKOL.P309? - @PDKOL.P306? ) / 3 } , { f.If ( periodin( 27,28,3 ), { ( @PDKOL.P309? - @PDKOL.P306? ) / 3 * f.monthInKvart( q.Column.Period ) + @PDKOL.P306? } , { f.If ( periodin( 110,111,112 ), { ( @PDKOL.P251? - @PDKOL.P309? ) / 3 }, { f.If ( periodin( 110,111,112 ), { ( @PDKOL.P251? - @PDKOL.P309? ) / 3 * f.monthInKvart( q.Column.Period ) + @PDKOL.P309? } ) } ) } ) } ) } ) } ) } ) } )
+		)
+		column PDSUMMACALC 'Сумма приход (расчет)' formula = (
+			@PDKOL? * @PDCENA? / 1000
+		)
+		column PDSUMMAOTKLP 'Откл-е суммы от плана' dosum formula = (
+			f.If ( periodin (1,2,3,4,403,406,409,401), { @PDSUMMA? - @PDSUMMA.P-303? }, { @PDSUMMA? - @PDSUMMA.P-206? / 3 } )
+		)
+		column PDSUMMAOTKLP_CENA 'Откл-е за счет цен' dosum formula = (
+			@PDKOL? * ( @PDSUMMA? / @PDKOL? - @PDSUMMA.P-303? / @PDKOL.P-303? )
+		)
+		column PDSUMMAOTKLP_KOL 'Откл-е за счет кол-ва' dosum formula = (
+			f.If ( periodin (1,2,3,4,403,406,409,401), { @PDSUMMA.P-303? / @PDKOL.P-303? * ( @PDKOL? - @PDKOL.P-303? ) }, { @PDSUMMA.P-303? / @PDKOL.P-303? * ( @PDKOL? - @PDKOL.P-303? / 3 ) } )
+		)
+		column PDSUMMAPLAN 'Сумма план приход' formula = (
+			f.If ( periodin( 11,12,13 ), { @PDSUMMACALC.P303? / 3 } , { f.If ( periodin( 22,1 ), { @PDSUMMACALC.P303? / 3 * f.monthInKvart( q.Column.Period ) } , { f.If ( periodin( 14,15,16 ), { ( @PDSUMMACALC.P306? - @PDSUMMACALC.P303? ) / 3 } , { f.If ( periodin( 24,25,2 ), { ( @PDSUMMACALC.P306? - @PDSUMMACALC.P303? ) / 3 * f.monthInKvart( q.Column.Period ) + @PDSUMMACALC.P303? } , { f.If ( periodin( 17,18,19 ), { ( @PDSUMMACALC.P309? - @PDSUMMACALC.P306? ) / 3 } , { f.If ( periodin( 27,28,3 ), { ( @PDSUMMACALC.P309? - @PDSUMMACALC.P306? ) / 3 * f.monthInKvart( q.Column.Period ) + @PDSUMMACALC.P306? } , { f.If ( periodin( 110,111,112 ), { ( @PDSUMMACALC.P251? - @PDSUMMACALC.P309? ) / 3 }, { f.If ( periodin( 110,111,112 ), { ( @PDSUMMACALC.P251? - @PDSUMMACALC.P309? ) / 3 * f.monthInKvart( q.Column.Period ) + @PDSUMMACALC.P309? } ) } ) } ) } ) } ) } ) } ) } )
+		)
+		column PLAN1KV 'План 1 кв.' formula = (
+			f.If ( pathin("t110300","t110350","t110430"), { @Б1.P303? } , {  
 f.If ( pathin("t110400"), { $t110100? / ( $t110300? + $t110350? ) * 1000 / 3 }, { 
 f.If ( pathin("t110431"), { 0 }, { 
 f.If ( pathin("t110600","t110610","t110611","t110620","t110710"), { @Б1.P303? }, { @Б1.P303? }  ) } ) } ) } )
-			)
-			column PLAN2KV 'План 2 кв.' formula = (
-				f.If ( pathin("t110300","t110350","t110430"), { @Б1.P306? * 2 - @Б1.P303? } , {  
+		)
+		column PLAN2KV 'План 2 кв.' formula = (
+			f.If ( pathin("t110300","t110350","t110430"), { @Б1.P306? * 2 - @Б1.P303? } , {  
 f.If ( pathin("t110400"), { $t110100? / ( $t110300? + $t110350? ) * 1000 / 3 }, { 
 f.If ( pathin("t110431"), { 0 }, { 
 f.If ( pathin("t110600","t110610","t110611","t110620","t110710"), { @Б1.P306? }, { @Б1.P306? - @Б1.P303? }  ) } ) } ) } )
 
-			)
-			column PLAN2KV_JOB200 'План 2 кв. (числ)' formula = (
-				@Б1.P306? * 2 - @Б1.P303?
-			)
-			column PLAN2KV_JOB300 'План 2 кв. (числ. кон)' formula = (
-				@Б1.P306?
-			)
-			column PLAN2KV_JOB400 'План ЗП 1 кв.' formula = (
-				$t120100@PLAN2KV? / $t120200@PLAN2KV? * 1000 / 3
-			)
-			column PLAN3KV 'План 3 кв.' formula = (
-				f.If ( pathin("t110300","t110350","t110430"), { @Б1.P309? * 3 - @Б1.P306? * 2} , {  
+		)
+		column PLAN2KV_JOB200 'План 2 кв. (числ)' formula = (
+			@Б1.P306? * 2 - @Б1.P303?
+		)
+		column PLAN2KV_JOB300 'План 2 кв. (числ. кон)' formula = (
+			@Б1.P306?
+		)
+		column PLAN2KV_JOB400 'План ЗП 1 кв.' formula = (
+			$t120100@PLAN2KV? / $t120200@PLAN2KV? * 1000 / 3
+		)
+		column PLAN3KV 'План 3 кв.' formula = (
+			f.If ( pathin("t110300","t110350","t110430"), { @Б1.P309? * 3 - @Б1.P306? * 2} , {  
 f.If ( pathin("t110400"), { $t110100? / ( $t110300? + $t110300? ) * 1000 / 3 }, { 
 f.If ( pathin("t110431"), { 0 }, { 
 f.If ( pathin("t110600","t110610","t110611","t110620","t110710"), { @Б1.P309? }, { @Б1.P309? - @Б1.P306? }  ) } ) } ) } )
-			)
-			column PLAN3KV_JOB200 'План 3 кв. (числ)' formula = (
-				@Б1.P309? * 3 - @Б1.P306? * 2
-			)
-			column PLAN3KV_JOB300 'План 3 кв. (числ. кон)' formula = (
-				@Б1.P309?
-			)
-			column PLAN3KV_JOB400 'План ЗП 3 кв.' formula = (
-				$t120100@PLAN3KV? / $t120200@PLAN3KV? * 1000 / 3
-			)
-			column PLAN4KV 'План 4 кв.' formula = (
-				f.If ( pathin("t110300","t110430","t110350","m200230"), { ( @Б1.P301? + @PLANC.P(31,32,33,34)? ) * 4 - @Б1.P309? * 3 } , {  
+		)
+		column PLAN3KV_JOB200 'План 3 кв. (числ)' formula = (
+			@Б1.P309? * 3 - @Б1.P306? * 2
+		)
+		column PLAN3KV_JOB300 'План 3 кв. (числ. кон)' formula = (
+			@Б1.P309?
+		)
+		column PLAN3KV_JOB400 'План ЗП 3 кв.' formula = (
+			$t120100@PLAN3KV? / $t120200@PLAN3KV? * 1000 / 3
+		)
+		column PLAN4KV 'План 4 кв.' formula = (
+			f.If ( pathin("t110300","t110430","t110350","m200230"), { ( @Б1.P301? + @PLANC.P(31,32,33,34)? ) * 4 - @Б1.P309? * 3 } , {  
 f.If ( pathin("t110400"), { $t110100? / ( $t110300? + $t110350? ) * 1000 / 3 }, {  
 f.If ( pathin("m200250"), { $m200220? / $m200230? * 1000 / 3 }, {  
 f.If ( pathin("t110431"), { 0 }, {  
 f.If ( pathin("t110600","t110610","t110611","t110620","t110710","m200240","m200240"), { @Б1.P301? + @PLANC.P(31,32,33,34)? },  { @Б1.P301? + @PLANC.P(31,32,33,34)? - @Б1.P309? } ) } ) } ) } ) } )
-			)
-			column PLAN4KV_JOB200 'План 4 кв. (числ)' formula = (
-				@Б1.P301? * 4 - @Б1.P309? * 3
-			)
-			column PLAN4KV_JOB300 'План 4 кв. (числ. кон)' formula = (
-				@Б1.P301?
-			)
-			column PLAN4KV_JOB400 'План ЗП 4 кв.' formula = (
-				$t120100@PLAN4KV? / $t120200@PLAN4KV? * 1000 / 3
-			)
-			column PLANDIV12 'Среднемес. ТПФП' formula = (
-				f.If ( treetagin( "/UDPOK:1/" ) , { @Б1? } , { @Б1?/12 } )
-			)
-			column PLANDIV4 'Среднекв. ТПФП' formula = (
-				f.If ( treetagin( "/UDPOK:1/" ) , { @Б1? } , { @Б1?/4 } )
-			)
-			column PLANGOD 'Годовой план' formula = (
-				@Б1?
-			)
-			column PLANKOLDIV12 'Среднемес. год план' formula = (
-				f.If ( pathin("r175"), { f.If ( treetagin( "/UDPOK:1/" ) , { @RDKOL? } , { @RDKOL?/12 } ) }, { f.If ( treetagin( "/UDPOK:1/" ) , { @KOL? } , { @KOL?/12 } ) } )
-			)
-			column PLANKOLDIV4 'Среднекв. план. кол-во' formula = (
-				f.If ( pathin("r175"), { f.If ( treetagin( "/UDPOK:1/" ) , { @RDKOL? } , { @RDKOL?/4 } ) }, { f.If ( treetagin( "/UDPOK:1/" ) , { @KOL? } , { @KOL?/4 } ) } )
-			)
-			column PLANKORR 'Уточненный план' formula = (
-				f.If ( pathin("t110400", "m200250"), { ( $t110100@Б1.P301? + $t110100@PLANC.P(31,32,33,34)? ) / ( $t110300@Б1.P301? + $t110300@PLANC.P(31,32,33,34)? + $t110350@Б1.P301? + $t110350@PLANC.P(31,32,33,34)? ) * 1000 / 12 }, { @Б1.P301? + @PLANC.P(31,32,33,34)? } )
-			)
-			column PLANKV 'План квартальный' formula = (
-				f.If ( pathin ( "m161400","m161410" ), { @Б1.P-305? }, {
+		)
+		column PLAN4KV_JOB200 'План 4 кв. (числ)' formula = (
+			@Б1.P301? * 4 - @Б1.P309? * 3
+		)
+		column PLAN4KV_JOB300 'План 4 кв. (числ. кон)' formula = (
+			@Б1.P301?
+		)
+		column PLAN4KV_JOB400 'План ЗП 4 кв.' formula = (
+			$t120100@PLAN4KV? / $t120200@PLAN4KV? * 1000 / 3
+		)
+		column PLANDIV12 'Среднемес. ТПФП' formula = (
+			f.If ( treetagin( "/UDPOK:1/" ) , { @Б1? } , { @Б1?/12 } )
+		)
+		column PLANDIV4 'Среднекв. ТПФП' formula = (
+			f.If ( treetagin( "/UDPOK:1/" ) , { @Б1? } , { @Б1?/4 } )
+		)
+		column PLANGOD 'Годовой план' formula = (
+			@Б1?
+		)
+		column PLANKOLDIV12 'Среднемес. год план' formula = (
+			f.If ( pathin("r175"), { f.If ( treetagin( "/UDPOK:1/" ) , { @RDKOL? } , { @RDKOL?/12 } ) }, { f.If ( treetagin( "/UDPOK:1/" ) , { @KOL? } , { @KOL?/12 } ) } )
+		)
+		column PLANKOLDIV4 'Среднекв. план. кол-во' formula = (
+			f.If ( pathin("r175"), { f.If ( treetagin( "/UDPOK:1/" ) , { @RDKOL? } , { @RDKOL?/4 } ) }, { f.If ( treetagin( "/UDPOK:1/" ) , { @KOL? } , { @KOL?/4 } ) } )
+		)
+		column PLANKORR 'Уточненный план' formula = (
+			f.If ( pathin("t110400", "m200250"), { ( $t110100@Б1.P301? + $t110100@PLANC.P(31,32,33,34)? ) / ( $t110300@Б1.P301? + $t110300@PLANC.P(31,32,33,34)? + $t110350@Б1.P301? + $t110350@PLANC.P(31,32,33,34)? ) * 1000 / 12 }, { @Б1.P301? + @PLANC.P(31,32,33,34)? } )
+		)
+		column PLANKV 'План квартальный' formula = (
+			f.If ( pathin ( "m161400","m161410" ), { @Б1.P-305? }, {
 f.If ( pathin ( "m220" ) , {  @Pd.P-305?  } , {  @Б1.P-305?  }  )  }  )
-			)
-			column PLANKV2 'План 2 кв.' formula = (
-				@Б1.P306? - @Б1.P303?
-			)
-			column PLANKV3 'План 3 кв.' formula = (
-				@Б1.P309? - @Б1.P306?
-			)
-			column PLANMONTH 'Месячный план' formula = (
-				f.If ( pathin ( "m161400","m161410","t110300","t110350","t110400","t110550" ), { @Б1.P-305? }, {
+		)
+		column PLANKV2 'План 2 кв.' formula = (
+			@Б1.P306? - @Б1.P303?
+		)
+		column PLANKV3 'План 3 кв.' formula = (
+			@Б1.P309? - @Б1.P306?
+		)
+		column PLANMONTH 'Месячный план' formula = (
+			f.If ( pathin ( "m161400","m161410","t110300","t110350","t110400","t110550" ), { @Б1.P-305? }, {
 f.If ( pathin ( "m220" ) , {  @Pd.P-305?  / 3   } , {  @Б1.P-305?  / 3  }  )  }  )
-			)
-			column PLANOPER 'Оперативный план' formula = (
-				@Б1?
-			)
-			column PLANSNG 'План с н.г.' formula = (
-				f.If ( periodin ( 11,12,13,22,1,403 ), { @PLANSNG1? }, {
+		)
+		column PLANOPER 'Оперативный план' formula = (
+			@Б1?
+		)
+		column PLANSNG 'План с н.г.' formula = (
+			f.If ( periodin ( 11,12,13,22,1,403 ), { @PLANSNG1? }, {
 f.If ( periodin ( 14,15,16,24,25,2,406 ), { @PLANSNG2? }, {
 f.If ( periodin ( 17,18,19,27,28,3,409 ), { @PLANSNG3? }, {
 f.If ( periodin ( 110,111,112,210,211,4,401 ), { @PLANSNG4? } ) } ) } ) } )
-			)
-			column PLANSNG1 'План с н.г. 1 кв' formula = (
-				f.If ( pathin ( "m161400","m161410" ), { @Б1.P303? }, {
+		)
+		column PLANSNG1 'План с н.г. 1 кв' formula = (
+			f.If ( pathin ( "m161400","m161410" ), { @Б1.P303? }, {
 f.If ( pathin ( "m220" ) , { ( @Pd.P303?  / 3) * f.monthInKvart(q.Column.Period) } , { ( @Б1.P303?  / 3) * f.monthInKvart(q.Column.Period) } ) } )
-			)
-			column PLANSNG2 'План с н.г. 2 кв' formula = (
-				f.If ( periodin (406,2), {
+		)
+		column PLANSNG2 'План с н.г. 2 кв' formula = (
+			f.If ( periodin (406,2), {
 f.If ( pathin ( "m220" ), { @Pd.P306? }, { @Б1.P306? } )
 }, {
 f.If ( pathin ( "m220" ), { ( ( @Pd.P306? - @Pd.P303? )  / 3) * f.monthInKvart(q.Column.Period) + @Pd.P303? }, { ( ( @Б1.P306? - @Б1.P303? )  / 3) * f.monthInKvart(q.Column.Period) + @Б1.P303? } )
 } )
-			)
-			column PLANSNG3 'План с н.г. 3 кв' formula = (
-				f.If ( pathin ( "m220" ), { ( ( @Pd.P309? - @Pd.P306? )  / 3) * f.monthInKvart(q.Column.Period) + @Pd.P306? }, { ( ( @Б1.P309? - @Б1.P306? )  / 3) * f.monthInKvart(q.Column.Period) + @Б1.P306? } )
+		)
+		column PLANSNG3 'План с н.г. 3 кв' formula = (
+			f.If ( pathin ( "m220" ), { ( ( @Pd.P309? - @Pd.P306? )  / 3) * f.monthInKvart(q.Column.Period) + @Pd.P306? }, { ( ( @Б1.P309? - @Б1.P306? )  / 3) * f.monthInKvart(q.Column.Period) + @Б1.P306? } )
 
-			)
-			column PLANSNG4 'План с н.г. 4 кв' formula = (
-				f.If ( pathin ( "m220" ), { ( ( @Pd.P301? - @Pd.P309? + @PLANC.P34? )  / 3) * f.monthInKvart(q.Column.Period) + @Pd.P309? + @PLANC.P31? + @PLANC.P32? + @PLANC.P33? }, { ( ( @Б1.P301? - @Б1.P309? + @PLANC.P34? )  / 3) * f.monthInKvart(q.Column.Period) + @Б1.P309? + @PLANC.P31? + @PLANC.P32? + @PLANC.P33? } ) 
+		)
+		column PLANSNG4 'План с н.г. 4 кв' formula = (
+			f.If ( pathin ( "m220" ), { ( ( @Pd.P301? - @Pd.P309? + @PLANC.P34? )  / 3) * f.monthInKvart(q.Column.Period) + @Pd.P309? + @PLANC.P31? + @PLANC.P32? + @PLANC.P33? }, { ( ( @Б1.P301? - @Б1.P309? + @PLANC.P34? )  / 3) * f.monthInKvart(q.Column.Period) + @Б1.P309? + @PLANC.P31? + @PLANC.P32? + @PLANC.P33? } ) 
 
-			)
-			column PRIVED1 'Привед-й к году 1 кв.' formula = (
-				@Б1.P1? * 4 + @Б2.P1?
-			)
-			column PRIVED10 'Привед-й к году 1 кв.' formula = (
-				@Б1.Y-1.P4? - @Б1.Y-1.P1? + @Б1.P1? + @Б2.P1?
-			)
-			column PRIVED2 'Привед-й к году 6 мес.' formula = (
-				@Б1.P2? * 2 + @Б2.P2?
-			)
-			column PRIVED20 'Привед-й к году 6 мес.' formula = (
-				@Б1.Y-1.P4? - @Б1.Y-1.P2? + @Б1.P2? + @Б2.P2?
-			)
-			column PRIVED3 'Привед-й к году 9 мес.' formula = (
-				f.round ( @Б1.P3? / 3 * 4 ) + @Б2.P3?
-			)
-			column PRIVED30 'Привед-й к году 9 мес.' formula = (
-				@Б1.Y-1.P4? - @Б1.Y-1.P3? + @Б1.P3? + @Б2.P3?
-			)
-			column RDCENACALC 'Цена расход (расчет)' formula = (
-				@RDSUMMA? / @RDKOL? * 1000
-			)
-			column RDCENAOTKLP 'Откл-е цены' formula = (
-				f.If ( periodin (1,2,3,4), { @RDCENA? - @RDCENA.P-303? }, { @RDCENA? - @RDCENA.P-206?  } )
-			)
-			column RDCENAPLAN 'Цена расход план' formula = (
-				@RDSUMMAPLAN? / @RDKOLPLAN? * 1000
-			)
-			column RDCENASNG 'Цена расхода с н.г.' formula = (
-				@RDSUMMASNG? / @RDKOL.P-501? * 1000
-			)
-			column RDKOLDIV4 'Среднекв. объем' formula = (
-				@RDKOL? / 4
-			)
-			column RDKOLOTKLP 'Откл-е кол-ва' formula = (
-				f.If ( periodin (1,2,3,4), { @RDKOL? - @RDKOL.P-303? }, { @RDKOL? - @RDKOL.P-206? / 3 } )
-			)
-			column RDKOLPLAN 'Кол-вол план расход' formula = (
-				f.If ( periodin( 11,12,13 ), { @RDKOL.P303? / 3 } , { f.If ( periodin( 22,1 ), { @RDKOL.P303? / 3 * f.monthInKvart( q.Column.Period ) } , { f.If ( periodin( 14,15,16 ), { ( @RDKOL.P306? - @RDKOL.P303? ) / 3 } , { f.If ( periodin( 24,25,2 ), { ( @RDKOL.P306? - @RDKOL.P303? ) / 3 * f.monthInKvart( q.Column.Period ) + @RDKOL.P303? } , { f.If ( periodin( 17,18,19 ), { ( @RDKOL.P309? - @RDKOL.P306? ) / 3 } , { f.If ( periodin( 27,28,3 ), { ( @RDKOL.P309? - @RDKOL.P306? ) / 3 * f.monthInKvart( q.Column.Period ) + @RDKOL.P306? } , { f.If ( periodin( 110,111,112 ), { ( @RDKOL.P251? - @RDKOL.P309? ) / 3 }, { f.If ( periodin( 110,111,112 ), { ( @RDKOL.P251? - @RDKOL.P309? ) / 3 * f.monthInKvart( q.Column.Period ) + @RDKOL.P309? } ) } ) } ) } ) } ) } ) } ) } )
-			)
-			column RDSUMMACALC 'Сумма расход (расчет)' formula = (
-				@RDKOL? * @RDCENA? / 1000
-			)
-			column RDSUMMAOTKLP 'Откл-е суммы' dosum formula = (
-				f.If ( periodin (1,2,3,4,403,406,409,401), { @RDSUMMA? - @RDSUMMA.P-303? }, { @RDSUMMA? - @RDSUMMA.P-206? / 3 } )
-			)
-			column RDSUMMAOTKLP_CENA 'Откл-е за счет цен' dosum formula = (
-				@RDKOL? * ( @RDSUMMA? / @RDKOL? - @RDSUMMA.P-303? / @RDKOL.P-303? )
-			)
-			column RDSUMMAOTKLP_KOL 'Откл-е за счет кол-ва' dosum formula = (
-				f.If ( periodin (1,2,3,4,403,406,409,401), { @RDSUMMA.P-303? / @RDKOL.P-303? * ( @RDKOL? - @RDKOL.P-303? ) }, { @RDSUMMA.P-303? / @RDKOL.P-303? * ( @RDKOL? - @RDKOL.P-303? / 3 ) / 1000 } )
-			)
-			column RDSUMMAPLAN 'Сумма план расход' formula = (
-				f.If ( periodin( 11,12,13 ), { @RDSUMMACALC.P303? / 3 } , { f.If ( periodin( 22,1 ), { @RDSUMMACALC.P303? / 3 * f.monthInKvart( q.Column.Period ) } , { f.If ( periodin( 14,15,16 ), { ( @RDSUMMACALC.P306? - @RDSUMMACALC.P303? ) / 3 } , { f.If ( periodin( 24,25,2 ), { ( @RDSUMMACALC.P306? - @RDSUMMACALC.P303? ) / 3 * f.monthInKvart( q.Column.Period ) + @RDSUMMACALC.P303? } , { f.If ( periodin( 17,18,19 ), { ( @RDSUMMACALC.P309? - @RDSUMMACALC.P306? ) / 3 } , { f.If ( periodin( 27,28,3 ), { ( @RDSUMMACALC.P309? - @RDSUMMACALC.P306? ) / 3 * f.monthInKvart( q.Column.Period ) + @RDSUMMACALC.P306? } , { f.If ( periodin( 110,111,112 ), { ( @RDSUMMACALC.P251? - @RDSUMMACALC.P309? ) / 3 }, { f.If ( periodin( 110,111,112 ), { ( @RDSUMMACALC.P251? - @RDSUMMACALC.P309? ) / 3 * f.monthInKvart( q.Column.Period ) + @RDSUMMACALC.P309? } ) } ) } ) } ) } ) } ) } ) } )
-			)
-			column RDSUMMASNG 'Сумма расхода с н.г.' formula = (
-				@ONSUMMA.P11? + @PDSUMMA.P-501? - @OKSUMMA.P-205?
-			)
-			column SLPRIBOTKLP 'Откл-е прибыли от плана' dosum formula = (
-				@SLPRIB? - @SLPRIB.P-303?
-			)
-			column SLPRIBOTKLP_CENA 'Откл-е за счет цен' dosum formula = (
-				( @SLREV? / @SLKOL? - @SLREV.P-303? / @SLKOL.P-303? ) * @SLKOL?
-			)
-			column SLPRIBOTKLP_KOL 'Откл-е за счет кол-ва' dosum formula = (
-				@SLPRIB.P-303? / @SLKOL.P-303?  * ( @SLKOL? - @SLKOL.P-303? )
-			)
-			column SLPRIBOTKLP_KR 'Откл-е за счет ком. р-дов' dosum formula = (
-				( - @SLKR? / @SLKOL? + @SLKR.P-303? / @SLKOL.P-303? ) * @SLKOL?
-			)
-			column SLPRIBOTKLP_SS 'Откл-е за счет с-сти' dosum formula = (
-				(  - @SLSS? / @SLKOL? + @SLSS.P-303? / @SLKOL.P-303? ) * @SLKOL?
-			)
-			column SLPRIBOTKLP_UR 'Откл-е за счет упр. р-дов' dosum formula = (
-				( - @SLUR? / @SLKOL? + @SLUR.P-303? / @SLKOL.P-303? ) * @SLKOL?
-			)
-			column SLPRIBVOTKLP 'Откл-е вал. прибыли от плана' dosum formula = (
-				@SLPRIBV? - @SLPRIBV.P-303?
-			)
-			column SLPRIBVOTKLP_CENA 'Откл-е за счет цен' dosum formula = (
-				( @SLREV? / @SLKOL? - @SLREV.P-303? / @SLKOL.P-303? ) * @SLKOL?
-			)
-			column SLPRIBVOTKLP_KOL 'Откл-е за счет кол-ва' dosum formula = (
-				@SLPRIBV.P-303? / @SLKOL.P-303?  * ( @SLKOL? - @SLKOL.P-303? )
-			)
-			column SLPRIBVOTKLP_SS 'Откл-е за счет с-сти' dosum formula = (
-				(  - @SLSS? / @SLKOL? + @SLSS.P-303? / @SLKOL.P-303? ) * @SLKOL?
-			)
-			column SLPSSOTKLP 'Откл-е полн. с-сти' dosum formula = (
-				@SLPSS? - @SLPSS.P-303?
-			)
-			column SLPSSOTKLP_KOL 'Откл-е с-сти за счет кол-ва' dosum formula = (
-				@SLPSS.P-303? / @SLKOL.P-303? * ( @SLKOL? - @SLKOL.P-303? )
-			)
-			column SLPSSOTKLP_KR 'Откл-е с-сти за счет ком. р-дов' dosum formula = (
-				( @SLKR? / @SLKOL? - @SLKR.P-303? / @SLKOL.P-303? ) * @SLKOL?
-			)
-			column SLPSSOTKLP_SS 'Откл-е с-сти за счет с-сти' dosum formula = (
-				(  @SLSS? / @SLKOL? - @SLSS.P-303? / @SLKOL.P-303? ) * @SLKOL?
-			)
-			column SLPSSOTKLP_UR 'Откл-е с-сти за счет упр. р-дов' dosum formula = (
-				( @SLUR? / @SLKOL? - @SLUR.P-303? / @SLKOL.P-303? ) * @SLKOL?
-			)
-			column SLREVOTKLP 'Выручка откл-е от плана' dosum formula = (
-				@SLREV? - @SLREV.P-303?
-			)
-			column SLREVOTKLP_CENA 'Выручка откл-е за счет цен' dosum formula = (
-				@SLKOL? * ( @SLREV? / @SLKOL? - @SLREV.P-303? / @SLKOL.P-303? )
-			)
-			column SLREVOTKLP_KOL 'Выручка откл-е за счет кол-ва' dosum formula = (
-				@SLREV.P-303? / @SLKOL.P-303? * ( @SLKOL? - @SLKOL.P-303? )
-			)
-			column SLSSEDSNG 'Себестоимость ед. с н.г.' nocalcsum formulatype=zeta.calculate_sql_column formula = (
-				zeta.calculate_sql_column
-			)
-			column SNDS 'Всего с НДС' formula = (
-				f.If ( treetagin('/nds_avans:1/'), { @Б1? }, { @Б1? + @NDSLINK? } )
-			)
-			column SNDS1 'Всего с НДС' dosum formula = (
-				f.If ( treetagin('/nds_avans:1/'), { @Б1? }, { @Б1? + @NDS? } )
-			)
-			column SSCENAPLAN 'Цена план' formula = (
-				@SSSUMMAPLAN? / @SSKOLPLAN? * 1000
-			)
-			column SSCENAPLANSNG 'Цена план с н.г.' formula = (
-				@SSSUMMAPLANSNG? / @SSKOLPLANSNG? * 1000
-			)
-			column SSKOLEDPLAN 'Норматив на ед. план' nocalcsum formula = (
-				f.If ( periodin (11,12,13), { ( @KOLCALCPLAN.P303? ) / @OBCALCPLAN.P303? }, {   f.If ( periodin (14,15,16), { ( @KOLCALCPLAN.P306? - @KOLCALCPLAN.P303? ) / ( @OBCALCPLAN.P306? - @OBCALCPLAN.P303? ) }, {   f.If ( periodin (17,18,19), { ( @KOLCALCPLAN.P309? - @KOLCALCPLAN.P306? ) / ( @OBCALCPLAN.P309? - @OBCALCPLAN.P306? ) }, {   f.If ( periodin (110,111,112), { ( @KOLCALCPLAN.P251? - @KOLCALCPLAN.P309? ) / ( @OBCALCPLAN.P251? - @OBCALCPLAN.P309? ) } ) } ) } ) } )
-			)
-			column SSKOLEDPLANSNG 'Норматив на ед. план  с н.г.' nocalcsum formula = (
-				f.If ( periodin (1,303), { @KOLCALCPLAN.P303? / @OBCALCPLAN.P303? }, {   f.If ( periodin (2,306), { @KOLCALCPLAN.P306? / @OBCALCPLAN.P306? }, {   f.If ( periodin (3,309), { @KOLCALCPLAN.P309? / @OBCALCPLAN.P309? }, {   f.If ( periodin (4,301,251), { @KOLCALCPLAN.P251? / @OBCALCPLAN.P251? } ) } ) } ) } )
-			)
-			column SSKOLPLAN 'Кол-во на объем план' nocalcsum formula = (
-				f.If ( periodin (11,12,13), { @KOLCALCPLAN.P303? / 3 }, {   f.If ( periodin (14,15,16), { ( @KOLCALCPLAN.P306? - @KOLCALCPLAN.P303? ) / 3 }, {   f.If ( periodin (17,18,19), { ( @KOLCALCPLAN.P309? - @KOLCALCPLAN.P306? ) / 3 }, {   f.If ( periodin (110,111,112), { ( @KOLCALCPLAN.P251? - @KOLCALCPLAN.P309? ) / 3 } ) } ) } ) } )
-			)
-			column SSKOLPLANSNG 'Кол-во план с н.г.' noaggsum nocalcsum formula = (
-				f.If ( periodin (1,303), { @KOLCALCPLAN.P303? }, {     f.If ( periodin (2,306), { @KOLCALCPLAN.P306? }, {     f.If ( periodin (3,309), { @KOLCALCPLAN.P309? }, {     f.If ( periodin (4,301,251), { @KOLCALCPLAN.P251? } ) } ) } ) } )
-			)
-			column SSSUMMAEDPLAN 'Сумма на ед. план' dosum formula = (
-				f.If ( periodin (11,12,13), { @SSSUMMAPLAN? / @OBCALCPLAN.P303? * 3 * 1000 }, {  f.If ( periodin (14,15,16), { @SSSUMMAPLAN? / ( @OBCALCPLAN.P306? - @OBCALCPLAN.P303? ) * 3 * 1000 }, {  f.If ( periodin (17,18,19), { @SSSUMMAPLAN? / ( @OBCALCPLAN.P309? - @OBCALCPLAN.P306? ) * 3 * 1000 }, {  f.If ( periodin (110,111,112), { @SSSUMMAPLAN? / ( @OBCALCPLAN.P251? - @OBCALCPLAN.P309? ) * 3 * 1000 } ) } ) } ) } )
-			)
-			column SSSUMMAEDPLANSNG 'Сумма на ед. план с н.г.' dosum formula = (
-				f.If ( periodin (1,303), { @SSSUMMAPLANSNG? / @OBCALCPLAN.P303? * 1000 }, {     f.If ( periodin (2,306), { @SSSUMMAPLANSNG? / @OBCALCPLAN.P306? * 1000 }, {     f.If ( periodin (3,309), { @SSSUMMAPLANSNG? / @OBCALCPLAN.P309? * 1000 }, {     f.If ( periodin (4,301,251), { @SSSUMMAPLANSNG? / @OBCALCPLAN.P251? * 1000 } ) } ) } ) } )
-			)
-			column SSSUMMAPLAN 'Сумма на объем план' dosum formula = (
-				f.If ( periodin (11,12,13), { @SUMMACALCPLAN.P303? / 3 }, {   f.If ( periodin (14,15,16), { ( @SUMMACALCPLAN.P306? - @SUMMACALCPLAN.P303? ) / 3 }, {   f.If ( periodin (17,18,19), { ( @SUMMACALCPLAN.P309? - @SUMMACALCPLAN.P306? ) / 3 }, {   f.If ( periodin (110,111,112), { ( @SUMMACALCPLAN.P251? - @SUMMACALCPLAN.P309? ) / 3 } ) } ) } ) } )
-			)
-			column SSSUMMAPLANSNG 'Сумма план с н.г.' noaggsum dosum formula = (
-				f.If ( periodin (1,303), { @SUMMACALCPLAN.P303? }, {  f.If ( periodin (2,306), { @SUMMACALCPLAN.P306? }, {  f.If ( periodin (3,309), { @SUMMACALCPLAN.P309? }, {  f.If ( periodin (4,301,251), { @SUMMACALCPLAN.P251? } ) } ) } ) } )
-			)
-			column SUMMACALC 'Сумма расчетная' dosum formula = (
-				@KOLED? * @CENA? / 1000.0000 + @FIXZATR?
-			)
-			column SUMMACALCPLAN 'Сумма всего план' formula = (
-				@KOLED? * @CENA? * @OBCALCPLAN? / 1000 + @FIXKOL? * @CENA? / 1000 + @FIXCOST?
-			)
-			column SUMMADIV12 'Среднемес. сумма' formula = (
-				@SUMMA? / 12
-			)
-			column SUMMADIV4 'Среднекв. сумма' formula = (
-				f.If ( treetagin( "/UDPOK:1/" ) , { @SUMMA? } , { @SUMMA?/4 } )
-			)
-			column SUMMAEDCALC 'Сумма на единицу расчетно' calc=F formula = (
-				@SUMMA? * 1000 / @OBCALC?
-			)
-			column SUMMAEDCALCD 'Сумма на ед. долл.' dosum formula = (
-				f.If ( periodin (251,301) , { @SUMMAEDPLANCALC? / $m204137@PLAN.toobj(357)? }, { 
+		)
+		column PRIVED1 'Привед-й к году 1 кв.' formula = (
+			@Б1.P1? * 4 + @Б2.P1?
+		)
+		column PRIVED10 'Привед-й к году 1 кв.' formula = (
+			@Б1.Y-1.P4? - @Б1.Y-1.P1? + @Б1.P1? + @Б2.P1?
+		)
+		column PRIVED2 'Привед-й к году 6 мес.' formula = (
+			@Б1.P2? * 2 + @Б2.P2?
+		)
+		column PRIVED20 'Привед-й к году 6 мес.' formula = (
+			@Б1.Y-1.P4? - @Б1.Y-1.P2? + @Б1.P2? + @Б2.P2?
+		)
+		column PRIVED3 'Привед-й к году 9 мес.' formula = (
+			f.round ( @Б1.P3? / 3 * 4 ) + @Б2.P3?
+		)
+		column PRIVED30 'Привед-й к году 9 мес.' formula = (
+			@Б1.Y-1.P4? - @Б1.Y-1.P3? + @Б1.P3? + @Б2.P3?
+		)
+		column RDCENACALC 'Цена расход (расчет)' formula = (
+			@RDSUMMA? / @RDKOL? * 1000
+		)
+		column RDCENAOTKLP 'Откл-е цены' formula = (
+			f.If ( periodin (1,2,3,4), { @RDCENA? - @RDCENA.P-303? }, { @RDCENA? - @RDCENA.P-206?  } )
+		)
+		column RDCENAPLAN 'Цена расход план' formula = (
+			@RDSUMMAPLAN? / @RDKOLPLAN? * 1000
+		)
+		column RDCENASNG 'Цена расхода с н.г.' formula = (
+			@RDSUMMASNG? / @RDKOL.P-501? * 1000
+		)
+		column RDKOLDIV4 'Среднекв. объем' formula = (
+			@RDKOL? / 4
+		)
+		column RDKOLOTKLP 'Откл-е кол-ва' formula = (
+			f.If ( periodin (1,2,3,4), { @RDKOL? - @RDKOL.P-303? }, { @RDKOL? - @RDKOL.P-206? / 3 } )
+		)
+		column RDKOLPLAN 'Кол-вол план расход' formula = (
+			f.If ( periodin( 11,12,13 ), { @RDKOL.P303? / 3 } , { f.If ( periodin( 22,1 ), { @RDKOL.P303? / 3 * f.monthInKvart( q.Column.Period ) } , { f.If ( periodin( 14,15,16 ), { ( @RDKOL.P306? - @RDKOL.P303? ) / 3 } , { f.If ( periodin( 24,25,2 ), { ( @RDKOL.P306? - @RDKOL.P303? ) / 3 * f.monthInKvart( q.Column.Period ) + @RDKOL.P303? } , { f.If ( periodin( 17,18,19 ), { ( @RDKOL.P309? - @RDKOL.P306? ) / 3 } , { f.If ( periodin( 27,28,3 ), { ( @RDKOL.P309? - @RDKOL.P306? ) / 3 * f.monthInKvart( q.Column.Period ) + @RDKOL.P306? } , { f.If ( periodin( 110,111,112 ), { ( @RDKOL.P251? - @RDKOL.P309? ) / 3 }, { f.If ( periodin( 110,111,112 ), { ( @RDKOL.P251? - @RDKOL.P309? ) / 3 * f.monthInKvart( q.Column.Period ) + @RDKOL.P309? } ) } ) } ) } ) } ) } ) } ) } )
+		)
+		column RDSUMMACALC 'Сумма расход (расчет)' formula = (
+			@RDKOL? * @RDCENA? / 1000
+		)
+		column RDSUMMAOTKLP 'Откл-е суммы' dosum formula = (
+			f.If ( periodin (1,2,3,4,403,406,409,401), { @RDSUMMA? - @RDSUMMA.P-303? }, { @RDSUMMA? - @RDSUMMA.P-206? / 3 } )
+		)
+		column RDSUMMAOTKLP_CENA 'Откл-е за счет цен' dosum formula = (
+			@RDKOL? * ( @RDSUMMA? / @RDKOL? - @RDSUMMA.P-303? / @RDKOL.P-303? )
+		)
+		column RDSUMMAOTKLP_KOL 'Откл-е за счет кол-ва' dosum formula = (
+			f.If ( periodin (1,2,3,4,403,406,409,401), { @RDSUMMA.P-303? / @RDKOL.P-303? * ( @RDKOL? - @RDKOL.P-303? ) }, { @RDSUMMA.P-303? / @RDKOL.P-303? * ( @RDKOL? - @RDKOL.P-303? / 3 ) / 1000 } )
+		)
+		column RDSUMMAPLAN 'Сумма план расход' formula = (
+			f.If ( periodin( 11,12,13 ), { @RDSUMMACALC.P303? / 3 } , { f.If ( periodin( 22,1 ), { @RDSUMMACALC.P303? / 3 * f.monthInKvart( q.Column.Period ) } , { f.If ( periodin( 14,15,16 ), { ( @RDSUMMACALC.P306? - @RDSUMMACALC.P303? ) / 3 } , { f.If ( periodin( 24,25,2 ), { ( @RDSUMMACALC.P306? - @RDSUMMACALC.P303? ) / 3 * f.monthInKvart( q.Column.Period ) + @RDSUMMACALC.P303? } , { f.If ( periodin( 17,18,19 ), { ( @RDSUMMACALC.P309? - @RDSUMMACALC.P306? ) / 3 } , { f.If ( periodin( 27,28,3 ), { ( @RDSUMMACALC.P309? - @RDSUMMACALC.P306? ) / 3 * f.monthInKvart( q.Column.Period ) + @RDSUMMACALC.P306? } , { f.If ( periodin( 110,111,112 ), { ( @RDSUMMACALC.P251? - @RDSUMMACALC.P309? ) / 3 }, { f.If ( periodin( 110,111,112 ), { ( @RDSUMMACALC.P251? - @RDSUMMACALC.P309? ) / 3 * f.monthInKvart( q.Column.Period ) + @RDSUMMACALC.P309? } ) } ) } ) } ) } ) } ) } ) } )
+		)
+		column RDSUMMASNG 'Сумма расхода с н.г.' formula = (
+			@ONSUMMA.P11? + @PDSUMMA.P-501? - @OKSUMMA.P-205?
+		)
+		column SLPRIBOTKLP 'Откл-е прибыли от плана' dosum formula = (
+			@SLPRIB? - @SLPRIB.P-303?
+		)
+		column SLPRIBOTKLP_CENA 'Откл-е за счет цен' dosum formula = (
+			( @SLREV? / @SLKOL? - @SLREV.P-303? / @SLKOL.P-303? ) * @SLKOL?
+		)
+		column SLPRIBOTKLP_KOL 'Откл-е за счет кол-ва' dosum formula = (
+			@SLPRIB.P-303? / @SLKOL.P-303?  * ( @SLKOL? - @SLKOL.P-303? )
+		)
+		column SLPRIBOTKLP_KR 'Откл-е за счет ком. р-дов' dosum formula = (
+			( - @SLKR? / @SLKOL? + @SLKR.P-303? / @SLKOL.P-303? ) * @SLKOL?
+		)
+		column SLPRIBOTKLP_SS 'Откл-е за счет с-сти' dosum formula = (
+			(  - @SLSS? / @SLKOL? + @SLSS.P-303? / @SLKOL.P-303? ) * @SLKOL?
+		)
+		column SLPRIBOTKLP_UR 'Откл-е за счет упр. р-дов' dosum formula = (
+			( - @SLUR? / @SLKOL? + @SLUR.P-303? / @SLKOL.P-303? ) * @SLKOL?
+		)
+		column SLPRIBVOTKLP 'Откл-е вал. прибыли от плана' dosum formula = (
+			@SLPRIBV? - @SLPRIBV.P-303?
+		)
+		column SLPRIBVOTKLP_CENA 'Откл-е за счет цен' dosum formula = (
+			( @SLREV? / @SLKOL? - @SLREV.P-303? / @SLKOL.P-303? ) * @SLKOL?
+		)
+		column SLPRIBVOTKLP_KOL 'Откл-е за счет кол-ва' dosum formula = (
+			@SLPRIBV.P-303? / @SLKOL.P-303?  * ( @SLKOL? - @SLKOL.P-303? )
+		)
+		column SLPRIBVOTKLP_SS 'Откл-е за счет с-сти' dosum formula = (
+			(  - @SLSS? / @SLKOL? + @SLSS.P-303? / @SLKOL.P-303? ) * @SLKOL?
+		)
+		column SLPSSOTKLP 'Откл-е полн. с-сти' dosum formula = (
+			@SLPSS? - @SLPSS.P-303?
+		)
+		column SLPSSOTKLP_KOL 'Откл-е с-сти за счет кол-ва' dosum formula = (
+			@SLPSS.P-303? / @SLKOL.P-303? * ( @SLKOL? - @SLKOL.P-303? )
+		)
+		column SLPSSOTKLP_KR 'Откл-е с-сти за счет ком. р-дов' dosum formula = (
+			( @SLKR? / @SLKOL? - @SLKR.P-303? / @SLKOL.P-303? ) * @SLKOL?
+		)
+		column SLPSSOTKLP_SS 'Откл-е с-сти за счет с-сти' dosum formula = (
+			(  @SLSS? / @SLKOL? - @SLSS.P-303? / @SLKOL.P-303? ) * @SLKOL?
+		)
+		column SLPSSOTKLP_UR 'Откл-е с-сти за счет упр. р-дов' dosum formula = (
+			( @SLUR? / @SLKOL? - @SLUR.P-303? / @SLKOL.P-303? ) * @SLKOL?
+		)
+		column SLREVOTKLP 'Выручка откл-е от плана' dosum formula = (
+			@SLREV? - @SLREV.P-303?
+		)
+		column SLREVOTKLP_CENA 'Выручка откл-е за счет цен' dosum formula = (
+			@SLKOL? * ( @SLREV? / @SLKOL? - @SLREV.P-303? / @SLKOL.P-303? )
+		)
+		column SLREVOTKLP_KOL 'Выручка откл-е за счет кол-ва' dosum formula = (
+			@SLREV.P-303? / @SLKOL.P-303? * ( @SLKOL? - @SLKOL.P-303? )
+		)
+		column SLSSEDSNG 'Себестоимость ед. с н.г.' nocalcsum formulatype=zeta.calculate_sql_column formula = (
+			zeta.calculate_sql_column
+		)
+		column SNDS 'Всего с НДС' formula = (
+			f.If ( treetagin('/nds_avans:1/'), { @Б1? }, { @Б1? + @NDSLINK? } )
+		)
+		column SNDS1 'Всего с НДС' dosum formula = (
+			f.If ( treetagin('/nds_avans:1/'), { @Б1? }, { @Б1? + @NDS? } )
+		)
+		column SSCENAPLAN 'Цена план' formula = (
+			@SSSUMMAPLAN? / @SSKOLPLAN? * 1000
+		)
+		column SSCENAPLANSNG 'Цена план с н.г.' formula = (
+			@SSSUMMAPLANSNG? / @SSKOLPLANSNG? * 1000
+		)
+		column SSKOLEDPLAN 'Норматив на ед. план' nocalcsum formula = (
+			f.If ( periodin (11,12,13), { ( @KOLCALCPLAN.P303? ) / @OBCALCPLAN.P303? }, {   f.If ( periodin (14,15,16), { ( @KOLCALCPLAN.P306? - @KOLCALCPLAN.P303? ) / ( @OBCALCPLAN.P306? - @OBCALCPLAN.P303? ) }, {   f.If ( periodin (17,18,19), { ( @KOLCALCPLAN.P309? - @KOLCALCPLAN.P306? ) / ( @OBCALCPLAN.P309? - @OBCALCPLAN.P306? ) }, {   f.If ( periodin (110,111,112), { ( @KOLCALCPLAN.P251? - @KOLCALCPLAN.P309? ) / ( @OBCALCPLAN.P251? - @OBCALCPLAN.P309? ) } ) } ) } ) } )
+		)
+		column SSKOLEDPLANSNG 'Норматив на ед. план  с н.г.' nocalcsum formula = (
+			f.If ( periodin (1,303), { @KOLCALCPLAN.P303? / @OBCALCPLAN.P303? }, {   f.If ( periodin (2,306), { @KOLCALCPLAN.P306? / @OBCALCPLAN.P306? }, {   f.If ( periodin (3,309), { @KOLCALCPLAN.P309? / @OBCALCPLAN.P309? }, {   f.If ( periodin (4,301,251), { @KOLCALCPLAN.P251? / @OBCALCPLAN.P251? } ) } ) } ) } )
+		)
+		column SSKOLPLAN 'Кол-во на объем план' nocalcsum formula = (
+			f.If ( periodin (11,12,13), { @KOLCALCPLAN.P303? / 3 }, {   f.If ( periodin (14,15,16), { ( @KOLCALCPLAN.P306? - @KOLCALCPLAN.P303? ) / 3 }, {   f.If ( periodin (17,18,19), { ( @KOLCALCPLAN.P309? - @KOLCALCPLAN.P306? ) / 3 }, {   f.If ( periodin (110,111,112), { ( @KOLCALCPLAN.P251? - @KOLCALCPLAN.P309? ) / 3 } ) } ) } ) } )
+		)
+		column SSKOLPLANSNG 'Кол-во план с н.г.' noaggsum nocalcsum formula = (
+			f.If ( periodin (1,303), { @KOLCALCPLAN.P303? }, {     f.If ( periodin (2,306), { @KOLCALCPLAN.P306? }, {     f.If ( periodin (3,309), { @KOLCALCPLAN.P309? }, {     f.If ( periodin (4,301,251), { @KOLCALCPLAN.P251? } ) } ) } ) } )
+		)
+		column SSSUMMAEDPLAN 'Сумма на ед. план' dosum formula = (
+			f.If ( periodin (11,12,13), { @SSSUMMAPLAN? / @OBCALCPLAN.P303? * 3 * 1000 }, {  f.If ( periodin (14,15,16), { @SSSUMMAPLAN? / ( @OBCALCPLAN.P306? - @OBCALCPLAN.P303? ) * 3 * 1000 }, {  f.If ( periodin (17,18,19), { @SSSUMMAPLAN? / ( @OBCALCPLAN.P309? - @OBCALCPLAN.P306? ) * 3 * 1000 }, {  f.If ( periodin (110,111,112), { @SSSUMMAPLAN? / ( @OBCALCPLAN.P251? - @OBCALCPLAN.P309? ) * 3 * 1000 } ) } ) } ) } )
+		)
+		column SSSUMMAEDPLANSNG 'Сумма на ед. план с н.г.' dosum formula = (
+			f.If ( periodin (1,303), { @SSSUMMAPLANSNG? / @OBCALCPLAN.P303? * 1000 }, {     f.If ( periodin (2,306), { @SSSUMMAPLANSNG? / @OBCALCPLAN.P306? * 1000 }, {     f.If ( periodin (3,309), { @SSSUMMAPLANSNG? / @OBCALCPLAN.P309? * 1000 }, {     f.If ( periodin (4,301,251), { @SSSUMMAPLANSNG? / @OBCALCPLAN.P251? * 1000 } ) } ) } ) } )
+		)
+		column SSSUMMAPLAN 'Сумма на объем план' dosum formula = (
+			f.If ( periodin (11,12,13), { @SUMMACALCPLAN.P303? / 3 }, {   f.If ( periodin (14,15,16), { ( @SUMMACALCPLAN.P306? - @SUMMACALCPLAN.P303? ) / 3 }, {   f.If ( periodin (17,18,19), { ( @SUMMACALCPLAN.P309? - @SUMMACALCPLAN.P306? ) / 3 }, {   f.If ( periodin (110,111,112), { ( @SUMMACALCPLAN.P251? - @SUMMACALCPLAN.P309? ) / 3 } ) } ) } ) } )
+		)
+		column SSSUMMAPLANSNG 'Сумма план с н.г.' noaggsum dosum formula = (
+			f.If ( periodin (1,303), { @SUMMACALCPLAN.P303? }, {  f.If ( periodin (2,306), { @SUMMACALCPLAN.P306? }, {  f.If ( periodin (3,309), { @SUMMACALCPLAN.P309? }, {  f.If ( periodin (4,301,251), { @SUMMACALCPLAN.P251? } ) } ) } ) } )
+		)
+		column SUMMACALC 'Сумма расчетная' dosum formula = (
+			@KOLED? * @CENA? / 1000.0000 + @FIXZATR?
+		)
+		column SUMMACALCPLAN 'Сумма всего план' formula = (
+			@KOLED? * @CENA? * @OBCALCPLAN? / 1000 + @FIXKOL? * @CENA? / 1000 + @FIXCOST?
+		)
+		column SUMMADIV12 'Среднемес. сумма' formula = (
+			@SUMMA? / 12
+		)
+		column SUMMADIV4 'Среднекв. сумма' formula = (
+			f.If ( treetagin( "/UDPOK:1/" ) , { @SUMMA? } , { @SUMMA?/4 } )
+		)
+		column SUMMAEDCALC 'Сумма на единицу расчетно' calc=F formula = (
+			@SUMMA? * 1000 / @OBCALC?
+		)
+		column SUMMAEDCALCD 'Сумма на ед. долл.' dosum formula = (
+			f.If ( periodin (251,301) , { @SUMMAEDPLANCALC? / $m204137@PLAN.toobj(357)? }, { 
 f.If ( periodin (401) , { @SUMMAEDFACTCALC? / $m204137@PLAN.toobj(357)? }, { @SUMMAEDFACTCALC? / $m204137@Б1.toobj(357)? } ) } )
-			)
-			column SUMMAEDFACTCALC 'Сумма на ед. факт (расчетно)' aggregateobj dosum thema=calc formula = (
-				@SUMMA? / f.choose( $__OFS@__OFK?, $__OFS@__OFK.torootobj()? ) * ___KMULT
-			)
-			column SUMMAEDLINK 'Сумма на единицу (по ссылке)' dosum thema=calc formula = (
-				@SUMMA? / $__OBLINK@SUMMA? * ___KMULT
-			)
-			column SUMMAEDLINKD 'Сумма на единицу в долларах' dosum thema=calc formula = (
-				f.If ( isplanperiod, { @SUMMAEDLINK? / $m204137@PLAN.toobj(357)? }, { @SUMMAEDLINK? / $m204137@Б1.toobj(357)? } )
-			)
-			column SUMMAEDPLANCALC 'Сумма на ед. план (расчетно)' aggregateobj dosum thema=calc formula = (
-				@SUMMA? / f.choose( $__OPS@__OPK?, $__OPS@__OPK.torootobj()? )* ___KMULT
-			)
-			column SUMMAEDPLANCALCDIV4 'Среднекв. план ' formula = (
-				$SUMMAEDPLANCALC? / 4
-			)
-			column SUMMALINK 'Сумма (ссылка)' dosum formula = (
-				f.If ( iskorrperiod , { @PLANC? } , { 
+		)
+		column SUMMAEDFACTCALC 'Сумма на ед. факт (расчетно)' aggregateobj dosum thema=calc formula = (
+			@SUMMA? / f.choose( $__OFS@__OFK?, $__OFS@__OFK.torootobj()? ) * ___KMULT
+		)
+		column SUMMAEDLINK 'Сумма на единицу (по ссылке)' dosum thema=calc formula = (
+			@SUMMA? / $__OBLINK@SUMMA? * ___KMULT
+		)
+		column SUMMAEDLINKD 'Сумма на единицу в долларах' dosum thema=calc formula = (
+			f.If ( isplanperiod, { @SUMMAEDLINK? / $m204137@PLAN.toobj(357)? }, { @SUMMAEDLINK? / $m204137@Б1.toobj(357)? } )
+		)
+		column SUMMAEDPLANCALC 'Сумма на ед. план (расчетно)' aggregateobj dosum thema=calc formula = (
+			@SUMMA? / f.choose( $__OPS@__OPK?, $__OPS@__OPK.torootobj()? )* ___KMULT
+		)
+		column SUMMAEDPLANCALCDIV4 'Среднекв. план ' formula = (
+			$SUMMAEDPLANCALC? / 4
+		)
+		column SUMMALINK 'Сумма (ссылка)' dosum formula = (
+			f.If ( iskorrperiod , { @PLANC? } , { 
 f.If ( periodin ( 401 ), { @Б1.P3? + @Б1.P444?}, { @Б1? } )
  } )
-			)
-			column SUMMAOZHIDGOD 'Сумма ожид. год' formula = (
-				@SUMMA.P3? + @SUMMA.P444?
-			)
-			column SUMMAPLANCALC 'Сумма план (расчетно)' dosum thema=calc formula = (
-				@KOLED? * @CENA? * $__OPS@__OPK.torootobj()? / 1000 + @FIXKOL? * @CENA? / 1000 + @FIXCOST?
-			)
-			column TESTSQL 'Проверяем SQL' formulatype=zeta.calculate_sql_column formula = (
-				zeta.calculate_sql_column
-			)
-			column TPFP_KOR1 'ТПФП (уточненный в 1 квартале)' formulatype=TPFP,KOR1 formula = (
-				TPFP,KOR1
-			)
-			column TPFP_KOR2 'ТПФП (уточненный в 2 квартале)' formulatype=TPFP,KOR1,KOR2 formula = (
-				TPFP,KOR1,KOR2
-			)
-			column TPFP_KOR3 'ТПФП (уточненный в 3 квартале)' formulatype=TPFP,KOR1,KOR2,KOR3 formula = (
-				TPFP,KOR1,KOR2,KOR3
-			)
-			column TPFP_KOR4 'ТПФП (уточненный в 4 квартале)' formulatype=TPFP,KOR1,KOR2,KOR3,KOR4 formula = (
-				TPFP,KOR1,KOR2,KOR3,KOR4
-			)
-			column UDVESPERED 'Удельный вес от передела' formula = (
-				f.If ( periodin ( 401 ), { @OZHIDPREDGOD? / $m260610@OZHIDPREDGOD? * 100 } , { @ENSUMMA? / $m260610@ENSUMMA? * 100 } )
-			)
-			column UDVESZATR 'Удельный вес от затрат' formula = (
-				f.If ( periodin ( 401 ), { @OZHIDPREDGOD? / $m260@OZHIDPREDGOD? * 100 } , { @Б1? / $m260@Б1? * 100 } )
-			)
-			column ZOk 'Займы, остаток на конец (основная сумма)' dosum formula = (
-				f.If ( periodin (1,2,3,4) and year > 2011, { @ZOn.P11?  + @ZPd.P-501? - @ZRd.P-501? } , { @ZOn? + @ZPd? - @ZRd? } )
-			)
-			column ZOn_control 'На начало' dosum formula = (
-				f.If ( periodin (1,2,3,4) and year > 2011, { @ZOn.P11? } , { @ZOn? } )
-			)
-			column ZPOk 'Займы, остаток на конец (%)' formula = (
-				 @ZPOn? + @ZPPd? - @ZPRd? 
-			)
-			column ZSOk 'Займы, остаток на конец (все)' formula = (
-				 @ZPOn? + @ZPPd? - @ZPRd? + @ZOn? + @ZPd? - @ZRd? 
-			)
-			column ZSOn 'Займы, остаток на начало (всего)' formula = (
-				@ZOn? + @ZPOn?
-			)
-			column ZSPd 'Займы, начисления (всего)' formula = (
-				@ZPd? + @ZPPd?
-			)
-			column ZSRd 'Займы, оплата (всего)' formula = (
-				@ZRd? + @ZPRd?
-			)
-			column Б1К 'Б1 конс' formula = (
-				@Б1? - @Б1ВО?
-			)
-			column Б1УГМК 'Показатели 3 лиц' formula = (
-				@Б1? - @Б1КОНС?
-			)
-			column Б2К 'Б2 конс' formula = (
-				@Б2? - @Б2ВО?
-			)
-			column Б3К 'Б3 конс' formula = (
-				@Б3? - @Б3ВО?
-			)
-			column Б4К 'Б4 конс' formula = (
-				@Б4? - @Б4ВО?
-			)
+		)
+		column SUMMAOZHIDGOD 'Сумма ожид. год' formula = (
+			@SUMMA.P3? + @SUMMA.P444?
+		)
+		column SUMMAPLANCALC 'Сумма план (расчетно)' dosum thema=calc formula = (
+			@KOLED? * @CENA? * $__OPS@__OPK.torootobj()? / 1000 + @FIXKOL? * @CENA? / 1000 + @FIXCOST?
+		)
+		column TESTSQL 'Проверяем SQL' formulatype=zeta.calculate_sql_column formula = (
+			zeta.calculate_sql_column
+		)
+		column TPFP_KOR1 'ТПФП (уточненный в 1 квартале)' formulatype=TPFP,KOR1 formula = (
+			TPFP,KOR1
+		)
+		column TPFP_KOR2 'ТПФП (уточненный в 2 квартале)' formulatype=TPFP,KOR1,KOR2 formula = (
+			TPFP,KOR1,KOR2
+		)
+		column TPFP_KOR3 'ТПФП (уточненный в 3 квартале)' formulatype=TPFP,KOR1,KOR2,KOR3 formula = (
+			TPFP,KOR1,KOR2,KOR3
+		)
+		column TPFP_KOR4 'ТПФП (уточненный в 4 квартале)' formulatype=TPFP,KOR1,KOR2,KOR3,KOR4 formula = (
+			TPFP,KOR1,KOR2,KOR3,KOR4
+		)
+		column UDVESPERED 'Удельный вес от передела' formula = (
+			f.If ( periodin ( 401 ), { @OZHIDPREDGOD? / $m260610@OZHIDPREDGOD? * 100 } , { @ENSUMMA? / $m260610@ENSUMMA? * 100 } )
+		)
+		column UDVESZATR 'Удельный вес от затрат' formula = (
+			f.If ( periodin ( 401 ), { @OZHIDPREDGOD? / $m260@OZHIDPREDGOD? * 100 } , { @Б1? / $m260@Б1? * 100 } )
+		)
+		column ZOk 'Займы, остаток на конец (основная сумма)' dosum formula = (
+			f.If ( periodin (1,2,3,4) and year > 2011, { @ZOn.P11?  + @ZPd.P-501? - @ZRd.P-501? } , { @ZOn? + @ZPd? - @ZRd? } )
+		)
+		column ZOn_control 'На начало' dosum formula = (
+			f.If ( periodin (1,2,3,4) and year > 2011, { @ZOn.P11? } , { @ZOn? } )
+		)
+		column ZPOk 'Займы, остаток на конец (%)' formula = (
+			 @ZPOn? + @ZPPd? - @ZPRd? 
+		)
+		column ZSOk 'Займы, остаток на конец (все)' formula = (
+			 @ZPOn? + @ZPPd? - @ZPRd? + @ZOn? + @ZPd? - @ZRd? 
+		)
+		column ZSOn 'Займы, остаток на начало (всего)' formula = (
+			@ZOn? + @ZPOn?
+		)
+		column ZSPd 'Займы, начисления (всего)' formula = (
+			@ZPd? + @ZPPd?
+		)
+		column ZSRd 'Займы, оплата (всего)' formula = (
+			@ZRd? + @ZPRd?
+		)
+		column Б1К 'Б1 конс' formula = (
+			@Б1? - @Б1ВО?
+		)
+		column Б1УГМК 'Показатели 3 лиц' formula = (
+			@Б1? - @Б1КОНС?
+		)
+		column Б2К 'Б2 конс' formula = (
+			@Б2? - @Б2ВО?
+		)
+		column Б3К 'Б3 конс' formula = (
+			@Б3? - @Б3ВО?
+		)
+		column Б4К 'Б4 конс' formula = (
+			@Б4? - @Б4ВО?
+		)

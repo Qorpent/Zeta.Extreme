@@ -30,7 +30,7 @@ namespace Zeta.Extreme.Developer.MetaStorage {
             var version = new[]{zones.Select(_=>_.Version).Max(),regions.Select(_=>_.Version).Max(),points.Select(_=>_.Version).Max()}.Max();
             builder.WriteCommentBlock("Объекты географии Zeta", new {version});
             builder.StartNamespace(Namespace);
-            builder.StartClass(ClassName);
+            builder.StartClass(ClassName,new{prototype="meta-geo"});
             builder.WriteClassElement(PointElement);
             foreach (var z in zones) {
                 builder.StartElement(ZoneElement,z.Code,z.Name,inlineattributes:new{comment=z.Comment,tag=z.Tag});

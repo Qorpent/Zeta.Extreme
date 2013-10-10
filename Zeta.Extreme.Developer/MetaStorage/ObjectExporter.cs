@@ -67,7 +67,7 @@ namespace Zeta.Extreme.Developer.MetaStorage {
             var version = _objs.Select(_ => _.Version).Max();
             _builder.WriteCommentBlock("Экспорт старших объектов",new {version});
             _builder.StartNamespace(Namespace);
-            _builder.StartClass(ClassName);
+            _builder.StartClass(ClassName,new{prototype="meta-obj"});
             _builder.WriteClassExport("obj");
             _builder.WriteClassElement("obj");
             foreach (var r in _roots) {

@@ -1,6 +1,6 @@
 ########################################################################################################################
 ####                                             Экспорт структуры форм                                             ####
-####                    hash                           : c58vN2ZB/ozDLbeJguoR8Q==                                   ####
+####                    hash                           : w2dVV2U5d2x3AsdPuO/+HA==                                   ####
 ####                    BlocksOnly                     : False                                                      ####
 ########################################################################################################################
 namespace demo.import.meta
@@ -55,6 +55,10 @@ namespace demo.import.meta
 					thema f7 'Управленческие расходы (форма №7)'
 				root m218
 					thema f8 'Расходы на продажу (форма №8)'
+				root m216
+					thema opr_div 'Общепроизводственные расходы (по переделам)'
+				root m200
+					thema osnpok 'Основные показатели (форма № 2)'
 				root m161
 					thema uslugi_chop 'Услуги ЧОП'
 				root m260
@@ -82,9 +86,6 @@ namespace demo.import.meta
 					thema nalog_nds 'Расчет НДС (форма № 16.4)'
 				root m225
 					thema nalog_nds19 'НДС по приобретенным ценнностям (Прил. № 23)'
-			block KPI
-				root m200
-					thema osnpok 'Основные показатели (форма № 2)'
 			block DZK
 				root m230
 					thema ras_dk 'Дебиторы и кредиторы'
@@ -132,8 +133,6 @@ namespace demo.import.meta
 					thema calc_slitki 'Калькуляция слитков'
 				root z250
 					thema calc_zink 'Калькуляция цинка'
-				root m216
-					thema opr_div 'Общепроизводственные расходы (по переделам)'
 			block cost_grp.DR oldcode=DR doubled=true
 				root b102
 					thema kovenant_amort 'Амортизация по приложению № 5 стр. 740'

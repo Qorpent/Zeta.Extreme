@@ -18,9 +18,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using Qorpent.Mvc;
 using Qorpent.Mvc.Binding;
+using Qorpent.Utils.Extensions;
 using Zeta.Extreme.FrontEnd.Helpers;
 
 namespace Zeta.Extreme.FrontEnd.Actions.Info {
@@ -52,6 +53,9 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
 
         private object GetUser(string userLogin, string userName, bool withRoles) {
             if (userLogin != null) {
+                if (userLogin.Contains(",")) {
+                    return GetUsersByLogin(userLogin.SmartSplit().Distinct().ToArray(), withRoles);
+                }
                 return GetUserByLogin(userLogin, withRoles);
             } else {
                 if (userName != null) {
@@ -62,7 +66,16 @@ namespace Zeta.Extreme.FrontEnd.Actions.Info {
             }
         }
 
-        private object GetUserByLogin(string userLogin, bool withRoles) {
+	    private object GetUsersByLogin(string[] logins, bool withRoles) {
+	        if (withRoles) {
+                return new UserInfoHelper().GetUsersInfoWithRoles(logins).ToArray();
+	        }
+	        else {
+                return new UserInfoHelper().GetUsersInfo(logins).ToArray();
+	        }
+	    }
+
+	    private object GetUserByLogin(string userLogin, bool withRoles) {
             if(withRoles) {
                 return new UserInfoHelper().GetUserInfoWithRoles(userLogin);
             } else {

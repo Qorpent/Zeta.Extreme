@@ -10,7 +10,7 @@ orgnode GDIR, 'Генеральный директор', roleprefix='DR,FIN,FA'
 
 orgnode GLBUH, 'Главный бухгалтер'
 	orgnode BA_Dept, 'Отдел(бюро) бухгалтерского учета',roleprefix='FIN'
-		process ACCOUNT, 'Бухгалтерский учет', type=man
+		process ACCOUNT, 'Бухгалтерский учет', type=man 
 			thema balans2011
 			thema prib_cons
 	    	thema free_active2011

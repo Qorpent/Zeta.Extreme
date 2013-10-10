@@ -9,7 +9,7 @@
         var user = window.zeta.user;
         if (user != null) {
             if (user.getRealLogonName()) {
-                login.text(user.getRealLogonName());
+                zeta.zetauser.getDetails(user.getRealLogonName(), function(result) { login.text(result.ShortName) });
                 var t1 = $('<div/>').append($('<ul class="login-permissions"/>').append(
                     $("<li/>").html("Администратор<span>" + (user.getRealIsAdmin() ? "ДА" : "НЕТ") + "</span>"),
                     $("<li/>").html("Разработчик<span>" + (user.getRealIsDeveloper() ? "ДА" : "НЕТ") + "</span>"),
@@ -19,7 +19,7 @@
             }
             if (user.getImpersonation()) {
                 loginas.show();
-                loginas.text(user.getImpersonation());
+                zeta.zetauser.getDetails(user.getImpersonation(), function(result) { loginas.text(result.ShortName) });
                 var t2 = $('<div/>').append($('<ul class="login-permissions"/>').append(
                     $("<li/>").html("Администратор<span>" + (user.getIsImpAdmin() ? "ДА" : "НЕТ") + "</span>"),
                     $("<li/>").html("Разработчик<span>" + (user.getIsImpDeveloper() ? "ДА" : "НЕТ") + "</span>"),
@@ -37,8 +37,6 @@
     });
     var logininfo = new root.Widget("logininfo", root.console.layout.position.layoutHeader, "right", { authonly: false, priority: 70, ready: function() {
         ConfigurePermissions();
-        if (login.text() != "") {login.zetauser()};
-        if (loginas.text() != "") {loginas.zetauser()};
     }});
     logininfo.body = $('<div/>').append(login, loginas.hide());
     root.console.RegisterWidget(logininfo);
