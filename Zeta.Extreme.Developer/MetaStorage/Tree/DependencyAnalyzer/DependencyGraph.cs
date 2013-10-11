@@ -10,6 +10,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 	/// Граф для зависимостей
 	/// </summary>
 	public class DependencyGraph {
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool CalculateEdgeInWeight { get; set; }
 		/// <summary>
 		/// Граф зависимостей
 		/// </summary>

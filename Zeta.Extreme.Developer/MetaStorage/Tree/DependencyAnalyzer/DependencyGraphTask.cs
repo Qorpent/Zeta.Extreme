@@ -19,6 +19,10 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 			Direction = DependencyDirection.Default;
 
 		}
+        /// <summary>
+        ///     Флаг, указывающий на то, что требуется просчёт сложности графа
+        /// </summary>
+        public bool CalculateEdgeInWeight { get; set; }
 		/// <summary>
 		/// Код задачи/графа
 		/// </summary>
@@ -102,21 +106,19 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
 		/// Построить граф
 		/// </summary>
 		public void Build() {
-			if (null == ResultGraph)
-			{
-				ResultGraph = new DependencyGraph {Clusterize = Clusterize, Code = Code, BaseUri = BaseUri};
+			if (null == ResultGraph) {
+                ResultGraph = new DependencyGraph { Clusterize = Clusterize, Code = Code, BaseUri = BaseUri, CalculateEdgeInWeight = CalculateEdgeInWeight };
 			    if (string.IsNullOrWhiteSpace(ResultGraph.Code)) {
 					ResultGraph.Code = DependencyNode.GetDotCode(StartRow) + "_" + Direction;
 				}
 				ResultGraph.ShowLegend = ShowLegend;
 			}
        
-			if (Direction.HasFlag(DependencyDirection.Down))
-			{
+			if (Direction.HasFlag(DependencyDirection.Down)) {
 				new GoDownDependencyVisitor().Process(this);
 			}
-			if (Direction.HasFlag(DependencyDirection.Up))
-			{
+
+			if (Direction.HasFlag(DependencyDirection.Up)) {
 				new GoUpDependencyVisitor().Process(this);
 			}
 			

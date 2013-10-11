@@ -14,7 +14,6 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
         private Uri uri;
         private bool hasignore;
         private const string IGNORENODE = "IGNORE";
-
         /// <summary>
         /// Формирует из графа завимисомтией DOT-graph
         /// </summary>
@@ -34,8 +33,8 @@ namespace Zeta.Extreme.Developer.MetaStorage.Tree.DependencyAnalyzer {
                     Style = NodeStyleType.Filled,
                     FillColor = "2",
                 },
-                DefaultEdge = new Node
-                {
+                CalculateEdgeInWeight = s.CalculateEdgeInWeight,
+                DefaultEdge = new Node {
                     FontSize = 8,
                 }
             };

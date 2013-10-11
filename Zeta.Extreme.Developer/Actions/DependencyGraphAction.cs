@@ -54,6 +54,7 @@ namespace Zeta.Extreme.Developer.Actions {
 				TerminalMasks = terminals.SmartSplit().ToArray(),
 				ShowLegend = showlegend,
                 BaseUri = Context.Uri,
+                CalculateEdgeInWeight = true
 			};
 			return task;
 		}
