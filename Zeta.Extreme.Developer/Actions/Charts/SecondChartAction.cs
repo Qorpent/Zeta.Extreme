@@ -16,33 +16,31 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
         /// <param name="obj"></param>
         /// <returns></returns>
         protected override object GenerateChart(int year, int period, int obj) {
-            var result = new Chart {
-                Caption = "Котировки меди на LME",
-                SubCaption = "$ за тонну CU",
-                CaptionPadding = 10,
-                Config = new ChartConfig {
-                    Type = FusionChartType.MSLine.ToString()
-                }
-            };
-
-            var dataset1 = ChartFrontEndBuilder.BuildDataset(year, "m203102", "PLANGOD", new[] { 11, 12, 13, 14, 15, 16, 1 });
-            var dataset2 = ChartFrontEndBuilder.BuildDataset(year, "m203117", "PLANGOD", new[] { 11, 12, 13, 14, 15, 16, 1 });
-
-            result.Datasets.Add(dataset1);
-            result.Datasets.Add(dataset2);
-
-            foreach (var cat in ChartFrontEndBuilder.BuildCategories(new[] { 11, 12, 13, 14, 15, 16, 1 })) {
-                result.Categories.Add(cat);
-            }
-            
-            result.AsFusion().AddTrendLine(result, new ChartLine {
-                StartValue = 8384.0,
-                Color = "FF0000",
-                Dashed = true,
-                DisplayValue = "ТПФП"
-            });
-
-            return result;
+            return new Chart()
+                .SetCaption("Котировки меди на LME")
+                .SetSubCaption("$ за тонну CU")
+                .SetCaptionPadding(10)
+                .SetConfig(
+                    new ChartConfig().SetChartType(FusionChartType.MSLine))
+                .Add(
+                    ChartFrontEndBuilder.BuildDataset(year, "m203102", "PLANGOD", new[] { 11, 12, 13, 14, 15, 16, 1 })
+                        .SetSeriesName("На конец периода")
+                        .SetAnchorSides(4)
+                        .SetAnchorRadius(5)
+                        .SetColor("424242"))
+                .Add(
+                    ChartFrontEndBuilder.BuildDataset(year, "m203117", "PLANGOD", new[] { 11, 12, 13, 14, 15, 16, 1 })
+                        .SetSeriesName("На конец периода")
+                        .SetAnchorSides(3)
+                        .SetAnchorRadius(5)
+                        .SetColor("424242"))
+                .Add(
+                    new ChartTrendLine()
+                        .SetStartValue(7017.0)
+                        .SetColor("FF0000")
+                        .SetDashed(true)
+                        .SetDisplayValue("ТПФП"))
+                .AddElements(ChartFrontEndBuilder.BuildCategories(new[] {11, 12, 13, 14, 15, 16, 1}));
         }
     }
 }
