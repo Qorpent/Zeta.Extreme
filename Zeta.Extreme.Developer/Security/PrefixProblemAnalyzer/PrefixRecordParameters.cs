@@ -10,15 +10,6 @@ namespace Zeta.Extreme.Developer.Security.PrefixProblemAnalyzer {
     [Serialize]
     public class PrefixRecordParameters {
         /// <summary>
-        /// Создает стандартные параметры анализатора
-        /// </summary>
-        public PrefixRecordParameters() {
-            UseFact = true;
-            UsePlan = true;
-            MaxOperators = 5;
-            MaxUnderwriters = 5;
-        }
-        /// <summary>
         /// Признак исключения предприятия
         /// </summary>
         public int[] ExcludeObjects { get; set; }

@@ -5,12 +5,19 @@
     <style>
         table {
         border-collapse:collapse;
+        margin-top:10px;
+        
         }
         table td, table th {
         border : solid 1px gray;
+        padding:2px;
         }
         table.problem {
         width:200px;
+        margin-top:0px;
+        }
+        td.problem{
+          padding:0px;
         }
         td.prefix{
         width:100px;
@@ -23,7 +30,58 @@
   </head>
   <body>
     <h1>Отчет о проблемах в настройке безопасности</h1>
-    <p>В колонке "Проблемы" указаны Роли по которым есть превышение количества Опрераторов и/или Подписантов</p>
+    <p>В колонке "Проблемы" указаны Роли по которым есть превышение количества Операторов и/или Подписантов.</p>
+    <p>Параметры отчета</p>
+    <table>
+      <tr>
+        <td>Неустановленные префиксы - проблема</td>
+        <td>false</td>
+      </tr>
+      <tr>
+        <td>Осутсвие хотя бы одного Подписанта - проблема</td>
+        <td>false</td>
+      </tr>
+      <tr>
+        <td>Количество Опреаторов больше 5 (по умолчанию) - проблема</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>Количество Подписантов больше 5 (по умолчанию) - проблема</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>Включать плановые префиксы</td>
+        <td>true</td>
+      </tr>
+      <tr>
+        <td>Включать фактические префиксы</td>
+        <td>true</td>
+      </tr>
+      <tr>
+        <td>Исключенные предприятия</td>
+        <td>357; 
+  
+  352; 
+  
+  </td>
+      </tr>
+      <tr>
+        <td>Включенные предприятия</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Исключенные префиксы</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Включенные префиксы</td>
+        <td>DR; 
+  
+  FIN; 
+  
+  </td>
+      </tr>
+    </table>
     <table>
       <thead>
         <th>Номер</th>
@@ -34,745 +92,153 @@
       <tbody>
         <tr>
           <td>1</td>
-          <td>352</td>
-          <td>ОАО "Уралэлектромедь"</td>
-          <td>
+          <td>353</td>
+          <td>ОАО "Святогор"</td>
+          <td class="problem">
             <table class="problem">
-              <tr>
-                <td class="prefix">COST</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
               <tr>
                 <td class="prefix">DR</td>
                 <td class="number">11</td>
-                <td class="number">8</td>
+                <td class="number">12</td>
+              </tr>
+              <tr>
+                <td class="prefix">DRP</td>
+                <td class="number">5</td>
+                <td class="number">6</td>
               </tr>
               <tr>
                 <td class="prefix">FIN</td>
-                <td class="number">14</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">INV</td>
-                <td class="number">9</td>
-                <td class="number">
-                </td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
+                <td class="number">6</td>
                 <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">9</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOCP</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>2</td>
-          <td>353</td>
-          <td>ОАО "Святогор"</td>
-          <td>
+          <td>354</td>
+          <td>ОАО "Металлургический завод им. А.К.Серова"</td>
+          <td class="problem">
             <table class="problem">
               <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">7</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">COST</td>
-                <td class="number">10</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">COSTP</td>
-                <td class="number">8</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">DR</td>
-                <td class="number">11</td>
-                <td class="number">12</td>
-              </tr>
-              <tr>
-                <td class="prefix">DRP</td>
-                <td class="number">5</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
                 <td class="prefix">FIN</td>
+                <td class="number">7</td>
                 <td class="number">6</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">INV</td>
-                <td class="number">6</td>
-                <td class="number">
-                </td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">7</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">7</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">5</td>
-                <td class="number">7</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>3</td>
-          <td>354</td>
-          <td>ОАО "Металлургический завод им. А.К.Серова"</td>
-          <td>
+          <td>362</td>
+          <td>ОАО "Шадринский автоагрегатный завод"</td>
+          <td class="problem">
             <table class="problem">
               <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
+                <td class="prefix">DR</td>
+                <td class="number">12</td>
+                <td class="number">9</td>
+              </tr>
+              <tr>
+                <td class="prefix">DRP</td>
+                <td class="number">8</td>
+                <td class="number">5</td>
               </tr>
               <tr>
                 <td class="prefix">FIN</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
+                <td class="number">15</td>
+                <td class="number">11</td>
               </tr>
               <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
+                <td class="prefix">FINP</td>
+                <td class="number">11</td>
+                <td class="number">7</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>4</td>
-          <td>357</td>
-          <td>ООО "УГМК-Холдинг"</td>
-          <td>
+          <td>415</td>
+          <td>ОАО "Ревдинский завод ОЦМ"</td>
+          <td class="problem">
             <table class="problem">
-              <tr>
-                <td class="prefix">INV</td>
-                <td class="number">20</td>
-                <td class="number">
-                </td>
-              </tr>
-              <tr>
-                <td class="prefix">RUDA</td>
-                <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">RUDAP</td>
-                <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">11</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDRP</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">BIO</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">BIOP</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">20</td>
-                <td class="number">14</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">16</td>
-                <td class="number">11</td>
-              </tr>
               <tr>
                 <td class="prefix">DR</td>
                 <td class="number">19</td>
-                <td class="number">14</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">21</td>
-                <td class="number">14</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZKP</td>
-                <td class="number">15</td>
-                <td class="number">11</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGO</td>
-                <td class="number">17</td>
-                <td class="number">15</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">20</td>
-                <td class="number">14</td>
-              </tr>
-              <tr>
-                <td class="prefix">FAP</td>
-                <td class="number">16</td>
-                <td class="number">11</td>
-              </tr>
-              <tr>
-                <td class="prefix">FIN</td>
-                <td class="number">24</td>
-                <td class="number">16</td>
-              </tr>
-              <tr>
-                <td class="prefix">FINP</td>
-                <td class="number">15</td>
-                <td class="number">13</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">22</td>
-                <td class="number">15</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">14</td>
-                <td class="number">12</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">23</td>
-                <td class="number">18</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOCP</td>
-                <td class="number">19</td>
-                <td class="number">15</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZP</td>
-                <td class="number">19</td>
-                <td class="number">14</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZPP</td>
-                <td class="number">19</td>
-                <td class="number">14</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGOP</td>
-                <td class="number">13</td>
-                <td class="number">11</td>
+                <td class="number">6</td>
               </tr>
               <tr>
                 <td class="prefix">DRP</td>
                 <td class="number">14</td>
-                <td class="number">12</td>
+                <td class="number">7</td>
               </tr>
               <tr>
-                <td class="prefix">COST</td>
-                <td class="number">11</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">COSTP</td>
-                <td class="number">11</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">EDU</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">EDUP</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADR</td>
+                <td class="prefix">FIN</td>
                 <td class="number">17</td>
-                <td class="number">13</td>
+                <td class="number">7</td>
               </tr>
               <tr>
-                <td class="prefix">KADRP</td>
-                <td class="number">17</td>
-                <td class="number">13</td>
-              </tr>
-              <tr>
-                <td class="prefix">KPI</td>
-                <td class="number">31</td>
-                <td class="number">31</td>
-              </tr>
-              <tr>
-                <td class="prefix">KPIP</td>
-                <td class="number">31</td>
-                <td class="number">31</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
+                <td class="prefix">FINP</td>
+                <td class="number">15</td>
                 <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTRP</td>
-                <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">14</td>
-                <td class="number">11</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">14</td>
-                <td class="number">11</td>
-              </tr>
-              <tr>
-                <td class="prefix">OS</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">OSP</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALE</td>
-                <td class="number">11</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALEP</td>
-                <td class="number">11</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">KAZN</td>
-                <td class="number">16</td>
-                <td class="number">16</td>
-              </tr>
-              <tr>
-                <td class="prefix">KAZNP</td>
-                <td class="number">16</td>
-                <td class="number">16</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>5</td>
-          <td>362</td>
-          <td>ОАО "Шадринский автоагрегатный завод"</td>
-          <td>
+          <td>442</td>
+          <td>ОАО "Богословское рудоуправление"</td>
+          <td class="problem">
             <table class="problem">
               <tr>
                 <td class="prefix">DR</td>
-                <td class="number">12</td>
-                <td class="number">9</td>
+                <td class="number">7</td>
+                <td class="number">5</td>
               </tr>
               <tr>
                 <td class="prefix">DRP</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">10</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZKP</td>
-                <td class="number">6</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGO</td>
-                <td class="number">10</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">FIN</td>
-                <td class="number">15</td>
-                <td class="number">11</td>
-              </tr>
-              <tr>
-                <td class="prefix">FINP</td>
-                <td class="number">11</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">KAZN</td>
-                <td class="number">9</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">KPI</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">10</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">6</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALE</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">10</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">6</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">BIO</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">COST</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">10</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">FAP</td>
-                <td class="number">7</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">INV</td>
-                <td class="number">8</td>
-                <td class="number">
-                </td>
-              </tr>
-              <tr>
-                <td class="prefix">KADR</td>
-                <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">10</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZP</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">OS</td>
                 <td class="number">6</td>
                 <td class="number">4</td>
               </tr>
               <tr>
-                <td class="prefix">EDU</td>
+                <td class="prefix">FIN</td>
+                <td class="number">9</td>
+                <td class="number">8</td>
+              </tr>
+              <tr>
+                <td class="prefix">FINP</td>
+                <td class="number">8</td>
                 <td class="number">6</td>
-                <td class="number">5</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>6</td>
-          <td>415</td>
-          <td>ОАО "Ревдинский завод ОЦМ"</td>
-          <td>
+          <td>449</td>
+          <td>ОАО "Среднеуральский медеплавильный завод"</td>
+          <td class="problem">
             <table class="problem">
               <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">COST</td>
-                <td class="number">12</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">COSTP</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">DR</td>
-                <td class="number">19</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">DRP</td>
-                <td class="number">14</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZKP</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGO</td>
-                <td class="number">15</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGOP</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
                 <td class="prefix">FIN</td>
-                <td class="number">17</td>
-                <td class="number">7</td>
+                <td class="number">15</td>
+                <td class="number">15</td>
               </tr>
               <tr>
                 <td class="prefix">FINP</td>
                 <td class="number">15</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">11</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDRP</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADRP</td>
-                <td class="number">6</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">KAZN</td>
-                <td class="number">7</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">11</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTRP</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">11</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">14</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">13</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">11</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALE</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALEP</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">13</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOCP</td>
-                <td class="number">9</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZP</td>
-                <td class="number">11</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZPP</td>
-                <td class="number">9</td>
-                <td class="number">5</td>
+                <td class="number">15</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>7</td>
-          <td>442</td>
-          <td>ОАО "Богословское рудоуправление"</td>
-          <td>
-            <table class="problem">
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">DR</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">DRP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">FIN</td>
-                <td class="number">9</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">FINP</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>449</td>
-          <td>ОАО "Среднеуральский медеплавильный завод"</td>
-          <td>
-            <table class="problem">
-              <tr>
-                <td class="prefix">FIN</td>
-                <td class="number">14</td>
-                <td class="number">14</td>
-              </tr>
-              <tr>
-                <td class="prefix">FINP</td>
-                <td class="number">14</td>
-                <td class="number">14</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td>9</td>
           <td>467</td>
           <td>ОАО "Гайский ГОК"</td>
-          <td>
+          <td class="problem">
             <table class="problem">
               <tr>
                 <td class="prefix">DR</td>
@@ -785,209 +251,24 @@
                 <td class="number">9</td>
               </tr>
               <tr>
-                <td class="prefix">ENERGO</td>
-                <td class="number">10</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGOP</td>
-                <td class="number">10</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
                 <td class="prefix">FIN</td>
                 <td class="number">23</td>
                 <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">10</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">BIOP</td>
-                <td class="number">8</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">COST</td>
-                <td class="number">14</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">COSTP</td>
-                <td class="number">13</td>
-                <td class="number">10</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">10</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZKP</td>
-                <td class="number">10</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">9</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">FAP</td>
-                <td class="number">13</td>
-                <td class="number">6</td>
               </tr>
               <tr>
                 <td class="prefix">FINP</td>
                 <td class="number">18</td>
                 <td class="number">11</td>
               </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">15</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDRP</td>
-                <td class="number">11</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADR</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADRP</td>
-                <td class="number">11</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">KPI</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">KPIP</td>
-                <td class="number">9</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">13</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTRP</td>
-                <td class="number">13</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">14</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">13</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">11</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">10</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALE</td>
-                <td class="number">9</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALEP</td>
-                <td class="number">11</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">7</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOCP</td>
-                <td class="number">10</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZP</td>
-                <td class="number">9</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZPP</td>
-                <td class="number">12</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">EDU</td>
-                <td class="number">6</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">EDUP</td>
-                <td class="number">6</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">KAZN</td>
-                <td class="number">6</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">KAZNP</td>
-                <td class="number">7</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">OS</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">OSP</td>
-                <td class="number">10</td>
-                <td class="number">3</td>
-              </tr>
             </table>
           </td>
         </tr>
         <tr>
-          <td>10</td>
+          <td>8</td>
           <td>468</td>
           <td>ОАО "Кировский завод ОЦМ"</td>
-          <td>
+          <td class="problem">
             <table class="problem">
-              <tr>
-                <td class="prefix">COST</td>
-                <td class="number">16</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">COSTP</td>
-                <td class="number">10</td>
-                <td class="number">6</td>
-              </tr>
               <tr>
                 <td class="prefix">DR</td>
                 <td class="number">21</td>
@@ -999,47 +280,6 @@
                 <td class="number">9</td>
               </tr>
               <tr>
-                <td class="prefix">ENERGO</td>
-                <td class="number">10</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGOP</td>
-                <td class="number">6</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">INV</td>
-                <td class="number">7</td>
-                <td class="number">
-                </td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">10</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">12</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">8</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">13</td>
-                <td class="number">10</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOCP</td>
-                <td class="number">10</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
                 <td class="prefix">FIN</td>
                 <td class="number">14</td>
                 <td class="number">8</td>
@@ -1049,69 +289,14 @@
                 <td class="number">7</td>
                 <td class="number">6</td>
               </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">7</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDRP</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADR</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZP</td>
-                <td class="number">8</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZPP</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">9</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALE</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
             </table>
           </td>
         </tr>
         <tr>
-          <td>11</td>
+          <td>9</td>
           <td>471</td>
           <td>ООО "Оренбургский радиатор"</td>
-          <td>
+          <td class="problem">
             <table class="problem">
               <tr>
                 <td class="prefix">DR</td>
@@ -1124,51 +309,26 @@
                 <td class="number">6</td>
               </tr>
               <tr>
-                <td class="prefix">FA</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">FAP</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
                 <td class="prefix">FIN</td>
-                <td class="number">9</td>
                 <td class="number">8</td>
+                <td class="number">7</td>
               </tr>
               <tr>
                 <td class="prefix">FINP</td>
-                <td class="number">9</td>
                 <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">KAZN</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">KAZNP</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
+                <td class="number">7</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
-          <td>12</td>
+          <td>10</td>
           <td>473</td>
           <td>ООО "Медногорский медно-серный комбинат"</td>
-          <td>
+          <td class="problem">
             <table class="problem">
               <tr>
                 <td class="prefix">FIN</td>
-                <td class="number">13</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
                 <td class="number">13</td>
                 <td class="number">4</td>
               </tr>
@@ -1177,18 +337,41 @@
                 <td class="number">7</td>
                 <td class="number">4</td>
               </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>497</td>
+          <td>ЗАО "Кольчугцветмет"</td>
+          <td class="problem">
+            <table class="problem">
               <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
+                <td class="prefix">DR</td>
+                <td class="number">11</td>
+                <td class="number">8</td>
               </tr>
               <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">7</td>
-                <td class="number">4</td>
+                <td class="prefix">FIN</td>
+                <td class="number">10</td>
+                <td class="number">9</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td>509</td>
+          <td>Сибайский филиал ОАО "Учалинский ГОК"</td>
+          <td class="problem">
+            <table class="problem">
+              <tr>
+                <td class="prefix">FIN</td>
+                <td class="number">10</td>
+                <td class="number">9</td>
               </tr>
               <tr>
-                <td class="prefix">FA</td>
+                <td class="prefix">DR</td>
                 <td class="number">6</td>
                 <td class="number">4</td>
               </tr>
@@ -1197,148 +380,29 @@
         </tr>
         <tr>
           <td>13</td>
-          <td>497</td>
-          <td>ЗАО "Кольчугцветмет"</td>
-          <td>
+          <td>520</td>
+          <td>ОАО "Уралмеханобр"</td>
+          <td class="problem">
             <table class="problem">
               <tr>
-                <td class="prefix">COST</td>
-                <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
                 <td class="prefix">DR</td>
-                <td class="number">11</td>
-                <td class="number">8</td>
+                <td class="number">5</td>
+                <td class="number">6</td>
               </tr>
               <tr>
                 <td class="prefix">FIN</td>
-                <td class="number">10</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">INV</td>
-                <td class="number">7</td>
-                <td class="number">
-                </td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">7</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">6</td>
                 <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">7</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">7</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALE</td>
-                <td class="number">7</td>
                 <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">9</td>
-                <td class="number">9</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>14</td>
-          <td>509</td>
-          <td>Сибайский филиал ОАО "Учалинский ГОК"</td>
-          <td>
-            <table class="problem">
-              <tr>
-                <td class="prefix">FIN</td>
-                <td class="number">10</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">DR</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGO</td>
-                <td class="number">6</td>
-                <td class="number">3</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td>15</td>
-          <td>520</td>
-          <td>ОАО "Уралмеханобр"</td>
-          <td>
-            <table class="problem">
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">5</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">DR</td>
-                <td class="number">5</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">5</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">5</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">FIN</td>
-                <td class="number">5</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">5</td>
-                <td class="number">6</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td>16</td>
           <td>536</td>
           <td>ОАО "Электроцинк"</td>
-          <td>
+          <td class="problem">
             <table class="problem">
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">COST</td>
-                <td class="number">11</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">COSTP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
               <tr>
                 <td class="prefix">DR</td>
                 <td class="number">19</td>
@@ -1350,11 +414,6 @@
                 <td class="number">4</td>
               </tr>
               <tr>
-                <td class="prefix">FA</td>
-                <td class="number">6</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
                 <td class="prefix">FIN</td>
                 <td class="number">17</td>
                 <td class="number">8</td>
@@ -1364,606 +423,158 @@
                 <td class="number">8</td>
                 <td class="number">4</td>
               </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>539</td>
+          <td>ОАО "Сибирь-полиметаллы"</td>
+          <td class="problem">
+            <table class="problem">
               <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">10</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">8</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">5</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">5</td>
+                <td class="prefix">FIN</td>
+                <td class="number">12</td>
                 <td class="number">7</td>
               </tr>
               <tr>
-                <td class="prefix">SALE</td>
+                <td class="prefix">FINP</td>
+                <td class="number">11</td>
+                <td class="number">8</td>
+              </tr>
+              <tr>
+                <td class="prefix">DR</td>
+                <td class="number">13</td>
+                <td class="number">9</td>
+              </tr>
+              <tr>
+                <td class="prefix">DRP</td>
+                <td class="number">11</td>
+                <td class="number">8</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td>693</td>
+          <td>ЗАО "Сибкабель"</td>
+          <td class="problem">
+            <table class="problem">
+              <tr>
+                <td class="prefix">DRP</td>
+                <td class="number">11</td>
+                <td class="number">9</td>
+              </tr>
+              <tr>
+                <td class="prefix">FIN</td>
+                <td class="number">9</td>
                 <td class="number">7</td>
-                <td class="number">5</td>
+              </tr>
+              <tr>
+                <td class="prefix">FINP</td>
+                <td class="number">8</td>
+                <td class="number">7</td>
+              </tr>
+              <tr>
+                <td class="prefix">DR</td>
+                <td class="number">9</td>
+                <td class="number">7</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>17</td>
-          <td>539</td>
-          <td>ОАО "Сибирь-полиметаллы"</td>
-          <td>
+          <td>1046</td>
+          <td>ООО "УГМК-ОЦМ"</td>
+          <td class="problem">
             <table class="problem">
               <tr>
-                <td class="prefix">COST</td>
-                <td class="number">9</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">COSTP</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGO</td>
-                <td class="number">8</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGOP</td>
-                <td class="number">7</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">FAP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">FIN</td>
-                <td class="number">12</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">FINP</td>
-                <td class="number">11</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">6</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDRP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">11</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">10</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALE</td>
-                <td class="number">8</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALEP</td>
-                <td class="number">7</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">9</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOCP</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
                 <td class="prefix">DR</td>
-                <td class="number">13</td>
+                <td class="number">12</td>
                 <td class="number">9</td>
               </tr>
               <tr>
                 <td class="prefix">DRP</td>
-                <td class="number">11</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">7</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
                 <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZKP</td>
                 <td class="number">8</td>
-                <td class="number">3</td>
+              </tr>
+              <tr>
+                <td class="prefix">FIN</td>
+                <td class="number">13</td>
+                <td class="number">9</td>
+              </tr>
+              <tr>
+                <td class="prefix">FINP</td>
+                <td class="number">10</td>
+                <td class="number">6</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>18</td>
-          <td>693</td>
-          <td>ЗАО "Сибкабель"</td>
-          <td>
+          <td>1047</td>
+          <td>ООО "УГМК-Сталь"</td>
+          <td class="problem">
             <table class="problem">
               <tr>
-                <td class="prefix">DRP</td>
-                <td class="number">11</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
                 <td class="prefix">FIN</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
+                <td class="number">6</td>
+                <td class="number">5</td>
               </tr>
               <tr>
                 <td class="prefix">FINP</td>
-                <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">KPI</td>
                 <td class="number">6</td>
                 <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">KPIP</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">9</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOCP</td>
-                <td class="number">9</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">COST</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">COSTP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">DR</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZKP</td>
-                <td class="number">7</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGO</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGOP</td>
-                <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">FAP</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDRP</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTRP</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALE</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALEP</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>19</td>
-          <td>1046</td>
-          <td>ООО "УГМК-ОЦМ"</td>
-          <td>
+          <td>1050</td>
+          <td>ЗАО "Уралкабель"</td>
+          <td class="problem">
             <table class="problem">
               <tr>
-                <td class="prefix">BIO</td>
-                <td class="number">11</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">BIOP</td>
-                <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">COST</td>
-                <td class="number">11</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">COSTP</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGO</td>
-                <td class="number">10</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">ENERGOP</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">INV</td>
-                <td class="number">8</td>
-                <td class="number">
-                </td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">12</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDRP</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">10</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTRP</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">11</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">10</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
                 <td class="prefix">DR</td>
-                <td class="number">12</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">DRP</td>
-                <td class="number">9</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">11</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZKP</td>
-                <td class="number">8</td>
                 <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">EDUP</td>
-                <td class="number">7</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">10</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">FAP</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
+                <td class="number">3</td>
               </tr>
               <tr>
                 <td class="prefix">FIN</td>
-                <td class="number">13</td>
-                <td class="number">9</td>
+                <td class="number">7</td>
+                <td class="number">4</td>
               </tr>
               <tr>
                 <td class="prefix">FINP</td>
-                <td class="number">10</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADR</td>
-                <td class="number">16</td>
-                <td class="number">15</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADRP</td>
-                <td class="number">14</td>
-                <td class="number">14</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">13</td>
-                <td class="number">9</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">10</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">OS</td>
                 <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALE</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALEP</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">17</td>
-                <td class="number">15</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOCP</td>
-                <td class="number">14</td>
-                <td class="number">14</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZP</td>
-                <td class="number">14</td>
-                <td class="number">14</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZPP</td>
-                <td class="number">13</td>
-                <td class="number">13</td>
-              </tr>
-              <tr>
-                <td class="prefix">KPI</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">KPIP</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">EDU</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
+                <td class="number">4</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>20</td>
-          <td>1047</td>
-          <td>ООО "УГМК-Сталь"</td>
-          <td>
+          <td>1054</td>
+          <td>ООО "УГМК-Телеком"</td>
+          <td class="problem">
             <table class="problem">
               <tr>
-                <td class="prefix">FIN</td>
-                <td class="number">6</td>
+                <td class="prefix">DR</td>
+                <td class="number">7</td>
+                <td class="number">5</td>
+              </tr>
+              <tr>
+                <td class="prefix">DRP</td>
+                <td class="number">7</td>
                 <td class="number">5</td>
               </tr>
               <tr>
                 <td class="prefix">FINP</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADR</td>
                 <td class="number">7</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADRP</td>
-                <td class="number">7</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">KPI</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">KPIP</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOCP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZP</td>
-                <td class="number">7</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZPP</td>
-                <td class="number">7</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">EDU</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">EDUP</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZKP</td>
-                <td class="number">6</td>
                 <td class="number">5</td>
               </tr>
             </table>
@@ -1971,179 +582,52 @@
         </tr>
         <tr>
           <td>21</td>
-          <td>1050</td>
-          <td>ЗАО "Уралкабель"</td>
-          <td>
+          <td>1062</td>
+          <td>ООО "Башкирская медь"</td>
+          <td class="problem">
             <table class="problem">
               <tr>
-                <td class="prefix">INV</td>
-                <td class="number">6</td>
-                <td class="number">
-                </td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">7</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
                 <td class="prefix">DR</td>
+                <td class="number">8</td>
                 <td class="number">6</td>
-                <td class="number">3</td>
               </tr>
               <tr>
-                <td class="prefix">DZKP</td>
-                <td class="number">6</td>
-                <td class="number">2</td>
+                <td class="prefix">DRP</td>
+                <td class="number">9</td>
+                <td class="number">7</td>
               </tr>
               <tr>
                 <td class="prefix">FIN</td>
-                <td class="number">7</td>
-                <td class="number">4</td>
+                <td class="number">8</td>
+                <td class="number">5</td>
               </tr>
               <tr>
                 <td class="prefix">FINP</td>
-                <td class="number">7</td>
-                <td class="number">4</td>
+                <td class="number">8</td>
+                <td class="number">6</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>22</td>
-          <td>1054</td>
-          <td>ООО "УГМК-Телеком"</td>
-          <td>
+          <td>1067</td>
+          <td>ОАО "УК "Кузбассразрезуголь"</td>
+          <td class="problem">
             <table class="problem">
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">BIO</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">BIOP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">COST</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">COSTP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
               <tr>
                 <td class="prefix">DR</td>
                 <td class="number">7</td>
                 <td class="number">5</td>
               </tr>
               <tr>
-                <td class="prefix">DRP</td>
+                <td class="prefix">FIN</td>
+                <td class="number">9</td>
                 <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZKP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">FAP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
               </tr>
               <tr>
                 <td class="prefix">FINP</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">INV</td>
-                <td class="number">7</td>
-                <td class="number">
-                </td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDRP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADR</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADRP</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTRP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALE</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALEP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOCP</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZP</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZPP</td>
-                <td class="number">7</td>
+                <td class="number">8</td>
                 <td class="number">5</td>
               </tr>
             </table>
@@ -2151,172 +635,37 @@
         </tr>
         <tr>
           <td>23</td>
-          <td>1062</td>
-          <td>ООО "Башкирская медь"</td>
-          <td>
+          <td>1108</td>
+          <td>ОАО "Челябинский цинковый завод"</td>
+          <td class="problem">
             <table class="problem">
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">DR</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">DRP</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">FAP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
               <tr>
                 <td class="prefix">FIN</td>
                 <td class="number">8</td>
-                <td class="number">5</td>
+                <td class="number">2</td>
               </tr>
               <tr>
                 <td class="prefix">FINP</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
                 <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOCP</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
+                <td class="number">2</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>24</td>
-          <td>1067</td>
-          <td>ОАО "УК "Кузбассразрезуголь"</td>
-          <td>
+          <td>1166</td>
+          <td>ОАО "Сибайский ГОК"</td>
+          <td class="problem">
             <table class="problem">
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">11</td>
-                <td class="number">10</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">9</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">COST</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
               <tr>
                 <td class="prefix">DR</td>
                 <td class="number">7</td>
                 <td class="number">5</td>
               </tr>
               <tr>
-                <td class="prefix">DZKP</td>
-                <td class="number">6</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">FAP</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
                 <td class="prefix">FIN</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">FINP</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">KAZN</td>
-                <td class="number">7</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">KAZNP</td>
-                <td class="number">7</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">6</td>
-                <td class="number">3</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZPP</td>
-                <td class="number">6</td>
+                <td class="number">10</td>
                 <td class="number">5</td>
               </tr>
             </table>
@@ -2324,331 +673,39 @@
         </tr>
         <tr>
           <td>25</td>
-          <td>1072</td>
-          <td>ООО "Кузбасссвязьуголь"</td>
-          <td>
+          <td>1786</td>
+          <td>ОАО "Электрокабель "Кольчугинский завод"</td>
+          <td class="problem">
             <table class="problem">
               <tr>
-                <td class="prefix">INV</td>
+                <td class="prefix">DR</td>
+                <td class="number">12</td>
                 <td class="number">6</td>
-                <td class="number">
-                </td>
+              </tr>
+              <tr>
+                <td class="prefix">DRP</td>
+                <td class="number">11</td>
+                <td class="number">6</td>
+              </tr>
+              <tr>
+                <td class="prefix">FIN</td>
+                <td class="number">12</td>
+                <td class="number">5</td>
+              </tr>
+              <tr>
+                <td class="prefix">FINP</td>
+                <td class="number">11</td>
+                <td class="number">4</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>26</td>
-          <td>1103</td>
-          <td>ООО "ЕМЦ УГМК-Здоровье"</td>
-          <td>
-            <table class="problem">
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td>27</td>
-          <td>1106</td>
-          <td>ОАО "Сафьяновская медь"</td>
-          <td>
-            <table class="problem">
-              <tr>
-                <td class="prefix">KADRP</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td>28</td>
-          <td>1108</td>
-          <td>ОАО "Челябинский цинковый завод"</td>
-          <td>
-            <table class="problem">
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">8</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">7</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">COST</td>
-                <td class="number">6</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">8</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZKP</td>
-                <td class="number">7</td>
-                <td class="number">1</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">8</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">FAP</td>
-                <td class="number">7</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">FIN</td>
-                <td class="number">8</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">FINP</td>
-                <td class="number">7</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">KAZN</td>
-                <td class="number">6</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">KAZNP</td>
-                <td class="number">6</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">6</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">8</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">7</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALE</td>
-                <td class="number">6</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">6</td>
-                <td class="number">2</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOCP</td>
-                <td class="number">6</td>
-                <td class="number">2</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td>29</td>
-          <td>1166</td>
-          <td>ОАО "Сибайский ГОК"</td>
-          <td>
-            <table class="problem">
-              <tr>
-                <td class="prefix">DR</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">FIN</td>
-                <td class="number">10</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">6</td>
-                <td class="number">4</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td>30</td>
-          <td>1786</td>
-          <td>ОАО "Электрокабель "Кольчугинский завод"</td>
-          <td>
-            <table class="problem">
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">DR</td>
-                <td class="number">12</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">DRP</td>
-                <td class="number">11</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZKP</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">10</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">FAP</td>
-                <td class="number">9</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">FIN</td>
-                <td class="number">12</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">FINP</td>
-                <td class="number">11</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDRP</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTRP</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">9</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">9</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">SALEP</td>
-                <td class="number">6</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADRP</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZPP</td>
-                <td class="number">6</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">INV</td>
-                <td class="number">7</td>
-                <td class="number">
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td>31</td>
           <td>1836</td>
           <td>ООО "Холдинг Кабельный Альянс"</td>
-          <td>
+          <td class="problem">
             <table class="problem">
-              <tr>
-                <td class="prefix">BANK</td>
-                <td class="number">9</td>
-                <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">BANKP</td>
-                <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">COST</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">COSTP</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
               <tr>
                 <td class="prefix">DR</td>
                 <td class="number">8</td>
@@ -2660,21 +717,6 @@
                 <td class="number">7</td>
               </tr>
               <tr>
-                <td class="prefix">DZK</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">DZKP</td>
-                <td class="number">8</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">FA</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
                 <td class="prefix">FIN</td>
                 <td class="number">9</td>
                 <td class="number">9</td>
@@ -2683,82 +725,6 @@
                 <td class="prefix">FINP</td>
                 <td class="number">8</td>
                 <td class="number">8</td>
-              </tr>
-              <tr>
-                <td class="prefix">INV</td>
-                <td class="number">6</td>
-                <td class="number">
-                </td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDR</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">INVDRP</td>
-                <td class="number">8</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADR</td>
-                <td class="number">10</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">KADRP</td>
-                <td class="number">10</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTR</td>
-                <td class="number">7</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">MTRP</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">NAL</td>
-                <td class="number">8</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">NALP</td>
-                <td class="number">7</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZ</td>
-                <td class="number">7</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">OBPROIZP</td>
-                <td class="number">7</td>
-                <td class="number">4</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOC</td>
-                <td class="number">9</td>
-                <td class="number">6</td>
-              </tr>
-              <tr>
-                <td class="prefix">SOCP</td>
-                <td class="number">9</td>
-                <td class="number">7</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZP</td>
-                <td class="number">10</td>
-                <td class="number">5</td>
-              </tr>
-              <tr>
-                <td class="prefix">ZPP</td>
-                <td class="number">10</td>
-                <td class="number">5</td>
               </tr>
             </table>
           </td>
