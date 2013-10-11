@@ -10,13 +10,20 @@ namespace Zeta.Extreme.Developer.Security.PrefixProblemAnalyzer {
     /// </summary>
     [Serialize]
     public class PrefixRecordIndex {
+
+        /// <summary>
+        /// Параметры формаирования индекса
+        /// </summary>
+        public PrefixRecordParameters Parameters { get; set; }
+
         private string[] _allPrefixes;
         /// <summary>
         /// Строит индекс по всем активным учетным записям
         /// </summary>
         /// <returns></returns>
-        public static PrefixRecordIndex Build() {
-            var result = new PrefixRecordIndex();
+        public static PrefixRecordIndex Build(PrefixRecordParameters paramters = null) {
+            paramters = paramters ?? new PrefixRecordParameters();
+            var result = new PrefixRecordIndex {Parameters = paramters};
             var users = new NativeZetaReader().ReadUsers("Active = 1");
             foreach (var user in users) {
                 result.RegisterRecord(user);
@@ -42,14 +49,18 @@ namespace Zeta.Extreme.Developer.Security.PrefixProblemAnalyzer {
         /// </summary>
         /// <param name="user"></param>
         public void RegisterRecord(IZetaUser user) {
-            var obj = user.Object;
-            if (!_raw.ContainsKey(obj.Id)) {
-                _raw[obj.Id] = new PrefixObjectStats {ObjectId = obj.Id, ObjectName = obj.Name,Index = this};
-            }
-            var objs = _raw[obj.Id];
-            var roles = RoleRecord.Collect(user.Roles);
-            foreach (var roleRecord in roles) {
-                objs.Register(roleRecord);
+            if (Parameters.IsMatch(user)) {
+                var obj = user.Object;
+                if (!_raw.ContainsKey(obj.Id)) {
+                    _raw[obj.Id] = new PrefixObjectStats {ObjectId = obj.Id, ObjectName = obj.Name, Index = this};
+                }
+                var objs = _raw[obj.Id];
+                var roles = RoleRecord.Collect(user.Roles);
+                foreach (var roleRecord in roles) {
+                    if (Parameters.IsMatch(roleRecord)) {
+                        objs.Register(roleRecord);
+                    }
+                }
             }
         }
 
@@ -63,7 +74,7 @@ namespace Zeta.Extreme.Developer.Security.PrefixProblemAnalyzer {
         public PrefixObjectStats[] ProblemPrefixObjects {
             get {
                 if (null == _problems) {
-                    _problems = _raw.Values.Where(_ => _.IsProblem).ToArray();
+                    _problems = _raw.Values.Where(_ => !Parameters.IsValid(_,AllPrefixes)).ToArray();
                 }
                 return _problems;
             }

@@ -5,7 +5,7 @@
     var m = $('<div class="btn-group pull-left"/>');
     var l = $('<ul class="dropdown-menu"/>');
     var b = $('<button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-original-title="Смена формы (Ctrl+R)"/>')
-        .html('<i class="icon-arrow-right"></i>');
+        .html('<i class="icon-search"></i>');
     m.append(b, l);
     b.tooltip({placement: 'bottom'});
     var input = $('<input class="input-normal" type="text" id="zefsnewform-query"/>').css("width", 300);
@@ -33,7 +33,7 @@
         multiple: true,
         width: "element",
         data: search_data,
-        submit: function(val) { zefs.myform.openform(getParameters(val), openInNewWindow.is(':checked')) },
+        submit: function(val) { form.open(getParameters(val), openInNewWindow.is(':checked')) },
         formatNoMatches: function() { return "Нет совпадений" },
         formatSearching: function() { return "Поиск" },
         formatSelectionCssClass : function(o) { return o.type },
@@ -79,7 +79,7 @@
                 });
             } else {
                 $.each(g.periods, function(i, p) {
-                    var item = {id: "period=" + p.id || "", text: p.name || "", type: "period"};
+                    var item = {id: "period=" + p.id || "", text: p.name.trim() + " (" + g.readableType + ", " + p.id + ")" || "", type: "period"};
                     if (p.readableType) {
                         item.text += " (" + p.readableType + ")";
                     }
@@ -94,7 +94,7 @@
         var data = { text: "Формы", children: []};
         $.each(result, function(i, f) {
             if (!f.Code) return;
-            data.children.push({id: "form=" + f.Code || "", text: f.Name || "", type: "form"});
+            data.children.push({id: "form=" + f.Code || "", text: f.Name + " (" + f.Code + ")" || "", type: "form"});
         });
         search_data.push(data);
     });
@@ -102,7 +102,7 @@
     zefs.api.metadata.getobjects.onSuccess(function(e, result) {
         var data = {text: "Предприятия", children: []};
         $.each(result.objs, function(i, o) {
-            data.children.push({id: "obj=" + o.id || "", text: o.name || "", type: "obj"});
+            data.children.push({id: "obj=" + o.id || "", text: "(" + o.id + ") " + o.name || "", type: "obj"});
         });
         search_data.push(data);
     });

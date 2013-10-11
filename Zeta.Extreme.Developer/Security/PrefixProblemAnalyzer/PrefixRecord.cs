@@ -46,17 +46,7 @@ namespace Zeta.Extreme.Developer.Security.PrefixProblemAnalyzer
         /// </summary>
         [SerializeNotNullOnly]
         public int SoloAnalytics { get; set; }
-        /// <summary>
-        /// Общий признак проблемы
-        /// </summary>
-        public bool IsProblem {
-            get { 
-                if (Operators > 5) return true;
-                if (Underwriters > 5) return true;
-              //  if (Underwriters == 0) return true;
-                return false;
-            }
-        }
+        
         /// <summary>
         /// Применяет роль к счетчикам
         /// </summary>

@@ -33,29 +33,21 @@ namespace Zeta.Extreme.Developer.Security.PrefixProblemAnalyzer {
         /// </summary>
         [IgnoreSerialize]
         public List<PrefixRecord> PrefixRecords { get; private set; }
-        /// <summary>
-        /// Признак проблемного предприятия
-        /// </summary>
-        [Serialize]
-        public bool IsProblem {
-            get { 
-               // if (NoSetPrefixes.Length > 0) return true;
-                if (PrefixRecords.Any(_ => _.IsProblem)) return true;
-                return false;
-            }
-        }
+        
         /// <summary>
         /// Регистрирует запись о роли
         /// </summary>
         /// <param name="roleRecord"></param>
         public void Register(RoleRecord roleRecord) {
-            var existed = PrefixRecords.FirstOrDefault(_ => _.Prefix == roleRecord.Prefix);
-            if (null == existed) {
-                existed = new PrefixRecord {Prefix = roleRecord.Prefix, ObjId = this.ObjectId};
-                PrefixRecords.Add(existed);
-            }
-            existed.Register(roleRecord);
+
+                var existed = PrefixRecords.FirstOrDefault(_ => _.Prefix == roleRecord.Prefix);
+                if (null == existed) {
+                    existed = new PrefixRecord {Prefix = roleRecord.Prefix, ObjId = this.ObjectId};
+                    PrefixRecords.Add(existed);
+                }
+                existed.Register(roleRecord);
         }
+
 
         private PrefixRecord[] _problemRecords;
         /// <summary>
@@ -65,7 +57,7 @@ namespace Zeta.Extreme.Developer.Security.PrefixProblemAnalyzer {
         public PrefixRecord[] ProblemRecords {
             get {
                 if (null == _problemRecords) {
-                    _problemRecords = PrefixRecords.Where(_ => _.IsProblem).ToArray();
+                    _problemRecords = PrefixRecords.Where(_ => !Index.Parameters.IsValid(_)).ToArray();
                 }
                 return _problemRecords;
             }
