@@ -16,9 +16,15 @@ _.widget.register({
                 },
 
                 {
-                    title: 'Анализ проблем настройки префиксов',
+                    title: 'Анализ проблем настройки префиксов (по умолчанию)',
                     href: './zdev_security/prefixproblems.html.qweb?__xslt=zdev-security-prefixproblems',
                 },
+				{
+                 title: "Анализ проблем настройки префиксов (настраиваемый)",
+                 onclick: {
+                     modal: { title: "Анализ проблем настройки префиксов", template: 'zdev_prefix_analyze', width: 450 },
+                 },
+             },
 
 		
 		]

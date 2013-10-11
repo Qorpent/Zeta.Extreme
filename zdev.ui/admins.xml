@@ -1,0 +1,415 @@
+<root>
+  <result>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="352" IsValid="false" ObjectName="ОАО &quot;Уралэлектромедь&quot;" Index="0" __idx="0">
+      <Admins>
+        <item Login="elem\sio" Name="Салахиева Ирина Олеговна" Occupation="Заместитель начальника ПЭО" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="353" IsValid="false" ObjectName="ОАО &quot;Святогор&quot;" Index="0" __idx="1">
+      <Admins>
+        <item Login="ugmk\intro.svg" Name="Анисимова Светлана Рубиновна" Occupation="Начальник ПЭО" SlotList="ecoplan,ecosoc" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="354" IsValid="false" ObjectName="ОАО &quot;Металлургический завод им. А.К.Серова&quot;" Index="0" __idx="2">
+      <Admins>
+        <item Login="mzis\isakova" Name="Исакова Ольга Вадимовна" Occupation="Зам.директора по экономике и финансам" SlotList="ecoplan, gdir, sdir" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="357" IsValid="false" ObjectName="ООО &quot;УГМК-Холдинг&quot;" Index="0" __idx="3">
+      <Admins>
+        <item Login="ugmk\ssu" Name="Сергеев Сергей Юрьевич" Occupation="Нач. упр. экон. анализа и прогнозирования" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="362" IsValid="false" ObjectName="ОАО &quot;Шадринский автоагрегатный завод&quot;" Index="0" __idx="4">
+      <Admins>
+        <item Login="SHAAZ\T1785" Name="Воронин Эдуард Викторович" Occupation="Начальник ПЭО" SlotList="ecoplan, socplan" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="402" IsValid="false" ObjectName="ОАО &quot;Сухоложский завод Вторцветмет&quot;" Index="0" __idx="5">
+      <Admins>
+        <item Login="ugmk\intro.szocm" Name="Новоселова Ольга Владимировна" Occupation="Начальник ПЭО" SlotList="econ,dir" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="415" IsValid="false" ObjectName="ОАО &quot;Ревдинский завод ОЦМ&quot;" Index="0" __idx="6">
+      <Admins>
+        <item Login="rzocm\perevozchikova" Name="Перевозчикова Валентина Леонидовна" Occupation="Главный бухгалтер" SlotList="buh" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="441" IsValid="false" ObjectName="ЗАО &quot;СП-Катур-Инвест&quot;" Index="0" __idx="7">
+      <Admins>
+        <item Login="ugmk\intro.katur" Name="Устинова Надежда Константиновна" Occupation="Начальник ОЭиТ" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="442" IsValid="false" ObjectName="ОАО &quot;Богословское рудоуправление&quot;" Index="0" __idx="8">
+      <Admins>
+        <item Login="ugmk\intro.bru10" Name="Пацева Ольга Николаевна" Occupation="Начальник промышленного бюро бухгалтерии" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="444" IsValid="false" ObjectName="ОАО &quot;Ревдинский кирпичный завод&quot;" Index="0" __idx="9">
+      <Admins>
+        <item Login="ugmk\intro.rkz" Name="Долгова Лариса Анатольевна" Occupation="заместитель главного бухгалтера" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="445" IsValid="false" ObjectName="ОАО &quot;УГМК&quot;" Index="0" __idx="10">
+      <Admins>
+        <item Login="" Name="Сергеев Сергей Юрьевич" Occupation="гл. спец-ст аппарата сов. ген. дир. по экономике" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="449" IsValid="false" ObjectName="ОАО &quot;Среднеуральский медеплавильный завод&quot;" Index="0" __idx="11">
+      <Admins>
+        <item Login="SUMZ2\MNekrasova" Name="Некрасова Мария Александровна" Occupation="зам. начальника ПЭО" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="3" ObjectId="467" IsValid="false" ObjectName="ОАО &quot;Гайский ГОК&quot;" Index="0" __idx="12">
+      <Admins>
+        <item Login="CALCULATE\Akulov" Name="Акулов Александр Павлович" Occupation="начальник участка АСУ" SlotList="" __idx="0"/>
+        <item Login="CALCULATE\KNYAZKOV" Name="Князьков Альберт Александрович" Occupation="" SlotList="" __idx="1"/>
+        <item Login="CALCULATE\POSPELOV" Name="Поспелов Александр Сергеевич" Occupation="и.о.нач.бюро программирования" SlotList="" __idx="2"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="468" IsValid="false" ObjectName="ОАО &quot;Кировский завод ОЦМ&quot;" Index="0" __idx="13">
+      <Admins>
+        <item Login="kzocm\PL_Levichev" Name="Левичев Андрей Владимирович" Occupation="Заместитель директора по экономике - начальник ПЭО" SlotList="ecoplan" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="469" IsValid="false" ObjectName="ЗАО &quot;Урупский ГОК&quot;" Index="0" __idx="14">
+      <Admins>
+        <item Login="ugmk\intro.urgok1" Name="Соколовский Александр Васильевич" Occupation="Начальник отдела АСУ" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="471" IsValid="false" ObjectName="ООО &quot;Оренбургский радиатор&quot;" Index="0" __idx="15">
+      <Admins>
+        <item Login="ugmk\intro.orrad" Name="Шитова Тамара Ивановна" Occupation="начальник ПЭУ" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="472" IsValid="false" ObjectName="ОАО &quot;Учалинский ГОК&quot;" Index="0" __idx="16">
+      <Admins>
+        <item Login="ugmk\intro.uchgok" Name="Ахмадуллин Азат Амиржанович" Occupation="зам. нач. отдела бюджетирования" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="473" IsValid="false" ObjectName="ООО &quot;Медногорский медно-серный комбинат&quot;" Index="0" __idx="17">
+      <Admins>
+        <item Login="ugmk\intro.mmsk" Name="Кульбаев Наил Гумарович" Occupation="Зам. генерального директора по экономике" SlotList="econ, dir" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="497" IsValid="false" ObjectName="ЗАО &quot;Кольчугцветмет&quot;" Index="0" __idx="18">
+      <Admins>
+        <item Login="kcm\LiharevaUA" Name="Лихарева Юлия Алексеевна" Occupation="главный бухгалтер" SlotList="ecobuh" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="509" IsValid="false" ObjectName="Сибайский филиал ОАО &quot;Учалинский ГОК&quot;" Index="0" __idx="19">
+      <Admins>
+        <item Login="sfugok\igivleva" Name="Ивлева Ирина Геннадьевна" Occupation="Начальник отдела бюджетирования" SlotList="ecoplan, ecosoc" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="520" IsValid="false" ObjectName="ОАО &quot;Уралмеханобр&quot;" Index="0" __idx="20">
+      <Admins>
+        <item Login="ugmk\intro.umobr22" Name="Хваткова  Галина Станиславовна" Occupation="Главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="524" IsValid="false" ObjectName="ООО &quot;Екатеринбург-СИТИ&quot;" Index="0" __idx="21">
+      <Admins>
+        <item Login="ugmk\intro.ekcity" Name="Ерыпалова Евгения Сергеевна" Occupation="Зам. ген. директора по экономике и развитию" SlotList="ecoplan, dir, ecosoc, ecotrud" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="527" IsValid="false" ObjectName="ООО &quot;УГМК-Агро&quot;" Index="0" __idx="22">
+      <Admins>
+        <item Login="ugmk\intro.ugmkagro" Name="Хакимзянова Татьяна Валентиновна" Occupation="главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="529" IsValid="false" ObjectName="ЗАО &quot;Уралмедьстрой&quot;" Index="0" __idx="23">
+      <Admins>
+        <item Login="ugmk\intro.ums" Name="Буньков Юрий Александрович" Occupation="Зам. финансового директора по экономике" SlotList="ecoplan, ecotrud, ecosoc" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="532" IsValid="false" ObjectName="ООО КБ &quot;КОЛЬЦО УРАЛА&quot;" Index="0" __idx="24">
+      <Admins>
+        <item Login="ugmk\intro.kural01" Name="Алексенко Евгений Владимирович" Occupation="Начальник управления экономики и стратегического планирования" SlotList="econ" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="536" IsValid="false" ObjectName="ОАО &quot;Электроцинк&quot;" Index="0" __idx="25">
+      <Admins>
+        <item Login="ugmk\intro.elzink12" Name="Жуковецкая Ирина Олеговна" Occupation="Начальник ПЭО" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="537" IsValid="false" ObjectName="ЗАО &quot;Бурибаевский ГОК&quot;" Index="0" __idx="26">
+      <Admins>
+        <item Login="bgok\Guldar" Name="Гареева Гульдар Юнусовна" Occupation="зам. главного бухгалтера" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="true" FileUid="51c967cf41d74919c8c3c33d" ActiveAdminCount="1" ObjectId="538" IsValid="true" ObjectName="ЗАО &quot;Салаирский химический комбинат&quot;" Index="0" __idx="27">
+      <Admins>
+        <item Login="ugmk\intro.shk" Name="Чернышова Галина Степановна" Occupation="главный бухгалтер" SlotList="ecobuh" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="2" ObjectId="539" IsValid="false" ObjectName="ОАО &quot;Сибирь-полиметаллы&quot;" Index="0" __idx="28">
+      <Admins>
+        <item Login="SIBPM\PonomarenkoAS" Name="А.С. Пономаренко" Occupation="Комерческий директор" SlotList="dir" __idx="0"/>
+        <item Login="sibpm\SerkovAA" Name="Серков Андрей Александрович" Occupation="Начальник БИТ" SlotList="" __idx="1"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="693" IsValid="false" ObjectName="ЗАО &quot;Сибкабель&quot;" Index="0" __idx="29">
+      <Admins>
+        <item Login="ugmk\intro.sibcab05" Name="Петрова Татьяна Анатольевна" Occupation="Финансовый директор" SlotList="komdir, dir" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="708" IsValid="false" ObjectName="ЗАО &quot;Шемур&quot;" Index="0" __idx="30">
+      <Admins>
+        <item Login="ugmk\intro.shemur" Name="Мухин Андрей Владимирович" Occupation="главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="0" ObjectId="787" IsValid="false" ObjectName="ОАО &quot;Метмаш&quot;" Index="0" __idx="31"/>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="969" IsValid="false" ObjectName="ЗАО &quot;Агрофирма Патруши&quot;" Index="0" __idx="32">
+      <Admins>
+        <item Login="ugmk\intro.apatr" Name="Белоглазова Татьяна Александровна" Occupation="главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="0" ObjectId="970" IsValid="false" ObjectName="ООО &quot;Улыбка лета&quot;" Index="0" __idx="33"/>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="971" IsValid="false" ObjectName="ЗАО &quot;Тепличное&quot;" Index="0" __idx="34">
+      <Admins>
+        <item Login="ugmk\intro.tepl" Name="Яковлева Мария Валериевна" Occupation="Главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1013" IsValid="false" ObjectName="ООО &quot;УГМК-Страхование&quot;" Index="0" __idx="35">
+      <Admins>
+        <item Login="ugmk\intro.ugmkstr" Name="Мотузная Светлана Ивановна" Occupation="Нач. отд. экон. анализа и планирования" SlotList="ecoplan" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1022" IsValid="false" ObjectName="ООО СМК &quot;УГМК-Медицина&quot;" Index="0" __idx="36">
+      <Admins>
+        <item Login="ugmk\intro.ugmkmed" Name="Черных Дмитрий Николаевич" Occupation="бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1038" IsValid="false" ObjectName="ООО &quot;Орика УГМК&quot;" Index="0" __idx="37">
+      <Admins>
+        <item Login="ugmk\intro.nobel01" Name="Духовная Елена Владимировна" Occupation="Главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1046" IsValid="false" ObjectName="ООО &quot;УГМК-ОЦМ&quot;" Index="0" __idx="38">
+      <Admins>
+        <item Login="ocm\kada" Name="Камень Денис Алексеевич" Occupation="Зам. ком. директора по экономике и финансам" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1047" IsValid="false" ObjectName="ООО &quot;УГМК-Сталь&quot;" Index="0" __idx="39">
+      <Admins>
+        <item Login="ugmk\intro.ugmksteel" Name="Очакова Елена Александровна" Occupation="Финансовый директор ООО &quot;УГМК-Сталь&quot;" SlotList="ecoplan, dir" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1050" IsValid="false" ObjectName="ЗАО &quot;Уралкабель&quot;" Index="0" __idx="40">
+      <Admins>
+        <item Login="ugmk\intro.urcab" Name="Васильева Екатерина Олеговна" Occupation="Зам. директора по экономике и финансам" SlotList="econ" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1053" IsValid="false" ObjectName="ООО &quot;ТД &quot;Урал-щебень&quot;" Index="0" __idx="41">
+      <Admins>
+        <item Login="ugmk\intro.ursch01" Name="Рябухина Антонина Анатольевна" Occupation="Главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1054" IsValid="false" ObjectName="ООО &quot;УГМК-Телеком&quot;" Index="0" __idx="42">
+      <Admins>
+        <item Login="ugmk\intro.tcom" Name="Демьянцева Елена Васильевна" Occupation="главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1055" IsValid="false" ObjectName="ЗАО &quot;Ведение реестров компаний&quot;" Index="0" __idx="43">
+      <Admins>
+        <item Login="ugmk\intro.vrk" Name="Матвиенко Лариса Михайловна" Occupation="экономист" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1057" IsValid="false" ObjectName="ЗАО &quot;Энергопромышленная компания&quot;" Index="0" __idx="44">
+      <Admins>
+        <item Login="ugmk\intro.epk" Name="Кугаевский Павел Сергеевич" Occupation="нач. упр. расчетов и бюджетирования" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1062" IsValid="false" ObjectName="ООО &quot;Башкирская медь&quot;" Index="0" __idx="45">
+      <Admins>
+        <item Login="ugmk\intro.bash" Name="Гильманова Лилия Усмановна" Occupation="главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1063" IsValid="false" ObjectName="ООО &quot;Оренбургская горно-металлургическая компания&quot;" Index="0" __idx="46">
+      <Admins>
+        <item Login="ugmk\intro.ogmk" Name="Костенко Вячеслав Александрович" Occupation="Бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1064" IsValid="false" ObjectName="ОАО &quot;НИКИ&quot;" Index="0" __idx="47">
+      <Admins>
+        <item Login="ugmk\intro.niki" Name="Липовка Елена Георгиевна" Occupation="главный бухгалтер" SlotList="ecobuh" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="0" ObjectId="1065" IsValid="false" ObjectName="ООО &quot;УГМК-Цемент&quot;" Index="0" __idx="48"/>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1066" IsValid="false" ObjectName="FBC Майданпек" Index="0" __idx="49">
+      <Admins>
+        <item Login="ugmk\intro.fbc2" Name="Матвеева Олеся Павловна" Occupation="Директор по экономике и финансам" SlotList="ecoplan, ecotrud, ecosoc" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1067" IsValid="false" ObjectName="ОАО &quot;УК &quot;Кузбассразрезуголь&quot;" Index="0" __idx="50">
+      <Admins>
+        <item Login="kru\fomina" Name="Фомина Валентина Анатольевна" Occupation="Главный бухгалтер" SlotList="ecobuh" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="2" ObjectId="1070" IsValid="false" ObjectName="ЗАО &quot;Телекомпания АТН&quot;" Index="0" __idx="51">
+      <Admins>
+        <item Login="ugmk\intro.atn" Name="Рычкова Елена Львовна" Occupation="Главный бухгалтер" SlotList="buh" __idx="0"/>
+        <item Login="" Name="Рычкова Елена Львовна" Occupation="Главный бухгалтер" SlotList="" __idx="1"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1071" IsValid="false" ObjectName="ЗАО ТРВК &quot;10 канал-Губерния&quot;" Index="0" __idx="52">
+      <Admins>
+        <item Login="ugmk\intro.trvk" Name="Рычкова Елена Львовна" Occupation="Главный бухгалтер" SlotList="buh" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1072" IsValid="false" ObjectName="ООО &quot;Кузбасссвязьуголь&quot;" Index="0" __idx="53">
+      <Admins>
+        <item Login="ugmk\intro.ksug" Name="Баталова Римма Михайловна" Occupation="Главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1073" IsValid="false" ObjectName="ОАО &quot;Колтек&quot;" Index="0" __idx="54">
+      <Admins>
+        <item Login="ugmk\intro.koltec" Name="Тройнов Сергей Викторович" Occupation="" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="0" ObjectId="1076" IsValid="false" ObjectName="ООО &quot;Метресурс&quot;" Index="0" __idx="55"/>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1077" IsValid="false" ObjectName="ООО &quot;Ресурс&quot;" Index="0" __idx="56">
+      <Admins>
+        <item Login="ugmk\intro.resurs" Name="Рахманова Ольга Николаевна" Occupation="Главный экономист управления бюджетирования" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1078" IsValid="false" ObjectName="ООО &quot;Метресурс-С&quot;" Index="0" __idx="57">
+      <Admins>
+        <item Login="ugmk\intro.mresc" Name="Очакова Елена Александровна" Occupation="финансовый директор" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="2" ObjectId="1080" IsValid="false" ObjectName="ООО &quot;Метресурс-П&quot;" Index="0" __idx="58">
+      <Admins>
+        <item Login="ugmk\intro.mresp" Name="Очакова Елена Александровна" Occupation="финансовый директор" SlotList="" __idx="0"/>
+        <item Login="" Name="М.А. Травянская" Occupation="Экономист" SlotList="ecoplan.gdir" __idx="1"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1085" IsValid="false" ObjectName="ООО &quot;Агрофирма Байрамгул&quot;" Index="0" __idx="59">
+      <Admins>
+        <item Login="ugmk\intro.abrg" Name="Багаутдинов Салават Фатихович" Occupation="главный экономист" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="2" ObjectId="1086" IsValid="false" ObjectName="ОАО &quot;Макушинский элеватор&quot;" Index="0" __idx="60">
+      <Admins>
+        <item Login="ugmk\intro.macel" Name="Головинец Наталья Владимировна" Occupation="главный бухгалтер" SlotList="" __idx="0"/>
+        <item Login="ugmk\intro.macel01" Name="Габова Ирина Владимировна" Occupation="гл. экономист" SlotList="" __idx="1"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1087" IsValid="false" ObjectName="ЗАО Агрофирма &quot;Шутихинская&quot;" Index="0" __idx="61">
+      <Admins>
+        <item Login="ugmk\intro.ashut" Name="Говорухина Вера Викторовна" Occupation="зам. гл. бухгалтера" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1092" IsValid="false" ObjectName="ООО &quot;Управляющая портовая компания&quot;" Index="0" __idx="62">
+      <Admins>
+        <item Login="ugmk\intro.ukts" Name="Готальская Инна Александровна" Occupation="Зам. начальника финансового управления по портовой и ревизионной деятельности" SlotList="ecotrud" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1093" IsValid="false" ObjectName="ОАО &quot;Восточный порт&quot;" Index="0" __idx="63">
+      <Admins>
+        <item Login="" Name="И.А. Готальская" Occupation="Зам. начальника финансового управления по портовой и ревизионной деятельности ООО &quot;Управляющая портовая компания&quot;" SlotList="ecotrud, econ" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1094" IsValid="false" ObjectName="ОАО &quot;Ростерминалуголь&quot;" Index="0" __idx="64">
+      <Admins>
+        <item Login="" Name="И.А. Готальская" Occupation="Зам. начальника финансового управления по портовой и ревизионной деятельности ООО &quot;Управляющая портовая компания&quot;" SlotList="ecotrudm, econ" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1095" IsValid="false" ObjectName="Coal Terminal AS" Index="0" __idx="65">
+      <Admins>
+        <item Login="" Name="И.А. Готальская" Occupation="Зам. начальника финансового управления по портовой и ревизионной деятельности ООО &quot;Управляющая портовая компания&quot;" SlotList="econ" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1097" IsValid="false" ObjectName="ОАО &quot;Екатеринбургский мукомольный завод&quot;" Index="0" __idx="66">
+      <Admins>
+        <item Login="ugmk\intro.emz" Name="Крячко Елена Владимировна" Occupation="зам. ген. дир. по ком. вопр." SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1098" IsValid="false" ObjectName="ООО &quot;ГК Уральское золото&quot;" Index="0" __idx="67">
+      <Admins>
+        <item Login="ugmk\intro.urau" Name="Савина Нина Михайловна" Occupation="Главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1099" IsValid="false" ObjectName="ОАО &quot;Малышевское рудоуправление&quot;" Index="0" __idx="68">
+      <Admins>
+        <item Login="ugmk\intro.mru" Name="Мимонова Елена Алексеевна" Occupation="Начальник ОЭПиФ" SlotList="ecoplan" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1100" IsValid="false" ObjectName="ООО &quot;Компания ЕК&quot;" Index="0" __idx="69">
+      <Admins>
+        <item Login="" Name="Пудовкина Ольга Васильевна" Occupation="зам. дир. по экон. вопросам" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="0" ObjectId="1101" IsValid="false" ObjectName="ЗАО &quot;Клаас-строй&quot;" Index="0" __idx="70"/>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1102" IsValid="false" ObjectName="ООО &quot;Програнд&quot;" Index="0" __idx="71">
+      <Admins>
+        <item Login="ugmk\intro.progr03" Name="Игина Жанна Николаевна" Occupation="главный экономист" SlotList="ecoplan" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1103" IsValid="false" ObjectName="ООО &quot;ЕМЦ УГМК-Здоровье&quot;" Index="0" __idx="72">
+      <Admins>
+        <item Login="ugmk\intro.valeon" Name="Пудовкина Ольга Васильевна" Occupation="Директор по экономике и финансам" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1106" IsValid="false" ObjectName="ОАО &quot;Сафьяновская медь&quot;" Index="0" __idx="73">
+      <Admins>
+        <item Login="ugmk\intro.safm" Name="Алексеева Елена Александровна" Occupation="главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1108" IsValid="false" ObjectName="ОАО &quot;Челябинский цинковый завод&quot;" Index="0" __idx="74">
+      <Admins>
+        <item Login="ugmk\intro.zinc01" Name="Белоусов Владимир Николаевич" Occupation="Заместитель начальника ФЭУ - начальник ПЭО" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="0" ObjectId="1113" IsValid="false" ObjectName="ТОО &quot;Nova Цинк&quot;" Index="0" __idx="75"/>
+    <item FileAttached="false" ActiveAdminCount="0" ObjectId="1114" IsValid="false" ObjectName="&quot;The Brock Metal company&quot;" Index="0" __idx="76"/>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1162" IsValid="false" ObjectName="АО &quot;Aircraft Industries&quot;" Index="0" __idx="77">
+      <Admins>
+        <item Login="ugmk\intro.air" Name="Слободин Антон" Occupation="Директор по развитию и экономике" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1164" IsValid="false" ObjectName="ЗАО &quot;Драгма&quot;" Index="0" __idx="78">
+      <Admins>
+        <item Login="ugmk\intro.dragma" Name="Широбокова Александра Васильевна" Occupation="главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1165" IsValid="false" ObjectName="ЗАО &quot;УГМК-Вторцветмет&quot;" Index="0" __idx="79">
+      <Admins>
+        <item Login="ugmk\intro.usmk02" Name="Пастухова Татьяна Ивановна" Occupation="Ведущий экономист по бюджетированию" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1166" IsValid="false" ObjectName="ОАО &quot;Сибайский ГОК&quot;" Index="0" __idx="80">
+      <Admins>
+        <item Login="ugmk\intro.sgok01" Name="Ивлева Ирина Геннадьевна" Occupation="Главный экономист" SlotList="ecoplan, ecosoc, ecotrud" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1168" IsValid="false" ObjectName="ЗАО &quot;УГМК-Спортстрой&quot;" Index="0" __idx="81">
+      <Admins>
+        <item Login="ugmk\intro.sport03" Name="Савичева Юлия Валерьевна" Occupation="Заместитель директора по экономике и развитию" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1786" IsValid="false" ObjectName="ОАО &quot;Электрокабель &quot;Кольчугинский завод&quot;" Index="0" __idx="82">
+      <Admins>
+        <item Login="ugmk\intro.elcab" Name="Меренков Александр Владимирович" Occupation="Директор по экономике" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="true" FileUid="5254e0cbd925781adcb43326" ActiveAdminCount="1" ObjectId="1835" IsValid="false" ObjectName="ООО &quot;Хотел Девелопмент Компани&quot;" Index="0" __idx="83">
+      <Admins>
+        <item Login="" Name="Акулова Елена Леонидовна" Occupation="гл. бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="1836" IsValid="false" ObjectName="ООО &quot;Холдинг Кабельный Альянс&quot;" Index="0" __idx="84">
+      <Admins>
+        <item Login="ugmk\intro.hca" Name="Петрова Татьяна Анатольевна" Occupation="Финансовый директор" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="0" ObjectId="2151" IsValid="false" ObjectName="ООО &quot;УГМК-Транс&quot;" Index="0" __idx="85"/>
+    <item FileAttached="false" ActiveAdminCount="0" ObjectId="2976" IsValid="false" ObjectName="ООО &quot;ТРАНСГРУП АС&quot;" Index="0" __idx="86"/>
+    <item FileAttached="false" ActiveAdminCount="1" ObjectId="3529" IsValid="false" ObjectName="ООО &quot;Горнорудная компания Урала&quot;" Index="0" __idx="87">
+      <Admins>
+        <item Login="ugmk\intro.gkurala" Name="Бараненко Наталья Владимировна" Occupation="Главный бухгалтер" SlotList="" __idx="0"/>
+      </Admins>
+    </item>
+    <item FileAttached="false" ActiveAdminCount="0" ObjectId="3596" IsValid="false" ObjectName="ОАО &quot;Екатеринбургский мукомольный завод-Инвест&quot;" Index="0" __idx="88"/>
+  </result>
+</root>

@@ -131,11 +131,11 @@ _.widget.register({
 		             },
 		            
                      {
-                         title: "Экспорт структуры тем",
+                         title: "Экспорт структуры тем (по умолчанию)",
                          href: './zdev/exportthemastructure.string.qweb',
                      },
              {
-                 title: "Структура тем",
+                 title: "Экспорт структуры тем (настраиваемый) ",
                  onclick: {
                      modal: { title: "Структура тем", template: 'zdev_export_thema_structure', width: 400 },
                  },
