@@ -47,6 +47,23 @@ namespace Zeta.Extreme.Developer.DataMigrations
 				}
 
 			}
+            if (_agenda.Count != 0) {
+                session.WaitPreparation();
+                session.WaitEvaluation();
+                foreach (var rq in _agenda)
+                {
+                    if (rq.Result.NumericResult != 0)
+                    {
+                        if (null == rq.Obj.Native) continue;
+                        var sql = ((TransferRecord)rq.Data).CreateUpdateSqlQuery(rq.Result.NumericResult);
+                        sb.AppendFormat(@"/*{0,-4} [ {8} ] {2} {3,-6} {4,-10} {5,-4} {6} {7}*/
+{1}
+
+", c, sql, rq.Time.Year, rq.Time.Period, rq.Row.Code, rq.Col.Code, rq.Currency, rq.Obj.Name, rq.Result.NumericResult.ToString("#,0.######", CultureInfo.GetCultureInfo("Ru-ru")));
+                    }
+                }
+                _agenda.Clear();
+            }
 			return sb.ToString();
 		}
 		
