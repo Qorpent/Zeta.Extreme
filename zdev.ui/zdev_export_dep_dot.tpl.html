@@ -1,39 +1,38 @@
 ﻿<div class="export-tree-form">
     <form action="./zdev/dependencygraph.dot.qweb" target="_blank">
+	
         <fieldset>
            
             <label title="Введите код корневой строки, например m260">Код корневой строки</label>
             <input class="fill-modal" name="root" required />
-             <label title="Число уровней развертки(1, 2  и т.д.) или не устанавливайте ограничений"> Глубина развертки</label>
-            <input class="fill-modal" name="depth" placeholder="Без ограничений" />
-            <label class="checkbox" >
-                Объединять строки одной формы в группу
+             <label title="Задайте количество уровней развертки зависимостей строки числом (1 или 2  и т.д.) или не устанавливайте ограничений. Строки, чей уровень развертки после задания ограничения не отрисовываются, выделены в графическом отчете темно-желтым цветом. По умолчанию - отрисовывает все уровни."> Глубина развертки</label>
+            <input class="fill-modal" name="depth" placeholder="Без ограничений уровней развертки" />
+            <label title="При отключении опции отрисовывает входящие и исходящие связи строки, не объединяя визуально строки одной формы в группу."class="checkbox" >
+                Объединить строки одной формы в группу
                 <input checked="checked" type="checkbox" name="clusterize" />
             </label>
-            <label class="checkbox" >
+            <label title="При включении опции отрисовывает легенду в графическом отчете." class="checkbox" >
                Показать легенду
                 <input type="checkbox" name="showlegend" />
             </label>
-            <label>Направление развертки связей</label>
-            <select class="fill-modal" name="dir" >
-                <option value="Both">Все</option>
-                <option value="Down">Вниз (от чего зависит)</option>
-                <option value="Up">Вверх (что от него зависит)</option>
+            <label title="Опция позволяет задать  характер связей, которые необходимо отрисовать в графическом отчете">Направление развертки связей </label>
+            <select class="fill-modal" name="dir"  >
+                <option value="Both">Входящие и исходящие связи</option>
+                <option value="Down">Входящие связи (от каких строк зависит)</option>
+                <option value="Up">Исходящие связи (какие строки зависят)</option>
                 
             </select>
-             <label title="Сочетание Formula,Sum,Ref,ExRef,Primary,Controlpoint">Ограничение на тип узлов</label>
-            <input class="fill-modal" name="nodetypes" placeholder="Formula+Sum+Ref+Primary+ExRef"
+             <label title="Задайте через '+' сочетание типов узлов, которые необходимо отрисовать в отчете - Formula,Sum,Ref,ExRef,Primary,Controlpoint. По молчанию отрисовывет все типы узлов"> Ограничение на тип узлов</label>
+            <input class="fill-modal" name="nodetypes" placeholder=" Formula+Primary+Sum+Ref+ExRef"
                     />
-             <label title="Сочетание Formula,Sum,Ref,ExRef через '+'" > Ограничение на тип связей</label>
-            <input class="fill-modal" name="edgetypes" placeholder="Formula+Sum+Ref+ExRef"
-                   />
+             
             
-            <label title="Узлы, с указанными здесь началами кодов, будут выводится, но их дочерние связи - нет"> Префиксы терминальных узлов </label>
-            <input class="fill-modal" name="terminals" placeholder="Начала кодов строк, разделенные запятыми"
+            <label title="Узлы, с указанными здесь началами кодов, будут выводится, но их дочерние связи - нет. Узлы при отрисовке отчета будут разрисованы серым цветом."> Ограничение связей терминальных узлов </label>
+            <input class="fill-modal" name="terminals" placeholder="Коды строк, разделенные запятыми"
                  />
             
-            <label title="Узлы, с указанными здесь началами кодов, не будут выводится"> Префиксы игнорируемых узлов </label>
-            <input class="fill-modal" name="ignores" placeholder="Начала кодов строк, разделенные запятыми"
+            <label title="Узлы, с указанными здесь началами кодов, не будут выводится.Узлы при отрисовке отчета будут разрисованы блоком красного цвета "> Игнорирование узлов и их связей </label>
+            <input class="fill-modal" name="ignores" placeholder="Коды строк, разделенные запятыми"
                  />
             
         </fieldset> 
