@@ -1,6 +1,8 @@
 ﻿using Qorpent.Charts;
 using Qorpent.Charts.FusionCharts;
 using Qorpent.Mvc;
+using Qorpent.Mvc.Binding;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Developer.Actions.Charts {
     /// <summary>
@@ -8,6 +10,11 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
     /// </summary>
     [Action("zdev.chart", Role = "DEFAULT")]
     public class ChartAction : ChartActionBase {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Bind]
+        public string CustomType { get; set; }
         /// <summary>
         ///     
         /// </summary>
@@ -17,11 +24,19 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
         /// <returns></returns>
         protected override object GenerateChart(int year, int period, int obj) {
             return new Chart()
+                .SetXAxisName("Периоды")
+                .SetYAxisName("Котировки")
                 .SetCaption("Котировки цинка на LME")
                 .SetSubCaption("$ за тонну ZN")
                 .SetCaptionPadding(10)
+                .SetBgColor("FFFFFF,FFFFFF")
+                .SetDivIntervalHints("1600,1700,1800,1900,2000,2100,2200,2300")
+                .SetAlpha(0)
+                .SetShowAlternateHGridColor(false)
+                .SetDivLineAlpha(0)
+                .SetChartOrder("area,column")
                 .SetConfig(
-                    new ChartConfig().SetChartType(FusionChartType.MSLine))
+                    new ChartConfig().SetChartType(CustomType != null ? CustomType.To<FusionChartType>() : FusionChartType.MSLine))
                 .Add(
                     ChartFrontEndBuilder.BuildDataset(year, "m203103", "PLANGOD", new[] { 11, 12, 13, 14, 15, 16, 1 })
                         .SetSeriesName("На конец периода")
@@ -36,7 +51,7 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
                         .SetColor("424242"))
                 .Add(
                     new ChartTrendLine()
-                        .SetStartValue(1750.0)
+                        .SetStartValue(1790.0)
                         .SetColor("FF0000")
                         .SetDashed(true)
                         .SetDisplayValue("ТПФП"))

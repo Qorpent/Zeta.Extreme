@@ -38,7 +38,11 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
             var dataset = new ChartDataset();
 
             foreach (var q in GetData(year, rowCode, colCode, periods)) {
-                dataset.AddSet(Periods.Get(q.Time.Period).Name, q.GetResult().NumericResult);
+                dataset.Add(
+                    new ChartSet()
+                        .SetLabel(Periods.Get(q.Time.Period).Name)
+                        .SetValue(q.GetResult().NumericResult)
+                );
             }
 
             return dataset;
