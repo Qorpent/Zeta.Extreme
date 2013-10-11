@@ -3,12 +3,7 @@
 		<input type="hidden" name="__xslt" value="zdev-security-prefixproblems"  />
         <fieldset>
             
-            <label title="Укажите через запятую ID предприятий, которые требуется исключить из отчета">Признак исключения предприятий</label>
-            <input class="fill-modal" name="ExcludeObjects"  />
-			
-
-            <label title="Укажите через запятую ID предприятий, которые требуется включить в отчет"> Признак включения предприятий</label>
-            <input class="fill-modal" name="IncludeObjects"  />
+            
 			
             
             <label title="Выведет в качестве проблемы те предприятия у которых нет какого-либо префикса." class="checkbox">
@@ -22,17 +17,17 @@
             </label>
 			
 			<label title="Укажите число, превышение которого которое означает, что на предприятии назначено слишком большое число Опреаторов. По умолчанию - 5."> Ограничение на резрешенное число операторов по префиксу </label>
-            <input class="fill-modal" name="MaxOperators" placeholder="по умолчанию 5"  />
+            <input class="fill-modal" name="MaxOperators" value="5" placeholder="по умолчанию 5"  />
 			
 			<label title="Укажите число, превышение которого которое означает, что на предприятии назначено слишком большое число Подписантов. По умолчанию - 5."> Ограничение на разрешенное число подписантов по префиксу </label>
-            <input class="fill-modal" name="MaxUnderwriters" placeholder="по умолчанию 5" />
+            <input class="fill-modal" name="MaxUnderwriters" value="5" placeholder="по умолчанию 5" />
 			
 			<label title="Если опция включена, то выведет префиксы только для факта. Если опцию отключить, то выведет префиксы только для плана." class="checkbox">
                 Признак использования плановых префиксов
                 <input type="checkbox" name="UsePlan" checked="checked" />
             </label>
 			
-			<label title="Если опция включена, то выведет префиксы только для плана.Если опцию отключить, то выведет префиксы только для факта." class="checkbox">
+			<label title="Если опция включена, то выведет префиксы только для плана. Если опцию отключить, то выведет префиксы только для факта." class="checkbox">
                 Признак использования фактических префиксов
                 <input type="checkbox" name="UseFact" checked="checked" />
             </label>
@@ -42,6 +37,13 @@
 			
 			<label title="Укажите через запятую префиксы, которые не должны быть включены в отчет. По умолчанию - все префиксы включены."> Список исключенных префиксов </label>
             <input class="fill-modal" name="ExcludePrefixes"  />
+			
+			<label title="Укажите через запятую ID предприятий, которые требуется исключить из отчета">Признак исключения предприятий</label>
+            <input class="fill-modal" name="ExcludeObjects"  />
+			
+
+            <label title="Укажите через запятую ID предприятий, которые требуется включить в отчет"> Признак включения предприятий</label>
+            <input class="fill-modal" name="IncludeObjects"  />
 			
         </fieldset> 
         <hr />
