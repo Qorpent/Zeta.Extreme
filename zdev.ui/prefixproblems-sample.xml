@@ -1,0 +1,943 @@
+<root>
+  <result>
+    <AllPrefixes>
+      <item __idx="0">BANK</item>
+      <item __idx="1">BANKP</item>
+      <item __idx="2">BIO</item>
+      <item __idx="3">BIOP</item>
+      <item __idx="4">COST</item>
+      <item __idx="5">COSTP</item>
+      <item __idx="6">DR</item>
+      <item __idx="7">DRP</item>
+      <item __idx="8">DZK</item>
+      <item __idx="9">DZKP</item>
+      <item __idx="10">EDU</item>
+      <item __idx="11">EDUP</item>
+      <item __idx="12">ENERGO</item>
+      <item __idx="13">ENERGOP</item>
+      <item __idx="14">FA</item>
+      <item __idx="15">FAP</item>
+      <item __idx="16">FIN</item>
+      <item __idx="17">FINP</item>
+      <item __idx="18">INV</item>
+      <item __idx="19">INVDR</item>
+      <item __idx="20">INVDRP</item>
+      <item __idx="21">KADR</item>
+      <item __idx="22">KADRP</item>
+      <item __idx="23">KAZN</item>
+      <item __idx="24">KAZNP</item>
+      <item __idx="25">KPI</item>
+      <item __idx="26">KPIP</item>
+      <item __idx="27">MTR</item>
+      <item __idx="28">MTRP</item>
+      <item __idx="29">NAL</item>
+      <item __idx="30">NALP</item>
+      <item __idx="31">OBPROIZ</item>
+      <item __idx="32">OBPROIZP</item>
+      <item __idx="33">SALE</item>
+      <item __idx="34">SALEP</item>
+      <item __idx="35">SOC</item>
+      <item __idx="36">SOCP</item>
+      <item __idx="37">ZP</item>
+      <item __idx="38">ZPP</item>
+      <item __idx="39">OS</item>
+      <item __idx="40">OSP</item>
+      <item __idx="41">RUDA</item>
+      <item __idx="42">RUDAP</item>
+      <item __idx="43">TRUD</item>
+      <item __idx="44">TRUDP</item>
+      <item __idx="45">ECO</item>
+      <item __idx="46">ECOP</item>
+      <item __idx="47">TEP</item>
+      <item __idx="48">TEPP</item>
+      <item __idx="49">WORK</item>
+      <item __idx="50">WORKP</item>
+    </AllPrefixes>
+    <ProblemPrefixObjects>
+      <item ObjectId="352" ObjectName="ОАО &quot;Уралэлектромедь&quot;" IsProblem="true" __idx="0">
+        <ProblemRecords>
+          <item ObjId="352" Prefix="COST" Operators="6" Underwriters="5" Analytics="6" SoloOperators="1" IsProblem="true" __idx="0"/>
+          <item ObjId="352" Prefix="DR" Operators="11" Underwriters="8" Analytics="11" SoloOperators="3" IsProblem="true" __idx="1"/>
+          <item ObjId="352" Prefix="FIN" Operators="14" Underwriters="8" Analytics="14" SoloOperators="6" IsProblem="true" __idx="2"/>
+          <item ObjId="352" Prefix="INV" Operators="9" Analytics="5" SoloOperators="9" IsProblem="true" __idx="3"/>
+          <item ObjId="352" Prefix="INVDR" Operators="7" Underwriters="5" Analytics="7" SoloOperators="2" IsProblem="true" __idx="4"/>
+          <item ObjId="352" Prefix="MTR" Operators="8" Underwriters="6" Analytics="8" SoloOperators="2" IsProblem="true" __idx="5"/>
+          <item ObjId="352" Prefix="NAL" Operators="8" Underwriters="5" Analytics="8" SoloOperators="3" IsProblem="true" __idx="6"/>
+          <item ObjId="352" Prefix="SOC" Operators="9" Underwriters="9" Analytics="9" IsProblem="true" __idx="7"/>
+          <item ObjId="352" Prefix="SOCP" Operators="6" Underwriters="6" Analytics="9" SoloAnalytics="3" IsProblem="true" __idx="8"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">RUDA</item>
+          <item __idx="1">RUDAP</item>
+          <item __idx="2">TRUD</item>
+          <item __idx="3">TRUDP</item>
+          <item __idx="4">ECO</item>
+          <item __idx="5">ECOP</item>
+          <item __idx="6">TEP</item>
+          <item __idx="7">TEPP</item>
+          <item __idx="8">WORK</item>
+          <item __idx="9">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="353" ObjectName="ОАО &quot;Святогор&quot;" IsProblem="true" __idx="1">
+        <ProblemRecords>
+          <item ObjId="353" Prefix="BANK" Operators="7" Underwriters="7" Analytics="12" SoloAnalytics="5" IsProblem="true" __idx="0"/>
+          <item ObjId="353" Prefix="COST" Operators="10" Underwriters="9" Analytics="14" SoloOperators="1" SoloAnalytics="4" IsProblem="true" __idx="1"/>
+          <item ObjId="353" Prefix="COSTP" Operators="8" Underwriters="8" Analytics="13" SoloAnalytics="5" IsProblem="true" __idx="2"/>
+          <item ObjId="353" Prefix="DR" Operators="11" Underwriters="12" Analytics="17" SoloUnderwriters="1" SoloAnalytics="5" IsProblem="true" __idx="3"/>
+          <item ObjId="353" Prefix="DRP" Operators="5" Underwriters="6" Analytics="16" SoloUnderwriters="1" SoloAnalytics="10" IsProblem="true" __idx="4"/>
+          <item ObjId="353" Prefix="DZK" Operators="7" Underwriters="5" Analytics="12" SoloOperators="2" SoloAnalytics="5" IsProblem="true" __idx="5"/>
+          <item ObjId="353" Prefix="FIN" Operators="6" Underwriters="7" Analytics="15" SoloUnderwriters="1" SoloAnalytics="8" IsProblem="true" __idx="6"/>
+          <item ObjId="353" Prefix="INV" Operators="6" Analytics="14" SoloOperators="6" SoloAnalytics="8" IsProblem="true" __idx="7"/>
+          <item ObjId="353" Prefix="INVDR" Operators="6" Underwriters="5" Analytics="13" SoloOperators="1" SoloAnalytics="7" IsProblem="true" __idx="8"/>
+          <item ObjId="353" Prefix="OBPROIZ" Operators="7" Underwriters="7" Analytics="12" SoloOperators="1" SoloUnderwriters="1" SoloAnalytics="4" IsProblem="true" __idx="9"/>
+          <item ObjId="353" Prefix="OBPROIZP" Operators="7" Underwriters="7" Analytics="13" SoloOperators="1" SoloUnderwriters="1" SoloAnalytics="5" IsProblem="true" __idx="10"/>
+          <item ObjId="353" Prefix="SOC" Operators="5" Underwriters="7" Analytics="11" SoloUnderwriters="2" SoloAnalytics="4" IsProblem="true" __idx="11"/>
+        </ProblemRecords>
+      </item>
+      <item ObjectId="354" ObjectName="ОАО &quot;Металлургический завод им. А.К.Серова&quot;" IsProblem="true" __idx="2">
+        <ProblemRecords>
+          <item ObjId="354" Prefix="DZK" Operators="6" Underwriters="6" Analytics="6" IsProblem="true" __idx="0"/>
+          <item ObjId="354" Prefix="FIN" Operators="7" Underwriters="6" Analytics="7" SoloOperators="1" IsProblem="true" __idx="1"/>
+          <item ObjId="354" Prefix="NAL" Operators="6" Underwriters="5" Analytics="6" SoloOperators="1" IsProblem="true" __idx="2"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">RUDA</item>
+          <item __idx="1">RUDAP</item>
+          <item __idx="2">TRUD</item>
+          <item __idx="3">TRUDP</item>
+          <item __idx="4">ECO</item>
+          <item __idx="5">ECOP</item>
+          <item __idx="6">TEP</item>
+          <item __idx="7">TEPP</item>
+          <item __idx="8">WORK</item>
+          <item __idx="9">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="357" ObjectName="ООО &quot;УГМК-Холдинг&quot;" IsProblem="true" __idx="3">
+        <ProblemRecords>
+          <item ObjId="357" Prefix="INV" Operators="20" Analytics="40" SoloOperators="20" SoloAnalytics="24" IsProblem="true" __idx="0"/>
+          <item ObjId="357" Prefix="RUDA" Operators="8" Underwriters="7" Analytics="9" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="1"/>
+          <item ObjId="357" Prefix="RUDAP" Operators="8" Underwriters="7" Analytics="9" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="2"/>
+          <item ObjId="357" Prefix="INVDR" Operators="11" Underwriters="7" Analytics="22" SoloOperators="4" SoloAnalytics="11" IsProblem="true" __idx="3"/>
+          <item ObjId="357" Prefix="INVDRP" Operators="8" Underwriters="6" Analytics="22" SoloOperators="2" SoloAnalytics="14" IsProblem="true" __idx="4"/>
+          <item ObjId="357" Prefix="BIO" Operators="9" Underwriters="7" Analytics="15" SoloOperators="2" SoloAnalytics="6" IsProblem="true" __idx="5"/>
+          <item ObjId="357" Prefix="BIOP" Operators="9" Underwriters="7" Analytics="15" SoloOperators="2" SoloAnalytics="6" IsProblem="true" __idx="6"/>
+          <item ObjId="357" Prefix="BANK" Operators="20" Underwriters="14" Analytics="22" SoloOperators="6" SoloAnalytics="2" IsProblem="true" __idx="7"/>
+          <item ObjId="357" Prefix="BANKP" Operators="16" Underwriters="11" Analytics="22" SoloOperators="5" SoloAnalytics="6" IsProblem="true" __idx="8"/>
+          <item ObjId="357" Prefix="DR" Operators="19" Underwriters="14" Analytics="34" SoloOperators="5" SoloAnalytics="15" IsProblem="true" __idx="9"/>
+          <item ObjId="357" Prefix="DZK" Operators="21" Underwriters="14" Analytics="28" SoloOperators="7" SoloAnalytics="7" IsProblem="true" __idx="10"/>
+          <item ObjId="357" Prefix="DZKP" Operators="15" Underwriters="11" Analytics="28" SoloOperators="4" SoloAnalytics="13" IsProblem="true" __idx="11"/>
+          <item ObjId="357" Prefix="ENERGO" Operators="17" Underwriters="15" Analytics="22" SoloOperators="2" SoloAnalytics="5" IsProblem="true" __idx="12"/>
+          <item ObjId="357" Prefix="FA" Operators="20" Underwriters="14" Analytics="22" SoloOperators="6" SoloAnalytics="2" IsProblem="true" __idx="13"/>
+          <item ObjId="357" Prefix="FAP" Operators="16" Underwriters="11" Analytics="22" SoloOperators="5" SoloAnalytics="6" IsProblem="true" __idx="14"/>
+          <item ObjId="357" Prefix="FIN" Operators="24" Underwriters="16" Analytics="40" SoloOperators="8" SoloAnalytics="16" IsProblem="true" __idx="15"/>
+          <item ObjId="357" Prefix="FINP" Operators="15" Underwriters="13" Analytics="40" SoloOperators="2" SoloAnalytics="25" IsProblem="true" __idx="16"/>
+          <item ObjId="357" Prefix="NAL" Operators="22" Underwriters="15" Analytics="39" SoloOperators="7" SoloAnalytics="17" IsProblem="true" __idx="17"/>
+          <item ObjId="357" Prefix="NALP" Operators="14" Underwriters="12" Analytics="39" SoloOperators="2" SoloAnalytics="25" IsProblem="true" __idx="18"/>
+          <item ObjId="357" Prefix="SOC" Operators="23" Underwriters="18" Analytics="42" SoloOperators="5" SoloAnalytics="19" IsProblem="true" __idx="19"/>
+          <item ObjId="357" Prefix="SOCP" Operators="19" Underwriters="15" Analytics="42" SoloOperators="4" SoloAnalytics="23" IsProblem="true" __idx="20"/>
+          <item ObjId="357" Prefix="ZP" Operators="19" Underwriters="14" Analytics="38" SoloOperators="5" SoloAnalytics="19" IsProblem="true" __idx="21"/>
+          <item ObjId="357" Prefix="ZPP" Operators="19" Underwriters="14" Analytics="38" SoloOperators="5" SoloAnalytics="19" IsProblem="true" __idx="22"/>
+          <item ObjId="357" Prefix="ENERGOP" Operators="13" Underwriters="11" Analytics="20" SoloOperators="2" SoloAnalytics="7" IsProblem="true" __idx="23"/>
+          <item ObjId="357" Prefix="DRP" Operators="14" Underwriters="12" Analytics="33" SoloOperators="2" SoloAnalytics="19" IsProblem="true" __idx="24"/>
+          <item ObjId="357" Prefix="COST" Operators="11" Underwriters="9" Analytics="13" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="25"/>
+          <item ObjId="357" Prefix="COSTP" Operators="11" Underwriters="9" Analytics="13" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="26"/>
+          <item ObjId="357" Prefix="EDU" Operators="9" Underwriters="6" Analytics="12" SoloOperators="3" SoloAnalytics="3" IsProblem="true" __idx="27"/>
+          <item ObjId="357" Prefix="EDUP" Operators="9" Underwriters="6" Analytics="12" SoloOperators="3" SoloAnalytics="3" IsProblem="true" __idx="28"/>
+          <item ObjId="357" Prefix="KADR" Operators="17" Underwriters="13" Analytics="33" SoloOperators="4" SoloAnalytics="16" IsProblem="true" __idx="29"/>
+          <item ObjId="357" Prefix="KADRP" Operators="17" Underwriters="13" Analytics="33" SoloOperators="4" SoloAnalytics="16" IsProblem="true" __idx="30"/>
+          <item ObjId="357" Prefix="KPI" Operators="31" Underwriters="31" Analytics="31" IsProblem="true" __idx="31"/>
+          <item ObjId="357" Prefix="KPIP" Operators="31" Underwriters="31" Analytics="31" IsProblem="true" __idx="32"/>
+          <item ObjId="357" Prefix="MTR" Operators="8" Underwriters="7" Analytics="10" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="33"/>
+          <item ObjId="357" Prefix="MTRP" Operators="8" Underwriters="7" Analytics="10" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="34"/>
+          <item ObjId="357" Prefix="OBPROIZ" Operators="14" Underwriters="11" Analytics="30" SoloOperators="3" SoloAnalytics="16" IsProblem="true" __idx="35"/>
+          <item ObjId="357" Prefix="OBPROIZP" Operators="14" Underwriters="11" Analytics="30" SoloOperators="3" SoloAnalytics="16" IsProblem="true" __idx="36"/>
+          <item ObjId="357" Prefix="OS" Operators="7" Underwriters="6" Analytics="7" SoloOperators="1" IsProblem="true" __idx="37"/>
+          <item ObjId="357" Prefix="OSP" Operators="6" Underwriters="5" Analytics="7" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="38"/>
+          <item ObjId="357" Prefix="SALE" Operators="11" Underwriters="9" Analytics="13" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="39"/>
+          <item ObjId="357" Prefix="SALEP" Operators="11" Underwriters="9" Analytics="13" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="40"/>
+          <item ObjId="357" Prefix="KAZN" Operators="16" Underwriters="16" Analytics="16" IsProblem="true" __idx="41"/>
+          <item ObjId="357" Prefix="KAZNP" Operators="16" Underwriters="16" Analytics="16" IsProblem="true" __idx="42"/>
+        </ProblemRecords>
+      </item>
+      <item ObjectId="362" ObjectName="ОАО &quot;Шадринский автоагрегатный завод&quot;" IsProblem="true" __idx="4">
+        <ProblemRecords>
+          <item ObjId="362" Prefix="DR" Operators="12" Underwriters="9" Analytics="16" SoloOperators="3" SoloAnalytics="4" IsProblem="true" __idx="0"/>
+          <item ObjId="362" Prefix="DRP" Operators="8" Underwriters="5" Analytics="16" SoloOperators="3" SoloAnalytics="8" IsProblem="true" __idx="1"/>
+          <item ObjId="362" Prefix="DZK" Operators="10" Underwriters="5" Analytics="12" SoloOperators="5" SoloAnalytics="2" IsProblem="true" __idx="2"/>
+          <item ObjId="362" Prefix="DZKP" Operators="6" Underwriters="2" Analytics="11" SoloOperators="4" SoloAnalytics="6" IsProblem="true" __idx="3"/>
+          <item ObjId="362" Prefix="ENERGO" Operators="10" Underwriters="5" Analytics="12" SoloOperators="5" SoloAnalytics="2" IsProblem="true" __idx="4"/>
+          <item ObjId="362" Prefix="FIN" Operators="15" Underwriters="11" Analytics="17" SoloOperators="4" SoloAnalytics="2" IsProblem="true" __idx="5"/>
+          <item ObjId="362" Prefix="FINP" Operators="11" Underwriters="7" Analytics="17" SoloOperators="4" SoloAnalytics="6" IsProblem="true" __idx="6"/>
+          <item ObjId="362" Prefix="INVDR" Operators="8" Underwriters="5" Analytics="12" SoloOperators="3" SoloAnalytics="4" IsProblem="true" __idx="7"/>
+          <item ObjId="362" Prefix="KAZN" Operators="9" Underwriters="5" Analytics="9" SoloOperators="4" IsProblem="true" __idx="8"/>
+          <item ObjId="362" Prefix="KPI" Operators="8" Underwriters="5" Analytics="8" SoloOperators="3" IsProblem="true" __idx="9"/>
+          <item ObjId="362" Prefix="MTR" Operators="8" Underwriters="6" Analytics="10" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="10"/>
+          <item ObjId="362" Prefix="NAL" Operators="10" Underwriters="6" Analytics="10" SoloOperators="4" IsProblem="true" __idx="11"/>
+          <item ObjId="362" Prefix="NALP" Operators="6" Underwriters="3" Analytics="10" SoloOperators="3" SoloAnalytics="4" IsProblem="true" __idx="12"/>
+          <item ObjId="362" Prefix="SALE" Operators="8" Underwriters="5" Analytics="10" SoloOperators="3" SoloAnalytics="2" IsProblem="true" __idx="13"/>
+          <item ObjId="362" Prefix="BANK" Operators="10" Underwriters="5" Analytics="10" SoloOperators="5" IsProblem="true" __idx="14"/>
+          <item ObjId="362" Prefix="BANKP" Operators="6" Underwriters="2" Analytics="10" SoloOperators="4" SoloAnalytics="4" IsProblem="true" __idx="15"/>
+          <item ObjId="362" Prefix="BIO" Operators="8" Underwriters="5" Analytics="8" SoloOperators="3" IsProblem="true" __idx="16"/>
+          <item ObjId="362" Prefix="COST" Operators="8" Underwriters="6" Analytics="9" SoloOperators="2" SoloAnalytics="1" IsProblem="true" __idx="17"/>
+          <item ObjId="362" Prefix="FA" Operators="10" Underwriters="5" Analytics="10" SoloOperators="5" IsProblem="true" __idx="18"/>
+          <item ObjId="362" Prefix="FAP" Operators="7" Underwriters="2" Analytics="10" SoloOperators="5" SoloAnalytics="3" IsProblem="true" __idx="19"/>
+          <item ObjId="362" Prefix="INV" Operators="8" Analytics="10" SoloOperators="8" SoloAnalytics="2" IsProblem="true" __idx="20"/>
+          <item ObjId="362" Prefix="KADR" Operators="8" Underwriters="7" Analytics="10" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="21"/>
+          <item ObjId="362" Prefix="OBPROIZ" Operators="8" Underwriters="6" Analytics="9" SoloOperators="2" SoloAnalytics="1" IsProblem="true" __idx="22"/>
+          <item ObjId="362" Prefix="SOC" Operators="10" Underwriters="5" Analytics="10" SoloOperators="5" IsProblem="true" __idx="23"/>
+          <item ObjId="362" Prefix="ZP" Operators="8" Underwriters="6" Analytics="9" SoloOperators="2" SoloAnalytics="1" IsProblem="true" __idx="24"/>
+          <item ObjId="362" Prefix="OS" Operators="6" Underwriters="4" Analytics="8" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="25"/>
+          <item ObjId="362" Prefix="EDU" Operators="6" Underwriters="5" Analytics="7" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="26"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">RUDAP</item>
+          <item __idx="1">TEP</item>
+          <item __idx="2">TEPP</item>
+          <item __idx="3">WORK</item>
+          <item __idx="4">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="415" ObjectName="ОАО &quot;Ревдинский завод ОЦМ&quot;" IsProblem="true" __idx="5">
+        <ProblemRecords>
+          <item ObjId="415" Prefix="BANK" Operators="6" Underwriters="5" Analytics="8" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="0"/>
+          <item ObjId="415" Prefix="COST" Operators="12" Underwriters="6" Analytics="16" SoloOperators="6" SoloAnalytics="4" IsProblem="true" __idx="1"/>
+          <item ObjId="415" Prefix="COSTP" Operators="8" Underwriters="6" Analytics="11" SoloOperators="2" SoloAnalytics="3" IsProblem="true" __idx="2"/>
+          <item ObjId="415" Prefix="DR" Operators="19" Underwriters="6" Analytics="22" SoloOperators="13" SoloAnalytics="3" IsProblem="true" __idx="3"/>
+          <item ObjId="415" Prefix="DRP" Operators="14" Underwriters="7" Analytics="16" SoloOperators="7" SoloAnalytics="2" IsProblem="true" __idx="4"/>
+          <item ObjId="415" Prefix="DZK" Operators="9" Underwriters="6" Analytics="11" SoloOperators="3" SoloAnalytics="2" IsProblem="true" __idx="5"/>
+          <item ObjId="415" Prefix="DZKP" Operators="7" Underwriters="5" Analytics="9" SoloOperators="3" SoloUnderwriters="1" SoloAnalytics="1" IsProblem="true" __idx="6"/>
+          <item ObjId="415" Prefix="ENERGO" Operators="15" Underwriters="8" Analytics="16" SoloOperators="8" SoloUnderwriters="1" SoloAnalytics="1" IsProblem="true" __idx="7"/>
+          <item ObjId="415" Prefix="ENERGOP" Operators="9" Underwriters="6" Analytics="11" SoloOperators="4" SoloUnderwriters="1" SoloAnalytics="1" IsProblem="true" __idx="8"/>
+          <item ObjId="415" Prefix="FA" Operators="7" Underwriters="6" Analytics="8" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="9"/>
+          <item ObjId="415" Prefix="FIN" Operators="17" Underwriters="7" Analytics="21" SoloOperators="10" SoloAnalytics="4" IsProblem="true" __idx="10"/>
+          <item ObjId="415" Prefix="FINP" Operators="15" Underwriters="8" Analytics="19" SoloOperators="7" SoloAnalytics="4" IsProblem="true" __idx="11"/>
+          <item ObjId="415" Prefix="INVDR" Operators="11" Underwriters="6" Analytics="13" SoloOperators="5" SoloAnalytics="2" IsProblem="true" __idx="12"/>
+          <item ObjId="415" Prefix="INVDRP" Operators="7" Underwriters="6" Analytics="9" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="13"/>
+          <item ObjId="415" Prefix="KADRP" Operators="6" Underwriters="3" Analytics="9" SoloOperators="3" SoloAnalytics="3" IsProblem="true" __idx="14"/>
+          <item ObjId="415" Prefix="KAZN" Operators="7" Underwriters="7" Analytics="7" IsProblem="true" __idx="15"/>
+          <item ObjId="415" Prefix="MTR" Operators="11" Underwriters="6" Analytics="13" SoloOperators="5" SoloAnalytics="2" IsProblem="true" __idx="16"/>
+          <item ObjId="415" Prefix="MTRP" Operators="8" Underwriters="6" Analytics="10" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="17"/>
+          <item ObjId="415" Prefix="NAL" Operators="11" Underwriters="6" Analytics="17" SoloOperators="5" SoloAnalytics="6" IsProblem="true" __idx="18"/>
+          <item ObjId="415" Prefix="NALP" Operators="14" Underwriters="7" Analytics="15" SoloOperators="7" SoloAnalytics="1" IsProblem="true" __idx="19"/>
+          <item ObjId="415" Prefix="OBPROIZ" Operators="13" Underwriters="7" Analytics="15" SoloOperators="6" SoloAnalytics="2" IsProblem="true" __idx="20"/>
+          <item ObjId="415" Prefix="OBPROIZP" Operators="11" Underwriters="8" Analytics="13" SoloOperators="3" SoloAnalytics="2" IsProblem="true" __idx="21"/>
+          <item ObjId="415" Prefix="SALE" Operators="9" Underwriters="7" Analytics="11" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="22"/>
+          <item ObjId="415" Prefix="SALEP" Operators="7" Underwriters="6" Analytics="9" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="23"/>
+          <item ObjId="415" Prefix="SOC" Operators="13" Underwriters="5" Analytics="17" SoloOperators="8" SoloAnalytics="4" IsProblem="true" __idx="24"/>
+          <item ObjId="415" Prefix="SOCP" Operators="9" Underwriters="4" Analytics="12" SoloOperators="5" SoloAnalytics="3" IsProblem="true" __idx="25"/>
+          <item ObjId="415" Prefix="ZP" Operators="11" Underwriters="7" Analytics="15" SoloOperators="4" SoloAnalytics="4" IsProblem="true" __idx="26"/>
+          <item ObjId="415" Prefix="ZPP" Operators="9" Underwriters="5" Analytics="12" SoloOperators="4" SoloAnalytics="3" IsProblem="true" __idx="27"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">RUDA</item>
+          <item __idx="1">RUDAP</item>
+          <item __idx="2">TRUD</item>
+          <item __idx="3">TRUDP</item>
+          <item __idx="4">ECO</item>
+          <item __idx="5">ECOP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="442" ObjectName="ОАО &quot;Богословское рудоуправление&quot;" IsProblem="true" __idx="6">
+        <ProblemRecords>
+          <item ObjId="442" Prefix="NAL" Operators="6" Underwriters="5" Analytics="11" SoloOperators="1" SoloAnalytics="5" IsProblem="true" __idx="0"/>
+          <item ObjId="442" Prefix="NALP" Operators="6" Underwriters="4" Analytics="11" SoloOperators="2" SoloAnalytics="5" IsProblem="true" __idx="1"/>
+          <item ObjId="442" Prefix="DR" Operators="7" Underwriters="5" Analytics="9" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="2"/>
+          <item ObjId="442" Prefix="DRP" Operators="6" Underwriters="4" Analytics="9" SoloOperators="2" SoloAnalytics="3" IsProblem="true" __idx="3"/>
+          <item ObjId="442" Prefix="FIN" Operators="9" Underwriters="8" Analytics="10" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="4"/>
+          <item ObjId="442" Prefix="FINP" Operators="8" Underwriters="6" Analytics="9" SoloOperators="2" SoloAnalytics="1" IsProblem="true" __idx="5"/>
+          <item ObjId="442" Prefix="OBPROIZ" Operators="6" Underwriters="4" Analytics="7" SoloOperators="2" SoloAnalytics="1" IsProblem="true" __idx="6"/>
+          <item ObjId="442" Prefix="OBPROIZP" Operators="6" Underwriters="4" Analytics="7" SoloOperators="2" SoloAnalytics="1" IsProblem="true" __idx="7"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">OS</item>
+          <item __idx="1">OSP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="449" ObjectName="ОАО &quot;Среднеуральский медеплавильный завод&quot;" IsProblem="true" __idx="7">
+        <ProblemRecords>
+          <item ObjId="449" Prefix="FIN" Operators="14" Underwriters="14" Analytics="14" IsProblem="true" __idx="0"/>
+          <item ObjId="449" Prefix="FINP" Operators="14" Underwriters="14" Analytics="14" IsProblem="true" __idx="1"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">OS</item>
+          <item __idx="1">OSP</item>
+          <item __idx="2">RUDA</item>
+          <item __idx="3">RUDAP</item>
+          <item __idx="4">TRUD</item>
+          <item __idx="5">TRUDP</item>
+          <item __idx="6">TEP</item>
+          <item __idx="7">TEPP</item>
+          <item __idx="8">WORK</item>
+          <item __idx="9">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="467" ObjectName="ОАО &quot;Гайский ГОК&quot;" IsProblem="true" __idx="8">
+        <ProblemRecords>
+          <item ObjId="467" Prefix="DR" Operators="20" Underwriters="8" Analytics="26" SoloOperators="12" SoloAnalytics="6" IsProblem="true" __idx="0"/>
+          <item ObjId="467" Prefix="DRP" Operators="13" Underwriters="9" Analytics="22" SoloOperators="4" SoloAnalytics="9" IsProblem="true" __idx="1"/>
+          <item ObjId="467" Prefix="ENERGO" Operators="10" Underwriters="7" Analytics="16" SoloOperators="3" SoloAnalytics="6" IsProblem="true" __idx="2"/>
+          <item ObjId="467" Prefix="ENERGOP" Operators="10" Underwriters="6" Analytics="16" SoloOperators="4" SoloAnalytics="6" IsProblem="true" __idx="3"/>
+          <item ObjId="467" Prefix="FIN" Operators="23" Underwriters="9" Analytics="28" SoloOperators="14" SoloAnalytics="5" IsProblem="true" __idx="4"/>
+          <item ObjId="467" Prefix="BANK" Operators="9" Underwriters="6" Analytics="12" SoloOperators="3" SoloAnalytics="3" IsProblem="true" __idx="5"/>
+          <item ObjId="467" Prefix="BANKP" Operators="10" Underwriters="4" Analytics="14" SoloOperators="6" SoloAnalytics="4" IsProblem="true" __idx="6"/>
+          <item ObjId="467" Prefix="BIOP" Operators="8" Underwriters="3" Analytics="15" SoloOperators="5" SoloAnalytics="7" IsProblem="true" __idx="7"/>
+          <item ObjId="467" Prefix="COST" Operators="14" Underwriters="7" Analytics="15" SoloOperators="7" SoloAnalytics="1" IsProblem="true" __idx="8"/>
+          <item ObjId="467" Prefix="COSTP" Operators="13" Underwriters="10" Analytics="15" SoloOperators="3" SoloAnalytics="2" IsProblem="true" __idx="9"/>
+          <item ObjId="467" Prefix="DZK" Operators="10" Underwriters="5" Analytics="13" SoloOperators="5" SoloAnalytics="3" IsProblem="true" __idx="10"/>
+          <item ObjId="467" Prefix="DZKP" Operators="10" Underwriters="3" Analytics="14" SoloOperators="7" SoloAnalytics="4" IsProblem="true" __idx="11"/>
+          <item ObjId="467" Prefix="FA" Operators="9" Underwriters="4" Analytics="13" SoloOperators="5" SoloAnalytics="4" IsProblem="true" __idx="12"/>
+          <item ObjId="467" Prefix="FAP" Operators="13" Underwriters="6" Analytics="15" SoloOperators="7" SoloAnalytics="2" IsProblem="true" __idx="13"/>
+          <item ObjId="467" Prefix="FINP" Operators="18" Underwriters="11" Analytics="22" SoloOperators="7" SoloAnalytics="4" IsProblem="true" __idx="14"/>
+          <item ObjId="467" Prefix="INVDR" Operators="15" Underwriters="6" Analytics="20" SoloOperators="9" SoloAnalytics="5" IsProblem="true" __idx="15"/>
+          <item ObjId="467" Prefix="INVDRP" Operators="11" Underwriters="9" Analytics="17" SoloOperators="2" SoloAnalytics="6" IsProblem="true" __idx="16"/>
+          <item ObjId="467" Prefix="KADR" Operators="8" Underwriters="5" Analytics="16" SoloOperators="3" SoloAnalytics="8" IsProblem="true" __idx="17"/>
+          <item ObjId="467" Prefix="KADRP" Operators="11" Underwriters="8" Analytics="19" SoloOperators="3" SoloAnalytics="8" IsProblem="true" __idx="18"/>
+          <item ObjId="467" Prefix="KPI" Operators="9" Underwriters="7" Analytics="9" SoloOperators="2" IsProblem="true" __idx="19"/>
+          <item ObjId="467" Prefix="KPIP" Operators="9" Underwriters="9" Analytics="9" IsProblem="true" __idx="20"/>
+          <item ObjId="467" Prefix="MTR" Operators="13" Underwriters="8" Analytics="16" SoloOperators="5" SoloAnalytics="3" IsProblem="true" __idx="21"/>
+          <item ObjId="467" Prefix="MTRP" Operators="13" Underwriters="9" Analytics="16" SoloOperators="4" SoloAnalytics="3" IsProblem="true" __idx="22"/>
+          <item ObjId="467" Prefix="NAL" Operators="14" Underwriters="8" Analytics="21" SoloOperators="6" SoloAnalytics="7" IsProblem="true" __idx="23"/>
+          <item ObjId="467" Prefix="NALP" Operators="13" Underwriters="9" Analytics="20" SoloOperators="4" SoloAnalytics="7" IsProblem="true" __idx="24"/>
+          <item ObjId="467" Prefix="OBPROIZ" Operators="11" Underwriters="7" Analytics="17" SoloOperators="4" SoloAnalytics="6" IsProblem="true" __idx="25"/>
+          <item ObjId="467" Prefix="OBPROIZP" Operators="10" Underwriters="6" Analytics="16" SoloOperators="4" SoloAnalytics="6" IsProblem="true" __idx="26"/>
+          <item ObjId="467" Prefix="SALE" Operators="9" Underwriters="4" Analytics="12" SoloOperators="5" SoloAnalytics="3" IsProblem="true" __idx="27"/>
+          <item ObjId="467" Prefix="SALEP" Operators="11" Underwriters="4" Analytics="12" SoloOperators="7" SoloAnalytics="1" IsProblem="true" __idx="28"/>
+          <item ObjId="467" Prefix="SOC" Operators="7" Underwriters="7" Analytics="15" SoloAnalytics="8" IsProblem="true" __idx="29"/>
+          <item ObjId="467" Prefix="SOCP" Operators="10" Underwriters="7" Analytics="17" SoloOperators="3" SoloAnalytics="7" IsProblem="true" __idx="30"/>
+          <item ObjId="467" Prefix="ZP" Operators="9" Underwriters="5" Analytics="16" SoloOperators="4" SoloAnalytics="7" IsProblem="true" __idx="31"/>
+          <item ObjId="467" Prefix="ZPP" Operators="12" Underwriters="8" Analytics="19" SoloOperators="4" SoloAnalytics="7" IsProblem="true" __idx="32"/>
+          <item ObjId="467" Prefix="EDU" Operators="6" Underwriters="3" Analytics="9" SoloOperators="3" SoloAnalytics="3" IsProblem="true" __idx="33"/>
+          <item ObjId="467" Prefix="EDUP" Operators="6" Underwriters="3" Analytics="13" SoloOperators="3" SoloAnalytics="7" IsProblem="true" __idx="34"/>
+          <item ObjId="467" Prefix="KAZN" Operators="6" Underwriters="3" Analytics="7" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="35"/>
+          <item ObjId="467" Prefix="KAZNP" Operators="7" Underwriters="3" Analytics="7" SoloOperators="4" IsProblem="true" __idx="36"/>
+          <item ObjId="467" Prefix="OS" Operators="6" Underwriters="4" Analytics="15" SoloOperators="3" SoloUnderwriters="1" SoloAnalytics="8" IsProblem="true" __idx="37"/>
+          <item ObjId="467" Prefix="OSP" Operators="10" Underwriters="3" Analytics="15" SoloOperators="7" SoloAnalytics="5" IsProblem="true" __idx="38"/>
+        </ProblemRecords>
+      </item>
+      <item ObjectId="468" ObjectName="ОАО &quot;Кировский завод ОЦМ&quot;" IsProblem="true" __idx="9">
+        <ProblemRecords>
+          <item ObjId="468" Prefix="COST" Operators="16" Underwriters="7" Analytics="28" SoloOperators="9" SoloAnalytics="12" IsProblem="true" __idx="0"/>
+          <item ObjId="468" Prefix="COSTP" Operators="10" Underwriters="6" Analytics="27" SoloOperators="5" SoloUnderwriters="1" SoloAnalytics="16" IsProblem="true" __idx="1"/>
+          <item ObjId="468" Prefix="DR" Operators="21" Underwriters="11" Analytics="35" SoloOperators="11" SoloUnderwriters="1" SoloAnalytics="13" IsProblem="true" __idx="2"/>
+          <item ObjId="468" Prefix="DRP" Operators="15" Underwriters="9" Analytics="34" SoloOperators="7" SoloUnderwriters="1" SoloAnalytics="18" IsProblem="true" __idx="3"/>
+          <item ObjId="468" Prefix="ENERGO" Operators="10" Underwriters="8" Analytics="22" SoloOperators="3" SoloUnderwriters="1" SoloAnalytics="11" IsProblem="true" __idx="4"/>
+          <item ObjId="468" Prefix="ENERGOP" Operators="6" Underwriters="7" Analytics="22" SoloUnderwriters="1" SoloAnalytics="15" IsProblem="true" __idx="5"/>
+          <item ObjId="468" Prefix="INV" Operators="7" Analytics="17" SoloOperators="7" SoloAnalytics="10" IsProblem="true" __idx="6"/>
+          <item ObjId="468" Prefix="MTR" Operators="10" Underwriters="7" Analytics="16" SoloOperators="3" SoloAnalytics="6" IsProblem="true" __idx="7"/>
+          <item ObjId="468" Prefix="OBPROIZ" Operators="12" Underwriters="9" Analytics="28" SoloOperators="3" SoloAnalytics="16" IsProblem="true" __idx="8"/>
+          <item ObjId="468" Prefix="OBPROIZP" Operators="8" Underwriters="8" Analytics="27" SoloAnalytics="19" IsProblem="true" __idx="9"/>
+          <item ObjId="468" Prefix="SOC" Operators="13" Underwriters="10" Analytics="18" SoloOperators="3" SoloAnalytics="5" IsProblem="true" __idx="10"/>
+          <item ObjId="468" Prefix="SOCP" Operators="10" Underwriters="9" Analytics="18" SoloOperators="2" SoloUnderwriters="1" SoloAnalytics="7" IsProblem="true" __idx="11"/>
+          <item ObjId="468" Prefix="FIN" Operators="14" Underwriters="8" Analytics="26" SoloOperators="6" SoloAnalytics="12" IsProblem="true" __idx="12"/>
+          <item ObjId="468" Prefix="FINP" Operators="7" Underwriters="6" Analytics="26" SoloOperators="1" SoloAnalytics="19" IsProblem="true" __idx="13"/>
+          <item ObjId="468" Prefix="INVDR" Operators="7" Underwriters="4" Analytics="18" SoloOperators="3" SoloAnalytics="11" IsProblem="true" __idx="14"/>
+          <item ObjId="468" Prefix="INVDRP" Operators="6" Underwriters="5" Analytics="17" SoloOperators="2" SoloUnderwriters="1" SoloAnalytics="10" IsProblem="true" __idx="15"/>
+          <item ObjId="468" Prefix="KADR" Operators="6" Underwriters="5" Analytics="16" SoloOperators="2" SoloUnderwriters="1" SoloAnalytics="9" IsProblem="true" __idx="16"/>
+          <item ObjId="468" Prefix="NAL" Operators="9" Underwriters="7" Analytics="16" SoloOperators="2" SoloAnalytics="7" IsProblem="true" __idx="17"/>
+          <item ObjId="468" Prefix="NALP" Operators="7" Underwriters="6" Analytics="16" SoloOperators="1" SoloAnalytics="9" IsProblem="true" __idx="18"/>
+          <item ObjId="468" Prefix="ZP" Operators="8" Underwriters="4" Analytics="17" SoloOperators="4" SoloAnalytics="9" IsProblem="true" __idx="19"/>
+          <item ObjId="468" Prefix="ZPP" Operators="6" Underwriters="5" Analytics="17" SoloOperators="1" SoloAnalytics="11" IsProblem="true" __idx="20"/>
+          <item ObjId="468" Prefix="BANK" Operators="7" Underwriters="5" Analytics="13" SoloOperators="2" SoloAnalytics="6" IsProblem="true" __idx="21"/>
+          <item ObjId="468" Prefix="DZK" Operators="9" Underwriters="5" Analytics="18" SoloOperators="4" SoloAnalytics="9" IsProblem="true" __idx="22"/>
+          <item ObjId="468" Prefix="FA" Operators="7" Underwriters="5" Analytics="14" SoloOperators="2" SoloAnalytics="7" IsProblem="true" __idx="23"/>
+          <item ObjId="468" Prefix="SALE" Operators="7" Underwriters="5" Analytics="12" SoloOperators="2" SoloAnalytics="5" IsProblem="true" __idx="24"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">TRUD</item>
+          <item __idx="1">TRUDP</item>
+          <item __idx="2">ECO</item>
+          <item __idx="3">ECOP</item>
+          <item __idx="4">TEP</item>
+          <item __idx="5">TEPP</item>
+          <item __idx="6">WORK</item>
+          <item __idx="7">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="471" ObjectName="ООО &quot;Оренбургский радиатор&quot;" IsProblem="true" __idx="10">
+        <ProblemRecords>
+          <item ObjId="471" Prefix="DR" Operators="6" Underwriters="6" Analytics="8" SoloAnalytics="2" IsProblem="true" __idx="0"/>
+          <item ObjId="471" Prefix="DRP" Operators="6" Underwriters="6" Analytics="8" SoloAnalytics="2" IsProblem="true" __idx="1"/>
+          <item ObjId="471" Prefix="FA" Operators="6" Underwriters="6" Analytics="6" IsProblem="true" __idx="2"/>
+          <item ObjId="471" Prefix="FAP" Operators="6" Underwriters="6" Analytics="6" IsProblem="true" __idx="3"/>
+          <item ObjId="471" Prefix="FIN" Operators="9" Underwriters="8" Analytics="9" SoloOperators="1" IsProblem="true" __idx="4"/>
+          <item ObjId="471" Prefix="FINP" Operators="9" Underwriters="8" Analytics="9" SoloOperators="1" IsProblem="true" __idx="5"/>
+          <item ObjId="471" Prefix="KAZN" Operators="6" Underwriters="6" Analytics="6" IsProblem="true" __idx="6"/>
+          <item ObjId="471" Prefix="KAZNP" Operators="6" Underwriters="6" Analytics="6" IsProblem="true" __idx="7"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">RUDA</item>
+          <item __idx="1">RUDAP</item>
+          <item __idx="2">TRUD</item>
+          <item __idx="3">TRUDP</item>
+          <item __idx="4">ECO</item>
+          <item __idx="5">ECOP</item>
+          <item __idx="6">TEP</item>
+          <item __idx="7">TEPP</item>
+          <item __idx="8">WORK</item>
+          <item __idx="9">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="473" ObjectName="ООО &quot;Медногорский медно-серный комбинат&quot;" IsProblem="true" __idx="11">
+        <ProblemRecords>
+          <item ObjId="473" Prefix="FIN" Operators="13" Underwriters="4" Analytics="15" SoloOperators="9" SoloAnalytics="2" IsProblem="true" __idx="0"/>
+          <item ObjId="473" Prefix="NAL" Operators="13" Underwriters="4" Analytics="14" SoloOperators="9" SoloAnalytics="1" IsProblem="true" __idx="1"/>
+          <item ObjId="473" Prefix="DR" Operators="7" Underwriters="4" Analytics="8" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="2"/>
+          <item ObjId="473" Prefix="BANK" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="3"/>
+          <item ObjId="473" Prefix="DZK" Operators="7" Underwriters="4" Analytics="7" SoloOperators="3" IsProblem="true" __idx="4"/>
+          <item ObjId="473" Prefix="FA" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="5"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">OS</item>
+          <item __idx="1">OSP</item>
+          <item __idx="2">RUDA</item>
+          <item __idx="3">RUDAP</item>
+          <item __idx="4">TRUD</item>
+          <item __idx="5">TRUDP</item>
+          <item __idx="6">ECOP</item>
+          <item __idx="7">TEP</item>
+          <item __idx="8">TEPP</item>
+          <item __idx="9">WORK</item>
+          <item __idx="10">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="497" ObjectName="ЗАО &quot;Кольчугцветмет&quot;" IsProblem="true" __idx="12">
+        <ProblemRecords>
+          <item ObjId="497" Prefix="COST" Operators="8" Underwriters="7" Analytics="8" SoloOperators="1" IsProblem="true" __idx="0"/>
+          <item ObjId="497" Prefix="DR" Operators="11" Underwriters="8" Analytics="11" SoloOperators="3" IsProblem="true" __idx="1"/>
+          <item ObjId="497" Prefix="FIN" Operators="10" Underwriters="9" Analytics="11" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="2"/>
+          <item ObjId="497" Prefix="INV" Operators="7" Analytics="7" SoloOperators="7" IsProblem="true" __idx="3"/>
+          <item ObjId="497" Prefix="INVDR" Operators="7" Underwriters="7" Analytics="7" IsProblem="true" __idx="4"/>
+          <item ObjId="497" Prefix="MTR" Operators="6" Underwriters="5" Analytics="7" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="5"/>
+          <item ObjId="497" Prefix="NAL" Operators="7" Underwriters="7" Analytics="8" SoloAnalytics="1" IsProblem="true" __idx="6"/>
+          <item ObjId="497" Prefix="NALP" Operators="7" Underwriters="7" Analytics="8" SoloAnalytics="1" IsProblem="true" __idx="7"/>
+          <item ObjId="497" Prefix="SALE" Operators="7" Underwriters="6" Analytics="8" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="8"/>
+          <item ObjId="497" Prefix="SOC" Operators="9" Underwriters="9" Analytics="9" IsProblem="true" __idx="9"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">RUDA</item>
+          <item __idx="1">RUDAP</item>
+          <item __idx="2">TRUD</item>
+          <item __idx="3">TRUDP</item>
+          <item __idx="4">ECO</item>
+          <item __idx="5">ECOP</item>
+          <item __idx="6">TEP</item>
+          <item __idx="7">TEPP</item>
+          <item __idx="8">WORK</item>
+          <item __idx="9">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="509" ObjectName="Сибайский филиал ОАО &quot;Учалинский ГОК&quot;" IsProblem="true" __idx="13">
+        <ProblemRecords>
+          <item ObjId="509" Prefix="FIN" Operators="10" Underwriters="9" Analytics="11" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="0"/>
+          <item ObjId="509" Prefix="DR" Operators="6" Underwriters="4" Analytics="7" SoloOperators="2" SoloAnalytics="1" IsProblem="true" __idx="1"/>
+          <item ObjId="509" Prefix="ENERGO" Operators="6" Underwriters="3" Analytics="8" SoloOperators="3" SoloAnalytics="2" IsProblem="true" __idx="2"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">OSP</item>
+          <item __idx="1">TRUD</item>
+          <item __idx="2">TRUDP</item>
+          <item __idx="3">ECO</item>
+          <item __idx="4">ECOP</item>
+          <item __idx="5">TEP</item>
+          <item __idx="6">TEPP</item>
+          <item __idx="7">WORK</item>
+          <item __idx="8">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="520" ObjectName="ОАО &quot;Уралмеханобр&quot;" IsProblem="true" __idx="14">
+        <ProblemRecords>
+          <item ObjId="520" Prefix="BANK" Operators="5" Underwriters="6" Analytics="6" SoloUnderwriters="1" IsProblem="true" __idx="0"/>
+          <item ObjId="520" Prefix="DR" Operators="5" Underwriters="6" Analytics="6" SoloUnderwriters="1" IsProblem="true" __idx="1"/>
+          <item ObjId="520" Prefix="DZK" Operators="5" Underwriters="6" Analytics="6" SoloUnderwriters="1" IsProblem="true" __idx="2"/>
+          <item ObjId="520" Prefix="FA" Operators="5" Underwriters="6" Analytics="6" SoloUnderwriters="1" IsProblem="true" __idx="3"/>
+          <item ObjId="520" Prefix="FIN" Operators="5" Underwriters="6" Analytics="6" SoloUnderwriters="1" IsProblem="true" __idx="4"/>
+          <item ObjId="520" Prefix="NAL" Operators="5" Underwriters="6" Analytics="6" SoloUnderwriters="1" IsProblem="true" __idx="5"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">TRUD</item>
+          <item __idx="1">TRUDP</item>
+          <item __idx="2">ECO</item>
+          <item __idx="3">ECOP</item>
+          <item __idx="4">TEP</item>
+          <item __idx="5">TEPP</item>
+          <item __idx="6">WORK</item>
+          <item __idx="7">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="536" ObjectName="ОАО &quot;Электроцинк&quot;" IsProblem="true" __idx="15">
+        <ProblemRecords>
+          <item ObjId="536" Prefix="BANK" Operators="6" Underwriters="4" Analytics="9" SoloOperators="2" SoloAnalytics="3" IsProblem="true" __idx="0"/>
+          <item ObjId="536" Prefix="COST" Operators="11" Underwriters="7" Analytics="14" SoloOperators="5" SoloUnderwriters="1" SoloAnalytics="2" IsProblem="true" __idx="1"/>
+          <item ObjId="536" Prefix="COSTP" Operators="6" Underwriters="4" Analytics="14" SoloOperators="2" SoloAnalytics="8" IsProblem="true" __idx="2"/>
+          <item ObjId="536" Prefix="DR" Operators="19" Underwriters="8" Analytics="19" SoloOperators="11" IsProblem="true" __idx="3"/>
+          <item ObjId="536" Prefix="DRP" Operators="11" Underwriters="4" Analytics="19" SoloOperators="7" SoloAnalytics="8" IsProblem="true" __idx="4"/>
+          <item ObjId="536" Prefix="FA" Operators="6" Underwriters="3" Analytics="9" SoloOperators="3" SoloAnalytics="3" IsProblem="true" __idx="5"/>
+          <item ObjId="536" Prefix="FIN" Operators="17" Underwriters="8" Analytics="23" SoloOperators="10" SoloUnderwriters="1" SoloAnalytics="5" IsProblem="true" __idx="6"/>
+          <item ObjId="536" Prefix="FINP" Operators="8" Underwriters="4" Analytics="20" SoloOperators="4" SoloAnalytics="12" IsProblem="true" __idx="7"/>
+          <item ObjId="536" Prefix="INVDR" Operators="8" Underwriters="6" Analytics="12" SoloOperators="3" SoloUnderwriters="1" SoloAnalytics="3" IsProblem="true" __idx="8"/>
+          <item ObjId="536" Prefix="MTR" Operators="10" Underwriters="5" Analytics="12" SoloOperators="6" SoloUnderwriters="1" SoloAnalytics="1" IsProblem="true" __idx="9"/>
+          <item ObjId="536" Prefix="NAL" Operators="8" Underwriters="5" Analytics="15" SoloOperators="4" SoloUnderwriters="1" SoloAnalytics="6" IsProblem="true" __idx="10"/>
+          <item ObjId="536" Prefix="NALP" Operators="8" Underwriters="4" Analytics="15" SoloOperators="4" SoloAnalytics="7" IsProblem="true" __idx="11"/>
+          <item ObjId="536" Prefix="OBPROIZ" Operators="5" Underwriters="6" Analytics="11" SoloUnderwriters="1" SoloAnalytics="5" IsProblem="true" __idx="12"/>
+          <item ObjId="536" Prefix="OBPROIZP" Operators="5" Underwriters="7" Analytics="11" SoloUnderwriters="2" SoloAnalytics="4" IsProblem="true" __idx="13"/>
+          <item ObjId="536" Prefix="SALE" Operators="7" Underwriters="5" Analytics="10" SoloOperators="3" SoloUnderwriters="1" SoloAnalytics="2" IsProblem="true" __idx="14"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">OS</item>
+          <item __idx="1">OSP</item>
+          <item __idx="2">RUDA</item>
+          <item __idx="3">RUDAP</item>
+          <item __idx="4">ECO</item>
+          <item __idx="5">ECOP</item>
+          <item __idx="6">TEP</item>
+          <item __idx="7">TEPP</item>
+          <item __idx="8">WORK</item>
+          <item __idx="9">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="539" ObjectName="ОАО &quot;Сибирь-полиметаллы&quot;" IsProblem="true" __idx="16">
+        <ProblemRecords>
+          <item ObjId="539" Prefix="COST" Operators="9" Underwriters="5" Analytics="8" SoloOperators="4" IsProblem="true" __idx="0"/>
+          <item ObjId="539" Prefix="COSTP" Operators="8" Underwriters="5" Analytics="7" SoloOperators="3" IsProblem="true" __idx="1"/>
+          <item ObjId="539" Prefix="ENERGO" Operators="8" Underwriters="3" Analytics="7" SoloOperators="5" IsProblem="true" __idx="2"/>
+          <item ObjId="539" Prefix="ENERGOP" Operators="7" Underwriters="3" Analytics="6" SoloOperators="4" IsProblem="true" __idx="3"/>
+          <item ObjId="539" Prefix="FAP" Operators="6" Underwriters="4" Analytics="5" SoloOperators="2" IsProblem="true" __idx="4"/>
+          <item ObjId="539" Prefix="FIN" Operators="12" Underwriters="7" Analytics="14" SoloOperators="5" SoloAnalytics="2" IsProblem="true" __idx="5"/>
+          <item ObjId="539" Prefix="FINP" Operators="11" Underwriters="8" Analytics="11" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="6"/>
+          <item ObjId="539" Prefix="INVDR" Operators="6" Underwriters="3" Analytics="5" SoloOperators="3" IsProblem="true" __idx="7"/>
+          <item ObjId="539" Prefix="INVDRP" Operators="6" Underwriters="4" Analytics="5" SoloOperators="2" IsProblem="true" __idx="8"/>
+          <item ObjId="539" Prefix="NAL" Operators="8" Underwriters="6" Analytics="11" SoloOperators="2" SoloAnalytics="3" IsProblem="true" __idx="9"/>
+          <item ObjId="539" Prefix="NALP" Operators="11" Underwriters="8" Analytics="10" SoloOperators="3" IsProblem="true" __idx="10"/>
+          <item ObjId="539" Prefix="OBPROIZ" Operators="10" Underwriters="6" Analytics="9" SoloOperators="4" IsProblem="true" __idx="11"/>
+          <item ObjId="539" Prefix="OBPROIZP" Operators="9" Underwriters="6" Analytics="8" SoloOperators="3" IsProblem="true" __idx="12"/>
+          <item ObjId="539" Prefix="SALE" Operators="8" Underwriters="4" Analytics="7" SoloOperators="4" IsProblem="true" __idx="13"/>
+          <item ObjId="539" Prefix="SALEP" Operators="7" Underwriters="4" Analytics="6" SoloOperators="3" IsProblem="true" __idx="14"/>
+          <item ObjId="539" Prefix="SOC" Operators="9" Underwriters="5" Analytics="9" SoloOperators="4" SoloAnalytics="1" IsProblem="true" __idx="15"/>
+          <item ObjId="539" Prefix="SOCP" Operators="8" Underwriters="5" Analytics="8" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="16"/>
+          <item ObjId="539" Prefix="DR" Operators="13" Underwriters="9" Analytics="13" SoloOperators="4" IsProblem="true" __idx="17"/>
+          <item ObjId="539" Prefix="DRP" Operators="11" Underwriters="8" Analytics="11" SoloOperators="3" IsProblem="true" __idx="18"/>
+          <item ObjId="539" Prefix="BANK" Operators="7" Underwriters="4" Analytics="7" SoloOperators="3" IsProblem="true" __idx="19"/>
+          <item ObjId="539" Prefix="BANKP" Operators="9" Underwriters="6" Analytics="9" SoloOperators="3" IsProblem="true" __idx="20"/>
+          <item ObjId="539" Prefix="DZK" Operators="7" Underwriters="6" Analytics="8" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="21"/>
+          <item ObjId="539" Prefix="DZKP" Operators="8" Underwriters="3" Analytics="8" SoloOperators="5" IsProblem="true" __idx="22"/>
+        </ProblemRecords>
+      </item>
+      <item ObjectId="693" ObjectName="ЗАО &quot;Сибкабель&quot;" IsProblem="true" __idx="17">
+        <ProblemRecords>
+          <item ObjId="693" Prefix="DRP" Operators="11" Underwriters="9" Analytics="11" SoloOperators="2" IsProblem="true" __idx="0"/>
+          <item ObjId="693" Prefix="FIN" Operators="9" Underwriters="7" Analytics="11" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="1"/>
+          <item ObjId="693" Prefix="FINP" Operators="8" Underwriters="7" Analytics="12" SoloOperators="1" SoloAnalytics="4" IsProblem="true" __idx="2"/>
+          <item ObjId="693" Prefix="KPI" Operators="6" Underwriters="5" Analytics="7" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="3"/>
+          <item ObjId="693" Prefix="KPIP" Operators="6" Underwriters="5" Analytics="7" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="4"/>
+          <item ObjId="693" Prefix="SOC" Operators="9" Underwriters="8" Analytics="12" SoloOperators="2" SoloUnderwriters="1" SoloAnalytics="2" IsProblem="true" __idx="5"/>
+          <item ObjId="693" Prefix="SOCP" Operators="9" Underwriters="8" Analytics="12" SoloOperators="2" SoloUnderwriters="1" SoloAnalytics="2" IsProblem="true" __idx="6"/>
+          <item ObjId="693" Prefix="BANK" Operators="6" Underwriters="5" Analytics="8" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="7"/>
+          <item ObjId="693" Prefix="BANKP" Operators="7" Underwriters="6" Analytics="8" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="8"/>
+          <item ObjId="693" Prefix="COST" Operators="6" Underwriters="4" Analytics="7" SoloOperators="2" SoloAnalytics="1" IsProblem="true" __idx="9"/>
+          <item ObjId="693" Prefix="COSTP" Operators="6" Underwriters="4" Analytics="7" SoloOperators="2" SoloAnalytics="1" IsProblem="true" __idx="10"/>
+          <item ObjId="693" Prefix="DR" Operators="9" Underwriters="7" Analytics="9" SoloOperators="2" IsProblem="true" __idx="11"/>
+          <item ObjId="693" Prefix="DZK" Operators="6" Underwriters="5" Analytics="8" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="12"/>
+          <item ObjId="693" Prefix="DZKP" Operators="7" Underwriters="2" Analytics="7" SoloOperators="5" IsProblem="true" __idx="13"/>
+          <item ObjId="693" Prefix="ENERGO" Operators="9" Underwriters="7" Analytics="9" SoloOperators="2" IsProblem="true" __idx="14"/>
+          <item ObjId="693" Prefix="ENERGOP" Operators="8" Underwriters="7" Analytics="8" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="15"/>
+          <item ObjId="693" Prefix="FA" Operators="6" Underwriters="5" Analytics="8" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="16"/>
+          <item ObjId="693" Prefix="FAP" Operators="7" Underwriters="6" Analytics="8" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="17"/>
+          <item ObjId="693" Prefix="INVDR" Operators="8" Underwriters="5" Analytics="9" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="18"/>
+          <item ObjId="693" Prefix="INVDRP" Operators="9" Underwriters="6" Analytics="9" SoloOperators="3" IsProblem="true" __idx="19"/>
+          <item ObjId="693" Prefix="MTR" Operators="8" Underwriters="5" Analytics="9" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="20"/>
+          <item ObjId="693" Prefix="MTRP" Operators="9" Underwriters="6" Analytics="9" SoloOperators="3" IsProblem="true" __idx="21"/>
+          <item ObjId="693" Prefix="NAL" Operators="7" Underwriters="5" Analytics="9" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="22"/>
+          <item ObjId="693" Prefix="NALP" Operators="8" Underwriters="6" Analytics="8" SoloOperators="2" SoloAnalytics="1" IsProblem="true" __idx="23"/>
+          <item ObjId="693" Prefix="OBPROIZ" Operators="7" Underwriters="6" Analytics="8" SoloOperators="2" SoloUnderwriters="1" IsProblem="true" __idx="24"/>
+          <item ObjId="693" Prefix="OBPROIZP" Operators="7" Underwriters="5" Analytics="8" SoloOperators="2" SoloAnalytics="1" IsProblem="true" __idx="25"/>
+          <item ObjId="693" Prefix="SALE" Operators="9" Underwriters="6" Analytics="9" SoloOperators="3" IsProblem="true" __idx="26"/>
+          <item ObjId="693" Prefix="SALEP" Operators="9" Underwriters="6" Analytics="9" SoloOperators="3" IsProblem="true" __idx="27"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">RUDA</item>
+          <item __idx="1">RUDAP</item>
+          <item __idx="2">TRUD</item>
+          <item __idx="3">TRUDP</item>
+          <item __idx="4">ECO</item>
+          <item __idx="5">ECOP</item>
+          <item __idx="6">TEP</item>
+          <item __idx="7">TEPP</item>
+          <item __idx="8">WORK</item>
+          <item __idx="9">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="1046" ObjectName="ООО &quot;УГМК-ОЦМ&quot;" IsProblem="true" __idx="18">
+        <ProblemRecords>
+          <item ObjId="1046" Prefix="BIO" Operators="11" Underwriters="8" Analytics="14" SoloOperators="3" SoloAnalytics="3" IsProblem="true" __idx="0"/>
+          <item ObjId="1046" Prefix="BIOP" Operators="8" Underwriters="7" Analytics="14" SoloOperators="1" SoloAnalytics="6" IsProblem="true" __idx="1"/>
+          <item ObjId="1046" Prefix="COST" Operators="11" Underwriters="7" Analytics="20" SoloOperators="4" SoloAnalytics="9" IsProblem="true" __idx="2"/>
+          <item ObjId="1046" Prefix="COSTP" Operators="8" Underwriters="6" Analytics="20" SoloOperators="2" SoloAnalytics="12" IsProblem="true" __idx="3"/>
+          <item ObjId="1046" Prefix="ENERGO" Operators="10" Underwriters="6" Analytics="13" SoloOperators="4" SoloAnalytics="3" IsProblem="true" __idx="4"/>
+          <item ObjId="1046" Prefix="ENERGOP" Operators="7" Underwriters="5" Analytics="13" SoloOperators="2" SoloAnalytics="6" IsProblem="true" __idx="5"/>
+          <item ObjId="1046" Prefix="INV" Operators="8" Analytics="13" SoloOperators="8" SoloAnalytics="5" IsProblem="true" __idx="6"/>
+          <item ObjId="1046" Prefix="INVDR" Operators="12" Underwriters="7" Analytics="21" SoloOperators="5" SoloAnalytics="9" IsProblem="true" __idx="7"/>
+          <item ObjId="1046" Prefix="INVDRP" Operators="9" Underwriters="6" Analytics="21" SoloOperators="3" SoloAnalytics="12" IsProblem="true" __idx="8"/>
+          <item ObjId="1046" Prefix="MTR" Operators="10" Underwriters="7" Analytics="14" SoloOperators="3" SoloAnalytics="4" IsProblem="true" __idx="9"/>
+          <item ObjId="1046" Prefix="MTRP" Operators="7" Underwriters="6" Analytics="14" SoloOperators="1" SoloAnalytics="7" IsProblem="true" __idx="10"/>
+          <item ObjId="1046" Prefix="OBPROIZ" Operators="11" Underwriters="8" Analytics="19" SoloOperators="3" SoloAnalytics="8" IsProblem="true" __idx="11"/>
+          <item ObjId="1046" Prefix="OBPROIZP" Operators="9" Underwriters="7" Analytics="18" SoloOperators="2" SoloAnalytics="10" IsProblem="true" __idx="12"/>
+          <item ObjId="1046" Prefix="BANK" Operators="10" Underwriters="7" Analytics="11" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="13"/>
+          <item ObjId="1046" Prefix="BANKP" Operators="7" Underwriters="6" Analytics="11" SoloOperators="1" SoloAnalytics="4" IsProblem="true" __idx="14"/>
+          <item ObjId="1046" Prefix="DR" Operators="12" Underwriters="9" Analytics="22" SoloOperators="4" SoloUnderwriters="1" SoloAnalytics="9" IsProblem="true" __idx="15"/>
+          <item ObjId="1046" Prefix="DRP" Operators="9" Underwriters="8" Analytics="22" SoloOperators="2" SoloUnderwriters="1" SoloAnalytics="12" IsProblem="true" __idx="16"/>
+          <item ObjId="1046" Prefix="DZK" Operators="11" Underwriters="8" Analytics="12" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="17"/>
+          <item ObjId="1046" Prefix="DZKP" Operators="8" Underwriters="6" Analytics="12" SoloOperators="2" SoloAnalytics="4" IsProblem="true" __idx="18"/>
+          <item ObjId="1046" Prefix="EDUP" Operators="7" Underwriters="7" Analytics="11" SoloOperators="1" SoloUnderwriters="1" SoloAnalytics="3" IsProblem="true" __idx="19"/>
+          <item ObjId="1046" Prefix="FA" Operators="10" Underwriters="7" Analytics="11" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="20"/>
+          <item ObjId="1046" Prefix="FAP" Operators="7" Underwriters="6" Analytics="11" SoloOperators="1" SoloAnalytics="4" IsProblem="true" __idx="21"/>
+          <item ObjId="1046" Prefix="FIN" Operators="13" Underwriters="9" Analytics="19" SoloOperators="4" SoloAnalytics="6" IsProblem="true" __idx="22"/>
+          <item ObjId="1046" Prefix="FINP" Operators="10" Underwriters="6" Analytics="19" SoloOperators="4" SoloAnalytics="9" IsProblem="true" __idx="23"/>
+          <item ObjId="1046" Prefix="KADR" Operators="16" Underwriters="15" Analytics="20" SoloOperators="2" SoloUnderwriters="1" SoloAnalytics="3" IsProblem="true" __idx="24"/>
+          <item ObjId="1046" Prefix="KADRP" Operators="14" Underwriters="14" Analytics="20" SoloOperators="1" SoloUnderwriters="1" SoloAnalytics="5" IsProblem="true" __idx="25"/>
+          <item ObjId="1046" Prefix="NAL" Operators="13" Underwriters="9" Analytics="19" SoloOperators="4" SoloAnalytics="6" IsProblem="true" __idx="26"/>
+          <item ObjId="1046" Prefix="NALP" Operators="10" Underwriters="6" Analytics="19" SoloOperators="4" SoloAnalytics="9" IsProblem="true" __idx="27"/>
+          <item ObjId="1046" Prefix="OS" Operators="7" Underwriters="5" Analytics="7" SoloOperators="2" IsProblem="true" __idx="28"/>
+          <item ObjId="1046" Prefix="SALE" Operators="9" Underwriters="6" Analytics="11" SoloOperators="3" SoloAnalytics="2" IsProblem="true" __idx="29"/>
+          <item ObjId="1046" Prefix="SALEP" Operators="6" Underwriters="5" Analytics="11" SoloOperators="1" SoloAnalytics="5" IsProblem="true" __idx="30"/>
+          <item ObjId="1046" Prefix="SOC" Operators="17" Underwriters="15" Analytics="20" SoloOperators="3" SoloUnderwriters="1" SoloAnalytics="2" IsProblem="true" __idx="31"/>
+          <item ObjId="1046" Prefix="SOCP" Operators="14" Underwriters="14" Analytics="20" SoloOperators="1" SoloUnderwriters="1" SoloAnalytics="5" IsProblem="true" __idx="32"/>
+          <item ObjId="1046" Prefix="ZP" Operators="14" Underwriters="14" Analytics="19" SoloOperators="2" SoloUnderwriters="2" SoloAnalytics="3" IsProblem="true" __idx="33"/>
+          <item ObjId="1046" Prefix="ZPP" Operators="13" Underwriters="13" Analytics="19" SoloOperators="1" SoloUnderwriters="1" SoloAnalytics="5" IsProblem="true" __idx="34"/>
+          <item ObjId="1046" Prefix="KPI" Operators="6" Underwriters="6" Analytics="6" IsProblem="true" __idx="35"/>
+          <item ObjId="1046" Prefix="KPIP" Operators="6" Underwriters="6" Analytics="6" IsProblem="true" __idx="36"/>
+          <item ObjId="1046" Prefix="EDU" Operators="8" Underwriters="6" Analytics="10" SoloOperators="3" SoloUnderwriters="1" SoloAnalytics="1" IsProblem="true" __idx="37"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">TRUD</item>
+          <item __idx="1">TRUDP</item>
+          <item __idx="2">ECO</item>
+          <item __idx="3">ECOP</item>
+          <item __idx="4">TEP</item>
+          <item __idx="5">TEPP</item>
+          <item __idx="6">WORK</item>
+          <item __idx="7">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="1047" ObjectName="ООО &quot;УГМК-Сталь&quot;" IsProblem="true" __idx="19">
+        <ProblemRecords>
+          <item ObjId="1047" Prefix="FIN" Operators="6" Underwriters="5" Analytics="8" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="0"/>
+          <item ObjId="1047" Prefix="FINP" Operators="6" Underwriters="5" Analytics="8" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="1"/>
+          <item ObjId="1047" Prefix="KADR" Operators="7" Underwriters="7" Analytics="7" IsProblem="true" __idx="2"/>
+          <item ObjId="1047" Prefix="KADRP" Operators="7" Underwriters="7" Analytics="7" IsProblem="true" __idx="3"/>
+          <item ObjId="1047" Prefix="KPI" Operators="6" Underwriters="6" Analytics="6" IsProblem="true" __idx="4"/>
+          <item ObjId="1047" Prefix="KPIP" Operators="6" Underwriters="6" Analytics="6" IsProblem="true" __idx="5"/>
+          <item ObjId="1047" Prefix="NAL" Operators="6" Underwriters="5" Analytics="8" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="6"/>
+          <item ObjId="1047" Prefix="NALP" Operators="6" Underwriters="5" Analytics="8" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="7"/>
+          <item ObjId="1047" Prefix="SOCP" Operators="6" Underwriters="4" Analytics="9" SoloOperators="2" SoloAnalytics="3" IsProblem="true" __idx="8"/>
+          <item ObjId="1047" Prefix="ZP" Operators="7" Underwriters="7" Analytics="7" IsProblem="true" __idx="9"/>
+          <item ObjId="1047" Prefix="ZPP" Operators="7" Underwriters="7" Analytics="7" IsProblem="true" __idx="10"/>
+          <item ObjId="1047" Prefix="EDU" Operators="6" Underwriters="5" Analytics="6" SoloOperators="1" IsProblem="true" __idx="11"/>
+          <item ObjId="1047" Prefix="EDUP" Operators="6" Underwriters="5" Analytics="6" SoloOperators="1" IsProblem="true" __idx="12"/>
+          <item ObjId="1047" Prefix="BANK" Operators="6" Underwriters="5" Analytics="6" SoloOperators="1" IsProblem="true" __idx="13"/>
+          <item ObjId="1047" Prefix="BANKP" Operators="6" Underwriters="5" Analytics="6" SoloOperators="1" IsProblem="true" __idx="14"/>
+          <item ObjId="1047" Prefix="DZK" Operators="6" Underwriters="5" Analytics="6" SoloOperators="1" IsProblem="true" __idx="15"/>
+          <item ObjId="1047" Prefix="DZKP" Operators="6" Underwriters="5" Analytics="6" SoloOperators="1" IsProblem="true" __idx="16"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">TRUD</item>
+          <item __idx="1">TRUDP</item>
+          <item __idx="2">ECO</item>
+          <item __idx="3">ECOP</item>
+          <item __idx="4">TEP</item>
+          <item __idx="5">TEPP</item>
+          <item __idx="6">WORK</item>
+          <item __idx="7">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="1050" ObjectName="ЗАО &quot;Уралкабель&quot;" IsProblem="true" __idx="20">
+        <ProblemRecords>
+          <item ObjId="1050" Prefix="INV" Operators="6" Analytics="4" SoloOperators="6" IsProblem="true" __idx="0"/>
+          <item ObjId="1050" Prefix="BANKP" Operators="7" Underwriters="4" Analytics="8" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="1"/>
+          <item ObjId="1050" Prefix="DR" Operators="6" Underwriters="3" Analytics="8" SoloOperators="3" SoloAnalytics="2" IsProblem="true" __idx="2"/>
+          <item ObjId="1050" Prefix="DZKP" Operators="6" Underwriters="2" Analytics="8" SoloOperators="4" SoloAnalytics="2" IsProblem="true" __idx="3"/>
+          <item ObjId="1050" Prefix="FIN" Operators="7" Underwriters="4" Analytics="8" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="4"/>
+          <item ObjId="1050" Prefix="FINP" Operators="7" Underwriters="4" Analytics="8" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="5"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">OS</item>
+          <item __idx="1">OSP</item>
+          <item __idx="2">TRUD</item>
+          <item __idx="3">TRUDP</item>
+          <item __idx="4">ECO</item>
+          <item __idx="5">ECOP</item>
+          <item __idx="6">TEP</item>
+          <item __idx="7">TEPP</item>
+          <item __idx="8">WORK</item>
+          <item __idx="9">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="1054" ObjectName="ООО &quot;УГМК-Телеком&quot;" IsProblem="true" __idx="21">
+        <ProblemRecords>
+          <item ObjId="1054" Prefix="BANKP" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="0"/>
+          <item ObjId="1054" Prefix="BIO" Operators="6" Underwriters="5" Analytics="6" SoloOperators="1" IsProblem="true" __idx="1"/>
+          <item ObjId="1054" Prefix="BIOP" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="2"/>
+          <item ObjId="1054" Prefix="COST" Operators="6" Underwriters="5" Analytics="6" SoloOperators="1" IsProblem="true" __idx="3"/>
+          <item ObjId="1054" Prefix="COSTP" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="4"/>
+          <item ObjId="1054" Prefix="DR" Operators="7" Underwriters="5" Analytics="7" SoloOperators="2" IsProblem="true" __idx="5"/>
+          <item ObjId="1054" Prefix="DRP" Operators="7" Underwriters="5" Analytics="7" SoloOperators="2" IsProblem="true" __idx="6"/>
+          <item ObjId="1054" Prefix="DZKP" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="7"/>
+          <item ObjId="1054" Prefix="FAP" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="8"/>
+          <item ObjId="1054" Prefix="FINP" Operators="7" Underwriters="5" Analytics="7" SoloOperators="2" IsProblem="true" __idx="9"/>
+          <item ObjId="1054" Prefix="INV" Operators="7" Analytics="8" SoloOperators="7" SoloAnalytics="1" IsProblem="true" __idx="10"/>
+          <item ObjId="1054" Prefix="INVDR" Operators="6" Underwriters="5" Analytics="7" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="11"/>
+          <item ObjId="1054" Prefix="INVDRP" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="12"/>
+          <item ObjId="1054" Prefix="KADR" Operators="6" Underwriters="5" Analytics="7" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="13"/>
+          <item ObjId="1054" Prefix="KADRP" Operators="7" Underwriters="5" Analytics="7" SoloOperators="2" IsProblem="true" __idx="14"/>
+          <item ObjId="1054" Prefix="MTR" Operators="6" Underwriters="5" Analytics="6" SoloOperators="1" IsProblem="true" __idx="15"/>
+          <item ObjId="1054" Prefix="MTRP" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="16"/>
+          <item ObjId="1054" Prefix="NALP" Operators="7" Underwriters="5" Analytics="7" SoloOperators="2" IsProblem="true" __idx="17"/>
+          <item ObjId="1054" Prefix="OBPROIZ" Operators="6" Underwriters="5" Analytics="7" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="18"/>
+          <item ObjId="1054" Prefix="OBPROIZP" Operators="7" Underwriters="5" Analytics="7" SoloOperators="2" IsProblem="true" __idx="19"/>
+          <item ObjId="1054" Prefix="SALE" Operators="6" Underwriters="5" Analytics="6" SoloOperators="1" IsProblem="true" __idx="20"/>
+          <item ObjId="1054" Prefix="SALEP" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="21"/>
+          <item ObjId="1054" Prefix="SOC" Operators="7" Underwriters="6" Analytics="7" SoloOperators="1" IsProblem="true" __idx="22"/>
+          <item ObjId="1054" Prefix="SOCP" Operators="7" Underwriters="5" Analytics="7" SoloOperators="2" IsProblem="true" __idx="23"/>
+          <item ObjId="1054" Prefix="ZP" Operators="7" Underwriters="6" Analytics="7" SoloOperators="1" IsProblem="true" __idx="24"/>
+          <item ObjId="1054" Prefix="ZPP" Operators="7" Underwriters="5" Analytics="7" SoloOperators="2" IsProblem="true" __idx="25"/>
+        </ProblemRecords>
+      </item>
+      <item ObjectId="1062" ObjectName="ООО &quot;Башкирская медь&quot;" IsProblem="true" __idx="22">
+        <ProblemRecords>
+          <item ObjId="1062" Prefix="BANK" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="0"/>
+          <item ObjId="1062" Prefix="BANKP" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="1"/>
+          <item ObjId="1062" Prefix="DR" Operators="8" Underwriters="6" Analytics="8" SoloOperators="2" IsProblem="true" __idx="2"/>
+          <item ObjId="1062" Prefix="DRP" Operators="9" Underwriters="7" Analytics="9" SoloOperators="2" IsProblem="true" __idx="3"/>
+          <item ObjId="1062" Prefix="FA" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="4"/>
+          <item ObjId="1062" Prefix="FAP" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="5"/>
+          <item ObjId="1062" Prefix="FIN" Operators="8" Underwriters="5" Analytics="8" SoloOperators="3" IsProblem="true" __idx="6"/>
+          <item ObjId="1062" Prefix="FINP" Operators="8" Underwriters="6" Analytics="8" SoloOperators="2" IsProblem="true" __idx="7"/>
+          <item ObjId="1062" Prefix="NAL" Operators="8" Underwriters="5" Analytics="8" SoloOperators="3" IsProblem="true" __idx="8"/>
+          <item ObjId="1062" Prefix="NALP" Operators="8" Underwriters="5" Analytics="8" SoloOperators="3" IsProblem="true" __idx="9"/>
+          <item ObjId="1062" Prefix="OBPROIZ" Operators="7" Underwriters="6" Analytics="7" SoloOperators="1" IsProblem="true" __idx="10"/>
+          <item ObjId="1062" Prefix="OBPROIZP" Operators="7" Underwriters="5" Analytics="7" SoloOperators="2" IsProblem="true" __idx="11"/>
+          <item ObjId="1062" Prefix="SOC" Operators="6" Underwriters="6" Analytics="6" IsProblem="true" __idx="12"/>
+          <item ObjId="1062" Prefix="SOCP" Operators="6" Underwriters="6" Analytics="6" IsProblem="true" __idx="13"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">OS</item>
+          <item __idx="1">OSP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="1067" ObjectName="ОАО &quot;УК &quot;Кузбассразрезуголь&quot;" IsProblem="true" __idx="23">
+        <ProblemRecords>
+          <item ObjId="1067" Prefix="NAL" Operators="11" Underwriters="10" Analytics="12" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="0"/>
+          <item ObjId="1067" Prefix="BANK" Operators="9" Underwriters="8" Analytics="10" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="1"/>
+          <item ObjId="1067" Prefix="BANKP" Operators="7" Underwriters="6" Analytics="8" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="2"/>
+          <item ObjId="1067" Prefix="COST" Operators="6" Underwriters="5" Analytics="10" SoloOperators="1" SoloAnalytics="4" IsProblem="true" __idx="3"/>
+          <item ObjId="1067" Prefix="DR" Operators="7" Underwriters="5" Analytics="13" SoloOperators="2" SoloAnalytics="6" IsProblem="true" __idx="4"/>
+          <item ObjId="1067" Prefix="DZKP" Operators="6" Underwriters="3" Analytics="7" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="5"/>
+          <item ObjId="1067" Prefix="FA" Operators="8" Underwriters="7" Analytics="9" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="6"/>
+          <item ObjId="1067" Prefix="FAP" Operators="6" Underwriters="5" Analytics="8" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="7"/>
+          <item ObjId="1067" Prefix="FIN" Operators="9" Underwriters="7" Analytics="11" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="8"/>
+          <item ObjId="1067" Prefix="FINP" Operators="8" Underwriters="5" Analytics="9" SoloOperators="3" SoloAnalytics="1" IsProblem="true" __idx="9"/>
+          <item ObjId="1067" Prefix="INVDR" Operators="6" Underwriters="5" Analytics="11" SoloOperators="1" SoloAnalytics="5" IsProblem="true" __idx="10"/>
+          <item ObjId="1067" Prefix="KAZN" Operators="7" Underwriters="3" Analytics="7" SoloOperators="4" IsProblem="true" __idx="11"/>
+          <item ObjId="1067" Prefix="KAZNP" Operators="7" Underwriters="2" Analytics="7" SoloOperators="5" IsProblem="true" __idx="12"/>
+          <item ObjId="1067" Prefix="MTR" Operators="6" Underwriters="5" Analytics="10" SoloOperators="1" SoloAnalytics="4" IsProblem="true" __idx="13"/>
+          <item ObjId="1067" Prefix="NALP" Operators="7" Underwriters="6" Analytics="10" SoloOperators="1" SoloAnalytics="3" IsProblem="true" __idx="14"/>
+          <item ObjId="1067" Prefix="SOC" Operators="6" Underwriters="3" Analytics="13" SoloOperators="3" SoloAnalytics="7" IsProblem="true" __idx="15"/>
+          <item ObjId="1067" Prefix="ZPP" Operators="6" Underwriters="5" Analytics="11" SoloOperators="1" SoloAnalytics="5" IsProblem="true" __idx="16"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">TRUD</item>
+          <item __idx="1">TRUDP</item>
+          <item __idx="2">ECO</item>
+          <item __idx="3">ECOP</item>
+          <item __idx="4">TEP</item>
+          <item __idx="5">TEPP</item>
+          <item __idx="6">WORK</item>
+          <item __idx="7">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="1072" ObjectName="ООО &quot;Кузбасссвязьуголь&quot;" IsProblem="true" __idx="24">
+        <ProblemRecords>
+          <item ObjId="1072" Prefix="INV" Operators="6" Analytics="5" SoloOperators="6" IsProblem="true" __idx="0"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">ENERGO</item>
+          <item __idx="1">ENERGOP</item>
+          <item __idx="2">OSP</item>
+          <item __idx="3">RUDA</item>
+          <item __idx="4">RUDAP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="1103" ObjectName="ООО &quot;ЕМЦ УГМК-Здоровье&quot;" IsProblem="true" __idx="25">
+        <ProblemRecords>
+          <item ObjId="1103" Prefix="BANK" Operators="6" Underwriters="6" Analytics="6" IsProblem="true" __idx="0"/>
+          <item ObjId="1103" Prefix="BANKP" Operators="6" Underwriters="6" Analytics="6" IsProblem="true" __idx="1"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">RUDA</item>
+          <item __idx="1">RUDAP</item>
+          <item __idx="2">TRUD</item>
+          <item __idx="3">TRUDP</item>
+          <item __idx="4">ECO</item>
+          <item __idx="5">ECOP</item>
+          <item __idx="6">TEP</item>
+          <item __idx="7">TEPP</item>
+          <item __idx="8">WORK</item>
+          <item __idx="9">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="1106" ObjectName="ОАО &quot;Сафьяновская медь&quot;" IsProblem="true" __idx="26">
+        <ProblemRecords>
+          <item ObjId="1106" Prefix="KADRP" Operators="6" Underwriters="4" Analytics="6" SoloOperators="2" IsProblem="true" __idx="0"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">OSP</item>
+          <item __idx="1">TRUD</item>
+          <item __idx="2">TRUDP</item>
+          <item __idx="3">ECO</item>
+          <item __idx="4">ECOP</item>
+          <item __idx="5">TEP</item>
+          <item __idx="6">TEPP</item>
+          <item __idx="7">WORK</item>
+          <item __idx="8">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="1108" ObjectName="ОАО &quot;Челябинский цинковый завод&quot;" IsProblem="true" __idx="27">
+        <ProblemRecords>
+          <item ObjId="1108" Prefix="BANK" Operators="8" Underwriters="2" Analytics="8" SoloOperators="6" IsProblem="true" __idx="0"/>
+          <item ObjId="1108" Prefix="BANKP" Operators="7" Underwriters="2" Analytics="8" SoloOperators="5" SoloAnalytics="1" IsProblem="true" __idx="1"/>
+          <item ObjId="1108" Prefix="COST" Operators="6" Underwriters="2" Analytics="6" SoloOperators="4" IsProblem="true" __idx="2"/>
+          <item ObjId="1108" Prefix="DZK" Operators="8" Underwriters="2" Analytics="8" SoloOperators="6" IsProblem="true" __idx="3"/>
+          <item ObjId="1108" Prefix="DZKP" Operators="7" Underwriters="1" Analytics="6" SoloOperators="6" SoloAnalytics="1" IsProblem="true" __idx="4"/>
+          <item ObjId="1108" Prefix="FA" Operators="8" Underwriters="2" Analytics="8" SoloOperators="6" IsProblem="true" __idx="5"/>
+          <item ObjId="1108" Prefix="FAP" Operators="7" Underwriters="2" Analytics="8" SoloOperators="5" SoloAnalytics="1" IsProblem="true" __idx="6"/>
+          <item ObjId="1108" Prefix="FIN" Operators="8" Underwriters="2" Analytics="8" SoloOperators="6" IsProblem="true" __idx="7"/>
+          <item ObjId="1108" Prefix="FINP" Operators="7" Underwriters="2" Analytics="8" SoloOperators="5" SoloAnalytics="1" IsProblem="true" __idx="8"/>
+          <item ObjId="1108" Prefix="KAZN" Operators="6" Underwriters="2" Analytics="6" SoloOperators="4" IsProblem="true" __idx="9"/>
+          <item ObjId="1108" Prefix="KAZNP" Operators="6" Underwriters="2" Analytics="6" SoloOperators="4" IsProblem="true" __idx="10"/>
+          <item ObjId="1108" Prefix="MTR" Operators="6" Underwriters="2" Analytics="6" SoloOperators="4" IsProblem="true" __idx="11"/>
+          <item ObjId="1108" Prefix="NAL" Operators="8" Underwriters="2" Analytics="8" SoloOperators="6" IsProblem="true" __idx="12"/>
+          <item ObjId="1108" Prefix="NALP" Operators="7" Underwriters="2" Analytics="8" SoloOperators="5" SoloAnalytics="1" IsProblem="true" __idx="13"/>
+          <item ObjId="1108" Prefix="SALE" Operators="6" Underwriters="2" Analytics="6" SoloOperators="4" IsProblem="true" __idx="14"/>
+          <item ObjId="1108" Prefix="SOC" Operators="6" Underwriters="2" Analytics="6" SoloOperators="4" IsProblem="true" __idx="15"/>
+          <item ObjId="1108" Prefix="SOCP" Operators="6" Underwriters="2" Analytics="6" SoloOperators="4" IsProblem="true" __idx="16"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">BIO</item>
+          <item __idx="1">BIOP</item>
+          <item __idx="2">OS</item>
+          <item __idx="3">OSP</item>
+          <item __idx="4">RUDA</item>
+          <item __idx="5">RUDAP</item>
+          <item __idx="6">TRUD</item>
+          <item __idx="7">TRUDP</item>
+          <item __idx="8">ECO</item>
+          <item __idx="9">ECOP</item>
+          <item __idx="10">TEP</item>
+          <item __idx="11">TEPP</item>
+          <item __idx="12">WORK</item>
+          <item __idx="13">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="1166" ObjectName="ОАО &quot;Сибайский ГОК&quot;" IsProblem="true" __idx="28">
+        <ProblemRecords>
+          <item ObjId="1166" Prefix="DR" Operators="7" Underwriters="5" Analytics="9" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="0"/>
+          <item ObjId="1166" Prefix="DZK" Operators="6" Underwriters="4" Analytics="8" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="1"/>
+          <item ObjId="1166" Prefix="FA" Operators="6" Underwriters="4" Analytics="8" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="2"/>
+          <item ObjId="1166" Prefix="FIN" Operators="10" Underwriters="5" Analytics="11" SoloOperators="5" SoloAnalytics="1" IsProblem="true" __idx="3"/>
+          <item ObjId="1166" Prefix="INVDR" Operators="6" Underwriters="4" Analytics="9" SoloOperators="2" SoloAnalytics="3" IsProblem="true" __idx="4"/>
+          <item ObjId="1166" Prefix="NAL" Operators="6" Underwriters="4" Analytics="8" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="5"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">TRUD</item>
+          <item __idx="1">TRUDP</item>
+          <item __idx="2">ECO</item>
+          <item __idx="3">ECOP</item>
+          <item __idx="4">TEP</item>
+          <item __idx="5">TEPP</item>
+          <item __idx="6">WORK</item>
+          <item __idx="7">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="1786" ObjectName="ОАО &quot;Электрокабель &quot;Кольчугинский завод&quot;" IsProblem="true" __idx="29">
+        <ProblemRecords>
+          <item ObjId="1786" Prefix="BANK" Operators="8" Underwriters="7" Analytics="8" SoloOperators="1" IsProblem="true" __idx="0"/>
+          <item ObjId="1786" Prefix="BANKP" Operators="8" Underwriters="7" Analytics="8" SoloOperators="1" IsProblem="true" __idx="1"/>
+          <item ObjId="1786" Prefix="DR" Operators="12" Underwriters="6" Analytics="12" SoloOperators="6" IsProblem="true" __idx="2"/>
+          <item ObjId="1786" Prefix="DRP" Operators="11" Underwriters="6" Analytics="11" SoloOperators="5" IsProblem="true" __idx="3"/>
+          <item ObjId="1786" Prefix="DZK" Operators="9" Underwriters="7" Analytics="9" SoloOperators="2" IsProblem="true" __idx="4"/>
+          <item ObjId="1786" Prefix="DZKP" Operators="9" Underwriters="7" Analytics="9" SoloOperators="2" IsProblem="true" __idx="5"/>
+          <item ObjId="1786" Prefix="FA" Operators="10" Underwriters="8" Analytics="10" SoloOperators="2" IsProblem="true" __idx="6"/>
+          <item ObjId="1786" Prefix="FAP" Operators="9" Underwriters="8" Analytics="9" SoloOperators="1" IsProblem="true" __idx="7"/>
+          <item ObjId="1786" Prefix="FIN" Operators="12" Underwriters="5" Analytics="12" SoloOperators="7" IsProblem="true" __idx="8"/>
+          <item ObjId="1786" Prefix="FINP" Operators="11" Underwriters="4" Analytics="12" SoloOperators="7" SoloAnalytics="1" IsProblem="true" __idx="9"/>
+          <item ObjId="1786" Prefix="INVDR" Operators="8" Underwriters="5" Analytics="11" SoloOperators="3" SoloAnalytics="3" IsProblem="true" __idx="10"/>
+          <item ObjId="1786" Prefix="INVDRP" Operators="7" Underwriters="5" Analytics="10" SoloOperators="2" SoloAnalytics="3" IsProblem="true" __idx="11"/>
+          <item ObjId="1786" Prefix="MTR" Operators="7" Underwriters="6" Analytics="7" SoloOperators="1" IsProblem="true" __idx="12"/>
+          <item ObjId="1786" Prefix="MTRP" Operators="6" Underwriters="5" Analytics="7" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="13"/>
+          <item ObjId="1786" Prefix="NAL" Operators="9" Underwriters="8" Analytics="9" SoloOperators="1" IsProblem="true" __idx="14"/>
+          <item ObjId="1786" Prefix="NALP" Operators="9" Underwriters="8" Analytics="9" SoloOperators="1" IsProblem="true" __idx="15"/>
+          <item ObjId="1786" Prefix="OBPROIZ" Operators="6" Underwriters="5" Analytics="8" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="16"/>
+          <item ObjId="1786" Prefix="OBPROIZP" Operators="6" Underwriters="5" Analytics="8" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="17"/>
+          <item ObjId="1786" Prefix="SALEP" Operators="6" Underwriters="5" Analytics="6" SoloOperators="1" IsProblem="true" __idx="18"/>
+          <item ObjId="1786" Prefix="KADRP" Operators="6" Underwriters="6" Analytics="7" SoloAnalytics="1" IsProblem="true" __idx="19"/>
+          <item ObjId="1786" Prefix="ZPP" Operators="6" Underwriters="6" Analytics="7" SoloAnalytics="1" IsProblem="true" __idx="20"/>
+          <item ObjId="1786" Prefix="INV" Operators="7" Analytics="7" SoloOperators="7" IsProblem="true" __idx="21"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">RUDA</item>
+          <item __idx="1">TRUD</item>
+          <item __idx="2">TRUDP</item>
+          <item __idx="3">ECO</item>
+          <item __idx="4">ECOP</item>
+          <item __idx="5">TEP</item>
+          <item __idx="6">TEPP</item>
+          <item __idx="7">WORK</item>
+          <item __idx="8">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+      <item ObjectId="1836" ObjectName="ООО &quot;Холдинг Кабельный Альянс&quot;" IsProblem="true" __idx="30">
+        <ProblemRecords>
+          <item ObjId="1836" Prefix="BANK" Operators="9" Underwriters="8" Analytics="9" SoloOperators="1" IsProblem="true" __idx="0"/>
+          <item ObjId="1836" Prefix="BANKP" Operators="8" Underwriters="7" Analytics="8" SoloOperators="1" IsProblem="true" __idx="1"/>
+          <item ObjId="1836" Prefix="COST" Operators="7" Underwriters="5" Analytics="7" SoloOperators="2" IsProblem="true" __idx="2"/>
+          <item ObjId="1836" Prefix="COSTP" Operators="7" Underwriters="6" Analytics="7" SoloOperators="1" IsProblem="true" __idx="3"/>
+          <item ObjId="1836" Prefix="DR" Operators="8" Underwriters="7" Analytics="10" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="4"/>
+          <item ObjId="1836" Prefix="DRP" Operators="8" Underwriters="7" Analytics="10" SoloOperators="1" SoloAnalytics="2" IsProblem="true" __idx="5"/>
+          <item ObjId="1836" Prefix="DZK" Operators="9" Underwriters="6" Analytics="9" SoloOperators="3" IsProblem="true" __idx="6"/>
+          <item ObjId="1836" Prefix="DZKP" Operators="8" Underwriters="5" Analytics="8" SoloOperators="3" IsProblem="true" __idx="7"/>
+          <item ObjId="1836" Prefix="FA" Operators="7" Underwriters="6" Analytics="7" SoloOperators="1" IsProblem="true" __idx="8"/>
+          <item ObjId="1836" Prefix="FIN" Operators="9" Underwriters="9" Analytics="12" SoloAnalytics="3" IsProblem="true" __idx="9"/>
+          <item ObjId="1836" Prefix="FINP" Operators="8" Underwriters="8" Analytics="11" SoloAnalytics="3" IsProblem="true" __idx="10"/>
+          <item ObjId="1836" Prefix="INV" Operators="6" Analytics="6" SoloOperators="6" IsProblem="true" __idx="11"/>
+          <item ObjId="1836" Prefix="INVDR" Operators="8" Underwriters="6" Analytics="10" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="12"/>
+          <item ObjId="1836" Prefix="INVDRP" Operators="8" Underwriters="6" Analytics="10" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="13"/>
+          <item ObjId="1836" Prefix="KADR" Operators="10" Underwriters="5" Analytics="10" SoloOperators="5" IsProblem="true" __idx="14"/>
+          <item ObjId="1836" Prefix="KADRP" Operators="10" Underwriters="5" Analytics="10" SoloOperators="5" IsProblem="true" __idx="15"/>
+          <item ObjId="1836" Prefix="MTR" Operators="7" Underwriters="4" Analytics="7" SoloOperators="3" IsProblem="true" __idx="16"/>
+          <item ObjId="1836" Prefix="MTRP" Operators="7" Underwriters="5" Analytics="7" SoloOperators="2" IsProblem="true" __idx="17"/>
+          <item ObjId="1836" Prefix="NAL" Operators="8" Underwriters="7" Analytics="9" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="18"/>
+          <item ObjId="1836" Prefix="NALP" Operators="7" Underwriters="6" Analytics="8" SoloOperators="1" SoloAnalytics="1" IsProblem="true" __idx="19"/>
+          <item ObjId="1836" Prefix="OBPROIZ" Operators="7" Underwriters="5" Analytics="9" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="20"/>
+          <item ObjId="1836" Prefix="OBPROIZP" Operators="7" Underwriters="4" Analytics="9" SoloOperators="3" SoloAnalytics="2" IsProblem="true" __idx="21"/>
+          <item ObjId="1836" Prefix="SOC" Operators="9" Underwriters="6" Analytics="11" SoloOperators="3" SoloAnalytics="2" IsProblem="true" __idx="22"/>
+          <item ObjId="1836" Prefix="SOCP" Operators="9" Underwriters="7" Analytics="11" SoloOperators="2" SoloAnalytics="2" IsProblem="true" __idx="23"/>
+          <item ObjId="1836" Prefix="ZP" Operators="10" Underwriters="5" Analytics="10" SoloOperators="5" IsProblem="true" __idx="24"/>
+          <item ObjId="1836" Prefix="ZPP" Operators="10" Underwriters="5" Analytics="10" SoloOperators="5" IsProblem="true" __idx="25"/>
+        </ProblemRecords>
+        <NoSetPrefixes>
+          <item __idx="0">RUDA</item>
+          <item __idx="1">RUDAP</item>
+          <item __idx="2">TRUD</item>
+          <item __idx="3">TRUDP</item>
+          <item __idx="4">ECO</item>
+          <item __idx="5">ECOP</item>
+          <item __idx="6">TEP</item>
+          <item __idx="7">TEPP</item>
+          <item __idx="8">WORK</item>
+          <item __idx="9">WORKP</item>
+        </NoSetPrefixes>
+      </item>
+    </ProblemPrefixObjects>
+  </result>
+</root>

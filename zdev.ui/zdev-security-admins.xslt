@@ -44,7 +44,7 @@
       <xsl:when test="@IsValid = 'true'">
         <xsl:choose>
           <xsl:when test="Admins/item/@SlotList!=''">
-            <tr class="v-{@IsValid} SlotList-true">
+            <tr class="fa-{@FileAttached} cnt-{@ActiveAdminCount} v-{@IsValid} SlotList-true">
               <td>
                 <xsl:value-of select="position()"/>
               </td>
