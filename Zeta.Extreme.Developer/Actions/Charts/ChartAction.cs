@@ -1,6 +1,8 @@
 ﻿using Qorpent.Charts;
 using Qorpent.Charts.FusionCharts;
 using Qorpent.Mvc;
+using Qorpent.Mvc.Binding;
+using Qorpent.Utils.Extensions;
 
 namespace Zeta.Extreme.Developer.Actions.Charts {
     /// <summary>
@@ -8,6 +10,11 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
     /// </summary>
     [Action("zdev.chart", Role = "DEFAULT")]
     public class ChartAction : ChartActionBase {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Bind]
+        public string CustomType { get; set; }
         /// <summary>
         ///     
         /// </summary>
@@ -27,8 +34,9 @@ namespace Zeta.Extreme.Developer.Actions.Charts {
                 .SetAlpha(0)
                 .SetShowAlternateHGridColor(false)
                 .SetDivLineAlpha(0)
+                .SetChartOrder("area,column")
                 .SetConfig(
-                    new ChartConfig().SetChartType(FusionChartType.MSLine))
+                    new ChartConfig().SetChartType(CustomType != null ? CustomType.To<FusionChartType>() : FusionChartType.MSLine))
                 .Add(
                     ChartFrontEndBuilder.BuildDataset(year, "m203103", "PLANGOD", new[] { 11, 12, 13, 14, 15, 16, 1 })
                         .SetSeriesName("На конец периода")
